@@ -72,7 +72,10 @@ MATHLIBS= m
 GLUTLIBS = GLU GL glut
 QTLIBS = Qt5Widgets Qt5Gui Qt5Core
 X11LIBS = X11
-LIB_LIST = $(MATHLIBS) $(GLUTLIBS) $(QTLIBS) $(X11LIBS)
+LIB_LIST = $(MATHLIBS) \
+           $(GLUTLIBS) \
+           $(QTLIBS)   \
+           $(X11LIBS)
 LIBS := $(foreach LIB, ${LIB_LIST}, -l${LIB})
 
 # Directory containing source and header files
@@ -118,18 +121,26 @@ DIR_LIST = $(LIB_DIR) \
 INCLUDE_PATH := $(foreach DIR, ${DIR_LIST}, $(DIR)/$(INCLUDE_DIR))
 INCLUDE_HEADERS := $(foreach INCHEADER, ${INCLUDE_PATH}, -I${INCHEADER})
 
-INCLUDE_QT_LIBS = /usr/include/x86_64-linux-gnu/qt5
+ifneq ($(wildcard /usr/include/x86_64-linux-gnu/qt5),)
+  INCLUDE_QT_LIBS = /usr/include/x86_64-linux-gnu/qt5
+else
+  $(error Qt libraries not found)
+endif
 INCLUDE_PATH_LIBS = $(INCLUDE_QT_LIBS)
-INCLUDE_LIBS := $(foreach INCLIB, ${INCLUDE_PATH_LIBS}, -isystem${INCLIB})
 
-INCLUDES = $(INCLUDE_HEADERS) $(INCLUDE_LIBS)
+ifneq ($(INCLUDE_PATH_LIBS),)
+  INCLUDE_LIBS := $(foreach INCLIB, ${INCLUDE_PATH_LIBS}, -isystem${INCLIB})
+endif
+
+INCLUDES = $(INCLUDE_HEADERS) \
+           $(INCLUDE_LIBS)
 
 SRCS := $(notdir $(wildcard $(foreach DIR, ${DIR_LIST}, $(DIR)/$(SRC_DIR)/*.$(SRC_EXT))))
 OBJS = $(patsubst %.$(SRC_EXT),$(OBJ_DIR)/%.$(OBJ_EXT),$(notdir $(SRCS)))
 
-VPATH = $(LIB_DIR)/$(SRC_DIR) \
-        $(TOP_DIR)/$(SRC_DIR) \
-        $(TEST_DIR)/$(SRC_DIR)
+SRC_PATH = $(LIB_DIR)/$(SRC_DIR)  \
+           $(TOP_DIR)/$(SRC_DIR)  \
+           $(TEST_DIR)/$(SRC_DIR)
 
 MAIN = main.$(SRC_EXT)
 TOP = $(TOP_DIR)/$(SRC_DIR)/$(MAIN)
@@ -178,7 +189,7 @@ debug :
 	$(VERBOSE_ECHO)echo "[${shell date "+${DATE_FORMAT} ${TIME_FORMAT}"}] --> Object files: $(notdir $(OBJS))"
 	$(VERBOSE_ECHO)echo "[${shell date "+${DATE_FORMAT} ${TIME_FORMAT}"}] --> Executable file: $(notdir $(EXE_NAME))"
 	$(VERBOSE_ECHO)echo "[${shell date "+${DATE_FORMAT} ${TIME_FORMAT}"}] Directories lists:"
-	$(VERBOSE_ECHO)echo "[${shell date "+${DATE_FORMAT} ${TIME_FORMAT}"}] --> Source directories: $(VPATH)"
+	$(VERBOSE_ECHO)echo "[${shell date "+${DATE_FORMAT} ${TIME_FORMAT}"}] --> Source directories: $(SRC_PATH)"
 	$(VERBOSE_ECHO)echo "[${shell date "+${DATE_FORMAT} ${TIME_FORMAT}"}] --> Include directories: $(INCLUDE_PATH)"
 	$(VERBOSE_ECHO)echo "[${shell date "+${DATE_FORMAT} ${TIME_FORMAT}"}] --> Include Qt library path: $(INCLUDE_QT_LIBS)"
 	$(VERBOSE_ECHO)echo "[${shell date "+${DATE_FORMAT} ${TIME_FORMAT}"}] --> Exeutable directory: $(BIN_DIR)"
