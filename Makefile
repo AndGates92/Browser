@@ -138,9 +138,9 @@ INCLUDES = $(INCLUDE_HEADERS) \
 SRCS := $(notdir $(wildcard $(foreach DIR, ${DIR_LIST}, $(DIR)/$(SRC_DIR)/*.$(SRC_EXT))))
 OBJS = $(patsubst %.$(SRC_EXT),$(OBJ_DIR)/%.$(OBJ_EXT),$(notdir $(SRCS)))
 
-SRC_PATH = $(LIB_DIR)/$(SRC_DIR)  \
-           $(TOP_DIR)/$(SRC_DIR)  \
-           $(TEST_DIR)/$(SRC_DIR)
+VPATH = $(LIB_DIR)/$(SRC_DIR)  \
+        $(TOP_DIR)/$(SRC_DIR)  \
+        $(TEST_DIR)/$(SRC_DIR)
 
 MAIN = main.$(SRC_EXT)
 TOP = $(TOP_DIR)/$(SRC_DIR)/$(MAIN)
