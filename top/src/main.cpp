@@ -7,7 +7,9 @@
  */
 
 #include <iostream>
+#include <qt5/QtCore/QtMessageHandler>
 
+#include "logging.h"
 #include "graphics.h"
 
 /** @addtogroup MainGroup
@@ -25,6 +27,7 @@
  */
 
 int main (int argc, char* argv[]) {
+	qInstallMessageHandler(logging::handler);
 	graphics::init_graphics(argc, argv);
 
 	return EXIT_SUCCESS;
