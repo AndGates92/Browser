@@ -1,18 +1,31 @@
-#include <qt5/QtWidgets/QApplication>
-#include <qt5/QtWidgets/QLabel>
-#include <qt5/QtWidgets/QWidget>
-#include <qt5/QtCore/QSize>
+/**
+ * @copyright
+ * @file main.cpp
+ * @author Andrea Gianarda
+ * @date 15th September 2019
+ * @brief Main function of the program
+ */
+
+#include <iostream>
+
+#include "graphics.h"
+
+/** @addtogroup MainGroup
+ *  @{
+ */
+/** 
+ * @brief Function: int main (int argc, char * argv[])
+ *
+ * \param argc: argument count. Number of arguments including the executable itself.
+ * \param argv: argument vector. The first argument is the executable name. Last element of the array is NULL.
+ * \return an integer corresponging to the exit status
+ *
+ * Decodes the arguments and call functions for further processing
+ *
+ */
 
 int main (int argc, char* argv[]) {
-	QApplication app(argc, argv);
-	QSize winSize(320,400);
-	QWidget window;
-	window.setWindowTitle("Test");
-	window.resize(winSize);
-	window.show();
-	QLabel hello("Welcome to Qt", &window);
-	hello.setAlignment(Qt::AlignCenter);
-	hello.resize(winSize);
-	hello.show();
-	return app.exec();
+	graphics::init_graphics(argc, argv);
+
+	return EXIT_SUCCESS;
 }
