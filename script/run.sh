@@ -10,7 +10,7 @@ doc=0
 
 
 # Make file settings
-PROJNAME=snake
+PROJNAME=browser
 EXENAME=${PROJNAME}
 EXEDIR=bin
 
