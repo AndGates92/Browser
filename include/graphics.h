@@ -8,11 +8,17 @@
  * @brief Graphics header file
 */
 
+#include <qt5/QtCore/QLoggingCategory>
+
+Q_DECLARE_LOGGING_CATEGORY(graphicsOverall)
+
 /** @defgroup GraphicsGroup Graphics Doxygen Group
  *  Graphics functions and classes
  *  @{
  */
 namespace graphics {
+
+
 	/**
 	 * @brief Function: void init_graphics(int argc, char** argv)
 	 *

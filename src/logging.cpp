@@ -6,6 +6,8 @@
  * @brief Graphics functions
  */
 
+#include <iostream>
+
 #include <qt5/QtCore/QMessageLogContext>
 #include <qt5/QtCore/QTextStream>
 #include <qt5/QtCore/QString>
@@ -15,7 +17,7 @@
 
 void logging::handler(QtMsgType type, const QMessageLogContext & context, const QString & message) {
 
-	QString info_str("");
+		QString info_str("");
 
 	// CategoryFunction
 	if (context.category != Q_NULLPTR) {
@@ -37,22 +39,29 @@ void logging::handler(QtMsgType type, const QMessageLogContext & context, const 
 	}
 
 	// @TODO print error message
-	if (!logfile.open(QIODevice::WriteOnly | QIODevice::Text)) return ;
+	if (!logfile.open(QIODevice::WriteOnly | QIODevice::Text)) {
+		const QString filename(logfile.fileName());
+		std::cerr << "Uname to open file " << filename.toStdString() << std::endl;
+		exit(EXIT_FAILURE);
+	}
 
 	QTextStream ologfile(&logfile);
 
 	switch(type) {
 		case QtDebugMsg:
-			ologfile << "Debug " << info_str << " " << message << "\n";
+			ologfile << "Debug" << info_str << " " << message << "n";
 			break;
 		case QtInfoMsg:
-			ologfile << "Info " << info_str << " " << message << "\n";
+			ologfile << "Info" << info_str << " " << message <<  "n";
 			break;
 		case QtWarningMsg:
+			ologfile << "Warning" << info_str << " " << message << "n";
 			break;
 		case QtCriticalMsg:
+			ologfile << "Critical" << info_str << " " << message << "n";
 			break;
 		case QtFatalMsg:
+			ologfile << "Fatal" << info_str << " " << message << "n";
 			break;
 	}
 

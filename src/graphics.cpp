@@ -12,16 +12,21 @@
 #include <qt5/QtWidgets/QLabel>
 #include <qt5/QtWidgets/QWidget>
 #include <qt5/QtCore/QSize>
+#include <qt5/QtCore/QLoggingCategory>
 
 // Required by qInfo
 #include <qt5/QtCore/QtDebug>
 
 #include "graphics.h"
 
+
+// Categories
+Q_LOGGING_CATEGORY(graphicsOverall, "graphics.overall", QtInfoMsg)
+
 void graphics::init_graphics(int argc, char** argv) {
 	QApplication app(argc, argv);
 
-	qInfo() << "Create Application";
+	qInfo(graphicsOverall) << "Create Application";
 
 	QSize winSize(320,400);
 	QWidget window;

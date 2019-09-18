@@ -26,8 +26,6 @@
  *  @{
  */
 namespace logging {
-	// Categories
-	//Q_DECLARE_LOGGING_CATEGORY(
 
 	namespace {
 		/**
