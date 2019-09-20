@@ -17,11 +17,12 @@
 // Required by qInfo
 #include <qt5/QtCore/QtDebug>
 
+#include "global_macros.h"
 #include "graphics.h"
 
 
 // Categories
-Q_LOGGING_CATEGORY(graphicsOverall, "graphics.overall", QtInfoMsg)
+Q_LOGGING_CATEGORY(graphicsOverall, "graphics.overall", MSG_TYPE_LEVEL)
 
 void graphics::init_graphics(int argc, char** argv) {
 	QApplication app(argc, argv);

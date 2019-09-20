@@ -13,7 +13,16 @@
 #include <qt5/QtCore/QString>
 #include <qt5/QtCore/QtGlobal>
 
+// Get pointer to default category
+#include <qt5/QtCore/QLoggingCategory>
+
+#include "global_macros.h"
 #include "logging.h"
+
+#define SetMsgLevel(MsgLevel, Category) \
+	if (MsgLevel >= static_cast<QtMsgType>(MSG_TYPE_LEVEL)) { \
+		Category->setEnabled(MsgLevel, true); \
+	}
 
 void logging::handler(QtMsgType type, const QMessageLogContext & context, const QString & message) {
 
@@ -38,7 +47,6 @@ void logging::handler(QtMsgType type, const QMessageLogContext & context, const 
 		info_str.append(context.function);
 	}
 
-	// @TODO print error message
 	if (!logfile.open(QIODevice::WriteOnly | QIODevice::Text)) {
 		const QString filename(logfile.fileName());
 		std::cerr << "Uname to open file " << filename.toStdString() << std::endl;
@@ -64,5 +72,16 @@ void logging::handler(QtMsgType type, const QMessageLogContext & context, const 
 			ologfile << "Fatal" << info_str << " " << message << "n";
 			break;
 	}
+
+}
+
+void logging::set_default_category() {
+	QLoggingCategory * defaultMsgCategory = QLoggingCategory::defaultCategory();
+
+	// Fatal cannpt be disabled therefore not trying to enable it here
+	SetMsgLevel(QtDebugMsg, defaultMsgCategory)
+	SetMsgLevel(QtInfoMsg, defaultMsgCategory)
+	SetMsgLevel(QtWarningMsg, defaultMsgCategory)
+	SetMsgLevel(QtCriticalMsg, defaultMsgCategory)
 
 }

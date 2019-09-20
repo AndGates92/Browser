@@ -21,6 +21,14 @@
 	#define LOGFILE browser.log
 #endif
 
+/**
+ * @brief Default qinfo verbosity level
+ *
+ */
+#if !defined(QINFO_VERBOSITY)
+	#define QINFO_VERBOSITY MEDIUM
+#endif
+
 /** @defgroup LoggingGroup Logging Doxygen Group
  *  Logging functions and classes
  *  @{
@@ -36,6 +44,18 @@ namespace logging {
 	}
 
 	/**
+	 * @brief Verbosity levels
+	 *
+	 */
+	typedef enum class qinfo_level_list {
+		ZERO,   /**< Always printed */
+		LOW,    /**< Low level */
+		MEDIUM, /**< Medium level */
+		HIGH,   /**< High level */
+		DEBUG   /**< Debug level */
+	} qinfo_level_e;
+
+	/**
 	 * @brief Function: void init_graphics(int argc, char** argv)
 	 *
 	 * \param argc: number of arguments
@@ -44,6 +64,13 @@ namespace logging {
 	 * This function initialize graphics
 	 */
 	void handler(QtMsgType type, const QMessageLogContext & context, const QString & message);
+
+	/**
+	 * @brief Function: void set_default_category()
+	 *
+	 * This function enables message types depending on the MSG_TYPE_LEVEL macro
+	 */
+	void set_default_category();
 
 }
 /** @} */ // End of LoggingGroup group

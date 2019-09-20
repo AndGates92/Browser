@@ -27,6 +27,7 @@
  */
 
 int main (int argc, char* argv[]) {
+	logging::set_default_category();
 	qInstallMessageHandler(logging::handler);
 	graphics::init_graphics(argc, argv);
 
