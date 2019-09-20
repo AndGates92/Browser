@@ -19,8 +19,26 @@
 #include "global_macros.h"
 #include "logging.h"
 
+// QtMsgType
+// |---------------|--------|
+// | Name          | Value  |
+// |---------------|--------|
+// | QtDebugMsg    | 0      |
+// | QtInfoMsg     | 4      |
+// | QtWarningMsg  | 1      |
+// | QtCritcalMsg  | 2      |
+// | QtFatalMsg    | 3      |
+// |---------------|--------|
+// Enable messge level if:
+// - MSG_LEVEL_TYPE is set to QtInfoMsg and trying to enable QtDebugMsg
+// - MSG_LEVEL_TYPE is set to QtDebugMsg
+// - MSG_LEVEL_TYPE is not set to QtDebugMsg or QtInfoMsg and not trying to enable QtInfoMsg and MsgLevel is larger than MSG_TYPE_LEVEL
 #define SetMsgLevel(MsgLevel, Category) \
-	if (MsgLevel >= static_cast<QtMsgType>(MSG_TYPE_LEVEL)) { \
+	if (((MsgLevel != QtDebugMsg) && (static_cast<QtMsgType>(MSG_TYPE_LEVEL) == QtInfoMsg)) || \
+	    (static_cast<QtMsgType>(MSG_TYPE_LEVEL) == QtDebugMsg) || \
+	    ((static_cast<QtMsgType>(MSG_TYPE_LEVEL) != QtDebugMsg) && (static_cast<QtMsgType>(MSG_TYPE_LEVEL) != QtInfoMsg) && (MsgLevel >= static_cast<QtMsgType>(MSG_TYPE_LEVEL)) && (MsgLevel != QtDebugMsg)) \
+	) { \
+		std::cout << "set mmsg level" << std::endl;\
 		Category->setEnabled(MsgLevel, true); \
 	}
 
@@ -81,9 +99,13 @@ void logging::set_default_category() {
 	QLoggingCategory * defaultMsgCategory = QLoggingCategory::defaultCategory();
 
 	// Fatal cannpt be disabled therefore not trying to enable it here
+std::cout << "set mmsg debug" << std::endl;
 	SetMsgLevel(QtDebugMsg, defaultMsgCategory)
+std::cout << "set mmsg info" << std::endl;
 	SetMsgLevel(QtInfoMsg, defaultMsgCategory)
+std::cout << "set mmsg wrn" << std::endl;
 	SetMsgLevel(QtWarningMsg, defaultMsgCategory)
+std::cout << "set mmsg crit" << std::endl;
 	SetMsgLevel(QtCriticalMsg, defaultMsgCategory)
 
 }
