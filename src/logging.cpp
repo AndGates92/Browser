@@ -44,7 +44,7 @@
 
 void logging::handler(QtMsgType type, const QMessageLogContext & context, const QString & message) {
 
-		QString info_str("");
+	QString info_str("");
 
 	// CategoryFunction
 	if (context.category != Q_NULLPTR) {
