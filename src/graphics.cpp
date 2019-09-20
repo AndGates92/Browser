@@ -28,6 +28,7 @@ void graphics::init_graphics(int argc, char** argv) {
 	QApplication app(argc, argv);
 
 	qInfo(graphicsOverall) << "Create Application";
+	qDebug(graphicsOverall) << "graphics dont print me ";
 	qDebug() << "Dont print me";
 
 	QSize winSize(320,400);
