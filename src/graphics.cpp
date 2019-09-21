@@ -18,6 +18,7 @@
 #include <qt5/QtCore/QtDebug>
 
 #include "global_macros.h"
+#include "global_types.h"
 #include "graphics.h"
 
 
@@ -27,7 +28,7 @@ Q_LOGGING_CATEGORY(graphicsOverall, "graphics.overall", MSG_TYPE_LEVEL)
 void graphics::init_graphics(int argc, char** argv) {
 	QApplication app(argc, argv);
 
-	qInfo(graphicsOverall) << "Create Application";
+	QINFO_PRINT(global_types::qinfo_level_e::ZERO, graphicsOverall,  "Create Application");
 
 	QSize winSize(320,400);
 	QWidget window;

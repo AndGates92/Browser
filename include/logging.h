@@ -21,14 +21,6 @@
 	#define LOGFILE browser.log
 #endif
 
-/**
- * @brief Default qinfo verbosity level
- *
- */
-#if !defined(QINFO_VERBOSITY)
-	#define QINFO_VERBOSITY MEDIUM
-#endif
-
 /** @defgroup LoggingGroup Logging Doxygen Group
  *  Logging functions and classes
  *  @{
@@ -42,18 +34,6 @@ namespace logging {
 		 */
 		QFile logfile(QT_STRINGIFY(LOGFILE));
 	}
-
-	/**
-	 * @brief Verbosity levels
-	 *
-	 */
-	typedef enum class qinfo_level_list {
-		ZERO,   /**< Always printed */
-		LOW,    /**< Low level */
-		MEDIUM, /**< Medium level */
-		HIGH,   /**< High level */
-		DEBUG   /**< Debug level */
-	} qinfo_level_e;
 
 	/**
 	 * @brief Function: void init_graphics(int argc, char** argv)
