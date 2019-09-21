@@ -1,9 +1,9 @@
 /**
  * @copyright
- * @file graphics.cpp
+ * @file logging.cpp
  * @author Andrea Gianarda
  * @date 17th September 2019
- * @brief Graphics functions
+ * @brief Logging functions
  */
 
 #include <iostream>
@@ -34,12 +34,17 @@
 // - MSG_LEVEL_TYPE is set to QtDebugMsg
 // - MSG_LEVEL_TYPE is not set to QtDebugMsg or QtInfoMsg and not trying to enable QtInfoMsg and MsgLevel is larger than MSG_TYPE_LEVEL
 #define SetMsgLevel(MsgLevel, Category) \
-	if (((MsgLevel != QtDebugMsg) && (static_cast<QtMsgType>(MSG_TYPE_LEVEL) == QtInfoMsg)) || \
-	    (static_cast<QtMsgType>(MSG_TYPE_LEVEL) == QtDebugMsg) || \
-	    ((static_cast<QtMsgType>(MSG_TYPE_LEVEL) != QtDebugMsg) && (static_cast<QtMsgType>(MSG_TYPE_LEVEL) != QtInfoMsg) && (MsgLevel >= static_cast<QtMsgType>(MSG_TYPE_LEVEL)) && (MsgLevel != QtDebugMsg)) \
-	) { \
-		std::cout << "set mmsg level" << std::endl;\
-		Category->setEnabled(MsgLevel, true); \
+	if (Category != Q_NULLPTR) { \
+		if (((MsgLevel != QtDebugMsg) && (static_cast<QtMsgType>(MSG_TYPE_LEVEL) == QtInfoMsg)) || \
+		    (static_cast<QtMsgType>(MSG_TYPE_LEVEL) == QtDebugMsg) || \
+		    ((static_cast<QtMsgType>(MSG_TYPE_LEVEL) != QtDebugMsg) && (static_cast<QtMsgType>(MSG_TYPE_LEVEL) != QtInfoMsg) && (MsgLevel >= static_cast<QtMsgType>(MSG_TYPE_LEVEL)) && (MsgLevel != QtDebugMsg)) \
+		) { \
+			std::cout << "set mmsg level for category " << Category->categoryName() << std::endl; \
+			Category->setEnabled(MsgLevel, true); \
+		} else { \
+			std::cout << "disable mmsg level for category " << Category->categoryName() << std::endl; \
+			Category->setEnabled(MsgLevel, false); \
+		} \
 	}
 
 void logging::handler(QtMsgType type, const QMessageLogContext & context, const QString & message) {
