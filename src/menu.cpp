@@ -9,8 +9,14 @@
 // Qt libraries
 #include <qt5/QtWidgets/QMenu>
 #include <qt5/QtWidgets/QGridLayout>
+#include <qt5/QtCore/QLoggingCategory>
 
+#include "global_macros.h"
+#include "global_types.h"
 #include "menu.h"
+
+// Categories
+Q_LOGGING_CATEGORY(menuOverall, "menu.overall", MSG_TYPE_LEVEL)
 
 //void menu::addTopMenu(QGridLayout & layout) {
 void menu::addTopMenu() {
