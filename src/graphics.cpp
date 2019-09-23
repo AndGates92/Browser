@@ -8,6 +8,7 @@
 
 // Qt libraries
 #include <qt5/QtWidgets/QApplication>
+#include <qt5/QtWidgets/QPushButton>
 #include <qt5/QtWidgets/QGridLayout>
 #include <qt5/QtWidgets/QLabel>
 #include <qt5/QtWidgets/QWidget>
@@ -36,9 +37,10 @@ void graphics::init_graphics(int argc, char** argv) {
 	window.resize(winSize);
 	QLabel hello("Welcome to Qt");
 	hello.setAlignment(Qt::AlignCenter);
-	hello.show();
+	QPushButton exitbutton("Exit");
 	QGridLayout layout;
 	layout.addWidget(&hello, 0, 0, Qt::AlignCenter);
+	layout.addWidget(&exitbutton, 10, 20, Qt::AlignCenter);
 	window.setLayout(&layout);
 	window.show();
 
