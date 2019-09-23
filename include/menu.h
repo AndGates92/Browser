@@ -8,6 +8,10 @@
  * @brief Menu header file
 */
 
+#include <qt5/QtCore/QLoggingCategory>
+
+Q_DECLARE_LOGGING_CATEGORY(menuOverall)
+
 /** @defgroup MenuGroup Menu Doxygen Group
  *  Menu functions and classes
  *  @{
