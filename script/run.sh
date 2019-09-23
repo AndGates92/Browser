@@ -16,8 +16,7 @@ EXEDIR=bin
 
 LOGDIR=log
 DEBUGLOG=debug.log
-COMPNOHWLOG=compile_no_hard_wall.log
-COMPHWLOG=compile_hard_wall.log
+COMPLOG=compile_browser.log
 DOCLOG=doc.log
 EXELOG=${EXENAME}.log
 VALGRINDNOINPUTLOG=valgrind_noinput.log
@@ -110,8 +109,7 @@ if [ ${debug} -eq 1 ]; then
 fi
 
 if [ ${compile} -eq 1 ]; then
-	echo "[`date "+${DATE_FORMAT} ${TIME_FORMAT}"`] --> Compile logfile name hard wall: ${COMPHWLOG}"
-	echo "[`date "+${DATE_FORMAT} ${TIME_FORMAT}"`] --> Compile logfile name no hard wall: ${COMPNOHWLOG}"
+	echo "[`date "+${DATE_FORMAT} ${TIME_FORMAT}"`] --> Compile logfile name: ${COMPLOG}"
 fi
 
 if [ ${tests} -eq 1 ]; then
@@ -160,7 +158,7 @@ if [ ${compile} -eq 1 ]; then
 	echo "[`date "+${DATE_FORMAT} ${TIME_FORMAT}"`] Compile sources"
 	echo "[`date "+${DATE_FORMAT} ${TIME_FORMAT}"`] ========================================================================="
 	(set -x; \
-	 make all LOG_DIR=${LOGDIR} LOGFILENAME=${EXELOG} PROJ_NAME=${PROJNAME} EXE_NAME=${EXENAME} BIN_DIR=${EXEDIR} VERBOSITY=${VERBOSITY} CEXTRAFLAGS=${CEXTRAFLAGS} 2> ${LOGDIR}/${COMPNOHWLOG})
+	 make all LOG_DIR=${LOGDIR} LOGFILENAME=${EXELOG} PROJ_NAME=${PROJNAME} EXE_NAME=${EXENAME} BIN_DIR=${EXEDIR} VERBOSITY=${VERBOSITY} CEXTRAFLAGS=${CEXTRAFLAGS} 2> ${LOGDIR}/${COMPLOG})
 
 	echo "[`date "+${DATE_FORMAT} ${TIME_FORMAT}"`] ========================================================================="
 	echo "[`date "+${DATE_FORMAT} ${TIME_FORMAT}"`] Clean by-product"
