@@ -8,11 +8,11 @@
 
 // Qt libraries
 #include <qt5/QtWidgets/QApplication>
-#include <qt5/QtWidgets/QPushButton>
-#include <qt5/QtWidgets/QGridLayout>
-#include <qt5/QtWidgets/QLabel>
-#include <qt5/QtWidgets/QWidget>
-#include <qt5/QtCore/QSize>
+//#include <qt5/QtWidgets/QPushButton>
+//#include <qt5/QtWidgets/QGridLayout>
+//#include <qt5/QtWidgets/QLabel>
+//#include <qt5/QtWidgets/QWidget>
+//#include <qt5/QtCore/QSize>
 #include <qt5/QtCore/QLoggingCategory>
 
 // Required by qInfo
@@ -20,6 +20,7 @@
 
 #include "global_macros.h"
 #include "global_types.h"
+#include "main_window.h"
 #include "graphics.h"
 
 
@@ -31,17 +32,7 @@ void graphics::init_graphics(int argc, char** argv) {
 
 	QINFO_PRINT(global_types::qinfo_level_e::ZERO, graphicsOverall,  "Create Application");
 
-	QSize winSize(320,400);
-	QWidget window;
-	window.setWindowTitle("Test");
-	window.resize(winSize);
-	QLabel hello("Welcome to Qt");
-	hello.setAlignment(Qt::AlignCenter);
-	QPushButton exitbutton("Exit");
-	QGridLayout layout;
-	layout.addWidget(&hello, 0, 0, Qt::AlignCenter);
-	layout.addWidget(&exitbutton, 10, 20, Qt::AlignCenter);
-	window.setLayout(&layout);
+	main_window::MainWindow window;
 	window.show();
 
 	app.exec();

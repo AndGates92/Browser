@@ -49,8 +49,14 @@ else ifeq ($(PROG_LANG), C)
   CC = gcc
 endif
 
+MOC = moc
+
 OBJ_EXT = o
 HEADER_EXT = h
+
+# Meta-Object compiler handler Qt C++ language extension
+MOC_SRC_EXT = moccpp
+MOC_OBJ_EXT = moco
 
 # Compile-time flags
 # Upgrade all warnings to errors
@@ -86,11 +92,17 @@ LIB_DIR = .
 # Directory containing source files
 SRC_DIR = src
 
+# Directory containing moc source files
+MOC_SRC_DIR = moc_src
+
 # Directory containing include files
 INCLUDE_DIR = include
 
 # Directory containing object files
 OBJ_DIR = obj
+
+# Directory containing moc object files
+MOC_OBJ_DIR = moc_obj
 
 # Directory containing binary files
 BIN_DIR ?= bin
@@ -135,12 +147,15 @@ endif
 INCLUDES = $(INCLUDE_HEADERS) \
            $(INCLUDE_LIBS)
 
-SRCS := $(notdir $(wildcard $(foreach DIR, ${DIR_LIST}, $(DIR)/$(SRC_DIR)/*.$(SRC_EXT))))
+SRC_PATH := $(foreach DIR, ${DIR_LIST}, $(DIR)/$(SRC_DIR))
+SRCS := $(notdir $(wildcard $(foreach DIR, ${SRC_PATH}, $(DIR)/*.$(SRC_EXT))))
+HEADERS := $(notdir $(wildcard $(foreach DIR, ${INCLUDE_PATH}, $(DIR)/*.$(HEADER_EXT))))
+MOC_SRCS = $(patsubst %.$(HEADER_EXT),$(MOC_SRC_DIR)/%.$(MOC_SRC_EXT),$(notdir $(HEADERS)))
 OBJS = $(patsubst %.$(SRC_EXT),$(OBJ_DIR)/%.$(OBJ_EXT),$(notdir $(SRCS)))
+MOC_OBJS = $(patsubst %.$(HEADER_EXT),$(MOC_OBJ_DIR)/%.$(MOC_OBJ_EXT),$(notdir $(HEADERS)))
 
-VPATH = $(LIB_DIR)/$(SRC_DIR)  \
-        $(TOP_DIR)/$(SRC_DIR)  \
-        $(TEST_DIR)/$(SRC_DIR)
+VPATH = $(SRC_PATH) \
+        $(INCLUDE_PATH)
 
 MAIN = main.$(SRC_EXT)
 TOP = $(TOP_DIR)/$(SRC_DIR)/$(MAIN)
@@ -148,7 +163,7 @@ EXE = $(BIN_DIR)/$(EXE_NAME)
 
 #-include $(DEPFILE)
 
-$(EXE) : $(OBJS)
+$(EXE) : $(MOC_OBJS) $(OBJS)
 	$(MKDIR) $(LOG_DIR)
 	$(MKDIR) $(@D)
 	$(VERBOSE_ECHO)echo "[${shell date "+${DATE_FORMAT} ${TIME_FORMAT}"}] Compiling $(@F). Object files are: $^"
@@ -158,6 +173,16 @@ $(OBJ_DIR)/%.$(OBJ_EXT) : %.$(SRC_EXT)
 	$(MKDIR) $(@D)
 	$(VERBOSE_ECHO)echo "[${shell date "+${DATE_FORMAT} ${TIME_FORMAT}"}] Compiling $(<F) and creating object $@"
 	$(CC) $(CFLAGS) $(INCLUDES)  -c $< $(DFLAGS) $(BEHFLAGS) $(CEXTRAFLAGS) -o $@ $(LIBS)
+
+$(MOC_SRC_DIR)/%.$(SRC_EXT) : %.$(HEADER_EXT)
+	$(MKDIR) $(@D)
+	$(VERBOSE_ECHO)echo "[${shell date "+${DATE_FORMAT} ${TIME_FORMAT}"}] Compiling $(<F) and creating moc source $@"
+	$(MOC) $(DFLAGS) $(BEHFLAGS) $(CEXTRAFLAGS) $(INCLUDE_HEADERS) $< -o $@
+
+$(MOC_OBJ_DIR)/%.$(MOC_OBJ_EXT) : $(MOC_SRC_DIR)/%.$(SRC_EXT)
+	$(MKDIR) $(@D)
+	$(VERBOSE_ECHO)echo "[${shell date "+${DATE_FORMAT} ${TIME_FORMAT}"}] Compiling $(<F) and creating moc object $@"
+	$(CC) $(CFLAGS) $(INCLUDES) -c $< $(DFLAGS) $(BEHFLAGS) $(CEXTRAFLAGS) -o $@ $(LIBS)
 
 $(DEPFILE) : $(SRCS)
 	rm -rf $(DEP_DIR)
@@ -186,10 +211,14 @@ debug :
 	$(VERBOSE_ECHO)echo "[${shell date "+${DATE_FORMAT} ${TIME_FORMAT}"}] --> Qt libraries: $(QTLIBS)"
 	$(VERBOSE_ECHO)echo "[${shell date "+${DATE_FORMAT} ${TIME_FORMAT}"}] Files lists:"
 	$(VERBOSE_ECHO)echo "[${shell date "+${DATE_FORMAT} ${TIME_FORMAT}"}] --> Source files: $(SRCS)"
+	$(VERBOSE_ECHO)echo "[${shell date "+${DATE_FORMAT} ${TIME_FORMAT}"}] --> Header files: $(HEADERS)"
+	$(VERBOSE_ECHO)echo "[${shell date "+${DATE_FORMAT} ${TIME_FORMAT}"}] --> moc source files: $(notdir $(MOC_SRCS))"
 	$(VERBOSE_ECHO)echo "[${shell date "+${DATE_FORMAT} ${TIME_FORMAT}"}] --> Object files: $(notdir $(OBJS))"
+	$(VERBOSE_ECHO)echo "[${shell date "+${DATE_FORMAT} ${TIME_FORMAT}"}] --> moc object files: $(notdir $(MOC_OBJS))"
 	$(VERBOSE_ECHO)echo "[${shell date "+${DATE_FORMAT} ${TIME_FORMAT}"}] --> Executable file: $(notdir $(EXE_NAME))"
 	$(VERBOSE_ECHO)echo "[${shell date "+${DATE_FORMAT} ${TIME_FORMAT}"}] Directories lists:"
 	$(VERBOSE_ECHO)echo "[${shell date "+${DATE_FORMAT} ${TIME_FORMAT}"}] --> Source directories: $(SRC_PATH)"
+	$(VERBOSE_ECHO)echo "[${shell date "+${DATE_FORMAT} ${TIME_FORMAT}"}] --> moc source directories: $(MOC_SRC_DIR)"
 	$(VERBOSE_ECHO)echo "[${shell date "+${DATE_FORMAT} ${TIME_FORMAT}"}] --> Include directories: $(INCLUDE_PATH)"
 	$(VERBOSE_ECHO)echo "[${shell date "+${DATE_FORMAT} ${TIME_FORMAT}"}] --> Include Qt library path: $(INCLUDE_QT_LIBS)"
 	$(VERBOSE_ECHO)echo "[${shell date "+${DATE_FORMAT} ${TIME_FORMAT}"}] --> Exeutable directory: $(BIN_DIR)"
@@ -198,6 +227,10 @@ debug :
 clean_byprod :
 	$(VERBOSE_ECHO)echo "[${shell date "+${DATE_FORMAT} ${TIME_FORMAT}"}] Remove object files: $(OBJS)"
 	rm -rf $(OBJ_DIR)
+	$(VERBOSE_ECHO)echo "[${shell date "+${DATE_FORMAT} ${TIME_FORMAT}"}] Remove moc object files: $(MOC_OBJS)"
+	rm -rf $(MOC_OBJ_DIR)
+	$(VERBOSE_ECHO)echo "[${shell date "+${DATE_FORMAT} ${TIME_FORMAT}"}] Remove moc source files: $(MOC_SRCS)"
+	rm -rf $(MOC_SRC_DIR)
 	$(VERBOSE_ECHO)echo "[${shell date "+${DATE_FORMAT} ${TIME_FORMAT}"}] Remove dependencies directory: $(DEP_DIR)"
 	rm -rf $(DEP_DIR)
 	$(VERBOSE_ECHO)echo "[${shell date "+${DATE_FORMAT} ${TIME_FORMAT}"}] Remove doxygen documentation directory: $(DOX_DOC_DIR)"
