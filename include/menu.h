@@ -9,6 +9,9 @@
 */
 
 #include <qt5/QtCore/QLoggingCategory>
+#include <qt5/QtWidgets/QMenu>
+#include <qt5/QtWidgets/QWidget>
+#include <qt5/QtWidgets/QMenuBar>
 
 Q_DECLARE_LOGGING_CATEGORY(menuOverall)
 
@@ -18,17 +21,18 @@ Q_DECLARE_LOGGING_CATEGORY(menuOverall)
  */
 namespace menu {
 
+	class Menu {
 
-	/**
-	 * @brief Function: void addTopMenu(QGridLayout & layout)
-	 *
-	 * \param layout: window grid layout
-	 *
-	 * This function adds a menu on top of the main window
-	 */
-//	void addTopMenu(QGridLayout & layout);
-	void addTopMenu();
+		public:
+			explicit Menu(QWidget * window = Q_NULLPTR, QMenuBar * menuBar = Q_NULLPTR);
 
+		protected:
+			QWidget * window;
+			QMenuBar * menuBar;
+			QMenu * winMenu;
+
+		private:
+	};
 }
 /** @} */ // End of MenuGroup group
 

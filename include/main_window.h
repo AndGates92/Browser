@@ -49,10 +49,6 @@ namespace main_window {
 
 			// File dropdown menu
 			file_menu::FileMenu * fileMenu;
-//			QMenu * fileMenu;
-//			QAction * openAction;
-//			QAction * saveAction;
-//			QAction * printAction;
 
 			// Edit dropdown menu
 			QMenu * editMenu;
@@ -67,11 +63,6 @@ namespace main_window {
 			QLabel * centerWindow;
 
 		private slots:
-			// File dropdown menu
-//			void openSlot();
-//			void saveSlot();
-//			void printSlot();
-
 			// Edit dropdown menu
 			void undoSlot();
 /*			void redoSlot();

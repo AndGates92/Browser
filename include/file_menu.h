@@ -14,6 +14,8 @@
 #include <qt5/QtWidgets/QWidget>
 #include <qt5/QtWidgets/QMenuBar>
 
+#include "menu.h"
+
 /** @defgroup FileMenuGroup File Menu Doxygen Group
  *  File Menu functions and classes
  *  @{
@@ -23,25 +25,27 @@ Q_DECLARE_LOGGING_CATEGORY(fileMenuOverall)
 
 namespace file_menu {
 
-	class FileMenu : public QObject {
+	class FileMenu : public QObject, public menu::Menu {
 
 		Q_OBJECT
 
 		public:
-			explicit FileMenu(QWidget * parent = Q_NULLPTR, QMenuBar * menuBar = Q_NULLPTR);
+			explicit FileMenu(QWidget * window = Q_NULLPTR, QMenuBar * menuBar = Q_NULLPTR);
 
 		protected:
-			void createMenu();
-			void createActions();
 
 		protected slots:
 			void openSlot();
+//			void saveSlot();
+//			void printSlot();
 
 		private:
-			QWidget * parent;
-			QMenuBar * menuBar;
-			QMenu * Menu;
 			QAction * openAction;
+//			QAction * saveAction;
+//			QAction * printAction;
+
+			void createMenu();
+			void createActions();
 	};
 }
 /** @} */ // End of FileMenuGroup group
