@@ -32,7 +32,7 @@ namespace main_window {
 
 		public:
 
-			MainWindow();
+			explicit MainWindow(QWidget * parent = Q_NULLPTR, Qt::WindowFlags flags = Qt::WindowFlags());
 
 		protected:
 		#ifndef QT_NO_CONTEXTMENU

@@ -7,14 +7,9 @@
  */
 
 // Qt libraries
-#include <qt5/QtWidgets/QMainWindow>
-#include <qt5/QtWidgets/QWidget>
 #include <qt5/QtWidgets/QVBoxLayout>
 #include <qt5/QtWidgets/QStatusBar>
 #include <qt5/QtWidgets/QMenuBar>
-#include <qt5/QtWidgets/QMenu>
-
-#include <qt5/QtCore/QLoggingCategory>
 
 // Required by qInfo
 #include <qt5/QtCore/QtDebug>
@@ -23,6 +18,7 @@
 
 #include "global_macros.h"
 #include "global_types.h"
+#include "open_button_window.h"
 #include "main_window.h"
 
 
@@ -31,27 +27,27 @@ Q_LOGGING_CATEGORY(mainWindowOverall, "mainWindow.overall", MSG_TYPE_LEVEL)
 Q_LOGGING_CATEGORY(mainWindowFileMenu, "mainWindow.menu.file", MSG_TYPE_LEVEL)
 Q_LOGGING_CATEGORY(mainWindowEditMenu, "mainWindow.menu.edit", MSG_TYPE_LEVEL)
 
-main_window::MainWindow::MainWindow() {
+main_window::MainWindow::MainWindow(QWidget * parent, Qt::WindowFlags flags) : QMainWindow(parent, flags) {
 
-	QWidget * mainWidget = new QWidget();
+	QWidget * mainWidget = new QWidget(this);
 	setCentralWidget(mainWidget);
 
-	QWidget * topWidget = new QWidget();
+	QWidget * topWidget = new QWidget(this);
 	// size policy horintally and vertically to expanding
 	topWidget->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
 
-	this->centerWindow = new QLabel(tr("Example"));
+	this->centerWindow = new QLabel(tr("Example"), this);
 	this->centerWindow->setFrameStyle(QFrame::StyledPanel | QFrame::Sunken);
 	this->centerWindow->setAlignment(Qt::AlignCenter);
 
-	QWidget * bottomWidget = new QWidget();
+	QWidget * bottomWidget = new QWidget(this);
 	// size policy horintally and vertically to expanding
 	bottomWidget->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
 
-	QVBoxLayout * layout = new QVBoxLayout;
+	QVBoxLayout * layout = new QVBoxLayout(this);
 	layout->setContentsMargins(5,5,5,5);
 	layout->addWidget(topWidget);
-	layout->addWidget(centerWindow);
+	layout->addWidget(this->centerWindow);
 	layout->addWidget(bottomWidget);
 
 	mainWidget->setLayout(layout);
@@ -94,6 +90,9 @@ void main_window::MainWindow::createTopMenu() {
 
 void main_window::MainWindow::openSlot() {
 	QINFO_PRINT(global_types::qinfo_level_e::ZERO, mainWindowFileMenu,  "open slot");
+
+	open_button_window::OpenButtonWindow OpenWindow(this, Qt::Dialog);
+	OpenWindow.exec();
 }
 
 void main_window::MainWindow::undoSlot() {
