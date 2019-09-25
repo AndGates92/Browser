@@ -52,9 +52,7 @@ main_window::MainWindow::MainWindow(QWidget * parent, Qt::WindowFlags flags) : Q
 	mainWidget->setLayout(layout);
 
 	this->fileMenu = new file_menu::FileMenu(this, this->menuBar());
-
-	this->createActions();
-	this->createTopMenu();
+	this->editMenu = new edit_menu::EditMenu(this, this->menuBar());
 
 	QString msg = tr("status bar message");
 	statusBar()->showMessage(msg);
@@ -63,42 +61,6 @@ main_window::MainWindow::MainWindow(QWidget * parent, Qt::WindowFlags flags) : Q
 
 	QSize winSize(320,400);
 	resize(winSize);
-}
-
-void main_window::MainWindow::createActions() {
-
-	// File menu
-//	this->openAction = new QAction(tr("Open"), this);
-//	this->openAction->setStatusTip(tr("Open URL"));
-//	connect(this->openAction, &QAction::triggered, this, &MainWindow::openSlot);
-
-	// Edit menu
-	this->undoAction = new QAction(tr("Undo"), this);
-	this->undoAction->setStatusTip(tr("Undo previous action"));
-	connect(this->undoAction, &QAction::triggered, this, &MainWindow::undoSlot);
-}
-
-void main_window::MainWindow::createTopMenu() {
-
-	// File
-//	this->fileMenu = menuBar()->addMenu(tr("File"));
-//	this->fileMenu->addAction(openAction);
-
-	// Edit
-	this->editMenu = menuBar()->addMenu(tr("Edit"));
-	this->editMenu->addAction(undoAction);
-}
-/*
-void main_window::MainWindow::openSlot() {
-	QINFO_PRINT(global_types::qinfo_level_e::ZERO, mainWindowFileMenu,  "open slot");
-
-	open_button_window::OpenButtonWindow OpenWindow(this, Qt::Dialog);
-	OpenWindow.exec();
-}
-*/
-
-void main_window::MainWindow::undoSlot() {
-	QINFO_PRINT(global_types::qinfo_level_e::ZERO, mainWindowEditMenu,  "undo slot");
 }
 
 QMenuBar * main_window::MainWindow::getMenuBar() {

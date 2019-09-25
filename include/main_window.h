@@ -17,6 +17,7 @@
 #include <qt5/QtWidgets/QMenuBar>
 
 #include "file_menu.h"
+#include "edit_menu.h"
 
 /** @defgroup MainWindowGroup Main Window Doxygen Group
  *  Main Window functions and classes
@@ -44,34 +45,14 @@ namespace main_window {
 		#endif // QT_NO_CONTEXTMENU
 
 		private:
-			void createActions();
-			void createTopMenu();
-
 			// File dropdown menu
 			file_menu::FileMenu * fileMenu;
 
 			// Edit dropdown menu
-			QMenu * editMenu;
-			QAction * undoAction;
-/*			QAction * redoAction;
-			QAction * copyAction;
-			QAction * pasteAction;
-			QAction * selectAllAction;
-			QAction * findAction;
-*/
+			edit_menu::EditMenu * editMenu;
 
 			QLabel * centerWindow;
 
-		private slots:
-			// Edit dropdown menu
-			void undoSlot();
-/*			void redoSlot();
-			void cutSlot();
-			void copySlot();
-			void pasteSlot();
-			void selectAllSlot();
-			void findSlot();
-*/
 	};
 }
 /** @} */ // End of MainWindowGroup group
