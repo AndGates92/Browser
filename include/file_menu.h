@@ -34,7 +34,7 @@ namespace file_menu {
 
 		protected:
 
-		protected slots:
+		private slots:
 			void openSlot();
 //			void saveSlot();
 //			void printSlot();

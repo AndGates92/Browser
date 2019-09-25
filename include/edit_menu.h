@@ -37,7 +37,7 @@ namespace edit_menu {
 
 		protected:
 
-		protected slots:
+		private slots:
 			void undoSlot();
 /*			void redoSlot();
 			void cutSlot();
