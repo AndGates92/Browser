@@ -14,6 +14,9 @@
 #include <qt5/QtWidgets/QLabel>
 #include <qt5/QtWidgets/QAction>
 #include <qt5/QtWidgets/QWidget>
+#include <qt5/QtWidgets/QMenuBar>
+
+#include "file_menu.h"
 
 /** @defgroup MainWindowGroup Main Window Doxygen Group
  *  Main Window functions and classes
@@ -33,6 +36,7 @@ namespace main_window {
 		public:
 
 			explicit MainWindow(QWidget * parent = Q_NULLPTR, Qt::WindowFlags flags = Qt::WindowFlags());
+			QMenuBar  * getMenuBar();
 
 		protected:
 		#ifndef QT_NO_CONTEXTMENU
@@ -44,8 +48,9 @@ namespace main_window {
 			void createTopMenu();
 
 			// File dropdown menu
-			QMenu * fileMenu;
-			QAction * openAction;
+			file_menu::FileMenu * fileMenu;
+//			QMenu * fileMenu;
+//			QAction * openAction;
 //			QAction * saveAction;
 //			QAction * printAction;
 
@@ -63,7 +68,7 @@ namespace main_window {
 
 		private slots:
 			// File dropdown menu
-			void openSlot();
+//			void openSlot();
 //			void saveSlot();
 //			void printSlot();
 

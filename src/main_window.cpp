@@ -9,7 +9,6 @@
 // Qt libraries
 #include <qt5/QtWidgets/QVBoxLayout>
 #include <qt5/QtWidgets/QStatusBar>
-#include <qt5/QtWidgets/QMenuBar>
 
 // Required by qInfo
 #include <qt5/QtCore/QtDebug>
@@ -52,6 +51,8 @@ main_window::MainWindow::MainWindow(QWidget * parent, Qt::WindowFlags flags) : Q
 
 	mainWidget->setLayout(layout);
 
+	this->fileMenu = new file_menu::FileMenu(this, this->menuBar());
+
 	this->createActions();
 	this->createTopMenu();
 
@@ -67,9 +68,9 @@ main_window::MainWindow::MainWindow(QWidget * parent, Qt::WindowFlags flags) : Q
 void main_window::MainWindow::createActions() {
 
 	// File menu
-	this->openAction = new QAction(tr("Open"), this);
-	this->openAction->setStatusTip(tr("Open URL"));
-	connect(this->openAction, &QAction::triggered, this, &MainWindow::openSlot);
+//	this->openAction = new QAction(tr("Open"), this);
+//	this->openAction->setStatusTip(tr("Open URL"));
+//	connect(this->openAction, &QAction::triggered, this, &MainWindow::openSlot);
 
 	// Edit menu
 	this->undoAction = new QAction(tr("Undo"), this);
@@ -80,21 +81,26 @@ void main_window::MainWindow::createActions() {
 void main_window::MainWindow::createTopMenu() {
 
 	// File
-	this->fileMenu = menuBar()->addMenu(tr("File"));
-	this->fileMenu->addAction(openAction);
+//	this->fileMenu = menuBar()->addMenu(tr("File"));
+//	this->fileMenu->addAction(openAction);
 
 	// Edit
 	this->editMenu = menuBar()->addMenu(tr("Edit"));
 	this->editMenu->addAction(undoAction);
 }
-
+/*
 void main_window::MainWindow::openSlot() {
 	QINFO_PRINT(global_types::qinfo_level_e::ZERO, mainWindowFileMenu,  "open slot");
 
 	open_button_window::OpenButtonWindow OpenWindow(this, Qt::Dialog);
 	OpenWindow.exec();
 }
+*/
 
 void main_window::MainWindow::undoSlot() {
 	QINFO_PRINT(global_types::qinfo_level_e::ZERO, mainWindowEditMenu,  "undo slot");
+}
+
+QMenuBar * main_window::MainWindow::getMenuBar() {
+	return this->menuBar();
 }
