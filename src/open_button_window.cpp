@@ -2,7 +2,7 @@
  * @copyright
  * @file open_button_window.cpp
  * @author Andrea Gianarda
- * @date 23th September 2019
+ * @date 25th September 2019
  * @brief Open Button Window functions
  */
 

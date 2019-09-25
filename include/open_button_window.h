@@ -4,7 +4,7 @@
  * @copyright
  * @file open_button_window.h
  * @author Andrea Gianarda
- * @date 23th of September 2019
+ * @date 25th of September 2019
  * @brief Open Button Window header file
 */
 
