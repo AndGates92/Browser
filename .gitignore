@@ -3,3 +3,5 @@ bin/
 doc/
 log/
 dep/
+moc_obj/
+moc_src/
