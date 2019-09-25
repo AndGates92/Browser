@@ -31,8 +31,8 @@ namespace file_menu {
 			explicit FileMenu(QWidget * parent = Q_NULLPTR, QMenuBar * menuBar = Q_NULLPTR);
 
 		protected:
-			void createMenu() override;
-			void createActions() override;
+			void createMenu();
+			void createActions();
 
 		protected slots:
 			void openSlot();
