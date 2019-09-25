@@ -8,12 +8,6 @@
 
 // Qt libraries
 #include <qt5/QtWidgets/QApplication>
-//#include <qt5/QtWidgets/QPushButton>
-//#include <qt5/QtWidgets/QGridLayout>
-//#include <qt5/QtWidgets/QLabel>
-//#include <qt5/QtWidgets/QWidget>
-//#include <qt5/QtCore/QSize>
-#include <qt5/QtCore/QLoggingCategory>
 
 // Required by qInfo
 #include <qt5/QtCore/QtDebug>
