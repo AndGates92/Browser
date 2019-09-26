@@ -31,19 +31,19 @@ main_window::MainWindow::MainWindow(QWidget * parent, Qt::WindowFlags flags) : Q
 	QWidget * mainWidget = new QWidget(this);
 	setCentralWidget(mainWidget);
 
-	QWidget * topWidget = new QWidget(this);
+	QWidget * topWidget = new QWidget(mainWidget);
 	// size policy horintally and vertically to expanding
 	topWidget->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
 
-	this->centerWindow = new QLabel(tr("Example"), this);
+	this->centerWindow = new QLabel(tr("Example"), mainWidget);
 	this->centerWindow->setFrameStyle(QFrame::StyledPanel | QFrame::Sunken);
 	this->centerWindow->setAlignment(Qt::AlignCenter);
 
-	QWidget * bottomWidget = new QWidget(this);
+	QWidget * bottomWidget = new QWidget(mainWidget);
 	// size policy horintally and vertically to expanding
 	bottomWidget->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
 
-	QVBoxLayout * layout = new QVBoxLayout(this);
+	QVBoxLayout * layout = new QVBoxLayout(mainWidget);
 	layout->setContentsMargins(5,5,5,5);
 	layout->addWidget(topWidget);
 	layout->addWidget(this->centerWindow);
