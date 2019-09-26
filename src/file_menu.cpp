@@ -46,6 +46,6 @@ void file_menu::FileMenu::createMenu() {
 void file_menu::FileMenu::openSlot() {
 	QINFO_PRINT(global_types::qinfo_level_e::ZERO, fileMenuOverall,  "open slot");
 
-	open_button_window::OpenButtonWindow OpenWindow(window, Qt::Dialog);
+	open_button_window::OpenButtonWindow OpenWindow(this->window, Qt::Dialog);
 	OpenWindow.exec();
 }
