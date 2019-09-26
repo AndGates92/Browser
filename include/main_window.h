@@ -44,6 +44,9 @@ namespace main_window {
 //			void contextMenuEvent(QContextMenuEvent * event) override;
 		#endif // QT_NO_CONTEXTMENU
 
+		private slots:
+			void disableMenubar();
+
 		private:
 			// File dropdown menu
 			file_menu::FileMenu * fileMenu;
@@ -53,6 +56,7 @@ namespace main_window {
 
 			QLabel * centerWindow;
 
+			void createShortcuts();
 	};
 }
 /** @} */ // End of MainWindowGroup group

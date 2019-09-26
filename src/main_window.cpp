@@ -9,6 +9,7 @@
 // Qt libraries
 #include <qt5/QtWidgets/QVBoxLayout>
 #include <qt5/QtWidgets/QStatusBar>
+#include <qt5/QtWidgets/QShortcut>
 
 // Required by qInfo
 #include <qt5/QtCore/QtDebug>
@@ -53,6 +54,7 @@ main_window::MainWindow::MainWindow(QWidget * parent, Qt::WindowFlags flags) : Q
 
 	this->fileMenu = new file_menu::FileMenu(this, this->menuBar());
 	this->editMenu = new edit_menu::EditMenu(this, this->menuBar());
+	main_window::MainWindow::createShortcuts();
 
 	QString msg = tr("status bar message");
 	statusBar()->showMessage(msg);
@@ -65,4 +67,16 @@ main_window::MainWindow::MainWindow(QWidget * parent, Qt::WindowFlags flags) : Q
 
 QMenuBar * main_window::MainWindow::getMenuBar() {
 	return this->menuBar();
+}
+
+void main_window::MainWindow::createShortcuts() {
+	// m will hide/show the menu bar
+	QShortcut * hideMenuBar = new QShortcut(this);
+	hideMenuBar->setKey(Qt::Key_M);
+	connect(hideMenuBar, SIGNAL(activated()), this, SLOT(disableMenubar()));
+}
+
+void main_window::MainWindow::disableMenubar() {
+	bool menubarVisible = this->menuBar()->isVisible();
+	this->menuBar()->setVisible(!menubarVisible);
 }
