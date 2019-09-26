@@ -21,6 +21,8 @@
 
 Q_DECLARE_LOGGING_CATEGORY(openButtonWindowOverall)
 Q_DECLARE_LOGGING_CATEGORY(openButtonWindowLayout)
+Q_DECLARE_LOGGING_CATEGORY(openButtonWindowOpen)
+Q_DECLARE_LOGGING_CATEGORY(openButtonWindowCancel)
 
 namespace open_button_window {
 
@@ -33,6 +35,10 @@ namespace open_button_window {
 			explicit OpenButtonWindow(QWidget * parent = Q_NULLPTR, Qt::WindowFlags flags = Qt::WindowFlags());
 
 		protected:
+
+		private slots:
+			void openSlot();
+			void cancelSlot();
 
 		private:
 			QLabel * label;

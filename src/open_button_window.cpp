@@ -22,6 +22,8 @@
 // Categories
 Q_LOGGING_CATEGORY(openButtonWindowOverall, "openButtonWindow.overall", MSG_TYPE_LEVEL)
 Q_LOGGING_CATEGORY(openButtonWindowLayout, "openButtonWindow.layout", MSG_TYPE_LEVEL)
+Q_LOGGING_CATEGORY(openButtonWindowOpen, "openButtonWindow.open_button", MSG_TYPE_LEVEL)
+Q_LOGGING_CATEGORY(openButtonWindowCancel, "openButtonWindow.cancel_button", MSG_TYPE_LEVEL)
 
 open_button_window::OpenButtonWindow::OpenButtonWindow(QWidget * parent, Qt::WindowFlags flags) : QDialog(parent, flags) {
 
@@ -29,6 +31,8 @@ open_button_window::OpenButtonWindow::OpenButtonWindow(QWidget * parent, Qt::Win
 
 	// Set modal because other windows should not be active
 	this->setModal(true);
+	// Set attribute to delete when the dialog is closed
+	this->setAttribute(Qt::WA_DeleteOnClose);
 
 	this->label = new QLabel(tr("Open -> "), this);
 	this->label->setFrameStyle(QFrame::NoFrame | QFrame::Sunken);
@@ -38,7 +42,9 @@ open_button_window::OpenButtonWindow::OpenButtonWindow(QWidget * parent, Qt::Win
 	this->text->setPlaceholderText(tr("<URL or file to open>"));
 
 	this->openButton = new QPushButton("Open", this);
+	connect(this->openButton, SIGNAL(pressed()), this, SLOT(openSlot()));
 	this->cancelButton = new QPushButton("Cancel", this);
+	connect(this->cancelButton, SIGNAL(released()), this, SLOT(cancelSlot()));
 
 	QGridLayout * layout = new QGridLayout(this);
 	int labelRowSpan = 1;
@@ -67,4 +73,15 @@ open_button_window::OpenButtonWindow::OpenButtonWindow(QWidget * parent, Qt::Win
 	QINFO_PRINT(global_types::qinfo_level_e::ZERO, openButtonWindowLayout,  "Cancel button: start coordinates: row " << cancelButtonFromRow << " and column " << cancelButtonFromColumn << " width " << cancelButtonColumnSpan << " height " << cancelButtonRowSpan);
 
 	this->setLayout(layout);
+}
+
+void open_button_window::OpenButtonWindow::openSlot() {
+	QINFO_PRINT(global_types::qinfo_level_e::ZERO, openButtonWindowOpen,  "Opening " << text->displayText());
+
+}
+
+void open_button_window::OpenButtonWindow::cancelSlot() {
+	QINFO_PRINT(global_types::qinfo_level_e::ZERO, openButtonWindowCancel,  "Deleting dialog as Cancel button has been clicked");
+	this->close();
+
 }
