@@ -36,13 +36,17 @@ namespace file_menu {
 
 		private slots:
 			void openSlot();
+//			void openTabSlot();
 //			void saveSlot();
 //			void printSlot();
+//			void exitSlot();
 
 		private:
 			QAction * openAction;
+//			QAction * openTabAction;
 //			QAction * saveAction;
 //			QAction * printAction;
+//			QAction * exitAction;
 
 			void createMenu();
 			void createActions();
