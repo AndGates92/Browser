@@ -31,8 +31,6 @@ open_button_window::OpenButtonWindow::OpenButtonWindow(QWidget * parent, Qt::Win
 
 	// Set modal because other windows should not be active
 	this->setModal(true);
-	// Set attribute to delete when the dialog is closed
-	this->setAttribute(Qt::WA_DeleteOnClose);
 
 	this->label = new QLabel(tr("Open -> "), this);
 	this->label->setFrameStyle(QFrame::NoFrame | QFrame::Sunken);
@@ -73,6 +71,14 @@ open_button_window::OpenButtonWindow::OpenButtonWindow(QWidget * parent, Qt::Win
 	QINFO_PRINT(global_types::qinfo_level_e::ZERO, openButtonWindowLayout,  "Cancel button: start coordinates: row " << cancelButtonFromRow << " and column " << cancelButtonFromColumn << " width " << cancelButtonColumnSpan << " height " << cancelButtonRowSpan);
 
 	this->setLayout(layout);
+}
+
+open_button_window::OpenButtonWindow::~OpenButtonWindow() {
+	QINFO_PRINT(global_types::qinfo_level_e::ZERO, openButtonWindowOverall,  "Destructor");
+	delete label;
+	delete text;
+	delete openButton;
+	delete cancelButton;
 }
 
 void open_button_window::OpenButtonWindow::openSlot() {

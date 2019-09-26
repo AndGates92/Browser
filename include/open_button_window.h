@@ -31,8 +31,8 @@ namespace open_button_window {
 		Q_OBJECT
 
 		public:
-
 			explicit OpenButtonWindow(QWidget * parent = Q_NULLPTR, Qt::WindowFlags flags = Qt::WindowFlags());
+			~OpenButtonWindow();
 
 		protected:
 
