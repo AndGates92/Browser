@@ -44,6 +44,12 @@ open_button_window::OpenButtonWindow::OpenButtonWindow(QWidget * parent, Qt::Win
 	this->cancelButton = new QPushButton("Cancel", this);
 	connect(this->cancelButton, SIGNAL(released()), this, SLOT(cancelSlot()));
 
+
+	// Layout
+	// -------------------------------------
+	// |  <label>  |     <text to open>    |
+	// |  <open>   |           | <cancel>  |
+	// -------------------------------------
 	QGridLayout * layout = new QGridLayout(this);
 	int labelRowSpan = 1;
 	int labelColumnSpan = 1;
