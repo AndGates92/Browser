@@ -11,6 +11,7 @@
 #include <qt5/QtCore/QtDebug>
 
 #include <qt5/QtCore/QObject>
+#include <qt5/QtWidgets/QGridLayout>
 
 #include "global_macros.h"
 #include "global_types.h"
@@ -33,9 +34,9 @@ open_button_window::OpenButtonWindow::OpenButtonWindow(QWidget * parent, Qt::Win
 	// Create widgets to put in the window
 	this->fillWindow();
 
-	QGridLayout * layout = this->windowLayout();
+	// define window layout
+	this->windowLayout();
 
-	this->setLayout(layout);
 }
 
 open_button_window::OpenButtonWindow::~OpenButtonWindow() {
@@ -56,7 +57,7 @@ void open_button_window::OpenButtonWindow::cancelSlot() {
 	this->close();
 }
 
-QGridLayout * open_button_window::OpenButtonWindow::windowLayout() {
+void open_button_window::OpenButtonWindow::windowLayout() {
 	// Layout
 	// -------------------------------------
 	// |  <label>  |     <text to open>    |
@@ -88,7 +89,7 @@ QGridLayout * open_button_window::OpenButtonWindow::windowLayout() {
 	layout->addWidget(this->cancelButton, cancelButtonFromRow, cancelButtonFromColumn, cancelButtonRowSpan, cancelButtonColumnSpan);
 	QINFO_PRINT(global_types::qinfo_level_e::ZERO, openButtonWindowLayout,  "Cancel button: start coordinates: row " << cancelButtonFromRow << " and column " << cancelButtonFromColumn << " width " << cancelButtonColumnSpan << " height " << cancelButtonRowSpan);
 
-	return layout;
+	this->setLayout(layout);
 }
 
 void open_button_window::OpenButtonWindow::fillWindow() {

@@ -13,7 +13,6 @@
 #include <qt5/QtWidgets/QLabel>
 #include <qt5/QtWidgets/QLineEdit>
 #include <qt5/QtWidgets/QPushButton>
-#include <qt5/QtWidgets/QGridLayout>
 
 /** @defgroup OpenButtonWindowGroup Open Button Window Doxygen Group
  *  Open Button Window functions and classes
@@ -47,7 +46,7 @@ namespace open_button_window {
 			QPushButton * openButton;
 			QPushButton * cancelButton;
 
-			QGridLayout * windowLayout();
+			void windowLayout();
 			void fillWindow();
 	};
 }
