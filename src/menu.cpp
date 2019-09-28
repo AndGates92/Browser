@@ -23,6 +23,5 @@ menu::Menu::Menu(QWidget * window, QMenuBar * menuBar, const char* menuName) : w
 }
 
 void menu::Menu::createMenu() {
-
-	this->winMenu = this->menuBar->addMenu(menuName);
+	this->winMenu = this->menuBar->addMenu(QObject::tr(menuName));
 }
