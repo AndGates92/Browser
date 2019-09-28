@@ -26,6 +26,7 @@ menu::Menu::Menu(QWidget * window, QMenuBar * menuBar, const char* menuName, con
 }
 
 void menu::Menu::createMenu() {
+	//Use QObject::tr as Menu is not a derived class of QObject
 	this->winMenu = this->menuBar->addMenu(QObject::tr(menuName));
 }
 
