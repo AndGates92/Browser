@@ -7,8 +7,6 @@
  */
 
 // Qt libraries
-#include <qt5/QtWidgets/QHBoxLayout>
-
 // Required by qInfo
 #include <qt5/QtCore/QtDebug>
 
@@ -32,19 +30,33 @@ open_button_window::OpenButtonWindow::OpenButtonWindow(QWidget * parent, Qt::Win
 	// Set modal because other windows should not be active
 	this->setModal(true);
 
-	this->label = new QLabel(tr("Open -> "), this);
-	this->label->setFrameStyle(QFrame::NoFrame | QFrame::Sunken);
-	this->label->setAlignment(Qt::AlignCenter);
+	// Create widgets to put in the window
+	this->fillWindow();
 
-	this->text = new QLineEdit(this);
-	this->text->setPlaceholderText(tr("<URL or file to open>"));
+	QGridLayout * layout = this->windowLayout();
 
-	this->openButton = new QPushButton("Open", this);
-	connect(this->openButton, SIGNAL(pressed()), this, SLOT(openSlot()));
-	this->cancelButton = new QPushButton("Cancel", this);
-	connect(this->cancelButton, SIGNAL(released()), this, SLOT(cancelSlot()));
+	this->setLayout(layout);
+}
 
+open_button_window::OpenButtonWindow::~OpenButtonWindow() {
+	QINFO_PRINT(global_types::qinfo_level_e::ZERO, openButtonWindowOverall,  "Destructor");
+	delete label;
+	delete text;
+	delete openButton;
+	delete cancelButton;
+}
 
+void open_button_window::OpenButtonWindow::openSlot() {
+	QINFO_PRINT(global_types::qinfo_level_e::ZERO, openButtonWindowOpen,  "Opening " << text->displayText());
+	this->close();
+}
+
+void open_button_window::OpenButtonWindow::cancelSlot() {
+	QINFO_PRINT(global_types::qinfo_level_e::ZERO, openButtonWindowCancel,  "Deleting dialog as Cancel button has been clicked");
+	this->close();
+}
+
+QGridLayout * open_button_window::OpenButtonWindow::windowLayout() {
 	// Layout
 	// -------------------------------------
 	// |  <label>  |     <text to open>    |
@@ -76,24 +88,19 @@ open_button_window::OpenButtonWindow::OpenButtonWindow(QWidget * parent, Qt::Win
 	layout->addWidget(this->cancelButton, cancelButtonFromRow, cancelButtonFromColumn, cancelButtonRowSpan, cancelButtonColumnSpan);
 	QINFO_PRINT(global_types::qinfo_level_e::ZERO, openButtonWindowLayout,  "Cancel button: start coordinates: row " << cancelButtonFromRow << " and column " << cancelButtonFromColumn << " width " << cancelButtonColumnSpan << " height " << cancelButtonRowSpan);
 
-	this->setLayout(layout);
+	return layout;
 }
 
-open_button_window::OpenButtonWindow::~OpenButtonWindow() {
-	QINFO_PRINT(global_types::qinfo_level_e::ZERO, openButtonWindowOverall,  "Destructor");
-	delete label;
-	delete text;
-	delete openButton;
-	delete cancelButton;
-}
+void open_button_window::OpenButtonWindow::fillWindow() {
+	this->label = new QLabel(tr("Open -> "), this);
+	this->label->setFrameStyle(QFrame::NoFrame | QFrame::Sunken);
+	this->label->setAlignment(Qt::AlignCenter);
 
-void open_button_window::OpenButtonWindow::openSlot() {
-	QINFO_PRINT(global_types::qinfo_level_e::ZERO, openButtonWindowOpen,  "Opening " << text->displayText());
+	this->text = new QLineEdit(this);
+	this->text->setPlaceholderText(tr("<URL or file to open>"));
 
-}
-
-void open_button_window::OpenButtonWindow::cancelSlot() {
-	QINFO_PRINT(global_types::qinfo_level_e::ZERO, openButtonWindowCancel,  "Deleting dialog as Cancel button has been clicked");
-	this->close();
-
+	this->openButton = new QPushButton("Open", this);
+	connect(this->openButton, SIGNAL(pressed()), this, SLOT(openSlot()));
+	this->cancelButton = new QPushButton("Cancel", this);
+	connect(this->cancelButton, SIGNAL(released()), this, SLOT(cancelSlot()));
 }
