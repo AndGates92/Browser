@@ -33,12 +33,13 @@ void menu::Menu::createMenu() {
 }
 
 void menu::Menu::createShortcuts() {
-	QShortcut * expandMenu = new QShortcut(this->winMenu);
+	QShortcut * expandMenu = new QShortcut(this->window);
 	expandMenu->setKey(this->key);
 	connect(expandMenu, SIGNAL(activated()), this, SLOT(expandSlot()));
 }
 
 void menu::Menu::expandSlot() {
 	QINFO_PRINT(global_types::qinfo_level_e::ZERO, menuOverall, "Expand menu " << this->menuName << " because shortcut key " << this->key.toString() << " has been pressed");
-	this->winMenu->exec();
+
+	this->winMenu->show();
 }

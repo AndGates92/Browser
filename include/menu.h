@@ -36,13 +36,12 @@ namespace menu {
 			const char * menuName;
 			const QKeySequence key;
 
-			void createMenu();
-			void createShortcuts();
-
 		private slots:
 			void expandSlot();
 
 		private:
+			void createMenu();
+			void createShortcuts();
 	};
 }
 /** @} */ // End of MenuGroup group
