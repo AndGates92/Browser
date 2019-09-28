@@ -12,6 +12,7 @@
 #include <qt5/QtWidgets/QMenu>
 #include <qt5/QtWidgets/QWidget>
 #include <qt5/QtWidgets/QMenuBar>
+#include <qt5/QtGui/QKeySequence>
 
 Q_DECLARE_LOGGING_CATEGORY(menuOverall)
 
@@ -24,15 +25,17 @@ namespace menu {
 	class Menu {
 
 		public:
-			explicit Menu(QWidget * window = Q_NULLPTR, QMenuBar * menuBar = Q_NULLPTR,  const char* menuName = "Unknown");
+			explicit Menu(QWidget * window = Q_NULLPTR, QMenuBar * menuBar = Q_NULLPTR,  const char* menuName = "Unknown", const QKeySequence & key = QKeySequence::UnknownKey);
 
 		protected:
 			QWidget * window;
 			QMenuBar * menuBar;
 			QMenu * winMenu;
 			const char * menuName;
+			const QKeySequence key;
 
 			void createMenu();
+			void createShortcuts();
 
 		private:
 	};
