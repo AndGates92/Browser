@@ -11,7 +11,9 @@
 #include <qt5/QtCore/QtDebug>
 
 #include <qt5/QtCore/QObject>
+#include <qt5/QtCore/QDir>
 #include <qt5/QtWidgets/QGridLayout>
+#include <qt5/QtWidgets/QFileDialog>
 
 #include "global_macros.h"
 #include "global_types.h"
@@ -54,6 +56,10 @@ void open_button_window::OpenButtonWindow::openSlot() {
 
 void open_button_window::OpenButtonWindow::browseSlot() {
 	QINFO_PRINT(global_types::qinfo_level_e::ZERO, openButtonWindowOpen,  "Browsing files");
+	QFileDialog * fileBrowser = new QFileDialog(this, Qt::Popup);
+	QString filename = fileBrowser->getOpenFileName(this, tr("Open file"), QDir::currentPath(), tr("Web Pages (*.html);;All (*.*)"));
+	QINFO_PRINT(global_types::qinfo_level_e::ZERO, openButtonWindowOpen,  "Selected " << filename);
+	this->text->setText(filename);
 }
 
 void open_button_window::OpenButtonWindow::cancelSlot() {
