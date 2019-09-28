@@ -24,12 +24,15 @@ namespace menu {
 	class Menu {
 
 		public:
-			explicit Menu(QWidget * window = Q_NULLPTR, QMenuBar * menuBar = Q_NULLPTR);
+			explicit Menu(QWidget * window = Q_NULLPTR, QMenuBar * menuBar = Q_NULLPTR,  const char* menuName = "Unknown");
 
 		protected:
 			QWidget * window;
 			QMenuBar * menuBar;
 			QMenu * winMenu;
+			const char * menuName;
+
+			void createMenu();
 
 		private:
 	};

@@ -18,7 +18,7 @@
 // Categories
 Q_LOGGING_CATEGORY(editMenuOverall, "editNemu.overall", MSG_TYPE_LEVEL)
 
-edit_menu::EditMenu::EditMenu(QWidget * window, QMenuBar * menuBar) : menu::Menu(window,menuBar) {
+edit_menu::EditMenu::EditMenu(QWidget * window, QMenuBar * menuBar) : menu::Menu(window,menuBar,"Edit") {
 
 	this->createActions();
 	this->createMenu();
@@ -35,7 +35,7 @@ void edit_menu::EditMenu::createActions() {
 
 void edit_menu::EditMenu::createMenu() {
 
-	this->winMenu = this->menuBar->addMenu(tr("Edit"));
+	menu::Menu::createMenu();
 	this->winMenu->addAction(undoAction);
 
 }

@@ -19,9 +19,9 @@
 
 
 // Categories
-Q_LOGGING_CATEGORY(fileMenuOverall, "fileNemu.overall", MSG_TYPE_LEVEL)
+Q_LOGGING_CATEGORY(fileMenuOverall, "fileMenu.overall", MSG_TYPE_LEVEL)
 
-file_menu::FileMenu::FileMenu(QWidget * window, QMenuBar * menuBar) : menu::Menu(window,menuBar) {
+file_menu::FileMenu::FileMenu(QWidget * window, QMenuBar * menuBar) : menu::Menu(window,menuBar,"File") {
 
 	this->createActions();
 	this->createMenu();
@@ -38,7 +38,9 @@ void file_menu::FileMenu::createActions() {
 
 void file_menu::FileMenu::createMenu() {
 
-	this->winMenu = this->menuBar->addMenu(tr("File"));
+	menu::Menu::createMenu();
+
+//	this->winMenu = this->menuBar->addMenu(tr("File"));
 	this->winMenu->addAction(openAction);
 
 }

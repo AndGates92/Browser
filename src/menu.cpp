@@ -7,6 +7,9 @@
  */
 
 // Qt libraries
+// Required by qInfo
+#include <qt5/QtCore/QtDebug>
+
 #include "global_macros.h"
 #include "global_types.h"
 
@@ -15,7 +18,11 @@
 // Categories
 Q_LOGGING_CATEGORY(menuOverall, "menu.overall", MSG_TYPE_LEVEL)
 
-menu::Menu::Menu(QWidget * window, QMenuBar * menuBar) : window(window), menuBar(menuBar) {
+menu::Menu::Menu(QWidget * window, QMenuBar * menuBar, const char* menuName) : window(window), menuBar(menuBar), menuName(menuName) {
 
 }
 
+void menu::Menu::createMenu() {
+
+	this->winMenu = this->menuBar->addMenu(menuName);
+}
