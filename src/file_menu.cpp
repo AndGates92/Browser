@@ -17,7 +17,6 @@
 #include "open_button_window.h"
 #include "file_menu.h"
 
-
 // Categories
 Q_LOGGING_CATEGORY(fileMenuOverall, "fileMenu.overall", MSG_TYPE_LEVEL)
 
@@ -37,11 +36,7 @@ void file_menu::FileMenu::createActions() {
 }
 
 void file_menu::FileMenu::createMenu() {
-
-//	menu::Menu::createMenu();
-
 	this->winMenu->addAction(openAction);
-
 }
 
 void file_menu::FileMenu::openSlot() {

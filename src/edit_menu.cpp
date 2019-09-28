@@ -35,10 +35,7 @@ void edit_menu::EditMenu::createActions() {
 }
 
 void edit_menu::EditMenu::createMenu() {
-
-//	menu::Menu::createMenu();
 	this->winMenu->addAction(undoAction);
-
 }
 
 void edit_menu::EditMenu::undoSlot() {
