@@ -38,12 +38,14 @@ namespace open_button_window {
 
 		private slots:
 			void openSlot();
+			void browseSlot();
 			void cancelSlot();
 
 		private:
 			QLabel * label;
 			QLineEdit * text;
 			QPushButton * openButton;
+			QPushButton * browseButton;
 			QPushButton * cancelButton;
 
 			void windowLayout();
