@@ -22,7 +22,9 @@ Q_DECLARE_LOGGING_CATEGORY(menuOverall)
  */
 namespace menu {
 
-	class Menu {
+	class Menu : public QObject {
+
+		Q_OBJECT
 
 		public:
 			explicit Menu(QWidget * window = Q_NULLPTR, QMenuBar * menuBar = Q_NULLPTR, const char* menuName = "Unknown", const QKeySequence & key = QKeySequence::UnknownKey);
@@ -36,6 +38,9 @@ namespace menu {
 
 			void createMenu();
 			void createShortcuts();
+
+		private slots:
+			void expandSlot();
 
 		private:
 	};

@@ -26,7 +26,7 @@ Q_DECLARE_LOGGING_CATEGORY(fileMenuOverall)
 
 namespace file_menu {
 
-	class FileMenu : public QObject, public menu::Menu {
+	class FileMenu :  public menu::Menu {
 
 		Q_OBJECT
 

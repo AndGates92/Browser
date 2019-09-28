@@ -21,6 +21,8 @@
 Q_LOGGING_CATEGORY(menuOverall, "menu.overall", MSG_TYPE_LEVEL)
 
 menu::Menu::Menu(QWidget * window, QMenuBar * menuBar, const char* menuName, const QKeySequence & key) : window(window), menuBar(menuBar), menuName(menuName), key(key) {
+
+	QINFO_PRINT(global_types::qinfo_level_e::ZERO, menuOverall, "Create menu " << this->menuName << " shortcut key " << this->key.toString());
 	this->createMenu();
 	this->createShortcuts();
 }
@@ -31,7 +33,12 @@ void menu::Menu::createMenu() {
 }
 
 void menu::Menu::createShortcuts() {
-//	QShortcut * expandMenu = new QShortcut(this);
-//	expandMenu->setKey(key);
-//	connect(hideMenuBar, SIGNAL(activated()), this, SLOT(disableMenubar()));
+	QShortcut * expandMenu = new QShortcut(this->winMenu);
+	expandMenu->setKey(this->key);
+	connect(expandMenu, SIGNAL(activated()), this, SLOT(expandSlot()));
+}
+
+void menu::Menu::expandSlot() {
+	QINFO_PRINT(global_types::qinfo_level_e::ZERO, menuOverall, "Expand menu " << this->menuName << " because shortcut key " << this->key.toString() << " has been pressed");
+	this->winMenu->exec();
 }

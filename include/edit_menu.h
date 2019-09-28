@@ -28,7 +28,7 @@ Q_DECLARE_LOGGING_CATEGORY(editMenuOverall)
 
 namespace edit_menu {
 
-	class EditMenu : public QObject, public menu::Menu {
+	class EditMenu : public menu::Menu {
 
 		Q_OBJECT
 
