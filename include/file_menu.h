@@ -13,6 +13,7 @@
 #include <qt5/QtWidgets/QAction>
 #include <qt5/QtWidgets/QWidget>
 #include <qt5/QtWidgets/QMenuBar>
+#include <qt5/QtGui/QKeySequence>
 
 #include "menu.h"
 
@@ -30,7 +31,7 @@ namespace file_menu {
 		Q_OBJECT
 
 		public:
-			explicit FileMenu(QWidget * window = Q_NULLPTR, QMenuBar * menuBar = Q_NULLPTR);
+			explicit FileMenu(QWidget * window = Q_NULLPTR, QMenuBar * menuBar = Q_NULLPTR, const char* menuName = "Unknown", const QKeySequence & key = QKeySequence::UnknownKey);
 
 		protected:
 

@@ -12,13 +12,14 @@
 #include <qt5/QtWidgets/QAction>
 #include <qt5/QtWidgets/QWidget>
 #include <qt5/QtWidgets/QMenuBar>
+#include <qt5/QtGui/QKeySequence>
 
 #include "edit_menu.h"
 
 // Categories
 Q_LOGGING_CATEGORY(editMenuOverall, "editNemu.overall", MSG_TYPE_LEVEL)
 
-edit_menu::EditMenu::EditMenu(QWidget * window, QMenuBar * menuBar) : menu::Menu(window,menuBar,"Edit") {
+edit_menu::EditMenu::EditMenu(QWidget * window, QMenuBar * menuBar, const char* menuName, const QKeySequence & key) : menu::Menu(window,menuBar,menuName,key) {
 
 	this->createActions();
 	this->createMenu();
@@ -35,7 +36,7 @@ void edit_menu::EditMenu::createActions() {
 
 void edit_menu::EditMenu::createMenu() {
 
-	menu::Menu::createMenu();
+//	menu::Menu::createMenu();
 	this->winMenu->addAction(undoAction);
 
 }

@@ -25,7 +25,7 @@ namespace menu {
 	class Menu {
 
 		public:
-			explicit Menu(QWidget * window = Q_NULLPTR, QMenuBar * menuBar = Q_NULLPTR,  const char* menuName = "Unknown", const QKeySequence & key = QKeySequence::UnknownKey);
+			explicit Menu(QWidget * window = Q_NULLPTR, QMenuBar * menuBar = Q_NULLPTR, const char* menuName = "Unknown", const QKeySequence & key = QKeySequence::UnknownKey);
 
 		protected:
 			QWidget * window;

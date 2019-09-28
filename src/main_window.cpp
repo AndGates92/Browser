@@ -52,8 +52,8 @@ main_window::MainWindow::MainWindow(QWidget * parent, Qt::WindowFlags flags) : Q
 
 	mainWidget->setLayout(layout);
 
-	this->fileMenu = new file_menu::FileMenu(this, this->menuBar());
-	this->editMenu = new edit_menu::EditMenu(this, this->menuBar());
+	this->fileMenu = new file_menu::FileMenu(this, this->menuBar(),"File",Qt::Key_F);
+	this->editMenu = new edit_menu::EditMenu(this, this->menuBar(),"Edit",Qt::Key_E);
 	this->createShortcuts();
 
 	QString msg = tr("status bar message");

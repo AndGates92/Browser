@@ -33,7 +33,7 @@ namespace edit_menu {
 		Q_OBJECT
 
 		public:
-			explicit EditMenu(QWidget * window = Q_NULLPTR, QMenuBar * menuBar = Q_NULLPTR);
+			explicit EditMenu(QWidget * window = Q_NULLPTR, QMenuBar * menuBar = Q_NULLPTR, const char* menuName = "Unknown", const QKeySequence & key = QKeySequence::UnknownKey);
 
 		protected:
 
