@@ -42,7 +42,6 @@ void menu::Menu::createShortcuts() {
 }
 
 void menu::Menu::expandSlot() {
-
 	// menu is expanded only if menu bar is visible
 	if (this->menuBar->isVisible()) {
 		QINFO_PRINT(global_types::qinfo_level_e::ZERO, menuOverall, "Expand menu " << this->menuName << " because shortcut key " << this->key.toString() << " has been pressed");
