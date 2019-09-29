@@ -33,27 +33,70 @@ namespace main_window {
 		Q_OBJECT
 
 		public:
-
+			/**
+			 * @brief Function: explicit MainWindow(QWidget * parent = Q_NULLPTR, Qt::WindowFlags flags = Qt::WindowFlags())
+			 *
+			 * \param parent: parent window
+			 * \param flags: window flags
+			 *
+			 * Main window constructor
+			 */
 			explicit MainWindow(QWidget * parent = Q_NULLPTR, Qt::WindowFlags flags = Qt::WindowFlags());
-			QMenuBar  * getMenuBar();
+
+			/**
+			 * @brief Function: QMenuBar * getMenuBar()
+			 *
+			 * This function returns the menubar attached to the main window
+			 */
+			QMenuBar * getMenuBar();
 
 		protected:
 		#ifndef QT_NO_CONTEXTMENU
+			/**
+			 * @brief Function: void contextMenuEvent(QContextMenuEvent * event) override
+			 *
+			 * \param parent: event that must occur to trigger the context menu
+			 *
+			 * This function triggers the opening of the context menu
+			 */
 //			void contextMenuEvent(QContextMenuEvent * event) override;
 		#endif // QT_NO_CONTEXTMENU
 
 		private slots:
+
+			/**
+			 * @brief Function: void disableMenubar()
+			 *
+			 * This function is the slot to hide the menubar
+			 */
 			void disableMenubar();
 
 		private:
 			// File dropdown menu
+			/**
+			 * @brief File menu
+			 *
+			 */
 			file_menu::FileMenu * fileMenu;
 
 			// Edit dropdown menu
+			/**
+			 * @brief Edit menu
+			 *
+			 */
 			edit_menu::EditMenu * editMenu;
 
+			/**
+			 * @brief Label at the centre of the window
+			 *
+			 */
 			QLabel * centerWindow;
 
+			/**
+			 * @brief Function: void createShortcuts()
+			 *
+			 * This function creates shortcuts for the items on the window
+			 */
 			void createShortcuts();
 	};
 }

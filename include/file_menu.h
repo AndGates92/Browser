@@ -31,25 +31,102 @@ namespace file_menu {
 		Q_OBJECT
 
 		public:
+
+			/**
+			 * @brief Function: explicit FileMenu(QWidget * window = Q_NULLPTR, QMenuBar * menuBar = Q_NULLPTR, const char* menuName = "Unknown", const QKeySequence & key = QKeySequence::UnknownKey)
+			 *
+			 * \param window: pointer to the window the menu belongs to
+			 * \param menuBar: menubar the menu is part of
+			 * \param menuName: name of the menu
+			 * \param key: keyboard shortcut
+			 *
+			 * Constructor of file menu
+			 */
 			explicit FileMenu(QWidget * window = Q_NULLPTR, QMenuBar * menuBar = Q_NULLPTR, const char* menuName = "Unknown", const QKeySequence & key = QKeySequence::UnknownKey);
 
 		protected:
 
 		private slots:
+
+			/**
+			 * @brief Function: void undoSlot()
+			 *
+			 * This function is the slot of the undo menu item
+			 */
 			void openSlot();
+
+			/**
+			 * @brief Function: void openTabSlot()
+			 *
+			 * This function is the slot of the open tab menu item
+			 */
 //			void openTabSlot();
+
+			/**
+			 * @brief Function: void saveSlot()
+			 *
+			 * This function is the slot of the save menu item
+			 */
 //			void saveSlot();
+
+			/**
+			 * @brief Function: void printSlot()
+			 *
+			 * This function is the slot of the print menu item
+			 */
 //			void printSlot();
+
+			/**
+			 * @brief Function: void exitSlot()
+			 *
+			 * This function is the slot of the exit menu item
+			 */
 //			void exitSlot();
 
 		private:
+
+			/**
+			 * @brief open action
+			 *
+			 */
 			QAction * openAction;
+
+			/**
+			 * @brief open tab action
+			 *
+			 */
 //			QAction * openTabAction;
+
+			/**
+			 * @brief save action
+			 *
+			 */
 //			QAction * saveAction;
+
+			/**
+			 * @brief print action
+			 *
+			 */
 //			QAction * printAction;
+
+			/**
+			 * @brief exit action
+			 *
+			 */
 //			QAction * exitAction;
 
+			/**
+			 * @brief Function: void createMenu()
+			 *
+			 * This function adds the actions to the menu
+			 */
 			void createMenu();
+
+			/**
+			 * @brief Function: void createActions()
+			 *
+			 * This function creates actions that will be added to the menu
+			 */
 			void createActions();
 	};
 }

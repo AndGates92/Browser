@@ -31,24 +31,92 @@ namespace open_button_window {
 		Q_OBJECT
 
 		public:
+			/**
+			 * @brief Function: explicit OpenButtonWindow(QWidget * parent = Q_NULLPTR, Qt::WindowFlags flags = Qt::WindowFlags())
+			 *
+			 * \param parent: parent window
+			 * \param flags: window flags
+			 *
+			 * Open button window constructor
+			 */
 			explicit OpenButtonWindow(QWidget * parent = Q_NULLPTR, Qt::WindowFlags flags = Qt::WindowFlags());
+
+			/**
+			 * @brief Function: ~OpenButtonWindow()
+			 *
+			 * Open button window destructor
+			 */
 			~OpenButtonWindow();
 
 		protected:
 
 		private slots:
+
+			/**
+			 * @brief Function: void openSlot()
+			 *
+			 * This function is the slot of the open button
+			 */
 			void openSlot();
+
+			/**
+			 * @brief Function: void browseSlot()
+			 *
+			 * This function is the slot of the browse button
+			 */
 			void browseSlot();
+
+			/**
+			 * @brief Function: void cancelSlot()
+			 *
+			 * This function is the slot of the cancel button
+			 */
 			void cancelSlot();
 
 		private:
+
+			/**
+			 * @brief label printed next to the user typed text
+			 *
+			 */
 			QLabel * label;
+
+			/**
+			 * @brief user typed text
+			 *
+			 */
 			QLineEdit * text;
+
+			/**
+			 * @brief open button
+			 *
+			 */
 			QPushButton * openButton;
+
+			/**
+			 * @brief browse button
+			 *
+			 */
 			QPushButton * browseButton;
+
+			/**
+			 * @brief cancel button
+			 *
+			 */
 			QPushButton * cancelButton;
 
+			/**
+			 * @brief Function: void windowLayout()
+			 *
+			 * This function creates the layout of the window
+			 */
 			void windowLayout();
+
+			/**
+			 * @brief Function: void fillWindow()
+			 *
+			 * This function creates widgets that are part of the window
+			 */
 			void fillWindow();
 	};
 }
