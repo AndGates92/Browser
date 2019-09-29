@@ -33,9 +33,12 @@ void menu::Menu::createMenu() {
 }
 
 void menu::Menu::createShortcuts() {
-	QShortcut * expandMenu = new QShortcut(this->window);
-	expandMenu->setKey(this->key);
-	connect(expandMenu, SIGNAL(activated()), this, SLOT(expandSlot()));
+	// Do not bind key if it is not set
+	if (this->key != QKeySequence::UnknownKey) {
+		QShortcut * expandMenu = new QShortcut(this->window);
+		expandMenu->setKey(this->key);
+		connect(expandMenu, SIGNAL(activated()), this, SLOT(expandSlot()));
+	}
 }
 
 void menu::Menu::expandSlot() {
