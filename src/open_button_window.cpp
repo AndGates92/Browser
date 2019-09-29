@@ -57,6 +57,8 @@ void open_button_window::OpenButtonWindow::openSlot() {
 void open_button_window::OpenButtonWindow::browseSlot() {
 	QINFO_PRINT(global_types::qinfo_level_e::ZERO, openButtonWindowOpen,  "Browsing files");
 	QFileDialog * fileBrowser = new QFileDialog(this, Qt::Popup);
+	fileBrowser->setOption(QFileDialog::DontResolveSymlinks, true);
+	fileBrowser->setViewMode(QFileDialog::Detail);
 	QString filename = fileBrowser->getOpenFileName(this, tr("Open file"), QDir::currentPath(), tr("Web Pages (*.html);;All (*.*)"));
 	QINFO_PRINT(global_types::qinfo_level_e::ZERO, openButtonWindowOpen,  "Selected " << filename);
 	this->text->setText(filename);
