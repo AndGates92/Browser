@@ -12,6 +12,7 @@
 
 #include <qt5/QtCore/QObject>
 #include <qt5/QtCore/QDir>
+#include <qt5/QtCore/QFile>
 #include <qt5/QtWidgets/QGridLayout>
 #include <qt5/QtWidgets/QFileDialog>
 
@@ -50,7 +51,30 @@ open_button_window::OpenButtonWindow::~OpenButtonWindow() {
 }
 
 void open_button_window::OpenButtonWindow::openSlot() {
-	QINFO_PRINT(global_types::qinfo_level_e::ZERO, openButtonWindowOpen,  "Opening " << text->displayText());
+	QString filename(text->displayText());
+	QINFO_PRINT(global_types::qinfo_level_e::ZERO, openButtonWindowOpen,  "Opening " << filename);
+
+	QFile userFile(filename);
+	bool fileOpenRet = userFile.open(QIODevice::ReadOnly | QIODevice::Text);
+	if (!fileOpenRet) {
+		qCritical(openButtonWindowOpen) << "Unable to open file " << filename;
+		exit(EXIT_FAILURE);
+	}
+
+	while(!userFile.atEnd()) {
+		char fileLine[open_button_window::userFileSize];
+		qint64 bytesRead = userFile.readLine(fileLine, sizeof(fileLine));
+		if (bytesRead == -1) {
+			QINFO_PRINT(global_types::qinfo_level_e::ZERO, openButtonWindowOpen,  "Nothing was read from file " << filename);
+		} else if (bytesRead == 0) {
+			QINFO_PRINT(global_types::qinfo_level_e::ZERO, openButtonWindowOpen,  "Nothing was read from file " << filename << " however no error was returned");
+		} else {
+			QINFO_PRINT(global_types::qinfo_level_e::ZERO, openButtonWindowOpen,  "Line read: " << fileLine);
+		}
+	}
+
+	QINFO_PRINT(global_types::qinfo_level_e::ZERO, openButtonWindowOpen,  "Close " << filename);
+	userFile.close();
 	this->close();
 }
 
@@ -119,7 +143,7 @@ void open_button_window::OpenButtonWindow::fillWindow() {
 	this->text->setPlaceholderText(tr("<URL or file to open>"));
 
 	this->openButton = new QPushButton("Open", this);
-	connect(this->openButton, SIGNAL(pressed()), this, SLOT(browseSlot()));
+	connect(this->openButton, SIGNAL(pressed()), this, SLOT(openSlot()));
 	this->browseButton = new QPushButton("Browse", this);
 	connect(this->browseButton, SIGNAL(pressed()), this, SLOT(browseSlot()));
 	this->cancelButton = new QPushButton("Cancel", this);

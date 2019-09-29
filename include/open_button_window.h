@@ -24,7 +24,16 @@ Q_DECLARE_LOGGING_CATEGORY(openButtonWindowLayout)
 Q_DECLARE_LOGGING_CATEGORY(openButtonWindowOpen)
 Q_DECLARE_LOGGING_CATEGORY(openButtonWindowCancel)
 
+
 namespace open_button_window {
+
+	namespace {
+		/**
+		 * @brief maximum number of location in the array storing a line of the user selected file
+		 *
+		 */
+		const int userFileSize = 1024;
+	}
 
 	class OpenButtonWindow : public QDialog {
 
