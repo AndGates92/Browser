@@ -50,6 +50,13 @@ namespace main_window {
 			 */
 			QMenuBar * getMenuBar();
 
+			/**
+			 * @brief Function: QLabel * getcenterWindow()
+			 *
+			 * This function returns the centerWindow attached to the main window
+			 */
+			QLabel * getcenterWindow();
+
 		protected:
 		#ifndef QT_NO_CONTEXTMENU
 			/**
@@ -70,6 +77,15 @@ namespace main_window {
 			 * This function is the slot to hide the menubar
 			 */
 			void disableMenubar();
+
+			/**
+			 * @brief Function: void setCenterWindow(QString str)
+			 *
+			 * \param str: text to set the label to
+			 *
+			 * This function returns the menubar attached to the main window
+			 */
+			void setCenterWindow(QString str);
 
 		private:
 			// File dropdown menu

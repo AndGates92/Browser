@@ -15,6 +15,7 @@
 #include <qt5/QtWidgets/QMenuBar>
 #include <qt5/QtGui/QKeySequence>
 
+#include "open_button_window.h"
 #include "menu.h"
 
 /** @defgroup FileMenuGroup File Menu Doxygen Group
@@ -44,6 +45,7 @@ namespace file_menu {
 			 */
 			explicit FileMenu(QWidget * window = Q_NULLPTR, QMenuBar * menuBar = Q_NULLPTR, const char* menuName = "Unknown", const QKeySequence & key = QKeySequence::UnknownKey);
 
+			open_button_window::OpenButtonWindow * getOpenWindow();
 		protected:
 
 		private slots:
@@ -114,6 +116,12 @@ namespace file_menu {
 			 *
 			 */
 //			QAction * exitAction;
+
+			/**
+			 * @brief window opened following the opened action being clicked
+			 *
+			 */
+			open_button_window::OpenButtonWindow * OpenWindow;
 
 			/**
 			 * @brief Function: void createMenu()

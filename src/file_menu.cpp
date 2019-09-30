@@ -14,7 +14,6 @@
 
 #include "global_macros.h"
 #include "global_types.h"
-#include "open_button_window.h"
 #include "file_menu.h"
 
 // Categories
@@ -42,6 +41,10 @@ void file_menu::FileMenu::createMenu() {
 void file_menu::FileMenu::openSlot() {
 	QINFO_PRINT(global_types::qinfo_level_e::ZERO, fileMenuOverall,  "open slot");
 
-	open_button_window::OpenButtonWindow OpenWindow(this->window, Qt::Dialog);
-	OpenWindow.exec();
+	this->OpenWindow = new open_button_window::OpenButtonWindow(this->window, Qt::Dialog);
+	this->OpenWindow->exec();
+}
+
+open_button_window::OpenButtonWindow * file_menu::FileMenu::getOpenWindow() {
+	return this->OpenWindow;
 }

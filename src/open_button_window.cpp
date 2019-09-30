@@ -52,29 +52,39 @@ open_button_window::OpenButtonWindow::~OpenButtonWindow() {
 
 void open_button_window::OpenButtonWindow::openSlot() {
 	QString filename(text->displayText());
-	QINFO_PRINT(global_types::qinfo_level_e::ZERO, openButtonWindowOpen,  "Opening " << filename);
 
-	QFile userFile(filename);
-	bool fileOpenRet = userFile.open(QIODevice::ReadOnly | QIODevice::Text);
-	if (!fileOpenRet) {
-		qCritical(openButtonWindowOpen) << "Unable to open file " << filename;
-		exit(EXIT_FAILURE);
-	}
+	// Do not try to open and read file if the name is empty
+	if (!filename.isEmpty()) {
+		QINFO_PRINT(global_types::qinfo_level_e::ZERO, openButtonWindowOpen,  "Opening " << filename);
 
-	while(!userFile.atEnd()) {
-		char fileLine[open_button_window::userFileSize];
-		qint64 bytesRead = userFile.readLine(fileLine, sizeof(fileLine));
-		if (bytesRead == -1) {
-			QINFO_PRINT(global_types::qinfo_level_e::ZERO, openButtonWindowOpen,  "Nothing was read from file " << filename);
-		} else if (bytesRead == 0) {
-			QINFO_PRINT(global_types::qinfo_level_e::ZERO, openButtonWindowOpen,  "Nothing was read from file " << filename << " however no error was returned");
-		} else {
-			QINFO_PRINT(global_types::qinfo_level_e::ZERO, openButtonWindowOpen,  "Line read: " << fileLine);
+		QFile userFile(filename);
+		bool fileOpenRet = userFile.open(QIODevice::ReadOnly | QIODevice::Text);
+		if (!fileOpenRet) {
+			qCritical(openButtonWindowOpen) << "Unable to open file " << filename;
+			exit(EXIT_FAILURE);
 		}
+
+		QString fileContent("");
+		while(!userFile.atEnd()) {
+			char fileLine[open_button_window::userFileSize];
+			qint64 bytesRead = userFile.readLine(fileLine, sizeof(fileLine));
+			if (bytesRead == -1) {
+				QINFO_PRINT(global_types::qinfo_level_e::ZERO, openButtonWindowOpen,  "Nothing was read from file " << filename);
+			} else if (bytesRead == 0) {
+				QINFO_PRINT(global_types::qinfo_level_e::ZERO, openButtonWindowOpen,  "Nothing was read from file " << filename << " however no error was returned");
+			} else {
+				QINFO_PRINT(global_types::qinfo_level_e::ZERO, openButtonWindowOpen,  "Line read: " << fileLine);
+			}
+			fileContent.append(fileLine);
+		}
+
+		emit this->fileRead(fileContent);
+
+		QINFO_PRINT(global_types::qinfo_level_e::ZERO, openButtonWindowOpen,  "Close " << filename);
+		userFile.close();
 	}
 
-	QINFO_PRINT(global_types::qinfo_level_e::ZERO, openButtonWindowOpen,  "Close " << filename);
-	userFile.close();
+	// Close window when Open is clicked
 	this->close();
 }
 
@@ -149,3 +159,7 @@ void open_button_window::OpenButtonWindow::fillWindow() {
 	this->cancelButton = new QPushButton("Cancel", this);
 	connect(this->cancelButton, SIGNAL(released()), this, SLOT(cancelSlot()));
 }
+
+//void open_button_window::OpenButtonWindow::fileRead() {
+
+//}

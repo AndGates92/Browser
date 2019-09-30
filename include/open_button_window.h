@@ -127,6 +127,10 @@ namespace open_button_window {
 			 * This function creates widgets that are part of the window
 			 */
 			void fillWindow();
+
+		signals:
+			void fileRead(QString content);
+
 	};
 }
 /** @} */ // End of OpenButtonWindowGroup group
