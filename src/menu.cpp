@@ -37,7 +37,7 @@ void menu::Menu::createShortcuts() {
 	if (this->key != QKeySequence::UnknownKey) {
 		QShortcut * expandMenu = new QShortcut(this->window);
 		expandMenu->setKey(this->key);
-		connect(expandMenu, SIGNAL(activated()), this, SLOT(expandSlot()));
+		connect(expandMenu, &QShortcut::activated, this, &menu::Menu::expandSlot);
 	}
 }
 

@@ -153,11 +153,11 @@ void open_button_window::OpenButtonWindow::fillWindow() {
 	this->text->setPlaceholderText(tr("<URL or file to open>"));
 
 	this->openButton = new QPushButton("Open", this);
-	connect(this->openButton, SIGNAL(pressed()), this, SLOT(openSlot()));
+	connect(this->openButton, &QPushButton::pressed, this, &open_button_window::OpenButtonWindow::openSlot);
 	this->browseButton = new QPushButton("Browse", this);
-	connect(this->browseButton, SIGNAL(pressed()), this, SLOT(browseSlot()));
+	connect(this->browseButton, &QPushButton::pressed, this, &open_button_window::OpenButtonWindow::browseSlot);
 	this->cancelButton = new QPushButton("Cancel", this);
-	connect(this->cancelButton, SIGNAL(released()), this, SLOT(cancelSlot()));
+	connect(this->cancelButton, &QPushButton::released, this, &open_button_window::OpenButtonWindow::cancelSlot);
 }
 
 //void open_button_window::OpenButtonWindow::fileRead() {

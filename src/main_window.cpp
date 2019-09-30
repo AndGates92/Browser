@@ -71,7 +71,7 @@ void main_window::MainWindow::createShortcuts() {
 	// m will hide/show the menu bar
 	QShortcut * hideMenuBar = new QShortcut(this);
 	hideMenuBar->setKey(Qt::Key_M);
-	connect(hideMenuBar, SIGNAL(activated()), this, SLOT(disableMenubar()));
+	connect(hideMenuBar, &QShortcut::activated, this, &main_window::MainWindow::disableMenubar);
 }
 
 void main_window::MainWindow::disableMenubar() {
