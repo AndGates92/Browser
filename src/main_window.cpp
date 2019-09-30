@@ -23,6 +23,7 @@
 
 // Categories
 Q_LOGGING_CATEGORY(mainWindowOverall, "mainWindow.overall", MSG_TYPE_LEVEL)
+Q_LOGGING_CATEGORY(mainWindowCenterWindow, "mainWindow.centerWindow", MSG_TYPE_LEVEL)
 
 main_window::MainWindow::MainWindow(QWidget * parent, Qt::WindowFlags flags) : QMainWindow(parent, flags) {
 
@@ -50,7 +51,7 @@ main_window::MainWindow::MainWindow(QWidget * parent, Qt::WindowFlags flags) : Q
 	mainWidget->setLayout(layout);
 
 	this->fileMenu = new file_menu::FileMenu(this, this->menuBar(), "File", Qt::Key_F);
-//	connect(this->fileMenu->getOpenWindow(), &open_button_window::OpenButtonWindow::fileRead, this->centerWindow, &main_window::MainWindow::setCenterWindow);
+	connect(this->fileMenu, &file_menu::FileMenu::updateCenterWindow, this, &main_window::MainWindow::setCenterWindow);
 	this->editMenu = new edit_menu::EditMenu(this, this->menuBar(), "Edit", Qt::Key_E);
 	this->createShortcuts();
 
@@ -80,5 +81,8 @@ void main_window::MainWindow::disableMenubar() {
 }
 
 void main_window::MainWindow::setCenterWindow(QString str) {
+	QINFO_PRINT(global_types::qinfo_level_e::ZERO, mainWindowCenterWindow,  "Change texts in center window");
+	QINFO_PRINT(global_types::qinfo_level_e::ZERO, mainWindowCenterWindow,  str);
 	this->centerWindow->setText(str);
+	this->centerWindow->repaint();
 }

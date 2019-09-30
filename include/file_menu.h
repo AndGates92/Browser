@@ -45,7 +45,6 @@ namespace file_menu {
 			 */
 			explicit FileMenu(QWidget * window = Q_NULLPTR, QMenuBar * menuBar = Q_NULLPTR, const char* menuName = "Unknown", const QKeySequence & key = QKeySequence::UnknownKey);
 
-			open_button_window::OpenButtonWindow * getOpenWindow();
 		protected:
 
 		private slots:
@@ -85,6 +84,15 @@ namespace file_menu {
 			 */
 //			void exitSlot();
 
+			/**
+			 * @brief Function: void updateCenterWindowSlot(QString & content)
+			 *
+			 * \param content: content of the file read
+			 *
+			 * This function is a slot to emit the signal informing the main window that the center window must be updated
+			 */
+			void updateCenterWindowSlot(QString & content);
+
 		private:
 
 			/**
@@ -121,7 +129,7 @@ namespace file_menu {
 			 * @brief window opened following the opened action being clicked
 			 *
 			 */
-			open_button_window::OpenButtonWindow * OpenWindow;
+			open_button_window::OpenButtonWindow * openWindow;
 
 			/**
 			 * @brief Function: void createMenu()
@@ -136,6 +144,18 @@ namespace file_menu {
 			 * This function creates actions that will be added to the menu
 			 */
 			void createActions();
+
+		signals:
+			/**
+			 * @brief Function: void updateCenterWindow(QString & content)
+			 *
+			 * \param content: content of the file read
+			 *
+			 * This function is a signal to inform the main window that the center window must be updated
+			 */
+			void updateCenterWindow(QString & content);
+
+
 	};
 }
 /** @} */ // End of FileMenuGroup group

@@ -78,7 +78,7 @@ void open_button_window::OpenButtonWindow::openSlot() {
 			fileContent.append(fileLine);
 		}
 
-		emit this->fileRead(fileContent);
+		emit fileRead(fileContent);
 
 		QINFO_PRINT(global_types::qinfo_level_e::ZERO, openButtonWindowOpen,  "Close " << filename);
 		userFile.close();
@@ -159,7 +159,3 @@ void open_button_window::OpenButtonWindow::fillWindow() {
 	this->cancelButton = new QPushButton("Cancel", this);
 	connect(this->cancelButton, &QPushButton::released, this, &open_button_window::OpenButtonWindow::cancelSlot);
 }
-
-//void open_button_window::OpenButtonWindow::fileRead() {
-
-//}

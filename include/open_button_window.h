@@ -129,7 +129,14 @@ namespace open_button_window {
 			void fillWindow();
 
 		signals:
-			void fileRead(QString content);
+			/**
+			 * @brief Function: void fileRead(QString & content)
+			 *
+			 * \param content: content of the file read
+			 *
+			 * This function is a signal to inform the menu that the center window must be updated
+			 */
+			void fileRead(QString & content);
 
 	};
 }

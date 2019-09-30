@@ -18,9 +18,11 @@
 
 // Categories
 Q_LOGGING_CATEGORY(fileMenuOverall, "fileMenu.overall", MSG_TYPE_LEVEL)
+Q_LOGGING_CATEGORY(fileMenuOpenAction, "fileMenu.openAction", MSG_TYPE_LEVEL)
 
 file_menu::FileMenu::FileMenu(QWidget * window, QMenuBar * menuBar, const char* menuName, const QKeySequence & key) : menu::Menu(window,menuBar,menuName,key) {
 
+	QINFO_PRINT(global_types::qinfo_level_e::ZERO, fileMenuOverall,  "Creating file menu");
 	this->createActions();
 	this->createMenu();
 
@@ -39,12 +41,14 @@ void file_menu::FileMenu::createMenu() {
 }
 
 void file_menu::FileMenu::openSlot() {
-	QINFO_PRINT(global_types::qinfo_level_e::ZERO, fileMenuOverall,  "open slot");
+	QINFO_PRINT(global_types::qinfo_level_e::ZERO, fileMenuOpenAction,  "Open slot: connect signal from open window to slot seding signal to the main window");
 
-	this->OpenWindow = new open_button_window::OpenButtonWindow(this->window, Qt::Dialog);
-	this->OpenWindow->exec();
+	this->openWindow = new open_button_window::OpenButtonWindow(this->window, Qt::Dialog);
+	connect(this->openWindow, &open_button_window::OpenButtonWindow::fileRead, this, &file_menu::FileMenu::updateCenterWindowSlot);
+	this->openWindow->exec();
 }
 
-open_button_window::OpenButtonWindow * file_menu::FileMenu::getOpenWindow() {
-	return this->OpenWindow;
+void file_menu::FileMenu::updateCenterWindowSlot(QString & content) {
+	QINFO_PRINT(global_types::qinfo_level_e::ZERO, fileMenuOpenAction,  "Send signal to main window to update the center window");
+	emit this->updateCenterWindow(content);
 }

@@ -25,6 +25,7 @@
  */
 
 Q_DECLARE_LOGGING_CATEGORY(mainWindowOverall)
+Q_DECLARE_LOGGING_CATEGORY(mainWindowCenterWindow)
 
 namespace main_window {
 
