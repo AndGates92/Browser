@@ -13,8 +13,9 @@
 #include <qt5/QtWidgets/QMenu>
 #include <qt5/QtWidgets/QLabel>
 #include <qt5/QtWidgets/QAction>
-#include <qt5/QtWidgets/QWidget>
 #include <qt5/QtWidgets/QMenuBar>
+#include <qt5/QtWidgets/QWidget>
+#include <qt5/QtWidgets/QTabWidget>
 
 #include "file_menu.h"
 #include "edit_menu.h"
@@ -104,13 +105,16 @@ namespace main_window {
 			edit_menu::EditMenu * editMenu;
 
 			/**
-			 * @brief Label at the centre of the window
+			 * @brief Tabs of browser
 			 *
 			 */
-			QLabel * centerWindow;
+			QTabWidget * tabs;
 
-			QWidget * topWidget;
-			QWidget * bottomWidget;
+			/**
+			 * @brief Tabs of browser
+			 *
+			 */
+			QList<QLabel> * tabWidgets;
 
 			/**
 			 * @brief Function: void fillMainWindow(QWidget * mainWidget)

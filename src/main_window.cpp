@@ -52,17 +52,23 @@ main_window::MainWindow::MainWindow(QWidget * parent, Qt::WindowFlags flags) : Q
 }
 
 void main_window::MainWindow::fillMainWindow(QWidget * mainWidget) {
-	this->topWidget = new QWidget(mainWidget);
+	this->tabs = new QTabWidget(mainWidget);
 	// size policy horintally and vertically to expanding
-	this->topWidget->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
+	this->tabs->setSizePolicy(QSizePolicy::Minimum, QSizePolicy::Minimum);
 
-	this->centerWindow = new QLabel(tr("Example"), mainWidget);
-	this->centerWindow->setFrameStyle(QFrame::StyledPanel | QFrame::Sunken);
-	this->centerWindow->setAlignment(Qt::AlignCenter);
+	QLabel * centerWindow = new QLabel(tr("Example"), mainWidget);
+	centerWindow->setFrameStyle(QFrame::StyledPanel | QFrame::Sunken);
+	centerWindow->setAlignment(Qt::AlignCenter);
 
-	this->bottomWidget = new QWidget(mainWidget);
-	// size policy horintally and vertically to expanding
-	this->bottomWidget->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
+	QLabel * centerWindow1 = new QLabel(tr("Example 1"), mainWidget);
+	centerWindow1->setFrameStyle(QFrame::StyledPanel | QFrame::Sunken);
+	centerWindow1->setAlignment(Qt::AlignCenter);
+
+	this->tabs->addTab(centerWindow, "test");
+	this->tabs->addTab(centerWindow1, "test1");
+
+	//this->centerWindow = new QLabel(tr("Example"), mainWidget);
+
 }
 
 void main_window::MainWindow::mainWindowLayout(QWidget * mainWidget) {
@@ -74,9 +80,8 @@ void main_window::MainWindow::mainWindowLayout(QWidget * mainWidget) {
 
 	QVBoxLayout * layout = new QVBoxLayout(mainWidget);
 	layout->setContentsMargins(5,5,5,5);
-	layout->addWidget(this->topWidget);
-	layout->addWidget(this->centerWindow);
-	layout->addWidget(this->bottomWidget);
+	layout->addWidget(this->tabs);
+//	layout->addWidget(this->centerWindow);
 
 	mainWidget->setLayout(layout);
 }
@@ -106,6 +111,8 @@ void main_window::MainWindow::disableMenubar() {
 void main_window::MainWindow::setCenterWindow(QString str) {
 	QINFO_PRINT(global_types::qinfo_level_e::ZERO, mainWindowCenterWindow,  "Change texts in center window");
 	QINFO_PRINT(global_types::qinfo_level_e::ZERO, mainWindowCenterWindow,  str);
-	this->centerWindow->setText(str);
-	this->centerWindow->repaint();
+	// Convert back QWidget to QLabel
+	QLabel * currentWidget = dynamic_cast<QLabel *>(this->tabs->currentWidget());
+	currentWidget->setText(str);
+	currentWidget->repaint();
 }
