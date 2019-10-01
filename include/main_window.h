@@ -109,6 +109,35 @@ namespace main_window {
 			 */
 			QLabel * centerWindow;
 
+			QWidget * topWidget;
+			QWidget * bottomWidget;
+
+			/**
+			 * @brief Function: void fillMainWindow(QWidget * mainWidget)
+			 *
+			 * \param mainWidget: main widget
+			 *
+			 * This function fills the the main window
+			 */
+			void fillMainWindow(QWidget * mainWidget);
+
+			/**
+			 * @brief Function: void fillMenuBar()
+			 *
+			 * This function fills the menu bar of the main window
+			 */
+			void fillMenuBar();
+
+			/**
+			 * @brief Function: void mainWindowLayout(QWidget * mainWidget)
+			 *
+			 * \param mainWidget: main widget
+			 *
+			 * This function defined the layout of the main window
+			 */
+			void mainWindowLayout(QWidget * mainWidget);
+
+
 			/**
 			 * @brief Function: void createShortcuts()
 			 *
