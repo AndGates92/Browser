@@ -24,6 +24,11 @@
  */
 
 Q_DECLARE_LOGGING_CATEGORY(fileMenuOverall)
+Q_DECLARE_LOGGING_CATEGORY(fileMenuOpenAction)
+Q_DECLARE_LOGGING_CATEGORY(fileMenuOpenTabAction)
+Q_DECLARE_LOGGING_CATEGORY(fileMenuSaveAction)
+Q_DECLARE_LOGGING_CATEGORY(fileMenuPrintAction)
+Q_DECLARE_LOGGING_CATEGORY(fileMenuExitAction)
 
 namespace file_menu {
 
@@ -61,28 +66,28 @@ namespace file_menu {
 			 *
 			 * This function is the slot of the open tab menu item
 			 */
-//			void openTabSlot();
+			void openTabSlot();
 
 			/**
 			 * @brief Function: void saveSlot()
 			 *
 			 * This function is the slot of the save menu item
 			 */
-//			void saveSlot();
+			void saveSlot();
 
 			/**
 			 * @brief Function: void printSlot()
 			 *
 			 * This function is the slot of the print menu item
 			 */
-//			void printSlot();
+			void printSlot();
 
 			/**
 			 * @brief Function: void exitSlot()
 			 *
 			 * This function is the slot of the exit menu item
 			 */
-//			void exitSlot();
+			void exitSlot();
 
 			/**
 			 * @brief Function: void updateCenterWindowSlot(QString & content)
@@ -105,25 +110,25 @@ namespace file_menu {
 			 * @brief open tab action
 			 *
 			 */
-//			QAction * openTabAction;
+			QAction * openTabAction;
 
 			/**
 			 * @brief save action
 			 *
 			 */
-//			QAction * saveAction;
+			QAction * saveAction;
 
 			/**
 			 * @brief print action
 			 *
 			 */
-//			QAction * printAction;
+			QAction * printAction;
 
 			/**
 			 * @brief exit action
 			 *
 			 */
-//			QAction * exitAction;
+			QAction * exitAction;
 
 			/**
 			 * @brief window opened following the opened action being clicked
