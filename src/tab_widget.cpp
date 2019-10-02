@@ -17,6 +17,7 @@ Q_LOGGING_CATEGORY(tabWidgetOverall, "tabWidget.overall", MSG_TYPE_LEVEL)
 tab_widget::TabWidget::TabWidget(QWidget * parent): QTabWidget(parent) {
 	QINFO_PRINT(global_types::qinfo_level_e::ZERO, tabWidgetOverall,  "Tab widget constructor");
 	this->tabBar = new tab_bar::TabBar(this);
+	this->setTabBar(this->tabBar);
 }
 
 void tab_widget::TabWidget::resizeEvent(QResizeEvent * event) {
