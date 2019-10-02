@@ -117,6 +117,15 @@ namespace main_window {
 			QList<QLabel> * tabWidgets;
 
 			/**
+			 * @brief Function: void createTabs(QWidget * mainWidget)
+			 *
+			 * \param mainWidget: main widget
+			 *
+			 * This function creates and customizes QTabWidget
+			 */
+			void createTabs(QWidget * mainWidget);
+
+			/**
 			 * @brief Function: void fillMainWindow(QWidget * mainWidget)
 			 *
 			 * \param mainWidget: main widget

@@ -10,6 +10,7 @@
 #include <qt5/QtWidgets/QVBoxLayout>
 #include <qt5/QtWidgets/QStatusBar>
 #include <qt5/QtWidgets/QShortcut>
+#include <qt5/QtWidgets/QTabBar>
 
 // Required by qInfo
 #include <qt5/QtCore/QtDebug>
@@ -52,9 +53,8 @@ main_window::MainWindow::MainWindow(QWidget * parent, Qt::WindowFlags flags) : Q
 }
 
 void main_window::MainWindow::fillMainWindow(QWidget * mainWidget) {
-	this->tabs = new QTabWidget(mainWidget);
-	// size policy horintally and vertically to expanding
-	this->tabs->setSizePolicy(QSizePolicy::Minimum, QSizePolicy::Minimum);
+	// Customize QTabWidget
+	this->createTabs(mainWidget);
 
 	QLabel * centerWindow = new QLabel(tr("Example"), mainWidget);
 	centerWindow->setFrameStyle(QFrame::StyledPanel | QFrame::Sunken);
@@ -68,6 +68,27 @@ void main_window::MainWindow::fillMainWindow(QWidget * mainWidget) {
 	this->tabs->addTab(centerWindow1, "test1");
 
 	//this->centerWindow = new QLabel(tr("Example"), mainWidget);
+
+}
+
+void main_window::MainWindow::createTabs(QWidget * mainWidget) {
+	this->tabs = new QTabWidget(mainWidget);
+	// size policy horintally and vertically to expanding
+	this->tabs->setSizePolicy(QSizePolicy::Minimum, QSizePolicy::Minimum);
+
+	this->tabs->tabBar()->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Minimum);
+	this->tabs->tabBar()->setExpanding(true);
+
+	this->tabs->setStyleSheet(
+		"QTabBar::tab {"
+			"background: gray; "
+			"color: white; "
+			"text-align: center; "
+		"}"
+		"QTabBar::tab::selected {"
+			"background: black; "
+		"}"
+	);
 
 }
 
