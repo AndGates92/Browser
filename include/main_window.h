@@ -15,10 +15,10 @@
 #include <qt5/QtWidgets/QAction>
 #include <qt5/QtWidgets/QMenuBar>
 #include <qt5/QtWidgets/QWidget>
-#include <qt5/QtWidgets/QTabWidget>
 
 #include "file_menu.h"
 #include "edit_menu.h"
+#include "tab_widget.h"
 
 /** @defgroup MainWindowGroup Main Window Doxygen Group
  *  Main Window functions and classes
@@ -108,7 +108,7 @@ namespace main_window {
 			 * @brief Tabs of browser
 			 *
 			 */
-			QTabWidget * tabs;
+			tab_widget::TabWidget * tabs;
 
 			/**
 			 * @brief Tabs of browser

@@ -72,12 +72,12 @@ void main_window::MainWindow::fillMainWindow(QWidget * mainWidget) {
 }
 
 void main_window::MainWindow::createTabs(QWidget * mainWidget) {
-	this->tabs = new QTabWidget(mainWidget);
+	this->tabs = new tab_widget::TabWidget(mainWidget);
 	// size policy horintally and vertically to expanding
 	this->tabs->setSizePolicy(QSizePolicy::Minimum, QSizePolicy::Minimum);
 
-	this->tabs->tabBar()->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Minimum);
-	this->tabs->tabBar()->setExpanding(true);
+	this->tabs->tabBar->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Minimum);
+	this->tabs->tabBar->setExpanding(true);
 
 	this->tabs->setStyleSheet(
 		"QTabBar::tab {"

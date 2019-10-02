@@ -41,5 +41,3 @@ void edit_menu::EditMenu::createMenu() {
 void edit_menu::EditMenu::undoSlot() {
 	QINFO_PRINT(global_types::qinfo_level_e::ZERO, editMenuOverall,  "undo slot");
 }
-
-
