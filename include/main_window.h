@@ -108,9 +108,9 @@ namespace main_window {
 			/**
 			 * @brief Function: void setCenterWindow(QString str)
 			 *
-			 * \param str: text to set the label to
+			 * \param str: text to write in the widget
 			 *
-			 * This function returns the menubar attached to the main window
+			 * This function writes the widget with the content of the file read (stored in input argument str)
 			 */
 			void setCenterWindow(QString str);
 

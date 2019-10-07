@@ -29,6 +29,20 @@ Q_DECLARE_LOGGING_CATEGORY(tabWidgetSearch)
 
 namespace tab_widget {
 
+	namespace {
+		/**
+		 * @brief minimum height
+		 *
+		 */
+		const int minHeight = 200; // px
+
+		/**
+		 * @brief minimum width
+		 *
+		 */
+		const int minWidth = 100; // px
+	}
+
 	class TabWidget : public QTabWidget {
 
 		public:

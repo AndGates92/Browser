@@ -24,7 +24,10 @@ tab_bar::TabBar::TabBar(QWidget * parent): QTabBar(parent) {
 	this->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Minimum);
 	this->setExpanding(true);
 	this->setFocusPolicy(Qt::StrongFocus);
-//	this->resize(this->size());
+
+	this->setMinimumHeight(tab_bar::minHeight);
+	this->setMinimumWidth(tab_bar::minWidth);
+	this->resize(this->size());
 }
 
 QSize tab_bar::TabBar::tabSizeHint(int index) const {
@@ -67,4 +70,5 @@ void tab_bar::TabBar::keyPressEvent(QKeyEvent * event) {
 	}
 
 	QINFO_PRINT(global_types::qinfo_level_e::ZERO, tabBarSearch,  "User typed text " << userText << " to search");
+
 }

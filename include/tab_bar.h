@@ -29,6 +29,20 @@ Q_DECLARE_LOGGING_CATEGORY(tabBarSearch)
 
 namespace tab_bar {
 
+	namespace {
+		/**
+		 * @brief minimum height
+		 *
+		 */
+		const int minHeight = 10; // px
+
+		/**
+		 * @brief minimum width
+		 *
+		 */
+		const int minWidth = 50; // px
+	}
+
 	class TabBar : public QTabBar {
 
 		public:

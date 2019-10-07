@@ -24,6 +24,8 @@ tab_widget::TabWidget::TabWidget(QWidget * parent): QTabWidget(parent) {
 	this->setTabBar(this->tabBar);
 
 	this->setFocusPolicy(Qt::StrongFocus);
+	this->setMinimumHeight(tab_widget::minHeight);
+	this->setMinimumWidth(tab_widget::minWidth);
 }
 
 void tab_widget::TabWidget::resizeEvent(QResizeEvent * event) {
@@ -45,4 +47,9 @@ void tab_widget::TabWidget::keyPressEvent(QKeyEvent * event) {
 	}
 
 	QINFO_PRINT(global_types::qinfo_level_e::ZERO, tabWidgetSearch,  "User typed text " << userText << " to search");
+
+	// Resize tab to ensure that it is as wide as the main widget
+	int widgetWidth = this->size().width();
+	this->tabBar->setWidth(widgetWidth);
+
 }

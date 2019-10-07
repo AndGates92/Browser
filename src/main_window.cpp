@@ -78,6 +78,8 @@ void main_window::MainWindow::createTabs() {
 		"QTabBar::tab {"
 			"background: gray; "
 			"color: white; "
+			"min-width: 100px; "
+			"min-heigth: 20px; "
 			"text-align: center; "
 		"}"
 		"QTabBar::tab::selected {"
@@ -104,6 +106,7 @@ void main_window::MainWindow::mainWindowLayout() {
 
 void main_window::MainWindow::fillMenuBar() {
 	this->fileMenu = new file_menu::FileMenu(this, this->menuBar(), "File", Qt::Key_F);
+	// When the file has been read, then show it on the screen
 	connect(this->fileMenu, &file_menu::FileMenu::updateCenterWindow, this, &main_window::MainWindow::setCenterWindow);
 	this->editMenu = new edit_menu::EditMenu(this, this->menuBar(), "Edit", Qt::Key_E);
 }
@@ -168,6 +171,7 @@ void main_window::MainWindow::newSearchTabSlot() {
 
 }
 
+// 
 void main_window::MainWindow::setCenterWindow(QString str) {
 	QINFO_PRINT(global_types::qinfo_level_e::ZERO, mainWindowCenterWindow,  "Change texts in center window");
 	QINFO_PRINT(global_types::qinfo_level_e::ZERO, mainWindowCenterWindow,  str);
@@ -197,6 +201,5 @@ void main_window::MainWindow::keyPressEvent(QKeyEvent * event) {
 
 	mainWindowState = main_window::MainWindow::state_e::IDLE;
 
-	this->repaint();
-
+	this->mainWidget->repaint();
 }
