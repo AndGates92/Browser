@@ -24,6 +24,7 @@
  */
 
 Q_DECLARE_LOGGING_CATEGORY(tabWidgetOverall)
+Q_DECLARE_LOGGING_CATEGORY(tabWidgetResize)
 
 namespace tab_widget {
 

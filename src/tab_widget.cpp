@@ -8,11 +8,13 @@
 
 // Qt libraries
 #include <qt5/QtCore/QLoggingCategory>
+#include <qt5/QtGui/QResizeEvent>
 
 #include "tab_widget.h"
 
 // Categories
 Q_LOGGING_CATEGORY(tabWidgetOverall, "tabWidget.overall", MSG_TYPE_LEVEL)
+Q_LOGGING_CATEGORY(tabWidgetResize, "tabWidget.resize", MSG_TYPE_LEVEL)
 
 tab_widget::TabWidget::TabWidget(QWidget * parent): QTabWidget(parent) {
 	QINFO_PRINT(global_types::qinfo_level_e::ZERO, tabWidgetOverall,  "Tab widget constructor");
@@ -23,6 +25,9 @@ tab_widget::TabWidget::TabWidget(QWidget * parent): QTabWidget(parent) {
 }
 
 void tab_widget::TabWidget::resizeEvent(QResizeEvent * event) {
+	QSize previousSize(event->oldSize());
+	QSize newSize(event->size());
+	QINFO_PRINT(global_types::qinfo_level_e::ZERO, tabWidgetResize,  "Tab widget resize from " << previousSize << " to " << newSize);
 	int widgetWidth = this->size().width();
 	this->tabBar->setWidth(widgetWidth);
 	QTabWidget::resizeEvent(event);

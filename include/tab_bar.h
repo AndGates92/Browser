@@ -23,7 +23,8 @@
  */
 
 Q_DECLARE_LOGGING_CATEGORY(tabBarOverall)
-Q_DECLARE_LOGGING_CATEGORY(tabBarHint)
+Q_DECLARE_LOGGING_CATEGORY(tabBarSizeHint)
+Q_DECLARE_LOGGING_CATEGORY(tabBarSetWidth)
 
 namespace tab_bar {
 
@@ -60,11 +61,6 @@ namespace tab_bar {
 
 
 		private:
-			/**
-			 * @brief tab bar size
-			 *
-			 */
-			QSize tabBarSize;
 
 	};
 }
