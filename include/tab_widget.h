@@ -25,6 +25,7 @@
 
 Q_DECLARE_LOGGING_CATEGORY(tabWidgetOverall)
 Q_DECLARE_LOGGING_CATEGORY(tabWidgetResize)
+Q_DECLARE_LOGGING_CATEGORY(tabWidgetSearch)
 
 namespace tab_widget {
 
@@ -56,6 +57,15 @@ namespace tab_widget {
 			 *
 			 */
 			tab_bar::TabBar * tabBar;
+
+			/**
+			 * @brief Function: void keyPressEvent(QKeyEvent * event)
+			 *
+			 * \param event: key event
+			 *
+			 * Re-implement key pressed event
+			 */
+			void keyPressEvent(QKeyEvent * event);
 	};
 }
 /** @} */ // End of TabWidgetGroup group

@@ -11,6 +11,7 @@
 #include <qt5/QtWidgets/QStatusBar>
 #include <qt5/QtWidgets/QShortcut>
 #include <qt5/QtWidgets/QTabBar>
+#include <qt5/QtGui/QKeyEvent>
 
 // Required by qInfo
 #include <qt5/QtCore/QtDebug>
@@ -25,20 +26,23 @@
 // Categories
 Q_LOGGING_CATEGORY(mainWindowOverall, "mainWindow.overall", MSG_TYPE_LEVEL)
 Q_LOGGING_CATEGORY(mainWindowCenterWindow, "mainWindow.centerWindow", MSG_TYPE_LEVEL)
+Q_LOGGING_CATEGORY(mainWindowSearch, "mainWindow.search", MSG_TYPE_LEVEL)
 
 main_window::MainWindow::MainWindow(QWidget * parent, Qt::WindowFlags flags) : QMainWindow(parent, flags) {
 
-	QWidget * mainWidget = new QWidget(this);
-	setCentralWidget(mainWidget);
+	mainWindowState = main_window::MainWindow::state_e::IDLE;
+
+	// main widget
+	this->createMainWidget();
 
 	// main window body
-	this->fillMainWindow(mainWidget);
+	this->fillMainWindow();
 
 	// Menu bar
 	this->fillMenuBar();
 
 	// main window layout
-	this->mainWindowLayout(mainWidget);
+	this->mainWindowLayout();
 
 	// Shortcuts
 	this->createShortcuts();
@@ -52,25 +56,21 @@ main_window::MainWindow::MainWindow(QWidget * parent, Qt::WindowFlags flags) : Q
 	this->resize(winSize);
 }
 
-void main_window::MainWindow::fillMainWindow(QWidget * mainWidget) {
+
+void main_window::MainWindow::createMainWidget() {
+	this->mainWidget = new QWidget(this);
+	this->mainWidget->setFocusPolicy(Qt::StrongFocus);
+	setCentralWidget(this->mainWidget);
+}
+
+void main_window::MainWindow::fillMainWindow() {
 	// Customize MainWidget
-	this->createTabs(mainWidget);
-
-	QLabel * centerWindow = new QLabel(tr("Example"), mainWidget);
-	centerWindow->setFrameStyle(QFrame::StyledPanel | QFrame::Sunken);
-	centerWindow->setAlignment(Qt::AlignCenter);
-
-	QLabel * centerWindow1 = new QLabel(tr("Example 1"), mainWidget);
-	centerWindow1->setFrameStyle(QFrame::StyledPanel | QFrame::Sunken);
-	centerWindow1->setAlignment(Qt::AlignCenter);
-
-	this->tabs->addTab(centerWindow, "test");
-	this->tabs->addTab(centerWindow1, "test1");
+	this->createTabs();
 
 }
 
-void main_window::MainWindow::createTabs(QWidget * mainWidget) {
-	this->tabs = new tab_widget::TabWidget(mainWidget);
+void main_window::MainWindow::createTabs() {
+	this->tabs = new tab_widget::TabWidget(this->mainWidget);
 	// size policy horintally and vertically to expanding
 	this->tabs->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Minimum);
 
@@ -87,19 +87,19 @@ void main_window::MainWindow::createTabs(QWidget * mainWidget) {
 
 }
 
-void main_window::MainWindow::mainWindowLayout(QWidget * mainWidget) {
+void main_window::MainWindow::mainWindowLayout() {
 	// Layout
 	// -------------------------------------------------
 	// |  <label>  |     <text to open>    | <browse>  |
 	// |  <open>   |                       | <cancel>  |
 	// -------------------------------------------------
 
-	QVBoxLayout * layout = new QVBoxLayout(mainWidget);
+	QVBoxLayout * layout = new QVBoxLayout(this->mainWidget);
 	layout->setContentsMargins(0, 0, 0, 0);
 	layout->addWidget(this->tabs);
 //	layout->addWidget(this->centerWindow);
 
-	mainWidget->setLayout(layout);
+	this->mainWidget->setLayout(layout);
 }
 
 void main_window::MainWindow::fillMenuBar() {
@@ -114,14 +114,58 @@ QMenuBar * main_window::MainWindow::getMenuBar() {
 
 void main_window::MainWindow::createShortcuts() {
 	// m will hide/show the menu bar
-	QShortcut * hideMenuBar = new QShortcut(this);
-	hideMenuBar->setKey(Qt::Key_M);
-	connect(hideMenuBar, &QShortcut::activated, this, &main_window::MainWindow::disableMenubar);
+	QShortcut * toggleShowMenuBarKey = new QShortcut(this);
+	toggleShowMenuBarKey->setKey(Qt::Key_M);
+	connect(toggleShowMenuBarKey, &QShortcut::activated, this, &main_window::MainWindow::toggleShowMenubarSlot);
+
+	// o + t will open a new tab
+	QShortcut * openNewTabKey = new QShortcut(this);
+	openNewTabKey->setKey(Qt::Key_O);
+	connect(openNewTabKey, &QShortcut::activated, this, &main_window::MainWindow::openNewTabSlot);
+
+	// s will open a new tab
+	QShortcut * newSearchTabKey = new QShortcut(this);
+	newSearchTabKey->setKey(Qt::Key_S);
+	connect(newSearchTabKey, &QShortcut::activated, this, &main_window::MainWindow::newSearchTabSlot);
+
 }
 
-void main_window::MainWindow::disableMenubar() {
+void main_window::MainWindow::toggleShowMenubarSlot() {
 	bool menubarVisible = this->menuBar()->isVisible();
 	this->menuBar()->setVisible(!menubarVisible);
+}
+
+void main_window::MainWindow::addNewTab(QString search) {
+	QLabel * centerWindow = new QLabel(tr("Searching"), this->mainWidget);
+	centerWindow->setFrameStyle(QFrame::StyledPanel | QFrame::Sunken);
+	centerWindow->setAlignment(Qt::AlignCenter);
+
+	int tabIndex = this->tabs->addTab(centerWindow, search);
+	this->newSearchTab(tabIndex, search);
+}
+
+void main_window::MainWindow::openNewTabSlot() {
+	QINFO_PRINT(global_types::qinfo_level_e::ZERO, mainWindowSearch,  "Search in new tab");
+	mainWindowState = main_window::MainWindow::state_e::OPEN_TAB;
+
+}
+
+void main_window::MainWindow::newSearchCurrentTab(QString search) {
+	int tabIndex = this->tabs->currentIndex();
+	this->newSearchTab(tabIndex, search);
+}
+
+
+void main_window::MainWindow::newSearchTab(int index, QString search) {
+	QINFO_PRINT(global_types::qinfo_level_e::ZERO, mainWindowSearch,  "Search " << search << " in tab " << index);
+	this->tabs->setTabText(index, search);
+}
+
+void main_window::MainWindow::newSearchTabSlot() {
+
+	QINFO_PRINT(global_types::qinfo_level_e::ZERO, mainWindowSearch,  "Search in current tab");
+	mainWindowState = main_window::MainWindow::state_e::SEARCH;
+
 }
 
 void main_window::MainWindow::setCenterWindow(QString str) {
@@ -131,4 +175,28 @@ void main_window::MainWindow::setCenterWindow(QString str) {
 	QLabel * currentWidget = dynamic_cast<QLabel *>(this->tabs->currentWidget());
 	currentWidget->setText(str);
 	currentWidget->repaint();
+}
+
+void main_window::MainWindow::keyPressEvent(QKeyEvent * event) {
+
+	QMainWindow::keyPressEvent(event);
+
+	QString userText(event->text());
+	if (userText.isEmpty()) {
+		userText = "No text provided";
+	}
+
+	QINFO_PRINT(global_types::qinfo_level_e::ZERO, mainWindowSearch,  "User typed text " << userText << " to search");
+
+	if (mainWindowState == main_window::MainWindow::state_e::OPEN_TAB) {
+		this->addNewTab(userText);
+	} else if (mainWindowState == main_window::MainWindow::state_e::SEARCH) {
+		this->newSearchCurrentTab(userText);
+
+	}
+
+	mainWindowState = main_window::MainWindow::state_e::IDLE;
+
+	this->repaint();
+
 }

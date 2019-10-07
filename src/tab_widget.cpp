@@ -9,19 +9,21 @@
 // Qt libraries
 #include <qt5/QtCore/QLoggingCategory>
 #include <qt5/QtGui/QResizeEvent>
+#include <qt5/QtGui/QKeyEvent>
 
 #include "tab_widget.h"
 
 // Categories
 Q_LOGGING_CATEGORY(tabWidgetOverall, "tabWidget.overall", MSG_TYPE_LEVEL)
 Q_LOGGING_CATEGORY(tabWidgetResize, "tabWidget.resize", MSG_TYPE_LEVEL)
+Q_LOGGING_CATEGORY(tabWidgetSearch, "tabWidget.search", MSG_TYPE_LEVEL)
 
 tab_widget::TabWidget::TabWidget(QWidget * parent): QTabWidget(parent) {
 	QINFO_PRINT(global_types::qinfo_level_e::ZERO, tabWidgetOverall,  "Tab widget constructor");
 	this->tabBar = new tab_bar::TabBar(this);
-	this->tabBar->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Minimum);
-	this->tabBar->setExpanding(true);
 	this->setTabBar(this->tabBar);
+
+	this->setFocusPolicy(Qt::StrongFocus);
 }
 
 void tab_widget::TabWidget::resizeEvent(QResizeEvent * event) {
@@ -31,4 +33,16 @@ void tab_widget::TabWidget::resizeEvent(QResizeEvent * event) {
 	int widgetWidth = this->size().width();
 	this->tabBar->setWidth(widgetWidth);
 	QTabWidget::resizeEvent(event);
+}
+
+void tab_widget::TabWidget::keyPressEvent(QKeyEvent * event) {
+
+	QTabWidget::keyPressEvent(event);
+
+	QString userText(event->text());
+	if (userText.isEmpty()) {
+		userText = "No text provided";
+	}
+
+	QINFO_PRINT(global_types::qinfo_level_e::ZERO, tabWidgetSearch,  "User typed text " << userText << " to search");
 }

@@ -25,6 +25,7 @@
 Q_DECLARE_LOGGING_CATEGORY(tabBarOverall)
 Q_DECLARE_LOGGING_CATEGORY(tabBarSizeHint)
 Q_DECLARE_LOGGING_CATEGORY(tabBarSetWidth)
+Q_DECLARE_LOGGING_CATEGORY(tabBarSearch)
 
 namespace tab_bar {
 
@@ -59,8 +60,16 @@ namespace tab_bar {
 			 */
 			QSize tabSizeHint(int index) const override;
 
-
 		private:
+
+			/**
+			 * @brief Function: void keyPressEvent(QKeyEvent * event)
+			 *
+			 * \param event: key event
+			 *
+			 * Re-implement key pressed event
+			 */
+			void keyPressEvent(QKeyEvent * event);
 
 	};
 }

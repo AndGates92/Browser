@@ -27,12 +27,23 @@
 
 Q_DECLARE_LOGGING_CATEGORY(mainWindowOverall)
 Q_DECLARE_LOGGING_CATEGORY(mainWindowCenterWindow)
+Q_DECLARE_LOGGING_CATEGORY(mainWindowSearch)
 
 namespace main_window {
 
 	class MainWindow : public QMainWindow {
 
 		Q_OBJECT
+
+		/**
+		 * @brief Verbosity levels
+		 *
+		 */
+		typedef enum class state_list {
+			IDLE,         /**< Idle state - no user input */
+			OPEN_TAB,     /**< Open new tab */
+			SEARCH        /**< Search on same tab */
+		} state_e;
 
 		public:
 			/**
@@ -74,11 +85,25 @@ namespace main_window {
 		private slots:
 
 			/**
-			 * @brief Function: void disableMenubar()
+			 * @brief Function: void openNewTabSlot()
+			 *
+			 * This function opens a new tab
+			 */
+			void openNewTabSlot();
+
+			/**
+			 * @brief Function: void newSearchTabSlot()
+			 *
+			 * This function changes the title of a tab
+			 */
+			void newSearchTabSlot();
+
+			/**
+			 * @brief Function: void toggleShowMenubarSlot()
 			 *
 			 * This function is the slot to hide the menubar
 			 */
-			void disableMenubar();
+			void toggleShowMenubarSlot();
 
 			/**
 			 * @brief Function: void setCenterWindow(QString str)
@@ -90,6 +115,14 @@ namespace main_window {
 			void setCenterWindow(QString str);
 
 		private:
+
+			// main widget
+			/**
+			 * @brief main widget
+			 *
+			 */
+			QWidget * mainWidget;
+
 			// File dropdown menu
 			/**
 			 * @brief File menu
@@ -111,28 +144,31 @@ namespace main_window {
 			tab_widget::TabWidget * tabs;
 
 			/**
-			 * @brief Tabs of browser
+			 * @brief state of the main window
 			 *
 			 */
-			QList<QLabel> * tabWidgets;
+			state_e mainWindowState;
 
 			/**
-			 * @brief Function: void createTabs(QWidget * mainWidget)
+			 * @brief Function: void createMainWidget()
 			 *
-			 * \param mainWidget: main widget
+			 * This function creates and customizes the main widget
+			 */
+			void createMainWidget();
+
+			/**
+			 * @brief Function: void createTabs()
 			 *
 			 * This function creates and customizes QTabWidget
 			 */
-			void createTabs(QWidget * mainWidget);
+			void createTabs();
 
 			/**
-			 * @brief Function: void fillMainWindow(QWidget * mainWidget)
-			 *
-			 * \param mainWidget: main widget
+			 * @brief Function: void fillMainWindow()
 			 *
 			 * This function fills the the main window
 			 */
-			void fillMainWindow(QWidget * mainWidget);
+			void fillMainWindow();
 
 			/**
 			 * @brief Function: void fillMenuBar()
@@ -142,14 +178,11 @@ namespace main_window {
 			void fillMenuBar();
 
 			/**
-			 * @brief Function: void mainWindowLayout(QWidget * mainWidget)
-			 *
-			 * \param mainWidget: main widget
+			 * @brief Function: void mainWindowLayout()
 			 *
 			 * This function defined the layout of the main window
 			 */
-			void mainWindowLayout(QWidget * mainWidget);
-
+			void mainWindowLayout();
 
 			/**
 			 * @brief Function: void createShortcuts()
@@ -157,6 +190,42 @@ namespace main_window {
 			 * This function creates shortcuts for the items on the window
 			 */
 			void createShortcuts();
+
+			/**
+			 * @brief Function: void addNewTab(QString search)
+			 *
+			 * \param search: string to search
+			 *
+			 * This function adds a new tab to the main window
+			 */
+			void addNewTab(QString search);
+
+			/**
+			 * @brief Function: void newSearchCurrentTab(QString search)
+			 *
+			 * \param search: string to search
+			 *
+			 * This function search on the current tab
+			 */
+			void newSearchCurrentTab(QString search);
+
+			/**
+			 * @brief Function: void newSearchTab(int index, QString search)
+			 *
+			 * \param search: string to search
+			 *
+			 * This function search on the tab at index index
+			 */
+			void newSearchTab(int index, QString search);
+
+			/**
+			 * @brief Function: void keyPressEvent(QKeyEvent * event)
+			 *
+			 * \param event: key event
+			 *
+			 * Re-implement key pressed event
+			 */
+			void keyPressEvent(QKeyEvent * event);
 	};
 }
 /** @} */ // End of MainWindowGroup group
