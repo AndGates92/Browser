@@ -30,13 +30,40 @@ namespace tab_bar {
 	class TabBar : public QTabBar {
 
 		public:
-			explicit TabBar(QWidget * parent);
+			/**
+			 * @brief Function: explicit TabBar(QWidget * parent = Q_NULLPTR)
+			 *
+			 * \param parent: parent widget
+			 *
+			 * Tab bar constructor
+			 */
+			explicit TabBar(QWidget * parent = Q_NULLPTR);
 
+			/**
+			 * @brief Function: void setWdith(int newWidth)
+			 *
+			 * \param newWidth: new tab bar width
+			 *
+			 * Set the tab bar width
+			 */
+			void setWidth(int newWidth);
+
+		protected:
+			/**
+			 * @brief Function: QSize tabSizeHint(int index) const override
+			 *
+			 * \param index: index of tab
+			 *
+			 * Calculates the recommended size of the tab
+			 */
 			QSize tabSizeHint(int index) const override;
 
-			void resize(QSize new_size);
 
 		private:
+			/**
+			 * @brief tab bar size
+			 *
+			 */
 			QSize tabBarSize;
 
 	};

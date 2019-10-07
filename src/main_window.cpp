@@ -44,16 +44,16 @@ main_window::MainWindow::MainWindow(QWidget * parent, Qt::WindowFlags flags) : Q
 	this->createShortcuts();
 
 	QString msg(tr("status bar message"));
-	statusBar()->showMessage(msg);
+	this->statusBar()->showMessage(msg);
 
 	setWindowTitle(tr("Browser"));
 
 	QSize winSize(320,400);
-	resize(winSize);
+	this->resize(winSize);
 }
 
 void main_window::MainWindow::fillMainWindow(QWidget * mainWidget) {
-	// Customize QTabWidget
+	// Customize MainWidget
 	this->createTabs(mainWidget);
 
 	QLabel * centerWindow = new QLabel(tr("Example"), mainWidget);
@@ -67,17 +67,12 @@ void main_window::MainWindow::fillMainWindow(QWidget * mainWidget) {
 	this->tabs->addTab(centerWindow, "test");
 	this->tabs->addTab(centerWindow1, "test1");
 
-	//this->centerWindow = new QLabel(tr("Example"), mainWidget);
-
 }
 
 void main_window::MainWindow::createTabs(QWidget * mainWidget) {
 	this->tabs = new tab_widget::TabWidget(mainWidget);
 	// size policy horintally and vertically to expanding
-	this->tabs->setSizePolicy(QSizePolicy::Minimum, QSizePolicy::Minimum);
-
-	this->tabs->tabBar->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Minimum);
-	this->tabs->tabBar->setExpanding(true);
+	this->tabs->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Minimum);
 
 	this->tabs->setStyleSheet(
 		"QTabBar::tab {"
@@ -100,7 +95,7 @@ void main_window::MainWindow::mainWindowLayout(QWidget * mainWidget) {
 	// -------------------------------------------------
 
 	QVBoxLayout * layout = new QVBoxLayout(mainWidget);
-	layout->setContentsMargins(5,5,5,5);
+	layout->setContentsMargins(0, 0, 0, 0);
 	layout->addWidget(this->tabs);
 //	layout->addWidget(this->centerWindow);
 

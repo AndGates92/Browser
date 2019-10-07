@@ -17,10 +17,13 @@ Q_LOGGING_CATEGORY(tabWidgetOverall, "tabWidget.overall", MSG_TYPE_LEVEL)
 tab_widget::TabWidget::TabWidget(QWidget * parent): QTabWidget(parent) {
 	QINFO_PRINT(global_types::qinfo_level_e::ZERO, tabWidgetOverall,  "Tab widget constructor");
 	this->tabBar = new tab_bar::TabBar(this);
+	this->tabBar->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Minimum);
+	this->tabBar->setExpanding(true);
 	this->setTabBar(this->tabBar);
 }
 
 void tab_widget::TabWidget::resizeEvent(QResizeEvent * event) {
-	this->tabBar->resize(this->size());
+	int widgetWidth = this->size().width();
+	this->tabBar->setWidth(widgetWidth);
 	QTabWidget::resizeEvent(event);
 }

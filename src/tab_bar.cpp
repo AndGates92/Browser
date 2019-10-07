@@ -17,12 +17,13 @@ Q_LOGGING_CATEGORY(tabBarHint, "tabBar.hint", MSG_TYPE_LEVEL)
 
 tab_bar::TabBar::TabBar(QWidget * parent): QTabBar(parent) {
 	QINFO_PRINT(global_types::qinfo_level_e::ZERO, tabBarOverall,  "Tab bar constructor");
-	this->resize(this->size());
+//	this->resize(this->size());
 }
 
 QSize tab_bar::TabBar::tabSizeHint(int index) const {
 	QINFO_PRINT(global_types::qinfo_level_e::ZERO, tabBarHint,  "Tab bar size hint for tab " << index);
 
+	//int barWidth = this->size().width();
 	int barWidth = this->size().width();
 	int barHeight = this->size().height();
 	int tabNumber = this->count();
@@ -42,7 +43,8 @@ QSize tab_bar::TabBar::tabSizeHint(int index) const {
 	return tabSize;
 }
 
-void tab_bar::TabBar::resize(QSize new_size) {
-	tabBarSize = new_size;
+void tab_bar::TabBar::setWidth(int newWidth) {
+	int tabHeight = this->size().height();
+	QSize tabBarSize(newWidth, tabHeight);
 	QTabBar::resize(tabBarSize);
 }
