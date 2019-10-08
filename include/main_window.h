@@ -31,6 +31,14 @@ Q_DECLARE_LOGGING_CATEGORY(mainWindowSearch)
 
 namespace main_window {
 
+	namespace {
+		/**
+		 * @brief bottom information label height
+		 *
+		 */
+		const int labelHeight = 20;
+	}
+
 	class MainWindow : public QMainWindow {
 
 		Q_OBJECT

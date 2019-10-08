@@ -49,6 +49,7 @@ main_window::MainWindow::MainWindow(QWidget * parent, Qt::WindowFlags flags) : Q
 
 	QString msg(tr("status bar message"));
 	this->statusBar()->showMessage(msg);
+	this->statusBar()->hide();
 
 	setWindowTitle(tr("Browser"));
 
@@ -71,16 +72,19 @@ void main_window::MainWindow::fillMainWindow() {
 	this->searchText = new QLabel("", this);
 	this->searchText->setFrameStyle(QFrame::NoFrame | QFrame::Sunken);
 	this->searchText->setAlignment(Qt::AlignLeft | Qt::AlignBottom);
+	this->searchText->setFixedHeight(main_window::labelHeight);
 
 	// website URL
 	this->websiteText = new QLabel("", this);
 	this->websiteText->setFrameStyle(QFrame::NoFrame | QFrame::Sunken);
 	this->websiteText->setAlignment(Qt::AlignLeft | Qt::AlignBottom);
+	this->websiteText->setFixedHeight(main_window::labelHeight);
 
 	// info
 	this->infoText = new QLabel("", this);
 	this->infoText->setFrameStyle(QFrame::NoFrame | QFrame::Sunken);
 	this->infoText->setAlignment(Qt::AlignLeft | Qt::AlignBottom);
+	this->infoText->setFixedHeight(main_window::labelHeight);
 }
 
 void main_window::MainWindow::createTabs() {
@@ -92,8 +96,8 @@ void main_window::MainWindow::createTabs() {
 		"QTabBar::tab {"
 			"background: gray; "
 			"color: white; "
-			"min-width: 100px; "
-			"min-heigth: 20px; "
+			"min-heigth: 30px; "
+			"max-heigth: 30px; "
 			"text-align: center; "
 		"}"
 		"QTabBar::tab::selected {"
