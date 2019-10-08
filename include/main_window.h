@@ -144,6 +144,24 @@ namespace main_window {
 			tab_widget::TabWidget * tabs;
 
 			/**
+			 * @brief search
+			 *
+			 */
+			QLabel * searchText;
+
+			/**
+			 * @brief website
+			 *
+			 */
+			QLabel * websiteText;
+
+			/**
+			 * @brief info
+			 *
+			 */
+			QLabel * infoText;
+
+			/**
 			 * @brief user text
 			 *
 			 */

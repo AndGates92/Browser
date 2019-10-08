@@ -7,7 +7,7 @@
  */
 
 // Qt libraries
-#include <qt5/QtWidgets/QVBoxLayout>
+#include <qt5/QtWidgets/QGridLayout>
 #include <qt5/QtWidgets/QStatusBar>
 #include <qt5/QtWidgets/QShortcut>
 #include <qt5/QtWidgets/QTabBar>
@@ -67,6 +67,20 @@ void main_window::MainWindow::fillMainWindow() {
 	// Customize MainWidget
 	this->createTabs();
 
+	// search
+	this->searchText = new QLabel("", this);
+	this->searchText->setFrameStyle(QFrame::NoFrame | QFrame::Sunken);
+	this->searchText->setAlignment(Qt::AlignLeft | Qt::AlignBottom);
+
+	// website URL
+	this->websiteText = new QLabel("", this);
+	this->websiteText->setFrameStyle(QFrame::NoFrame | QFrame::Sunken);
+	this->websiteText->setAlignment(Qt::AlignLeft | Qt::AlignBottom);
+
+	// info
+	this->infoText = new QLabel("", this);
+	this->infoText->setFrameStyle(QFrame::NoFrame | QFrame::Sunken);
+	this->infoText->setAlignment(Qt::AlignLeft | Qt::AlignBottom);
 }
 
 void main_window::MainWindow::createTabs() {
@@ -92,14 +106,32 @@ void main_window::MainWindow::createTabs() {
 void main_window::MainWindow::mainWindowLayout() {
 	// Layout
 	// -------------------------------------------------
-	// |  <label>  |     <text to open>    | <browse>  |
-	// |  <open>   |                       | <cancel>  |
+	// |                     <tabs>                    |
+	// |                    <content>                  |
+	// |  <search>   |      <website>     | <tab info> |
 	// -------------------------------------------------
 
-	QVBoxLayout * layout = new QVBoxLayout(this->mainWidget);
-	layout->setContentsMargins(0, 0, 0, 0);
-	layout->addWidget(this->tabs);
-//	layout->addWidget(this->centerWindow);
+	QGridLayout * layout = new QGridLayout(this->mainWidget);
+	int tabsRowSpan = 20;
+	int tabsColumnSpan = 10;
+	int tabsFromRow = 0;
+	int tabsFromColumn = 0;
+	layout->addWidget(this->tabs, tabsFromRow, tabsFromColumn, tabsRowSpan, tabsColumnSpan);
+	int searchRowSpan = 1;
+	int searchColumnSpan = 3;
+	int searchFromRow = tabsRowSpan;
+	int searchFromColumn = 0;
+	layout->addWidget(this->searchText, searchFromRow, searchFromColumn, searchRowSpan, searchColumnSpan);
+	int websiteRowSpan = 1;
+	int websiteColumnSpan = 5;
+	int websiteFromRow = tabsRowSpan;
+	int websiteFromColumn = searchColumnSpan;
+	layout->addWidget(this->websiteText, websiteFromRow, websiteFromColumn, websiteRowSpan, websiteColumnSpan);
+	int infoRowSpan = 1;
+	int infoColumnSpan = 2;
+	int infoFromRow = websiteRowSpan;
+	int infoFromColumn = searchColumnSpan;
+	layout->addWidget(this->infoText, infoFromRow, infoFromColumn, infoRowSpan, infoColumnSpan);
 
 	this->mainWidget->setLayout(layout);
 }
@@ -121,7 +153,7 @@ void main_window::MainWindow::createShortcuts() {
 	toggleShowMenuBarKey->setKey(Qt::Key_M);
 	connect(toggleShowMenuBarKey, &QShortcut::activated, this, &main_window::MainWindow::toggleShowMenubarSlot);
 
-	// o + t will open a new tab
+	// o will open a new tab
 	QShortcut * openNewTabKey = new QShortcut(this);
 	openNewTabKey->setKey(Qt::Key_O);
 	connect(openNewTabKey, &QShortcut::activated, this, &main_window::MainWindow::openNewTabSlot);
@@ -214,6 +246,8 @@ void main_window::MainWindow::keyPressEvent(QKeyEvent * event) {
 			this->userText.clear();
 		}
 	}
+
+	this->searchText->setText(this->userText);
 
 	this->mainWidget->repaint();
 }
