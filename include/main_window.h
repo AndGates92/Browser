@@ -144,6 +144,12 @@ namespace main_window {
 			tab_widget::TabWidget * tabs;
 
 			/**
+			 * @brief user text
+			 *
+			 */
+			QString userText;
+
+			/**
 			 * @brief state of the main window
 			 *
 			 */

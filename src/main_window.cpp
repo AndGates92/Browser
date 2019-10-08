@@ -185,21 +185,35 @@ void main_window::MainWindow::keyPressEvent(QKeyEvent * event) {
 
 	QMainWindow::keyPressEvent(event);
 
-	QString userText(event->text());
-	if (userText.isEmpty()) {
-		userText = "No text provided";
+	int pressedKey = event->key();
+
+	if ((pressedKey == Qt::Key_Enter) || (pressedKey == Qt::Key_Return)) {
+		if (this->userText.isEmpty()) {
+			this->userText.append("No text provided");
+		}
+
+		QINFO_PRINT(global_types::qinfo_level_e::ZERO, mainWindowSearch,  "User typed text " << this->userText << " to search");
+
+		if (mainWindowState == main_window::MainWindow::state_e::OPEN_TAB) {
+			this->addNewTab(this->userText);
+		} else if (mainWindowState == main_window::MainWindow::state_e::SEARCH) {
+			this->newSearchCurrentTab(this->userText);
+		}
+		this->userText.clear();
+		mainWindowState = main_window::MainWindow::state_e::IDLE;
+	} else {
+		if ((mainWindowState == main_window::MainWindow::state_e::OPEN_TAB) || (mainWindowState == main_window::MainWindow::state_e::SEARCH)) {
+			if (pressedKey == Qt::Key_Backspace) {
+				// Last position of the string
+				int endString = this->userText.count() - 1;
+				this->userText.remove(endString, 1);
+			} else {
+				this->userText.append(event->text());
+			}
+		} else {
+			this->userText.clear();
+		}
 	}
-
-	QINFO_PRINT(global_types::qinfo_level_e::ZERO, mainWindowSearch,  "User typed text " << userText << " to search");
-
-	if (mainWindowState == main_window::MainWindow::state_e::OPEN_TAB) {
-		this->addNewTab(userText);
-	} else if (mainWindowState == main_window::MainWindow::state_e::SEARCH) {
-		this->newSearchCurrentTab(userText);
-
-	}
-
-	mainWindowState = main_window::MainWindow::state_e::IDLE;
 
 	this->mainWidget->repaint();
 }
