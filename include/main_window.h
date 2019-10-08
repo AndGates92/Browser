@@ -90,6 +90,16 @@ namespace main_window {
 //			void contextMenuEvent(QContextMenuEvent * event) override;
 		#endif // QT_NO_CONTEXTMENU
 
+		signals:
+			/**
+			 * @brief Function: void updateInfoSignal(int index)
+			 *
+			 * \param index: index of tab either closed or clicked
+			 *
+			 * This function is a signal to inform that the info label needs to be updated
+			 */
+			void updateInfoSignal(int index);
+
 		private slots:
 
 			/**
@@ -105,6 +115,15 @@ namespace main_window {
 			 * This function changes the title of a tab
 			 */
 			void newSearchTabSlot();
+
+			/**
+			 * @brief Function: void updateInfoSlot(int index)
+			 *
+			 * \param index: index of tab either closed or clicked
+			 *
+			 * This function is the slot to update the info label
+			 */
+			void updateInfoSlot(int index);
 
 			/**
 			 * @brief Function: void toggleShowMenubarSlot()

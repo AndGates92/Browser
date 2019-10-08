@@ -105,6 +105,9 @@ void main_window::MainWindow::createTabs() {
 		"}"
 	);
 
+	connect(this->tabs, &QTabWidget::currentChanged, this, &main_window::MainWindow::updateInfoSlot);
+	connect(this->tabs, &QTabWidget::tabCloseRequested, this, &main_window::MainWindow::updateInfoSlot);
+	connect(this, &main_window::MainWindow::updateInfoSignal, this, &main_window::MainWindow::updateInfoSlot);
 }
 
 void main_window::MainWindow::mainWindowLayout() {
@@ -129,12 +132,12 @@ void main_window::MainWindow::mainWindowLayout() {
 	int websiteRowSpan = 1;
 	int websiteColumnSpan = 5;
 	int websiteFromRow = tabsRowSpan;
-	int websiteFromColumn = searchColumnSpan;
+	int websiteFromColumn = searchFromColumn + searchColumnSpan;
 	layout->addWidget(this->websiteText, websiteFromRow, websiteFromColumn, websiteRowSpan, websiteColumnSpan);
 	int infoRowSpan = 1;
 	int infoColumnSpan = 2;
-	int infoFromRow = websiteRowSpan;
-	int infoFromColumn = searchColumnSpan;
+	int infoFromRow = tabsRowSpan;
+	int infoFromColumn = websiteFromColumn + websiteColumnSpan;
 	layout->addWidget(this->infoText, infoFromRow, infoFromColumn, infoRowSpan, infoColumnSpan);
 
 	this->mainWidget->setLayout(layout);
@@ -181,6 +184,9 @@ void main_window::MainWindow::addNewTab(QString search) {
 
 	int tabIndex = this->tabs->addTab(centerWindow, search);
 	this->newSearchTab(tabIndex, search);
+
+	// Emit signal to update info label
+	emit updateInfoSignal(tabIndex);
 }
 
 void main_window::MainWindow::openNewTabSlot() {
@@ -255,3 +261,24 @@ void main_window::MainWindow::keyPressEvent(QKeyEvent * event) {
 
 	this->mainWidget->repaint();
 }
+
+#pragma GCC diagnostic push
+#pragma GCC diagnostic ignored "-Wunused-parameter"
+// Function connected to both currentChanged and tabCloseRequested signals
+// In the case of currentChanged signal, index is the current tab
+// In the case of tabCloseRequested signal, index is the closed tab
+void main_window::MainWindow::updateInfoSlot(int index) {
+	QString info("");
+	int tabIndex = this->tabs->currentIndex();
+	int tabCount = this->tabs->count();
+	if (tabIndex < 0) {
+		info.append("No tabs");
+	} else {
+		info.append("tab ");
+		info.append(QString("%1").arg(tabIndex));
+		info.append(" out of ");
+		info.append(QString("%1").arg(tabCount));
+	}
+	this->infoText->setText(info);
+}
+#pragma GCC diagnostic pop
