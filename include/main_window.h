@@ -251,6 +251,15 @@ namespace main_window {
 			void newSearchTab(int index, QString search);
 
 			/**
+			 * @brief Function: QLabel * newWindowLabel()
+			 *
+			 * \return configured label
+			 *
+			 * Configure window label
+			 */
+			QLabel * newWindowLabel();
+
+			/**
 			 * @brief Function: void keyPressEvent(QKeyEvent * event)
 			 *
 			 * \param event: key event
@@ -258,6 +267,7 @@ namespace main_window {
 			 * Re-implement key pressed event
 			 */
 			void keyPressEvent(QKeyEvent * event);
+
 	};
 }
 /** @} */ // End of MainWindowGroup group

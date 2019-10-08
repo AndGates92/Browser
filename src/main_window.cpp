@@ -64,27 +64,27 @@ void main_window::MainWindow::createMainWidget() {
 	setCentralWidget(this->mainWidget);
 }
 
+QLabel * main_window::MainWindow::newWindowLabel() {
+	QLabel * label = new QLabel("", this);
+	label->setFrameStyle(QFrame::NoFrame | QFrame::Sunken);
+	label->setAlignment(Qt::AlignLeft | Qt::AlignBottom);
+	label->setFixedHeight(main_window::labelHeight);
+
+	return label;
+}
+
 void main_window::MainWindow::fillMainWindow() {
 	// Customize MainWidget
 	this->createTabs();
 
 	// search
-	this->searchText = new QLabel("", this);
-	this->searchText->setFrameStyle(QFrame::NoFrame | QFrame::Sunken);
-	this->searchText->setAlignment(Qt::AlignLeft | Qt::AlignBottom);
-	this->searchText->setFixedHeight(main_window::labelHeight);
+	this->searchText = this->newWindowLabel();
 
 	// website URL
-	this->websiteText = new QLabel("", this);
-	this->websiteText->setFrameStyle(QFrame::NoFrame | QFrame::Sunken);
-	this->websiteText->setAlignment(Qt::AlignLeft | Qt::AlignBottom);
-	this->websiteText->setFixedHeight(main_window::labelHeight);
+	this->websiteText = this->newWindowLabel();
 
 	// info
-	this->infoText = new QLabel("", this);
-	this->infoText->setFrameStyle(QFrame::NoFrame | QFrame::Sunken);
-	this->infoText->setAlignment(Qt::AlignLeft | Qt::AlignBottom);
-	this->infoText->setFixedHeight(main_window::labelHeight);
+	this->infoText = this->newWindowLabel();
 }
 
 void main_window::MainWindow::createTabs() {
