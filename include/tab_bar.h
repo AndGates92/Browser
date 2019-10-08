@@ -25,6 +25,7 @@
 Q_DECLARE_LOGGING_CATEGORY(tabBarOverall)
 Q_DECLARE_LOGGING_CATEGORY(tabBarSizeHint)
 Q_DECLARE_LOGGING_CATEGORY(tabBarSetWidth)
+Q_DECLARE_LOGGING_CATEGORY(tabBarResize)
 Q_DECLARE_LOGGING_CATEGORY(tabBarSearch)
 
 namespace tab_bar {
@@ -73,6 +74,15 @@ namespace tab_bar {
 			 * Calculates the recommended size of the tab
 			 */
 			QSize tabSizeHint(int index) const override;
+
+			/**
+			 * @brief Function: void resizeEvent(QResizeEvent * event) override
+			 *
+			 * \param event: resize event
+			 *
+			 * Reimplement resize event
+			 */
+			void resizeEvent(QResizeEvent * event) override;
 
 		private:
 
