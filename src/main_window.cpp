@@ -53,6 +53,15 @@ main_window::MainWindow::MainWindow(QWidget * parent, Qt::WindowFlags flags) : Q
 
 	setWindowTitle(tr("Browser"));
 
+	this->setStyleSheet(
+		"QMainWindow {"
+			"background: black; "
+			"color: white; "
+			"text-align: center; "
+			"border: none; "
+		"}"
+	);
+
 	QSize winSize(320,400);
 	this->resize(winSize);
 }
@@ -60,8 +69,17 @@ main_window::MainWindow::MainWindow(QWidget * parent, Qt::WindowFlags flags) : Q
 
 void main_window::MainWindow::createMainWidget() {
 	this->mainWidget = new QWidget(this);
-	this->mainWidget->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
+//	this->mainWidget->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
 	this->mainWidget->setFocusPolicy(Qt::StrongFocus);
+
+	this->mainWidget->setStyleSheet(
+		"QWidget {"
+			"background: brown; "
+			"color: white; "
+			"text-align: center; "
+			"border: none; "
+		"}"
+	);
 	setCentralWidget(this->mainWidget);
 }
 
@@ -69,6 +87,14 @@ QLabel * main_window::MainWindow::newWindowLabel() {
 	QLabel * label = new QLabel("", this);
 	label->setFrameStyle(QFrame::NoFrame | QFrame::Sunken);
 	label->setFixedHeight(main_window::labelHeight);
+	label->setStyleSheet(
+		"QLabel {"
+			"background: black; "
+			"color: white; "
+			"text-align: center; "
+			"border: none; "
+		"}"
+	);
 
 	return label;
 }
