@@ -155,6 +155,11 @@ QMenuBar * main_window::MainWindow::getMenuBar() {
 	return this->menuBar();
 }
 
+void main_window::MainWindow::setAllMenuShortcutEnabledProperty(bool enabled) {
+	this->fileMenu->setShortcutEnabledProperty(enabled);
+	this->editMenu->setShortcutEnabledProperty(enabled);
+}
+
 void main_window::MainWindow::createShortcuts() {
 	// m will hide/show the menu bar
 	QShortcut * toggleShowMenuBarKey = new QShortcut(this);
@@ -193,6 +198,7 @@ void main_window::MainWindow::addNewTab(QString search) {
 void main_window::MainWindow::openNewTabSlot() {
 	QINFO_PRINT(global_types::qinfo_level_e::ZERO, mainWindowSearch,  "Search in new tab");
 	mainWindowState = main_window::MainWindow::state_e::OPEN_TAB;
+	this->setAllMenuShortcutEnabledProperty(false);
 
 }
 
@@ -211,6 +217,7 @@ void main_window::MainWindow::newSearchTabSlot() {
 
 	QINFO_PRINT(global_types::qinfo_level_e::ZERO, mainWindowSearch,  "Search in current tab");
 	mainWindowState = main_window::MainWindow::state_e::SEARCH;
+	this->setAllMenuShortcutEnabledProperty(false);
 
 }
 
@@ -244,6 +251,7 @@ void main_window::MainWindow::keyPressEvent(QKeyEvent * event) {
 		}
 		this->userText.clear();
 		mainWindowState = main_window::MainWindow::state_e::IDLE;
+		this->setAllMenuShortcutEnabledProperty(true);
 	} else {
 		if ((mainWindowState == main_window::MainWindow::state_e::OPEN_TAB) || (mainWindowState == main_window::MainWindow::state_e::SEARCH)) {
 			if (pressedKey == Qt::Key_Backspace) {

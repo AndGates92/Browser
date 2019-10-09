@@ -287,6 +287,15 @@ namespace main_window {
 			 */
 			void keyPressEvent(QKeyEvent * event);
 
+			/**
+			 * @brief Function: void setAllMenuShortcutEnabledProperty(bool enabled)
+			 *
+			 * \param enabled: value of enabled property
+			 *
+			 * This function sets the enabled property of all menus of the main window
+			 */
+			void setAllMenuShortcutEnabledProperty(bool enabled);
+
 	};
 }
 /** @} */ // End of MainWindowGroup group

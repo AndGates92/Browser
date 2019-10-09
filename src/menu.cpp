@@ -10,8 +10,6 @@
 // Required by qInfo
 #include <qt5/QtCore/QtDebug>
 
-#include <qt5/QtWidgets/QShortcut>
-
 #include "global_macros.h"
 #include "global_types.h"
 
@@ -33,11 +31,12 @@ void menu::Menu::createMenu() {
 }
 
 void menu::Menu::createShortcuts() {
+	this->expandMenu = new QShortcut(this->window);
+
 	// Do not bind key if it is not set
 	if (this->key != QKeySequence::UnknownKey) {
-		QShortcut * expandMenu = new QShortcut(this->window);
-		expandMenu->setKey(this->key);
-		connect(expandMenu, &QShortcut::activated, this, &menu::Menu::expandSlot);
+		this->expandMenu->setKey(this->key);
+		connect(this->expandMenu, &QShortcut::activated, this, &menu::Menu::expandSlot);
 	}
 }
 
@@ -47,4 +46,8 @@ void menu::Menu::expandSlot() {
 		QINFO_PRINT(global_types::qinfo_level_e::ZERO, menuOverall, "Expand menu " << this->menuName << " because shortcut key " << this->key.toString() << " has been pressed");
 		this->winMenu->show();
 	}
+}
+
+void menu::Menu::setShortcutEnabledProperty(bool enabled) {
+	this->expandMenu->setEnabled(enabled);
 }

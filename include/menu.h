@@ -13,6 +13,7 @@
 #include <qt5/QtWidgets/QWidget>
 #include <qt5/QtWidgets/QMenuBar>
 #include <qt5/QtGui/QKeySequence>
+#include <qt5/QtWidgets/QShortcut>
 
 Q_DECLARE_LOGGING_CATEGORY(menuOverall)
 
@@ -41,6 +42,15 @@ namespace menu {
 			 */
 			explicit Menu(QWidget * window = Q_NULLPTR, QMenuBar * menuBar = Q_NULLPTR, const char* menuName = "Unknown", const QKeySequence & key = QKeySequence::UnknownKey);
 
+			/**
+			 * @brief Function: void setShortcutEnabledProperty(bool enabled)
+			 *
+			 * \param enabled: value of enabled property
+			 *
+			 * This function sets the enabled property of the menu
+			 */
+			void setShortcutEnabledProperty(bool enabled);
+
 		protected:
 
 			/**
@@ -56,10 +66,16 @@ namespace menu {
 			QMenuBar * menuBar;
 
 			/**
-			 * @brief menu 
+			 * @brief menu
 			 *
 			 */
 			QMenu * winMenu;
+
+			/**
+			 * @brief shortcut to expand menu
+			 *
+			 */
+			QShortcut * expandMenu;
 
 			/**
 			 * @brief menu name
