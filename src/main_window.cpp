@@ -60,6 +60,7 @@ main_window::MainWindow::MainWindow(QWidget * parent, Qt::WindowFlags flags) : Q
 
 void main_window::MainWindow::createMainWidget() {
 	this->mainWidget = new QWidget(this);
+	this->mainWidget->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
 	this->mainWidget->setFocusPolicy(Qt::StrongFocus);
 	setCentralWidget(this->mainWidget);
 }
@@ -67,7 +68,6 @@ void main_window::MainWindow::createMainWidget() {
 QLabel * main_window::MainWindow::newWindowLabel() {
 	QLabel * label = new QLabel("", this);
 	label->setFrameStyle(QFrame::NoFrame | QFrame::Sunken);
-	label->setAlignment(Qt::AlignLeft | Qt::AlignBottom);
 	label->setFixedHeight(main_window::labelHeight);
 
 	return label;
@@ -79,12 +79,15 @@ void main_window::MainWindow::fillMainWindow() {
 
 	// search
 	this->searchText = this->newWindowLabel();
+	this->searchText->setAlignment(Qt::AlignLeft | Qt::AlignBottom);
 
 	// website URL
 	this->websiteText = this->newWindowLabel();
+	this->websiteText->setAlignment(Qt::AlignLeft | Qt::AlignBottom);
 
 	// info
 	this->infoText = this->newWindowLabel();
+	this->infoText->setAlignment(Qt::AlignRight | Qt::AlignBottom);
 }
 
 void main_window::MainWindow::createTabs() {
@@ -96,8 +99,6 @@ void main_window::MainWindow::createTabs() {
 		"QTabBar::tab {"
 			"background: gray; "
 			"color: white; "
-			"min-heigth: 30px; "
-			"max-heigth: 30px; "
 			"text-align: center; "
 		"}"
 		"QTabBar::tab::selected {"

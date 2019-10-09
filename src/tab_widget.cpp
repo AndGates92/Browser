@@ -20,31 +20,26 @@ Q_LOGGING_CATEGORY(tabWidgetSearch, "tabWidget.search", MSG_TYPE_LEVEL)
 
 tab_widget::TabWidget::TabWidget(QWidget * parent): QTabWidget(parent) {
 	QINFO_PRINT(global_types::qinfo_level_e::ZERO, tabWidgetOverall,  "Tab widget constructor");
-	this->tabBar = new tab_bar::TabBar(this);
-	this->setTabBar(this->tabBar);
-
 	this->setFocusPolicy(Qt::StrongFocus);
 	this->setMinimumHeight(tab_widget::minHeight);
 	this->setMinimumWidth(tab_widget::minWidth);
 
-	// Resize tab to ensure that it is as wide as the main widget
-	int widgetWidth = this->size().width();
-	this->tabBar->setWidth(widgetWidth);
+	this->tabBar = new tab_bar::TabBar(this, this->size().width());
+	this->setTabBar(this->tabBar);
 
 }
 
 void tab_widget::TabWidget::resizeEvent(QResizeEvent * event) {
-	QTabWidget::resizeEvent(event);
 	QSize previousSize(event->oldSize());
 	QSize newSize(event->size());
 	QINFO_PRINT(global_types::qinfo_level_e::ZERO, tabWidgetResize,  "Tab widget resize from " << previousSize << " to " << newSize);
 	int widgetWidth = this->size().width();
 	this->tabBar->setWidth(widgetWidth);
+
+	QTabWidget::resizeEvent(event);
 }
 
 void tab_widget::TabWidget::keyPressEvent(QKeyEvent * event) {
-
-	QTabWidget::keyPressEvent(event);
 
 	QString userText(event->text());
 	if (userText.isEmpty()) {
@@ -52,5 +47,7 @@ void tab_widget::TabWidget::keyPressEvent(QKeyEvent * event) {
 	}
 
 	QINFO_PRINT(global_types::qinfo_level_e::ZERO, tabWidgetSearch,  "User typed text " << userText << " to search");
+
+	QTabWidget::keyPressEvent(event);
 
 }

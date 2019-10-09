@@ -32,10 +32,10 @@ namespace tab_bar {
 
 	namespace {
 		/**
-		 * @brief minimum height
+		 * @brief height
 		 *
 		 */
-		const int minHeight = 10; // px
+		const int height = 15; // px
 
 		/**
 		 * @brief minimum width
@@ -51,10 +51,11 @@ namespace tab_bar {
 			 * @brief Function: explicit TabBar(QWidget * parent = Q_NULLPTR)
 			 *
 			 * \param parent: parent widget
+			 * \param width: width of the tab bar
 			 *
 			 * Tab bar constructor
 			 */
-			explicit TabBar(QWidget * parent = Q_NULLPTR);
+			explicit TabBar(QWidget * parent = Q_NULLPTR, int width = tab_bar::minWidth);
 
 			/**
 			 * @brief Function: void setWdith(int newWidth)
@@ -85,6 +86,11 @@ namespace tab_bar {
 			void resizeEvent(QResizeEvent * event) override;
 
 		private:
+			/**
+			 * @brief tab bar
+			 *
+			 */
+			QSize tabBarSize;
 
 			/**
 			 * @brief Function: void keyPressEvent(QKeyEvent * event)

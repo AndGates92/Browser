@@ -19,22 +19,24 @@ Q_LOGGING_CATEGORY(tabBarSetWidth, "tabBar.setWidth", MSG_TYPE_LEVEL)
 Q_LOGGING_CATEGORY(tabBarResize, "tabBar.resize", MSG_TYPE_LEVEL)
 Q_LOGGING_CATEGORY(tabBarSearch, "tabBar.search", MSG_TYPE_LEVEL)
 
-tab_bar::TabBar::TabBar(QWidget * parent): QTabBar(parent) {
+tab_bar::TabBar::TabBar(QWidget * parent, int width): QTabBar(parent), tabBarSize(QSize(width, tab_bar::height)) {
 	QINFO_PRINT(global_types::qinfo_level_e::ZERO, tabBarOverall,  "Tab bar constructor");
 
 	this->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Minimum);
 	this->setExpanding(true);
 	this->setFocusPolicy(Qt::StrongFocus);
 
-	this->setMinimumHeight(tab_bar::minHeight);
+	this->setFixedHeight(tab_bar::height);
 	this->setMinimumWidth(tab_bar::minWidth);
+
+	QINFO_PRINT(global_types::qinfo_level_e::ZERO, tabBarOverall,  "Current tab size: " << this->tabBarSize);
 }
 
 QSize tab_bar::TabBar::tabSizeHint(int index) const {
 	QINFO_PRINT(global_types::qinfo_level_e::ZERO, tabBarSizeHint,  "Tab bar size hint for tab " << index);
 
-	int barWidth = this->size().width();
-	int barHeight = this->size().height();
+	int barWidth = this->tabBarSize.width();
+	int barHeight = this->tabBarSize.height();
 	int tabNumber = this->count();
 
 	int tabWidth = 0;
@@ -53,15 +55,14 @@ QSize tab_bar::TabBar::tabSizeHint(int index) const {
 }
 
 void tab_bar::TabBar::setWidth(int newWidth) {
-	int tabHeight = this->size().height();
+	int tabHeight = tab_bar::height;
 	QINFO_PRINT(global_types::qinfo_level_e::ZERO, tabBarSetWidth,  "Tab bar size width: " << newWidth << " height " << tabHeight);
-	QSize tabBarSize(newWidth, tabHeight);
-	this->resize(tabBarSize);
+	this->tabBarSize.setWidth(newWidth);
+	this->tabBarSize.setHeight(tabHeight);
+	this->resize(this->tabBarSize);
 }
 
 void tab_bar::TabBar::keyPressEvent(QKeyEvent * event) {
-
-	QTabBar::keyPressEvent(event);
 
 	QString userText(event->text());
 	if (userText.isEmpty()) {
@@ -70,11 +71,13 @@ void tab_bar::TabBar::keyPressEvent(QKeyEvent * event) {
 
 	QINFO_PRINT(global_types::qinfo_level_e::ZERO, tabBarSearch,  "User typed text " << userText << " to search");
 
+	QTabBar::keyPressEvent(event);
+
 }
 
 void tab_bar::TabBar::resizeEvent(QResizeEvent * event) {
-	QTabBar::resizeEvent(event);
 	QSize previousSize(event->oldSize());
 	QSize newSize(event->size());
 	QINFO_PRINT(global_types::qinfo_level_e::ZERO, tabBarResize,  "Tab bar resize from " << previousSize << " to " << newSize);
+	QTabBar::resizeEvent(event);
 }
