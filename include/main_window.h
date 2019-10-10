@@ -87,6 +87,7 @@ namespace main_window {
 		typedef enum class state_list {
 			IDLE,         /**< Idle state - no user input */
 			OPEN_TAB,     /**< Open new tab */
+			CLOSE_TAB,    /**< Close tab */
 			SEARCH        /**< Search on same tab */
 		} state_e;
 
@@ -296,6 +297,13 @@ namespace main_window {
 			void addNewTab(QString search);
 
 			/**
+			 * @brief Function: void closeTab()
+			 *
+			 * This function closes a tab
+			 */
+			void closeTab();
+
+			/**
 			 * @brief Function: void newSearchCurrentTab(QString search)
 			 *
 			 * \param search: string to search
@@ -336,9 +344,52 @@ namespace main_window {
 			 *
 			 * \param enabled: value of enabled property
 			 *
-			 * This function sets the enabled property of all menus of the main window
+			 * This function sets the enabled property of all shortcuts of menus of the main window
 			 */
 			void setAllMenuShortcutEnabledProperty(bool enabled);
+
+			/**
+			 * @brief Function: void setAllWindowShortcutEnabledProperty(bool enabled)
+			 *
+			 * \param enabled: value of enabled property
+			 *
+			 * This function sets the enabled property of all shortcuts of the main window
+			 */
+			void setAllWindowShortcutEnabledProperty(bool enabled);
+
+			/**
+			 * @brief Function: void setAllShortcutEnabledProperty(bool enabled)
+			 *
+			 * \param enabled: value of enabled property
+			 *
+			 * This function sets the enabled property of all shortcuts of the main window and menus of the main window
+			 */
+			void setAllShortcutEnabledProperty(bool enabled);
+
+
+			/**
+			 * @brief shortcut to toggle visibility of the menu bar
+			 *
+			 */
+			QShortcut * toggleShowMenuBarKey;
+
+			/**
+			 * @brief shortcut to open a new tab
+			 *
+			 */
+			QShortcut * openNewTabKey;
+
+			/**
+			 * @brief shortcut to search in the current tab
+			 *
+			 */
+			QShortcut * newSearchTabKey;
+
+			/**
+			 * @brief shortcut to close a tab 
+			 *
+			 */
+			QShortcut * closeTabKey;
 
 	};
 }

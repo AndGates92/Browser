@@ -195,26 +195,38 @@ void main_window::MainWindow::setAllMenuShortcutEnabledProperty(bool enabled) {
 	this->editMenu->setShortcutEnabledProperty(enabled);
 }
 
+void main_window::MainWindow::setAllWindowShortcutEnabledProperty(bool enabled) {
+	this->toggleShowMenuBarKey->setEnabled(enabled);
+	this->openNewTabKey->setEnabled(enabled);
+	this->newSearchTabKey->setEnabled(enabled);
+	this->closeTabKey->setEnabled(enabled);
+}
+
+void main_window::MainWindow::setAllShortcutEnabledProperty(bool enabled) {
+	this->setAllMenuShortcutEnabledProperty(enabled);
+	this->setAllWindowShortcutEnabledProperty(enabled);
+}
+
 void main_window::MainWindow::createShortcuts() {
 	// m will hide/show the menu bar
-	QShortcut * toggleShowMenuBarKey = new QShortcut(this);
-	toggleShowMenuBarKey->setKey(Qt::Key_M);
-	connect(toggleShowMenuBarKey, &QShortcut::activated, this, &main_window::MainWindow::toggleShowMenubarSlot);
+	this->toggleShowMenuBarKey = new QShortcut(this);
+	this->toggleShowMenuBarKey->setKey(Qt::Key_M);
+	connect(this->toggleShowMenuBarKey, &QShortcut::activated, this, &main_window::MainWindow::toggleShowMenubarSlot);
 
 	// o will open a new tab
-	QShortcut * openNewTabKey = new QShortcut(this);
-	openNewTabKey->setKey(Qt::Key_O);
-	connect(openNewTabKey, &QShortcut::activated, this, &main_window::MainWindow::openNewTabSlot);
+	this->openNewTabKey = new QShortcut(this);
+	this->openNewTabKey->setKey(Qt::Key_O);
+	connect(this->openNewTabKey, &QShortcut::activated, this, &main_window::MainWindow::openNewTabSlot);
 
 	// s will search on the current tab
-	QShortcut * newSearchTabKey = new QShortcut(this);
-	newSearchTabKey->setKey(Qt::Key_S);
-	connect(newSearchTabKey, &QShortcut::activated, this, &main_window::MainWindow::newSearchTabSlot);
+	this->newSearchTabKey = new QShortcut(this);
+	this->newSearchTabKey->setKey(Qt::Key_S);
+	connect(this->newSearchTabKey, &QShortcut::activated, this, &main_window::MainWindow::newSearchTabSlot);
 
-	// s will search on the current tab
-	QShortcut * closeTabKey = new QShortcut(this);
-	closeTabKey->setKey(Qt::Key_C);
-	connect(closeTabKey, &QShortcut::activated, this, &main_window::MainWindow::closeTabSlot);
+	// c will close the current tab
+	this->closeTabKey = new QShortcut(this);
+	this->closeTabKey->setKey(Qt::Key_C);
+	connect(this->closeTabKey, &QShortcut::activated, this, &main_window::MainWindow::closeTabSlot);
 
 }
 
@@ -224,6 +236,12 @@ void main_window::MainWindow::toggleShowMenubarSlot() {
 }
 
 void main_window::MainWindow::closeTabSlot() {
+//	this->setAllShortcutEnabledProperty(false);
+//	mainWindowState = main_window::MainWindow::state_e::CLOSE_TAB;
+	this->closeTab();
+}
+
+void main_window::MainWindow::closeTab() {
 	int tabIndex = this->tabs->currentIndex();
 	int tabCount = this->tabs->count();
 
@@ -250,7 +268,7 @@ void main_window::MainWindow::addNewTab(QString search) {
 void main_window::MainWindow::openNewTabSlot() {
 	QINFO_PRINT(global_types::qinfo_level_e::ZERO, mainWindowSearch,  "Search in new tab");
 	mainWindowState = main_window::MainWindow::state_e::OPEN_TAB;
-	this->setAllMenuShortcutEnabledProperty(false);
+	this->setAllShortcutEnabledProperty(false);
 
 }
 
@@ -270,7 +288,7 @@ void main_window::MainWindow::newSearchTabSlot() {
 
 	QINFO_PRINT(global_types::qinfo_level_e::ZERO, mainWindowSearch,  "Search in current tab");
 	mainWindowState = main_window::MainWindow::state_e::SEARCH;
-	this->setAllMenuShortcutEnabledProperty(false);
+	this->setAllShortcutEnabledProperty(false);
 
 }
 
@@ -304,7 +322,7 @@ void main_window::MainWindow::keyPressEvent(QKeyEvent * event) {
 		}
 		this->userText.clear();
 		mainWindowState = main_window::MainWindow::state_e::IDLE;
-		this->setAllMenuShortcutEnabledProperty(true);
+		this->setAllShortcutEnabledProperty(true);
 	} else {
 		if ((mainWindowState == main_window::MainWindow::state_e::OPEN_TAB) || (mainWindowState == main_window::MainWindow::state_e::SEARCH)) {
 			if (pressedKey == Qt::Key_Backspace) {
