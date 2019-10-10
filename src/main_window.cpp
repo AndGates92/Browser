@@ -65,6 +65,8 @@ main_window::MainWindow::MainWindow(QWidget * parent, Qt::WindowFlags flags) : Q
 		"}"
 	);
 
+//	this->setAttribute(Qt::WA_DeleteOnClose);
+
 	QSize winSize(320,400);
 	this->resize(winSize);
 }
@@ -230,11 +232,21 @@ void main_window::MainWindow::createShortcuts() {
 	this->closeTabKey->setKey(Qt::Key_C);
 	connect(this->closeTabKey, &QShortcut::activated, this, &main_window::MainWindow::closeTabSlot);
 
+	// q will close the browser
+	this->closeKey = new QShortcut(this);
+	this->closeKey->setKey(Qt::Key_Q);
+	connect(this->closeKey, &QShortcut::activated, this, &main_window::MainWindow::closeSlot);
+
+
 }
 
 void main_window::MainWindow::toggleShowMenubarSlot() {
 	bool menubarVisible = this->menuBar()->isVisible();
 	this->menuBar()->setVisible(!menubarVisible);
+}
+
+void main_window::MainWindow::closeSlot() {
+	this->close();
 }
 
 void main_window::MainWindow::closeTabSlot() {

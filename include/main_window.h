@@ -148,6 +148,13 @@ namespace main_window {
 		private slots:
 
 			/**
+			 * @brief Function: void closeSlot()
+			 *
+			 * This function closes the main window
+			 */
+			void closeSlot();
+
+			/**
 			 * @brief Function: void openNewTabSlot()
 			 *
 			 * This function opens a new tab
@@ -252,6 +259,38 @@ namespace main_window {
 			 */
 			state_e mainWindowState;
 
+			// ================================ START SHORTCUTS ========================================//
+			/**
+			 * @brief shortcut to toggle visibility of the menu bar
+			 *
+			 */
+			QShortcut * toggleShowMenuBarKey;
+
+			/**
+			 * @brief shortcut to open a new tab
+			 *
+			 */
+			QShortcut * openNewTabKey;
+
+			/**
+			 * @brief shortcut to search in the current tab
+			 *
+			 */
+			QShortcut * newSearchTabKey;
+
+			/**
+			 * @brief shortcut to close a tab
+			 *
+			 */
+			QShortcut * closeTabKey;
+
+			/**
+			 * @brief shortcut to close the main window
+			 *
+			 */
+			QShortcut * closeKey;
+			// ================================ END SHORTCUTS ========================================//
+
 			/**
 			 * @brief Function: void createMainWidget()
 			 *
@@ -317,7 +356,6 @@ namespace main_window {
 			 */
 			void closeTabWrapper(QString indexStr);
 
-
 			/**
 			 * @brief Function: void newSearchCurrentTab(QString search)
 			 *
@@ -380,31 +418,6 @@ namespace main_window {
 			 * This function sets the enabled property of all shortcuts of the main window and menus of the main window
 			 */
 			void setAllShortcutEnabledProperty(bool enabled);
-
-
-			/**
-			 * @brief shortcut to toggle visibility of the menu bar
-			 *
-			 */
-			QShortcut * toggleShowMenuBarKey;
-
-			/**
-			 * @brief shortcut to open a new tab
-			 *
-			 */
-			QShortcut * openNewTabKey;
-
-			/**
-			 * @brief shortcut to search in the current tab
-			 *
-			 */
-			QShortcut * newSearchTabKey;
-
-			/**
-			 * @brief shortcut to close a tab 
-			 *
-			 */
-			QShortcut * closeTabKey;
 
 	};
 }
