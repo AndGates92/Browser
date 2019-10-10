@@ -167,6 +167,10 @@ void main_window::MainWindow::mainWindowLayout() {
 	int infoFromColumn = websiteFromColumn + websiteColumnSpan;
 	layout->addWidget(this->infoText, infoFromRow, infoFromColumn, infoRowSpan, infoColumnSpan);
 
+	layout->setHorizontalSpacing(main_window::horizontalWidgetSpacing);
+	layout->setVerticalSpacing(main_window::verticalWidgetSpacing);
+	layout->setContentsMargins(main_window::leftMargin, main_window::topMargin, main_window::rightMargin, main_window::bottomMargin);
+
 	this->mainWidget->setLayout(layout);
 }
 

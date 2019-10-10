@@ -37,6 +37,42 @@ namespace main_window {
 		 *
 		 */
 		const int labelHeight = 20;
+
+		/**
+		 * @brief horizontal spacing between widgets
+		 *
+		 */
+		const int horizontalWidgetSpacing = 0;
+
+		/**
+		 * @brief vertical spacing between widgets
+		 *
+		 */
+		const int verticalWidgetSpacing = 0;
+
+		/**
+		 * @brief left margin between widget and window
+		 *
+		 */
+		const int leftMargin = 0;
+
+		/**
+		 * @brief right margin between widget and window
+		 *
+		 */
+		const int rightMargin = 0;
+
+		/**
+		 * @brief top margin between widget and window
+		 *
+		 */
+		const int topMargin = 0;
+
+		/**
+		 * @brief bottom margin between widget and window
+		 *
+		 */
+		const int bottomMargin = 0;
 	}
 
 	class MainWindow : public QMainWindow {
