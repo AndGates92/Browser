@@ -7,6 +7,8 @@
  */
 
 // Qt libraries
+// QtGlobal defines qWarning
+#include <qt5/QtCore/QtGlobal>
 #include <qt5/QtWidgets/QGridLayout>
 #include <qt5/QtWidgets/QStatusBar>
 #include <qt5/QtWidgets/QShortcut>
@@ -236,19 +238,27 @@ void main_window::MainWindow::toggleShowMenubarSlot() {
 }
 
 void main_window::MainWindow::closeTabSlot() {
-//	this->setAllShortcutEnabledProperty(false);
-//	mainWindowState = main_window::MainWindow::state_e::CLOSE_TAB;
-	this->closeTab();
+	mainWindowState = main_window::MainWindow::state_e::CLOSE_TAB;
+	this->setAllShortcutEnabledProperty(false);
 }
 
-void main_window::MainWindow::closeTab() {
-	int tabIndex = this->tabs->currentIndex();
+void main_window::MainWindow::closeTab(int index) {
+	int tabIndex = main_window::invalidTabIndex;
 	int tabCount = this->tabs->count();
+	// index is main_window::invalidTabIndex if the argument is not passed
+	if (index == main_window::invalidTabIndex) {
+		tabIndex = this->tabs->currentIndex();
+	} else {
+		tabIndex = index;
+	}
 
-	if (tabCount > 0) {
+	if ((tabCount > tabIndex) && (tabIndex >= 0)) {
 		QINFO_PRINT(global_types::qinfo_level_e::ZERO, mainWindowTabs,  "Close tab " << tabIndex);
 		this->tabs->removeTab(tabIndex);
 		emit updateInfoSignal(tabIndex);
+	} else {
+		int maxTabRange = tabCount-1;
+		qWarning(mainWindowTabs) << "Tab " << tabIndex << " doesn't exists. Valid range of tab is the integer number between 0 and " << maxTabRange << "\n";
 	}
 }
 
@@ -309,16 +319,14 @@ void main_window::MainWindow::keyPressEvent(QKeyEvent * event) {
 	int pressedKey = event->key();
 
 	if ((pressedKey == Qt::Key_Enter) || (pressedKey == Qt::Key_Return)) {
-		if (this->userText.isEmpty()) {
-			this->userText.append("No text provided");
-		}
-
 		QINFO_PRINT(global_types::qinfo_level_e::ZERO, mainWindowSearch,  "User typed text " << this->userText << " to search");
 
 		if (mainWindowState == main_window::MainWindow::state_e::OPEN_TAB) {
 			this->addNewTab(this->userText);
 		} else if (mainWindowState == main_window::MainWindow::state_e::SEARCH) {
 			this->newSearchCurrentTab(this->userText);
+		} else if (mainWindowState == main_window::MainWindow::state_e::CLOSE_TAB) {
+			this->closeTabWrapper(this->userText);
 		}
 		this->userText.clear();
 		mainWindowState = main_window::MainWindow::state_e::IDLE;
@@ -327,10 +335,24 @@ void main_window::MainWindow::keyPressEvent(QKeyEvent * event) {
 		if ((mainWindowState == main_window::MainWindow::state_e::OPEN_TAB) || (mainWindowState == main_window::MainWindow::state_e::SEARCH)) {
 			if (pressedKey == Qt::Key_Backspace) {
 				// Last position of the string
-				int endString = this->userText.count() - 1;
-				this->userText.remove(endString, 1);
+				if (this->userText.isEmpty()) {
+					int endString = this->userText.count() - 1;
+					this->userText.remove(endString, 1);
+				}
 			} else {
 				this->userText.append(event->text());
+			}
+		} else if (mainWindowState == main_window::MainWindow::state_e::CLOSE_TAB) {
+			if (pressedKey == Qt::Key_Backspace) {
+				// Last position of the string
+				if (this->userText.isEmpty()) {
+					int endString = this->userText.count() - 1;
+					this->userText.remove(endString, 1);
+				}
+			} else if ((pressedKey >= Qt::Key_0) && (pressedKey <= Qt::Key_9)) {
+				this->userText.append(event->text());
+			} else {
+				qWarning(mainWindowTabs) << "Pressed key " << event->text() << ". Only numbers are accepted when closing windows\n";
 			}
 		} else {
 			this->userText.clear();
@@ -340,6 +362,21 @@ void main_window::MainWindow::keyPressEvent(QKeyEvent * event) {
 	this->searchText->setText(this->userText);
 
 	this->mainWidget->repaint();
+}
+
+void main_window::MainWindow::closeTabWrapper(QString indexStr) {
+	// If indexStr is an empty string, do not pass any argument to closeTab (i.e. close current tab)
+	if (indexStr.isEmpty()) {
+		this->closeTab();
+	} else {
+		bool conversionSuccessful = false;
+		int index = indexStr.toInt(&conversionSuccessful, 10);
+		if (conversionSuccessful == true) {
+			this->closeTab(index);
+		} else {
+			qWarning(mainWindowTabs) << "tab index " << indexStr << " is not made up by numbers only\n";
+		}
+	}
 }
 
 #pragma GCC diagnostic push

@@ -74,6 +74,13 @@ namespace main_window {
 		 *
 		 */
 		const int bottomMargin = 0;
+
+		/**
+		 * @brief invalid tab index - default value of optional argument index of closeTab function
+		 *
+		 */
+		const int invalidTabIndex = 0;
+
 	}
 
 	class MainWindow : public QMainWindow {
@@ -297,11 +304,19 @@ namespace main_window {
 			void addNewTab(QString search);
 
 			/**
-			 * @brief Function: void closeTab()
+			 * @brief Function: void closeTab(int index = main_window::invalidTabIndex)
 			 *
 			 * This function closes a tab
 			 */
-			void closeTab();
+			void closeTab(int index = main_window::invalidTabIndex);
+
+			/**
+			 * @brief Function: void closeTabWrapper(QString indexStr)
+			 *
+			 * This function is a wrapper to closeTab and converts the string indexStr to an integer
+			 */
+			void closeTabWrapper(QString indexStr);
+
 
 			/**
 			 * @brief Function: void newSearchCurrentTab(QString search)
