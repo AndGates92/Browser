@@ -114,6 +114,10 @@ void main_window::MainWindow::fillMainWindow() {
 	// info
 	this->infoText = this->newWindowLabel();
 	this->infoText->setAlignment(Qt::AlignRight | Qt::AlignBottom);
+
+	// Emit signal to update info label
+	int tabIndex = this->tabs->currentIndex();
+	emit updateInfoSignal(tabIndex);
 }
 
 void main_window::MainWindow::createTabs() {
@@ -310,7 +314,7 @@ void main_window::MainWindow::updateInfoSlot(int index) {
 	QString info("");
 	int tabIndex = this->tabs->currentIndex();
 	int tabCount = this->tabs->count();
-	if (tabIndex < 0) {
+	if (tabCount == 0) {
 		info.append("No tabs");
 	} else {
 		info.append("tab ");
