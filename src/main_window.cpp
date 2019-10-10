@@ -65,7 +65,7 @@ main_window::MainWindow::MainWindow(QWidget * parent, Qt::WindowFlags flags) : Q
 		"}"
 	);
 
-//	this->setAttribute(Qt::WA_DeleteOnClose);
+	this->setAttribute(Qt::WA_DeleteOnClose);
 
 	QSize winSize(320,400);
 	this->resize(winSize);
