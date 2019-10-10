@@ -12,6 +12,8 @@
 // Required by qInfo
 #include <qt5/QtCore/QtDebug>
 
+#include <qt5/QtCore/QLoggingCategory>
+
 #include <qt5/QtWidgets/QTabBar>
 
 #include "global_macros.h"
@@ -45,6 +47,8 @@ namespace tab_bar {
 	}
 
 	class TabBar : public QTabBar {
+
+		Q_OBJECT
 
 		public:
 			/**
