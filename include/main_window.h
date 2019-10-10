@@ -28,6 +28,7 @@
 Q_DECLARE_LOGGING_CATEGORY(mainWindowOverall)
 Q_DECLARE_LOGGING_CATEGORY(mainWindowCenterWindow)
 Q_DECLARE_LOGGING_CATEGORY(mainWindowSearch)
+Q_DECLARE_LOGGING_CATEGORY(mainWindowTabs)
 
 namespace main_window {
 
@@ -144,6 +145,13 @@ namespace main_window {
 			 * This function opens a new tab
 			 */
 			void openNewTabSlot();
+
+			/**
+			 * @brief Function: void closeTabSlot()
+			 *
+			 * This function closes a tab
+			 */
+			void closeTabSlot();
 
 			/**
 			 * @brief Function: void newSearchTabSlot()

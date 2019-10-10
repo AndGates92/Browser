@@ -71,6 +71,11 @@ int tab_widget::TabWidget::addTab(QWidget * page, const QIcon & icon, const QStr
 	return tabIndex;
 }
 
+void tab_widget::TabWidget::removeTab(int index) {
+	QTabWidget::removeTab(index);
+	emit tabNumberChange();
+}
+
 void tab_widget::TabWidget::visibility() {
 	int tabCount = this->count();
 	bool visibleFlag = false;

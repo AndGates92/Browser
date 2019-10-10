@@ -86,6 +86,15 @@ namespace tab_widget {
 			 */
 			int addTab(QWidget * page, const QIcon & icon, const QString & label);
 
+			/**
+			 * @brief Function: void removeTab(int index)
+			 *
+			 * \param index: index of the tab to remove
+			 *
+			 * remove a tab from tab widget
+			 */
+			void removeTab(int index);
+
 		protected:
 			/**
 			 * @brief Function: void resizeEvent(QResizeEvent * event) override

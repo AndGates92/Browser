@@ -27,6 +27,7 @@
 Q_LOGGING_CATEGORY(mainWindowOverall, "mainWindow.overall", MSG_TYPE_LEVEL)
 Q_LOGGING_CATEGORY(mainWindowCenterWindow, "mainWindow.centerWindow", MSG_TYPE_LEVEL)
 Q_LOGGING_CATEGORY(mainWindowSearch, "mainWindow.search", MSG_TYPE_LEVEL)
+Q_LOGGING_CATEGORY(mainWindowTabs, "mainWindow.tabs", MSG_TYPE_LEVEL)
 
 main_window::MainWindow::MainWindow(QWidget * parent, Qt::WindowFlags flags) : QMainWindow(parent, flags) {
 
@@ -205,10 +206,15 @@ void main_window::MainWindow::createShortcuts() {
 	openNewTabKey->setKey(Qt::Key_O);
 	connect(openNewTabKey, &QShortcut::activated, this, &main_window::MainWindow::openNewTabSlot);
 
-	// s will open a new tab
+	// s will search on the current tab
 	QShortcut * newSearchTabKey = new QShortcut(this);
 	newSearchTabKey->setKey(Qt::Key_S);
 	connect(newSearchTabKey, &QShortcut::activated, this, &main_window::MainWindow::newSearchTabSlot);
+
+	// s will search on the current tab
+	QShortcut * closeTabKey = new QShortcut(this);
+	closeTabKey->setKey(Qt::Key_C);
+	connect(closeTabKey, &QShortcut::activated, this, &main_window::MainWindow::closeTabSlot);
 
 }
 
@@ -217,11 +223,23 @@ void main_window::MainWindow::toggleShowMenubarSlot() {
 	this->menuBar()->setVisible(!menubarVisible);
 }
 
+void main_window::MainWindow::closeTabSlot() {
+	int tabIndex = this->tabs->currentIndex();
+	int tabCount = this->tabs->count();
+
+	if (tabCount > 0) {
+		QINFO_PRINT(global_types::qinfo_level_e::ZERO, mainWindowTabs,  "Close tab " << tabIndex);
+		this->tabs->removeTab(tabIndex);
+		emit updateInfoSignal(tabIndex);
+	}
+}
+
 void main_window::MainWindow::addNewTab(QString search) {
 	QLabel * centerWindow = new QLabel(tr("Searching"), this->mainWidget);
 	centerWindow->setFrameStyle(QFrame::StyledPanel | QFrame::Sunken);
 	centerWindow->setAlignment(Qt::AlignCenter);
 
+	QINFO_PRINT(global_types::qinfo_level_e::ZERO, mainWindowTabs,  "Open tab with label " << search);
 	int tabIndex = this->tabs->addTab(centerWindow, search);
 	this->newSearchTab(tabIndex, search);
 
@@ -238,6 +256,7 @@ void main_window::MainWindow::openNewTabSlot() {
 
 void main_window::MainWindow::newSearchCurrentTab(QString search) {
 	int tabIndex = this->tabs->currentIndex();
+	QINFO_PRINT(global_types::qinfo_level_e::ZERO, mainWindowTabs,  "Search " << search << " in tab " << tabIndex);
 	this->newSearchTab(tabIndex, search);
 }
 
