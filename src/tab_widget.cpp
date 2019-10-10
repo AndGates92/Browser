@@ -15,9 +15,10 @@
 
 // Categories
 Q_LOGGING_CATEGORY(tabWidgetOverall, "tabWidget.overall", MSG_TYPE_LEVEL)
-Q_LOGGING_CATEGORY(tabWidgetResize, "tabWidget.resize", MSG_TYPE_LEVEL)
+Q_LOGGING_CATEGORY(tabWidgetSize, "tabWidget.size", MSG_TYPE_LEVEL)
 Q_LOGGING_CATEGORY(tabWidgetSearch, "tabWidget.search", MSG_TYPE_LEVEL)
 Q_LOGGING_CATEGORY(tabWidgetVisibility, "tabWidget.visibility", MSG_TYPE_LEVEL)
+Q_LOGGING_CATEGORY(tabWidgetTabs, "tabWidget.tabs", MSG_TYPE_LEVEL)
 
 tab_widget::TabWidget::TabWidget(QWidget * parent): QTabWidget(parent) {
 	QINFO_PRINT(global_types::qinfo_level_e::ZERO, tabWidgetOverall,  "Tab widget constructor");
@@ -37,7 +38,7 @@ tab_widget::TabWidget::TabWidget(QWidget * parent): QTabWidget(parent) {
 void tab_widget::TabWidget::resizeEvent(QResizeEvent * event) {
 	QSize previousSize(event->oldSize());
 	QSize newSize(event->size());
-	QINFO_PRINT(global_types::qinfo_level_e::ZERO, tabWidgetResize,  "Tab widget resize from " << previousSize << " to " << newSize);
+	QINFO_PRINT(global_types::qinfo_level_e::ZERO, tabWidgetSize,  "Tab widget resize from " << previousSize << " to " << newSize);
 	int widgetWidth = this->size().width();
 	this->tabBar->setWidth(widgetWidth);
 
@@ -58,6 +59,7 @@ void tab_widget::TabWidget::keyPressEvent(QKeyEvent * event) {
 }
 
 int tab_widget::TabWidget::addTab(QWidget * page, const QString & label) {
+	QINFO_PRINT(global_types::qinfo_level_e::ZERO, tabWidgetTabs,  "Open tab with label " << label);
 	int tabIndex = QTabWidget::addTab(page, label);
 	emit tabNumberChange();
 
@@ -65,6 +67,7 @@ int tab_widget::TabWidget::addTab(QWidget * page, const QString & label) {
 }
 
 int tab_widget::TabWidget::addTab(QWidget * page, const QIcon & icon, const QString & label) {
+	QINFO_PRINT(global_types::qinfo_level_e::ZERO, tabWidgetTabs,  "Open tab with label " << label);
 	int tabIndex = QTabWidget::addTab(page, icon, label);
 	emit tabNumberChange();
 
@@ -72,6 +75,7 @@ int tab_widget::TabWidget::addTab(QWidget * page, const QIcon & icon, const QStr
 }
 
 void tab_widget::TabWidget::removeTab(int index) {
+	QINFO_PRINT(global_types::qinfo_level_e::ZERO, tabWidgetTabs,  "Close tab " << index);
 	QTabWidget::removeTab(index);
 	emit tabNumberChange();
 }

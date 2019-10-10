@@ -14,12 +14,10 @@
 
 // Categories
 Q_LOGGING_CATEGORY(tabBarOverall, "tabBar.overall", MSG_TYPE_LEVEL)
-Q_LOGGING_CATEGORY(tabBarSizeHint, "tabBar.sizeHint", MSG_TYPE_LEVEL)
-Q_LOGGING_CATEGORY(tabBarSetWidth, "tabBar.setWidth", MSG_TYPE_LEVEL)
-Q_LOGGING_CATEGORY(tabBarResize, "tabBar.resize", MSG_TYPE_LEVEL)
+Q_LOGGING_CATEGORY(tabBarSize, "tabBar.size", MSG_TYPE_LEVEL)
 Q_LOGGING_CATEGORY(tabBarSearch, "tabBar.search", MSG_TYPE_LEVEL)
 
-tab_bar::TabBar::TabBar(QWidget * parent, int width): QTabBar(parent), tabBarSize(QSize(width, tab_bar::height)) {
+tab_bar::TabBar::TabBar(QWidget * parent, int width): QTabBar(parent), dimensions(QSize(width, tab_bar::height)) {
 	QINFO_PRINT(global_types::qinfo_level_e::ZERO, tabBarOverall,  "Tab bar constructor");
 
 	this->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Minimum);
@@ -29,14 +27,14 @@ tab_bar::TabBar::TabBar(QWidget * parent, int width): QTabBar(parent), tabBarSiz
 	this->setFixedHeight(tab_bar::height);
 	this->setMinimumWidth(tab_bar::minWidth);
 
-	QINFO_PRINT(global_types::qinfo_level_e::ZERO, tabBarOverall,  "Current tab size: " << this->tabBarSize);
+	QINFO_PRINT(global_types::qinfo_level_e::ZERO, tabBarOverall,  "Current tab size: " << this->dimensions);
 }
 
 QSize tab_bar::TabBar::tabSizeHint(int index) const {
-	QINFO_PRINT(global_types::qinfo_level_e::ZERO, tabBarSizeHint,  "Tab bar size hint for tab " << index);
+	QINFO_PRINT(global_types::qinfo_level_e::ZERO, tabBarSize,  "Tab bar size hint for tab " << index);
 
-	int barWidth = this->tabBarSize.width();
-	int barHeight = this->tabBarSize.height();
+	int barWidth = this->dimensions.width();
+	int barHeight = this->dimensions.height();
 	int tabNumber = this->count();
 
 	int tabWidth = 0;
@@ -48,7 +46,7 @@ QSize tab_bar::TabBar::tabSizeHint(int index) const {
 		tabWidth = barWidth/tabNumber;
 	}
 	int tabHeight = barHeight;
-	QINFO_PRINT(global_types::qinfo_level_e::ZERO, tabBarSizeHint,  "Tab bar dimensions: width " << barWidth << " height " << barHeight << " Tab width " << tabWidth << " height " << tabHeight << " number of tabs " << tabNumber);
+	QINFO_PRINT(global_types::qinfo_level_e::ZERO, tabBarSize,  "Tab bar dimensions: width " << barWidth << " height " << barHeight << " Tab width " << tabWidth << " height " << tabHeight << " number of tabs " << tabNumber);
 	QSize tabSize(tabWidth, tabHeight);
 
 	return tabSize;
@@ -56,10 +54,10 @@ QSize tab_bar::TabBar::tabSizeHint(int index) const {
 
 void tab_bar::TabBar::setWidth(int newWidth) {
 	int tabHeight = tab_bar::height;
-	QINFO_PRINT(global_types::qinfo_level_e::ZERO, tabBarSetWidth,  "Tab bar size width: " << newWidth << " height " << tabHeight);
-	this->tabBarSize.setWidth(newWidth);
-	this->tabBarSize.setHeight(tabHeight);
-	this->resize(this->tabBarSize);
+	QINFO_PRINT(global_types::qinfo_level_e::ZERO, tabBarSize,  "Tab bar size width: " << newWidth << " height " << tabHeight);
+	this->dimensions.setWidth(newWidth);
+	this->dimensions.setHeight(tabHeight);
+	this->resize(this->dimensions);
 }
 
 void tab_bar::TabBar::keyPressEvent(QKeyEvent * event) {
@@ -78,6 +76,6 @@ void tab_bar::TabBar::keyPressEvent(QKeyEvent * event) {
 void tab_bar::TabBar::resizeEvent(QResizeEvent * event) {
 	QSize previousSize(event->oldSize());
 	QSize newSize(event->size());
-	QINFO_PRINT(global_types::qinfo_level_e::ZERO, tabBarResize,  "Tab bar resize from " << previousSize << " to " << newSize);
+	QINFO_PRINT(global_types::qinfo_level_e::ZERO, tabBarSize,  "Tab bar resize from " << previousSize << " to " << newSize);
 	QTabBar::resizeEvent(event);
 }
