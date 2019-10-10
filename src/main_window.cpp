@@ -312,7 +312,7 @@ void main_window::MainWindow::keyPressEvent(QKeyEvent * event) {
 // In the case of tabCloseRequested signal, index is the closed tab
 void main_window::MainWindow::updateInfoSlot(int index) {
 	QString info("");
-	int tabIndex = this->tabs->currentIndex();
+	int tabIndex = this->tabs->currentIndex() + 1;
 	int tabCount = this->tabs->count();
 	if (tabCount == 0) {
 		info.append("No tabs");
