@@ -74,6 +74,7 @@ main_window::MainWindow::MainWindow(QWidget * parent, Qt::WindowFlags flags) : Q
 
 void main_window::MainWindow::createMainWidget() {
 	this->mainWidget = new QWidget(this);
+	this->mainWidget->setAttribute(Qt::WA_DeleteOnClose);
 //	this->mainWidget->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
 	this->mainWidget->setFocusPolicy(Qt::StrongFocus);
 
@@ -90,6 +91,7 @@ void main_window::MainWindow::createMainWidget() {
 
 QLabel * main_window::MainWindow::newWindowLabel() {
 	QLabel * label = new QLabel("", this);
+	label->setAttribute(Qt::WA_DeleteOnClose);
 	label->setFrameStyle(QFrame::NoFrame | QFrame::Sunken);
 	label->setFixedHeight(main_window::labelHeight);
 	label->setStyleSheet(
@@ -236,7 +238,6 @@ void main_window::MainWindow::createShortcuts() {
 	this->closeKey = new QShortcut(this);
 	this->closeKey->setKey(Qt::Key_Q);
 	connect(this->closeKey, &QShortcut::activated, this, &main_window::MainWindow::closeSlot);
-
 
 }
 
