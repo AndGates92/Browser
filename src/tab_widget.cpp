@@ -17,6 +17,7 @@
 Q_LOGGING_CATEGORY(tabWidgetOverall, "tabWidget.overall", MSG_TYPE_LEVEL)
 Q_LOGGING_CATEGORY(tabWidgetResize, "tabWidget.resize", MSG_TYPE_LEVEL)
 Q_LOGGING_CATEGORY(tabWidgetSearch, "tabWidget.search", MSG_TYPE_LEVEL)
+Q_LOGGING_CATEGORY(tabWidgetVisibility, "tabWidget.visibility", MSG_TYPE_LEVEL)
 
 tab_widget::TabWidget::TabWidget(QWidget * parent): QTabWidget(parent) {
 	QINFO_PRINT(global_types::qinfo_level_e::ZERO, tabWidgetOverall,  "Tab widget constructor");
@@ -26,6 +27,10 @@ tab_widget::TabWidget::TabWidget(QWidget * parent): QTabWidget(parent) {
 
 	this->tabBar = new tab_bar::TabBar(this, this->size().width());
 	this->setTabBar(this->tabBar);
+
+	connect(this, &tab_widget::TabWidget::tabNumberChange, this, &tab_widget::TabWidget::visibility);
+
+	emit tabNumberChange();
 
 }
 
@@ -50,4 +55,30 @@ void tab_widget::TabWidget::keyPressEvent(QKeyEvent * event) {
 
 	QTabWidget::keyPressEvent(event);
 
+}
+
+int tab_widget::TabWidget::addTab(QWidget * page, const QString & label) {
+	int tabIndex = QTabWidget::addTab(page, label);
+	emit tabNumberChange();
+
+	return tabIndex;
+}
+
+int tab_widget::TabWidget::addTab(QWidget * page, const QIcon & icon, const QString & label) {
+	int tabIndex = QTabWidget::addTab(page, icon, label);
+	emit tabNumberChange();
+
+	return tabIndex;
+}
+
+void tab_widget::TabWidget::visibility() {
+	int tabCount = this->count();
+	bool visibleFlag = false;
+	if (tabCount == 0) {
+		visibleFlag = false;
+	} else {
+		visibleFlag = true;
+	}
+	QINFO_PRINT(global_types::qinfo_level_e::ZERO, tabWidgetVisibility,  "Set visibility of tab widget to " << visibleFlag);
+	this->setVisible(visibleFlag);
 }

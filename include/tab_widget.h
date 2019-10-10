@@ -12,7 +12,10 @@
 // Required by qInfo
 #include <qt5/QtCore/QtDebug>
 
+#include <qt5/QtCore/QLoggingCategory>
+
 #include <qt5/QtWidgets/QTabWidget>
+#include <qt5/QtGui/QIcon>
 
 #include "global_macros.h"
 #include "global_types.h"
@@ -26,6 +29,7 @@
 Q_DECLARE_LOGGING_CATEGORY(tabWidgetOverall)
 Q_DECLARE_LOGGING_CATEGORY(tabWidgetResize)
 Q_DECLARE_LOGGING_CATEGORY(tabWidgetSearch)
+Q_DECLARE_LOGGING_CATEGORY(tabWidgetVisibility)
 
 namespace tab_widget {
 
@@ -45,6 +49,8 @@ namespace tab_widget {
 
 	class TabWidget : public QTabWidget {
 
+		Q_OBJECT
+
 		public:
 			/**
 			 * @brief Function: explicit TabWidget(QWidget * parent = Q_NULLPTR)
@@ -55,6 +61,31 @@ namespace tab_widget {
 			 */
 			explicit TabWidget(QWidget * parent = Q_NULLPTR);
 
+			/**
+			 * @brief Function: int addTab(QWidget * page, const QString & label)
+			 *
+			 * \param page: widget to fill in
+			 * \param label: label of the tab
+			 *
+			 * \return tab index
+			 *
+			 * add tab to tab widget
+			 */
+			int addTab(QWidget * page, const QString & label);
+
+			/**
+			 * @brief Function: int addTab(QWidget * page, const QIcon & icon, const QString & label)
+			 *
+			 * \param page: widget to fill in
+			 * \param icon: icon of the tab
+			 * \param label: label of the tab
+			 *
+			 * \return tab index
+			 *
+			 * add tab to tab widget
+			 */
+			int addTab(QWidget * page, const QIcon & icon, const QString & label);
+
 		protected:
 			/**
 			 * @brief Function: void resizeEvent(QResizeEvent * event) override
@@ -64,6 +95,14 @@ namespace tab_widget {
 			 * Reimplement resize event
 			 */
 			void resizeEvent(QResizeEvent * event) override;
+
+		private slots:
+			/**
+			 * @brief Function: void visibility()
+			 *
+			 * Set tab visibility
+			 */
+			void visibility();
 
 		private:
 			/**
@@ -80,6 +119,13 @@ namespace tab_widget {
 			 * Re-implement key pressed event
 			 */
 			void keyPressEvent(QKeyEvent * event);
+
+		signals:
+			/**
+			 * @brief change in tab numbers
+			 *
+			 */
+			void tabNumberChange();
 	};
 }
 /** @} */ // End of TabWidgetGroup group
