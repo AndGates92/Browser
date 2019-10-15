@@ -46,11 +46,17 @@ namespace main_window {
 			case main_window::MainWindow::state_e::CLOSE_TAB:
 				os << "CLOSE_TAB";
 				break;
+			case main_window::MainWindow::state_e::MOVE_LEFT_TAB:
+				os << "MVOE_LEFT_TAB";
+				break;
+			case main_window::MainWindow::state_e::MOVE_RIGHT_TAB:
+				os << "MVOE_RIGHT_TAB";
+				break;
 			case main_window::MainWindow::state_e::SEARCH:
 				os << "SEARCH";
 				break;
 			default:
-				os << "Unknown colour";
+				os << "Unknown stater";
 				break;
 		}
 
@@ -256,10 +262,20 @@ void main_window::MainWindow::createShortcuts() {
 	this->newSearchTabKey->setKey(Qt::Key_S);
 	connect(this->newSearchTabKey, &QShortcut::activated, this, &main_window::MainWindow::newSearchTabSlot);
 
-	// c will close the current tab
+	// c will close a tab
 	this->closeTabKey = new QShortcut(this);
 	this->closeTabKey->setKey(Qt::Key_C);
 	connect(this->closeTabKey, &QShortcut::activated, this, &main_window::MainWindow::closeTabSlot);
+
+	// h will move left tab
+	this->moveLeftTabKey = new QShortcut(this);
+	this->moveLeftTabKey->setKey(Qt::Key_H);
+	connect(this->moveLeftTabKey, &QShortcut::activated, this, &main_window::MainWindow::moveLeftTabSlot);
+
+	// l will move right tab
+	this->moveRightTabKey = new QShortcut(this);
+	this->moveRightTabKey->setKey(Qt::Key_L);
+	connect(this->moveRightTabKey, &QShortcut::activated, this, &main_window::MainWindow::moveRightTabSlot);
 
 	// q will close the browser
 	this->closeKey = new QShortcut(this);
@@ -277,16 +293,73 @@ void main_window::MainWindow::closeSlot() {
 	this->close();
 }
 
+void main_window::MainWindow::moveLeftTabSlot() {
+	this->mainWindowState = main_window::MainWindow::state_e::MOVE_LEFT_TAB;
+	this->setAllShortcutEnabledProperty(false);
+}
+
+void main_window::MainWindow::moveRightTabSlot() {
+	this->mainWindowState = main_window::MainWindow::state_e::MOVE_RIGHT_TAB;
+	this->setAllShortcutEnabledProperty(false);
+}
+
 void main_window::MainWindow::closeTabSlot() {
 	this->mainWindowState = main_window::MainWindow::state_e::CLOSE_TAB;
 	this->setAllShortcutEnabledProperty(false);
 }
 
-void main_window::MainWindow::closeTab(int index) {
-	int tabIndex = main_window::invalidTabIndex;
+void main_window::MainWindow::executeAction(int userInput) {
+	if (this->mainWindowState == main_window::MainWindow::state_e::CLOSE_TAB) {
+		this->executeActionOnTab(userInput);
+	} else if ((this->mainWindowState == main_window::MainWindow::state_e::MOVE_RIGHT_TAB) || (this->mainWindowState == main_window::MainWindow::state_e::MOVE_LEFT_TAB)) {
+		this->executeActionOnOffset(userInput);
+	}
+
+	int tabIndex = this->tabs->currentIndex();
+	emit updateInfoSignal(tabIndex);
+}
+
+void main_window::MainWindow::executeActionOnOffset(int offset) {
+	if (this->mainWindowState == main_window::MainWindow::state_e::MOVE_RIGHT_TAB) {
+		this->moveTab(offset, 1);
+	} else if (this->mainWindowState == main_window::MainWindow::state_e::MOVE_LEFT_TAB) {
+		this->moveTab(offset, -1);
+	}
+}
+
+void main_window::MainWindow::moveTab(int offset, int sign) {
+	// number of tabs to move by
+	int distance = 0;
+	// index is main_window::emptyUserInput if the argument is not passed
+	if (offset == main_window::emptyUserInput) {
+		distance = 1;
+	} else {
+		distance = offset;
+	}
+
 	int tabCount = this->tabs->count();
-	// index is main_window::invalidTabIndex if the argument is not passed
-	if (index == main_window::invalidTabIndex) {
+	// Keep tabIndex values within valid range (0 and (tabCount -1))
+	int tabIndexDst = this->tabs->currentIndex() + (sign * distance);
+	if (offset > tabCount) {
+		int maxTabRange = tabCount - 1;
+		qWarning(mainWindowTabs) << "Offset " << offset << " is bigger than the number of tabs " << tabCount << " Bringing tab index withing the valid range of tab (between 0 and " << maxTabRange << ")\n";
+	}
+	while (tabIndexDst < 0) {
+		tabIndexDst +=  tabCount;
+	}
+	int tabIndex = tabIndexDst % tabCount;
+
+	QINFO_PRINT(global_types::qinfo_level_e::ZERO, mainWindowTabs,  "Move to tab " << tabIndex << " distance " << distance << " action " << this->mainWindowState << " sign " << sign);
+
+	this->tabs->setCurrentIndex(tabIndex);
+}
+
+
+void main_window::MainWindow::executeActionOnTab(int index) {
+	int tabIndex = main_window::emptyUserInput;
+	int tabCount = this->tabs->count();
+	// index is main_window::emptyUserInput if the argument is not passed
+	if (index == main_window::emptyUserInput) {
 		tabIndex = this->tabs->currentIndex();
 	} else {
 		// start indexing tab to close with 1 (by default Qt starts indexig tabs with 0, therefore substract 1)
@@ -294,13 +367,18 @@ void main_window::MainWindow::closeTab(int index) {
 	}
 
 	if ((tabCount > tabIndex) && (tabIndex >= 0)) {
-		QINFO_PRINT(global_types::qinfo_level_e::ZERO, mainWindowTabs,  "Close tab " << tabIndex);
-		this->tabs->removeTab(tabIndex);
-		emit updateInfoSignal(tabIndex);
+		if (this->mainWindowState == main_window::MainWindow::state_e::CLOSE_TAB) {
+			this->closeTab(tabIndex);
+		}
 	} else {
 		int maxTabRange = tabCount;
 		qWarning(mainWindowTabs) << "Tab " << tabIndex << " doesn't exists. Valid range of tab is the integer number between 1 and " << maxTabRange << "\n";
 	}
+}
+
+void main_window::MainWindow::closeTab(int index) {
+	QINFO_PRINT(global_types::qinfo_level_e::ZERO, mainWindowTabs,  "Close tab " << index);
+	this->tabs->removeTab(index);
 }
 
 void main_window::MainWindow::addNewTab(QString search) {
@@ -364,14 +442,14 @@ void main_window::MainWindow::keyPressEvent(QKeyEvent * event) {
 	switch (pressedKey) {
 		case Qt::Key_Enter:
 		case Qt::Key_Return:
-			QINFO_PRINT(global_types::qinfo_level_e::ZERO, mainWindowUserInput,  "User typed text " << this->userText << " to search");
+			QINFO_PRINT(global_types::qinfo_level_e::ZERO, mainWindowUserInput,  "User typed text " << this->userText);
 
 			if (this->mainWindowState == main_window::MainWindow::state_e::OPEN_TAB) {
 				this->addNewTab(this->userText);
 			} else if (this->mainWindowState == main_window::MainWindow::state_e::SEARCH) {
 				this->newSearchCurrentTab(this->userText);
-			} else if (this->mainWindowState == main_window::MainWindow::state_e::CLOSE_TAB) {
-				this->closeTabWrapper(this->userText);
+			} else if ((this->mainWindowState == main_window::MainWindow::state_e::CLOSE_TAB) || (this->mainWindowState == main_window::MainWindow::state_e::MOVE_RIGHT_TAB) || (this->mainWindowState == main_window::MainWindow::state_e::MOVE_LEFT_TAB)) {
+				this->processTabIndex(this->userText);
 			}
 			this->userText.clear();
 			this->mainWindowState = main_window::MainWindow::state_e::IDLE;
@@ -394,11 +472,11 @@ void main_window::MainWindow::keyPressEvent(QKeyEvent * event) {
 				if ((pressedKey >= Qt::Key_Space) && (pressedKey <= Qt::Key_ydiaeresis)) {
 					this->userText.append(event->text());
 				}
-			} else if (this->mainWindowState == main_window::MainWindow::state_e::CLOSE_TAB) {
+			} else if ((this->mainWindowState == main_window::MainWindow::state_e::CLOSE_TAB) || (this->mainWindowState == main_window::MainWindow::state_e::MOVE_RIGHT_TAB) || (this->mainWindowState == main_window::MainWindow::state_e::MOVE_LEFT_TAB)) {
 				if ((pressedKey >= Qt::Key_0) && (pressedKey <= Qt::Key_9)) {
 					this->userText.append(event->text());
 				} else {
-					qWarning(mainWindowTabs) << "Pressed key " << event->text() << ". Only numbers are accepted when closing windows\n";
+					qWarning(mainWindowTabs) << "Pressed key " << event->text() << ". Only numbers are accepted when executing actions like closing windows or moving in the tab bar\n";
 				}
 			} else {
 				this->userText.clear();
@@ -411,17 +489,18 @@ void main_window::MainWindow::keyPressEvent(QKeyEvent * event) {
 	this->mainWidget->repaint();
 }
 
-void main_window::MainWindow::closeTabWrapper(QString indexStr) {
-	// If indexStr is an empty string, do not pass any argument to closeTab (i.e. close current tab)
-	if (indexStr.isEmpty()) {
-		this->closeTab();
+void main_window::MainWindow::processTabIndex(QString userInputStr) {
+	// If indexStr is an empty string, do not pass any argument to executeAction (i.e. execute action on current tab)
+	if (userInputStr.isEmpty()) {
+		this->executeAction();
 	} else {
 		bool conversionSuccessful = false;
-		int index = indexStr.toInt(&conversionSuccessful, 10);
+		int userInputInt = userInputStr.toInt(&conversionSuccessful, 10);
 		if (conversionSuccessful == true) {
-			this->closeTab(index);
+			QINFO_PRINT(global_types::qinfo_level_e::ZERO, mainWindowUserInput,  "user input succesfully converted to integer: string " << this->userText << " integer " << userInputInt);
+			this->executeAction(userInputInt);
 		} else {
-			qWarning(mainWindowTabs) << "tab index " << indexStr << " is not made up by numbers only\n";
+			qWarning(mainWindowTabs) << "tab index " << userInputStr << " is not made up by numbers only\n";
 		}
 	}
 }

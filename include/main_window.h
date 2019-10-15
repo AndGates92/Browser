@@ -77,10 +77,10 @@ namespace main_window {
 		const int bottomMargin = 0;
 
 		/**
-		 * @brief invalid tab index - default value of optional argument index of closeTab function
+		 * @brief invalid tab index - default value of optional argument index of executeActionOnTab function
 		 *
 		 */
-		const int invalidTabIndex = 0;
+		const int emptyUserInput = 0;
 
 	}
 
@@ -94,10 +94,12 @@ namespace main_window {
 		 *
 		 */
 		typedef enum class state_list {
-			IDLE,         /**< Idle state - no user input */
-			OPEN_TAB,     /**< Open new tab */
-			CLOSE_TAB,    /**< Close tab */
-			SEARCH        /**< Search on same tab */
+			IDLE,             /**< Idle state - no user input */
+			OPEN_TAB,         /**< Open new tab */
+			CLOSE_TAB,        /**< Close tab */
+			MOVE_LEFT_TAB,    /**< Move left tab */
+			MOVE_RIGHT_TAB,   /**< Move right tab */
+			SEARCH            /**< Search on same tab */
 		} state_e;
 
 		/**
@@ -182,6 +184,20 @@ namespace main_window {
 			 * This function closes a tab
 			 */
 			void closeTabSlot();
+
+			/**
+			 * @brief Function: void moveLeftTabSlot()
+			 *
+			 * This function moves left in the tabs. It will wrap around if the number of position leads to a negative tab index
+			 */
+			void moveLeftTabSlot();
+
+			/**
+			 * @brief Function: void moveRightTabSlot()
+			 *
+			 * This function moves right in the tabs. It will wrap around if the number of position leads to a tab index bigger than the max tab counter
+			 */
+			void moveRightTabSlot();
 
 			/**
 			 * @brief Function: void newSearchTabSlot()
@@ -300,6 +316,18 @@ namespace main_window {
 			QShortcut * closeTabKey;
 
 			/**
+			 * @brief shortcut to move left in the tab bar
+			 *
+			 */
+			QShortcut * moveLeftTabKey;
+
+			/**
+			 * @brief shortcut to move right in the tab bar
+			 *
+			 */
+			QShortcut * moveRightTabKey;
+
+			/**
 			 * @brief shortcut to close the main window
 			 *
 			 */
@@ -358,18 +386,57 @@ namespace main_window {
 			void addNewTab(QString search);
 
 			/**
-			 * @brief Function: void closeTab(int index = main_window::invalidTabIndex)
+			 * @brief Function: void executeAction(int userInput = main_window::emptyUserInput)
+			 *
+			 * \param userInput: user input to execute action. If not specified it is default to main_window::emptyUserInput
+			 *
+			 * This function executes action on a based on user input
+			 */
+			void executeAction(int userInput = main_window::emptyUserInput);
+
+			/**
+			 * @brief Function: void executeActionOnTab(int index)
+			 *
+			 * \param index: index of tab to execute action on
+			 *
+			 * This function executes action on a based on user input
+			 */
+			void executeActionOnTab(int index);
+
+			/**
+			 * @brief Function: void executeActionOnOffset(int offset)
+			 *
+			 * \param offset: offset of tab to execute action on
+			 *
+			 * This function executes action on a based on user input
+			 */
+			void executeActionOnOffset(int offset);
+
+			/**
+			 * @brief Function: void executeActionOnOffset(int offset)
+			 *
+			 * \param offset: offset of tab to execute action on
+			 * \param sign: direction of movement. -1 for left move and 1 for right move
+			 *
+			 * This function moves to a different tab as specified by the user
+			 */
+			void moveTab(int offset, int sign);
+
+			/**
+			 * @brief Function: void closeTab(int index)
+			 *
+			 * \param index: index of tab to close
 			 *
 			 * This function closes a tab
 			 */
-			void closeTab(int index = main_window::invalidTabIndex);
+			void closeTab(int index);
 
 			/**
-			 * @brief Function: void closeTabWrapper(QString indexStr)
+			 * @brief Function: void processTabIndex(QString userInputStr)
 			 *
-			 * This function is a wrapper to closeTab and converts the string indexStr to an integer
+			 * This function converts the string indexStr to an integer and executes desired action on it
 			 */
-			void closeTabWrapper(QString indexStr);
+			void processTabIndex(QString userInputStr);
 
 			/**
 			 * @brief Function: void newSearchCurrentTab(QString search)
