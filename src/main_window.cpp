@@ -289,7 +289,8 @@ void main_window::MainWindow::closeTab(int index) {
 	if (index == main_window::invalidTabIndex) {
 		tabIndex = this->tabs->currentIndex();
 	} else {
-		tabIndex = index;
+		// start indexing tab to close with 1 (by default Qt starts indexig tabs with 0, therefore substract 1)
+		tabIndex = index - 1;
 	}
 
 	if ((tabCount > tabIndex) && (tabIndex >= 0)) {
@@ -297,8 +298,8 @@ void main_window::MainWindow::closeTab(int index) {
 		this->tabs->removeTab(tabIndex);
 		emit updateInfoSignal(tabIndex);
 	} else {
-		int maxTabRange = tabCount-1;
-		qWarning(mainWindowTabs) << "Tab " << tabIndex << " doesn't exists. Valid range of tab is the integer number between 0 and " << maxTabRange << "\n";
+		int maxTabRange = tabCount;
+		qWarning(mainWindowTabs) << "Tab " << tabIndex << " doesn't exists. Valid range of tab is the integer number between 1 and " << maxTabRange << "\n";
 	}
 }
 
