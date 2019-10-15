@@ -88,6 +88,7 @@ namespace main_window {
 
 		Q_OBJECT
 
+		// ================================ START STATE ENUMERATION ========================================//
 		/**
 		 * @brief Verbosity levels
 		 *
@@ -98,6 +99,18 @@ namespace main_window {
 			CLOSE_TAB,    /**< Close tab */
 			SEARCH        /**< Search on same tab */
 		} state_e;
+
+		/**
+		 * @brief Function: QDebug & operator<< (QDebug & os, const main_window::MainWindow::state_e & state)
+		 *
+		 * \param os: output stream
+		 * \param state: state to print
+		 *
+		 * Overload << operator to print state
+		 */
+		friend QDebug & operator<< (QDebug & os, const main_window::MainWindow::state_e & state);
+
+		// ================================ END STATE ENUMERATION ========================================//
 
 		public:
 
@@ -203,16 +216,6 @@ namespace main_window {
 			void setCenterWindow(QString str);
 
 		private:
-
-			/**
-			 * @brief Function: QDebug & operator<< (QDebug & os, const main_window::MainWindow::state_e & state)
-			 *
-			 * \param os: output stream
-			 * \param state: state to print
-			 *
-			 * Overload << operator to print state
-			 */
-			friend QDebug & operator<< (QDebug & os, const main_window::MainWindow::state_e & state);
 
 			// main widget
 			/**
