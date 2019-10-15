@@ -28,12 +28,39 @@
 // Categories
 Q_LOGGING_CATEGORY(mainWindowOverall, "mainWindow.overall", MSG_TYPE_LEVEL)
 Q_LOGGING_CATEGORY(mainWindowCenterWindow, "mainWindow.centerWindow", MSG_TYPE_LEVEL)
+Q_LOGGING_CATEGORY(mainWindowUserInput, "mainWindow.userInput", MSG_TYPE_LEVEL)
 Q_LOGGING_CATEGORY(mainWindowSearch, "mainWindow.search", MSG_TYPE_LEVEL)
 Q_LOGGING_CATEGORY(mainWindowTabs, "mainWindow.tabs", MSG_TYPE_LEVEL)
 
+namespace main_window {
+	// Overload << operator for state_e
+	QDebug & operator<< (QDebug & os, const main_window::MainWindow::state_e & state) {
+
+		switch (state) {
+			case main_window::MainWindow::state_e::IDLE:
+				os << "IDLE";
+				break;
+			case main_window::MainWindow::state_e::OPEN_TAB:
+				os << "OPEN_TAB";
+				break;
+			case main_window::MainWindow::state_e::CLOSE_TAB:
+				os << "CLOSE_TAB";
+				break;
+			case main_window::MainWindow::state_e::SEARCH:
+				os << "SEARCH";
+				break;
+			default:
+				os << "Unknown colour";
+				break;
+		}
+
+		return os;
+	}
+}
+
 main_window::MainWindow::MainWindow(QWidget * parent, Qt::WindowFlags flags) : QMainWindow(parent, flags) {
 
-	mainWindowState = main_window::MainWindow::state_e::IDLE;
+	this->mainWindowState = main_window::MainWindow::state_e::IDLE;
 
 	// main widget
 	this->createMainWidget();
@@ -251,7 +278,7 @@ void main_window::MainWindow::closeSlot() {
 }
 
 void main_window::MainWindow::closeTabSlot() {
-	mainWindowState = main_window::MainWindow::state_e::CLOSE_TAB;
+	this->mainWindowState = main_window::MainWindow::state_e::CLOSE_TAB;
 	this->setAllShortcutEnabledProperty(false);
 }
 
@@ -290,7 +317,7 @@ void main_window::MainWindow::addNewTab(QString search) {
 
 void main_window::MainWindow::openNewTabSlot() {
 	QINFO_PRINT(global_types::qinfo_level_e::ZERO, mainWindowSearch,  "Search in new tab");
-	mainWindowState = main_window::MainWindow::state_e::OPEN_TAB;
+	this->mainWindowState = main_window::MainWindow::state_e::OPEN_TAB;
 	this->setAllShortcutEnabledProperty(false);
 
 }
@@ -310,7 +337,7 @@ void main_window::MainWindow::newSearchTab(int index, QString search) {
 void main_window::MainWindow::newSearchTabSlot() {
 
 	QINFO_PRINT(global_types::qinfo_level_e::ZERO, mainWindowSearch,  "Search in current tab");
-	mainWindowState = main_window::MainWindow::state_e::SEARCH;
+	this->mainWindowState = main_window::MainWindow::state_e::SEARCH;
 	this->setAllShortcutEnabledProperty(false);
 
 }
@@ -331,34 +358,36 @@ void main_window::MainWindow::keyPressEvent(QKeyEvent * event) {
 
 	int pressedKey = event->key();
 
-	if ((pressedKey == Qt::Key_Enter) || (pressedKey == Qt::Key_Return)) {
-		QINFO_PRINT(global_types::qinfo_level_e::ZERO, mainWindowSearch,  "User typed text " << this->userText << " to search");
+	QINFO_PRINT(global_types::qinfo_level_e::ZERO, mainWindowUserInput,  "State " << this->mainWindowState << " key " << event->text());
 
-		if (mainWindowState == main_window::MainWindow::state_e::OPEN_TAB) {
+	if ((pressedKey == Qt::Key_Enter) || (pressedKey == Qt::Key_Return)) {
+		QINFO_PRINT(global_types::qinfo_level_e::ZERO, mainWindowUserInput,  "User typed text " << this->userText << " to search");
+
+		if (this->mainWindowState == main_window::MainWindow::state_e::OPEN_TAB) {
 			this->addNewTab(this->userText);
-		} else if (mainWindowState == main_window::MainWindow::state_e::SEARCH) {
+		} else if (this->mainWindowState == main_window::MainWindow::state_e::SEARCH) {
 			this->newSearchCurrentTab(this->userText);
-		} else if (mainWindowState == main_window::MainWindow::state_e::CLOSE_TAB) {
+		} else if (this->mainWindowState == main_window::MainWindow::state_e::CLOSE_TAB) {
 			this->closeTabWrapper(this->userText);
 		}
 		this->userText.clear();
-		mainWindowState = main_window::MainWindow::state_e::IDLE;
+		this->mainWindowState = main_window::MainWindow::state_e::IDLE;
 		this->setAllShortcutEnabledProperty(true);
 	} else {
-		if ((mainWindowState == main_window::MainWindow::state_e::OPEN_TAB) || (mainWindowState == main_window::MainWindow::state_e::SEARCH)) {
+		if ((this->mainWindowState == main_window::MainWindow::state_e::OPEN_TAB) || (this->mainWindowState == main_window::MainWindow::state_e::SEARCH)) {
 			if (pressedKey == Qt::Key_Backspace) {
 				// Last position of the string
-				if (this->userText.isEmpty()) {
+				if (this->userText.isEmpty() == 0) {
 					int endString = this->userText.count() - 1;
 					this->userText.remove(endString, 1);
 				}
 			} else {
 				this->userText.append(event->text());
 			}
-		} else if (mainWindowState == main_window::MainWindow::state_e::CLOSE_TAB) {
+		} else if (this->mainWindowState == main_window::MainWindow::state_e::CLOSE_TAB) {
 			if (pressedKey == Qt::Key_Backspace) {
 				// Last position of the string
-				if (this->userText.isEmpty()) {
+				if (this->userText.isEmpty() == 0) {
 					int endString = this->userText.count() - 1;
 					this->userText.remove(endString, 1);
 				}

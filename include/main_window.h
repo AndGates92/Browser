@@ -27,6 +27,7 @@
 
 Q_DECLARE_LOGGING_CATEGORY(mainWindowOverall)
 Q_DECLARE_LOGGING_CATEGORY(mainWindowCenterWindow)
+Q_DECLARE_LOGGING_CATEGORY(mainWindowUserInput)
 Q_DECLARE_LOGGING_CATEGORY(mainWindowSearch)
 Q_DECLARE_LOGGING_CATEGORY(mainWindowTabs)
 
@@ -87,18 +88,8 @@ namespace main_window {
 
 		Q_OBJECT
 
-		/**
-		 * @brief Verbosity levels
-		 *
-		 */
-		typedef enum class state_list {
-			IDLE,         /**< Idle state - no user input */
-			OPEN_TAB,     /**< Open new tab */
-			CLOSE_TAB,    /**< Close tab */
-			SEARCH        /**< Search on same tab */
-		} state_e;
-
 		public:
+
 			/**
 			 * @brief Function: explicit MainWindow(QWidget * parent = Q_NULLPTR, Qt::WindowFlags flags = Qt::WindowFlags())
 			 *
@@ -202,6 +193,27 @@ namespace main_window {
 
 		private:
 
+			/**
+			 * @brief Verbosity levels
+			 *
+			 */
+			typedef enum class state_list {
+				IDLE,         /**< Idle state - no user input */
+				OPEN_TAB,     /**< Open new tab */
+				CLOSE_TAB,    /**< Close tab */
+				SEARCH        /**< Search on same tab */
+			} state_e;
+
+			/**
+			 * @brief Function: QDebug & operator<< (QDebug & os, const main_window::MainWindow::state_e & state)
+			 *
+			 * \param os: output stream
+			 * \param state: state to print
+			 *
+			 * Overload << operator to print state
+			 */
+			friend QDebug & operator<< (QDebug & os, const main_window::MainWindow::state_e & state);
+
 			// main widget
 			/**
 			 * @brief main widget
@@ -257,7 +269,7 @@ namespace main_window {
 			 * @brief state of the main window
 			 *
 			 */
-			state_e mainWindowState;
+			main_window::MainWindow::state_e mainWindowState;
 
 			// ================================ START SHORTCUTS ========================================//
 			/**
@@ -420,6 +432,7 @@ namespace main_window {
 			void setAllShortcutEnabledProperty(bool enabled);
 
 	};
+
 }
 /** @} */ // End of MainWindowGroup group
 
