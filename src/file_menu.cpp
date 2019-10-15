@@ -40,7 +40,6 @@ void file_menu::FileMenu::createActions() {
 
 	this->openTabAction = new QAction(tr("OpenTab"), this);
 	this->openTabAction->setStatusTip(tr("Open Tab"));
-	connect(this->openTabAction, &QAction::triggered, this, &file_menu::FileMenu::openTabSlot);
 
 	this->saveAction = new QAction(tr("Save"), this);
 	this->saveAction->setStatusTip(tr("Save"));
@@ -52,7 +51,6 @@ void file_menu::FileMenu::createActions() {
 
 	this->exitAction = new QAction(tr("Exit"), this);
 	this->exitAction->setStatusTip(tr("Exit"));
-	connect(this->exitAction, &QAction::triggered, this, &file_menu::FileMenu::exitSlot);
 
 }
 
@@ -72,11 +70,6 @@ void file_menu::FileMenu::openSlot() {
 	this->openWindow->exec();
 }
 
-void file_menu::FileMenu::openTabSlot() {
-	QINFO_PRINT(global_types::qinfo_level_e::ZERO, fileMenuOpenTabAction,  "Open tab slot: opening new tab");
-
-}
-
 void file_menu::FileMenu::saveSlot() {
 	QINFO_PRINT(global_types::qinfo_level_e::ZERO, fileMenuSaveAction,  "Save slot: saving web page to disk");
 
@@ -85,12 +78,6 @@ void file_menu::FileMenu::saveSlot() {
 void file_menu::FileMenu::printSlot() {
 	QINFO_PRINT(global_types::qinfo_level_e::ZERO, fileMenuPrintAction,  "Print slot: printing web page");
 
-}
-
-void file_menu::FileMenu::exitSlot() {
-	QINFO_PRINT(global_types::qinfo_level_e::ZERO, fileMenuExitAction,  "Exit slot: exiting from the browser");
-
-	this->window->close();
 }
 
 void file_menu::FileMenu::updateCenterWindowSlot(QString & content) {

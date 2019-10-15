@@ -50,62 +50,6 @@ namespace file_menu {
 			 */
 			explicit FileMenu(QWidget * window = Q_NULLPTR, QMenuBar * menuBar = Q_NULLPTR, const char* menuName = "Unknown", const QKeySequence & key = QKeySequence::UnknownKey);
 
-		protected:
-
-		private slots:
-
-			/**
-			 * @brief Function: void undoSlot()
-			 *
-			 * This function is the slot of the undo menu item
-			 */
-			void openSlot();
-
-			/**
-			 * @brief Function: void openTabSlot()
-			 *
-			 * This function is the slot of the open tab menu item
-			 */
-			void openTabSlot();
-
-			/**
-			 * @brief Function: void saveSlot()
-			 *
-			 * This function is the slot of the save menu item
-			 */
-			void saveSlot();
-
-			/**
-			 * @brief Function: void printSlot()
-			 *
-			 * This function is the slot of the print menu item
-			 */
-			void printSlot();
-
-			/**
-			 * @brief Function: void exitSlot()
-			 *
-			 * This function is the slot of the exit menu item
-			 */
-			void exitSlot();
-
-			/**
-			 * @brief Function: void updateCenterWindowSlot(QString & content)
-			 *
-			 * \param content: content of the file read
-			 *
-			 * This function is a slot to emit the signal informing the main window that the center window must be updated
-			 */
-			void updateCenterWindowSlot(QString & content);
-
-		private:
-
-			/**
-			 * @brief open action
-			 *
-			 */
-			QAction * openAction;
-
 			/**
 			 * @brief open tab action
 			 *
@@ -129,6 +73,48 @@ namespace file_menu {
 			 *
 			 */
 			QAction * exitAction;
+
+		protected:
+
+		private slots:
+
+			/**
+			 * @brief Function: void undoSlot()
+			 *
+			 * This function is the slot of the undo menu item
+			 */
+			void openSlot();
+
+			/**
+			 * @brief Function: void saveSlot()
+			 *
+			 * This function is the slot of the save menu item
+			 */
+			void saveSlot();
+
+			/**
+			 * @brief Function: void printSlot()
+			 *
+			 * This function is the slot of the print menu item
+			 */
+			void printSlot();
+
+			/**
+			 * @brief Function: void updateCenterWindowSlot(QString & content)
+			 *
+			 * \param content: content of the file read
+			 *
+			 * This function is a slot to emit the signal informing the main window that the center window must be updated
+			 */
+			void updateCenterWindowSlot(QString & content);
+
+		private:
+
+			/**
+			 * @brief open action
+			 *
+			 */
+			QAction * openAction;
 
 			/**
 			 * @brief window opened following the opened action being clicked

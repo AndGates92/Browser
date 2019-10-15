@@ -256,6 +256,7 @@ void main_window::MainWindow::createShortcuts() {
 	this->openNewTabKey = new QShortcut(this);
 	this->openNewTabKey->setKey(Qt::Key_O);
 	connect(this->openNewTabKey, &QShortcut::activated, this, &main_window::MainWindow::openNewTabSlot);
+	connect(this->fileMenu->openTabAction, &QAction::triggered, this, &main_window::MainWindow::openNewTabSlot);
 
 	// s will search on the current tab
 	this->newSearchTabKey = new QShortcut(this);
@@ -281,6 +282,7 @@ void main_window::MainWindow::createShortcuts() {
 	this->closeKey = new QShortcut(this);
 	this->closeKey->setKey(Qt::Key_Q);
 	connect(this->closeKey, &QShortcut::activated, this, &main_window::MainWindow::closeSlot);
+	connect(this->fileMenu->exitAction, &QAction::triggered, this, &main_window::MainWindow::closeSlot);
 
 }
 
@@ -290,6 +292,7 @@ void main_window::MainWindow::toggleShowMenubarSlot() {
 }
 
 void main_window::MainWindow::closeSlot() {
+	QINFO_PRINT(global_types::qinfo_level_e::ZERO, mainWindowOverall,  "Close slot: exiting from the browser");
 	this->close();
 }
 
