@@ -88,6 +88,17 @@ namespace main_window {
 
 		Q_OBJECT
 
+		/**
+		 * @brief Verbosity levels
+		 *
+		 */
+		typedef enum class state_list {
+			IDLE,         /**< Idle state - no user input */
+			OPEN_TAB,     /**< Open new tab */
+			CLOSE_TAB,    /**< Close tab */
+			SEARCH        /**< Search on same tab */
+		} state_e;
+
 		public:
 
 			/**
@@ -192,17 +203,6 @@ namespace main_window {
 			void setCenterWindow(QString str);
 
 		private:
-
-			/**
-			 * @brief Verbosity levels
-			 *
-			 */
-			typedef enum class state_list {
-				IDLE,         /**< Idle state - no user input */
-				OPEN_TAB,     /**< Open new tab */
-				CLOSE_TAB,    /**< Close tab */
-				SEARCH        /**< Search on same tab */
-			} state_e;
 
 			/**
 			 * @brief Function: QDebug & operator<< (QDebug & os, const main_window::MainWindow::state_e & state)
