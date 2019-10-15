@@ -373,6 +373,10 @@ void main_window::MainWindow::keyPressEvent(QKeyEvent * event) {
 		this->userText.clear();
 		this->mainWindowState = main_window::MainWindow::state_e::IDLE;
 		this->setAllShortcutEnabledProperty(true);
+	} else if (pressedKey == Qt::Key_Escape) {
+		this->userText.clear();
+		this->mainWindowState = main_window::MainWindow::state_e::IDLE;
+		this->setAllShortcutEnabledProperty(true);
 	} else {
 		if ((this->mainWindowState == main_window::MainWindow::state_e::OPEN_TAB) || (this->mainWindowState == main_window::MainWindow::state_e::SEARCH)) {
 			if (pressedKey == Qt::Key_Backspace) {
