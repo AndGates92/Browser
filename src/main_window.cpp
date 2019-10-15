@@ -47,10 +47,10 @@ namespace main_window {
 				os << "CLOSE_TAB";
 				break;
 			case main_window::MainWindow::state_e::MOVE_LEFT_TAB:
-				os << "MVOE_LEFT_TAB";
+				os << "MOVE_LEFT_TAB";
 				break;
 			case main_window::MainWindow::state_e::MOVE_RIGHT_TAB:
-				os << "MVOE_RIGHT_TAB";
+				os << "MOVE_RIGHT_TAB";
 				break;
 			case main_window::MainWindow::state_e::SEARCH:
 				os << "SEARCH";
@@ -338,7 +338,6 @@ void main_window::MainWindow::moveTab(int offset, int sign) {
 	}
 
 	int tabCount = this->tabs->count();
-	// Keep tabIndex values within valid range (0 and (tabCount -1))
 	int tabIndexDst = this->tabs->currentIndex() + (sign * distance);
 	if (offset > tabCount) {
 		int maxTabRange = tabCount - 1;
@@ -347,6 +346,7 @@ void main_window::MainWindow::moveTab(int offset, int sign) {
 	while (tabIndexDst < 0) {
 		tabIndexDst +=  tabCount;
 	}
+	// Keep tabIndex values within valid range (0 and (tabCount -1))
 	int tabIndex = tabIndexDst % tabCount;
 
 	QINFO_PRINT(global_types::qinfo_level_e::ZERO, mainWindowTabs,  "Move to tab " << tabIndex << " distance " << distance << " action " << this->mainWindowState << " sign " << sign);
