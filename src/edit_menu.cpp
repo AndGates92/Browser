@@ -17,7 +17,8 @@
 #include "edit_menu.h"
 
 // Categories
-Q_LOGGING_CATEGORY(editMenuOverall, "editNemu.overall", MSG_TYPE_LEVEL)
+Q_LOGGING_CATEGORY(editMenuOverall, "editMenu.overall", MSG_TYPE_LEVEL)
+Q_LOGGING_CATEGORY(editMenuAction, "editMenu.action", MSG_TYPE_LEVEL)
 
 edit_menu::EditMenu::EditMenu(QWidget * window, QMenuBar * menuBar, const char* menuName, const QKeySequence & key) : menu::Menu(window,menuBar,menuName,key) {
 
@@ -32,12 +33,66 @@ void edit_menu::EditMenu::createActions() {
 	this->undoAction->setStatusTip(tr("Undo previous action"));
 	connect(this->undoAction, &QAction::triggered, this, &EditMenu::undoSlot);
 
+	this->redoAction = new QAction(tr("Redo"), this);
+	this->redoAction->setStatusTip(tr("Redo action"));
+	connect(this->redoAction, &QAction::triggered, this, &EditMenu::redoSlot);
+
+	this->cutAction = new QAction(tr("Cut"), this);
+	this->cutAction->setStatusTip(tr("Cut action"));
+	connect(this->cutAction, &QAction::triggered, this, &EditMenu::cutSlot);
+
+	this->copyAction = new QAction(tr("Copy"), this);
+	this->copyAction->setStatusTip(tr("Copy action"));
+	connect(this->copyAction, &QAction::triggered, this, &EditMenu::copySlot);
+
+	this->pasteAction = new QAction(tr("Paste"), this);
+	this->pasteAction->setStatusTip(tr("Paste action"));
+	connect(this->pasteAction, &QAction::triggered, this, &EditMenu::pasteSlot);
+
+	this->selectAllAction = new QAction(tr("Select All"), this);
+	this->selectAllAction->setStatusTip(tr("Select All action"));
+	connect(this->selectAllAction, &QAction::triggered, this, &EditMenu::selectAllSlot);
+
+	this->findAction = new QAction(tr("Find"), this);
+	this->findAction->setStatusTip(tr("Find action"));
+	connect(this->findAction, &QAction::triggered, this, &EditMenu::findSlot);
+
 }
 
 void edit_menu::EditMenu::createMenu() {
 	this->winMenu->addAction(undoAction);
+	this->winMenu->addAction(redoAction);
+	this->winMenu->addAction(cutAction);
+	this->winMenu->addAction(copyAction);
+	this->winMenu->addAction(pasteAction);
+	this->winMenu->addAction(selectAllAction);
+	this->winMenu->addAction(findAction);
 }
 
 void edit_menu::EditMenu::undoSlot() {
-	QINFO_PRINT(global_types::qinfo_level_e::ZERO, editMenuOverall,  "undo slot");
+	QINFO_PRINT(global_types::qinfo_level_e::ZERO, editMenuAction,  "undo slot");
+}
+
+void edit_menu::EditMenu::redoSlot() {
+	QINFO_PRINT(global_types::qinfo_level_e::ZERO, editMenuAction,  "redo slot");
+}
+
+void edit_menu::EditMenu::cutSlot() {
+	QINFO_PRINT(global_types::qinfo_level_e::ZERO, editMenuAction,  "cut slot");
+}
+
+void edit_menu::EditMenu::copySlot() {
+	QINFO_PRINT(global_types::qinfo_level_e::ZERO, editMenuAction,  "copy slot");
+}
+
+void edit_menu::EditMenu::pasteSlot() {
+	QINFO_PRINT(global_types::qinfo_level_e::ZERO, editMenuAction,  "paste slot");
+}
+
+void edit_menu::EditMenu::selectAllSlot() {
+	QINFO_PRINT(global_types::qinfo_level_e::ZERO, editMenuAction,  "select all slot");
+}
+
+void edit_menu::EditMenu::findSlot() {
+	QINFO_PRINT(global_types::qinfo_level_e::ZERO, editMenuAction,  "find slot");
 }

@@ -25,6 +25,7 @@
  */
 
 Q_DECLARE_LOGGING_CATEGORY(editMenuOverall)
+Q_DECLARE_LOGGING_CATEGORY(editMenuAction)
 
 namespace edit_menu {
 
@@ -61,42 +62,42 @@ namespace edit_menu {
 			 *
 			 * This function is the slot of the redo menu item
 			 */
-//			void redoSlot();
+			void redoSlot();
 
 			/**
 			 * @brief Function: void cutSlot()
 			 *
 			 * This function is the slot of the cut menu item
 			 */
-//			void cutSlot();
+			void cutSlot();
 
 			/**
 			 * @brief Function: void copySlot()
 			 *
 			 * This function is the slot of the copy menu item
 			 */
-//			void copySlot();
+			void copySlot();
 
 			/**
 			 * @brief Function: void pasteSlot()
 			 *
 			 * This function is the slot of the paste menu item
 			 */
-//			void pasteSlot();
+			void pasteSlot();
 
 			/**
 			 * @brief Function: void selectAllSlot()
 			 *
 			 * This function is the slot of the selectAll menu item
 			 */
-//			void selectAllSlot();
+			void selectAllSlot();
 
 			/**
 			 * @brief Function: void findSlot()
 			 *
 			 * This function is the slot of the find menu item
 			 */
-//			void findSlot();
+			void findSlot();
 
 
 		private:
@@ -111,6 +112,12 @@ namespace edit_menu {
 			 *
 			 */
 			QAction * redoAction;
+
+			/**
+			 * @brief cut action
+			 *
+			 */
+			QAction * cutAction;
 
 			/**
 			 * @brief copy action
