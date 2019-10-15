@@ -360,49 +360,49 @@ void main_window::MainWindow::keyPressEvent(QKeyEvent * event) {
 
 	QINFO_PRINT(global_types::qinfo_level_e::ZERO, mainWindowUserInput,  "State " << this->mainWindowState << " key " << event->text());
 
-	if ((pressedKey == Qt::Key_Enter) || (pressedKey == Qt::Key_Return)) {
-		QINFO_PRINT(global_types::qinfo_level_e::ZERO, mainWindowUserInput,  "User typed text " << this->userText << " to search");
+	switch (pressedKey) {
+		case Qt::Key_Enter:
+		case Qt::Key_Return:
+			QINFO_PRINT(global_types::qinfo_level_e::ZERO, mainWindowUserInput,  "User typed text " << this->userText << " to search");
 
-		if (this->mainWindowState == main_window::MainWindow::state_e::OPEN_TAB) {
-			this->addNewTab(this->userText);
-		} else if (this->mainWindowState == main_window::MainWindow::state_e::SEARCH) {
-			this->newSearchCurrentTab(this->userText);
-		} else if (this->mainWindowState == main_window::MainWindow::state_e::CLOSE_TAB) {
-			this->closeTabWrapper(this->userText);
-		}
-		this->userText.clear();
-		this->mainWindowState = main_window::MainWindow::state_e::IDLE;
-		this->setAllShortcutEnabledProperty(true);
-	} else if (pressedKey == Qt::Key_Escape) {
-		this->userText.clear();
-		this->mainWindowState = main_window::MainWindow::state_e::IDLE;
-		this->setAllShortcutEnabledProperty(true);
-	} else {
-		if ((this->mainWindowState == main_window::MainWindow::state_e::OPEN_TAB) || (this->mainWindowState == main_window::MainWindow::state_e::SEARCH)) {
-			if (pressedKey == Qt::Key_Backspace) {
-				// Last position of the string
-				if (this->userText.isEmpty() == 0) {
-					int endString = this->userText.count() - 1;
-					this->userText.remove(endString, 1);
-				}
-			} else {
-				this->userText.append(event->text());
+			if (this->mainWindowState == main_window::MainWindow::state_e::OPEN_TAB) {
+				this->addNewTab(this->userText);
+			} else if (this->mainWindowState == main_window::MainWindow::state_e::SEARCH) {
+				this->newSearchCurrentTab(this->userText);
+			} else if (this->mainWindowState == main_window::MainWindow::state_e::CLOSE_TAB) {
+				this->closeTabWrapper(this->userText);
 			}
-		} else if (this->mainWindowState == main_window::MainWindow::state_e::CLOSE_TAB) {
-			if (pressedKey == Qt::Key_Backspace) {
-				// Last position of the string
-				if (this->userText.isEmpty() == 0) {
-					int endString = this->userText.count() - 1;
-					this->userText.remove(endString, 1);
-				}
-			} else if ((pressedKey >= Qt::Key_0) && (pressedKey <= Qt::Key_9)) {
-				this->userText.append(event->text());
-			} else {
-				qWarning(mainWindowTabs) << "Pressed key " << event->text() << ". Only numbers are accepted when closing windows\n";
-			}
-		} else {
 			this->userText.clear();
-		}
+			this->mainWindowState = main_window::MainWindow::state_e::IDLE;
+			this->setAllShortcutEnabledProperty(true);
+			break;
+		case Qt::Key_Escape:
+			this->userText.clear();
+			this->mainWindowState = main_window::MainWindow::state_e::IDLE;
+			this->setAllShortcutEnabledProperty(true);
+			break;
+		case Qt::Key_Backspace:
+			// Last position of the string
+			if (this->userText.isEmpty() == 0) {
+				int endString = this->userText.count() - 1;
+				this->userText.remove(endString, 1);
+			}
+			break;
+		default:
+			if ((this->mainWindowState == main_window::MainWindow::state_e::OPEN_TAB) || (this->mainWindowState == main_window::MainWindow::state_e::SEARCH)) {
+				if ((pressedKey >= Qt::Key_Space) && (pressedKey <= Qt::Key_ydiaeresis)) {
+					this->userText.append(event->text());
+				}
+			} else if (this->mainWindowState == main_window::MainWindow::state_e::CLOSE_TAB) {
+				if ((pressedKey >= Qt::Key_0) && (pressedKey <= Qt::Key_9)) {
+					this->userText.append(event->text());
+				} else {
+					qWarning(mainWindowTabs) << "Pressed key " << event->text() << ". Only numbers are accepted when closing windows\n";
+				}
+			} else {
+				this->userText.clear();
+			}
+			break;
 	}
 
 	this->searchText->setText(this->userText);
