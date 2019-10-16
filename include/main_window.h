@@ -169,6 +169,15 @@ namespace main_window {
 			 */
 			void updateInfoSignal(int index);
 
+			/**
+			 * @brief Function: void updateWebsiteSignal(int index)
+			 *
+			 * \param index: index of tab where the website is searched
+			 *
+			 * This function is a signal to inform that the info label needs to be updated
+			 */
+			void updateWebsiteSignal(int index);
+
 		private slots:
 
 			/**
@@ -221,6 +230,15 @@ namespace main_window {
 			 * This function is the slot to update the info label
 			 */
 			void updateInfoSlot(int index);
+
+			/**
+			 * @brief Function: void updateWebsiteSlot(int index)
+			 *
+			 * \param index: index of tab where the website has to be updated
+			 *
+			 * This function is the slot to update the info label
+			 */
+			void updateWebsiteSlot(int index);
 
 			/**
 			 * @brief Function: void toggleShowMenubarSlot()
