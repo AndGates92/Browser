@@ -500,7 +500,7 @@ void main_window::MainWindow::processTabIndex(QString userInputStr) {
 		bool conversionSuccessful = false;
 		int userInputInt = userInputStr.toInt(&conversionSuccessful, 10);
 		if (conversionSuccessful == true) {
-			QINFO_PRINT(global_types::qinfo_level_e::ZERO, mainWindowUserInput,  "user input succesfully converted to integer: string " << this->userText << " integer " << userInputInt);
+			QINFO_PRINT(global_types::qinfo_level_e::ZERO, mainWindowUserInput,  "user input succesfully converted to integer: string " << userInputStr << " integer " << userInputInt);
 			this->executeAction(userInputInt);
 		} else {
 			qWarning(mainWindowTabs) << "tab index " << userInputStr << " is not made up by numbers only\n";
