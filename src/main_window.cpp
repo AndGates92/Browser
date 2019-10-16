@@ -388,7 +388,6 @@ void main_window::MainWindow::closeTab(int index) {
 
 void main_window::MainWindow::addNewTab(QString search) {
 	QWebEngineView * centerWindow = new QWebEngineView(this->mainWidget);
-	centerWindow->load(QUrl(main_window::defaultSearchEngine.arg(search)));
 
 	QINFO_PRINT(global_types::qinfo_level_e::ZERO, mainWindowTabs,  "Open tab with label " << search);
 	int tabIndex = this->tabs->addTab(centerWindow, search);
@@ -415,6 +414,9 @@ void main_window::MainWindow::newSearchCurrentTab(QString search) {
 void main_window::MainWindow::newSearchTab(int index, QString search) {
 	QINFO_PRINT(global_types::qinfo_level_e::ZERO, mainWindowSearch,  "Search " << search << " in tab " << index);
 	this->tabs->setTabText(index, search);
+
+	QWebEngineView * centerWindow = (QWebEngineView *) this->tabs->widget(index);
+	centerWindow->load(QUrl(main_window::defaultSearchEngine.arg(search)));
 }
 
 void main_window::MainWindow::newSearchTabSlot() {
