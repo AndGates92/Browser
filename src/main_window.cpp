@@ -393,6 +393,9 @@ void main_window::MainWindow::addNewTab(QString search) {
 	int tabIndex = this->tabs->addTab(centerWindow, search);
 	this->newSearchTab(tabIndex, search);
 
+	// Move to the newly opened tab
+	this->tabs->setCurrentIndex(tabIndex);
+
 	// Emit signal to update info label
 	emit updateInfoSignal(tabIndex);
 }
