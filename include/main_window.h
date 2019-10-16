@@ -82,6 +82,13 @@ namespace main_window {
 		 */
 		const int emptyUserInput = 0;
 
+		/**
+		 * @brief default serch engine is duckduckgo
+		 *
+		 */
+		const QString defaultSearchEngine("http://www.duckduckgo.com/?q=%1");
+
+
 	}
 
 	class MainWindow : public QMainWindow {

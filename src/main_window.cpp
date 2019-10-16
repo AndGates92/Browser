@@ -13,6 +13,8 @@
 #include <qt5/QtWidgets/QStatusBar>
 #include <qt5/QtWidgets/QShortcut>
 #include <qt5/QtWidgets/QTabBar>
+#include <qt5/QtWebEngineWidgets/QWebEngineView>
+#include <qt5/QtCore/QUrl>
 #include <qt5/QtGui/QKeyEvent>
 
 // Required by qInfo
@@ -385,9 +387,8 @@ void main_window::MainWindow::closeTab(int index) {
 }
 
 void main_window::MainWindow::addNewTab(QString search) {
-	QLabel * centerWindow = new QLabel(tr("Searching"), this->mainWidget);
-	centerWindow->setFrameStyle(QFrame::StyledPanel | QFrame::Sunken);
-	centerWindow->setAlignment(Qt::AlignCenter);
+	QWebEngineView * centerWindow = new QWebEngineView(this->mainWidget);
+	centerWindow->load(QUrl(main_window::defaultSearchEngine.arg(search)));
 
 	QINFO_PRINT(global_types::qinfo_level_e::ZERO, mainWindowTabs,  "Open tab with label " << search);
 	int tabIndex = this->tabs->addTab(centerWindow, search);

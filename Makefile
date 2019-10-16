@@ -76,7 +76,7 @@ DFLAGS := $(foreach DEF, ${DEFINE_LIST}, -D${DEF})
 # Libraries
 MATHLIBS= m
 GLUTLIBS = GLU GL glut
-QTLIBS = Qt5Widgets Qt5Gui Qt5Core
+QTLIBS = Qt5Widgets Qt5Gui Qt5Core Qt5WebEngineWidgets
 X11LIBS = X11
 LIB_LIST = $(MATHLIBS) \
            $(GLUTLIBS) \
