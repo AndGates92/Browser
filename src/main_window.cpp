@@ -422,15 +422,10 @@ void main_window::MainWindow::newSearchTab(int index, QString search) {
 	this->tabs->setTabText(index, search);
 
 	QWebEngineView * centerWindow = (QWebEngineView *) this->tabs->widget(index);
-	centerWindow->load(QUrl(main_window::defaultSearchEngine.arg(search)));
+	centerWindow->setUrl(QUrl(main_window::defaultSearchEngine.arg(search)));
 
 	QUrl websiteUrl = centerWindow->url();
-
-	QString websiteStr (websiteUrl.toDisplayString(QUrl::FullyDecoded));
-	QINFO_PRINT(global_types::qinfo_level_e::ZERO, mainWindowTabs,  "Set URL in websiteText to " << websiteStr);
-	this->websiteText->setText(websiteStr);
-
-	//emit updateWebsiteSignal(index);
+	emit updateWebsiteSignal(index);
 }
 
 void main_window::MainWindow::newSearchTabSlot() {
