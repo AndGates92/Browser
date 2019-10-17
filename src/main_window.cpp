@@ -151,7 +151,7 @@ void main_window::MainWindow::fillMainWindow() {
 
 	// website URL
 	this->websiteText = this->newWindowLabel();
-	this->websiteText->setAlignment(Qt::AlignLeft | Qt::AlignBottom);
+	this->websiteText->setAlignment(Qt::AlignRight | Qt::AlignBottom);
 
 	// info
 	this->infoText = this->newWindowLabel();
@@ -424,7 +424,6 @@ void main_window::MainWindow::newSearchTab(int index, QString search) {
 	QWebEngineView * centerWindow = (QWebEngineView *) this->tabs->widget(index);
 	centerWindow->setUrl(QUrl(main_window::defaultSearchEngine.arg(search)));
 
-	QUrl websiteUrl = centerWindow->url();
 	emit updateWebsiteSignal(index);
 }
 
