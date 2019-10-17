@@ -58,12 +58,33 @@ namespace main_window {
 				os << "SEARCH";
 				break;
 			default:
-				os << "Unknown stater";
+				os << "Unknown state";
 				break;
 		}
 
 		return os;
 	}
+
+	QDebug & operator<< (QDebug & os, const main_window::MainWindow::text_action_e & action) {
+
+		switch (action) {
+			case main_window::MainWindow::text_action_e::SET:
+				os << "SET";
+				break;
+			case main_window::MainWindow::text_action_e::APPEND:
+				os << "APPEND";
+				break;
+			case main_window::MainWindow::text_action_e::CLEAR:
+				os << "CLEAR";
+				break;
+			default:
+				os << "Unknown action";
+				break;
+		}
+
+		return os;
+	}
+
 }
 
 main_window::MainWindow::MainWindow(QWidget * parent, Qt::WindowFlags flags) : QMainWindow(parent, flags) {
@@ -146,9 +167,9 @@ void main_window::MainWindow::fillMainWindow() {
 	// Customize MainWidget
 	this->createTabs();
 
-	// search
-	this->searchText = this->newWindowLabel();
-	this->searchText->setAlignment(Qt::AlignLeft | Qt::AlignBottom);
+	// user input
+	this->userInputText = this->newWindowLabel();
+	this->userInputText->setAlignment(Qt::AlignLeft | Qt::AlignBottom);
 
 	// website URL
 	this->websiteText = this->newWindowLabel();
@@ -182,6 +203,7 @@ void main_window::MainWindow::createTabs() {
 	connect(this->tabs, &QTabWidget::currentChanged, this, &main_window::MainWindow::updateInfoSlot);
 	connect(this->tabs, &QTabWidget::tabCloseRequested, this, &main_window::MainWindow::updateInfoSlot);
 	connect(this, &main_window::MainWindow::updateInfoSignal, this, &main_window::MainWindow::updateInfoSlot);
+	connect(this, &main_window::MainWindow::updateUserInputSignal, this, &main_window::MainWindow::updateUserInputSlot);
 //	connect(this->tabs, &QTabWidget::currentChanged, this, &main_window::MainWindow::updateWebsiteSlot);
 	connect(this, &main_window::MainWindow::updateWebsiteSignal, this, &main_window::MainWindow::updateWebsiteSlot);
 }
@@ -204,7 +226,7 @@ void main_window::MainWindow::mainWindowLayout() {
 	int searchColumnSpan = 3;
 	int searchFromRow = tabsRowSpan;
 	int searchFromColumn = 0;
-	layout->addWidget(this->searchText, searchFromRow, searchFromColumn, searchRowSpan, searchColumnSpan);
+	layout->addWidget(this->userInputText, searchFromRow, searchFromColumn, searchRowSpan, searchColumnSpan);
 	int websiteRowSpan = 1;
 	int websiteColumnSpan = 5;
 	int websiteFromRow = tabsRowSpan;
@@ -244,6 +266,8 @@ void main_window::MainWindow::setAllWindowShortcutEnabledProperty(bool enabled) 
 	this->openNewTabKey->setEnabled(enabled);
 	this->newSearchTabKey->setEnabled(enabled);
 	this->closeTabKey->setEnabled(enabled);
+	this->moveLeftTabKey->setEnabled(enabled);
+	this->moveRightTabKey->setEnabled(enabled);
 }
 
 void main_window::MainWindow::setAllShortcutEnabledProperty(bool enabled) {
@@ -303,20 +327,20 @@ void main_window::MainWindow::closeSlot() {
 
 void main_window::MainWindow::moveLeftTabSlot() {
 	this->mainWindowState = main_window::MainWindow::state_e::MOVE_LEFT_TAB;
-	this->userText.append(":move left ");
 	this->setAllShortcutEnabledProperty(false);
+	emit updateUserInputSignal(main_window::MainWindow::text_action_e::APPEND, ":move left ");
 }
 
 void main_window::MainWindow::moveRightTabSlot() {
 	this->mainWindowState = main_window::MainWindow::state_e::MOVE_RIGHT_TAB;
-	this->userText.append(":move right ");
 	this->setAllShortcutEnabledProperty(false);
+	emit updateUserInputSignal(main_window::MainWindow::text_action_e::APPEND, ":move right ");
 }
 
 void main_window::MainWindow::closeTabSlot() {
 	this->mainWindowState = main_window::MainWindow::state_e::CLOSE_TAB;
-	this->userText.append(":close ");
 	this->setAllShortcutEnabledProperty(false);
+	emit updateUserInputSignal(main_window::MainWindow::text_action_e::APPEND, ":close ");
 }
 
 void main_window::MainWindow::executeAction(int userInput) {
@@ -410,9 +434,8 @@ void main_window::MainWindow::addNewTab(QString search) {
 void main_window::MainWindow::openNewTabSlot() {
 	QINFO_PRINT(global_types::qinfo_level_e::ZERO, mainWindowSearch,  "Search in new tab");
 	this->mainWindowState = main_window::MainWindow::state_e::OPEN_TAB;
-	this->userText.append(":open ");
 	this->setAllShortcutEnabledProperty(false);
-
+	emit updateUserInputSignal(main_window::MainWindow::text_action_e::APPEND, ":open ");
 }
 
 void main_window::MainWindow::newSearchCurrentTab(QString search) {
@@ -436,9 +459,8 @@ void main_window::MainWindow::newSearchTabSlot() {
 
 	QINFO_PRINT(global_types::qinfo_level_e::ZERO, mainWindowSearch,  "Search in current tab");
 	this->mainWindowState = main_window::MainWindow::state_e::SEARCH;
-	this->userText.append(":search ");
 	this->setAllShortcutEnabledProperty(false);
-
+	emit updateUserInputSignal(main_window::MainWindow::text_action_e::APPEND, ":search ");
 }
 
 // 
@@ -471,14 +493,14 @@ void main_window::MainWindow::keyPressEvent(QKeyEvent * event) {
 			} else if ((this->mainWindowState == main_window::MainWindow::state_e::CLOSE_TAB) || (this->mainWindowState == main_window::MainWindow::state_e::MOVE_RIGHT_TAB) || (this->mainWindowState == main_window::MainWindow::state_e::MOVE_LEFT_TAB)) {
 				this->processTabIndex(this->userText);
 			}
-			this->userText.clear();
 			this->mainWindowState = main_window::MainWindow::state_e::IDLE;
 			this->setAllShortcutEnabledProperty(true);
+			emit updateUserInputSignal(main_window::MainWindow::text_action_e::CLEAR);
 			break;
 		case Qt::Key_Escape:
-			this->userText.clear();
 			this->mainWindowState = main_window::MainWindow::state_e::IDLE;
 			this->setAllShortcutEnabledProperty(true);
+			emit updateUserInputSignal(main_window::MainWindow::text_action_e::CLEAR);
 			break;
 		case Qt::Key_Backspace:
 			// Last position of the string
@@ -490,21 +512,19 @@ void main_window::MainWindow::keyPressEvent(QKeyEvent * event) {
 		default:
 			if ((this->mainWindowState == main_window::MainWindow::state_e::OPEN_TAB) || (this->mainWindowState == main_window::MainWindow::state_e::SEARCH)) {
 				if ((pressedKey >= Qt::Key_Space) && (pressedKey <= Qt::Key_ydiaeresis)) {
-					this->userText.append(event->text());
+					emit updateUserInputSignal(main_window::MainWindow::text_action_e::APPEND, event->text());
 				}
 			} else if ((this->mainWindowState == main_window::MainWindow::state_e::CLOSE_TAB) || (this->mainWindowState == main_window::MainWindow::state_e::MOVE_RIGHT_TAB) || (this->mainWindowState == main_window::MainWindow::state_e::MOVE_LEFT_TAB)) {
 				if ((pressedKey >= Qt::Key_0) && (pressedKey <= Qt::Key_9)) {
-					this->userText.append(event->text());
+					emit updateUserInputSignal(main_window::MainWindow::text_action_e::APPEND, event->text());
 				} else {
 					qWarning(mainWindowTabs) << "Pressed key " << event->text() << ". Only numbers are accepted when executing actions like closing windows or moving in the tab bar\n";
 				}
 			} else {
-				this->userText.clear();
+				emit updateUserInputSignal(main_window::MainWindow::text_action_e::CLEAR);
 			}
 			break;
 	}
-
-	this->searchText->setText(this->userText);
 
 	this->mainWidget->repaint();
 }
@@ -554,4 +574,33 @@ void main_window::MainWindow::updateWebsiteSlot(int index) {
 	QString websiteStr (websiteUrl.toDisplayString(QUrl::FullyDecoded));
 	QINFO_PRINT(global_types::qinfo_level_e::ZERO, mainWindowTabs,  "Set URL in websiteText to " << websiteStr);
 	this->websiteText->setText(websiteStr);
+}
+
+void main_window::MainWindow::updateUserInputSlot(const main_window::MainWindow::text_action_e action, QString text) {
+
+	QString textPrint = Q_NULLPTR;
+	if (text == Q_NULLPTR) {
+		textPrint.append("Not provided");
+	} else {
+		textPrint.append(text);
+	}
+
+	QINFO_PRINT(global_types::qinfo_level_e::ZERO, mainWindowUserInput,  "Action is " << action << " for user input " << textPrint);
+	switch (action) {
+		case main_window::MainWindow::text_action_e::SET:
+			this->userText.clear();
+			this->userText.append(text);
+			break;
+		case main_window::MainWindow::text_action_e::APPEND:
+			this->userText.append(text);
+			break;
+		case main_window::MainWindow::text_action_e::CLEAR:
+			this->userText.clear();
+			break;
+		default:
+			qWarning(mainWindowUserInput) << "Unknown action " << action << "\n";
+			break;
+	}
+
+	this->userInputText->setText(this->userText);
 }

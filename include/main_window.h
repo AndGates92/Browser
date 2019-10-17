@@ -97,7 +97,7 @@ namespace main_window {
 
 		// ================================ START STATE ENUMERATION ========================================//
 		/**
-		 * @brief Verbosity levels
+		 * @brief states
 		 *
 		 */
 		typedef enum class state_list {
@@ -118,6 +118,26 @@ namespace main_window {
 		 * Overload << operator to print state
 		 */
 		friend QDebug & operator<< (QDebug & os, const main_window::MainWindow::state_e & state);
+
+		/**
+		 * @brief states
+		 *
+		 */
+		typedef enum class text_action_list {
+			SET,              /**< Set text */
+			APPEND,           /**< Append text */
+			CLEAR             /**< Clear text */
+		} text_action_e;
+
+		/**
+		 * @brief Function: QDebug & operator<< (QDebug & os, const main_window::text_action_e & action)
+		 *
+		 * \param os: output stream
+		 * \param state: state to print
+		 *
+		 * Overload << operator to print state
+		 */
+		friend QDebug & operator<< (QDebug & os, const main_window::MainWindow::text_action_e & action);
 
 		// ================================ END STATE ENUMERATION ========================================//
 
@@ -178,6 +198,16 @@ namespace main_window {
 			 */
 			void updateWebsiteSignal(int index);
 
+			/**
+			 * @brief Function: void updateUserInputSignal(const main_window::MainWindow::text_action_e action, QString text = Q_NULLPTR)
+			 *
+			 * \param action: action to execute - valid values are: SET, APPEND and CLEAR
+			 * \param text: text to append to userText
+			 *
+			 * This function is the slot to update the user input label
+			 */
+			void updateUserInputSignal(const main_window::MainWindow::text_action_e action, QString text = Q_NULLPTR);
+
 		private slots:
 
 			/**
@@ -230,6 +260,16 @@ namespace main_window {
 			 * This function is the slot to update the info label
 			 */
 			void updateInfoSlot(int index);
+
+			/**
+			 * @brief Function: void updateUserInputSlot(const main_window::MainWindow::text_action_e action, QString text = Q_NULLPTR)
+			 *
+			 * \param action: action to execute - valid values are: SET, APPEND and CLEAR
+			 * \param text: text to append to userText
+			 *
+			 * This function is the slot to update the user input label
+			 */
+			void updateUserInputSlot(const main_window::MainWindow::text_action_e action, QString text = Q_NULLPTR);
 
 			/**
 			 * @brief Function: void updateWebsiteSlot(int index)
@@ -286,10 +326,10 @@ namespace main_window {
 			tab_widget::TabWidget * tabs;
 
 			/**
-			 * @brief search
+			 * @brief user input
 			 *
 			 */
-			QLabel * searchText;
+			QLabel * userInputText;
 
 			/**
 			 * @brief website
