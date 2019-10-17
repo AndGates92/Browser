@@ -69,6 +69,7 @@ namespace main_window {
 main_window::MainWindow::MainWindow(QWidget * parent, Qt::WindowFlags flags) : QMainWindow(parent, flags) {
 
 	this->mainWindowState = main_window::MainWindow::state_e::IDLE;
+	this->setFocusPolicy(Qt::StrongFocus);
 
 	// main widget
 	this->createMainWidget();
@@ -302,16 +303,19 @@ void main_window::MainWindow::closeSlot() {
 
 void main_window::MainWindow::moveLeftTabSlot() {
 	this->mainWindowState = main_window::MainWindow::state_e::MOVE_LEFT_TAB;
+	this->userText.append(":move left ");
 	this->setAllShortcutEnabledProperty(false);
 }
 
 void main_window::MainWindow::moveRightTabSlot() {
 	this->mainWindowState = main_window::MainWindow::state_e::MOVE_RIGHT_TAB;
+	this->userText.append(":move right ");
 	this->setAllShortcutEnabledProperty(false);
 }
 
 void main_window::MainWindow::closeTabSlot() {
 	this->mainWindowState = main_window::MainWindow::state_e::CLOSE_TAB;
+	this->userText.append(":close ");
 	this->setAllShortcutEnabledProperty(false);
 }
 
@@ -406,6 +410,7 @@ void main_window::MainWindow::addNewTab(QString search) {
 void main_window::MainWindow::openNewTabSlot() {
 	QINFO_PRINT(global_types::qinfo_level_e::ZERO, mainWindowSearch,  "Search in new tab");
 	this->mainWindowState = main_window::MainWindow::state_e::OPEN_TAB;
+	this->userText.append(":open ");
 	this->setAllShortcutEnabledProperty(false);
 
 }
@@ -431,6 +436,7 @@ void main_window::MainWindow::newSearchTabSlot() {
 
 	QINFO_PRINT(global_types::qinfo_level_e::ZERO, mainWindowSearch,  "Search in current tab");
 	this->mainWindowState = main_window::MainWindow::state_e::SEARCH;
+	this->userText.append(":search ");
 	this->setAllShortcutEnabledProperty(false);
 
 }
