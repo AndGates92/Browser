@@ -160,7 +160,6 @@ void main_window::MainWindow::fillMainWindow() {
 	// Emit signal to update info label
 	int tabIndex = this->tabs->currentIndex();
 	emit updateInfoSignal(tabIndex);
-	emit updateWebsiteSignal(tabIndex);
 }
 
 void main_window::MainWindow::createTabs() {
@@ -183,7 +182,7 @@ void main_window::MainWindow::createTabs() {
 	connect(this->tabs, &QTabWidget::tabCloseRequested, this, &main_window::MainWindow::updateInfoSlot);
 	connect(this, &main_window::MainWindow::updateInfoSignal, this, &main_window::MainWindow::updateInfoSlot);
 //	connect(this->tabs, &QTabWidget::currentChanged, this, &main_window::MainWindow::updateWebsiteSlot);
-//	connect(this, &main_window::MainWindow::updateWebsiteSignal, this, &main_window::MainWindow::updateWebsiteSlot);
+	connect(this, &main_window::MainWindow::updateWebsiteSignal, this, &main_window::MainWindow::updateWebsiteSlot);
 }
 
 void main_window::MainWindow::mainWindowLayout() {
@@ -402,7 +401,6 @@ void main_window::MainWindow::addNewTab(QString search) {
 
 	// Emit signal to update info label
 	emit updateInfoSignal(tabIndex);
-	emit updateWebsiteSignal(tabIndex);
 }
 
 void main_window::MainWindow::openNewTabSlot() {
@@ -425,6 +423,14 @@ void main_window::MainWindow::newSearchTab(int index, QString search) {
 
 	QWebEngineView * centerWindow = (QWebEngineView *) this->tabs->widget(index);
 	centerWindow->load(QUrl(main_window::defaultSearchEngine.arg(search)));
+
+	QUrl websiteUrl = centerWindow->url();
+
+	QString websiteStr (websiteUrl.toDisplayString(QUrl::FullyDecoded));
+	QINFO_PRINT(global_types::qinfo_level_e::ZERO, mainWindowTabs,  "Set URL in websiteText to " << websiteStr);
+	this->websiteText->setText(websiteStr);
+
+	//emit updateWebsiteSignal(index);
 }
 
 void main_window::MainWindow::newSearchTabSlot() {
@@ -542,9 +548,10 @@ void main_window::MainWindow::updateInfoSlot(int index) {
 
 void main_window::MainWindow::updateWebsiteSlot(int index) {
 
-	QWebEngineView * centerWindow = (QWebEngineView *) this->tabs->widget(index);
+	QWebEngineView * centerWindow = dynamic_cast<QWebEngineView *>(this->tabs->widget(index));
 	QUrl websiteUrl = centerWindow->url();
 
-	QString websiteStr (websiteUrl.toDisplayString());
+	QString websiteStr (websiteUrl.toDisplayString(QUrl::FullyDecoded));
+	QINFO_PRINT(global_types::qinfo_level_e::ZERO, mainWindowTabs,  "Set URL in websiteText to " << websiteStr);
 	this->websiteText->setText(websiteStr);
 }
