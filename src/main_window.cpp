@@ -43,16 +43,16 @@ namespace main_window {
 				os << "IDLE";
 				break;
 			case main_window::MainWindow::state_e::OPEN_TAB:
-				os << "OPEN_TAB";
+				os << "OPEN TAB";
 				break;
 			case main_window::MainWindow::state_e::CLOSE_TAB:
-				os << "CLOSE_TAB";
+				os << "CLOSE TAB";
 				break;
-			case main_window::MainWindow::state_e::MOVE_LEFT_TAB:
-				os << "MOVE_LEFT_TAB";
+			case main_window::MainWindow::state_e::MOVE_LEFT:
+				os << "MOVE LEFT";
 				break;
-			case main_window::MainWindow::state_e::MOVE_RIGHT_TAB:
-				os << "MOVE_RIGHT_TAB";
+			case main_window::MainWindow::state_e::MOVE_RIGHT:
+				os << "MOVE RIGHT";
 				break;
 			case main_window::MainWindow::state_e::SEARCH:
 				os << "SEARCH";
@@ -326,27 +326,27 @@ void main_window::MainWindow::closeSlot() {
 }
 
 void main_window::MainWindow::moveLeftTabSlot() {
-	this->mainWindowState = main_window::MainWindow::state_e::MOVE_LEFT_TAB;
+	this->mainWindowState = main_window::MainWindow::state_e::MOVE_LEFT;
 	this->setAllShortcutEnabledProperty(false);
-	emit updateUserInputSignal(main_window::MainWindow::text_action_e::APPEND, ":move left ");
+	emit updateUserInputSignal(main_window::MainWindow::text_action_e::CLEAR);
 }
 
 void main_window::MainWindow::moveRightTabSlot() {
-	this->mainWindowState = main_window::MainWindow::state_e::MOVE_RIGHT_TAB;
+	this->mainWindowState = main_window::MainWindow::state_e::MOVE_RIGHT;
 	this->setAllShortcutEnabledProperty(false);
-	emit updateUserInputSignal(main_window::MainWindow::text_action_e::APPEND, ":move right ");
+	emit updateUserInputSignal(main_window::MainWindow::text_action_e::CLEAR);
 }
 
 void main_window::MainWindow::closeTabSlot() {
 	this->mainWindowState = main_window::MainWindow::state_e::CLOSE_TAB;
 	this->setAllShortcutEnabledProperty(false);
-	emit updateUserInputSignal(main_window::MainWindow::text_action_e::APPEND, ":close ");
+	emit updateUserInputSignal(main_window::MainWindow::text_action_e::CLEAR);
 }
 
 void main_window::MainWindow::executeAction(int userInput) {
 	if (this->mainWindowState == main_window::MainWindow::state_e::CLOSE_TAB) {
 		this->executeActionOnTab(userInput);
-	} else if ((this->mainWindowState == main_window::MainWindow::state_e::MOVE_RIGHT_TAB) || (this->mainWindowState == main_window::MainWindow::state_e::MOVE_LEFT_TAB)) {
+	} else if ((this->mainWindowState == main_window::MainWindow::state_e::MOVE_RIGHT) || (this->mainWindowState == main_window::MainWindow::state_e::MOVE_LEFT)) {
 		this->executeActionOnOffset(userInput);
 	}
 
@@ -356,9 +356,9 @@ void main_window::MainWindow::executeAction(int userInput) {
 }
 
 void main_window::MainWindow::executeActionOnOffset(int offset) {
-	if (this->mainWindowState == main_window::MainWindow::state_e::MOVE_RIGHT_TAB) {
+	if (this->mainWindowState == main_window::MainWindow::state_e::MOVE_RIGHT) {
 		this->moveTab(offset, 1);
-	} else if (this->mainWindowState == main_window::MainWindow::state_e::MOVE_LEFT_TAB) {
+	} else if (this->mainWindowState == main_window::MainWindow::state_e::MOVE_LEFT) {
 		this->moveTab(offset, -1);
 	}
 }
@@ -435,7 +435,7 @@ void main_window::MainWindow::openNewTabSlot() {
 	QINFO_PRINT(global_types::qinfo_level_e::ZERO, mainWindowSearch,  "Search in new tab");
 	this->mainWindowState = main_window::MainWindow::state_e::OPEN_TAB;
 	this->setAllShortcutEnabledProperty(false);
-	emit updateUserInputSignal(main_window::MainWindow::text_action_e::APPEND, ":open ");
+	emit updateUserInputSignal(main_window::MainWindow::text_action_e::CLEAR);
 }
 
 void main_window::MainWindow::newSearchCurrentTab(QString search) {
@@ -460,7 +460,7 @@ void main_window::MainWindow::newSearchTabSlot() {
 	QINFO_PRINT(global_types::qinfo_level_e::ZERO, mainWindowSearch,  "Search in current tab");
 	this->mainWindowState = main_window::MainWindow::state_e::SEARCH;
 	this->setAllShortcutEnabledProperty(false);
-	emit updateUserInputSignal(main_window::MainWindow::text_action_e::APPEND, ":search ");
+	emit updateUserInputSignal(main_window::MainWindow::text_action_e::CLEAR);
 }
 
 // 
@@ -490,7 +490,7 @@ void main_window::MainWindow::keyPressEvent(QKeyEvent * event) {
 				this->addNewTab(this->userText);
 			} else if (this->mainWindowState == main_window::MainWindow::state_e::SEARCH) {
 				this->newSearchCurrentTab(this->userText);
-			} else if ((this->mainWindowState == main_window::MainWindow::state_e::CLOSE_TAB) || (this->mainWindowState == main_window::MainWindow::state_e::MOVE_RIGHT_TAB) || (this->mainWindowState == main_window::MainWindow::state_e::MOVE_LEFT_TAB)) {
+			} else if ((this->mainWindowState == main_window::MainWindow::state_e::CLOSE_TAB) || (this->mainWindowState == main_window::MainWindow::state_e::MOVE_RIGHT) || (this->mainWindowState == main_window::MainWindow::state_e::MOVE_LEFT)) {
 				this->processTabIndex(this->userText);
 			}
 			this->mainWindowState = main_window::MainWindow::state_e::IDLE;
@@ -515,7 +515,7 @@ void main_window::MainWindow::keyPressEvent(QKeyEvent * event) {
 				if ((pressedKey >= Qt::Key_Space) && (pressedKey <= Qt::Key_ydiaeresis)) {
 					emit updateUserInputSignal(main_window::MainWindow::text_action_e::APPEND, event->text());
 				}
-			} else if ((this->mainWindowState == main_window::MainWindow::state_e::CLOSE_TAB) || (this->mainWindowState == main_window::MainWindow::state_e::MOVE_RIGHT_TAB) || (this->mainWindowState == main_window::MainWindow::state_e::MOVE_LEFT_TAB)) {
+			} else if ((this->mainWindowState == main_window::MainWindow::state_e::CLOSE_TAB) || (this->mainWindowState == main_window::MainWindow::state_e::MOVE_RIGHT) || (this->mainWindowState == main_window::MainWindow::state_e::MOVE_LEFT)) {
 				if ((pressedKey >= Qt::Key_0) && (pressedKey <= Qt::Key_9)) {
 					emit updateUserInputSignal(main_window::MainWindow::text_action_e::APPEND, event->text());
 				} else {
@@ -603,5 +603,42 @@ void main_window::MainWindow::updateUserInputSlot(const main_window::MainWindow:
 			break;
 	}
 
-	this->userInputText->setText(this->userText);
+	if (this->mainWindowState != main_window::MainWindow::state_e::IDLE) {
+		QString userAction = this->getActionName();
+		QString textLabel = Q_NULLPTR;
+		textLabel.append(":" + userAction + " " + this->userText);
+
+		this->userInputText->setText(textLabel);
+	}
+}
+
+QString main_window::MainWindow::getActionName() {
+	QString actionName = Q_NULLPTR;
+	switch (this->mainWindowState) {
+		case main_window::MainWindow::state_e::IDLE:
+			actionName = "";
+			break;
+		case main_window::MainWindow::state_e::OPEN_TAB:
+			actionName = "open";
+			break;
+		case main_window::MainWindow::state_e::CLOSE_TAB:
+			actionName = "close";
+			break;
+		case main_window::MainWindow::state_e::MOVE_LEFT:
+			actionName = "move left";
+			break;
+		case main_window::MainWindow::state_e::MOVE_RIGHT:
+			actionName = "move right";
+			break;
+		case main_window::MainWindow::state_e::SEARCH:
+			actionName = "search";
+			break;
+		default:
+			actionName = "Unknown state";
+			break;
+	}
+
+	QINFO_PRINT(global_types::qinfo_level_e::ZERO, mainWindowUserInput,  "State " << this->mainWindowState << " action text " << actionName);
+
+	return actionName;
 }

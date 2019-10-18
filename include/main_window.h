@@ -95,7 +95,7 @@ namespace main_window {
 
 		Q_OBJECT
 
-		// ================================ START STATE ENUMERATION ========================================//
+		// ================================ START ENUMERATION ========================================//
 		/**
 		 * @brief states
 		 *
@@ -104,8 +104,8 @@ namespace main_window {
 			IDLE,             /**< Idle state - no user input */
 			OPEN_TAB,         /**< Open new tab */
 			CLOSE_TAB,        /**< Close tab */
-			MOVE_LEFT_TAB,    /**< Move left tab */
-			MOVE_RIGHT_TAB,   /**< Move right tab */
+			MOVE_LEFT,        /**< Move left tab */
+			MOVE_RIGHT,       /**< Move right tab */
 			SEARCH            /**< Search on same tab */
 		} state_e;
 
@@ -139,7 +139,7 @@ namespace main_window {
 		 */
 		friend QDebug & operator<< (QDebug & os, const main_window::MainWindow::text_action_e & action);
 
-		// ================================ END STATE ENUMERATION ========================================//
+		// ================================ END ENUMERATION ========================================//
 
 		public:
 
@@ -565,6 +565,15 @@ namespace main_window {
 			 * This function sets the enabled property of all shortcuts of the main window and menus of the main window
 			 */
 			void setAllShortcutEnabledProperty(bool enabled);
+
+			/**
+			 * @brief Function: QString getActionName()
+			 *
+			 * \return string with the text to display as action
+			 *
+			 * Get action name to display in the userInputText label
+			 */
+			QString getActionName();
 
 	};
 
