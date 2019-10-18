@@ -507,6 +507,7 @@ void main_window::MainWindow::keyPressEvent(QKeyEvent * event) {
 			if (this->userText.isEmpty() == 0) {
 				int endString = this->userText.count() - 1;
 				this->userText.remove(endString, 1);
+				emit updateUserInputSignal(main_window::MainWindow::text_action_e::SET, this->userText);
 			}
 			break;
 		default:
