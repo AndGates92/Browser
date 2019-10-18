@@ -446,11 +446,26 @@ void main_window::MainWindow::newSearchCurrentTab(QString search) {
 
 
 void main_window::MainWindow::newSearchTab(int index, QString search) {
-	QINFO_PRINT(global_types::qinfo_level_e::ZERO, mainWindowSearch,  "Search " << search << " in tab " << index);
-	this->tabs->setTabText(index, search);
+	QINFO_PRINT(global_types::qinfo_level_e::ZERO, mainWindowSearch,  "User input " << search << " in tab " << index);
 
 	QWebEngineView * centerWindow = (QWebEngineView *) this->tabs->widget(index);
-	centerWindow->setUrl(QUrl(main_window::defaultSearchEngine.arg(search)));
+
+	bool containsSpace = search.contains(" ");
+	int numberDots = search.count(".");
+
+	QString tabTitle = Q_NULLPTR;
+	QString Url = Q_NULLPTR;
+
+	// if contains at least 1 dot and no space, it could be a URL
+	if ((numberDots > 0) && (containsSpace == false)) {
+		tabTitle = search;
+		Url = search;
+	} else {
+		tabTitle = search;
+		Url = main_window::defaultSearchEngine.arg(search);
+	}
+	this->tabs->setTabText(index, tabTitle);
+	centerWindow->setUrl(QUrl(Url));
 
 	emit updateWebsiteSignal(index);
 }
