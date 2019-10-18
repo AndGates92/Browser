@@ -156,7 +156,8 @@ QLabel * main_window::MainWindow::newWindowLabel() {
 			"background: black; "
 			"color: white; "
 			"text-align: center; "
-			"border: none; "
+			"border-right: 1px solid black; "
+			"border-left: 1px solid black; "
 		"}"
 	);
 
