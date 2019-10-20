@@ -355,11 +355,7 @@ void main_window::MainWindow::executeAction(int userInput) {
 	int tabIndex = this->tabs->currentIndex();
 	emit updateInfoSignal(tabIndex);
 
-	int tabCount = this->tabs->count();
-
-	if (tabCount > 0) {
-		emit updateWebsiteSignal(tabIndex);
-	}
+	emit updateWebsiteSignal(tabIndex);
 }
 
 void main_window::MainWindow::executeActionOnOffset(int offset) {
@@ -591,12 +587,18 @@ void main_window::MainWindow::updateInfoSlot(int index) {
 
 void main_window::MainWindow::updateWebsiteSlot(int index) {
 
-	QWebEngineView * centerWindow = dynamic_cast<QWebEngineView *>(this->tabs->widget(index));
-	QUrl websiteUrl = centerWindow->url();
+	int tabCount = this->tabs->count();
 
-	QString websiteStr (websiteUrl.toDisplayString(QUrl::FullyDecoded));
-	QINFO_PRINT(global_types::qinfo_level_e::ZERO, mainWindowTabs,  "Set URL in websiteText to " << websiteStr);
-	this->websiteText->setText(websiteStr);
+	if (tabCount > 0) {
+		QWebEngineView * centerWindow = dynamic_cast<QWebEngineView *>(this->tabs->widget(index));
+		QUrl websiteUrl = centerWindow->url();
+
+		QString websiteStr (websiteUrl.toDisplayString(QUrl::FullyDecoded));
+		QINFO_PRINT(global_types::qinfo_level_e::ZERO, mainWindowTabs,  "Set URL in websiteText to " << websiteStr);
+		this->websiteText->setText(websiteStr);
+	} else {
+		this->websiteText->clear();
+	}
 }
 
 void main_window::MainWindow::updateUserInputSlot(const main_window::MainWindow::text_action_e action, QString text) {
@@ -625,7 +627,9 @@ void main_window::MainWindow::updateUserInputSlot(const main_window::MainWindow:
 			break;
 	}
 
-	if (this->mainWindowState != main_window::MainWindow::state_e::IDLE) {
+	if (this->mainWindowState == main_window::MainWindow::state_e::IDLE) {
+		this->userInputText->clear();
+	} else {
 		QString userAction = this->getActionName();
 		QString textLabel = Q_NULLPTR;
 		textLabel.append(":" + userAction + " " + this->userText);
