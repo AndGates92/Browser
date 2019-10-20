@@ -351,9 +351,15 @@ void main_window::MainWindow::executeAction(int userInput) {
 		this->executeActionOnOffset(userInput);
 	}
 
+
 	int tabIndex = this->tabs->currentIndex();
 	emit updateInfoSignal(tabIndex);
-	emit updateWebsiteSignal(tabIndex);
+
+	int tabCount = this->tabs->count();
+
+	if (tabCount > 0) {
+		emit updateWebsiteSignal(tabIndex);
+	}
 }
 
 void main_window::MainWindow::executeActionOnOffset(int offset) {
