@@ -234,6 +234,7 @@ void main_window::MainWindow::createTabs() {
 	connect(this, &main_window::MainWindow::updateUserInputSignal, this, &main_window::MainWindow::updateUserInputSlot);
 //	connect(this->tabs, &QTabWidget::currentChanged, this, &main_window::MainWindow::updateWebsiteSlot);
 	connect(this, &main_window::MainWindow::updateWebsiteSignal, this, &main_window::MainWindow::updateWebsiteSlot);
+	connect(this->tabs, &tab_widget::TabWidget::setShortcutEnabledPropertySignal, this, &main_window::MainWindow::setShortcutEnabledPropertySlot);
 }
 
 void main_window::MainWindow::mainWindowLayout() {
@@ -670,6 +671,10 @@ void main_window::MainWindow::updateInfoSlot(int index) {
 	this->infoText->setText(info);
 }
 #pragma GCC diagnostic pop
+
+void main_window::MainWindow::setShortcutEnabledPropertySlot (bool enabled) {
+	this->setAllShortcutEnabledProperty(enabled);
+}
 
 void main_window::MainWindow::updateWebsiteSlot(int index) {
 

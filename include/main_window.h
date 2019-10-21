@@ -325,6 +325,15 @@ namespace main_window {
 			 */
 			void setCenterWindow(QString str);
 
+			/**
+			 * @brief Function: void setShortcutEnabledPropertySlot(bool enabled)
+			 *
+			 * \param enabled: value of enabled property
+			 *
+			 * This function is the slot to set the enabled property of all shortcuts of the main window and menus of the main window
+			 */
+			void setShortcutEnabledPropertySlot(bool enabled);
+
 		private:
 
 			// main widget
