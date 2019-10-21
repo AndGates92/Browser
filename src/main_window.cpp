@@ -417,6 +417,8 @@ void main_window::MainWindow::executeActionOnOffset(int offset) {
 }
 
 void main_window::MainWindow::move(int offset, int sign) {
+
+	Q_ASSERT_X(((sign == 0) || (sign == -1) || (sign == 1)), "main window move", "sign input must be either 0 or -1 or 1");
 	// number of tabs to move by
 	int distance = 0;
 	// index is main_window::emptyUserInput if the argument is not passed
