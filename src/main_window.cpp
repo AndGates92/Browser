@@ -54,11 +54,37 @@ namespace main_window {
 			case main_window::MainWindow::state_e::MOVE_RIGHT:
 				os << "MOVE RIGHT";
 				break;
+			case main_window::MainWindow::state_e::TAB_MOVE:
+				os << "TAB MOVE";
+				break;
 			case main_window::MainWindow::state_e::SEARCH:
 				os << "SEARCH";
 				break;
 			default:
 				os << "Unknown state";
+				break;
+		}
+
+		return os;
+	}
+
+	QDebug & operator<< (QDebug & os, const main_window::MainWindow::move_value_e & value_type) {
+
+		switch (value_type) {
+			case main_window::MainWindow::move_value_e::IDLE:
+				os << "IDLE";
+				break;
+			case main_window::MainWindow::move_value_e::LEFT:
+				os << "LEFT";
+				break;
+			case main_window::MainWindow::move_value_e::RIGHT:
+				os << "RIGHT";
+				break;
+			case main_window::MainWindow::move_value_e::ABSOLUTE:
+				os << "ABSOLUTE";
+				break;
+			default:
+				os << "Unknown value type";
 				break;
 		}
 
@@ -90,6 +116,7 @@ namespace main_window {
 main_window::MainWindow::MainWindow(QWidget * parent, Qt::WindowFlags flags) : QMainWindow(parent, flags) {
 
 	this->mainWindowState = main_window::MainWindow::state_e::IDLE;
+	this->moveValueType = main_window::MainWindow::move_value_e::IDLE;
 	this->setFocusPolicy(Qt::StrongFocus);
 
 	// main widget
@@ -267,8 +294,8 @@ void main_window::MainWindow::setAllWindowShortcutEnabledProperty(bool enabled) 
 	this->openNewTabKey->setEnabled(enabled);
 	this->newSearchTabKey->setEnabled(enabled);
 	this->closeTabKey->setEnabled(enabled);
-	this->moveLeftTabKey->setEnabled(enabled);
-	this->moveRightTabKey->setEnabled(enabled);
+	this->moveLeftKey->setEnabled(enabled);
+	this->moveRightKey->setEnabled(enabled);
 }
 
 void main_window::MainWindow::setAllShortcutEnabledProperty(bool enabled) {
@@ -298,15 +325,20 @@ void main_window::MainWindow::createShortcuts() {
 	this->closeTabKey->setKey(Qt::Key_C);
 	connect(this->closeTabKey, &QShortcut::activated, this, &main_window::MainWindow::closeTabSlot);
 
-	// h will move left tab
-	this->moveLeftTabKey = new QShortcut(this);
-	this->moveLeftTabKey->setKey(Qt::Key_H);
-	connect(this->moveLeftTabKey, &QShortcut::activated, this, &main_window::MainWindow::moveLeftTabSlot);
+	// t will move left in the tab bar
+	this->moveTabToKey = new QShortcut(this);
+	this->moveTabToKey->setKey(Qt::Key_T);
+	connect(this->moveTabToKey, &QShortcut::activated, this, &main_window::MainWindow::moveTabToSlot);
 
-	// l will move right tab
-	this->moveRightTabKey = new QShortcut(this);
-	this->moveRightTabKey->setKey(Qt::Key_L);
-	connect(this->moveRightTabKey, &QShortcut::activated, this, &main_window::MainWindow::moveRightTabSlot);
+	// h will move left in the tab bar
+	this->moveLeftKey = new QShortcut(this);
+	this->moveLeftKey->setKey(Qt::Key_H);
+	connect(this->moveLeftKey, &QShortcut::activated, this, &main_window::MainWindow::moveLeftSlot);
+
+	// l will move right in the tab bar
+	this->moveRightKey = new QShortcut(this);
+	this->moveRightKey->setKey(Qt::Key_L);
+	connect(this->moveRightKey, &QShortcut::activated, this, &main_window::MainWindow::moveRightSlot);
 
 	// q will close the browser
 	this->closeKey = new QShortcut(this);
@@ -326,13 +358,19 @@ void main_window::MainWindow::closeSlot() {
 	this->close();
 }
 
-void main_window::MainWindow::moveLeftTabSlot() {
+void main_window::MainWindow::moveTabToSlot() {
+	this->mainWindowState = main_window::MainWindow::state_e::TAB_MOVE;
+	this->setAllShortcutEnabledProperty(false);
+	emit updateUserInputSignal(main_window::MainWindow::text_action_e::CLEAR);
+}
+
+void main_window::MainWindow::moveLeftSlot() {
 	this->mainWindowState = main_window::MainWindow::state_e::MOVE_LEFT;
 	this->setAllShortcutEnabledProperty(false);
 	emit updateUserInputSignal(main_window::MainWindow::text_action_e::CLEAR);
 }
 
-void main_window::MainWindow::moveRightTabSlot() {
+void main_window::MainWindow::moveRightSlot() {
 	this->mainWindowState = main_window::MainWindow::state_e::MOVE_RIGHT;
 	this->setAllShortcutEnabledProperty(false);
 	emit updateUserInputSignal(main_window::MainWindow::text_action_e::CLEAR);
@@ -349,8 +387,13 @@ void main_window::MainWindow::executeAction(int userInput) {
 		this->executeActionOnTab(userInput);
 	} else if ((this->mainWindowState == main_window::MainWindow::state_e::MOVE_RIGHT) || (this->mainWindowState == main_window::MainWindow::state_e::MOVE_LEFT)) {
 		this->executeActionOnOffset(userInput);
+	} else if (this->mainWindowState == main_window::MainWindow::state_e::TAB_MOVE) {
+	       if ((this->moveValueType == main_window::MainWindow::move_value_e::LEFT) || (this->moveValueType == main_window::MainWindow::move_value_e::RIGHT)) {
+			this->executeActionOnOffset(userInput);
+		} else if (this->moveValueType == main_window::MainWindow::move_value_e::ABSOLUTE) {
+			this->executeActionOnTab(userInput);
+		}
 	}
-
 
 	int tabIndex = this->tabs->currentIndex();
 	emit updateInfoSignal(tabIndex);
@@ -360,13 +403,19 @@ void main_window::MainWindow::executeAction(int userInput) {
 
 void main_window::MainWindow::executeActionOnOffset(int offset) {
 	if (this->mainWindowState == main_window::MainWindow::state_e::MOVE_RIGHT) {
-		this->moveTab(offset, 1);
+		this->move(offset, 1);
 	} else if (this->mainWindowState == main_window::MainWindow::state_e::MOVE_LEFT) {
-		this->moveTab(offset, -1);
+		this->move(offset, -1);
+	} else if (this->mainWindowState == main_window::MainWindow::state_e::TAB_MOVE) {
+		if (this->moveValueType == main_window::MainWindow::move_value_e::RIGHT) {
+			this->move(offset, 1);
+		} else if (this->moveValueType == main_window::MainWindow::move_value_e::LEFT) {
+			this->move(offset, -1);
+		}
 	}
 }
 
-void main_window::MainWindow::moveTab(int offset, int sign) {
+void main_window::MainWindow::move(int offset, int sign) {
 	// number of tabs to move by
 	int distance = 0;
 	// index is main_window::emptyUserInput if the argument is not passed
@@ -377,7 +426,13 @@ void main_window::MainWindow::moveTab(int offset, int sign) {
 	}
 
 	int tabCount = this->tabs->count();
-	int tabIndexDst = this->tabs->currentIndex() + (sign * distance);
+	int tabIndexCurrent = this->tabs->currentIndex();
+	int tabIndexDst = 0;
+	if (sign == 0) {
+		tabIndexDst = distance;
+	} else {
+		tabIndexDst = tabIndexCurrent + (sign * distance);
+	}
 	if (offset > tabCount) {
 		int maxTabRange = tabCount - 1;
 		qWarning(mainWindowTabs) << "Offset " << offset << " is bigger than the number of tabs " << tabCount << " Bringing tab index withing the valid range of tab (between 0 and " << maxTabRange << ")\n";
@@ -388,9 +443,13 @@ void main_window::MainWindow::moveTab(int offset, int sign) {
 	// Keep tabIndex values within valid range (0 and (tabCount -1))
 	int tabIndex = tabIndexDst % tabCount;
 
-	QINFO_PRINT(global_types::qinfo_level_e::ZERO, mainWindowTabs,  "Move to tab " << tabIndex << " distance " << distance << " action " << this->mainWindowState << " sign " << sign);
-
-	this->tabs->setCurrentIndex(tabIndex);
+	if ((this->mainWindowState == main_window::MainWindow::state_e::MOVE_RIGHT) || (this->mainWindowState == main_window::MainWindow::state_e::MOVE_LEFT)) {
+		QINFO_PRINT(global_types::qinfo_level_e::ZERO, mainWindowTabs,  "Move to tab " << tabIndex << " distance " << distance << " action " << this->mainWindowState << " sign " << sign);
+		this->tabs->setCurrentIndex(tabIndex);
+	} else if (this->mainWindowState == main_window::MainWindow::state_e::TAB_MOVE) {
+		QINFO_PRINT(global_types::qinfo_level_e::ZERO, mainWindowTabs,  "Move tab " << tabIndexCurrent << " to position " << tabIndex << " action " << this->mainWindowState << " sign " << sign);
+		this->tabs->tabBar()->moveTab(tabIndexCurrent, tabIndex);
+	}
 }
 
 
@@ -408,6 +467,8 @@ void main_window::MainWindow::executeActionOnTab(int index) {
 	if ((tabCount > tabIndex) && (tabIndex >= 0)) {
 		if (this->mainWindowState == main_window::MainWindow::state_e::CLOSE_TAB) {
 			this->closeTab(tabIndex);
+		} else if (this->mainWindowState == main_window::MainWindow::state_e::TAB_MOVE) {
+			this->move(tabIndex);
 		}
 	} else {
 		int maxTabRange = tabCount;
@@ -508,15 +569,17 @@ void main_window::MainWindow::keyPressEvent(QKeyEvent * event) {
 				this->addNewTab(this->userText);
 			} else if (this->mainWindowState == main_window::MainWindow::state_e::SEARCH) {
 				this->newSearchCurrentTab(this->userText);
-			} else if ((this->mainWindowState == main_window::MainWindow::state_e::CLOSE_TAB) || (this->mainWindowState == main_window::MainWindow::state_e::MOVE_RIGHT) || (this->mainWindowState == main_window::MainWindow::state_e::MOVE_LEFT)) {
+			} else if ((this->mainWindowState == main_window::MainWindow::state_e::CLOSE_TAB) || (this->mainWindowState == main_window::MainWindow::state_e::MOVE_RIGHT) || (this->mainWindowState == main_window::MainWindow::state_e::MOVE_LEFT) || (this->mainWindowState == main_window::MainWindow::state_e::TAB_MOVE)) {
 				this->processTabIndex(this->userText);
 			}
 			this->mainWindowState = main_window::MainWindow::state_e::IDLE;
+			this->moveValueType = main_window::MainWindow::move_value_e::IDLE;
 			this->setAllShortcutEnabledProperty(true);
 			emit updateUserInputSignal(main_window::MainWindow::text_action_e::CLEAR);
 			break;
 		case Qt::Key_Escape:
 			this->mainWindowState = main_window::MainWindow::state_e::IDLE;
+			this->moveValueType = main_window::MainWindow::move_value_e::IDLE;
 			this->setAllShortcutEnabledProperty(true);
 			emit updateUserInputSignal(main_window::MainWindow::text_action_e::CLEAR);
 			break;
@@ -538,6 +601,25 @@ void main_window::MainWindow::keyPressEvent(QKeyEvent * event) {
 					emit updateUserInputSignal(main_window::MainWindow::text_action_e::APPEND, event->text());
 				} else {
 					qWarning(mainWindowTabs) << "Pressed key " << event->text() << ". Only numbers are accepted when executing actions like closing windows or moving in the tab bar\n";
+				}
+			} else if (this->mainWindowState == main_window::MainWindow::state_e::TAB_MOVE) {
+				// If no sign is provided, the tab is considered as absolute value
+				// If + or - sign is provided, then the value is considered to be relative to the current tab
+				if ((pressedKey >= Qt::Key_0) && (pressedKey <= Qt::Key_9)) {
+					emit updateUserInputSignal(main_window::MainWindow::text_action_e::APPEND, event->text());
+					if (this->moveValueType == main_window::MainWindow::move_value_e::IDLE) {
+						this->moveValueType = main_window::MainWindow::move_value_e::ABSOLUTE;
+					}
+				} else if ((this->moveValueType == main_window::MainWindow::move_value_e::IDLE) && ((pressedKey == Qt::Key_Plus) || (pressedKey == Qt::Key_Plus))) {
+					if (pressedKey == Qt::Key_Plus) {
+						this->moveValueType = main_window::MainWindow::move_value_e::RIGHT;
+						emit updateUserInputSignal(main_window::MainWindow::text_action_e::APPEND, "right");
+					} else {
+						this->moveValueType = main_window::MainWindow::move_value_e::LEFT;
+						emit updateUserInputSignal(main_window::MainWindow::text_action_e::APPEND, "left");
+					}
+				} else {
+					qWarning(mainWindowTabs) << "Pressed key " << event->text() << ". Only numbers and + and - signs are accepted when executing actions like move tabs in the tab bar\n";
 				}
 			} else {
 				emit updateUserInputSignal(main_window::MainWindow::text_action_e::CLEAR);
@@ -655,6 +737,9 @@ QString main_window::MainWindow::getActionName() {
 			break;
 		case main_window::MainWindow::state_e::MOVE_RIGHT:
 			actionName = "move right";
+			break;
+		case main_window::MainWindow::state_e::TAB_MOVE:
+			actionName = "move tab";
 			break;
 		case main_window::MainWindow::state_e::SEARCH:
 			actionName = "search";

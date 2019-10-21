@@ -104,8 +104,9 @@ namespace main_window {
 			IDLE,             /**< Idle state - no user input */
 			OPEN_TAB,         /**< Open new tab */
 			CLOSE_TAB,        /**< Close tab */
-			MOVE_LEFT,        /**< Move left tab */
-			MOVE_RIGHT,       /**< Move right tab */
+			MOVE_LEFT,        /**< Move to tab to the left */
+			MOVE_RIGHT,       /**< Move to tab to the right */
+			TAB_MOVE,         /**< Move tab */
 			SEARCH            /**< Search on same tab */
 		} state_e;
 
@@ -118,6 +119,27 @@ namespace main_window {
 		 * Overload << operator to print state
 		 */
 		friend QDebug & operator<< (QDebug & os, const main_window::MainWindow::state_e & state);
+
+		/**
+		 * @brief states
+		 *
+		 */
+		typedef enum class move_value_list {
+			IDLE,             /**< Idle state - no user input */
+			LEFT,             /**< Left movement */
+			RIGHT,            /**< Right movement */
+			ABSOLUTE          /**< Absolute value - action on the tab index equal to value */
+		} move_value_e;
+
+		/**
+		 * @brief Function: QDebug & operator<< (QDebug & os, const main_window::MainWindow::move_value_e & value_type)
+		 *
+		 * \param os: output stream
+		 * \param state: state to print
+		 *
+		 * Overload << operator to print state
+		 */
+		friend QDebug & operator<< (QDebug & os, const main_window::MainWindow::move_value_e & value_type);
 
 		/**
 		 * @brief states
@@ -232,18 +254,25 @@ namespace main_window {
 			void closeTabSlot();
 
 			/**
-			 * @brief Function: void moveLeftTabSlot()
+			 * @brief Function: void moveLeftSlot()
 			 *
 			 * This function moves left in the tabs. It will wrap around if the number of position leads to a negative tab index
 			 */
-			void moveLeftTabSlot();
+			void moveLeftSlot();
 
 			/**
-			 * @brief Function: void moveRightTabSlot()
+			 * @brief Function: void moveRightSlot()
 			 *
 			 * This function moves right in the tabs. It will wrap around if the number of position leads to a tab index bigger than the max tab counter
 			 */
-			void moveRightTabSlot();
+			void moveRightSlot();
+
+			/**
+			 * @brief Function: void moveTabToSlot()
+			 *
+			 * This function moves tab to. It will wrap around if the number of position leads to a negative tab index
+			 */
+			void moveTabToSlot();
 
 			/**
 			 * @brief Function: void newSearchTabSlot()
@@ -355,6 +384,12 @@ namespace main_window {
 			 */
 			main_window::MainWindow::state_e mainWindowState;
 
+			/**
+			 * @brief type of value of movements in tab bar
+			 *
+			 */
+			main_window::MainWindow::move_value_e moveValueType;
+
 			// ================================ START SHORTCUTS ========================================//
 			/**
 			 * @brief shortcut to toggle visibility of the menu bar
@@ -384,13 +419,19 @@ namespace main_window {
 			 * @brief shortcut to move left in the tab bar
 			 *
 			 */
-			QShortcut * moveLeftTabKey;
+			QShortcut * moveLeftKey;
 
 			/**
 			 * @brief shortcut to move right in the tab bar
 			 *
 			 */
-			QShortcut * moveRightTabKey;
+			QShortcut * moveRightKey;
+
+			/**
+			 * @brief shortcut to move tab to the left
+			 *
+			 */
+			QShortcut * moveTabToKey;
 
 			/**
 			 * @brief shortcut to close the main window
@@ -478,14 +519,14 @@ namespace main_window {
 			void executeActionOnOffset(int offset);
 
 			/**
-			 * @brief Function: void executeActionOnOffset(int offset)
+			 * @brief Function: void move(int offset, int sign = 0)
 			 *
 			 * \param offset: offset of tab to execute action on
 			 * \param sign: direction of movement. -1 for left move and 1 for right move
 			 *
 			 * This function moves to a different tab as specified by the user
 			 */
-			void moveTab(int offset, int sign);
+			void move(int offset, int sign = 0);
 
 			/**
 			 * @brief Function: void closeTab(int index)

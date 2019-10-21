@@ -22,12 +22,13 @@ Q_LOGGING_CATEGORY(tabWidgetTabs, "tabWidget.tabs", MSG_TYPE_LEVEL)
 
 tab_widget::TabWidget::TabWidget(QWidget * parent): QTabWidget(parent) {
 	QINFO_PRINT(global_types::qinfo_level_e::ZERO, tabWidgetOverall,  "Tab widget constructor");
+	this->setMovable(true);
 	this->setFocusPolicy(Qt::StrongFocus);
 	this->setMinimumHeight(tab_widget::minHeight);
 	this->setMinimumWidth(tab_widget::minWidth);
 
-	this->tabBar = new tab_bar::TabBar(this, this->size().width());
-	this->setTabBar(this->tabBar);
+	this->bar = new tab_bar::TabBar(this, this->size().width());
+	this->setTabBar(this->bar);
 
 	connect(this, &tab_widget::TabWidget::tabNumberChange, this, &tab_widget::TabWidget::visibility);
 
@@ -40,7 +41,7 @@ void tab_widget::TabWidget::resizeEvent(QResizeEvent * event) {
 	QSize newSize(event->size());
 	QINFO_PRINT(global_types::qinfo_level_e::ZERO, tabWidgetSize,  "Tab widget resize from " << previousSize << " to " << newSize);
 	int widgetWidth = this->size().width();
-	this->tabBar->setWidth(widgetWidth);
+	this->bar->setWidth(widgetWidth);
 
 	QTabWidget::resizeEvent(event);
 }

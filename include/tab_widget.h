@@ -119,7 +119,7 @@ namespace tab_widget {
 			 * @brief tab bar
 			 *
 			 */
-			tab_bar::TabBar * tabBar;
+			tab_bar::TabBar * bar;
 
 			/**
 			 * @brief Function: void keyPressEvent(QKeyEvent * event)
