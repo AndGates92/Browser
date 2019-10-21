@@ -326,7 +326,7 @@ void main_window::MainWindow::createShortcuts() {
 	this->closeTabKey->setKey(Qt::Key_C);
 	connect(this->closeTabKey, &QShortcut::activated, this, &main_window::MainWindow::closeTabSlot);
 
-	// t will move left in the tab bar
+	// t will move tab in the tab bar
 	this->moveTabToKey = new QShortcut(this);
 	this->moveTabToKey->setKey(Qt::Key_T);
 	connect(this->moveTabToKey, &QShortcut::activated, this, &main_window::MainWindow::moveTabToSlot);
@@ -441,6 +441,7 @@ void main_window::MainWindow::move(int offset, int sign) {
 	while (tabIndexDst < 0) {
 		tabIndexDst +=  tabCount;
 	}
+
 	// Keep tabIndex values within valid range (0 and (tabCount -1))
 	int tabIndex = tabIndexDst % tabCount;
 
@@ -460,8 +461,8 @@ void main_window::MainWindow::executeActionOnTab(int index) {
 	if (index == main_window::emptyUserInput) {
 		tabIndex = this->tabs->currentIndex();
 	} else {
-		// start indexing tab to close with 1 (by default Qt starts indexig tabs with 0, therefore substract 1)
-		tabIndex = index - 1;
+		// start indexing tab to close with 0
+		tabIndex = index;
 	}
 
 	if ((tabCount > tabIndex) && (tabIndex >= 0)) {

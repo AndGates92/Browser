@@ -80,7 +80,7 @@ namespace main_window {
 		 * @brief invalid tab index - default value of optional argument index of executeActionOnTab function
 		 *
 		 */
-		const int emptyUserInput = 0;
+		const int emptyUserInput = -1;
 
 		/**
 		 * @brief default serch engine is duckduckgo
