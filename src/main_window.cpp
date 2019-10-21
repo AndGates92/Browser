@@ -610,14 +610,13 @@ void main_window::MainWindow::keyPressEvent(QKeyEvent * event) {
 					if (this->moveValueType == main_window::MainWindow::move_value_e::IDLE) {
 						this->moveValueType = main_window::MainWindow::move_value_e::ABSOLUTE;
 					}
-				} else if ((this->moveValueType == main_window::MainWindow::move_value_e::IDLE) && ((pressedKey == Qt::Key_Plus) || (pressedKey == Qt::Key_Plus))) {
+				} else if ((this->moveValueType == main_window::MainWindow::move_value_e::IDLE) && ((pressedKey == Qt::Key_Plus) || (pressedKey == Qt::Key_Minus))) {
 					if (pressedKey == Qt::Key_Plus) {
 						this->moveValueType = main_window::MainWindow::move_value_e::RIGHT;
-						emit updateUserInputSignal(main_window::MainWindow::text_action_e::APPEND, "right");
 					} else {
 						this->moveValueType = main_window::MainWindow::move_value_e::LEFT;
-						emit updateUserInputSignal(main_window::MainWindow::text_action_e::APPEND, "left");
 					}
+					emit updateUserInputSignal(main_window::MainWindow::text_action_e::CLEAR);
 				} else {
 					qWarning(mainWindowTabs) << "Pressed key " << event->text() << ". Only numbers and + and - signs are accepted when executing actions like move tabs in the tab bar\n";
 				}
@@ -740,6 +739,11 @@ QString main_window::MainWindow::getActionName() {
 			break;
 		case main_window::MainWindow::state_e::TAB_MOVE:
 			actionName = "move tab";
+			if (this->moveValueType == main_window::MainWindow::move_value_e::RIGHT) {
+				actionName.append(" right");
+			} else if (this->moveValueType == main_window::MainWindow::move_value_e::LEFT) {
+				actionName.append(" left");
+			}
 			break;
 		case main_window::MainWindow::state_e::SEARCH:
 			actionName = "search";
