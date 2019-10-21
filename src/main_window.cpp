@@ -294,6 +294,7 @@ void main_window::MainWindow::setAllWindowShortcutEnabledProperty(bool enabled) 
 	this->openNewTabKey->setEnabled(enabled);
 	this->newSearchTabKey->setEnabled(enabled);
 	this->closeTabKey->setEnabled(enabled);
+	this->moveTabToKey->setEnabled(enabled);
 	this->moveLeftKey->setEnabled(enabled);
 	this->moveRightKey->setEnabled(enabled);
 }
@@ -451,7 +452,6 @@ void main_window::MainWindow::move(int offset, int sign) {
 		this->tabs->tabBar()->moveTab(tabIndexCurrent, tabIndex);
 	}
 }
-
 
 void main_window::MainWindow::executeActionOnTab(int index) {
 	int tabIndex = main_window::emptyUserInput;
