@@ -608,13 +608,15 @@ void main_window::MainWindow::keyPressEvent(QKeyEvent * event) {
 			} else if (this->mainWindowState == main_window::MainWindow::state_e::TAB_MOVE) {
 				// If no sign is provided, the tab is considered as absolute value
 				// If + or - sign is provided, then the value is considered to be relative to the current tab
+				// If key h is pressed, then the value is considered to be relative to the current tab and considered to go to the left
+				// If key l is pressed, then the value is considered to be relative to the current tab and considered to go to the right
 				if ((pressedKey >= Qt::Key_0) && (pressedKey <= Qt::Key_9)) {
 					emit updateUserInputSignal(main_window::MainWindow::text_action_e::APPEND, event->text());
 					if (this->moveValueType == main_window::MainWindow::move_value_e::IDLE) {
 						this->moveValueType = main_window::MainWindow::move_value_e::ABSOLUTE;
 					}
-				} else if ((this->moveValueType == main_window::MainWindow::move_value_e::IDLE) && ((pressedKey == Qt::Key_Plus) || (pressedKey == Qt::Key_Minus))) {
-					if (pressedKey == Qt::Key_Plus) {
+				} else if ((this->moveValueType == main_window::MainWindow::move_value_e::IDLE) && ((pressedKey == Qt::Key_H) || (pressedKey == Qt::Key_L) || (pressedKey == Qt::Key_Plus) || (pressedKey == Qt::Key_Minus))) {
+					if ((pressedKey == Qt::Key_Plus) || (pressedKey == Qt::Key_L)) {
 						this->moveValueType = main_window::MainWindow::move_value_e::RIGHT;
 					} else {
 						this->moveValueType = main_window::MainWindow::move_value_e::LEFT;
