@@ -519,6 +519,7 @@ void main_window::MainWindow::newSearchTab(int index, QString search) {
 	QWebEngineView * centerWindow = (QWebEngineView *) this->tabs->widget(index);
 
 	bool containsSpace = search.contains(" ");
+	bool containsWww = search.contains(main_window::www);
 	int numberDots = search.count(".");
 
 	QString tabTitle = Q_NULLPTR;
@@ -526,8 +527,13 @@ void main_window::MainWindow::newSearchTab(int index, QString search) {
 
 	// if contains at least 1 dot and no space, it could be a URL
 	if ((numberDots > 0) && (containsSpace == false)) {
+		Url = main_window::https;
 		tabTitle = search;
-		Url = search;
+		if (containsWww == true) {
+			Url += search;
+		} else {
+			Url += main_window::www + search;
+		}
 	} else {
 		tabTitle = search;
 		Url = main_window::defaultSearchEngine.arg(search);
