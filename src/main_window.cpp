@@ -500,7 +500,7 @@ void main_window::MainWindow::addNewTab(QString search) {
 }
 
 void main_window::MainWindow::openNewTabSlot() {
-	QINFO_PRINT(global_types::qinfo_level_e::ZERO, mainWindowSearch,  "Search in new tab");
+	QINFO_PRINT(global_types::qinfo_level_e::ZERO, mainWindowSearch,  "Open new tab");
 	this->mainWindowState = main_window::MainWindow::state_e::OPEN_TAB;
 	this->setAllShortcutEnabledProperty(false);
 	emit updateUserInputSignal(main_window::MainWindow::text_action_e::CLEAR);
@@ -568,74 +568,79 @@ void main_window::MainWindow::keyPressEvent(QKeyEvent * event) {
 
 	int pressedKey = event->key();
 
-	QINFO_PRINT(global_types::qinfo_level_e::ZERO, mainWindowUserInput,  "State " << this->mainWindowState << " key " << event->text());
+	if (event->type() == QEvent::KeyPress) {
 
-	switch (pressedKey) {
-		case Qt::Key_Enter:
-		case Qt::Key_Return:
-			QINFO_PRINT(global_types::qinfo_level_e::ZERO, mainWindowUserInput,  "User typed text " << this->userText);
+		QINFO_PRINT(global_types::qinfo_level_e::ZERO, mainWindowUserInput,  "State " << this->mainWindowState << " key " << event->text() << " i.e. number 0x" << hex << pressedKey);
 
-			if (this->mainWindowState == main_window::MainWindow::state_e::OPEN_TAB) {
-				this->addNewTab(this->userText);
-			} else if (this->mainWindowState == main_window::MainWindow::state_e::SEARCH) {
-				this->newSearchCurrentTab(this->userText);
-			} else if ((this->mainWindowState == main_window::MainWindow::state_e::CLOSE_TAB) || (this->mainWindowState == main_window::MainWindow::state_e::MOVE_RIGHT) || (this->mainWindowState == main_window::MainWindow::state_e::MOVE_LEFT) || (this->mainWindowState == main_window::MainWindow::state_e::TAB_MOVE)) {
-				this->processTabIndex(this->userText);
-			}
-			this->mainWindowState = main_window::MainWindow::state_e::IDLE;
-			this->moveValueType = main_window::MainWindow::move_value_e::IDLE;
-			this->setAllShortcutEnabledProperty(true);
-			emit updateUserInputSignal(main_window::MainWindow::text_action_e::CLEAR);
-			break;
-		case Qt::Key_Escape:
-			this->mainWindowState = main_window::MainWindow::state_e::IDLE;
-			this->moveValueType = main_window::MainWindow::move_value_e::IDLE;
-			this->setAllShortcutEnabledProperty(true);
-			emit updateUserInputSignal(main_window::MainWindow::text_action_e::CLEAR);
-			break;
-		case Qt::Key_Backspace:
-			// Last position of the string
-			if (this->userText.isEmpty() == 0) {
-				int endString = this->userText.count() - 1;
-				this->userText.remove(endString, 1);
-				emit updateUserInputSignal(main_window::MainWindow::text_action_e::SET, this->userText);
-			}
-			break;
-		default:
-			if ((this->mainWindowState == main_window::MainWindow::state_e::OPEN_TAB) || (this->mainWindowState == main_window::MainWindow::state_e::SEARCH)) {
-				if ((pressedKey >= Qt::Key_Space) && (pressedKey <= Qt::Key_ydiaeresis)) {
-					emit updateUserInputSignal(main_window::MainWindow::text_action_e::APPEND, event->text());
+		switch (pressedKey) {
+			case Qt::Key_Enter:
+			case Qt::Key_Return:
+				QINFO_PRINT(global_types::qinfo_level_e::ZERO, mainWindowUserInput,  "User typed text " << this->userText);
+
+				if (this->mainWindowState == main_window::MainWindow::state_e::OPEN_TAB) {
+					this->addNewTab(this->userText);
+				} else if (this->mainWindowState == main_window::MainWindow::state_e::SEARCH) {
+					this->newSearchCurrentTab(this->userText);
+				} else if ((this->mainWindowState == main_window::MainWindow::state_e::CLOSE_TAB) || (this->mainWindowState == main_window::MainWindow::state_e::MOVE_RIGHT) || (this->mainWindowState == main_window::MainWindow::state_e::MOVE_LEFT) || (this->mainWindowState == main_window::MainWindow::state_e::TAB_MOVE)) {
+					this->processTabIndex(this->userText);
 				}
-			} else if ((this->mainWindowState == main_window::MainWindow::state_e::CLOSE_TAB) || (this->mainWindowState == main_window::MainWindow::state_e::MOVE_RIGHT) || (this->mainWindowState == main_window::MainWindow::state_e::MOVE_LEFT)) {
-				if ((pressedKey >= Qt::Key_0) && (pressedKey <= Qt::Key_9)) {
-					emit updateUserInputSignal(main_window::MainWindow::text_action_e::APPEND, event->text());
-				} else {
-					qWarning(mainWindowTabs) << "Pressed key " << event->text() << ". Only numbers are accepted when executing actions like closing windows or moving in the tab bar\n";
-				}
-			} else if (this->mainWindowState == main_window::MainWindow::state_e::TAB_MOVE) {
-				// If no sign is provided, the tab is considered as absolute value
-				// If + or - sign is provided, then the value is considered to be relative to the current tab
-				// If key h is pressed, then the value is considered to be relative to the current tab and considered to go to the left
-				// If key l is pressed, then the value is considered to be relative to the current tab and considered to go to the right
-				if ((pressedKey >= Qt::Key_0) && (pressedKey <= Qt::Key_9)) {
-					emit updateUserInputSignal(main_window::MainWindow::text_action_e::APPEND, event->text());
-					if (this->moveValueType == main_window::MainWindow::move_value_e::IDLE) {
-						this->moveValueType = main_window::MainWindow::move_value_e::ABSOLUTE;
-					}
-				} else if ((this->moveValueType == main_window::MainWindow::move_value_e::IDLE) && ((pressedKey == Qt::Key_H) || (pressedKey == Qt::Key_L) || (pressedKey == Qt::Key_Plus) || (pressedKey == Qt::Key_Minus))) {
-					if ((pressedKey == Qt::Key_Plus) || (pressedKey == Qt::Key_L)) {
-						this->moveValueType = main_window::MainWindow::move_value_e::RIGHT;
-					} else {
-						this->moveValueType = main_window::MainWindow::move_value_e::LEFT;
-					}
-					emit updateUserInputSignal(main_window::MainWindow::text_action_e::CLEAR);
-				} else {
-					qWarning(mainWindowTabs) << "Pressed key " << event->text() << ". Only numbers and + and - signs are accepted when executing actions like move tabs in the tab bar\n";
-				}
-			} else {
+				this->mainWindowState = main_window::MainWindow::state_e::IDLE;
+				this->moveValueType = main_window::MainWindow::move_value_e::IDLE;
+				this->setAllShortcutEnabledProperty(true);
 				emit updateUserInputSignal(main_window::MainWindow::text_action_e::CLEAR);
-			}
-			break;
+				break;
+			case Qt::Key_Escape:
+				this->mainWindowState = main_window::MainWindow::state_e::IDLE;
+				this->moveValueType = main_window::MainWindow::move_value_e::IDLE;
+				this->setAllShortcutEnabledProperty(true);
+				emit updateUserInputSignal(main_window::MainWindow::text_action_e::CLEAR);
+				break;
+			case Qt::Key_Backspace:
+				QINFO_PRINT(global_types::qinfo_level_e::ZERO, mainWindowUserInput,  "User typed text " << this->userText);
+				// Last position of the string
+				if (this->userText.isEmpty() == 0) {
+					int endString = this->userText.count() - 1;
+					this->userText.remove(endString, 1);
+					emit updateUserInputSignal(main_window::MainWindow::text_action_e::SET, this->userText);
+				}
+				break;
+			default:
+				if ((this->mainWindowState == main_window::MainWindow::state_e::OPEN_TAB) || (this->mainWindowState == main_window::MainWindow::state_e::SEARCH)) {
+					if ((pressedKey >= Qt::Key_Space) && (pressedKey <= Qt::Key_ydiaeresis)) {
+						emit updateUserInputSignal(main_window::MainWindow::text_action_e::APPEND, event->text());
+					}
+				} else if ((this->mainWindowState == main_window::MainWindow::state_e::CLOSE_TAB) || (this->mainWindowState == main_window::MainWindow::state_e::MOVE_RIGHT) || (this->mainWindowState == main_window::MainWindow::state_e::MOVE_LEFT)) {
+					if ((pressedKey >= Qt::Key_0) && (pressedKey <= Qt::Key_9)) {
+						emit updateUserInputSignal(main_window::MainWindow::text_action_e::APPEND, event->text());
+					} else {
+						qWarning(mainWindowTabs) << "Pressed key " << event->text() << ". Only numbers are accepted when executing actions like closing windows or moving in the tab bar\n";
+					}
+				} else if (this->mainWindowState == main_window::MainWindow::state_e::TAB_MOVE) {
+					// If no sign is provided, the tab is considered as absolute value
+					// If + or - sign is provided, then the value is considered to be relative to the current tab
+					// If key h is pressed, then the value is considered to be relative to the current tab and considered to go to the left
+					// If key l is pressed, then the value is considered to be relative to the current tab and considered to go to the right
+					if ((pressedKey >= Qt::Key_0) && (pressedKey <= Qt::Key_9)) {
+						emit updateUserInputSignal(main_window::MainWindow::text_action_e::APPEND, event->text());
+						if (this->moveValueType == main_window::MainWindow::move_value_e::IDLE) {
+							this->moveValueType = main_window::MainWindow::move_value_e::ABSOLUTE;
+						}
+					} else if ((this->moveValueType == main_window::MainWindow::move_value_e::IDLE) && ((pressedKey == Qt::Key_H) || (pressedKey == Qt::Key_L) || (pressedKey == Qt::Key_Plus) || (pressedKey == Qt::Key_Minus))) {
+						if ((pressedKey == Qt::Key_Plus) || (pressedKey == Qt::Key_L)) {
+							this->moveValueType = main_window::MainWindow::move_value_e::RIGHT;
+						} else {
+							this->moveValueType = main_window::MainWindow::move_value_e::LEFT;
+						}
+						emit updateUserInputSignal(main_window::MainWindow::text_action_e::CLEAR);
+					} else {
+						qWarning(mainWindowTabs) << "Pressed key " << event->text() << ". Only numbers and + and - signs are accepted when executing actions like move tabs in the tab bar\n";
+					}
+				} else {
+					emit updateUserInputSignal(main_window::MainWindow::text_action_e::CLEAR);
+				}
+				break;
+		}
+
 	}
 
 	this->mainWidget->repaint();
@@ -706,6 +711,8 @@ void main_window::MainWindow::updateUserInputSlot(const main_window::MainWindow:
 	} else {
 		textPrint.append(text);
 	}
+
+	this->userInputText->setFocus(Qt::OtherFocusReason);
 
 	QINFO_PRINT(global_types::qinfo_level_e::ZERO, mainWindowUserInput,  "Action is " << action << " for user input " << textPrint);
 	switch (action) {
