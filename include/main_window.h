@@ -113,6 +113,7 @@ namespace main_window {
 		 */
 		typedef enum class state_list {
 			IDLE,             /**< Idle state - no user input */
+			COMMAND,          /**< Typing command */
 			OPEN_TAB,         /**< Open new tab */
 			CLOSE_TAB,        /**< Close tab */
 			MOVE_LEFT,        /**< Move to tab to the left */
@@ -510,6 +511,15 @@ namespace main_window {
 			 * This function adds a new tab to the main window
 			 */
 			void addNewTab(QString search);
+
+			/**
+			 * @brief Function: void executeCommand(QString command)
+			 *
+			 * \param command: command to execute.
+			 *
+			 * This function executes a command on a based on user input
+			 */
+			void executeCommand(QString command);
 
 			/**
 			 * @brief Function: void executeAction(int userInput = main_window::emptyUserInput)

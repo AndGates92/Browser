@@ -42,6 +42,9 @@ namespace main_window {
 			case main_window::MainWindow::state_e::IDLE:
 				os << "IDLE";
 				break;
+			case main_window::MainWindow::state_e::COMMAND:
+				os << "COMMAND";
+				break;
 			case main_window::MainWindow::state_e::OPEN_TAB:
 				os << "OPEN TAB";
 				break;
@@ -512,6 +515,37 @@ void main_window::MainWindow::newSearchCurrentTab(QString search) {
 	this->newSearchTab(tabIndex, search);
 }
 
+void main_window::MainWindow::executeCommand(QString command) {
+
+	if (command.compare("open") == 0) {
+
+	}
+/*
+	// m will hide/show the menu bar
+	connect(this->toggleShowMenuBarKey, &QShortcut::activated, this, &main_window::MainWindow::toggleShowMenubarSlot);
+
+	// o will open a new tab
+	connect(this->fileMenu->openTabAction, &QAction::triggered, this, &main_window::MainWindow::openNewTabSlot);
+
+	// s will search on the current tab
+	connect(this->newSearchTabKey, &QShortcut::activated, this, &main_window::MainWindow::newSearchTabSlot);
+
+	// c will close a tab
+	connect(this->closeTabKey, &QShortcut::activated, this, &main_window::MainWindow::closeTabSlot);
+
+	// t will move tab in the tab bar
+	connect(this->moveTabToKey, &QShortcut::activated, this, &main_window::MainWindow::moveTabToSlot);
+
+	// h will move left in the tab bar
+	connect(this->moveLeftKey, &QShortcut::activated, this, &main_window::MainWindow::moveLeftSlot);
+
+	// l will move right in the tab bar
+	connect(this->moveRightKey, &QShortcut::activated, this, &main_window::MainWindow::moveRightSlot);
+
+	// q will close the browser
+	connect(this->fileMenu->exitAction, &QAction::triggered, this, &main_window::MainWindow::closeSlot);
+*/
+}
 
 void main_window::MainWindow::newSearchTab(int index, QString search) {
 	QINFO_PRINT(global_types::qinfo_level_e::ZERO, mainWindowSearch,  "User input " << search << " in tab " << index);
@@ -635,7 +669,16 @@ void main_window::MainWindow::keyPressEvent(QKeyEvent * event) {
 					} else {
 						qWarning(mainWindowTabs) << "Pressed key " << event->text() << ". Only numbers and + and - signs are accepted when executing actions like move tabs in the tab bar\n";
 					}
+				} else if (this->mainWindowState == main_window::MainWindow::state_e::COMMAND) {
+					emit updateUserInputSignal(main_window::MainWindow::text_action_e::APPEND, event->text());
+					if (pressedKey >= Qt::Key_Space) {
+						this->executeCommand(this->userText);
+					}
 				} else {
+					if (pressedKey == Qt::Key_Colon) {
+						this->mainWindowState = main_window::MainWindow::state_e::COMMAND;
+						this->setAllShortcutEnabledProperty(false);
+					}
 					emit updateUserInputSignal(main_window::MainWindow::text_action_e::CLEAR);
 				}
 				break;
@@ -734,7 +777,10 @@ void main_window::MainWindow::updateUserInputSlot(const main_window::MainWindow:
 	if (this->mainWindowState == main_window::MainWindow::state_e::IDLE) {
 		this->userInputText->clear();
 	} else {
-		QString userAction = this->getActionName();
+		QString userAction = Q_NULLPTR;
+		if (this->mainWindowState != main_window::MainWindow::state_e::COMMAND) {
+			QString userAction = this->getActionName();
+		}
 		QString textLabel = Q_NULLPTR;
 		textLabel.append(":" + userAction + " " + this->userText);
 
@@ -750,6 +796,9 @@ QString main_window::MainWindow::getActionName() {
 			break;
 		case main_window::MainWindow::state_e::OPEN_TAB:
 			actionName = "open";
+			break;
+		case main_window::MainWindow::state_e::COMMAND:
+			actionName = "command";
 			break;
 		case main_window::MainWindow::state_e::CLOSE_TAB:
 			actionName = "close";
