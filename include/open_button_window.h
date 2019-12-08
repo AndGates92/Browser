@@ -35,6 +35,10 @@ namespace open_button_window {
 		const int userFileSize = 1024;
 	}
 
+	/**
+	 * @brief OpenButtonWindow class
+	 *
+	 */
 	class OpenButtonWindow : public QDialog {
 
 		Q_OBJECT

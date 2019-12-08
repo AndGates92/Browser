@@ -48,6 +48,10 @@ namespace tab_widget {
 		const int minWidth = 100; // px
 	}
 
+	/**
+	 * @brief TabWidget class
+	 *
+	 */
 	class TabWidget : public QTabWidget {
 
 		Q_OBJECT

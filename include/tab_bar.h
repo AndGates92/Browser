@@ -44,6 +44,10 @@ namespace tab_bar {
 		const int minWidth = 50; // px
 	}
 
+	/**
+	 * @brief TabBar class
+	 *
+	 */
 	class TabBar : public QTabBar {
 
 		Q_OBJECT

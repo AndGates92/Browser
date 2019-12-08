@@ -102,6 +102,10 @@ namespace main_window {
 
 	}
 
+	/**
+	 * @brief MainWindow class
+	 *
+	 */
 	class MainWindow : public QMainWindow {
 
 		Q_OBJECT
@@ -147,9 +151,9 @@ namespace main_window {
 		 * @brief Function: QDebug & operator<< (QDebug & os, const main_window::MainWindow::move_value_e & value_type)
 		 *
 		 * \param os: output stream
-		 * \param state: state to print
+		 * \param value_type: move type
 		 *
-		 * Overload << operator to print state
+		 * Overload << operator to print the move type
 		 */
 		friend QDebug & operator<< (QDebug & os, const main_window::MainWindow::move_value_e & value_type);
 
@@ -167,9 +171,9 @@ namespace main_window {
 		 * @brief Function: QDebug & operator<< (QDebug & os, const main_window::text_action_e & action)
 		 *
 		 * \param os: output stream
-		 * \param state: state to print
+		 * \param action: action applied on the text in the status bar
 		 *
-		 * Overload << operator to print state
+		 * Overload << operator to print text action in the status bar
 		 */
 		friend QDebug & operator<< (QDebug & os, const main_window::MainWindow::text_action_e & action);
 
@@ -206,7 +210,7 @@ namespace main_window {
 			/**
 			 * @brief Function: void contextMenuEvent(QContextMenuEvent * event) override
 			 *
-			 * \param parent: event that must occur to trigger the context menu
+			 * \param event: event that must occur to trigger the context menu
 			 *
 			 * This function triggers the opening of the context menu
 			 */

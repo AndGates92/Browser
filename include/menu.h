@@ -24,6 +24,10 @@ Q_DECLARE_LOGGING_CATEGORY(menuOverall)
 
 namespace menu {
 
+	/**
+	 * @brief Menu class
+	 *
+	 */
 	class Menu : public QObject {
 
 		Q_OBJECT

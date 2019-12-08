@@ -32,6 +32,10 @@ Q_DECLARE_LOGGING_CATEGORY(fileMenuExitAction)
 
 namespace file_menu {
 
+	/**
+	 * @brief FileMenu class
+	 *
+	 */
 	class FileMenu : public menu::Menu {
 
 		Q_OBJECT

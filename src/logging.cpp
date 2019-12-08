@@ -19,20 +19,23 @@
 #include "global_macros.h"
 #include "logging.h"
 
-// QtMsgType
-// |---------------|--------|
-// | Name          | Value  |
-// |---------------|--------|
-// | QtDebugMsg    | 0      |
-// | QtInfoMsg     | 4      |
-// | QtWarningMsg  | 1      |
-// | QtCritcalMsg  | 2      |
-// | QtFatalMsg    | 3      |
-// |---------------|--------|
-// Enable messge level if:
-// - MSG_LEVEL_TYPE is set to QtInfoMsg and trying to enable QtDebugMsg
-// - MSG_LEVEL_TYPE is set to QtDebugMsg
-// - MSG_LEVEL_TYPE is not set to QtDebugMsg or QtInfoMsg and not trying to enable QtInfoMsg and MsgLevel is larger than MSG_TYPE_LEVEL
+/**
+	* @brief bottom information label height
+	* QtMsgType
+	* |---------------|--------|
+	* | Name          | Value  |
+	* |---------------|--------|
+	* | QtDebugMsg    | 0      |
+	* | QtInfoMsg     | 4      |
+	* | QtWarningMsg  | 1      |
+	* | QtCritcalMsg  | 2      |
+	* | QtFatalMsg    | 3      |
+	* |---------------|--------|
+	* Enable messge level if:
+	* - MSG_LEVEL_TYPE is set to QtInfoMsg and trying to enable QtDebugMsg
+	* - MSG_LEVEL_TYPE is set to QtDebugMsg
+	* - MSG_LEVEL_TYPE is not set to QtDebugMsg or QtInfoMsg and not trying to enable QtInfoMsg and MsgLevel is larger than MSG_TYPE_LEVEL
+*/
 #define SetMsgLevel(MsgLevel, Category) \
 	if (Category != Q_NULLPTR) { \
 		if (((MsgLevel != QtDebugMsg) && (static_cast<QtMsgType>(MSG_TYPE_LEVEL) == QtInfoMsg)) || \

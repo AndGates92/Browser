@@ -36,10 +36,11 @@ namespace logging {
 	}
 
 	/**
-	 * @brief Function: void init_graphics(int argc, char** argv)
+	 * @brief Function: void handler(QtMsgType type, const QMessageLogContext & context, const QString & message)
 	 *
-	 * \param argc: number of arguments
-	 * \param argv: value of arguments
+	 * \param type: message type
+	 * \param context: context fo the message (function, file and category)
+	 * \param message: message to be printed
 	 *
 	 * This function initialize graphics
 	 */
