@@ -779,7 +779,7 @@ void main_window::MainWindow::updateUserInputSlot(const main_window::MainWindow:
 	} else {
 		QString userAction = Q_NULLPTR;
 		if (this->mainWindowState != main_window::MainWindow::state_e::COMMAND) {
-			QString userAction = this->getActionName();
+			userAction = this->getActionName();
 		}
 		QString textLabel = Q_NULLPTR;
 		textLabel.append(":" + userAction + " " + this->userText);
