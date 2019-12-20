@@ -120,6 +120,7 @@ namespace main_window {
 			COMMAND,          /**< Typing command */
 			OPEN_TAB,         /**< Open new tab */
 			CLOSE_TAB,        /**< Close tab */
+			REFRESH_TAB,      /**< Close tab */
 			MOVE_LEFT,        /**< Move to tab to the left */
 			MOVE_RIGHT,       /**< Move to tab to the right */
 			TAB_MOVE,         /**< Move tab */
@@ -268,6 +269,13 @@ namespace main_window {
 			 * This function closes a tab
 			 */
 			void closeTabSlot();
+
+			/**
+			 * @brief Function: void refreshUrlSlot()
+			 *
+			 * This function refresh the url in a tab
+			 */
+			void refreshUrlSlot();
 
 			/**
 			 * @brief Function: void moveLeftSlot()
@@ -453,6 +461,12 @@ namespace main_window {
 			QShortcut * moveRightKey;
 
 			/**
+			 * @brief shortcut to refresh the content of a bar
+			 *
+			 */
+			QShortcut * refreshUrlKey;
+
+			/**
 			 * @brief shortcut to move tab to the left
 			 *
 			 */
@@ -561,6 +575,16 @@ namespace main_window {
 			 * This function moves to a different tab as specified by the user
 			 */
 			void move(int offset, int sign = 0);
+
+			/**
+			 * @brief Function: void refreshUrl(int offset, int sign = 0)
+			 *
+			 * \param offset: offset of tab to execute action on
+			 * \param sign: direction of movement. -1 for left move and 1 for right move
+			 *
+			 * This function refreshes a tab as specified by the user
+			 */
+			void refreshUrl(int offset, int sign = 0);
 
 			/**
 			 * @brief Function: void closeTab(int index)

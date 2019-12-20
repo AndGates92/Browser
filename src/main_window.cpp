@@ -51,6 +51,9 @@ namespace main_window {
 			case main_window::MainWindow::state_e::CLOSE_TAB:
 				os << "CLOSE TAB";
 				break;
+			case main_window::MainWindow::state_e::REFRESH_TAB:
+				os << "REFRESH TAB";
+				break;
 			case main_window::MainWindow::state_e::MOVE_LEFT:
 				os << "MOVE LEFT";
 				break;
@@ -351,6 +354,11 @@ void main_window::MainWindow::createShortcuts() {
 	connect(this->closeKey, &QShortcut::activated, this, &main_window::MainWindow::closeSlot);
 	connect(this->fileMenu->exitAction, &QAction::triggered, this, &main_window::MainWindow::closeSlot);
 
+	// r will refresh a webpage
+	this->refreshUrlKey = new QShortcut(this);
+	this->refreshUrlKey->setKey(Qt::Key_R);
+	connect(this->refreshUrlKey, &QShortcut::activated, this, &main_window::MainWindow::refreshUrlSlot);
+
 }
 
 void main_window::MainWindow::toggleShowMenubarSlot() {
@@ -383,6 +391,12 @@ void main_window::MainWindow::moveRightSlot() {
 
 void main_window::MainWindow::closeTabSlot() {
 	this->mainWindowState = main_window::MainWindow::state_e::CLOSE_TAB;
+	this->setAllShortcutEnabledProperty(false);
+	emit updateUserInputSignal(main_window::MainWindow::text_action_e::CLEAR);
+}
+
+void main_window::MainWindow::refreshUrlSlot() {
+	this->mainWindowState = main_window::MainWindow::state_e::REFRESH_TAB;
 	this->setAllShortcutEnabledProperty(false);
 	emit updateUserInputSignal(main_window::MainWindow::text_action_e::CLEAR);
 }
@@ -460,6 +474,38 @@ void main_window::MainWindow::move(int offset, int sign) {
 	}
 }
 
+void main_window::MainWindow::refreshUrl(int offset, int sign) {
+	int distance = 0;
+	// index is main_window::emptyUserInput if the argument is not passed
+	if (offset == main_window::emptyUserInput) {
+		distance = 1;
+	} else {
+		distance = offset;
+	}
+
+	int tabCount = this->tabs->count();
+	int tabIndexCurrent = this->tabs->currentIndex();
+	int tabIndexDst = 0;
+	if (sign == 0) {
+		tabIndexDst = distance;
+	} else {
+		tabIndexDst = tabIndexCurrent + (sign * distance);
+	}
+	if (offset > tabCount) {
+		int maxTabRange = tabCount - 1;
+		qWarning(mainWindowTabs) << "Offset " << offset << " is bigger than the number of tabs " << tabCount << " Bringing tab index withing the valid range of tab (between 0 and " << maxTabRange << ")\n";
+	}
+
+	// Keep tabIndex values within valid range (0 and (tabCount -1))
+	int tabIndex = tabIndexDst % tabCount;
+
+	QWebEngineView * centerWindow = dynamic_cast<QWebEngineView *>(this->tabs->widget(tabIndex));
+	QUrl currUrl = centerWindow->url();
+
+	centerWindow->setUrl(QUrl(currUrl));
+
+}
+
 void main_window::MainWindow::executeActionOnTab(int index) {
 	int tabIndex = main_window::emptyUserInput;
 	int tabCount = this->tabs->count();
@@ -476,6 +522,8 @@ void main_window::MainWindow::executeActionOnTab(int index) {
 			this->closeTab(tabIndex);
 		} else if (this->mainWindowState == main_window::MainWindow::state_e::TAB_MOVE) {
 			this->move(tabIndex);
+		} else if (this->mainWindowState == main_window::MainWindow::state_e::REFRESH_TAB) {
+			this->refreshUrl(tabIndex);
 		}
 	} else {
 		int maxTabRange = tabCount;
@@ -550,7 +598,7 @@ void main_window::MainWindow::executeCommand(QString command) {
 void main_window::MainWindow::newSearchTab(int index, QString search) {
 	QINFO_PRINT(global_types::qinfo_level_e::ZERO, mainWindowSearch,  "User input " << search << " in tab " << index);
 
-	QWebEngineView * centerWindow = (QWebEngineView *) this->tabs->widget(index);
+	QWebEngineView * centerWindow = dynamic_cast<QWebEngineView *>(this->tabs->widget(index));
 
 	bool containsSpace = search.contains(" ");
 	bool containsWww = search.contains(main_window::www);
@@ -802,6 +850,9 @@ QString main_window::MainWindow::getActionName() {
 			break;
 		case main_window::MainWindow::state_e::CLOSE_TAB:
 			actionName = "close";
+			break;
+		case main_window::MainWindow::state_e::REFRESH_TAB:
+			actionName = "refresh";
 			break;
 		case main_window::MainWindow::state_e::MOVE_LEFT:
 			actionName = "move left";
