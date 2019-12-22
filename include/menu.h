@@ -46,14 +46,16 @@ namespace menu {
 			 */
 			explicit Menu(QWidget * window = Q_NULLPTR, QMenuBar * menuBar = Q_NULLPTR, const char* menuName = "Unknown", const QKeySequence & key = QKeySequence::UnknownKey);
 
+		public slots:
+
 			/**
-			 * @brief Function: void setShortcutEnabledProperty(bool enabled)
+			 * @brief Function: void enabledPropertySlot(bool enabled)
 			 *
 			 * \param enabled: value of enabled property
 			 *
-			 * This function sets the enabled property of the menu
+			 * This function is a slot setting the enabled property of the menu
 			 */
-			void setShortcutEnabledProperty(bool enabled);
+			void enabledPropertySlot(bool enabled);
 
 		protected:
 
@@ -94,7 +96,6 @@ namespace menu {
 			const QKeySequence key;
 
 		private slots:
-
 			/**
 			 * @brief Function: void expandSlot()
 			 *
@@ -116,6 +117,16 @@ namespace menu {
 			 * This function create a shortcut for a menu
 			 */
 			void createShortcuts();
+
+			/**
+			 * @brief Function: void setEnabledProperty(bool enabled)
+			 *
+			 * \param enabled: value of enabled property
+			 *
+			 * This function sets the enabled property of the menu
+			 */
+			void setEnabledProperty(bool enabled);
+
 	};
 }
 /** @} */ // End of MenuGroup group

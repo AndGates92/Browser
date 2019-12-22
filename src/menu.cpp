@@ -48,6 +48,10 @@ void menu::Menu::expandSlot() {
 	}
 }
 
-void menu::Menu::setShortcutEnabledProperty(bool enabled) {
+void menu::Menu::setEnabledProperty(bool enabled) {
 	this->expandMenu->setEnabled(enabled);
+}
+
+void menu::Menu::enabledPropertySlot(bool enabled) {
+	this->setEnabledProperty(enabled);
 }

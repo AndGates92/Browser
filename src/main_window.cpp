@@ -34,95 +34,8 @@ Q_LOGGING_CATEGORY(mainWindowUserInput, "mainWindow.userInput", MSG_TYPE_LEVEL)
 Q_LOGGING_CATEGORY(mainWindowSearch, "mainWindow.search", MSG_TYPE_LEVEL)
 Q_LOGGING_CATEGORY(mainWindowTabs, "mainWindow.tabs", MSG_TYPE_LEVEL)
 
-namespace main_window {
-	// Overload << operator for state_e
-	QDebug & operator<< (QDebug & os, const main_window::MainWindow::state_e & state) {
-
-		switch (state) {
-			case main_window::MainWindow::state_e::IDLE:
-				os << "IDLE";
-				break;
-			case main_window::MainWindow::state_e::COMMAND:
-				os << "COMMAND";
-				break;
-			case main_window::MainWindow::state_e::OPEN_TAB:
-				os << "OPEN TAB";
-				break;
-			case main_window::MainWindow::state_e::CLOSE_TAB:
-				os << "CLOSE TAB";
-				break;
-			case main_window::MainWindow::state_e::REFRESH_TAB:
-				os << "REFRESH TAB";
-				break;
-			case main_window::MainWindow::state_e::MOVE_LEFT:
-				os << "MOVE LEFT";
-				break;
-			case main_window::MainWindow::state_e::MOVE_RIGHT:
-				os << "MOVE RIGHT";
-				break;
-			case main_window::MainWindow::state_e::TAB_MOVE:
-				os << "TAB MOVE";
-				break;
-			case main_window::MainWindow::state_e::SEARCH:
-				os << "SEARCH";
-				break;
-			default:
-				os << "Unknown state";
-				break;
-		}
-
-		return os;
-	}
-
-	QDebug & operator<< (QDebug & os, const main_window::MainWindow::move_value_e & value_type) {
-
-		switch (value_type) {
-			case main_window::MainWindow::move_value_e::IDLE:
-				os << "IDLE";
-				break;
-			case main_window::MainWindow::move_value_e::LEFT:
-				os << "LEFT";
-				break;
-			case main_window::MainWindow::move_value_e::RIGHT:
-				os << "RIGHT";
-				break;
-			case main_window::MainWindow::move_value_e::ABSOLUTE:
-				os << "ABSOLUTE";
-				break;
-			default:
-				os << "Unknown value type";
-				break;
-		}
-
-		return os;
-	}
-
-	QDebug & operator<< (QDebug & os, const main_window::MainWindow::text_action_e & action) {
-
-		switch (action) {
-			case main_window::MainWindow::text_action_e::SET:
-				os << "SET";
-				break;
-			case main_window::MainWindow::text_action_e::APPEND:
-				os << "APPEND";
-				break;
-			case main_window::MainWindow::text_action_e::CLEAR:
-				os << "CLEAR";
-				break;
-			default:
-				os << "Unknown action";
-				break;
-		}
-
-		return os;
-	}
-
-}
-
 main_window::MainWindow::MainWindow(QWidget * parent, Qt::WindowFlags flags) : QMainWindow(parent, flags) {
 
-	this->mainWindowState = main_window::MainWindow::state_e::IDLE;
-	this->moveValueType = main_window::MainWindow::move_value_e::IDLE;
 	this->setFocusPolicy(Qt::StrongFocus);
 
 	// main widget
@@ -131,14 +44,17 @@ main_window::MainWindow::MainWindow(QWidget * parent, Qt::WindowFlags flags) : Q
 	// main window body
 	this->fillMainWindow();
 
+	// Control
+	this->createCtrl();
+
 	// Menu bar
 	this->fillMenuBar();
 
+	// Connect signals and slots
+	this->connectSignals();
+
 	// main window layout
 	this->mainWindowLayout();
-
-	// Shortcuts
-	this->createShortcuts();
 
 	QString msg(tr("status bar message"));
 	this->statusBar()->showMessage(msg);
@@ -204,6 +120,7 @@ void main_window::MainWindow::fillMainWindow() {
 	// user input
 	this->userInputText = this->newWindowLabel();
 	this->userInputText->setAlignment(Qt::AlignLeft | Qt::AlignBottom);
+	this->userInputText->setFocus(Qt::OtherFocusReason);
 
 	// website URL
 	this->websiteText = this->newWindowLabel();
@@ -213,9 +130,8 @@ void main_window::MainWindow::fillMainWindow() {
 	this->infoText = this->newWindowLabel();
 	this->infoText->setAlignment(Qt::AlignRight | Qt::AlignBottom);
 
-	// Emit signal to update info label
-	int tabIndex = this->tabs->currentIndex();
-	emit updateInfoSignal(tabIndex);
+	// Update info label
+	updateInfo();
 }
 
 void main_window::MainWindow::createTabs() {
@@ -236,11 +152,8 @@ void main_window::MainWindow::createTabs() {
 
 	connect(this->tabs, &QTabWidget::currentChanged, this, &main_window::MainWindow::updateInfoSlot);
 	connect(this->tabs, &QTabWidget::tabCloseRequested, this, &main_window::MainWindow::updateInfoSlot);
-	connect(this, &main_window::MainWindow::updateInfoSignal, this, &main_window::MainWindow::updateInfoSlot);
-	connect(this, &main_window::MainWindow::updateUserInputSignal, this, &main_window::MainWindow::updateUserInputSlot);
-//	connect(this->tabs, &QTabWidget::currentChanged, this, &main_window::MainWindow::updateWebsiteSlot);
-	connect(this, &main_window::MainWindow::updateWebsiteSignal, this, &main_window::MainWindow::updateWebsiteSlot);
-	connect(this->tabs, &tab_widget::TabWidget::setShortcutEnabledPropertySignal, this, &main_window::MainWindow::setShortcutEnabledPropertySlot);
+//	connect(this->tabs, &QTabWidget::currentChanged, this->ctrl, &main_window_ctrl::MainWindowCtrl::updateWebsite);
+	connect(this->tabs, &tab_widget::TabWidget::setShortcutEnabledPropertySignal, this->ctrl, &main_window_ctrl::MainWindowCtrl::setShortcutEnabledPropertySlot);
 }
 
 void main_window::MainWindow::mainWindowLayout() {
@@ -282,8 +195,6 @@ void main_window::MainWindow::mainWindowLayout() {
 
 void main_window::MainWindow::fillMenuBar() {
 	this->fileMenu = new file_menu::FileMenu(this, this->menuBar(), "File", Qt::Key_F);
-	// When the file has been read, then show it on the screen
-	connect(this->fileMenu, &file_menu::FileMenu::updateCenterWindow, this, &main_window::MainWindow::setCenterWindow);
 	this->editMenu = new edit_menu::EditMenu(this, this->menuBar(), "Edit", Qt::Key_E);
 }
 
@@ -291,156 +202,174 @@ QMenuBar * main_window::MainWindow::getMenuBar() {
 	return this->menuBar();
 }
 
-void main_window::MainWindow::setAllMenuShortcutEnabledProperty(bool enabled) {
-	this->fileMenu->setShortcutEnabledProperty(enabled);
-	this->editMenu->setShortcutEnabledProperty(enabled);
-}
+void main_window::MainWindow::connectSignals() {
 
-void main_window::MainWindow::setAllWindowShortcutEnabledProperty(bool enabled) {
-	this->toggleShowMenuBarKey->setEnabled(enabled);
-	this->openNewTabKey->setEnabled(enabled);
-	this->newSearchTabKey->setEnabled(enabled);
-	this->closeTabKey->setEnabled(enabled);
-	this->moveTabToKey->setEnabled(enabled);
-	this->moveLeftKey->setEnabled(enabled);
-	this->moveRightKey->setEnabled(enabled);
-}
+	// When the file has been read, then show it on the screen
+	connect(this->fileMenu, &file_menu::FileMenu::updateCenterWindow, this, &main_window::MainWindow::setCenterWindow);
 
-void main_window::MainWindow::setAllShortcutEnabledProperty(bool enabled) {
-	this->setAllMenuShortcutEnabledProperty(enabled);
-	this->setAllWindowShortcutEnabledProperty(enabled);
-}
+	// open tab action
+	connect(this->fileMenu->openTabAction, &QAction::triggered, this->ctrl, &main_window_ctrl::MainWindowCtrl::openNewTabSlot);
 
-void main_window::MainWindow::createShortcuts() {
-	// m will hide/show the menu bar
-	this->toggleShowMenuBarKey = new QShortcut(this);
-	this->toggleShowMenuBarKey->setKey(Qt::Key_M);
-	connect(this->toggleShowMenuBarKey, &QShortcut::activated, this, &main_window::MainWindow::toggleShowMenubarSlot);
+	// enable/disable file menu
+	connect(this->ctrl, &main_window_ctrl::MainWindowCtrl::enabledPropertyMenuSignal, this->fileMenu, &file_menu::FileMenu::enabledPropertySlot);
 
-	// o will open a new tab
-	this->openNewTabKey = new QShortcut(this);
-	this->openNewTabKey->setKey(Qt::Key_O);
-	connect(this->openNewTabKey, &QShortcut::activated, this, &main_window::MainWindow::openNewTabSlot);
-	connect(this->fileMenu->openTabAction, &QAction::triggered, this, &main_window::MainWindow::openNewTabSlot);
+	// enable/disable edit menu
+	connect(this->ctrl, &main_window_ctrl::MainWindowCtrl::enabledPropertyMenuSignal, this->editMenu, &edit_menu::EditMenu::enabledPropertySlot);
 
-	// s will search on the current tab
-	this->newSearchTabKey = new QShortcut(this);
-	this->newSearchTabKey->setKey(Qt::Key_S);
-	connect(this->newSearchTabKey, &QShortcut::activated, this, &main_window::MainWindow::newSearchTabSlot);
+	// Update info in the info bar following action
+	connect(this->ctrl, &main_window_ctrl::MainWindowCtrl::updateInfoActionSignal, this, &main_window::MainWindow::updateInfoSlot);
 
-	// c will close a tab
-	this->closeTabKey = new QShortcut(this);
-	this->closeTabKey->setKey(Qt::Key_C);
-	connect(this->closeTabKey, &QShortcut::activated, this, &main_window::MainWindow::closeTabSlot);
+	// Update website in info bar
+	connect(this->ctrl, &main_window_ctrl::MainWindowCtrl::updateWebsiteSignal, this, &main_window::MainWindow::updateWebsite);
 
-	// t will move tab in the tab bar
-	this->moveTabToKey = new QShortcut(this);
-	this->moveTabToKey->setKey(Qt::Key_T);
-	connect(this->moveTabToKey, &QShortcut::activated, this, &main_window::MainWindow::moveTabToSlot);
+	// Add tab
+	connect(this->ctrl, &main_window_ctrl::MainWindowCtrl::addNewTabSignal, this, &main_window::MainWindow::addNewTab);
 
-	// h will move left in the tab bar
-	this->moveLeftKey = new QShortcut(this);
-	this->moveLeftKey->setKey(Qt::Key_H);
-	connect(this->moveLeftKey, &QShortcut::activated, this, &main_window::MainWindow::moveLeftSlot);
+	// Close tab
+	connect(this->ctrl, &main_window_ctrl::MainWindowCtrl::closeTabSignal, this, &main_window::MainWindow::closeTab);
 
-	// l will move right in the tab bar
-	this->moveRightKey = new QShortcut(this);
-	this->moveRightKey->setKey(Qt::Key_L);
-	connect(this->moveRightKey, &QShortcut::activated, this, &main_window::MainWindow::moveRightSlot);
+	// Move tab
+	connect(this->ctrl, &main_window_ctrl::MainWindowCtrl::moveSignal, this, &main_window::MainWindow::move);
 
-	// q will close the browser
-	this->closeKey = new QShortcut(this);
-	this->closeKey->setKey(Qt::Key_Q);
-	connect(this->closeKey, &QShortcut::activated, this, &main_window::MainWindow::closeSlot);
-	connect(this->fileMenu->exitAction, &QAction::triggered, this, &main_window::MainWindow::closeSlot);
+	// Search in current tab
+	connect(this->ctrl, &main_window_ctrl::MainWindowCtrl::searchCurrentTabSignal, this, &main_window::MainWindow::searchCurrentTab);
 
-	// r will refresh a webpage
-	this->refreshUrlKey = new QShortcut(this);
-	this->refreshUrlKey->setKey(Qt::Key_R);
-	connect(this->refreshUrlKey, &QShortcut::activated, this, &main_window::MainWindow::refreshUrlSlot);
+	// Refresh URL tab
+	connect(this->ctrl, &main_window_ctrl::MainWindowCtrl::refreshUrlSignal, this, &main_window::MainWindow::refreshUrl);
+
+	// Update user input
+	connect(this->ctrl, &main_window_ctrl::MainWindowCtrl::updateUserInputBarSignal, this, &main_window::MainWindow::updateUserInputBar);
+
+	// Close window
+	connect(this->fileMenu->exitAction, &QAction::triggered, this, &main_window::MainWindow::closeWindow);
+	connect(this->ctrl, &main_window_ctrl::MainWindowCtrl::closeWindowSignal, this, &main_window::MainWindow::closeWindow);
+
+	// show/hide menu bar
+	connect(this->ctrl, &main_window_ctrl::MainWindowCtrl::toggleShowMenubarSignal, this, &main_window::MainWindow::toggleShowMenubar);
+
+	// share current tab index
+	connect(this->ctrl, &main_window_ctrl::MainWindowCtrl::requestCurrentTabIndexSignal, this, &main_window::MainWindow::getCurrentTabIndex);
+	connect(this, &main_window::MainWindow::sendCurrentTabIndexSignal, this->ctrl, &main_window_ctrl::MainWindowCtrl::receiveCurrentTabIndex);
+
+	// share tab count
+	connect(this->ctrl, &main_window_ctrl::MainWindowCtrl::requestTabCountSignal, this, &main_window::MainWindow::getTabCount);
+	connect(this, &main_window::MainWindow::sendTabCountSignal, this->ctrl, &main_window_ctrl::MainWindowCtrl::receiveTabCount);
 
 }
 
-void main_window::MainWindow::toggleShowMenubarSlot() {
-	bool menubarVisible = this->menuBar()->isVisible();
-	this->menuBar()->setVisible(!menubarVisible);
+void main_window::MainWindow::createCtrl() {
+	// main window control class
+	this->ctrl = new main_window_ctrl::MainWindowCtrl(this, this->tabs->currentIndex(), this->tabs->count());
 }
 
-void main_window::MainWindow::closeSlot() {
-	QINFO_PRINT(global_types::qinfo_level_e::ZERO, mainWindowOverall,  "Close slot: exiting from the browser");
-	this->close();
+void main_window::MainWindow::addNewTab(QString search) {
+	QWebEngineView * centerWindow = new QWebEngineView(this->mainWidget);
+
+	QINFO_PRINT(global_types::qinfo_level_e::ZERO, mainWindowTabs,  "Open tab with label " << search);
+	int tabIndex = this->tabs->addTab(centerWindow, search);
+	this->newSearchTab(tabIndex, search);
+
+	// Move to the newly opened tab
+	this->tabs->setCurrentIndex(tabIndex);
+
+	// Update info label
+	updateInfo();
 }
 
-void main_window::MainWindow::moveTabToSlot() {
-	this->mainWindowState = main_window::MainWindow::state_e::TAB_MOVE;
-	this->setAllShortcutEnabledProperty(false);
-	emit updateUserInputSignal(main_window::MainWindow::text_action_e::CLEAR);
-}
+void main_window::MainWindow::newSearchTab(int index, QString search) {
+	QINFO_PRINT(global_types::qinfo_level_e::ZERO, mainWindowSearch,  "User input " << search << " in tab " << index);
 
-void main_window::MainWindow::moveLeftSlot() {
-	this->mainWindowState = main_window::MainWindow::state_e::MOVE_LEFT;
-	this->setAllShortcutEnabledProperty(false);
-	emit updateUserInputSignal(main_window::MainWindow::text_action_e::CLEAR);
-}
+	QWebEngineView * centerWindow = dynamic_cast<QWebEngineView *>(this->tabs->widget(index));
 
-void main_window::MainWindow::moveRightSlot() {
-	this->mainWindowState = main_window::MainWindow::state_e::MOVE_RIGHT;
-	this->setAllShortcutEnabledProperty(false);
-	emit updateUserInputSignal(main_window::MainWindow::text_action_e::CLEAR);
-}
+	bool containsSpace = search.contains(" ");
+	bool containsWww = search.contains(main_window_ctrl::www);
+	int numberDots = search.count(".");
 
-void main_window::MainWindow::closeTabSlot() {
-	this->mainWindowState = main_window::MainWindow::state_e::CLOSE_TAB;
-	this->setAllShortcutEnabledProperty(false);
-	emit updateUserInputSignal(main_window::MainWindow::text_action_e::CLEAR);
-}
+	QString tabTitle = Q_NULLPTR;
+	QString Url = Q_NULLPTR;
 
-void main_window::MainWindow::refreshUrlSlot() {
-	this->mainWindowState = main_window::MainWindow::state_e::REFRESH_TAB;
-	this->setAllShortcutEnabledProperty(false);
-	emit updateUserInputSignal(main_window::MainWindow::text_action_e::CLEAR);
-}
-
-void main_window::MainWindow::executeAction(int userInput) {
-	if (this->mainWindowState == main_window::MainWindow::state_e::CLOSE_TAB) {
-		this->executeActionOnTab(userInput);
-	} else if ((this->mainWindowState == main_window::MainWindow::state_e::MOVE_RIGHT) || (this->mainWindowState == main_window::MainWindow::state_e::MOVE_LEFT)) {
-		this->executeActionOnOffset(userInput);
-	} else if (this->mainWindowState == main_window::MainWindow::state_e::TAB_MOVE) {
-	       if ((this->moveValueType == main_window::MainWindow::move_value_e::LEFT) || (this->moveValueType == main_window::MainWindow::move_value_e::RIGHT)) {
-			this->executeActionOnOffset(userInput);
-		} else if (this->moveValueType == main_window::MainWindow::move_value_e::ABSOLUTE) {
-			this->executeActionOnTab(userInput);
+	// if contains at least 1 dot and no space, it could be a URL
+	if ((numberDots > 0) && (containsSpace == false)) {
+		Url = main_window_ctrl::https;
+		tabTitle = search;
+		if (containsWww == true) {
+			Url += search;
+		} else {
+			Url += main_window_ctrl::www + search;
 		}
+	} else {
+		tabTitle = search;
+		Url = main_window_ctrl::defaultSearchEngine.arg(search);
 	}
+	this->tabs->setTabText(index, tabTitle);
+	centerWindow->setUrl(QUrl(Url));
 
+	updateWebsite(index);
+}
+
+void main_window::MainWindow::searchCurrentTab(QString search) {
 	int tabIndex = this->tabs->currentIndex();
-	emit updateInfoSignal(tabIndex);
-
-	emit updateWebsiteSignal(tabIndex);
+	QINFO_PRINT(global_types::qinfo_level_e::ZERO, mainWindowTabs,  "Search " << search << " in tab " << tabIndex);
+	this->newSearchTab(tabIndex, search);
 }
 
-void main_window::MainWindow::executeActionOnOffset(int offset) {
-	if (this->mainWindowState == main_window::MainWindow::state_e::MOVE_RIGHT) {
-		this->move(offset, 1);
-	} else if (this->mainWindowState == main_window::MainWindow::state_e::MOVE_LEFT) {
-		this->move(offset, -1);
-	} else if (this->mainWindowState == main_window::MainWindow::state_e::TAB_MOVE) {
-		if (this->moveValueType == main_window::MainWindow::move_value_e::RIGHT) {
-			this->move(offset, 1);
-		} else if (this->moveValueType == main_window::MainWindow::move_value_e::LEFT) {
-			this->move(offset, -1);
-		}
+#pragma GCC diagnostic push
+#pragma GCC diagnostic ignored "-Wunused-parameter"
+// Function connected to both currentChanged and tabCloseRequested signals
+// In the case of currentChanged signal, index is the current tab
+// In the case of tabCloseRequested signal, index is the closed tab
+void main_window::MainWindow::updateInfoSlot(int index) {
+	updateInfo();
+}
+#pragma GCC diagnostic pop
+
+void main_window::MainWindow::updateInfo() {
+	QString info("");
+	int tabIndex = this->tabs->currentIndex() + 1;
+	int tabCount = this->tabs->count();
+	if (tabCount == 0) {
+		info.append("No tabs");
+	} else {
+		info.append("tab ");
+		info.append(QString("%1").arg(tabIndex));
+		info.append(" out of ");
+		info.append(QString("%1").arg(tabCount));
+	}
+	this->infoText->setText(info);
+}
+
+void main_window::MainWindow::updateWebsite(int index) {
+
+	int tabCount = this->tabs->count();
+
+	if (tabCount > 0) {
+		QWebEngineView * centerWindow = dynamic_cast<QWebEngineView *>(this->tabs->widget(index));
+		QUrl websiteUrl = centerWindow->url();
+
+		QString websiteStr (websiteUrl.toDisplayString(QUrl::FullyDecoded));
+		QINFO_PRINT(global_types::qinfo_level_e::ZERO, mainWindowTabs,  "Set URL in websiteText to " << websiteStr);
+		this->websiteText->setText(websiteStr);
+	} else {
+		this->websiteText->clear();
 	}
 }
 
-void main_window::MainWindow::move(int offset, int sign) {
+void main_window::MainWindow::setCenterWindow(QString str) {
+	QINFO_PRINT(global_types::qinfo_level_e::ZERO, mainWindowCenterWindow,  "Change texts in center window");
+	QINFO_PRINT(global_types::qinfo_level_e::ZERO, mainWindowCenterWindow,  str);
+	// Convert back QWidget to QLabel
+	QLabel * currentWidget = dynamic_cast<QLabel *>(this->tabs->currentWidget());
+	currentWidget->setText(str);
+	currentWidget->repaint();
+}
+
+void main_window::MainWindow::move(int offset, int sign, const main_window_shared_types::object_type_e & object) {
 
 	Q_ASSERT_X(((sign == 0) || (sign == -1) || (sign == 1)), "main window move", "sign input must be either 0 or -1 or 1");
 	// number of tabs to move by
 	int distance = 0;
-	// index is main_window::emptyUserInput if the argument is not passed
-	if (offset == main_window::emptyUserInput) {
+	// index is main_window_ctrl::emptyUserInput if the argument is not passed
+	if (offset == main_window_ctrl::emptyUserInput) {
 		distance = 1;
 	} else {
 		distance = offset;
@@ -465,19 +394,19 @@ void main_window::MainWindow::move(int offset, int sign) {
 	// Keep tabIndex values within valid range (0 and (tabCount -1))
 	int tabIndex = tabIndexDst % tabCount;
 
-	if ((this->mainWindowState == main_window::MainWindow::state_e::MOVE_RIGHT) || (this->mainWindowState == main_window::MainWindow::state_e::MOVE_LEFT)) {
-		QINFO_PRINT(global_types::qinfo_level_e::ZERO, mainWindowTabs,  "Move to tab " << tabIndex << " distance " << distance << " action " << this->mainWindowState << " sign " << sign);
+	if (object == main_window_shared_types::object_type_e::CURSOR) {
+		QINFO_PRINT(global_types::qinfo_level_e::ZERO, mainWindowTabs,  "Move to tab " << tabIndex << " distance " << distance << " on object " << object << " sign " << sign);
 		this->tabs->setCurrentIndex(tabIndex);
-	} else if (this->mainWindowState == main_window::MainWindow::state_e::TAB_MOVE) {
-		QINFO_PRINT(global_types::qinfo_level_e::ZERO, mainWindowTabs,  "Move tab " << tabIndexCurrent << " to position " << tabIndex << " action " << this->mainWindowState << " sign " << sign);
+	} else if (object == main_window_shared_types::object_type_e::TAB) {
+		QINFO_PRINT(global_types::qinfo_level_e::ZERO, mainWindowTabs,  "Move tab " << tabIndexCurrent << " to position " << tabIndex << " on object " << object << " sign " << sign);
 		this->tabs->tabBar()->moveTab(tabIndexCurrent, tabIndex);
 	}
 }
 
 void main_window::MainWindow::refreshUrl(int offset, int sign) {
 	int distance = 0;
-	// index is main_window::emptyUserInput if the argument is not passed
-	if (offset == main_window::emptyUserInput) {
+	// index is main_window_ctrl::emptyUserInput if the argument is not passed
+	if (offset == main_window_ctrl::emptyUserInput) {
 		distance = 1;
 	} else {
 		distance = offset;
@@ -506,377 +435,41 @@ void main_window::MainWindow::refreshUrl(int offset, int sign) {
 
 }
 
-void main_window::MainWindow::executeActionOnTab(int index) {
-	int tabIndex = main_window::emptyUserInput;
-	int tabCount = this->tabs->count();
-	// index is main_window::emptyUserInput if the argument is not passed
-	if (index == main_window::emptyUserInput) {
-		tabIndex = this->tabs->currentIndex();
-	} else {
-		// start indexing tab to close with 0
-		tabIndex = index;
-	}
-
-	if ((tabCount > tabIndex) && (tabIndex >= 0)) {
-		if (this->mainWindowState == main_window::MainWindow::state_e::CLOSE_TAB) {
-			this->closeTab(tabIndex);
-		} else if (this->mainWindowState == main_window::MainWindow::state_e::TAB_MOVE) {
-			this->move(tabIndex);
-		} else if (this->mainWindowState == main_window::MainWindow::state_e::REFRESH_TAB) {
-			this->refreshUrl(tabIndex);
-		}
-	} else {
-		int maxTabRange = tabCount;
-		qWarning(mainWindowTabs) << "Tab " << tabIndex << " doesn't exists. Valid range of tab is the integer number between 1 and " << maxTabRange << "\n";
-	}
-}
-
 void main_window::MainWindow::closeTab(int index) {
 	QINFO_PRINT(global_types::qinfo_level_e::ZERO, mainWindowTabs,  "Close tab " << index);
 	this->tabs->removeTab(index);
 }
 
-void main_window::MainWindow::addNewTab(QString search) {
-	QWebEngineView * centerWindow = new QWebEngineView(this->mainWidget);
-
-	QINFO_PRINT(global_types::qinfo_level_e::ZERO, mainWindowTabs,  "Open tab with label " << search);
-	int tabIndex = this->tabs->addTab(centerWindow, search);
-	this->newSearchTab(tabIndex, search);
-
-	// Move to the newly opened tab
-	this->tabs->setCurrentIndex(tabIndex);
-
-	// Emit signal to update info label
-	emit updateInfoSignal(tabIndex);
-}
-
-void main_window::MainWindow::openNewTabSlot() {
-	QINFO_PRINT(global_types::qinfo_level_e::ZERO, mainWindowSearch,  "Open new tab");
-	this->mainWindowState = main_window::MainWindow::state_e::OPEN_TAB;
-	this->setAllShortcutEnabledProperty(false);
-	emit updateUserInputSignal(main_window::MainWindow::text_action_e::CLEAR);
-}
-
-void main_window::MainWindow::newSearchCurrentTab(QString search) {
-	int tabIndex = this->tabs->currentIndex();
-	QINFO_PRINT(global_types::qinfo_level_e::ZERO, mainWindowTabs,  "Search " << search << " in tab " << tabIndex);
-	this->newSearchTab(tabIndex, search);
-}
-
-void main_window::MainWindow::executeCommand(QString command) {
-
-	if (command.compare("open") == 0) {
-
-	}
-/*
-	// m will hide/show the menu bar
-	connect(this->toggleShowMenuBarKey, &QShortcut::activated, this, &main_window::MainWindow::toggleShowMenubarSlot);
-
-	// o will open a new tab
-	connect(this->fileMenu->openTabAction, &QAction::triggered, this, &main_window::MainWindow::openNewTabSlot);
-
-	// s will search on the current tab
-	connect(this->newSearchTabKey, &QShortcut::activated, this, &main_window::MainWindow::newSearchTabSlot);
-
-	// c will close a tab
-	connect(this->closeTabKey, &QShortcut::activated, this, &main_window::MainWindow::closeTabSlot);
-
-	// t will move tab in the tab bar
-	connect(this->moveTabToKey, &QShortcut::activated, this, &main_window::MainWindow::moveTabToSlot);
-
-	// h will move left in the tab bar
-	connect(this->moveLeftKey, &QShortcut::activated, this, &main_window::MainWindow::moveLeftSlot);
-
-	// l will move right in the tab bar
-	connect(this->moveRightKey, &QShortcut::activated, this, &main_window::MainWindow::moveRightSlot);
-
-	// q will close the browser
-	connect(this->fileMenu->exitAction, &QAction::triggered, this, &main_window::MainWindow::closeSlot);
-*/
-}
-
-void main_window::MainWindow::newSearchTab(int index, QString search) {
-	QINFO_PRINT(global_types::qinfo_level_e::ZERO, mainWindowSearch,  "User input " << search << " in tab " << index);
-
-	QWebEngineView * centerWindow = dynamic_cast<QWebEngineView *>(this->tabs->widget(index));
-
-	bool containsSpace = search.contains(" ");
-	bool containsWww = search.contains(main_window::www);
-	int numberDots = search.count(".");
-
-	QString tabTitle = Q_NULLPTR;
-	QString Url = Q_NULLPTR;
-
-	// if contains at least 1 dot and no space, it could be a URL
-	if ((numberDots > 0) && (containsSpace == false)) {
-		Url = main_window::https;
-		tabTitle = search;
-		if (containsWww == true) {
-			Url += search;
-		} else {
-			Url += main_window::www + search;
-		}
+void main_window::MainWindow::updateUserInputBar(QString textLabel) {
+	if (textLabel == Q_NULLPTR) {
+		this->userInputText->clear();
 	} else {
-		tabTitle = search;
-		Url = main_window::defaultSearchEngine.arg(search);
+		this->userInputText->setText(textLabel);
 	}
-	this->tabs->setTabText(index, tabTitle);
-	centerWindow->setUrl(QUrl(Url));
-
-	emit updateWebsiteSignal(index);
 }
 
-void main_window::MainWindow::newSearchTabSlot() {
-
-	QINFO_PRINT(global_types::qinfo_level_e::ZERO, mainWindowSearch,  "Search in current tab");
-	this->mainWindowState = main_window::MainWindow::state_e::SEARCH;
-	this->setAllShortcutEnabledProperty(false);
-	emit updateUserInputSignal(main_window::MainWindow::text_action_e::CLEAR);
+void main_window::MainWindow::closeWindow() {
+	this->close();
 }
 
-// 
-void main_window::MainWindow::setCenterWindow(QString str) {
-	QINFO_PRINT(global_types::qinfo_level_e::ZERO, mainWindowCenterWindow,  "Change texts in center window");
-	QINFO_PRINT(global_types::qinfo_level_e::ZERO, mainWindowCenterWindow,  str);
-	// Convert back QWidget to QLabel
-	QLabel * currentWidget = dynamic_cast<QLabel *>(this->tabs->currentWidget());
-	currentWidget->setText(str);
-	currentWidget->repaint();
+void main_window::MainWindow::toggleShowMenubar() {
+	bool menubarVisible = this->menuBar()->isVisible();
+	this->menuBar()->setVisible(!menubarVisible);
+}
+
+void main_window::MainWindow::getCurrentTabIndex() {
+	emit sendCurrentTabIndexSignal(this->tabs->currentIndex());
+}
+
+void main_window::MainWindow::getTabCount() {
+	emit sendTabCountSignal(this->tabs->count());
 }
 
 void main_window::MainWindow::keyPressEvent(QKeyEvent * event) {
 
 	QMainWindow::keyPressEvent(event);
 
-	int pressedKey = event->key();
-
-	if (event->type() == QEvent::KeyPress) {
-
-		QINFO_PRINT(global_types::qinfo_level_e::ZERO, mainWindowUserInput,  "State " << this->mainWindowState << " key " << event->text() << " i.e. number 0x" << hex << pressedKey);
-
-		switch (pressedKey) {
-			case Qt::Key_Enter:
-			case Qt::Key_Return:
-				QINFO_PRINT(global_types::qinfo_level_e::ZERO, mainWindowUserInput,  "User typed text " << this->userText);
-
-				if (this->mainWindowState == main_window::MainWindow::state_e::OPEN_TAB) {
-					this->addNewTab(this->userText);
-				} else if (this->mainWindowState == main_window::MainWindow::state_e::SEARCH) {
-					this->newSearchCurrentTab(this->userText);
-				} else if ((this->mainWindowState == main_window::MainWindow::state_e::CLOSE_TAB) || (this->mainWindowState == main_window::MainWindow::state_e::MOVE_RIGHT) || (this->mainWindowState == main_window::MainWindow::state_e::MOVE_LEFT) || (this->mainWindowState == main_window::MainWindow::state_e::TAB_MOVE)) {
-					this->processTabIndex(this->userText);
-				}
-				this->mainWindowState = main_window::MainWindow::state_e::IDLE;
-				this->moveValueType = main_window::MainWindow::move_value_e::IDLE;
-				this->setAllShortcutEnabledProperty(true);
-				emit updateUserInputSignal(main_window::MainWindow::text_action_e::CLEAR);
-				break;
-			case Qt::Key_Escape:
-				this->mainWindowState = main_window::MainWindow::state_e::IDLE;
-				this->moveValueType = main_window::MainWindow::move_value_e::IDLE;
-				this->setAllShortcutEnabledProperty(true);
-				emit updateUserInputSignal(main_window::MainWindow::text_action_e::CLEAR);
-				break;
-			case Qt::Key_Backspace:
-				QINFO_PRINT(global_types::qinfo_level_e::ZERO, mainWindowUserInput,  "User typed text " << this->userText);
-				// Last position of the string
-				if (this->userText.isEmpty() == 0) {
-					int endString = this->userText.count() - 1;
-					this->userText.remove(endString, 1);
-					emit updateUserInputSignal(main_window::MainWindow::text_action_e::SET, this->userText);
-				}
-				break;
-			default:
-				if ((this->mainWindowState == main_window::MainWindow::state_e::OPEN_TAB) || (this->mainWindowState == main_window::MainWindow::state_e::SEARCH)) {
-					if ((pressedKey >= Qt::Key_Space) && (pressedKey <= Qt::Key_ydiaeresis)) {
-						emit updateUserInputSignal(main_window::MainWindow::text_action_e::APPEND, event->text());
-					}
-				} else if ((this->mainWindowState == main_window::MainWindow::state_e::CLOSE_TAB) || (this->mainWindowState == main_window::MainWindow::state_e::MOVE_RIGHT) || (this->mainWindowState == main_window::MainWindow::state_e::MOVE_LEFT)) {
-					if ((pressedKey >= Qt::Key_0) && (pressedKey <= Qt::Key_9)) {
-						emit updateUserInputSignal(main_window::MainWindow::text_action_e::APPEND, event->text());
-					} else {
-						qWarning(mainWindowTabs) << "Pressed key " << event->text() << ". Only numbers are accepted when executing actions like closing windows or moving in the tab bar\n";
-					}
-				} else if (this->mainWindowState == main_window::MainWindow::state_e::TAB_MOVE) {
-					// If no sign is provided, the tab is considered as absolute value
-					// If + or - sign is provided, then the value is considered to be relative to the current tab
-					// If key h is pressed, then the value is considered to be relative to the current tab and considered to go to the left
-					// If key l is pressed, then the value is considered to be relative to the current tab and considered to go to the right
-					if ((pressedKey >= Qt::Key_0) && (pressedKey <= Qt::Key_9)) {
-						emit updateUserInputSignal(main_window::MainWindow::text_action_e::APPEND, event->text());
-						if (this->moveValueType == main_window::MainWindow::move_value_e::IDLE) {
-							this->moveValueType = main_window::MainWindow::move_value_e::ABSOLUTE;
-						}
-					} else if ((this->moveValueType == main_window::MainWindow::move_value_e::IDLE) && ((pressedKey == Qt::Key_H) || (pressedKey == Qt::Key_L) || (pressedKey == Qt::Key_Plus) || (pressedKey == Qt::Key_Minus))) {
-						if ((pressedKey == Qt::Key_Plus) || (pressedKey == Qt::Key_L)) {
-							this->moveValueType = main_window::MainWindow::move_value_e::RIGHT;
-						} else {
-							this->moveValueType = main_window::MainWindow::move_value_e::LEFT;
-						}
-						emit updateUserInputSignal(main_window::MainWindow::text_action_e::CLEAR);
-					} else {
-						qWarning(mainWindowTabs) << "Pressed key " << event->text() << ". Only numbers and + and - signs are accepted when executing actions like move tabs in the tab bar\n";
-					}
-				} else if (this->mainWindowState == main_window::MainWindow::state_e::COMMAND) {
-					emit updateUserInputSignal(main_window::MainWindow::text_action_e::APPEND, event->text());
-					if (pressedKey >= Qt::Key_Space) {
-						this->executeCommand(this->userText);
-					}
-				} else {
-					if (pressedKey == Qt::Key_Colon) {
-						this->mainWindowState = main_window::MainWindow::state_e::COMMAND;
-						this->setAllShortcutEnabledProperty(false);
-					}
-					emit updateUserInputSignal(main_window::MainWindow::text_action_e::CLEAR);
-				}
-				break;
-		}
-
-	}
+	ctrl->keyPressEvent(event);
 
 	this->mainWidget->repaint();
-}
-
-void main_window::MainWindow::processTabIndex(QString userInputStr) {
-	// If indexStr is an empty string, do not pass any argument to executeAction (i.e. execute action on current tab)
-	if (userInputStr.isEmpty()) {
-		this->executeAction();
-	} else {
-		bool conversionSuccessful = false;
-		int userInputInt = userInputStr.toInt(&conversionSuccessful, 10);
-		if (conversionSuccessful == true) {
-			QINFO_PRINT(global_types::qinfo_level_e::ZERO, mainWindowUserInput,  "user input succesfully converted to integer: string " << userInputStr << " integer " << userInputInt);
-			this->executeAction(userInputInt);
-		} else {
-			qWarning(mainWindowTabs) << "tab index " << userInputStr << " is not made up by numbers only\n";
-		}
-	}
-}
-
-#pragma GCC diagnostic push
-#pragma GCC diagnostic ignored "-Wunused-parameter"
-// Function connected to both currentChanged and tabCloseRequested signals
-// In the case of currentChanged signal, index is the current tab
-// In the case of tabCloseRequested signal, index is the closed tab
-void main_window::MainWindow::updateInfoSlot(int index) {
-	QString info("");
-	int tabIndex = this->tabs->currentIndex() + 1;
-	int tabCount = this->tabs->count();
-	if (tabCount == 0) {
-		info.append("No tabs");
-	} else {
-		info.append("tab ");
-		info.append(QString("%1").arg(tabIndex));
-		info.append(" out of ");
-		info.append(QString("%1").arg(tabCount));
-	}
-	this->infoText->setText(info);
-}
-#pragma GCC diagnostic pop
-
-void main_window::MainWindow::setShortcutEnabledPropertySlot (bool enabled) {
-	this->setAllShortcutEnabledProperty(enabled);
-}
-
-void main_window::MainWindow::updateWebsiteSlot(int index) {
-
-	int tabCount = this->tabs->count();
-
-	if (tabCount > 0) {
-		QWebEngineView * centerWindow = dynamic_cast<QWebEngineView *>(this->tabs->widget(index));
-		QUrl websiteUrl = centerWindow->url();
-
-		QString websiteStr (websiteUrl.toDisplayString(QUrl::FullyDecoded));
-		QINFO_PRINT(global_types::qinfo_level_e::ZERO, mainWindowTabs,  "Set URL in websiteText to " << websiteStr);
-		this->websiteText->setText(websiteStr);
-	} else {
-		this->websiteText->clear();
-	}
-}
-
-void main_window::MainWindow::updateUserInputSlot(const main_window::MainWindow::text_action_e action, QString text) {
-
-	QString textPrint = Q_NULLPTR;
-	if (text == Q_NULLPTR) {
-		textPrint.append("Not provided");
-	} else {
-		textPrint.append(text);
-	}
-
-	this->userInputText->setFocus(Qt::OtherFocusReason);
-
-	QINFO_PRINT(global_types::qinfo_level_e::ZERO, mainWindowUserInput,  "Action is " << action << " for user input " << textPrint);
-	switch (action) {
-		case main_window::MainWindow::text_action_e::SET:
-			this->userText.clear();
-			this->userText.append(text);
-			break;
-		case main_window::MainWindow::text_action_e::APPEND:
-			this->userText.append(text);
-			break;
-		case main_window::MainWindow::text_action_e::CLEAR:
-			this->userText.clear();
-			break;
-		default:
-			qWarning(mainWindowUserInput) << "Unknown action " << action << "\n";
-			break;
-	}
-
-	if (this->mainWindowState == main_window::MainWindow::state_e::IDLE) {
-		this->userInputText->clear();
-	} else {
-		QString userAction = Q_NULLPTR;
-		if (this->mainWindowState != main_window::MainWindow::state_e::COMMAND) {
-			userAction = this->getActionName();
-		}
-		QString textLabel = Q_NULLPTR;
-		textLabel.append(":" + userAction + " " + this->userText);
-
-		this->userInputText->setText(textLabel);
-	}
-}
-
-QString main_window::MainWindow::getActionName() {
-	QString actionName = Q_NULLPTR;
-	switch (this->mainWindowState) {
-		case main_window::MainWindow::state_e::IDLE:
-			actionName = "";
-			break;
-		case main_window::MainWindow::state_e::OPEN_TAB:
-			actionName = "open";
-			break;
-		case main_window::MainWindow::state_e::COMMAND:
-			actionName = "command";
-			break;
-		case main_window::MainWindow::state_e::CLOSE_TAB:
-			actionName = "close";
-			break;
-		case main_window::MainWindow::state_e::REFRESH_TAB:
-			actionName = "refresh";
-			break;
-		case main_window::MainWindow::state_e::MOVE_LEFT:
-			actionName = "move left";
-			break;
-		case main_window::MainWindow::state_e::MOVE_RIGHT:
-			actionName = "move right";
-			break;
-		case main_window::MainWindow::state_e::TAB_MOVE:
-			actionName = "move tab";
-			if (this->moveValueType == main_window::MainWindow::move_value_e::RIGHT) {
-				actionName.append(" right");
-			} else if (this->moveValueType == main_window::MainWindow::move_value_e::LEFT) {
-				actionName.append(" left");
-			}
-			break;
-		case main_window::MainWindow::state_e::SEARCH:
-			actionName = "search";
-			break;
-		default:
-			actionName = "Unknown state";
-			break;
-	}
-
-	QINFO_PRINT(global_types::qinfo_level_e::ZERO, mainWindowUserInput,  "State " << this->mainWindowState << " action text " << actionName);
-
-	return actionName;
 }
