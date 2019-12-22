@@ -55,53 +55,53 @@ namespace edit_menu {
 		private slots:
 
 			/**
-			 * @brief Function: void undoSlot()
+			 * @brief Function: void undo()
 			 *
 			 * This function is the slot of the undo menu item
 			 */
-			void undoSlot();
+			void undo();
 			
 			/**
-			 * @brief Function: void redoSlot()
+			 * @brief Function: void redo()
 			 *
 			 * This function is the slot of the redo menu item
 			 */
-			void redoSlot();
+			void redo();
 
 			/**
-			 * @brief Function: void cutSlot()
+			 * @brief Function: void cut()
 			 *
 			 * This function is the slot of the cut menu item
 			 */
-			void cutSlot();
+			void cut();
 
 			/**
-			 * @brief Function: void copySlot()
+			 * @brief Function: void copy()
 			 *
 			 * This function is the slot of the copy menu item
 			 */
-			void copySlot();
+			void copy();
 
 			/**
-			 * @brief Function: void pasteSlot()
+			 * @brief Function: void paste()
 			 *
 			 * This function is the slot of the paste menu item
 			 */
-			void pasteSlot();
+			void paste();
 
 			/**
-			 * @brief Function: void selectAllSlot()
+			 * @brief Function: void selectAll()
 			 *
 			 * This function is the slot of the selectAll menu item
 			 */
-			void selectAllSlot();
+			void selectAll();
 
 			/**
-			 * @brief Function: void findSlot()
+			 * @brief Function: void find()
 			 *
 			 * This function is the slot of the find menu item
 			 */
-			void findSlot();
+			void find();
 
 
 		private:

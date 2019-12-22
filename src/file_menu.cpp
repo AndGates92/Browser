@@ -36,18 +36,18 @@ void file_menu::FileMenu::createActions() {
 
 	this->openAction = new QAction(tr("Open"), this);
 	this->openAction->setStatusTip(tr("Open URL"));
-	connect(this->openAction, &QAction::triggered, this, &file_menu::FileMenu::openSlot);
+	connect(this->openAction, &QAction::triggered, this, &file_menu::FileMenu::open);
 
 	this->openTabAction = new QAction(tr("OpenTab"), this);
 	this->openTabAction->setStatusTip(tr("Open Tab"));
 
 	this->saveAction = new QAction(tr("Save"), this);
 	this->saveAction->setStatusTip(tr("Save"));
-	connect(this->saveAction, &QAction::triggered, this, &file_menu::FileMenu::saveSlot);
+	connect(this->saveAction, &QAction::triggered, this, &file_menu::FileMenu::save);
 
 	this->printAction = new QAction(tr("Print"), this);
 	this->printAction->setStatusTip(tr("Print"));
-	connect(this->printAction, &QAction::triggered, this, &file_menu::FileMenu::printSlot);
+	connect(this->printAction, &QAction::triggered, this, &file_menu::FileMenu::print);
 
 	this->exitAction = new QAction(tr("Exit"), this);
 	this->exitAction->setStatusTip(tr("Exit"));
@@ -62,25 +62,25 @@ void file_menu::FileMenu::createMenu() {
 	this->winMenu->addAction(exitAction);
 }
 
-void file_menu::FileMenu::openSlot() {
+void file_menu::FileMenu::open() {
 	QINFO_PRINT(global_types::qinfo_level_e::ZERO, fileMenuOpenAction,  "Open slot: connect signal from open window to slot seding signal to the main window");
 
 	this->openWindow = new open_button_window::OpenButtonWindow(this->window, Qt::Dialog);
-	connect(this->openWindow, &open_button_window::OpenButtonWindow::fileRead, this, &file_menu::FileMenu::updateCenterWindowSlot);
+	connect(this->openWindow, &open_button_window::OpenButtonWindow::fileRead, this, &file_menu::FileMenu::updateCenterWindow);
 	this->openWindow->exec();
 }
 
-void file_menu::FileMenu::saveSlot() {
+void file_menu::FileMenu::save() {
 	QINFO_PRINT(global_types::qinfo_level_e::ZERO, fileMenuSaveAction,  "Save slot: saving web page to disk");
 
 }
 
-void file_menu::FileMenu::printSlot() {
+void file_menu::FileMenu::print() {
 	QINFO_PRINT(global_types::qinfo_level_e::ZERO, fileMenuPrintAction,  "Print slot: printing web page");
 
 }
 
-void file_menu::FileMenu::updateCenterWindowSlot(QString & content) {
+void file_menu::FileMenu::updateCenterWindow(QString & content) {
 	QINFO_PRINT(global_types::qinfo_level_e::ZERO, fileMenuOpenAction,  "Send signal to main window to update the center window");
-	emit this->updateCenterWindow(content);
+	emit this->updateCenterWindowSignal(content);
 }

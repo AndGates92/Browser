@@ -52,7 +52,7 @@ open_button_window::OpenButtonWindow::~OpenButtonWindow() {
 	delete cancelButton;
 }
 
-void open_button_window::OpenButtonWindow::openSlot() {
+void open_button_window::OpenButtonWindow::open() {
 	QString filename(text->displayText());
 
 	// Do not try to open and read file if the name is empty
@@ -90,7 +90,7 @@ void open_button_window::OpenButtonWindow::openSlot() {
 	this->close();
 }
 
-void open_button_window::OpenButtonWindow::browseSlot() {
+void open_button_window::OpenButtonWindow::browse() {
 	QINFO_PRINT(global_types::qinfo_level_e::ZERO, openButtonWindowOpen,  "Browsing files");
 	QFileDialog * fileBrowser = new QFileDialog(this, Qt::Popup);
 	fileBrowser->setOption(QFileDialog::DontResolveSymlinks, true);
@@ -100,7 +100,7 @@ void open_button_window::OpenButtonWindow::browseSlot() {
 	this->text->setText(filename);
 }
 
-void open_button_window::OpenButtonWindow::cancelSlot() {
+void open_button_window::OpenButtonWindow::cancel() {
 	QINFO_PRINT(global_types::qinfo_level_e::ZERO, openButtonWindowCancel,  "Deleting dialog as Cancel button has been clicked");
 	this->close();
 }
@@ -155,9 +155,9 @@ void open_button_window::OpenButtonWindow::fillWindow() {
 	this->text->setPlaceholderText(tr("<URL or file to open>"));
 
 	this->openButton = new QPushButton("Open", this);
-	connect(this->openButton, &QPushButton::pressed, this, &open_button_window::OpenButtonWindow::openSlot);
+	connect(this->openButton, &QPushButton::pressed, this, &open_button_window::OpenButtonWindow::open);
 	this->browseButton = new QPushButton("Browse", this);
-	connect(this->browseButton, &QPushButton::pressed, this, &open_button_window::OpenButtonWindow::browseSlot);
+	connect(this->browseButton, &QPushButton::pressed, this, &open_button_window::OpenButtonWindow::browse);
 	this->cancelButton = new QPushButton("Cancel", this);
-	connect(this->cancelButton, &QPushButton::released, this, &open_button_window::OpenButtonWindow::cancelSlot);
+	connect(this->cancelButton, &QPushButton::released, this, &open_button_window::OpenButtonWindow::cancel);
 }

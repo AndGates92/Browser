@@ -36,11 +36,11 @@ void menu::Menu::createShortcuts() {
 	// Do not bind key if it is not set
 	if (this->key != QKeySequence::UnknownKey) {
 		this->expandMenu->setKey(this->key);
-		connect(this->expandMenu, &QShortcut::activated, this, &menu::Menu::expandSlot);
+		connect(this->expandMenu, &QShortcut::activated, this, &menu::Menu::expand);
 	}
 }
 
-void menu::Menu::expandSlot() {
+void menu::Menu::expand() {
 	// menu is expanded only if menu bar is visible
 	if (this->menuBar->isVisible()) {
 		QINFO_PRINT(global_types::qinfo_level_e::ZERO, menuOverall, "Expand menu " << this->menuName << " because shortcut key " << this->key.toString() << " has been pressed");
@@ -50,8 +50,4 @@ void menu::Menu::expandSlot() {
 
 void menu::Menu::setEnabledProperty(bool enabled) {
 	this->expandMenu->setEnabled(enabled);
-}
-
-void menu::Menu::enabledPropertySlot(bool enabled) {
-	this->setEnabledProperty(enabled);
 }

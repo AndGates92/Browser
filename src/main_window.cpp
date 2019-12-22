@@ -150,10 +150,6 @@ void main_window::MainWindow::createTabs() {
 		"}"
 	);
 
-	connect(this->tabs, &QTabWidget::currentChanged, this, &main_window::MainWindow::updateInfoSlot);
-	connect(this->tabs, &QTabWidget::tabCloseRequested, this, &main_window::MainWindow::updateInfoSlot);
-//	connect(this->tabs, &QTabWidget::currentChanged, this->ctrl, &main_window_ctrl::MainWindowCtrl::updateWebsite);
-	connect(this->tabs, &tab_widget::TabWidget::setShortcutEnabledPropertySignal, this->ctrl, &main_window_ctrl::MainWindowCtrl::setShortcutEnabledPropertySlot);
 }
 
 void main_window::MainWindow::mainWindowLayout() {
@@ -205,19 +201,19 @@ QMenuBar * main_window::MainWindow::getMenuBar() {
 void main_window::MainWindow::connectSignals() {
 
 	// When the file has been read, then show it on the screen
-	connect(this->fileMenu, &file_menu::FileMenu::updateCenterWindow, this, &main_window::MainWindow::setCenterWindow);
+	connect(this->fileMenu, &file_menu::FileMenu::updateCenterWindowSignal, this, &main_window::MainWindow::setCenterWindow);
 
 	// open tab action
-	connect(this->fileMenu->openTabAction, &QAction::triggered, this->ctrl, &main_window_ctrl::MainWindowCtrl::openNewTabSlot);
+	connect(this->fileMenu->openTabAction, &QAction::triggered, this->ctrl, &main_window_ctrl::MainWindowCtrl::openNewTab);
 
 	// enable/disable file menu
-	connect(this->ctrl, &main_window_ctrl::MainWindowCtrl::enabledPropertyMenuSignal, this->fileMenu, &file_menu::FileMenu::enabledPropertySlot);
+	connect(this->ctrl, &main_window_ctrl::MainWindowCtrl::enabledPropertyMenuSignal, this->fileMenu, &file_menu::FileMenu::setEnabledProperty);
 
 	// enable/disable edit menu
-	connect(this->ctrl, &main_window_ctrl::MainWindowCtrl::enabledPropertyMenuSignal, this->editMenu, &edit_menu::EditMenu::enabledPropertySlot);
+	connect(this->ctrl, &main_window_ctrl::MainWindowCtrl::enabledPropertyMenuSignal, this->editMenu, &edit_menu::EditMenu::setEnabledProperty);
 
 	// Update info in the info bar following action
-	connect(this->ctrl, &main_window_ctrl::MainWindowCtrl::updateInfoActionSignal, this, &main_window::MainWindow::updateInfoSlot);
+	connect(this->ctrl, &main_window_ctrl::MainWindowCtrl::updateInfoActionSignal, this, &main_window::MainWindow::updateInfo);
 
 	// Update website in info bar
 	connect(this->ctrl, &main_window_ctrl::MainWindowCtrl::updateWebsiteSignal, this, &main_window::MainWindow::updateWebsite);
@@ -255,6 +251,13 @@ void main_window::MainWindow::connectSignals() {
 	connect(this->ctrl, &main_window_ctrl::MainWindowCtrl::requestTabCountSignal, this, &main_window::MainWindow::getTabCount);
 	connect(this, &main_window::MainWindow::sendTabCountSignal, this->ctrl, &main_window_ctrl::MainWindowCtrl::receiveTabCount);
 
+	// Update info bar
+	connect(this->tabs, &QTabWidget::currentChanged, this, &main_window::MainWindow::updateInfoSlot);
+	connect(this->tabs, &QTabWidget::tabCloseRequested, this, &main_window::MainWindow::updateInfoSlot);
+//	connect(this->tabs, &QTabWidget::currentChanged, this->ctrl, &main_window_ctrl::MainWindowCtrl::updateWebsite);
+
+	// Disable/Enable menu shortcuts
+	connect(this->tabs, &tab_widget::TabWidget::setShortcutEnabledPropertySignal, this->ctrl, &main_window_ctrl::MainWindowCtrl::setShortcutEnabledProperty);
 }
 
 void main_window::MainWindow::createCtrl() {

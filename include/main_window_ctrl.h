@@ -157,20 +157,20 @@ namespace main_window_ctrl {
 		public slots:
 
 			/**
-			 * @brief Function: void openNewTabSlot()
+			 * @brief Function: void openNewTab()
 			 *
 			 * This function opens a new tab
 			 */
-			void openNewTabSlot();
+			void openNewTab();
 
 			/**
-			 * @brief Function: void setShortcutEnabledPropertySlot(bool enabled)
+			 * @brief Function: void setShortcutEnabledProperty(bool enabled)
 			 *
 			 * \param enabled: value of enabled property
 			 *
 			 * This function is the slot to set the enabled property of all shortcuts of the main window and menus of the main window
 			 */
-			void setShortcutEnabledPropertySlot(bool enabled);
+			void setShortcutEnabledProperty(bool enabled);
 
 			/**
 			 * @brief Function: void receiveCurrentTabIndex(int tabIndex)
@@ -316,60 +316,60 @@ namespace main_window_ctrl {
 		private slots:
 
 			/**
-			 * @brief Function: void closeSlot()
+			 * @brief Function: void close()
 			 *
 			 * This function closes the main window
 			 */
-			void closeWindowSlot();
+			void closeWindow();
 
 			/**
-			 * @brief Function: void refreshUrlSlot()
+			 * @brief Function: void refreshUrl()
 			 *
 			 * This function refresh the url in a tab
 			 */
-			void refreshUrlSlot();
+			void refreshUrl();
 
 			/**
-			 * @brief Function: void moveLeftSlot()
+			 * @brief Function: void moveLeft()
 			 *
 			 * This function moves left in the tabs. It will wrap around if the number of position leads to a negative tab index
 			 */
-			void moveLeftSlot();
+			void moveLeft();
 
 			/**
-			 * @brief Function: void moveRightSlot()
+			 * @brief Function: void moveRight()
 			 *
 			 * This function moves right in the tabs. It will wrap around if the number of position leads to a tab index bigger than the max tab counter
 			 */
-			void moveRightSlot();
+			void moveRight();
 
 			/**
-			 * @brief Function: void moveTabToSlot()
+			 * @brief Function: void moveTabTo()
 			 *
 			 * This function moves tab to. It will wrap around if the number of position leads to a negative tab index
 			 */
-			void moveTabToSlot();
+			void moveTabTo();
 
 			/**
-			 * @brief Function: void newSearchTabSlot()
+			 * @brief Function: void newSearchTab()
 			 *
 			 * This function changes the title of a tab
 			 */
-			void newSearchTabSlot();
+			void newSearchTab();
 
 			/**
-			 * @brief Function: void toggleShowMenubarSlot()
+			 * @brief Function: void toggleShowMenubar()
 			 *
 			 * This function is the slot to show/hide the menubar
 			 */
-			void toggleShowMenubarSlot();
+			void toggleShowMenubar();
 
 			/**
-			 * @brief Function: void closeTabSlot()
+			 * @brief Function: void closeTab()
 			 *
 			 * This function closes a tab
 			 */
-			void closeTabSlot();
+			void closeTab();
 
 		private:
 

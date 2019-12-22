@@ -83,34 +83,34 @@ namespace file_menu {
 		private slots:
 
 			/**
-			 * @brief Function: void undoSlot()
+			 * @brief Function: void undo()
 			 *
 			 * This function is the slot of the undo menu item
 			 */
-			void openSlot();
+			void open();
 
 			/**
-			 * @brief Function: void saveSlot()
+			 * @brief Function: void save()
 			 *
 			 * This function is the slot of the save menu item
 			 */
-			void saveSlot();
+			void save();
 
 			/**
-			 * @brief Function: void printSlot()
+			 * @brief Function: void print()
 			 *
 			 * This function is the slot of the print menu item
 			 */
-			void printSlot();
+			void print();
 
 			/**
-			 * @brief Function: void updateCenterWindowSlot(QString & content)
+			 * @brief Function: void updateCenterWindow(QString & content)
 			 *
 			 * \param content: content of the file read
 			 *
 			 * This function is a slot to emit the signal informing the main window that the center window must be updated
 			 */
-			void updateCenterWindowSlot(QString & content);
+			void updateCenterWindow(QString & content);
 
 		private:
 
@@ -142,14 +142,13 @@ namespace file_menu {
 
 		signals:
 			/**
-			 * @brief Function: void updateCenterWindow(QString & content)
+			 * @brief Function: void updateCenterWindowSignal(QString & content)
 			 *
 			 * \param content: content of the file read
 			 *
 			 * This function is a signal to inform the main window that the center window must be updated
 			 */
-			void updateCenterWindow(QString & content);
-
+			void updateCenterWindowSignal(QString & content);
 
 	};
 }

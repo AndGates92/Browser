@@ -146,47 +146,47 @@ void main_window_ctrl::MainWindowCtrl::createShortcuts() {
 	// m will hide/show the menu bar
 	this->toggleShowMenuBarKey = new QShortcut(parent);
 	this->toggleShowMenuBarKey->setKey(Qt::Key_M);
-	connect(this->toggleShowMenuBarKey, &QShortcut::activated, this, &main_window_ctrl::MainWindowCtrl::toggleShowMenubarSlot);
+	connect(this->toggleShowMenuBarKey, &QShortcut::activated, this, &main_window_ctrl::MainWindowCtrl::toggleShowMenubar);
 
 	// o will open a new tab
 	this->openNewTabKey = new QShortcut(parent);
 	this->openNewTabKey->setKey(Qt::Key_O);
-	connect(this->openNewTabKey, &QShortcut::activated, this, &main_window_ctrl::MainWindowCtrl::openNewTabSlot);
+	connect(this->openNewTabKey, &QShortcut::activated, this, &main_window_ctrl::MainWindowCtrl::openNewTab);
 
 	// s will search on the current tab
 	this->newSearchTabKey = new QShortcut(parent);
 	this->newSearchTabKey->setKey(Qt::Key_S);
-	connect(this->newSearchTabKey, &QShortcut::activated, this, &main_window_ctrl::MainWindowCtrl::newSearchTabSlot);
+	connect(this->newSearchTabKey, &QShortcut::activated, this, &main_window_ctrl::MainWindowCtrl::newSearchTab);
 
 	// c will close a tab
 	this->closeTabKey = new QShortcut(parent);
 	this->closeTabKey->setKey(Qt::Key_C);
-	connect(this->closeTabKey, &QShortcut::activated, this, &main_window_ctrl::MainWindowCtrl::closeTabSlot);
+	connect(this->closeTabKey, &QShortcut::activated, this, &main_window_ctrl::MainWindowCtrl::closeTab);
 
 	// t will move tab in the tab bar
 	this->moveTabToKey = new QShortcut(parent);
 	this->moveTabToKey->setKey(Qt::Key_T);
-	connect(this->moveTabToKey, &QShortcut::activated, this, &main_window_ctrl::MainWindowCtrl::moveTabToSlot);
+	connect(this->moveTabToKey, &QShortcut::activated, this, &main_window_ctrl::MainWindowCtrl::moveTabTo);
 
 	// h will move left in the tab bar
 	this->moveLeftKey = new QShortcut(parent);
 	this->moveLeftKey->setKey(Qt::Key_H);
-	connect(this->moveLeftKey, &QShortcut::activated, this, &main_window_ctrl::MainWindowCtrl::moveLeftSlot);
+	connect(this->moveLeftKey, &QShortcut::activated, this, &main_window_ctrl::MainWindowCtrl::moveLeft);
 
 	// l will move right in the tab bar
 	this->moveRightKey = new QShortcut(parent);
 	this->moveRightKey->setKey(Qt::Key_L);
-	connect(this->moveRightKey, &QShortcut::activated, this, &main_window_ctrl::MainWindowCtrl::moveRightSlot);
+	connect(this->moveRightKey, &QShortcut::activated, this, &main_window_ctrl::MainWindowCtrl::moveRight);
 
 	// q will close the browser
 	this->closeKey = new QShortcut(parent);
 	this->closeKey->setKey(Qt::Key_Q);
-	connect(this->closeKey, &QShortcut::activated, this, &main_window_ctrl::MainWindowCtrl::closeWindowSlot);
+	connect(this->closeKey, &QShortcut::activated, this, &main_window_ctrl::MainWindowCtrl::closeWindow);
 
 	// r will refresh a webpage
 	this->refreshUrlKey = new QShortcut(parent);
 	this->refreshUrlKey->setKey(Qt::Key_R);
-	connect(this->refreshUrlKey, &QShortcut::activated, this, &main_window_ctrl::MainWindowCtrl::refreshUrlSlot);
+	connect(this->refreshUrlKey, &QShortcut::activated, this, &main_window_ctrl::MainWindowCtrl::refreshUrl);
 
 }
 
@@ -194,40 +194,40 @@ void main_window_ctrl::MainWindowCtrl::connectSignals() {
 
 }
 
-void main_window_ctrl::MainWindowCtrl::toggleShowMenubarSlot() {
+void main_window_ctrl::MainWindowCtrl::toggleShowMenubar() {
 	emit toggleShowMenubarSignal();
 }
 
-void main_window_ctrl::MainWindowCtrl::closeWindowSlot() {
+void main_window_ctrl::MainWindowCtrl::closeWindow() {
 	QINFO_PRINT(global_types::qinfo_level_e::ZERO, mainWindowCtrlOverall,  "Close slot: exiting from the browser");
 	emit closeWindowSignal();
 }
 
-void main_window_ctrl::MainWindowCtrl::moveTabToSlot() {
+void main_window_ctrl::MainWindowCtrl::moveTabTo() {
 	this->mainWindowState = main_window_ctrl::MainWindowCtrl::state_e::TAB_MOVE;
 	this->setAllShortcutEnabledProperty(false);
 	formUserInputStr(main_window_ctrl::MainWindowCtrl::text_action_e::CLEAR);
 }
 
-void main_window_ctrl::MainWindowCtrl::moveLeftSlot() {
+void main_window_ctrl::MainWindowCtrl::moveLeft() {
 	this->mainWindowState = main_window_ctrl::MainWindowCtrl::state_e::MOVE_LEFT;
 	this->setAllShortcutEnabledProperty(false);
 	formUserInputStr(main_window_ctrl::MainWindowCtrl::text_action_e::CLEAR);
 }
 
-void main_window_ctrl::MainWindowCtrl::moveRightSlot() {
+void main_window_ctrl::MainWindowCtrl::moveRight() {
 	this->mainWindowState = main_window_ctrl::MainWindowCtrl::state_e::MOVE_RIGHT;
 	this->setAllShortcutEnabledProperty(false);
 	formUserInputStr(main_window_ctrl::MainWindowCtrl::text_action_e::CLEAR);
 }
 
-void main_window_ctrl::MainWindowCtrl::closeTabSlot() {
+void main_window_ctrl::MainWindowCtrl::closeTab() {
 	this->mainWindowState = main_window_ctrl::MainWindowCtrl::state_e::CLOSE_TAB;
 	this->setAllShortcutEnabledProperty(false);
 	formUserInputStr(main_window_ctrl::MainWindowCtrl::text_action_e::CLEAR);
 }
 
-void main_window_ctrl::MainWindowCtrl::refreshUrlSlot() {
+void main_window_ctrl::MainWindowCtrl::refreshUrl() {
 	this->mainWindowState = main_window_ctrl::MainWindowCtrl::state_e::REFRESH_TAB;
 	this->setAllShortcutEnabledProperty(false);
 	formUserInputStr(main_window_ctrl::MainWindowCtrl::text_action_e::CLEAR);
@@ -292,7 +292,7 @@ void main_window_ctrl::MainWindowCtrl::executeActionOnTab(int index) {
 	}
 }
 
-void main_window_ctrl::MainWindowCtrl::openNewTabSlot() {
+void main_window_ctrl::MainWindowCtrl::openNewTab() {
 	QINFO_PRINT(global_types::qinfo_level_e::ZERO, mainWindowCtrlSearch,  "Open new tab");
 	this->mainWindowState = main_window_ctrl::MainWindowCtrl::state_e::OPEN_TAB;
 	this->setAllShortcutEnabledProperty(false);
@@ -306,32 +306,32 @@ void main_window_ctrl::MainWindowCtrl::executeCommand(QString command) {
 	}
 /*
 	// m will hide/show the menu bar
-	connect(this->toggleShowMenuBarKey, &QShortcut::activated, this, &main_window_ctrl::MainWindowCtrl::toggleShowMenubarSlot);
+	connect(this->toggleShowMenuBarKey, &QShortcut::activated, this, &main_window_ctrl::MainWindowCtrl::toggleShowMenubar);
 
 	// o will open a new tab
-	connect(this->fileMenu->openTabAction, &QAction::triggered, this, &main_window_ctrl::MainWindowCtrl::openNewTabSlot);
+	connect(this->fileMenu->openTabAction, &QAction::triggered, this, &main_window_ctrl::MainWindowCtrl::openNewTab);
 
 	// s will search on the current tab
-	connect(this->newSearchTabKey, &QShortcut::activated, this, &main_window_ctrl::MainWindowCtrl::newSearchTabSlot);
+	connect(this->newSearchTabKey, &QShortcut::activated, this, &main_window_ctrl::MainWindowCtrl::newSearchTab);
 
 	// c will close a tab
-	connect(this->closeTabKey, &QShortcut::activated, this, &main_window_ctrl::MainWindowCtrl::closeTabSlot);
+	connect(this->closeTabKey, &QShortcut::activated, this, &main_window_ctrl::MainWindowCtrl::closeTab);
 
 	// t will move tab in the tab bar
-	connect(this->moveTabToKey, &QShortcut::activated, this, &main_window_ctrl::MainWindowCtrl::moveTabToSlot);
+	connect(this->moveTabToKey, &QShortcut::activated, this, &main_window_ctrl::MainWindowCtrl::moveTabTo);
 
 	// h will move left in the tab bar
-	connect(this->moveLeftKey, &QShortcut::activated, this, &main_window_ctrl::MainWindowCtrl::moveLeftSlot);
+	connect(this->moveLeftKey, &QShortcut::activated, this, &main_window_ctrl::MainWindowCtrl::moveLeft);
 
 	// l will move right in the tab bar
-	connect(this->moveRightKey, &QShortcut::activated, this, &main_window_ctrl::MainWindowCtrl::moveRightSlot);
+	connect(this->moveRightKey, &QShortcut::activated, this, &main_window_ctrl::MainWindowCtrl::moveRight);
 
 	// q will close the browser
-	connect(this->fileMenu->exitAction, &QAction::triggered, this, &main_window_ctrl::MainWindowCtrl::closeSlot);
+	connect(this->fileMenu->exitAction, &QAction::triggered, this, &main_window_ctrl::MainWindowCtrl::close);
 */
 }
 
-void main_window_ctrl::MainWindowCtrl::newSearchTabSlot() {
+void main_window_ctrl::MainWindowCtrl::newSearchTab() {
 
 	QINFO_PRINT(global_types::qinfo_level_e::ZERO, mainWindowCtrlSearch,  "Search in current tab");
 	this->mainWindowState = main_window_ctrl::MainWindowCtrl::state_e::SEARCH;
@@ -446,7 +446,7 @@ void main_window_ctrl::MainWindowCtrl::processTabIndex(QString userInputStr) {
 }
 
 
-void main_window_ctrl::MainWindowCtrl::setShortcutEnabledPropertySlot (bool enabled) {
+void main_window_ctrl::MainWindowCtrl::setShortcutEnabledProperty (bool enabled) {
 	this->setAllShortcutEnabledProperty(enabled);
 }
 

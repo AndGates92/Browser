@@ -66,25 +66,25 @@ namespace open_button_window {
 		private slots:
 
 			/**
-			 * @brief Function: void openSlot()
+			 * @brief Function: void open()
 			 *
 			 * This function is the slot of the open button
 			 */
-			void openSlot();
+			void open();
 
 			/**
-			 * @brief Function: void browseSlot()
+			 * @brief Function: void browse()
 			 *
 			 * This function is the slot of the browse button
 			 */
-			void browseSlot();
+			void browse();
 
 			/**
-			 * @brief Function: void cancelSlot()
+			 * @brief Function: void cancel()
 			 *
 			 * This function is the slot of the cancel button
 			 */
-			void cancelSlot();
+			void cancel();
 
 		private:
 

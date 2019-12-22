@@ -49,13 +49,13 @@ namespace menu {
 		public slots:
 
 			/**
-			 * @brief Function: void enabledPropertySlot(bool enabled)
+			 * @brief Function: void setEnabledProperty(bool enabled)
 			 *
 			 * \param enabled: value of enabled property
 			 *
-			 * This function is a slot setting the enabled property of the menu
+			 * This function sets the enabled property of the menu
 			 */
-			void enabledPropertySlot(bool enabled);
+			void setEnabledProperty(bool enabled);
 
 		protected:
 
@@ -97,11 +97,11 @@ namespace menu {
 
 		private slots:
 			/**
-			 * @brief Function: void expandSlot()
+			 * @brief Function: void expand()
 			 *
 			 * This function is the slot to expand or open the menu
 			 */
-			void expandSlot();
+			void expand();
 
 		private:
 			/**
@@ -117,15 +117,6 @@ namespace menu {
 			 * This function create a shortcut for a menu
 			 */
 			void createShortcuts();
-
-			/**
-			 * @brief Function: void setEnabledProperty(bool enabled)
-			 *
-			 * \param enabled: value of enabled property
-			 *
-			 * This function sets the enabled property of the menu
-			 */
-			void setEnabledProperty(bool enabled);
 
 	};
 }
