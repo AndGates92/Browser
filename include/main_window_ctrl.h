@@ -126,7 +126,7 @@ namespace main_window_ctrl {
 			/**
 			 * @brief Function: void updateUserInputBarSignal(QString textLabel)
 			 *
-			 * \param text: text to write to userInputText
+			 * \param textLabel: text to write to userInputText
 			 *
 			 * This function is the signal to update the user input label
 			 */
