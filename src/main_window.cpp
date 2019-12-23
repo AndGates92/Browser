@@ -131,7 +131,7 @@ void main_window::MainWindow::fillMainWindow() {
 	this->infoText->setAlignment(Qt::AlignRight | Qt::AlignBottom);
 
 	// Update info label
-	updateInfo();
+	this->updateInfo();
 }
 
 void main_window::MainWindow::createTabs() {
@@ -285,7 +285,7 @@ void main_window::MainWindow::newSearchTab(int index, QString search) {
 	QWebEngineView * centerWindow = dynamic_cast<QWebEngineView *>(this->tabs->widget(index));
 
 	bool containsSpace = search.contains(" ");
-	bool containsWww = search.contains(main_window_ctrl::www);
+	bool containsWww = search.contains(main_window::www);
 	int numberDots = search.count(".");
 
 	QString tabTitle = Q_NULLPTR;
@@ -293,16 +293,16 @@ void main_window::MainWindow::newSearchTab(int index, QString search) {
 
 	// if contains at least 1 dot and no space, it could be a URL
 	if ((numberDots > 0) && (containsSpace == false)) {
-		Url = main_window_ctrl::https;
+		Url = main_window::https;
 		tabTitle = search;
 		if (containsWww == true) {
 			Url += search;
 		} else {
-			Url += main_window_ctrl::www + search;
+			Url += main_window::www + search;
 		}
 	} else {
 		tabTitle = search;
-		Url = main_window_ctrl::defaultSearchEngine.arg(search);
+		Url = main_window::defaultSearchEngine.arg(search);
 	}
 	this->tabs->setTabText(index, tabTitle);
 	centerWindow->setUrl(QUrl(Url));
@@ -371,8 +371,8 @@ void main_window::MainWindow::move(int offset, int sign, const main_window_share
 	Q_ASSERT_X(((sign == 0) || (sign == -1) || (sign == 1)), "main window move", "sign input must be either 0 or -1 or 1");
 	// number of tabs to move by
 	int distance = 0;
-	// index is main_window_ctrl::emptyUserInput if the argument is not passed
-	if (offset == main_window_ctrl::emptyUserInput) {
+	// index is main_window_ctrl_tab::emptyUserInput if the argument is not passed
+	if (offset == main_window_ctrl_tab::emptyUserInput) {
 		distance = 1;
 	} else {
 		distance = offset;
@@ -408,8 +408,8 @@ void main_window::MainWindow::move(int offset, int sign, const main_window_share
 
 void main_window::MainWindow::refreshUrl(int offset, int sign) {
 	int distance = 0;
-	// index is main_window_ctrl::emptyUserInput if the argument is not passed
-	if (offset == main_window_ctrl::emptyUserInput) {
+	// index is main_window_ctrl_tab::emptyUserInput if the argument is not passed
+	if (offset == main_window_ctrl_tab::emptyUserInput) {
 		distance = 1;
 	} else {
 		distance = offset;
@@ -472,7 +472,7 @@ void main_window::MainWindow::keyPressEvent(QKeyEvent * event) {
 
 	QMainWindow::keyPressEvent(event);
 
-	ctrl->keyPressEvent(event);
+	this->ctrl->keyPressEvent(event);
 
 	this->mainWidget->repaint();
 }

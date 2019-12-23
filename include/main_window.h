@@ -78,6 +78,24 @@ namespace main_window {
 		 */
 		const int bottomMargin = 0;
 
+		/**
+		 * @brief https string
+		 *
+		 */
+		const QString https("https://");
+
+		/**
+		 * @brief www string
+		 *
+		 */
+		const QString www("www.");
+
+		/**
+		 * @brief default serch engine is duckduckgo
+		 *
+		 */
+		const QString defaultSearchEngine(https + www + "duckduckgo.com/?q=%1");
+
 	}
 
 	/**
@@ -144,7 +162,6 @@ namespace main_window {
 			 * This function is a signal to send the value of the number of opened tab
 			 */
 			void sendTabCountSignal(int tabCount);
-
 
 		private slots:
 

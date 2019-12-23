@@ -4,7 +4,7 @@
  * @copyright
  * @file main_window_ctrl.h
  * @author Andrea Gianarda
- * @date 23th of September 2019
+ * @date 21st of December 2019
  * @brief Main Window Control header file
 */
 
@@ -20,6 +20,7 @@
 #include "file_menu.h"
 #include "edit_menu.h"
 #include "tab_widget.h"
+#include "main_window_ctrl_tab.h"
 
 /** @defgroup MainWindowCtrlGroup Main Window Doxygen Group
  *  Main Window control functions and classes
@@ -34,33 +35,6 @@ Q_DECLARE_LOGGING_CATEGORY(mainWindowCtrlTabs)
 
 namespace main_window_ctrl {
 
-	namespace {
-		/**
-		 * @brief invalid tab index - default value of optional argument index of executeActionOnTab function
-		 *
-		 */
-		const int emptyUserInput = -1;
-
-		/**
-		 * @brief https string
-		 *
-		 */
-		const QString https("https://");
-
-		/**
-		 * @brief www string
-		 *
-		 */
-		const QString www("www.");
-
-		/**
-		 * @brief default serch engine is duckduckgo
-		 *
-		 */
-		const QString defaultSearchEngine(https + www + "duckduckgo.com/?q=%1");
-
-	}
-
 	/**
 	 * @brief MainWindowCtrl class
 	 *
@@ -68,76 +42,6 @@ namespace main_window_ctrl {
 	class MainWindowCtrl : public QObject {
 
 		Q_OBJECT
-
-		// ================================ START ENUMERATION ========================================//
-		/**
-		 * @brief states
-		 *
-		 */
-		typedef enum class state_list {
-			IDLE,             /**< Idle state - no user input */
-			COMMAND,          /**< Typing command */
-			OPEN_TAB,         /**< Open new tab */
-			CLOSE_TAB,        /**< Close tab */
-			REFRESH_TAB,      /**< Refresh tab */
-			MOVE_LEFT,        /**< Move to tab to the left */
-			MOVE_RIGHT,       /**< Move to tab to the right */
-			TAB_MOVE,         /**< Move tab */
-			SEARCH            /**< Search on same tab */
-		} state_e;
-
-		/**
-		 * @brief Function: QDebug & operator<< (QDebug & os, const main_window_ctrl::MainWindowCtrl::state_e & state)
-		 *
-		 * \param os: output stream
-		 * \param state: state to print
-		 *
-		 * Overload << operator to print state
-		 */
-		friend QDebug & operator<< (QDebug & os, const main_window_ctrl::MainWindowCtrl::state_e & state);
-
-		/**
-		 * @brief move info
-		 *
-		 */
-		typedef enum class move_value_list {
-			IDLE,             /**< Idle state - no user input */
-			LEFT,             /**< Left movement */
-			RIGHT,            /**< Right movement */
-			ABSOLUTE          /**< Absolute value - action on the tab index equal to value */
-		} move_value_e;
-
-		/**
-		 * @brief Function: QDebug & operator<< (QDebug & os, const main_window_ctrl::MainWindowCtrl::move_value_e & value_type)
-		 *
-		 * \param os: output stream
-		 * \param value_type: move type
-		 *
-		 * Overload << operator to print the move type
-		 */
-		friend QDebug & operator<< (QDebug & os, const main_window_ctrl::MainWindowCtrl::move_value_e & value_type);
-
-		/**
-		 * @brief text action 
-		 *
-		 */
-		typedef enum class text_action_list {
-			SET,              /**< Set text */
-			APPEND,           /**< Append text */
-			CLEAR             /**< Clear text */
-		} text_action_e;
-
-		/**
-		 * @brief Function: QDebug & operator<< (QDebug & os, const main_window_ctrl::MainWindowCtrl::text_action_e & action)
-		 *
-		 * \param os: output stream
-		 * \param action: action applied on the text in the status bar
-		 *
-		 * Overload << operator to print text action in the status bar
-		 */
-		friend QDebug & operator<< (QDebug & os, const main_window_ctrl::MainWindowCtrl::text_action_e & action);
-
-		// ================================ END ENUMERATION ========================================//
 
 		public:
 
@@ -152,26 +56,17 @@ namespace main_window_ctrl {
 			 */
 			explicit MainWindowCtrl(QWidget * parent = Q_NULLPTR, int tabIndex = 0, int tabCount = 0);
 
-		protected:
+			/**
+			 * @brief Function: void keyPressEvent(QKeyEvent * event)
+			 *
+			 * \param event: event coming from keyboard 
+			 *
+			 * This function handles event coming from the keyboard
+			 * Re-implement key pressed event
+			 */
+			void keyPressEvent(QKeyEvent * event);
 
 		public slots:
-
-			/**
-			 * @brief Function: void openNewTab()
-			 *
-			 * This function opens a new tab
-			 */
-			void openNewTab();
-
-			/**
-			 * @brief Function: void setShortcutEnabledProperty(bool enabled)
-			 *
-			 * \param enabled: value of enabled property
-			 *
-			 * This function is the slot to set the enabled property of all shortcuts of the main window and menus of the main window
-			 */
-			void setShortcutEnabledProperty(bool enabled);
-
 			/**
 			 * @brief Function: void receiveCurrentTabIndex(int tabIndex)
 			 *
@@ -191,14 +86,23 @@ namespace main_window_ctrl {
 			void receiveTabCount(int tabCount);
 
 			/**
-			 * @brief Function: void keyPressEvent(QKeyEvent * event)
+			 * @brief Function: void openNewTab()
 			 *
-			 * \param event: event coming from keyboard 
-			 *
-			 * This function handles event coming from the keyboard
-			 * Re-implement key pressed event
+			 * This function opens a new tab
 			 */
-			void keyPressEvent(QKeyEvent * event);
+			void openNewTab();
+
+			/**
+			 * @brief Function: void setShortcutEnabledProperty(bool enabled)
+			 *
+			 * \param enabled: value of enabled property
+			 *
+			 * This function is the slot to set the enabled property of all shortcuts of the main window and menus of the main window
+			 */
+			void setShortcutEnabledProperty(bool enabled);
+
+
+		protected:
 
 		signals:
 			/**
@@ -229,6 +133,15 @@ namespace main_window_ctrl {
 			void updateUserInputBarSignal(QString textLabel);
 
 			/**
+			 * @brief Function: void searchCurrentTabSignal(QString search)
+			 *
+			 * \param search: string to search
+			 *
+			 * This function search on the current tab
+			 */
+			void searchCurrentTabSignal(QString search);
+
+			/**
 			 * @brief Function: void enabledPropertyMenuSignal(bool enabled)
 			 *
 			 * \param enabled: value of enabled property
@@ -236,6 +149,20 @@ namespace main_window_ctrl {
 			 * This function sets the enabled property of all shortcuts of the main window and menus of the main window
 			 */
 			void enabledPropertyMenuSignal(bool enabled);
+
+			/**
+			 * @brief Function: void toggleShowMenubarSignal()
+			 *
+			 * This function is the signal to show or hide the menubar
+			 */
+			void toggleShowMenubarSignal();
+
+			/**
+			 * @brief Function: void closeSignal()
+			 *
+			 * This function is a signal to close the main window
+			 */
+			void closeWindowSignal();
 
 			/**
 			 * @brief Function: void moveSignal(int offset, int sign = 0, const main_window_shared_types::object_type_e & object = main_window_shared_types::object_type_e::UNKNOWN)
@@ -259,7 +186,7 @@ namespace main_window_ctrl {
 			void refreshUrlSignal(int offset, int sign = 0);
 
 			/**
-			 * @brief Function: void addNewTab(QString search)
+			 * @brief Function: void addNewTabSignal(QString search)
 			 *
 			 * \param search: string to search
 			 *
@@ -277,27 +204,11 @@ namespace main_window_ctrl {
 			void closeTabSignal(int index);
 
 			/**
-			 * @brief Function: void searchCurrentTabSignal(QString search)
+			 * @brief Function: void openNewTabSignal()
 			 *
-			 * \param search: string to search
-			 *
-			 * This function search on the current tab
+			 * This function is a signal to open a tab
 			 */
-			void searchCurrentTabSignal(QString search);
-
-			/**
-			 * @brief Function: void toggleShowMenubarSignal()
-			 *
-			 * This function is the signal to show or hide the menubar
-			 */
-			void toggleShowMenubarSignal();
-
-			/**
-			 * @brief Function: void closeSignal()
-			 *
-			 * This function is a signal to close the main window
-			 */
-			void closeWindowSignal();
+			void openNewTabSignal();
 
 			/**
 			 * @brief Function: void requestCurrentTabIndexSignal()
@@ -313,6 +224,33 @@ namespace main_window_ctrl {
 			 */
 			void requestTabCountSignal();
 
+			/**
+			 * @brief Function: void sendCurrentTabIndexSignal(int tabIndex)
+			 *
+			 * \param tabIndex: index of the current tab
+			 *
+			 * This function is a signal to send the value of the current tab index
+			 */
+			void sendCurrentTabIndexSignal(int tabIndex);
+
+			/**
+			 * @brief Function: void sendTabCountSignal(int tabCount)
+			 *
+			 * \param tabCount: number of tabs
+			 *
+			 * This function is a signal to send the value of the number of opened tab
+			 */
+			void sendTabCountSignal(int tabCount);
+
+			/**
+			 * @brief Function: void sendStateSignal(main_window_shared_types::state_e state)
+			 *
+			 * \param state: main window control state
+			 *
+			 * This function is a signal to send the value of the main window control state
+			 */
+			void sendStateSignal(main_window_shared_types::state_e state);
+
 		private slots:
 
 			/**
@@ -323,41 +261,6 @@ namespace main_window_ctrl {
 			void closeWindow();
 
 			/**
-			 * @brief Function: void refreshUrl()
-			 *
-			 * This function refresh the url in a tab
-			 */
-			void refreshUrl();
-
-			/**
-			 * @brief Function: void moveLeft()
-			 *
-			 * This function moves left in the tabs. It will wrap around if the number of position leads to a negative tab index
-			 */
-			void moveLeft();
-
-			/**
-			 * @brief Function: void moveRight()
-			 *
-			 * This function moves right in the tabs. It will wrap around if the number of position leads to a tab index bigger than the max tab counter
-			 */
-			void moveRight();
-
-			/**
-			 * @brief Function: void moveTabTo()
-			 *
-			 * This function moves tab to. It will wrap around if the number of position leads to a negative tab index
-			 */
-			void moveTabTo();
-
-			/**
-			 * @brief Function: void newSearchTab()
-			 *
-			 * This function changes the title of a tab
-			 */
-			void newSearchTab();
-
-			/**
 			 * @brief Function: void toggleShowMenubar()
 			 *
 			 * This function is the slot to show/hide the menubar
@@ -365,11 +268,80 @@ namespace main_window_ctrl {
 			void toggleShowMenubar();
 
 			/**
-			 * @brief Function: void closeTab()
+			 * @brief Function: void addNewTab(QString search)
+			 *
+			 * \param search: string to search
+			 *
+			 * This function adds a new tab to the main window
+			 */
+			void addNewTab(QString search);
+
+			/**
+			 * @brief Function: void closeTab(int index)
+			 *
+			 * \param index: index of tab to close
 			 *
 			 * This function closes a tab
 			 */
-			void closeTab();
+			void closeTab(int index);
+
+			/**
+			 * @brief Function: void updateWebsite(int index)
+			 *
+			 * \param index: index of tab where the website has to be updated
+			 *
+			 * This function updates the website label
+			 */
+			void updateWebsite(int index);
+
+			/**
+			 * @brief Function: void move(int offset, int sign = 0, const main_window_shared_types::object_type_e & object = main_window_shared_types::object_type_e::UNKNOWN)
+			 *
+			 * \param offset: offset of tab to execute action on
+			 * \param sign: direction of movement. -1 for left move and 1 for right move
+			 * \param object: object to move: cursor or tab
+			 *
+			 * This function moves to a different tab as specified by the user
+			 */
+			void move(int offset, int sign = 0, const main_window_shared_types::object_type_e & object = main_window_shared_types::object_type_e::UNKNOWN);
+
+			/**
+			 * @brief Function: void refreshUrl(int offset, int sign = 0)
+			 *
+			 * \param offset: offset of tab to execute action on
+			 * \param sign: direction of movement. -1 for left move and 1 for right move
+			 *
+			 * This function refreshes a tab as specified by the user
+			 */
+			void refreshUrl(int offset, int sign = 0);
+
+			/**
+			 * @brief Function: void searchCurrentTab(QString search)
+			 *
+			 * \param search: string to search
+			 *
+			 * This function search on the current tab
+			 */
+			void searchCurrentTab(QString search);
+
+			/**
+			 * @brief Function: void setAllShortcutEnabledProperty(bool enabled)
+			 *
+			 * \param enabled: value of enabled property
+			 *
+			 * This function sets the enabled property of all shortcuts of the main window and menus of the main window
+			 */
+			void setAllShortcutEnabledProperty(bool enabled);
+
+			/**
+			 * @brief Function: void formUserInputStr(const main_window_shared_types::text_action_e action, QString text = Q_NULLPTR)
+			 *
+			 * \param action: action to execute - valid values are: SET, APPEND and CLEAR
+			 * \param text: text to append to userText
+			 *
+			 * This function is the slot to update the user input label
+			 */
+			void formUserInputStr(const main_window_shared_types::text_action_e action, QString text = Q_NULLPTR);
 
 		private:
 
@@ -377,31 +349,19 @@ namespace main_window_ctrl {
 			 * @brief state of the main window
 			 *
 			 */
-			main_window_ctrl::MainWindowCtrl::state_e mainWindowState;
+			main_window_ctrl_tab::MainWindowCtrlTab * tabctrl;
 
 			/**
-			 * @brief type of value of movements in tab bar
+			 * @brief state of the main window
 			 *
 			 */
-			main_window_ctrl::MainWindowCtrl::move_value_e moveValueType;
+			main_window_shared_types::state_e mainWindowState;
 
 			/**
 			 * @brief parent widget
 			 *
 			 */
 			QWidget * parent;
-
-			/**
-			 * @brief current tab index
-			 *
-			 */
-			int currentTabIndex;
-
-			/**
-			 * @brief number of opened tabs
-			 *
-			 */
-			int tabCount;
 
 			/**
 			 * @brief user text
@@ -415,48 +375,6 @@ namespace main_window_ctrl {
 			 *
 			 */
 			QShortcut * toggleShowMenuBarKey;
-
-			/**
-			 * @brief shortcut to open a new tab
-			 *
-			 */
-			QShortcut * openNewTabKey;
-
-			/**
-			 * @brief shortcut to search in the current tab
-			 *
-			 */
-			QShortcut * newSearchTabKey;
-
-			/**
-			 * @brief shortcut to close a tab
-			 *
-			 */
-			QShortcut * closeTabKey;
-
-			/**
-			 * @brief shortcut to move left in the tab bar
-			 *
-			 */
-			QShortcut * moveLeftKey;
-
-			/**
-			 * @brief shortcut to move right in the tab bar
-			 *
-			 */
-			QShortcut * moveRightKey;
-
-			/**
-			 * @brief shortcut to refresh the content of a bar
-			 *
-			 */
-			QShortcut * refreshUrlKey;
-
-			/**
-			 * @brief shortcut to move tab to the left
-			 *
-			 */
-			QShortcut * moveTabToKey;
 
 			/**
 			 * @brief shortcut to close the main window
@@ -480,6 +398,15 @@ namespace main_window_ctrl {
 			void connectSignals();
 
 			/**
+			 * @brief Function: void updateInfo(int index)
+			 *
+			 * \param index: index of tab either closed or clicked
+			 *
+			 * This function is updates the info label
+			 */
+			void updateInfo(int index);
+
+			/**
 			 * @brief Function: void executeCommand(QString command)
 			 *
 			 * \param command: command to execute.
@@ -487,40 +414,6 @@ namespace main_window_ctrl {
 			 * This function executes a command on a based on user input
 			 */
 			void executeCommand(QString command);
-
-			/**
-			 * @brief Function: void executeAction(int userInput = main_window_ctrl::emptyUserInput)
-			 *
-			 * \param userInput: user input to execute action. If not specified it is default to main_window_ctrl::emptyUserInput
-			 *
-			 * This function executes action on a based on user input
-			 */
-			void executeAction(int userInput = main_window_ctrl::emptyUserInput);
-
-			/**
-			 * @brief Function: void executeActionOnTab(int index)
-			 *
-			 * \param index: index of tab to execute action on
-			 *
-			 * This function executes action on a based on user input
-			 */
-			void executeActionOnTab(int index);
-
-			/**
-			 * @brief Function: void executeActionOnOffset(int offset)
-			 *
-			 * \param offset: offset of tab to execute action on
-			 *
-			 * This function executes action on a based on user input
-			 */
-			void executeActionOnOffset(int offset);
-
-			/**
-			 * @brief Function: void processTabIndex(QString userInputStr)
-			 *
-			 * This function converts the string indexStr to an integer and executes desired action on it
-			 */
-			void processTabIndex(QString userInputStr);
 
 			/**
 			 * @brief Function: void setAllMenuShortcutEnabledProperty(bool enabled)
@@ -541,15 +434,6 @@ namespace main_window_ctrl {
 			void setAllWindowShortcutEnabledProperty(bool enabled);
 
 			/**
-			 * @brief Function: void setAllShortcutEnabledProperty(bool enabled)
-			 *
-			 * \param enabled: value of enabled property
-			 *
-			 * This function sets the enabled property of all shortcuts of the main window and menus of the main window
-			 */
-			void setAllShortcutEnabledProperty(bool enabled);
-
-			/**
 			 * @brief Function: QString getActionName()
 			 *
 			 * \return string with the text to display as action
@@ -559,35 +443,35 @@ namespace main_window_ctrl {
 			QString getActionName();
 
 			/**
-			 * @brief Function: void formUserInputStr(const main_window_ctrl::MainWindowCtrl::text_action_e action, QString text = Q_NULLPTR)
+			 * @brief Function: void getCurrentTabIndex()
 			 *
-			 * \param action: action to execute - valid values are: SET, APPEND and CLEAR
-			 * \param text: text to append to userText
-			 *
-			 * This function is the slot to update the user input label
+			 * This function sends the current tab index
 			 */
-			void formUserInputStr(const main_window_ctrl::MainWindowCtrl::text_action_e action, QString text = Q_NULLPTR);
+			void getCurrentTabIndex();
 
 			/**
-			 * @brief Function: main_window_shared_types::object_type_e setAffectedObject()
+			 * @brief Function: void getTabCount()
 			 *
-			 * This function return the object type the action is applied on
+			 * This function sends the number of openend tabs
 			 */
-			main_window_shared_types::object_type_e setAffectedObject();
+			void getTabCount();
 
 			/**
-			 * @brief Function: void updateCurrentTabIndex()
+			 * @brief Function: void getState()
 			 *
-			 * This function retrieves the current tab index 
+			 * This function sends the state of the main window controller
 			 */
-			void updateCurrentTabIndex();
+			void getState();
 
 			/**
-			 * @brief Function: void updateTabCount()
+			 * @brief Function: void setState(main_window_shared_types::state_e state)
 			 *
-			 * This function updates the number of open tabs
+			 * \param state: state of the main window controller
+			 *
+			 * This function sets the state of the main window controller
 			 */
-			void updateTabCount();
+			void setState(main_window_shared_types::state_e state);
+
 	};
 
 }
