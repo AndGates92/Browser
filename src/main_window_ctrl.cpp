@@ -132,11 +132,40 @@ void main_window_ctrl::MainWindowCtrl::executeCommand(QString command) {
 */
 }
 
+void main_window_ctrl::MainWindowCtrl::keyReleaseEvent(QKeyEvent * event) {
+
+	int releasedKey = event->key();
+
+	if (event->type() == QEvent::KeyRelease) {
+
+		QINFO_PRINT(global_types::qinfo_level_e::ZERO, mainWindowCtrlUserInput,  "State " << this->mainWindowState << " key " << event->text() << " i.e. number 0x" << hex << releasedKey);
+
+		switch (releasedKey) {
+			case Qt::Key_Escape:
+				this->mainWindowState = main_window_shared_types::state_e::IDLE;
+				this->setAllShortcutEnabledProperty(true);
+				formUserInputStr(main_window_shared_types::text_action_e::CLEAR);
+				break;
+			case Qt::Key_Backspace:
+				QINFO_PRINT(global_types::qinfo_level_e::ZERO, mainWindowCtrlUserInput,  "User typed text " << this->userText);
+				// Last position of the string
+				if (this->userText.isEmpty() == 0) {
+					int endString = this->userText.count() - 1;
+					this->userText.remove(endString, 1);
+					formUserInputStr(main_window_shared_types::text_action_e::SET, this->userText);
+				}
+				break;
+			default:
+				break;
+		}
+	}
+
+	this->tabctrl->keyReleaseEvent(event);
+}
+
 void main_window_ctrl::MainWindowCtrl::keyPressEvent(QKeyEvent * event) {
 
 	int pressedKey = event->key();
-
-	this->tabctrl->keyPressEvent(event);
 
 	if (event->type() == QEvent::KeyPress) {
 
@@ -157,20 +186,6 @@ void main_window_ctrl::MainWindowCtrl::keyPressEvent(QKeyEvent * event) {
 				this->mainWindowState = main_window_shared_types::state_e::IDLE;
 				this->setAllShortcutEnabledProperty(true);
 				formUserInputStr(main_window_shared_types::text_action_e::CLEAR);
-				break;
-			case Qt::Key_Escape:
-				this->mainWindowState = main_window_shared_types::state_e::IDLE;
-				this->setAllShortcutEnabledProperty(true);
-				formUserInputStr(main_window_shared_types::text_action_e::CLEAR);
-				break;
-			case Qt::Key_Backspace:
-				QINFO_PRINT(global_types::qinfo_level_e::ZERO, mainWindowCtrlUserInput,  "User typed text " << this->userText);
-				// Last position of the string
-				if (this->userText.isEmpty() == 0) {
-					int endString = this->userText.count() - 1;
-					this->userText.remove(endString, 1);
-					formUserInputStr(main_window_shared_types::text_action_e::SET, this->userText);
-				}
 				break;
 			default:
 				if ((this->mainWindowState == main_window_shared_types::state_e::OPEN_TAB) || (this->mainWindowState == main_window_shared_types::state_e::SEARCH)) {
@@ -209,8 +224,10 @@ void main_window_ctrl::MainWindowCtrl::keyPressEvent(QKeyEvent * event) {
 				}
 				break;
 		}
-
 	}
+
+	this->tabctrl->keyPressEvent(event);
+
 
 }
 

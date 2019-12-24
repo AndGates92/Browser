@@ -6,6 +6,7 @@
  * @brief Main Window functions
  */
 
+#include <iostream>
 // Qt libraries
 // QtGlobal defines qWarning
 #include <qt5/QtCore/QtGlobal>
@@ -37,6 +38,7 @@ Q_LOGGING_CATEGORY(mainWindowTabs, "mainWindow.tabs", MSG_TYPE_LEVEL)
 main_window::MainWindow::MainWindow(QWidget * parent, Qt::WindowFlags flags) : QMainWindow(parent, flags) {
 
 	this->setFocusPolicy(Qt::StrongFocus);
+	this->setEnabled(true);
 
 	// main widget
 	this->createMainWidget();
@@ -92,7 +94,7 @@ void main_window::MainWindow::createMainWidget() {
 			"border: none; "
 		"}"
 	);
-	setCentralWidget(this->mainWidget);
+	this->setCentralWidget(this->mainWidget);
 }
 
 QLabel * main_window::MainWindow::newWindowLabel() {
@@ -473,6 +475,15 @@ void main_window::MainWindow::keyPressEvent(QKeyEvent * event) {
 	QMainWindow::keyPressEvent(event);
 
 	this->ctrl->keyPressEvent(event);
+
+	this->mainWidget->repaint();
+}
+
+void main_window::MainWindow::keyReleaseEvent(QKeyEvent * event) {
+
+	QMainWindow::keyReleaseEvent(event);
+
+	this->ctrl->keyReleaseEvent(event);
 
 	this->mainWidget->repaint();
 }

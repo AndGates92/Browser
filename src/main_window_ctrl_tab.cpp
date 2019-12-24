@@ -228,6 +228,28 @@ void main_window_ctrl_tab::MainWindowCtrlTab::executeCommand(QString command) {
 */
 }
 
+void main_window_ctrl_tab::MainWindowCtrlTab::keyReleaseEvent(QKeyEvent * event) {
+
+	int releasedKey = event->key();
+
+	if (event->type() == QEvent::KeyRelease) {
+
+		// Retrieve main window controller state
+		this->updateState();
+		QINFO_PRINT(global_types::qinfo_level_e::ZERO, mainWindowCtrlTabUserInput,  "State " << this->mainWindowState << " key " << event->text() << " i.e. number 0x" << hex << releasedKey);
+
+		switch (releasedKey) {
+			case Qt::Key_Escape:
+				this->moveValueType = main_window_shared_types::move_value_e::IDLE;
+				break;
+			case Qt::Key_Backspace:
+				break;
+			default:
+				break;
+		}
+	}
+}
+
 void main_window_ctrl_tab::MainWindowCtrlTab::refreshTabUrl() {
 	emit this->setStateSignal(main_window_shared_types::state_e::REFRESH_TAB);
 	emit this->setShortcutEnabledPropertySignal(false);
@@ -240,17 +262,14 @@ void main_window_ctrl_tab::MainWindowCtrlTab::keyPressEvent(QKeyEvent * event) {
 
 	if (event->type() == QEvent::KeyPress) {
 
+		// Retrieve main window controller state
+		this->updateState();
 		QINFO_PRINT(global_types::qinfo_level_e::ZERO, mainWindowCtrlTabUserInput,  "State " << this->mainWindowState << " key " << event->text() << " i.e. number 0x" << hex << pressedKey);
 
 		switch (pressedKey) {
 			case Qt::Key_Enter:
 			case Qt::Key_Return:
 				this->moveValueType = main_window_shared_types::move_value_e::IDLE;
-				break;
-			case Qt::Key_Escape:
-				this->moveValueType = main_window_shared_types::move_value_e::IDLE;
-				break;
-			case Qt::Key_Backspace:
 				break;
 			default:
 				if (this->mainWindowState == main_window_shared_types::state_e::TAB_MOVE) {
@@ -289,6 +308,10 @@ void main_window_ctrl_tab::MainWindowCtrlTab::receiveTabCount(int tabCount) {
 	this->tabCount = tabCount;
 }
 
+void main_window_ctrl_tab::MainWindowCtrlTab::updateState() {
+	emit requestStateSignal();
+}
+
 void main_window_ctrl_tab::MainWindowCtrlTab::receiveState(main_window_shared_types::state_e state) {
 	this->mainWindowState = state;
 }
@@ -301,6 +324,8 @@ main_window_shared_types::object_type_e main_window_ctrl_tab::MainWindowCtrlTab:
 
 	main_window_shared_types::object_type_e object = main_window_shared_types::object_type_e::UNKNOWN;
 
+	// Retrieve main window controller state
+	this->updateState();
 	if ((this->mainWindowState == main_window_shared_types::state_e::MOVE_RIGHT) || (this->mainWindowState == main_window_shared_types::state_e::MOVE_LEFT)) {
 		object = main_window_shared_types::object_type_e::CURSOR;
 	} else if (this->mainWindowState == main_window_shared_types::state_e::TAB_MOVE) {

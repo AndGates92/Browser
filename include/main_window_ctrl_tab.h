@@ -96,9 +96,20 @@ namespace main_window_ctrl_tab {
 			 * \param event: event coming from keyboard 
 			 *
 			 * This function handles event coming from the keyboard
+			 * Escape is not triggered in keyPressedEvent 
 			 * Re-implement key pressed event
 			 */
 			void keyPressEvent(QKeyEvent * event);
+
+			/**
+			 * @brief Function: void keyReleaseEvent(QKeyEvent * event)
+			 *
+			 * \param event: event coming from keyboard
+			 *
+			 * This function handles event coming from the keyboard
+			 * Re-implement key released event
+			 */
+			void keyReleaseEvent(QKeyEvent * event);
 
 		public slots:
 
@@ -409,7 +420,7 @@ namespace main_window_ctrl_tab {
 			/**
 			 * @brief Function: void updateCurrentTabIndex()
 			 *
-			 * This function retrieves the current tab index 
+			 * This function retrieves the current tab index
 			 */
 			void updateCurrentTabIndex();
 
@@ -419,6 +430,13 @@ namespace main_window_ctrl_tab {
 			 * This function updates the number of open tabs
 			 */
 			void updateTabCount();
+
+			/**
+			 * @brief Function: void updateState()
+			 *
+			 * This function retrieves the state of the main window control
+			 */
+			void updateState();
 
 			/**
 			 * @brief Function: void executeCommand(QString command)

@@ -62,9 +62,20 @@ namespace main_window_ctrl {
 			 * \param event: event coming from keyboard 
 			 *
 			 * This function handles event coming from the keyboard
+			 * Escape is not triggered in keyPressedEvent 
 			 * Re-implement key pressed event
 			 */
 			void keyPressEvent(QKeyEvent * event);
+
+			/**
+			 * @brief Function: void keyReleaseEvent(QKeyEvent * event)
+			 *
+			 * \param event: event coming from keyboard
+			 *
+			 * This function handles event coming from the keyboard
+			 * Re-implement key released event
+			 */
+			void keyReleaseEvent(QKeyEvent * event);
 
 		public slots:
 			/**
