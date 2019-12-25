@@ -15,47 +15,51 @@
 
 namespace main_window_shared_types {
 
-	QDebug & operator<< (QDebug & os, const main_window_shared_types::object_type_e & object) {
+	QDEBUG_OVERLOAD_PRINT_OP(main_window_shared_types::object_type_e)
+
+	QString & operator<< (QString & str, const main_window_shared_types::object_type_e & object) {
 
 		switch (object) {
 			case main_window_shared_types::object_type_e::CURSOR:
-				os << "CURSOR";
+				str.append("CURSOR");
 				break;
 			case main_window_shared_types::object_type_e::TAB:
-				os << "TAB";
+				str.append("TAB");
 				break;
 			case main_window_shared_types::object_type_e::UNKNOWN:
-				os << "UNKNOWN";
+				str.append("UNKNOWN");
 				break;
 			default:
-				os << "Unknown action";
+				str.append("Unknown action");
 				break;
 		}
 
-		return os;
+		return str;
 	}
 
-	QDebug & operator<< (QDebug & os, const main_window_shared_types::move_value_e & value_type) {
+	QDEBUG_OVERLOAD_PRINT_OP(main_window_shared_types::move_value_e)
+
+	QString & operator<< (QString & str, const main_window_shared_types::move_value_e & value_type) {
 
 		switch (value_type) {
 			case main_window_shared_types::move_value_e::IDLE:
-				os << "IDLE";
+				str.append("IDLE");
 				break;
 			case main_window_shared_types::move_value_e::LEFT:
-				os << "LEFT";
+				str.append("LEFT");
 				break;
 			case main_window_shared_types::move_value_e::RIGHT:
-				os << "RIGHT";
+				str.append("RIGHT");
 				break;
 			case main_window_shared_types::move_value_e::ABSOLUTE:
-				os << "ABSOLUTE";
+				str.append("ABSOLUTE");
 				break;
 			default:
-				os << "Unknown value type";
+				str.append("Unknown value type");
 				break;
 		}
 
-		return os;
+		return str;
 	}
 
 	// Overload << operator for state_e
@@ -99,24 +103,26 @@ namespace main_window_shared_types {
 		return str;
 	}
 
-	QDebug & operator<< (QDebug & os, const main_window_shared_types::text_action_e & action) {
+	QDEBUG_OVERLOAD_PRINT_OP(main_window_shared_types::text_action_e)
+
+	QString & operator<< (QString & str, const main_window_shared_types::text_action_e & action) {
 
 		switch (action) {
 			case main_window_shared_types::text_action_e::SET:
-				os << "SET";
+				str.append("SET");
 				break;
 			case main_window_shared_types::text_action_e::APPEND:
-				os << "APPEND";
+				str.append("APPEND");
 				break;
 			case main_window_shared_types::text_action_e::CLEAR:
-				os << "CLEAR";
+				str.append("CLEAR");
 				break;
 			default:
-				os << "Unknown action";
+				str.append("Unknown action");
 				break;
 		}
 
-		return os;
+		return str;
 	}
 
 }

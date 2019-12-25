@@ -37,6 +37,16 @@ namespace main_window_shared_types {
 	QDebug & operator<< (QDebug & os, const main_window_shared_types::object_type_e & object);
 
 	/**
+	 * @brief Function: QString & operator<< (QString & str, const main_window::MainWindow::object_type_e & object)
+	 *
+	 * \param str: text stream
+	 * \param object: object type the action is applied on
+	 *
+	 * Overload << operator to print they object type the action is execute on
+	 */
+	QString & operator<< (QString & str, const main_window_shared_types::object_type_e & object);
+
+	/**
 	 * @brief states
 	 *
 	 */
@@ -94,6 +104,16 @@ namespace main_window_shared_types {
 	QDebug & operator<< (QDebug & os, const main_window_shared_types::move_value_e & value_type);
 
 	/**
+	 * @brief Function: QString & operator<< (QString & str, const main_window_shared_types::move_value_e & value_type)
+	 *
+	 * \param str: text stream
+	 * \param value_type: move type
+	 *
+	 * Overload << operator to print the move type
+	 */
+	QString & operator<< (QString & str, const main_window_shared_types::move_value_e & value_type);
+
+	/**
 	 * @brief text action 
 	 *
 	 */
@@ -112,6 +132,16 @@ namespace main_window_shared_types {
 	 * Overload << operator to print text action in the status bar
 	 */
 	QDebug & operator<< (QDebug & os, const main_window_shared_types::text_action_e & action);
+
+	/**
+	 * @brief Function: QString & operator<< (QString & str, const main_window_shared_types::text_action_e & action)
+	 *
+	 * \param str: text stream
+	 * \param action: action applied on the text in the status bar
+	 *
+	 * Overload << operator to print text action in the status bar
+	 */
+	QString & operator<< (QString & str, const main_window_shared_types::text_action_e & action);
 
 }
 
