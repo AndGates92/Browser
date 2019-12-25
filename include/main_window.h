@@ -78,24 +78,6 @@ namespace main_window {
 		 */
 		const int bottomMargin = 0;
 
-		/**
-		 * @brief https string
-		 *
-		 */
-		const QString https("https://");
-
-		/**
-		 * @brief www string
-		 *
-		 */
-		const QString www("www.");
-
-		/**
-		 * @brief default serch engine is duckduckgo
-		 *
-		 */
-		const QString defaultSearchEngine(https + www + "duckduckgo.com/?q=%1");
-
 	}
 
 	/**

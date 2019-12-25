@@ -41,6 +41,24 @@ namespace main_window_ctrl_tab {
 		 */
 		const int emptyUserInput = -1;
 
+		/**
+		 * @brief https string
+		 *
+		 */
+		const QString https("https://");
+
+		/**
+		 * @brief www string
+		 *
+		 */
+		const QString www("www.");
+
+		/**
+		 * @brief default serch engine is duckduckgo
+		 *
+		 */
+		const QString defaultSearchEngine(https + www + "duckduckgo.com/?q=%1");
+
 	}
 
 
@@ -110,6 +128,18 @@ namespace main_window_ctrl_tab {
 			 * Re-implement key released event
 			 */
 			void keyReleaseEvent(QKeyEvent * event);
+
+			/**
+			 * @brief Function: QString createUrl(QString search)
+			 *
+			 * \param search: string to search
+			 * \return string with URL
+			 *
+			 * This function is creates the URL based on the input from the user
+			 * If the user writes down a URL himself/herself, it will return it adding, if required, https
+			 * If the user is writing a strign to search, it will be searched in the chosen search engine
+			 */
+			QString createUrl(QString search);
 
 		public slots:
 
@@ -478,8 +508,6 @@ namespace main_window_ctrl_tab {
 			 * This function moves to a different tab as specified by the user
 			 */
 			void convertToAbsTabIndex(int offset = main_window_ctrl_tab::emptyUserInput, int sign = 0);
-
-
 	};
 
 }

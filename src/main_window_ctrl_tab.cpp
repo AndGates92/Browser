@@ -112,6 +112,7 @@ void main_window_ctrl_tab::MainWindowCtrlTab::closeTab() {
 
 void main_window_ctrl_tab::MainWindowCtrlTab::executeActionOnOffset(int offset) {
 	int sign = 0;
+	this->updateState();
 	if (this->mainWindowState == main_window_shared_types::state_e::MOVE_RIGHT) {
 		sign = 1;
 	} else if (this->mainWindowState == main_window_shared_types::state_e::MOVE_LEFT) {
@@ -140,6 +141,7 @@ void main_window_ctrl_tab::MainWindowCtrlTab::executeActionOnTab(int index) {
 		tabIndex = index;
 	}
 
+	this->updateState();
 	if ((this->tabCount > tabIndex) && (tabIndex >= 0)) {
 		if (this->mainWindowState == main_window_shared_types::state_e::CLOSE_TAB) {
 			emit closeTabSignal(tabIndex);
@@ -169,6 +171,7 @@ void main_window_ctrl_tab::MainWindowCtrlTab::newSearchTab() {
 }
 
 void main_window_ctrl_tab::MainWindowCtrlTab::executeTabAction(int userInput) {
+	this->updateState();
 	if (this->mainWindowState == main_window_shared_types::state_e::CLOSE_TAB) {
 		this->executeActionOnTab(userInput);
 	} else if ((this->mainWindowState == main_window_shared_types::state_e::MOVE_RIGHT) || (this->mainWindowState == main_window_shared_types::state_e::MOVE_LEFT)) {
@@ -343,6 +346,8 @@ void main_window_ctrl_tab::MainWindowCtrlTab::convertToAbsTabIndex(int offset, i
 
 	Q_ASSERT_X(((sign == 0) || (sign == -1) || (sign == 1)), "main window move", "sign input must be either 0 or -1 or 1");
 
+	this->updateState();
+
 	int distance = 0;
 	// index is main_window_ctrl_tab::emptyUserInput if the argument is not passed
 	if (offset == main_window_ctrl_tab::emptyUserInput) {
@@ -382,4 +387,26 @@ void main_window_ctrl_tab::MainWindowCtrlTab::convertToAbsTabIndex(int offset, i
 	} else if (this->mainWindowState == main_window_shared_types::state_e::REFRESH_TAB) {
 		emit this->refreshUrlSignal(tabIndex);
 	}
+}
+
+QString main_window_ctrl_tab::MainWindowCtrlTab::createUrl(QString search) {
+	bool containsSpace = search.contains(" ");
+	bool containsWww = search.contains(main_window_ctrl_tab::www);
+	int numberDots = search.count(".");
+
+	QString url = Q_NULLPTR;
+
+	// if contains at least 1 dot and no space, it could be a URL
+	if ((numberDots > 0) && (containsSpace == false)) {
+		url = main_window_ctrl_tab::https;
+		if (containsWww == true) {
+			url += search;
+		} else {
+			url += main_window_ctrl_tab::www + search;
+		}
+	} else {
+		url = main_window_ctrl_tab::defaultSearchEngine.arg(search);
+	}
+
+	return url;
 }

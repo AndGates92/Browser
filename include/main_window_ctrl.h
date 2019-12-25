@@ -77,6 +77,16 @@ namespace main_window_ctrl {
 			 */
 			void keyReleaseEvent(QKeyEvent * event);
 
+			/**
+			 * @brief Function: QString getTabUrl(QString search)
+			 *
+			 * \param search: string to search
+			 * \return string with URL
+			 *
+			 * This function return a strign with the URL on the input from the user
+			 */
+			QString getTabUrl(QString search);
+
 		public slots:
 			/**
 			 * @brief Function: void receiveCurrentTabIndex(int tabIndex)
@@ -494,7 +504,6 @@ namespace main_window_ctrl {
 			 * This function sets the state of the main window controller
 			 */
 			void setState(main_window_shared_types::state_e state);
-
 	};
 
 }

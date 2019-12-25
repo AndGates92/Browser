@@ -319,6 +319,10 @@ void main_window_ctrl::MainWindowCtrl::formUserInputStr(const main_window_shared
 	emit updateUserInputBarSignal(textLabel);
 }
 
+QString main_window_ctrl::MainWindowCtrl::getTabUrl(QString search) {
+	return this->tabctrl->createUrl(search);
+}
+
 void main_window_ctrl::MainWindowCtrl::getState() {
 	emit this->sendStateSignal(this->mainWindowState);
 }
