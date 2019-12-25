@@ -351,7 +351,7 @@ void main_window_ctrl_tab::MainWindowCtrlTab::convertToAbsTabIndex(int offset, i
 	int distance = 0;
 	// index is main_window_ctrl_tab::emptyUserInput if the argument is not passed
 	if (offset == main_window_ctrl_tab::emptyUserInput) {
-		if (this->mainWindowState == main_window_shared_types::state_e::TAB_MOVE) {
+		if ((this->mainWindowState == main_window_shared_types::state_e::MOVE_RIGHT) || (this->mainWindowState == main_window_shared_types::state_e::MOVE_LEFT) || (this->mainWindowState == main_window_shared_types::state_e::TAB_MOVE)) {
 			distance = 1;
 		} else if (this->mainWindowState == main_window_shared_types::state_e::REFRESH_TAB) {
 			distance = 0;
