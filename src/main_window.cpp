@@ -227,7 +227,8 @@ void main_window::MainWindow::connectSignals() {
 	connect(this->ctrl, &main_window_ctrl::MainWindowCtrl::closeTabSignal, this, &main_window::MainWindow::closeTab);
 
 	// Move tab
-	connect(this->ctrl, &main_window_ctrl::MainWindowCtrl::moveSignal, this, &main_window::MainWindow::move);
+	connect(this->ctrl, &main_window_ctrl::MainWindowCtrl::moveCursorSignal, this, &main_window::MainWindow::moveCursor);
+	connect(this->ctrl, &main_window_ctrl::MainWindowCtrl::moveTabSignal, this, &main_window::MainWindow::moveTab);
 
 	// Search in current tab
 	connect(this->ctrl, &main_window_ctrl::MainWindowCtrl::searchCurrentTabSignal, this, &main_window::MainWindow::searchCurrentTab);
@@ -368,76 +369,22 @@ void main_window::MainWindow::setCenterWindow(QString str) {
 	currentWidget->repaint();
 }
 
-void main_window::MainWindow::move(int offset, int sign, const main_window_shared_types::object_type_e & object) {
-
-	Q_ASSERT_X(((sign == 0) || (sign == -1) || (sign == 1)), "main window move", "sign input must be either 0 or -1 or 1");
-	// number of tabs to move by
-	int distance = 0;
-	// index is main_window_ctrl_tab::emptyUserInput if the argument is not passed
-	if (offset == main_window_ctrl_tab::emptyUserInput) {
-		distance = 1;
-	} else {
-		distance = offset;
-	}
-
-	int tabCount = this->tabs->count();
-	int tabIndexCurrent = this->tabs->currentIndex();
-	int tabIndexDst = 0;
-	if (sign == 0) {
-		tabIndexDst = distance;
-	} else {
-		tabIndexDst = tabIndexCurrent + (sign * distance);
-	}
-	if (offset > tabCount) {
-		int maxTabRange = tabCount - 1;
-		qWarning(mainWindowTabs) << "Offset " << offset << " is bigger than the number of tabs " << tabCount << " Bringing tab index withing the valid range of tab (between 0 and " << maxTabRange << ")\n";
-	}
-	while (tabIndexDst < 0) {
-		tabIndexDst +=  tabCount;
-	}
-
-	// Keep tabIndex values within valid range (0 and (tabCount -1))
-	int tabIndex = tabIndexDst % tabCount;
-
-	if (object == main_window_shared_types::object_type_e::CURSOR) {
-		QINFO_PRINT(global_types::qinfo_level_e::ZERO, mainWindowTabs,  "Move to tab " << tabIndex << " distance " << distance << " on object " << object << " sign " << sign);
-		this->tabs->setCurrentIndex(tabIndex);
-	} else if (object == main_window_shared_types::object_type_e::TAB) {
-		QINFO_PRINT(global_types::qinfo_level_e::ZERO, mainWindowTabs,  "Move tab " << tabIndexCurrent << " to position " << tabIndex << " on object " << object << " sign " << sign);
-		this->tabs->tabBar()->moveTab(tabIndexCurrent, tabIndex);
-	}
+void main_window::MainWindow::moveCursor(int tabIndex) {
+	QINFO_PRINT(global_types::qinfo_level_e::ZERO, mainWindowTabs,  "Move cursor to tab " << tabIndex);
+	this->tabs->setCurrentIndex(tabIndex);
 }
 
-void main_window::MainWindow::refreshUrl(int offset, int sign) {
-	int distance = 0;
-	// index is main_window_ctrl_tab::emptyUserInput if the argument is not passed
-	if (offset == main_window_ctrl_tab::emptyUserInput) {
-		distance = 1;
-	} else {
-		distance = offset;
-	}
-
-	int tabCount = this->tabs->count();
+void main_window::MainWindow::moveTab(int tabIndex) {
 	int tabIndexCurrent = this->tabs->currentIndex();
-	int tabIndexDst = 0;
-	if (sign == 0) {
-		tabIndexDst = distance;
-	} else {
-		tabIndexDst = tabIndexCurrent + (sign * distance);
-	}
-	if (offset > tabCount) {
-		int maxTabRange = tabCount - 1;
-		qWarning(mainWindowTabs) << "Offset " << offset << " is bigger than the number of tabs " << tabCount << " Bringing tab index withing the valid range of tab (between 0 and " << maxTabRange << ")\n";
-	}
+	QINFO_PRINT(global_types::qinfo_level_e::ZERO, mainWindowTabs,  "Move tab " << tabIndexCurrent << " to " << tabIndex);
+	this->tabs->tabBar()->moveTab(tabIndexCurrent, tabIndex);
+}
 
-	// Keep tabIndex values within valid range (0 and (tabCount -1))
-	int tabIndex = tabIndexDst % tabCount;
-
+void main_window::MainWindow::refreshUrl(int tabIndex) {
 	QWebEngineView * centerWindow = dynamic_cast<QWebEngineView *>(this->tabs->widget(tabIndex));
 	QUrl currUrl = centerWindow->url();
 
 	centerWindow->setUrl(QUrl(currUrl));
-
 }
 
 void main_window::MainWindow::closeTab(int index) {

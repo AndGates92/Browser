@@ -170,25 +170,31 @@ namespace main_window_ctrl_tab {
 			void updateWebsiteSignal(int index);
 
 			/**
-			 * @brief Function: void moveSignal(int offset, int sign = 0, const main_window_shared_types::object_type_e & object = main_window_shared_types::object_type_e::UNKNOWN)
+			 * @brief Function: void moveCursorSignal(int tabIndex)
 			 *
-			 * \param offset: offset of tab to execute action on
-			 * \param sign: direction of movement. -1 for left move and 1 for right move
-			 * \param object: object to move: cursor or tab
+			 * \param tabIndex: index to move the cursor to
 			 *
-			 * This function is a signal to move to a different tab as specified by the user
+			 * This function is a signal to move the cursor to a different tab as specified by the user
 			 */
-			void moveSignal(int offset, int sign = 0, const main_window_shared_types::object_type_e & object = main_window_shared_types::object_type_e::UNKNOWN);
+			void moveCursorSignal(int tabIndex);
 
 			/**
-			 * @brief Function: void refreshUrlSignal(int offset, int sign = 0)
+			 * @brief Function: void moveTabSignal(int tabIndex)
 			 *
-			 * \param offset: offset of tab to execute action on
-			 * \param sign: direction of movement. -1 for left move and 1 for right move
+			 * \param tabIndex: index to move the tab to
+			 *
+			 * This function is a signal to move the current tab to another position as specified by the user
+			 */
+			void moveTabSignal(int tabIndex);
+
+			/**
+			 * @brief Function: void refreshUrlSignal(int tabIndex)
+			 *
+			 * \param tabIndex: tab index to refresh
 			 *
 			 * This function is a signal to refresh a tab as specified by the user
 			 */
-			void refreshUrlSignal(int offset, int sign = 0);
+			void refreshUrlSignal(int tabIndex);
 
 			/**
 			 * @brief Function: void addNewTabSignal(QString search)
@@ -462,6 +468,17 @@ namespace main_window_ctrl_tab {
 			 * This function return the object type the action is applied on
 			 */
 			main_window_shared_types::object_type_e setAffectedObject();
+
+			/**
+			 * @brief Function: void convertToAbsTabIndex(int offset = main_window_ctrl_tab::emptyUserInput, int sign = 0)
+			 *
+			 * \param offset: relatinve tab index
+			 * \param sign: direction of tab to apply action on: -1 for left move and 1 for right move
+			 *
+			 * This function moves to a different tab as specified by the user
+			 */
+			void convertToAbsTabIndex(int offset = main_window_ctrl_tab::emptyUserInput, int sign = 0);
+
 
 	};
 

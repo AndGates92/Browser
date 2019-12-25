@@ -235,25 +235,31 @@ namespace main_window {
 			void updateWebsite(int index);
 
 			/**
-			 * @brief Function: void move(int offset, int sign = 0, const main_window_shared_types::object_type_e & object = main_window_shared_types::object_type_e::UNKNOWN)
+			 * @brief Function: void moveCursor(int tabIndex)
 			 *
-			 * \param offset: offset of tab to execute action on
-			 * \param sign: direction of movement. -1 for left move and 1 for right move
-			 * \param object: object to move: cursor or tab
+			 * \param tabIndex: index to move the cursor to
 			 *
-			 * This function moves to a different tab as specified by the user
+			 * This function moves the cursor to a different tab as specified by the user
 			 */
-			void move(int offset, int sign = 0, const main_window_shared_types::object_type_e & object = main_window_shared_types::object_type_e::UNKNOWN);
+			void moveCursor(int tabIndex);
 
 			/**
-			 * @brief Function: void refreshUrl(int offset, int sign = 0)
+			 * @brief Function: void moveTab(int tabIndex)
 			 *
-			 * \param offset: offset of tab to execute action on
-			 * \param sign: direction of movement. -1 for left move and 1 for right move
+			 * \param tabIndex: index to move the tab to
+			 *
+			 * This function moves the current tab to a different tab as specified by the user
+			 */
+			void moveTab(int tabIndex);
+
+			/**
+			 * @brief Function: void refreshUrl(int tabIndex)
+			 *
+			 * \param tabIndex: tab index to refresh
 			 *
 			 * This function refreshes a tab as specified by the user
 			 */
-			void refreshUrl(int offset, int sign = 0);
+			void refreshUrl(int tabIndex);
 
 			/**
 			 * @brief Function: void searchCurrentTab(QString search)

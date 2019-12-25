@@ -99,7 +99,8 @@ void main_window_ctrl::MainWindowCtrl::connectSignals() {
 	connect(this->tabctrl, &main_window_ctrl_tab::MainWindowCtrlTab::closeTabSignal, this, &main_window_ctrl::MainWindowCtrl::closeTab);
 
 	// Move tab
-	connect(this->tabctrl, &main_window_ctrl_tab::MainWindowCtrlTab::moveSignal, this, &main_window_ctrl::MainWindowCtrl::move);
+	connect(this->tabctrl, &main_window_ctrl_tab::MainWindowCtrlTab::moveTabSignal, this, &main_window_ctrl::MainWindowCtrl::moveTab);
+	connect(this->tabctrl, &main_window_ctrl_tab::MainWindowCtrlTab::moveCursorSignal, this, &main_window_ctrl::MainWindowCtrl::moveCursor);
 
 	// Search in current tab
 	connect(this->tabctrl, &main_window_ctrl_tab::MainWindowCtrlTab::searchCurrentTabSignal, this, &main_window_ctrl::MainWindowCtrl::searchCurrentTab);
@@ -342,16 +343,20 @@ void main_window_ctrl::MainWindowCtrl::receiveTabCount(int tabCount) {
 	emit this->sendTabCountSignal(tabCount);
 }
 
-void main_window_ctrl::MainWindowCtrl::refreshUrl(int offset, int sign) {
-	emit this->refreshUrlSignal(offset, sign);
+void main_window_ctrl::MainWindowCtrl::refreshUrl(int tabIndex) {
+	emit this->refreshUrlSignal(tabIndex);
 }
 
 void main_window_ctrl::MainWindowCtrl::closeTab(int index) {
 	emit this->closeTabSignal(index);
 }
 
-void main_window_ctrl::MainWindowCtrl::move(int offset, int sign, const main_window_shared_types::object_type_e & object) {
-	emit this->moveSignal(offset, sign, object);
+void main_window_ctrl::MainWindowCtrl::moveTab(int tabIndex) {
+	emit this->moveTabSignal(tabIndex);
+}
+
+void main_window_ctrl::MainWindowCtrl::moveCursor(int tabIndex) {
+	emit this->moveCursorSignal(tabIndex);
 }
 
 void main_window_ctrl::MainWindowCtrl::addNewTab(QString search) {
@@ -373,4 +378,3 @@ void main_window_ctrl::MainWindowCtrl::searchCurrentTab(QString search) {
 void main_window_ctrl::MainWindowCtrl::openNewTab() {
 	emit this->openNewTabSignal();
 }
-

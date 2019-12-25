@@ -111,17 +111,21 @@ void main_window_ctrl_tab::MainWindowCtrlTab::closeTab() {
 }
 
 void main_window_ctrl_tab::MainWindowCtrlTab::executeActionOnOffset(int offset) {
+	int sign = 0;
 	if (this->mainWindowState == main_window_shared_types::state_e::MOVE_RIGHT) {
-		emit moveSignal(offset, 1, this->setAffectedObject());
+		sign = 1;
 	} else if (this->mainWindowState == main_window_shared_types::state_e::MOVE_LEFT) {
-		emit moveSignal(offset, -1, this->setAffectedObject());
+		sign = -1;
 	} else if (this->mainWindowState == main_window_shared_types::state_e::TAB_MOVE) {
 		if (this->moveValueType == main_window_shared_types::move_value_e::RIGHT) {
-			emit moveSignal(offset, 1, this->setAffectedObject());
+			sign = 1;
 		} else if (this->moveValueType == main_window_shared_types::move_value_e::LEFT) {
-			emit moveSignal(offset, -1, this->setAffectedObject());
+			sign = -1;
 		}
 	}
+
+	Q_ASSERT_X(((sign == -1) || (sign == 1)), "execute movement on offset", "sign input must be either -1 or 1");
+	this->convertToAbsTabIndex(offset, sign);
 }
 
 void main_window_ctrl_tab::MainWindowCtrlTab::executeActionOnTab(int index) {
@@ -140,9 +144,9 @@ void main_window_ctrl_tab::MainWindowCtrlTab::executeActionOnTab(int index) {
 		if (this->mainWindowState == main_window_shared_types::state_e::CLOSE_TAB) {
 			emit closeTabSignal(tabIndex);
 		} else if (this->mainWindowState == main_window_shared_types::state_e::TAB_MOVE) {
-			emit moveSignal(tabIndex, 0, this->setAffectedObject());
+			this->convertToAbsTabIndex(tabIndex, 0);
 		} else if (this->mainWindowState == main_window_shared_types::state_e::REFRESH_TAB) {
-			emit this->refreshUrlSignal(tabIndex);
+			this->convertToAbsTabIndex(tabIndex, 0);
 		}
 	} else {
 		int maxTabRange = this->tabCount;
@@ -333,4 +337,49 @@ main_window_shared_types::object_type_e main_window_ctrl_tab::MainWindowCtrlTab:
 	}
 
 	return object;
+}
+
+void main_window_ctrl_tab::MainWindowCtrlTab::convertToAbsTabIndex(int offset, int sign) {
+
+	Q_ASSERT_X(((sign == 0) || (sign == -1) || (sign == 1)), "main window move", "sign input must be either 0 or -1 or 1");
+
+	int distance = 0;
+	// index is main_window_ctrl_tab::emptyUserInput if the argument is not passed
+	if (offset == main_window_ctrl_tab::emptyUserInput) {
+		if (this->mainWindowState == main_window_shared_types::state_e::TAB_MOVE) {
+			distance = 1;
+		} else if (this->mainWindowState == main_window_shared_types::state_e::REFRESH_TAB) {
+			distance = 0;
+		}
+	} else {
+		distance = offset;
+	}
+
+	this->updateCurrentTabIndex();
+	this->updateTabCount();
+
+	int tabIndexDst = 0;
+	if (sign == 0) {
+		tabIndexDst = distance;
+	} else {
+		tabIndexDst = this->currentTabIndex + (sign * distance);
+	}
+	if (offset > this->tabCount) {
+		int maxTabRange = this->tabCount - 1;
+		qWarning(mainWindowCtrlTabTabs) << "Offset " << offset << " is bigger than the number of tabs " << this->tabCount << " Bringing tab index withing the valid range of tab (between 0 and " << maxTabRange << ")\n";
+	}
+	while (tabIndexDst < 0) {
+		tabIndexDst +=  this->tabCount;
+	}
+
+	// Keep tabIndex values within valid range (0 and (tabCount -1))
+	int tabIndex = tabIndexDst % this->tabCount;
+
+	if ((this->mainWindowState == main_window_shared_types::state_e::MOVE_RIGHT) || (this->mainWindowState == main_window_shared_types::state_e::MOVE_LEFT)) {
+		emit this->moveTabSignal(tabIndex);
+	} else if (this->mainWindowState == main_window_shared_types::state_e::TAB_MOVE) {
+		emit this->moveCursorSignal(tabIndex);
+	} else if (this->mainWindowState == main_window_shared_types::state_e::REFRESH_TAB) {
+		emit this->refreshUrlSignal(tabIndex);
+	}
 }
