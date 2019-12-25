@@ -6,6 +6,11 @@
  * @brief Main Window Shared Types functions
  */
 
+#include <iostream>
+
+#include <qt5/QtCore/QTextStream>
+
+#include "global_macros.h"
 #include "main_window_shared_types.h"
 
 namespace main_window_shared_types {
@@ -54,42 +59,44 @@ namespace main_window_shared_types {
 	}
 
 	// Overload << operator for state_e
-	QDebug & operator<< (QDebug & os, const main_window_shared_types::state_e & state) {
+	QDEBUG_OVERLOAD_PRINT_OP(main_window_shared_types::state_e)
+
+	QString & operator<< (QString & str, const main_window_shared_types::state_e & state) {
 
 		switch (state) {
 			case main_window_shared_types::state_e::IDLE:
-				os << "IDLE";
+				str.append("IDLE");
 				break;
 			case main_window_shared_types::state_e::COMMAND:
-				os << "COMMAND";
+				str.append("COMMAND");
 				break;
 			case main_window_shared_types::state_e::OPEN_TAB:
-				os << "OPEN TAB";
+				str.append("OPEN TAB");
 				break;
 			case main_window_shared_types::state_e::CLOSE_TAB:
-				os << "CLOSE TAB";
+				str.append("CLOSE TAB");
 				break;
 			case main_window_shared_types::state_e::REFRESH_TAB:
-				os << "REFRESH TAB";
+				str.append("REFRESH TAB");
 				break;
 			case main_window_shared_types::state_e::MOVE_LEFT:
-				os << "MOVE LEFT";
+				str.append("MOVE LEFT");
 				break;
 			case main_window_shared_types::state_e::MOVE_RIGHT:
-				os << "MOVE RIGHT";
+				str.append("MOVE RIGHT");
 				break;
 			case main_window_shared_types::state_e::TAB_MOVE:
-				os << "TAB MOVE";
+				str.append("TAB MOVE");
 				break;
 			case main_window_shared_types::state_e::SEARCH:
-				os << "SEARCH";
+				str.append("SEARCH");
 				break;
 			default:
-				os << "Unknown state";
+				str.append("Unknown state");
 				break;
 		}
 
-		return os;
+		return str;
 	}
 
 	QDebug & operator<< (QDebug & os, const main_window_shared_types::text_action_e & action) {

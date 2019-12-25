@@ -237,43 +237,16 @@ void main_window_ctrl::MainWindowCtrl::setShortcutEnabledProperty (bool enabled)
 }
 
 QString main_window_ctrl::MainWindowCtrl::getActionName() {
-	QString actionName = Q_NULLPTR;
-	switch (this->mainWindowState) {
-		case main_window_shared_types::state_e::IDLE:
-			actionName = "";
-			break;
-		case main_window_shared_types::state_e::OPEN_TAB:
-			actionName = "open";
-			break;
-		case main_window_shared_types::state_e::COMMAND:
-			actionName = "command";
-			break;
-		case main_window_shared_types::state_e::CLOSE_TAB:
-			actionName = "close";
-			break;
-		case main_window_shared_types::state_e::REFRESH_TAB:
-			actionName = "refresh";
-			break;
-		case main_window_shared_types::state_e::MOVE_LEFT:
-			actionName = "move left";
-			break;
-		case main_window_shared_types::state_e::MOVE_RIGHT:
-			actionName = "move right";
-			break;
-		case main_window_shared_types::state_e::TAB_MOVE:
-			actionName = "move tab";
-			if (this->tabctrl->getMoveValueType() == main_window_shared_types::move_value_e::RIGHT) {
-				actionName.append(" right");
-			} else if (this->tabctrl->getMoveValueType() == main_window_shared_types::move_value_e::LEFT) {
-				actionName.append(" left");
-			}
-			break;
-		case main_window_shared_types::state_e::SEARCH:
-			actionName = "search";
-			break;
-		default:
-			actionName = "Unknown state";
-			break;
+	QString actionName(QString::null);
+
+	actionName << this->mainWindowState;
+
+	if (this->mainWindowState == main_window_shared_types::state_e::TAB_MOVE) {
+		if (this->tabctrl->getMoveValueType() == main_window_shared_types::move_value_e::RIGHT) {
+			actionName.append(" right");
+		} else if (this->tabctrl->getMoveValueType() == main_window_shared_types::move_value_e::LEFT) {
+			actionName.append(" left");
+		}
 	}
 
 	QINFO_PRINT(global_types::qinfo_level_e::ZERO, mainWindowCtrlUserInput,  "State " << this->mainWindowState << " action text " << actionName);

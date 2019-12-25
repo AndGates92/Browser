@@ -45,6 +45,23 @@
 		qInfo(CATEGORY) << __VA_ARGS__; \
 	}
 
+/**
+ * @brief QDEBUG_OVERLOAD_PRINT_OP(TYPE)
+ *
+ * \param TYPE : type to have operator << overloaded for
+ *
+ * Creates function overloading operator << for a type Type.
+ * It needs the type to be coverted to a QString
+ */
+#define QDEBUG_OVERLOAD_PRINT_OP(TYPE) \
+	QDebug & operator<< (QDebug & os, const TYPE & state) { \
+		QString str(QString::null); \
+		str << state; \
+		os << str; \
+		return os; \
+	}
+
+
 /** @} */ // End of GlobalMacrosGroup group
 
 #endif // GLOBAL_MACROS_H

@@ -63,6 +63,16 @@ namespace main_window_shared_types {
 	QDebug & operator<< (QDebug & os, const main_window_shared_types::state_e & state);
 
 	/**
+	 * @brief Function: QTextStream & operator<< (QDebug & os, const main_window_shared_types::state_e & state)
+	 *
+	 * \param str: text stream
+	 * \param state: state of the main window controller
+	 *
+	 * Overload << operator to print state
+	 */
+	QString & operator<< (QString & str, const main_window_shared_types::state_e & state);
+
+	/**
 	 * @brief move info
 	 *
 	 */
