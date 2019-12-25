@@ -381,9 +381,9 @@ void main_window_ctrl_tab::MainWindowCtrlTab::convertToAbsTabIndex(int offset, i
 	int tabIndex = tabIndexDst % this->tabCount;
 
 	if ((this->mainWindowState == main_window_shared_types::state_e::MOVE_RIGHT) || (this->mainWindowState == main_window_shared_types::state_e::MOVE_LEFT)) {
-		emit this->moveTabSignal(tabIndex);
-	} else if (this->mainWindowState == main_window_shared_types::state_e::TAB_MOVE) {
 		emit this->moveCursorSignal(tabIndex);
+	} else if (this->mainWindowState == main_window_shared_types::state_e::TAB_MOVE) {
+		emit this->moveTabSignal(tabIndex);
 	} else if (this->mainWindowState == main_window_shared_types::state_e::REFRESH_TAB) {
 		emit this->refreshUrlSignal(tabIndex);
 	}
