@@ -142,16 +142,6 @@ namespace tab_widget {
 			 */
 			void tabNumberChange();
 
-			/**
-			 * @brief Function: void setShortcutEnabledPropertySignal(bool enabled)
-			 *
-			 * \param enabled: value of enabled property
-			 *
-			 * This function is the signal to set the enabled property of all shortcuts of the main window and menus of the main window
-			 */
-			void setShortcutEnabledPropertySignal(bool enabled);
-
-
 	};
 }
 /** @} */ // End of TabWidgetGroup group

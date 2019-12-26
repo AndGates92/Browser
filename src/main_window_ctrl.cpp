@@ -38,20 +38,6 @@ main_window_ctrl::MainWindowCtrl::MainWindowCtrl(QWidget * parent, int tabIndex,
 
 }
 
-void main_window_ctrl::MainWindowCtrl::setAllMenuShortcutEnabledProperty(bool enabled) {
-	emit this->enabledPropertyMenuSignal(enabled);
-}
-
-void main_window_ctrl::MainWindowCtrl::setAllWindowShortcutEnabledProperty(bool enabled) {
-	this->tabctrl->setAllTabShortcutEnabledProperty(enabled);
-	this->toggleShowMenuBarKey->setEnabled(enabled);
-}
-
-void main_window_ctrl::MainWindowCtrl::setAllShortcutEnabledProperty(bool enabled) {
-	this->setAllMenuShortcutEnabledProperty(enabled);
-	this->setAllWindowShortcutEnabledProperty(enabled);
-}
-
 void main_window_ctrl::MainWindowCtrl::createShortcuts() {
 	// m will hide/show the menu bar
 	this->toggleShowMenuBarKey = new QShortcut(parent);
@@ -60,6 +46,17 @@ void main_window_ctrl::MainWindowCtrl::createShortcuts() {
 	// q will close the browser
 	this->closeKey = new QShortcut(parent);
 	this->closeKey->setKey(Qt::Key_Q);
+}
+
+
+void main_window_ctrl::MainWindowCtrl::setAllShortcutEnabledProperty(bool enabled) {
+	QList<QShortcut *> shortcuts = this->parent->findChildren<QShortcut *>();
+
+	for (QShortcut * shortcut : shortcuts) {
+		QKeySequence key = shortcut->key();
+		QINFO_PRINT(global_types::qinfo_level_e::ZERO, mainWindowCtrlTabUserInput,  "Setting enabled for key " << key.toString() << " to " << enabled);
+		shortcut->setEnabled(enabled);
+	}
 }
 
 void main_window_ctrl::MainWindowCtrl::connectSignals() {
@@ -235,7 +232,7 @@ void main_window_ctrl::MainWindowCtrl::keyPressEvent(QKeyEvent * event) {
 
 }
 
-void main_window_ctrl::MainWindowCtrl::setShortcutEnabledProperty (bool enabled) {
+void main_window_ctrl::MainWindowCtrl::setShortcutEnabledProperty(bool enabled) {
 	this->setAllShortcutEnabledProperty(enabled);
 }
 

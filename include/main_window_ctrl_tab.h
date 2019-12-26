@@ -93,15 +93,6 @@ namespace main_window_ctrl_tab {
 			main_window_shared_types::move_value_e getMoveValueType();
 
 			/**
-			 * @brief Function: void setAllTabShortcutEnabledProperty(bool enabled)
-			 *
-			 * \param enabled: value of enabled property
-			 *
-			 * This function sets the enabled property of all shortcuts of the main window
-			 */
-			void setAllTabShortcutEnabledProperty(bool enabled);
-
-			/**
 			 * @brief Function: void processTabIndex(QString userInputStr)
 			 *
 			 * This function converts the string indexStr to an integer and executes desired action on it

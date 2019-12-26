@@ -77,15 +77,6 @@ void main_window_ctrl_tab::MainWindowCtrlTab::connectSignals() {
 	connect(this->refreshUrlKey, &QShortcut::activated, this, &main_window_ctrl_tab::MainWindowCtrlTab::refreshTabUrl);
 }
 
-void main_window_ctrl_tab::MainWindowCtrlTab::setAllTabShortcutEnabledProperty(bool enabled) {
-	this->openNewTabKey->setEnabled(enabled);
-	this->newSearchTabKey->setEnabled(enabled);
-	this->closeTabKey->setEnabled(enabled);
-	this->moveTabToKey->setEnabled(enabled);
-	this->moveLeftKey->setEnabled(enabled);
-	this->moveRightKey->setEnabled(enabled);
-	this->refreshUrlKey->setEnabled(enabled);
-}
 
 void main_window_ctrl_tab::MainWindowCtrlTab::moveTabTo() {
 	emit this->setStateSignal(main_window_shared_types::state_e::TAB_MOVE);

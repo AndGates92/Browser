@@ -208,12 +208,6 @@ void main_window::MainWindow::connectSignals() {
 	// open tab action
 	connect(this->fileMenu->openTabAction, &QAction::triggered, this->ctrl, &main_window_ctrl::MainWindowCtrl::openNewTab);
 
-	// enable/disable file menu
-	connect(this->ctrl, &main_window_ctrl::MainWindowCtrl::enabledPropertyMenuSignal, this->fileMenu, &file_menu::FileMenu::setEnabledProperty);
-
-	// enable/disable edit menu
-	connect(this->ctrl, &main_window_ctrl::MainWindowCtrl::enabledPropertyMenuSignal, this->editMenu, &edit_menu::EditMenu::setEnabledProperty);
-
 	// Update info in the info bar following action
 	connect(this->ctrl, &main_window_ctrl::MainWindowCtrl::updateInfoActionSignal, this, &main_window::MainWindow::updateInfo);
 
@@ -259,8 +253,6 @@ void main_window::MainWindow::connectSignals() {
 	connect(this->tabs, &QTabWidget::tabCloseRequested, this, &main_window::MainWindow::updateInfoSlot);
 //	connect(this->tabs, &QTabWidget::currentChanged, this->ctrl, &main_window_ctrl::MainWindowCtrl::updateWebsite);
 
-	// Disable/Enable menu shortcuts
-	connect(this->tabs, &tab_widget::TabWidget::setShortcutEnabledPropertySignal, this->ctrl, &main_window_ctrl::MainWindowCtrl::setShortcutEnabledProperty);
 }
 
 void main_window::MainWindow::createCtrl() {

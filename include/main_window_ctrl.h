@@ -171,15 +171,6 @@ namespace main_window_ctrl {
 			void searchCurrentTabSignal(QString search);
 
 			/**
-			 * @brief Function: void enabledPropertyMenuSignal(bool enabled)
-			 *
-			 * \param enabled: value of enabled property
-			 *
-			 * This function sets the enabled property of all shortcuts of the main window and menus of the main window
-			 */
-			void enabledPropertyMenuSignal(bool enabled);
-
-			/**
 			 * @brief Function: void toggleShowMenubarSignal()
 			 *
 			 * This function is the signal to show or hide the menubar
@@ -455,24 +446,6 @@ namespace main_window_ctrl {
 			 * This function executes a command on a based on user input
 			 */
 			void executeCommand(QString command);
-
-			/**
-			 * @brief Function: void setAllMenuShortcutEnabledProperty(bool enabled)
-			 *
-			 * \param enabled: value of enabled property
-			 *
-			 * This function sets the enabled property of all shortcuts of menus of the main window
-			 */
-			void setAllMenuShortcutEnabledProperty(bool enabled);
-
-			/**
-			 * @brief Function: void setAllWindowShortcutEnabledProperty(bool enabled)
-			 *
-			 * \param enabled: value of enabled property
-			 *
-			 * This function sets the enabled property of all shortcuts of the main window
-			 */
-			void setAllWindowShortcutEnabledProperty(bool enabled);
 
 			/**
 			 * @brief Function: QString getActionName()
