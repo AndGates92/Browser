@@ -249,6 +249,9 @@ QString main_window_ctrl::MainWindowCtrl::getActionName() {
 		}
 	}
 
+	// Create lowercase copy of the string
+	actionName = actionName.toLower();
+
 	QINFO_PRINT(global_types::qinfo_level_e::ZERO, mainWindowCtrlUserInput,  "State " << this->mainWindowState << " action text " << actionName);
 
 	return actionName;
