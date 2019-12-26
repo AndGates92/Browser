@@ -84,6 +84,7 @@ void main_window_ctrl_tab::MainWindowCtrlTab::setAllTabShortcutEnabledProperty(b
 	this->moveTabToKey->setEnabled(enabled);
 	this->moveLeftKey->setEnabled(enabled);
 	this->moveRightKey->setEnabled(enabled);
+	this->refreshUrlKey->setEnabled(enabled);
 }
 
 void main_window_ctrl_tab::MainWindowCtrlTab::moveTabTo() {
