@@ -205,6 +205,9 @@ void main_window_ctrl::MainWindowCtrl::keyPressEvent(QKeyEvent * event) {
 					// If key h is pressed, then the value is considered to be relative to the current tab and considered to go to the left
 					// If key l is pressed, then the value is considered to be relative to the current tab and considered to go to the right
 					if ((pressedKey >= Qt::Key_0) && (pressedKey <= Qt::Key_9)) {
+						if (this->tabctrl->getMoveValueType() == main_window_shared_types::move_value_e::IDLE) {
+							this->formUserInputStr(main_window_shared_types::text_action_e::CLEAR);
+						}
 						this->formUserInputStr(main_window_shared_types::text_action_e::APPEND, event->text());
 					} else if ((this->tabctrl->getMoveValueType() == main_window_shared_types::move_value_e::IDLE) && ((pressedKey == Qt::Key_H) || (pressedKey == Qt::Key_L) || (pressedKey == Qt::Key_Plus) || (pressedKey == Qt::Key_Minus))) {
 						this->formUserInputStr(main_window_shared_types::text_action_e::CLEAR);
