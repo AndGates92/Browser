@@ -394,7 +394,7 @@ QString main_window_ctrl_tab::MainWindowCtrlTab::createUrl(QString search) {
 	bool containsWww = search.contains(main_window_ctrl_tab::www);
 	int numberDots = search.count(".");
 
-	QString url = Q_NULLPTR;
+	QString url(QString::null);
 
 	// if contains at least 1 dot and no space, it could be a URL
 	if ((numberDots > 0) && (containsSpace == false)) {
@@ -409,4 +409,23 @@ QString main_window_ctrl_tab::MainWindowCtrlTab::createUrl(QString search) {
 	}
 
 	return url;
+}
+
+QString main_window_ctrl_tab::MainWindowCtrlTab::createTabInfo() {
+
+	QString tabInfo(QString::null);
+
+	this->updateCurrentTabIndex();
+	this->updateTabCount();
+
+	if (tabCount == 0) {
+		tabInfo.append("No tabs");
+	} else {
+		tabInfo.append("tab ");
+		tabInfo.append(QString("%1").arg(this->currentTabIndex + 1));
+		tabInfo.append(" out of ");
+		tabInfo.append(QString("%1").arg(this->tabCount));
+	}
+
+	return tabInfo;
 }

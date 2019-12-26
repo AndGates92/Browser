@@ -26,7 +26,7 @@ Q_LOGGING_CATEGORY(mainWindowCtrlTabs, "mainWindowCtrl.tabs", MSG_TYPE_LEVEL)
 main_window_ctrl::MainWindowCtrl::MainWindowCtrl(QWidget * parent, int tabIndex, int tabCount) : parent(parent) {
 
 	this->mainWindowState = main_window_shared_types::state_e::IDLE;
-	this->userText = Q_NULLPTR;
+	this->userText = QString::null;
 
 	this->tabctrl = new main_window_ctrl_tab::MainWindowCtrlTab(parent, tabIndex, tabCount);
 
@@ -256,8 +256,8 @@ QString main_window_ctrl::MainWindowCtrl::getActionName() {
 
 void main_window_ctrl::MainWindowCtrl::formUserInputStr(const main_window_shared_types::text_action_e action, QString text) {
 
-	QString textPrint = Q_NULLPTR;
-	if (text == Q_NULLPTR) {
+	QString textPrint(QString::null);
+	if (text == QString::null) {
 		textPrint.append("Not provided");
 	} else {
 		textPrint.append(text);
@@ -280,9 +280,9 @@ void main_window_ctrl::MainWindowCtrl::formUserInputStr(const main_window_shared
 			break;
 	}
 
-	QString textLabel = Q_NULLPTR;
+	QString textLabel(QString::null);
 	if (this->mainWindowState != main_window_shared_types::state_e::IDLE) {
-		QString userAction = Q_NULLPTR;
+		QString userAction(QString::null);
 		if (this->mainWindowState != main_window_shared_types::state_e::COMMAND) {
 			userAction = this->getActionName();
 		}
@@ -294,6 +294,10 @@ void main_window_ctrl::MainWindowCtrl::formUserInputStr(const main_window_shared
 
 QString main_window_ctrl::MainWindowCtrl::getTabUrl(QString search) {
 	return this->tabctrl->createUrl(search);
+}
+
+QString main_window_ctrl::MainWindowCtrl::getTabInfo() {
+	return this->tabctrl->createTabInfo();
 }
 
 void main_window_ctrl::MainWindowCtrl::getState() {

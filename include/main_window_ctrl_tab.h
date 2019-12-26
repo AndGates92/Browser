@@ -141,6 +141,15 @@ namespace main_window_ctrl_tab {
 			 */
 			QString createUrl(QString search);
 
+			/**
+			 * @brief Function: QString createTabInfo()
+			 *
+			 * \return string with tab information
+			 *
+			 * This function is creates the string to provide tab info to users
+			 */
+			QString createTabInfo();
+
 		public slots:
 
 			/**
@@ -292,14 +301,14 @@ namespace main_window_ctrl_tab {
 			void setShortcutEnabledPropertySignal(bool enabled);
 
 			/**
-			 * @brief Function: void setUserInputStrSignal(const main_window_shared_types::text_action_e action, QString text = Q_NULLPTR)
+			 * @brief Function: void setUserInputStrSignal(const main_window_shared_types::text_action_e action, QString text = QString::null)
 			 *
 			 * \param action: action to execute - valid values are: SET, APPEND and CLEAR
 			 * \param text: text to append to userText
 			 *
 			 * This function is the slot to update the user input label
 			 */
-			void setUserInputStrSignal(const main_window_shared_types::text_action_e action, QString text = Q_NULLPTR);
+			void setUserInputStrSignal(const main_window_shared_types::text_action_e action, QString text = QString::null);
 
 		private slots:
 

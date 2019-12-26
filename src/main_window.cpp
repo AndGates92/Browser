@@ -77,6 +77,9 @@ main_window::MainWindow::MainWindow(QWidget * parent, Qt::WindowFlags flags) : Q
 
 	QSize winSize(320,400);
 	this->resize(winSize);
+
+	// Update info label
+	this->updateInfo();
 }
 
 
@@ -131,9 +134,6 @@ void main_window::MainWindow::fillMainWindow() {
 	// info
 	this->infoText = this->newWindowLabel();
 	this->infoText->setAlignment(Qt::AlignRight | Qt::AlignBottom);
-
-	// Update info label
-	this->updateInfo();
 }
 
 void main_window::MainWindow::createTabs() {
@@ -279,7 +279,7 @@ void main_window::MainWindow::addNewTab(QString search) {
 	this->tabs->setCurrentIndex(tabIndex);
 
 	// Update info label
-	updateInfo();
+	this->updateInfo();
 }
 
 void main_window::MainWindow::newSearchTab(int index, QString search) {
@@ -308,22 +308,14 @@ void main_window::MainWindow::searchCurrentTab(QString search) {
 // In the case of currentChanged signal, index is the current tab
 // In the case of tabCloseRequested signal, index is the closed tab
 void main_window::MainWindow::updateInfoSlot(int index) {
-	updateInfo();
+	this->updateInfo();
 }
 #pragma GCC diagnostic pop
 
 void main_window::MainWindow::updateInfo() {
-	QString info("");
-	int tabIndex = this->tabs->currentIndex() + 1;
-	int tabCount = this->tabs->count();
-	if (tabCount == 0) {
-		info.append("No tabs");
-	} else {
-		info.append("tab ");
-		info.append(QString("%1").arg(tabIndex));
-		info.append(" out of ");
-		info.append(QString("%1").arg(tabCount));
-	}
+	QString info(QString::null);
+	info = this->ctrl->getTabInfo();
+
 	this->infoText->setText(info);
 }
 
@@ -376,7 +368,7 @@ void main_window::MainWindow::closeTab(int index) {
 }
 
 void main_window::MainWindow::updateUserInputBar(QString textLabel) {
-	if (textLabel == Q_NULLPTR) {
+	if (textLabel == QString::null) {
 		this->userInputText->clear();
 	} else {
 		this->userInputText->setText(textLabel);

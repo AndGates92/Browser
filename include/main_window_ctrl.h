@@ -46,7 +46,7 @@ namespace main_window_ctrl {
 		public:
 
 			/**
-			 * @brief Function: explicit MainWindowCtrl(QWidget * parent = Q_NULLPTR, int tabIndex = 0, int tabCount = 0)
+			 * @brief Function: explicit MainWindowCtrl(QWidget * parent = QString::null, int tabIndex = 0, int tabCount = 0)
 			 *
 			 * \param parent: parent window
 			 * \param tabIndex: current tab index
@@ -87,6 +87,15 @@ namespace main_window_ctrl {
 			 */
 			QString getTabUrl(QString search);
 
+			/**
+			 * @brief Function: QString getTabInfo()
+			 *
+			 * \return string with tab information
+			 *
+			 * This function is creates the string to provide tab info to users
+			 */
+			QString getTabInfo();
+
 		public slots:
 			/**
 			 * @brief Function: void receiveCurrentTabIndex(int tabIndex)
@@ -121,7 +130,6 @@ namespace main_window_ctrl {
 			 * This function is the slot to set the enabled property of all shortcuts of the main window and menus of the main window
 			 */
 			void setShortcutEnabledProperty(bool enabled);
-
 
 		protected:
 
@@ -367,14 +375,14 @@ namespace main_window_ctrl {
 			void setAllShortcutEnabledProperty(bool enabled);
 
 			/**
-			 * @brief Function: void formUserInputStr(const main_window_shared_types::text_action_e action, QString text = Q_NULLPTR)
+			 * @brief Function: void formUserInputStr(const main_window_shared_types::text_action_e action, QString text = QString::null)
 			 *
 			 * \param action: action to execute - valid values are: SET, APPEND and CLEAR
 			 * \param text: text to append to userText
 			 *
 			 * This function is the slot to update the user input label
 			 */
-			void formUserInputStr(const main_window_shared_types::text_action_e action, QString text = Q_NULLPTR);
+			void formUserInputStr(const main_window_shared_types::text_action_e action, QString text = QString::null);
 
 		private:
 
