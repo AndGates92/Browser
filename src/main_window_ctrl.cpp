@@ -108,12 +108,12 @@ void main_window_ctrl::MainWindowCtrl::connectSignals() {
 }
 
 void main_window_ctrl::MainWindowCtrl::toggleShowMenubar() {
-	emit toggleShowMenubarSignal();
+	emit this->toggleShowMenubarSignal();
 }
 
 void main_window_ctrl::MainWindowCtrl::closeWindow() {
 	QINFO_PRINT(global_types::qinfo_level_e::ZERO, mainWindowCtrlOverall,  "Close slot: exiting from the browser");
-	emit closeWindowSignal();
+	emit this->closeWindowSignal();
 }
 
 void main_window_ctrl::MainWindowCtrl::executeCommand(QString command) {
@@ -296,7 +296,7 @@ void main_window_ctrl::MainWindowCtrl::formUserInputStr(const main_window_shared
 		textLabel.append(":" + userAction + " " + this->userText);
 
 	}
-	emit updateUserInputBarSignal(textLabel);
+	emit this->updateUserInputBarSignal(textLabel);
 }
 
 QString main_window_ctrl::MainWindowCtrl::getTabUrl(QString search) {

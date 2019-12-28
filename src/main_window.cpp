@@ -377,11 +377,11 @@ void main_window::MainWindow::toggleShowMenubar() {
 }
 
 void main_window::MainWindow::getCurrentTabIndex() {
-	emit sendCurrentTabIndexSignal(this->tabs->currentIndex());
+	emit this->sendCurrentTabIndexSignal(this->tabs->currentIndex());
 }
 
 void main_window::MainWindow::getTabCount() {
-	emit sendTabCountSignal(this->tabs->count());
+	emit this->sendTabCountSignal(this->tabs->count());
 }
 
 void main_window::MainWindow::keyPressEvent(QKeyEvent * event) {

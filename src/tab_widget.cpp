@@ -32,7 +32,7 @@ tab_widget::TabWidget::TabWidget(QWidget * parent): QTabWidget(parent) {
 
 	connect(this, &tab_widget::TabWidget::tabNumberChange, this, &tab_widget::TabWidget::visibility);
 
-	emit tabNumberChange();
+	emit this->tabNumberChange();
 
 }
 
@@ -62,7 +62,7 @@ void tab_widget::TabWidget::keyPressEvent(QKeyEvent * event) {
 int tab_widget::TabWidget::addTab(QWidget * page, const QString & label) {
 	QINFO_PRINT(global_types::qinfo_level_e::ZERO, tabWidgetTabs,  "Open tab with label " << label);
 	int tabIndex = QTabWidget::addTab(page, label);
-	emit tabNumberChange();
+	emit this->tabNumberChange();
 
 	return tabIndex;
 }
@@ -70,7 +70,7 @@ int tab_widget::TabWidget::addTab(QWidget * page, const QString & label) {
 int tab_widget::TabWidget::addTab(QWidget * page, const QIcon & icon, const QString & label) {
 	QINFO_PRINT(global_types::qinfo_level_e::ZERO, tabWidgetTabs,  "Open tab with label " << label);
 	int tabIndex = QTabWidget::addTab(page, icon, label);
-	emit tabNumberChange();
+	emit this->tabNumberChange();
 
 	return tabIndex;
 }
@@ -78,7 +78,7 @@ int tab_widget::TabWidget::addTab(QWidget * page, const QIcon & icon, const QStr
 void tab_widget::TabWidget::removeTab(int index) {
 	QINFO_PRINT(global_types::qinfo_level_e::ZERO, tabWidgetTabs,  "Close tab " << index);
 	QTabWidget::removeTab(index);
-	emit tabNumberChange();
+	emit this->tabNumberChange();
 }
 
 void tab_widget::TabWidget::visibility() {

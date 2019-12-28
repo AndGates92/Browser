@@ -136,7 +136,7 @@ void main_window_ctrl_tab::MainWindowCtrlTab::executeActionOnTab(int index) {
 	this->updateState();
 	if ((this->tabCount > tabIndex) && (tabIndex >= 0)) {
 		if (this->mainWindowState == main_window_shared_types::state_e::CLOSE_TAB) {
-			emit closeTabSignal(tabIndex);
+			emit this->closeTabSignal(tabIndex);
 		} else if (this->mainWindowState == main_window_shared_types::state_e::TAB_MOVE) {
 			this->convertToAbsTabIndex(tabIndex, 0);
 		} else if (this->mainWindowState == main_window_shared_types::state_e::REFRESH_TAB) {
@@ -177,9 +177,9 @@ void main_window_ctrl_tab::MainWindowCtrlTab::executeTabAction(int userInput) {
 	}
 
 	this->updateCurrentTabIndex();
-	emit updateInfoActionSignal(this->currentTabIndex);
+	emit this->updateInfoActionSignal(this->currentTabIndex);
 
-	emit updateWebsiteSignal(this->currentTabIndex);
+	emit this->updateWebsiteSignal(this->currentTabIndex);
 }
 
 void main_window_ctrl_tab::MainWindowCtrlTab::processTabIndex(QString userInputStr) {
@@ -292,7 +292,7 @@ void main_window_ctrl_tab::MainWindowCtrlTab::keyPressEvent(QKeyEvent * event) {
 }
 
 void main_window_ctrl_tab::MainWindowCtrlTab::updateCurrentTabIndex() {
-	emit requestCurrentTabIndexSignal();
+	emit this->requestCurrentTabIndexSignal();
 }
 
 void main_window_ctrl_tab::MainWindowCtrlTab::receiveCurrentTabIndex(int tabIndex) {
@@ -300,7 +300,7 @@ void main_window_ctrl_tab::MainWindowCtrlTab::receiveCurrentTabIndex(int tabInde
 }
 
 void main_window_ctrl_tab::MainWindowCtrlTab::updateTabCount() {
-	emit requestTabCountSignal();
+	emit this->requestTabCountSignal();
 }
 
 void main_window_ctrl_tab::MainWindowCtrlTab::receiveTabCount(int tabCount) {
@@ -308,7 +308,7 @@ void main_window_ctrl_tab::MainWindowCtrlTab::receiveTabCount(int tabCount) {
 }
 
 void main_window_ctrl_tab::MainWindowCtrlTab::updateState() {
-	emit requestStateSignal();
+	emit this->requestStateSignal();
 }
 
 void main_window_ctrl_tab::MainWindowCtrlTab::receiveState(main_window_shared_types::state_e state) {
