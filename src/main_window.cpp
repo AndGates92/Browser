@@ -85,7 +85,7 @@ main_window::MainWindow::MainWindow(QWidget * parent, Qt::WindowFlags flags) : Q
 void main_window::MainWindow::createMainWidget() {
 	this->mainWidget = new QWidget(this);
 	this->mainWidget->setAttribute(Qt::WA_DeleteOnClose);
-//	this->mainWidget->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
+	this->mainWidget->setSizePolicy(QSizePolicy::Ignored, QSizePolicy::Ignored);
 	this->mainWidget->setFocusPolicy(Qt::StrongFocus);
 
 	this->mainWidget->setStyleSheet(
@@ -104,6 +104,7 @@ QLabel * main_window::MainWindow::newWindowLabel() {
 	label->setAttribute(Qt::WA_DeleteOnClose);
 	label->setFrameStyle(QFrame::NoFrame | QFrame::Sunken);
 	label->setFixedHeight(main_window::labelHeight);
+	label->setSizePolicy(QSizePolicy::Ignored, QSizePolicy::Ignored);
 	label->setStyleSheet(
 		"QLabel {"
 			"background: black; "
@@ -141,8 +142,8 @@ void main_window::MainWindow::createTabs() {
 	QINFO_PRINT(global_types::qinfo_level_e::ZERO, mainWindowOverall,  "Create tabs");
 
 	this->tabs = new tab_widget::TabWidget(this->mainWidget);
-	// size policy horintally and vertically to expanding
-	this->tabs->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Minimum);
+	// size policy horintally to expanfing and vertically to minimum
+	this->tabs->setSizePolicy(QSizePolicy::Ignored, QSizePolicy::Ignored);
 
 	this->tabs->setStyleSheet(
 		"QTabBar::tab {"
