@@ -27,7 +27,6 @@
  */
 
 Q_DECLARE_LOGGING_CATEGORY(mainWindowCtrlTabOverall)
-Q_DECLARE_LOGGING_CATEGORY(mainWindowCtrlTabCenterWindow)
 Q_DECLARE_LOGGING_CATEGORY(mainWindowCtrlTabUserInput)
 Q_DECLARE_LOGGING_CATEGORY(mainWindowCtrlTabSearch)
 Q_DECLARE_LOGGING_CATEGORY(mainWindowCtrlTabTabs)

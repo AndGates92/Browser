@@ -31,7 +31,6 @@
 // Categories
 Q_LOGGING_CATEGORY(mainWindowOverall, "mainWindow.overall", MSG_TYPE_LEVEL)
 Q_LOGGING_CATEGORY(mainWindowCenterWindow, "mainWindow.centerWindow", MSG_TYPE_LEVEL)
-Q_LOGGING_CATEGORY(mainWindowUserInput, "mainWindow.userInput", MSG_TYPE_LEVEL)
 Q_LOGGING_CATEGORY(mainWindowSearch, "mainWindow.search", MSG_TYPE_LEVEL)
 Q_LOGGING_CATEGORY(mainWindowTabs, "mainWindow.tabs", MSG_TYPE_LEVEL)
 
@@ -119,6 +118,8 @@ QLabel * main_window::MainWindow::newWindowLabel() {
 }
 
 void main_window::MainWindow::fillMainWindow() {
+	QINFO_PRINT(global_types::qinfo_level_e::ZERO, mainWindowOverall,  "Fill main window");
+
 	// Customize MainWidget
 	this->createTabs();
 
@@ -137,6 +138,8 @@ void main_window::MainWindow::fillMainWindow() {
 }
 
 void main_window::MainWindow::createTabs() {
+	QINFO_PRINT(global_types::qinfo_level_e::ZERO, mainWindowOverall,  "Create tabs");
+
 	this->tabs = new tab_widget::TabWidget(this->mainWidget);
 	// size policy horintally and vertically to expanding
 	this->tabs->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Minimum);
@@ -155,6 +158,9 @@ void main_window::MainWindow::createTabs() {
 }
 
 void main_window::MainWindow::mainWindowLayout() {
+
+	QINFO_PRINT(global_types::qinfo_level_e::ZERO, mainWindowOverall,  "Define layout");
+
 	// Layout
 	// -------------------------------------------------
 	// |                     <tabs>                    |
@@ -192,6 +198,7 @@ void main_window::MainWindow::mainWindowLayout() {
 }
 
 void main_window::MainWindow::fillMenuBar() {
+	QINFO_PRINT(global_types::qinfo_level_e::ZERO, mainWindowOverall,  "Create menus");
 	this->fileMenu = new file_menu::FileMenu(this, this->menuBar(), "File", Qt::Key_F);
 	this->editMenu = new edit_menu::EditMenu(this, this->menuBar(), "Edit", Qt::Key_E);
 }
@@ -201,6 +208,7 @@ QMenuBar * main_window::MainWindow::getMenuBar() {
 }
 
 void main_window::MainWindow::connectSignals() {
+	QINFO_PRINT(global_types::qinfo_level_e::ZERO, mainWindowOverall,  "Connect signals");
 
 	// When the file has been read, then show it on the screen
 	connect(this->fileMenu, &file_menu::FileMenu::updateCenterWindowSignal, this, &main_window::MainWindow::setCenterWindow);
@@ -256,6 +264,8 @@ void main_window::MainWindow::connectSignals() {
 }
 
 void main_window::MainWindow::createCtrl() {
+	QINFO_PRINT(global_types::qinfo_level_e::ZERO, mainWindowOverall,  "Create controller");
+
 	// main window control class
 	this->ctrl = new main_window_ctrl::MainWindowCtrl(this, this->tabs->currentIndex(), this->tabs->count());
 }
@@ -368,6 +378,7 @@ void main_window::MainWindow::updateUserInputBar(QString textLabel) {
 }
 
 void main_window::MainWindow::closeWindow() {
+	QINFO_PRINT(global_types::qinfo_level_e::ZERO, mainWindowOverall,  "Close slot: exiting from the browser");
 	this->close();
 }
 

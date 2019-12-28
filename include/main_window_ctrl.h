@@ -28,10 +28,8 @@
  */
 
 Q_DECLARE_LOGGING_CATEGORY(mainWindowCtrlOverall)
-Q_DECLARE_LOGGING_CATEGORY(mainWindowCtrlCenterWindow)
 Q_DECLARE_LOGGING_CATEGORY(mainWindowCtrlUserInput)
 Q_DECLARE_LOGGING_CATEGORY(mainWindowCtrlSearch)
-Q_DECLARE_LOGGING_CATEGORY(mainWindowCtrlTabs)
 
 namespace main_window_ctrl {
 

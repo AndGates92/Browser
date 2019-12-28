@@ -18,10 +18,8 @@
 
 // Categories
 Q_LOGGING_CATEGORY(mainWindowCtrlOverall, "mainWindowCtrl.overall", MSG_TYPE_LEVEL)
-Q_LOGGING_CATEGORY(mainWindowCtrlCenterWindow, "mainWindowCtrl.centerWindow", MSG_TYPE_LEVEL)
 Q_LOGGING_CATEGORY(mainWindowCtrlUserInput, "mainWindowCtrl.userInput", MSG_TYPE_LEVEL)
 Q_LOGGING_CATEGORY(mainWindowCtrlSearch, "mainWindowCtrl.search", MSG_TYPE_LEVEL)
-Q_LOGGING_CATEGORY(mainWindowCtrlTabs, "mainWindowCtrl.tabs", MSG_TYPE_LEVEL)
 
 main_window_ctrl::MainWindowCtrl::MainWindowCtrl(QWidget * parent, int tabIndex, int tabCount) : parent(parent) {
 
@@ -39,6 +37,8 @@ main_window_ctrl::MainWindowCtrl::MainWindowCtrl(QWidget * parent, int tabIndex,
 }
 
 void main_window_ctrl::MainWindowCtrl::createShortcuts() {
+	QINFO_PRINT(global_types::qinfo_level_e::ZERO, mainWindowCtrlOverall,  "Create shortcuts");
+
 	// m will hide/show the menu bar
 	this->toggleShowMenuBarKey = new QShortcut(parent);
 	this->toggleShowMenuBarKey->setKey(Qt::Key_M);
@@ -60,6 +60,8 @@ void main_window_ctrl::MainWindowCtrl::setAllShortcutEnabledProperty(bool enable
 }
 
 void main_window_ctrl::MainWindowCtrl::connectSignals() {
+
+	QINFO_PRINT(global_types::qinfo_level_e::ZERO, mainWindowCtrlOverall,  "Connect signals");
 
 	connect(this->toggleShowMenuBarKey, &QShortcut::activated, this, &main_window_ctrl::MainWindowCtrl::toggleShowMenubar);
 	connect(this->closeKey, &QShortcut::activated, this, &main_window_ctrl::MainWindowCtrl::closeWindow);
@@ -198,7 +200,7 @@ void main_window_ctrl::MainWindowCtrl::keyPressEvent(QKeyEvent * event) {
 					if ((pressedKey >= Qt::Key_0) && (pressedKey <= Qt::Key_9)) {
 						this->formUserInputStr(main_window_shared_types::text_action_e::APPEND, event->text());
 					} else {
-						qWarning(mainWindowCtrlTabs) << "Pressed key " << event->text() << ". Only numbers are accepted when executing actions like closing windows or moving in the tab bar\n";
+						qWarning(mainWindowCtrlUserInput) << "Pressed key " << event->text() << ". Only numbers are accepted when executing actions like closing windows or moving in the tab bar\n";
 					}
 				} else if (this->mainWindowState == main_window_shared_types::state_e::TAB_MOVE) {
 					// If no sign is provided, the tab is considered as absolute value
@@ -213,7 +215,7 @@ void main_window_ctrl::MainWindowCtrl::keyPressEvent(QKeyEvent * event) {
 					} else if ((this->tabctrl->getMoveValueType() == main_window_shared_types::move_value_e::IDLE) && ((pressedKey == Qt::Key_H) || (pressedKey == Qt::Key_L) || (pressedKey == Qt::Key_Plus) || (pressedKey == Qt::Key_Minus))) {
 						this->formUserInputStr(main_window_shared_types::text_action_e::CLEAR);
 					} else {
-						qWarning(mainWindowCtrlTabs) << "Pressed key " << event->text() << ". Only numbers and + and - signs are accepted when executing actions like move tabs in the tab bar\n";
+						qWarning(mainWindowCtrlUserInput) << "Pressed key " << event->text() << ". Only numbers and + and - signs are accepted when executing actions like move tabs in the tab bar\n";
 					}
 				} else if (this->mainWindowState == main_window_shared_types::state_e::COMMAND) {
 					this->formUserInputStr(main_window_shared_types::text_action_e::APPEND, event->text());
