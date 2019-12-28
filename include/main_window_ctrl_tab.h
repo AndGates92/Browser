@@ -93,6 +93,15 @@ namespace main_window_ctrl_tab {
 			main_window_shared_types::move_value_e getMoveValueType();
 
 			/**
+			 * @brief Function: void getMoveValueType(main_window_shared_types::move_value_e moveValue)
+			 *
+			 * \param moveValue: move value type
+			 *
+			 * This function sets the move value type
+			 */
+			void setMoveValueType(main_window_shared_types::move_value_e moveValue);
+
+			/**
 			 * @brief Function: void processTabIndex(QString userInputStr)
 			 *
 			 * This function converts the string indexStr to an integer and executes desired action on it

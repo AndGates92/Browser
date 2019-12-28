@@ -319,6 +319,10 @@ main_window_shared_types::move_value_e main_window_ctrl_tab::MainWindowCtrlTab::
 	return this->moveValueType;
 }
 
+void main_window_ctrl_tab::MainWindowCtrlTab::setMoveValueType(main_window_shared_types::move_value_e moveValue) {
+	this->moveValueType = moveValue;
+}
+
 main_window_shared_types::object_type_e main_window_ctrl_tab::MainWindowCtrlTab::setAffectedObject() {
 
 	main_window_shared_types::object_type_e object = main_window_shared_types::object_type_e::UNKNOWN;
