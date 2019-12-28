@@ -85,6 +85,7 @@ main_window::MainWindow::MainWindow(QWidget * parent, Qt::WindowFlags flags) : Q
 void main_window::MainWindow::createMainWidget() {
 	this->mainWidget = new QWidget(this);
 	this->mainWidget->setAttribute(Qt::WA_DeleteOnClose);
+	// Disable widget resizing
 	this->mainWidget->setSizePolicy(QSizePolicy::Ignored, QSizePolicy::Ignored);
 	this->mainWidget->setFocusPolicy(Qt::StrongFocus);
 
@@ -104,6 +105,7 @@ QLabel * main_window::MainWindow::newWindowLabel() {
 	label->setAttribute(Qt::WA_DeleteOnClose);
 	label->setFrameStyle(QFrame::NoFrame | QFrame::Sunken);
 	label->setFixedHeight(main_window::labelHeight);
+	// Disable widget resizing
 	label->setSizePolicy(QSizePolicy::Ignored, QSizePolicy::Ignored);
 	label->setStyleSheet(
 		"QLabel {"
@@ -142,7 +144,7 @@ void main_window::MainWindow::createTabs() {
 	QINFO_PRINT(global_types::qinfo_level_e::ZERO, mainWindowOverall,  "Create tabs");
 
 	this->tabs = new tab_widget::TabWidget(this->mainWidget);
-	// size policy horintally to expanfing and vertically to minimum
+	// Disable widget resizing
 	this->tabs->setSizePolicy(QSizePolicy::Ignored, QSizePolicy::Ignored);
 
 	this->tabs->setStyleSheet(
