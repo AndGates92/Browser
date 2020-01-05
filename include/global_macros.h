@@ -54,9 +54,9 @@
  * It needs the type to be coverted to a QString
  */
 #define QDEBUG_OVERLOAD_PRINT_OP(TYPE) \
-	QDebug & operator<< (QDebug & os, const TYPE & state) { \
+	QDebug & operator<< (QDebug & os, const TYPE & var) { \
 		QString str(QString::null); \
-		str << state; \
+		str << var; \
 		os << str; \
 		return os; \
 	}
