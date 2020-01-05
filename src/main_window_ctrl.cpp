@@ -120,16 +120,13 @@ void main_window_ctrl::MainWindowCtrl::closeWindow() {
 
 void main_window_ctrl::MainWindowCtrl::executeCommand(QString command) {
 
-	if (command.compare("open") == 0) {
-
+	if (command.compare("toggle-menubar") == 0) {
+		this->toggleShowMenubar();
+	} else if (command.compare("exit") == 0) {
+		this->closeWindow();
+	} else {
+		this->tabctrl->executeCommand(command);
 	}
-/*
-	// m will hide/show the menu bar
-	connect(this->toggleShowMenuBarKey, &QShortcut::activated, this, &main_window_ctrl::MainWindowCtrl::toggleShowMenubar);
-
-	// q will close the browser
-	connect(this->fileMenu->exitAction, &QAction::triggered, this, &main_window_ctrl::MainWindowCtrl::close);
-*/
 }
 
 void main_window_ctrl::MainWindowCtrl::keyReleaseEvent(QKeyEvent * event) {

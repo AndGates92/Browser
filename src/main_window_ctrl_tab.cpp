@@ -204,29 +204,20 @@ void main_window_ctrl_tab::MainWindowCtrlTab::processTabIndex(QString userInputS
 
 void main_window_ctrl_tab::MainWindowCtrlTab::executeCommand(QString command) {
 
-	if (command.compare("open") == 0) {
-
+	if (command.compare("open-tab") == 0) {
+		this->openNewTab();
+	} else if (command.compare("search-tab") == 0) {
+		this->newSearchTab();
+	} else if (command.compare("close-tab") == 0) {
+		this->closeTab();
+	} else if (command.compare("move-tab") == 0) {
+		this->moveTabTo();
+	} else if (command.compare("move-cursor-left") == 0) {
+		this->moveLeft();
+	} else if (command.compare("move-cursor-right") == 0) {
+		this->moveRight();
 	}
-/*
-	// o will open a new tab
-	connect(this->fileMenu->openTabAction, &QAction::triggered, this, &main_window_ctrl::MainWindowCtrl::openNewTab);
 
-	// s will search on the current tab
-	connect(this->newSearchTabKey, &QShortcut::activated, this, &main_window_ctrl::MainWindowCtrl::newSearchTab);
-
-	// c will close a tab
-	connect(this->closeTabKey, &QShortcut::activated, this, &main_window_ctrl::MainWindowCtrl::closeTab);
-
-	// t will move tab in the tab bar
-	connect(this->moveTabToKey, &QShortcut::activated, this, &main_window_ctrl::MainWindowCtrl::moveTabTo);
-
-	// h will move left in the tab bar
-	connect(this->moveLeftKey, &QShortcut::activated, this, &main_window_ctrl::MainWindowCtrl::moveLeft);
-
-	// l will move right in the tab bar
-	connect(this->moveRightKey, &QShortcut::activated, this, &main_window_ctrl::MainWindowCtrl::moveRight);
-
-*/
 }
 
 void main_window_ctrl_tab::MainWindowCtrlTab::keyReleaseEvent(QKeyEvent * event) {

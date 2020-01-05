@@ -149,6 +149,15 @@ namespace main_window_ctrl_tab {
 			 */
 			QString createTabInfo();
 
+			/**
+			 * @brief Function: void executeCommand(QString command)
+			 *
+			 * \param command: command to execute.
+			 *
+			 * This function executes a command on a based on user input
+			 */
+			void executeCommand(QString command);
+
 		public slots:
 
 			/**
@@ -481,15 +490,6 @@ namespace main_window_ctrl_tab {
 			 * This function retrieves the state of the main window control
 			 */
 			void updateState();
-
-			/**
-			 * @brief Function: void executeCommand(QString command)
-			 *
-			 * \param command: command to execute.
-			 *
-			 * This function executes a command on a based on user input
-			 */
-			void executeCommand(QString command);
 
 			/**
 			 * @brief Function: void executeTabAction(int userInput = main_window_ctrl_tab::emptyUserInput)
