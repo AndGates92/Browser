@@ -132,10 +132,13 @@ void main_window_ctrl::MainWindowCtrl::executeCommand(QString command) {
 void main_window_ctrl::MainWindowCtrl::keyReleaseEvent(QKeyEvent * event) {
 
 	int releasedKey = event->key();
+	Qt::KeyboardModifiers keyModifiers = event->modifiers();
+
+	QKeySequence keySeq(releasedKey | keyModifiers);
 
 	if (event->type() == QEvent::KeyRelease) {
 
-		QINFO_PRINT(global_types::qinfo_level_e::ZERO, mainWindowCtrlUserInput,  "State " << this->mainWindowState << " key " << event->text() << " i.e. number 0x" << hex << releasedKey);
+		QINFO_PRINT(global_types::qinfo_level_e::ZERO, mainWindowCtrlUserInput,  "State " << this->mainWindowState << " key " << keySeq.toString());
 
 		switch (releasedKey) {
 			case Qt::Key_Escape:
@@ -167,10 +170,13 @@ void main_window_ctrl::MainWindowCtrl::keyReleaseEvent(QKeyEvent * event) {
 void main_window_ctrl::MainWindowCtrl::keyPressEvent(QKeyEvent * event) {
 
 	int pressedKey = event->key();
+	Qt::KeyboardModifiers keyModifiers = event->modifiers();
+
+	QKeySequence keySeq(pressedKey | keyModifiers);
 
 	if (event->type() == QEvent::KeyPress) {
 
-		QINFO_PRINT(global_types::qinfo_level_e::ZERO, mainWindowCtrlUserInput,  "State " << this->mainWindowState << " key " << event->text() << " i.e. number 0x" << hex << pressedKey);
+		QINFO_PRINT(global_types::qinfo_level_e::ZERO, mainWindowCtrlUserInput,  "State " << this->mainWindowState << " key " << keySeq.toString());
 
 		switch (pressedKey) {
 			case Qt::Key_Enter:
