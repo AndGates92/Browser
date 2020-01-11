@@ -85,9 +85,9 @@ LIB_LIST = $(MATHLIBS) \
 LIBS := $(foreach LIB, ${LIB_LIST}, -l${LIB})
 
 # Directory containing source and header files
-TOP_DIR = top
+APP_DIR = app
 TEST_DIR = test
-LIB_DIR = .
+COMP_DIR = $(wildcard $(APP_DIR)/*/)
 
 # Directory containing source files
 SRC_DIR = src
@@ -126,8 +126,7 @@ VALGRINDLOGFILE = $(LOG_DIR)/$(VALGRINDLOGFILENAME)
 VALGRINDLOGOPTS = -v --log-file=$(VALGRINDLOGFILE) --time-stamp=yes
 VALGRINDEXEARGS ?=
 
-DIR_LIST = $(LIB_DIR) \
-           $(TOP_DIR) \
+DIR_LIST = $(COMP_DIR) \
            $(TEST_DIR)
 
 INCLUDE_PATH := $(foreach DIR, ${DIR_LIST}, $(DIR)/$(INCLUDE_DIR))
@@ -158,7 +157,6 @@ VPATH = $(SRC_PATH) \
         $(INCLUDE_PATH)
 
 MAIN = main.$(SRC_EXT)
-TOP = $(TOP_DIR)/$(SRC_DIR)/$(MAIN)
 EXE = $(BIN_DIR)/$(EXE_NAME)
 
 #-include $(DEPFILE)
