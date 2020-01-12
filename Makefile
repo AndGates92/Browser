@@ -87,7 +87,7 @@ LIBS := $(foreach LIB, ${LIB_LIST}, -l${LIB})
 # Directory containing source and header files
 APP_DIR = app
 TEST_DIR = test
-COMP_DIR = $(wildcard $(APP_DIR)/*/)
+COMP_DIR = $(wildcard $(APP_DIR)/*)
 
 # Directory containing source files
 SRC_DIR = src
