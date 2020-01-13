@@ -180,6 +180,15 @@ namespace key_sequence {
 			 */
 			QVector<QKeySequence> keySeqVec;
 
+			/**
+			 * @brief Function: void addKey(int key, QKeySequence::SequenceFormat format = QKeySequence::NativeText)
+			 *
+			 * \param key: key represented as an integer
+			 * \param format: format of key string
+			 *
+			 * This function adds a key to the key sequence vector
+			 */
+			void addKey(int key, QKeySequence::SequenceFormat format = QKeySequence::NativeText);
 	};
 
 }

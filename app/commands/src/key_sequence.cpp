@@ -37,7 +37,18 @@ key_sequence::KeySequence::KeySequence(const key_sequence::KeySequence & keySeq)
 
 key_sequence::KeySequence::KeySequence(int key0, int key1, int key2, int key3) {
 	QINFO_PRINT(global_types::qinfo_level_e::ZERO, keySequenceOverall,  "Key Sequence constructor: key0 " << key0 << " key1 " << key1 << " key2 " << key2 << " key3 " << key3);
-	
+	this->addKey(key0);
+	this->addKey(key1);
+	this->addKey(key2);
+	this->addKey(key3);
+}
+
+void key_sequence::KeySequence::addKey(int key, QKeySequence::SequenceFormat format) {
+	if (key != Qt::Key_unknown) {
+		QINFO_PRINT(global_types::qinfo_level_e::ZERO, keySequenceOverall,  "Adding 0x" << std::hex << key << " to key sequence vector");
+		QKeySequence keySeq(key, format);
+		this->keySeqVec.append(keySeq);
+	}
 }
 
 unsigned int key_sequence::KeySequence::count() const {
