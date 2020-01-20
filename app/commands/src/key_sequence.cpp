@@ -11,6 +11,7 @@
 
 #include "global_types.h"
 #include "global_macros.h"
+#include "key_info.h"
 #include "key_sequence.h"
 
 // Categories
@@ -64,8 +65,7 @@ QString key_sequence::KeySequence::toString(QKeySequence::SequenceFormat format)
 		// - split the key from the modifier (using Qt::KeyboardModifierMask)
 		// - if the sequence is only a special character then print string from the lookup table
 		// - if the sequence contains also a non-special character then call QKeySequence method toString
-		//KeyInfo seqInfo(*cIter, format);
-		QKeySequence seqInfo(*cIter);
+		key_info::KeyInfo seqInfo(*cIter);
 		keySeqList.append(seqInfo.toString(format));
 	}
 

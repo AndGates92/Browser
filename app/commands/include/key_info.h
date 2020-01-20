@@ -8,6 +8,9 @@
  * @brief Key Info header file
 */
 
+#include <unordered_map>
+#include <functional>
+
 #include <qt5/QtCore/QLoggingCategory>
 #include <qt5/QtGui/QKeySequence>
 #include <qt5/QtCore/QString>
@@ -33,7 +36,25 @@ Q_DECLARE_LOGGING_CATEGORY(keyInfoOverall)
 namespace key_info {
 
 	namespace {
-		const static std::map<Qt::Key, QString> specialKeyNameMap = {
+		class KeyInfoHash {
+			public :
+				std::size_t operator()(const Qt::Key & key) const {
+					int keyInt = (int) key;
+					std::size_t keyHash = std::hash<int>()(keyInt);
+					return keyHash;
+				}
+		};
+
+		class KeyInfoEqualTo {
+			public :
+				bool operator()(const Qt::Key & key0, const Qt::Key & key1) const {
+					return (((int) key0) == ((int) key1));
+				}
+		};
+
+		typedef std::unordered_map<Qt::Key, QString, KeyInfoHash, KeyInfoEqualTo> keyInfoMap;
+
+		const static keyInfoMap specialKeyMap = {
 			ADD_KEY_TO_MAP(Super_L, Super L),
 			ADD_KEY_TO_MAP(Super_R, Super R),
 			ADD_KEY_TO_MAP(Hyper_L, Hyper L),
@@ -133,6 +154,16 @@ namespace key_info {
 			 */
 			explicit KeyInfo(const QKeySequence & key);
 
+			/**
+			 * @brief Function: QString toString(QKeySequence::SequenceFormat format = QKeySequence::NativeText) const
+			 *
+			 * \param format: format of key string
+			 *
+			 * \return a string with all key sequences
+			 *
+			 * This function returns a string with all key sequences
+			 */
+			QString toString(QKeySequence::SequenceFormat format = QKeySequence::NativeText) const;
 
 		private:
 			/**
