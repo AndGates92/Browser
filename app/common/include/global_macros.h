@@ -42,7 +42,10 @@
  */
 #define QINFO_PRINT(VERBOSITY, CATEGORY, ...)\
 	if (VERBOSITY <= static_cast<global_types::qinfo_level_e>(QINFO_VERBOSITY)) { \
-		qInfo(CATEGORY) << __VA_ARGS__; \
+		QDebug infoMsg(qInfo(CATEGORY)); \
+		infoMsg.noquote(); \
+		infoMsg.nospace(); \
+		infoMsg << __VA_ARGS__; \
 	}
 
 /**

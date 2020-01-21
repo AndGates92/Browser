@@ -68,7 +68,7 @@ QString key_info::KeyInfo::toString(QKeySequence::SequenceFormat format) const {
 		keySeqStr.append(" " + commentStr);
 	}
 
-	QINFO_PRINT(global_types::qinfo_level_e::ZERO, keyInfoString,  "Key sequence (key " << this->key << ", modifier " << this->modifier << ") to " << keySeqStr);
+	QINFO_PRINT(global_types::qinfo_level_e::ZERO, keyInfoString,  "Key sequence (key " << this->key << ", modifier " << this->modifierToString(this->modifier) << " (0x" << QString("%1").arg(this->modifier, 0, 16) << ")) to " << keySeqStr);
 
 	return keySeqStr;
 
@@ -93,7 +93,9 @@ QString key_info::KeyInfo::keyToString(Qt::Key keyPrint, QKeySequence::SequenceF
 QString key_info::KeyInfo::modifierToString(Qt::KeyboardModifier modifierPrint, QKeySequence::SequenceFormat format) const {
 	QString modifierStr(QString::null);
 
+	// Concert to key sequence
 	QKeySequence modifierSeq(modifierPrint);
+
 	modifierStr.append(modifierSeq.toString(format));
 
 	return modifierStr;
