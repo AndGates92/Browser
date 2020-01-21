@@ -28,7 +28,7 @@ key_info::KeyInfo::KeyInfo(const QKeySequence & keySeq) {
 	this->key = Qt::Key(keyInt & ~(Qt::KeyboardModifierMask));
 	this->modifier = Qt::KeyboardModifier(keyInt & Qt::KeyboardModifierMask);
 
-	QINFO_PRINT(global_types::qinfo_level_e::ZERO, keyInfoOverall,  "Key Info constructor (key " << this->key << ", modifier " << this->modifier << ")");
+	QINFO_PRINT(global_types::qinfo_level_e::ZERO, keyInfoOverall,  "Key Info constructor (key " << this->key << " (0x" << QString("%1").arg(int(this->key), 0, 16) << "), modifier " << this->modifierToString(this->modifier) << " (0x" << QString("%1").arg(this->modifier, 0, 16) << ")");
 
 }
 
@@ -68,7 +68,7 @@ QString key_info::KeyInfo::toString(QKeySequence::SequenceFormat format) const {
 		keySeqStr.append(" " + commentStr);
 	}
 
-	QINFO_PRINT(global_types::qinfo_level_e::ZERO, keyInfoString,  "Key sequence (key " << this->key << ", modifier " << this->modifierToString(this->modifier) << " (0x" << QString("%1").arg(this->modifier, 0, 16) << ")) to " << keySeqStr);
+	QINFO_PRINT(global_types::qinfo_level_e::ZERO, keyInfoString,  "Key sequence (key " << this->key << " (0x" << QString("%1").arg(int(this->key), 0, 16) << "), modifier " << this->modifierToString(this->modifier) << " (0x" << QString("%1").arg(this->modifier, 0, 16) << ")) to " << keySeqStr);
 
 	return keySeqStr;
 

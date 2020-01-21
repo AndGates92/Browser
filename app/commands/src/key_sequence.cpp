@@ -36,13 +36,13 @@ key_sequence::KeySequence::KeySequence(const QKeySequence & qKeySeq) {
 
 	for (unsigned int idx; idx < thisSize; idx++) {
 		int key = qKeySeq[idx];
-		QINFO_PRINT(global_types::qinfo_level_e::ZERO, keySequenceOverall,  "Key Sequence constructor. Keys are " << key);
+		QINFO_PRINT(global_types::qinfo_level_e::ZERO, keySequenceOverall,  "Key Sequence constructor. Keys are 0x" << QString("%1").arg(key, 0, 16));
 		this->keySeqVec.append(key);
 	}
 }
 
 key_sequence::KeySequence::KeySequence(int key0, int key1, int key2, int key3) {
-	QINFO_PRINT(global_types::qinfo_level_e::ZERO, keySequenceOverall,  "Key Sequence constructor: key0 " << key0 << " key1 " << key1 << " key2 " << key2 << " key3 " << key3);
+	QINFO_PRINT(global_types::qinfo_level_e::ZERO, keySequenceOverall,  "Key Sequence constructor: key0 0x" << QString("%1").arg(key0, 0, 16) << " key1 0x" << QString("%1").arg(key1, 0, 16) << " key2 0x" << QString("%1").arg(key2, 0, 16) << " key3 0x" << QString("%1").arg(key3, 0, 16));
 	this->addKey(key0);
 	this->addKey(key1);
 	this->addKey(key2);
@@ -56,7 +56,7 @@ key_sequence::KeySequence::KeySequence(const key_sequence::KeySequence & keySeq)
 
 void key_sequence::KeySequence::addKey(int key, QKeySequence::SequenceFormat format) {
 	if (key != Qt::Key_unknown) {
-		QINFO_PRINT(global_types::qinfo_level_e::ZERO, keySequenceOverall,  "Adding 0x" << std::hex << key << " to key sequence vector");
+		QINFO_PRINT(global_types::qinfo_level_e::ZERO, keySequenceOverall,  "Adding 0x" << QString("%1").arg(int(key), 0, 16) << " to key sequence vector");
 		QKeySequence keySeq(key, format);
 		this->keySeqVec.append(keySeq);
 	}
@@ -68,7 +68,7 @@ unsigned int key_sequence::KeySequence::count() const {
 
 QString key_sequence::KeySequence::toString(QKeySequence::SequenceFormat format) const {
 
-	QStringList keySeqList(QString::null);
+	QStringList keySeqList;
 
 	for (QVector<QKeySequence>::const_iterator cIter = this->keySeqVec.cbegin(); cIter != this->keySeqVec.cend(); cIter++) {
 		// Retrieve sequence to:
@@ -76,18 +76,11 @@ QString key_sequence::KeySequence::toString(QKeySequence::SequenceFormat format)
 		// - if the sequence is only a special character then print string from the lookup table
 		// - if the sequence contains also a non-special character then call QKeySequence method toString
 		key_info::KeyInfo seqInfo(*cIter);
-		QINFO_PRINT(global_types::qinfo_level_e::ZERO, keySequenceString,  "Processing key" << seqInfo.toString(format));
+		QINFO_PRINT(global_types::qinfo_level_e::ZERO, keySequenceString,  "Processing key " << seqInfo.toString(format));
 		keySeqList.append(seqInfo.toString(format));
 	}
 
-	QString separator(QString::null);
-	if (keySeqList.size() == 1) {
-		// If length of the string is 1, then use an empty separator
-		separator.append("");
-	} else {
-		separator.append(",");
-	}
-
+	QString separator(",");
 	QString keyStr(keySeqList.join(separator));
 
 	return keyStr;
