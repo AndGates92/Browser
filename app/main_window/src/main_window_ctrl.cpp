@@ -14,6 +14,7 @@
 // Required by qInfo
 #include <qt5/QtCore/QtDebug>
 
+#include "key_sequence.h"
 #include "main_window_ctrl.h"
 
 // Categories
@@ -53,7 +54,7 @@ void main_window_ctrl::MainWindowCtrl::setAllShortcutEnabledProperty(bool enable
 	QList<QShortcut *> shortcuts = this->parent->findChildren<QShortcut *>();
 
 	for (QShortcut * shortcut : shortcuts) {
-		QKeySequence key = shortcut->key();
+		key_sequence::KeySequence key(shortcut->key());
 		QINFO_PRINT(global_types::qinfo_level_e::ZERO, mainWindowCtrlTabUserInput,  "Setting enabled for key " << key.toString() << " to " << enabled);
 		shortcut->setEnabled(enabled);
 	}
@@ -134,7 +135,7 @@ void main_window_ctrl::MainWindowCtrl::keyReleaseEvent(QKeyEvent * event) {
 	int releasedKey = event->key();
 	Qt::KeyboardModifiers keyModifiers = event->modifiers();
 
-	QKeySequence keySeq(releasedKey | keyModifiers);
+	key_sequence::KeySequence keySeq(releasedKey | keyModifiers);
 
 	if (event->type() == QEvent::KeyRelease) {
 
@@ -172,7 +173,7 @@ void main_window_ctrl::MainWindowCtrl::keyPressEvent(QKeyEvent * event) {
 	int pressedKey = event->key();
 	Qt::KeyboardModifiers keyModifiers = event->modifiers();
 
-	QKeySequence keySeq(pressedKey | keyModifiers);
+	key_sequence::KeySequence keySeq(pressedKey | keyModifiers);
 
 	if (event->type() == QEvent::KeyPress) {
 

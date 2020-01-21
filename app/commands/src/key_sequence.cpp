@@ -16,6 +16,7 @@
 
 // Categories
 Q_LOGGING_CATEGORY(keySequenceOverall, "keySequence.overall", MSG_TYPE_LEVEL)
+Q_LOGGING_CATEGORY(keySequenceString, "keySequence.string", MSG_TYPE_LEVEL)
 
 key_sequence::KeySequence::KeySequence(const QString & keyStr, QKeySequence::SequenceFormat format) {
 	QINFO_PRINT(global_types::qinfo_level_e::ZERO, keySequenceOverall,  "Key Sequence constructor");
@@ -28,12 +29,16 @@ key_sequence::KeySequence::KeySequence(const QString & keyStr, QKeySequence::Seq
 		QINFO_PRINT(global_types::qinfo_level_e::ZERO, keySequenceOverall,  "Adding " << (*cIter) << " to key sequence vector");
 		this->keySeqVec.append(keySeq);
 	}
-	
 }
 
-key_sequence::KeySequence::KeySequence(const key_sequence::KeySequence & keySeq) {
-	QINFO_PRINT(global_types::qinfo_level_e::ZERO, keySequenceOverall,  "Key Sequence copy constructor. Keys are " << keySeq.toString());
-	this->keySeqVec = keySeq.getSeqVec();
+key_sequence::KeySequence::KeySequence(const QKeySequence & qKeySeq) {
+	unsigned int thisSize = qKeySeq.count();
+
+	for (unsigned int idx; idx < thisSize; idx++) {
+		int key = qKeySeq[idx];
+		QINFO_PRINT(global_types::qinfo_level_e::ZERO, keySequenceOverall,  "Key Sequence constructor. Keys are " << key);
+		this->keySeqVec.append(key);
+	}
 }
 
 key_sequence::KeySequence::KeySequence(int key0, int key1, int key2, int key3) {
@@ -42,6 +47,11 @@ key_sequence::KeySequence::KeySequence(int key0, int key1, int key2, int key3) {
 	this->addKey(key1);
 	this->addKey(key2);
 	this->addKey(key3);
+}
+
+key_sequence::KeySequence::KeySequence(const key_sequence::KeySequence & keySeq) {
+	QINFO_PRINT(global_types::qinfo_level_e::ZERO, keySequenceOverall,  "Key Sequence copy constructor. Keys are " << keySeq.toString());
+	this->keySeqVec = keySeq.getSeqVec();
 }
 
 void key_sequence::KeySequence::addKey(int key, QKeySequence::SequenceFormat format) {
@@ -66,6 +76,7 @@ QString key_sequence::KeySequence::toString(QKeySequence::SequenceFormat format)
 		// - if the sequence is only a special character then print string from the lookup table
 		// - if the sequence contains also a non-special character then call QKeySequence method toString
 		key_info::KeyInfo seqInfo(*cIter);
+		QINFO_PRINT(global_types::qinfo_level_e::ZERO, keySequenceString,  "Processing key" << seqInfo.toString(format));
 		keySeqList.append(seqInfo.toString(format));
 	}
 

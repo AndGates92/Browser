@@ -14,6 +14,7 @@
 // Required by qInfo
 #include <qt5/QtCore/QtDebug>
 
+#include "key_sequence.h"
 #include "main_window_shared_types.h"
 #include "main_window_ctrl_tab.h"
 
@@ -225,7 +226,7 @@ void main_window_ctrl_tab::MainWindowCtrlTab::keyReleaseEvent(QKeyEvent * event)
 	int releasedKey = event->key();
 	Qt::KeyboardModifiers keyModifiers = event->modifiers();
 
-	QKeySequence keySeq(releasedKey | keyModifiers);
+	key_sequence::KeySequence keySeq(releasedKey | keyModifiers);
 
 	if (event->type() == QEvent::KeyRelease) {
 
@@ -256,7 +257,7 @@ void main_window_ctrl_tab::MainWindowCtrlTab::keyPressEvent(QKeyEvent * event) {
 	int pressedKey = event->key();
 	Qt::KeyboardModifiers keyModifiers = event->modifiers();
 
-	QKeySequence keySeq(pressedKey | keyModifiers);
+	key_sequence::KeySequence keySeq(pressedKey | keyModifiers);
 
 	if (event->type() == QEvent::KeyPress) {
 

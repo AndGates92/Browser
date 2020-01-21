@@ -15,6 +15,7 @@
 
 // Categories
 Q_LOGGING_CATEGORY(keyInfoOverall, "keyInfo.overall", MSG_TYPE_LEVEL)
+Q_LOGGING_CATEGORY(keyInfoString, "keyInfo.string", MSG_TYPE_LEVEL)
 
 key_info::KeyInfo::KeyInfo(const QKeySequence & keySeq) {
 
@@ -22,26 +23,84 @@ key_info::KeyInfo::KeyInfo(const QKeySequence & keySeq) {
 	Q_ASSERT_X((keySeq.count() == 1), "keyInfo to string", "QKeySequence passed to KeyInfo class instance must contain one key sequence");
 
 	QINFO_PRINT(global_types::qinfo_level_e::ZERO, keyInfoOverall,  "Key Info constructor");
-	this->key = QKeySequence(keySeq);
+
+	// Cast first element of key sequence to int in order to extract the key and the modifier
+	int keyInt = keySeq[0];
+
+	this->key = Qt::Key(keyInt & ~(Qt::KeyboardModifierMask));
+	this->modifier = Qt::KeyboardModifier(keyInt & Qt::KeyboardModifierMask);
+
 
 }
 
 QString key_info::KeyInfo::toString(QKeySequence::SequenceFormat format) const {
 
-	int keyInt = this->key[0];
-	Qt::Key key = Qt::Key(keyInt);
+	// Convert key to string
+	QString keyStr(this->keyToString(this->key, format));
 
-	// Find key into special key map
-	keyInfoMap::const_iterator specialKey = key_info::specialKeyMap.find(key);
+	int tmpModifier = int(this->modifier);
+	modifierKeyMap::const_iterator modifierKey = key_info::modifierKeys.find(this->key);
+
+	if (modifierKey == key_info::modifierKeys.end()) {
+		// If key is not only a special character, then act based on the modifier if the key is printable
+		if (isKeyPrintable(this->key)) {
+			if (this->modifier == Qt::ShiftModifier) {
+				keyStr = keyStr.toUpper();
+				tmpModifier &= ~Qt::ShiftModifier;
+			} else {
+				// Make string lowercase
+				keyStr = keyStr.toLower();
+			}
+		}
+	} else {
+		// If key is only a special character, then cancel out modifier
+		tmpModifier &= ~(modifierKey->second);
+	}
+
+	QString modifierStr(this->modifierToString(Qt::KeyboardModifier(tmpModifier), format));
+
+	QString keySeqStr(QString::null);
+	keySeqStr.append(modifierStr);
+	keySeqStr.append(keyStr);
+
+	QINFO_PRINT(global_types::qinfo_level_e::ZERO, keyInfoString,  "Key sequence (key " << this->key << ", modifier " << this->modifier << ") to " << keySeqStr);
+
+	return keySeqStr;
+
+}
+
+QString key_info::KeyInfo::keyToString(Qt::Key keyPrint, QKeySequence::SequenceFormat format) const {
+	specialKeyMap::const_iterator specialKey = key_info::specialKeys.find(keyPrint);
 
 	QString keyStr(QString::null);
 
-	if (specialKey == key_info::specialKeyMap.end()) {
-		keyStr = this->key.toString(format);
+	// key no found in specialKeys unordered map
+	if (specialKey == key_info::specialKeys.end()) {
+		QKeySequence keySeq = QKeySequence(int(keyPrint));
+		keyStr.append(keySeq.toString(format));
 	} else {
-		keyStr = QString(specialKey->second);
+		keyStr.append(QString(specialKey->second));
 	}
 
 	return keyStr;
+}
 
+QString key_info::KeyInfo::modifierToString(Qt::KeyboardModifier modifierPrint, QKeySequence::SequenceFormat format) const {
+	QString modifierStr(QString::null);
+
+	QKeySequence modifierSeq(modifierPrint);
+	modifierStr.append(modifierSeq.toString(format));
+
+	return modifierStr;
+
+}
+
+bool key_info::KeyInfo::isKeyPrintable(Qt::Key keyCheck) const {
+	bool isPrintable = false;
+
+	if ((keyCheck >= Qt::Key_A) && (keyCheck <= Qt::Key_ydiaeresis)) {
+		isPrintable = true;
+	}
+
+	return isPrintable;
 }

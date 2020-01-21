@@ -18,6 +18,7 @@
  */
 
 Q_DECLARE_LOGGING_CATEGORY(keySequenceOverall)
+Q_DECLARE_LOGGING_CATEGORY(keySequenceString)
 
 namespace key_sequence {
 
@@ -50,6 +51,15 @@ namespace key_sequence {
 			 * Key Sequence constructor
 			 */
 			explicit KeySequence(int key0, int key1 = Qt::Key_unknown, int key2 = Qt::Key_unknown, int key3 = Qt::Key_unknown);
+
+			/**
+			 * @brief Function: explicit KeySequence(const QKeySequence & qKeySeq)
+			 *
+			 * \param qKeySeq: key sequence to copy
+			 *
+			 * Key Sequence constructor
+			 */
+			explicit KeySequence(const QKeySequence & qKeySeq);
 
 			/**
 			 * @brief Function: explicit KeySequence(const KeySequence & keySeq)

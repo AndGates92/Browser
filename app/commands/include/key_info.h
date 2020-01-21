@@ -32,6 +32,7 @@
  */
 
 Q_DECLARE_LOGGING_CATEGORY(keyInfoOverall)
+Q_DECLARE_LOGGING_CATEGORY(keyInfoString)
 
 namespace key_info {
 
@@ -52,9 +53,18 @@ namespace key_info {
 				}
 		};
 
-		typedef std::unordered_map<Qt::Key, QString, KeyInfoHash, KeyInfoEqualTo> keyInfoMap;
-
-		const static keyInfoMap specialKeyMap = {
+		typedef std::unordered_map<Qt::Key, Qt::KeyboardModifier, KeyInfoHash, KeyInfoEqualTo> modifierKeyMap;
+		const static modifierKeyMap modifierKeys = {
+			{ Qt::Key_Shift, Qt::ShiftModifier },
+			{ Qt::Key_Control, Qt::ControlModifier },
+			{ Qt::Key_Alt, Qt::AltModifier },
+			{ Qt::Key_Meta, Qt::MetaModifier },
+			{ Qt::Key_AltGr, Qt::GroupSwitchModifier },
+			{ Qt::Key_Mode_switch, Qt::GroupSwitchModifier }
+		};
+	
+		typedef std::unordered_map<Qt::Key, QString, KeyInfoHash, KeyInfoEqualTo> specialKeyMap;
+		const static specialKeyMap specialKeys = {
 			ADD_KEY_TO_MAP(Super_L, Super L),
 			ADD_KEY_TO_MAP(Super_R, Super R),
 			ADD_KEY_TO_MAP(Hyper_L, Hyper L),
@@ -146,13 +156,13 @@ namespace key_info {
 
 		public:
 			/**
-			 * @brief Function: explicit KeyInfo(const QKeySequence & key, QKeyInfo::SequenceFormat format = QKeyInfoNativeText)
+			 * @brief Function: explicit KeyInfo(const QKeySequence & keySeq, QKeyInfo::SequenceFormat format = QKeyInfoNativeText)
 			 *
 			 * \param keySeq: key sequence
 			 *
 			 * Key Info constructor
 			 */
-			explicit KeyInfo(const QKeySequence & key);
+			explicit KeyInfo(const QKeySequence & keySeq);
 
 			/**
 			 * @brief Function: QString toString(QKeySequence::SequenceFormat format = QKeySequence::NativeText) const
@@ -161,16 +171,57 @@ namespace key_info {
 			 *
 			 * \return a string with all key sequences
 			 *
-			 * This function returns a string with all key sequences
+			 * This function returns a string with the key sequences
 			 */
 			QString toString(QKeySequence::SequenceFormat format = QKeySequence::NativeText) const;
 
 		private:
 			/**
-			 * @brief key sequence
+			 * @brief key
 			 *
 			 */
-			QKeySequence key;
+			Qt::Key key;
+
+			/**
+			 * @brief modifier
+			 *
+			 */
+			Qt::KeyboardModifier modifier;
+
+			/**
+			 * @brief Function: QString keyToString(Qt::Key keyPrint, QKeySequence::SequenceFormat format = QKeySequence::NativeText) const
+			 *
+			 * \param keyPrint: key
+			 * \param format: format of key string
+			 *
+			 * \return a string with all key sequences
+			 *
+			 * This function returns a string with the key converted to a string
+			 */
+			QString keyToString(Qt::Key keyPrint, QKeySequence::SequenceFormat format = QKeySequence::NativeText) const;
+
+			/**
+			 * @brief Function: QString modifierToString(Qt::KeyboardModifier keyPrint, QKeySequence::SequenceFormat format = QKeySequence::NativeText) const
+			 *
+			 * \param modifierPrint: modifier
+			 * \param format: format of key string
+			 *
+			 * \return a string with all key sequences
+			 *
+			 * This function returns a string with the modifier converted to a string 
+			 */
+			QString modifierToString(Qt::KeyboardModifier modifierPrint, QKeySequence::SequenceFormat format = QKeySequence::NativeText) const;
+
+			/**
+			 * @brief Function: bool isKeyPrintable(Qt::Key keyCheck) const
+			 *
+			 * \param keyCheck: key
+			 *
+			 * \return a boolean value depending on whether the character is printable or not
+			 *
+			 * This function returns whether a key is printable (i.e. character) or not
+			 */
+			bool isKeyPrintable(Qt::Key keyCheck) const;
 	};
 
 }
