@@ -80,7 +80,15 @@ QString key_sequence::KeySequence::toString(QKeySequence::SequenceFormat format)
 		keySeqList.append(seqInfo.toString(format));
 	}
 
-	QString keyStr(keySeqList.join(","));
+	QString separator(QString::null);
+	if (keySeqList.size() == 1) {
+		// If length of the string is 1, then use an empty separator
+		separator.append("");
+	} else {
+		separator.append(",");
+	}
+
+	QString keyStr(keySeqList.join(separator));
 
 	return keyStr;
 }
