@@ -22,14 +22,13 @@ key_info::KeyInfo::KeyInfo(const QKeySequence & keySeq) {
 	// Assert that only1 key is stored in the QKeySequence
 	Q_ASSERT_X((keySeq.count() == 1), "keyInfo to string", "QKeySequence passed to KeyInfo class instance must contain one key sequence");
 
-	QINFO_PRINT(global_types::qinfo_level_e::ZERO, keyInfoOverall,  "Key Info constructor");
-
 	// Cast first element of key sequence to int in order to extract the key and the modifier
 	int keyInt = keySeq[0];
 
 	this->key = Qt::Key(keyInt & ~(Qt::KeyboardModifierMask));
 	this->modifier = Qt::KeyboardModifier(keyInt & Qt::KeyboardModifierMask);
 
+	QINFO_PRINT(global_types::qinfo_level_e::ZERO, keyInfoOverall,  "Key Info constructor (key " << this->key << ", modifier " << this->modifier << ")");
 
 }
 
@@ -37,6 +36,7 @@ QString key_info::KeyInfo::toString(QKeySequence::SequenceFormat format) const {
 
 	// Convert key to string
 	QString keyStr(this->keyToString(this->key, format));
+	QString commentStr(QString::null);
 
 	int tmpModifier = int(this->modifier);
 	modifierKeyMap::const_iterator modifierKey = key_info::modifierKeys.find(this->key);
@@ -47,6 +47,7 @@ QString key_info::KeyInfo::toString(QKeySequence::SequenceFormat format) const {
 			if (this->modifier == Qt::ShiftModifier) {
 				keyStr = keyStr.toUpper();
 				tmpModifier &= ~Qt::ShiftModifier;
+				commentStr.append("(Shift+" + keyStr.toLower() + ")");
 			} else {
 				// Make string lowercase
 				keyStr = keyStr.toLower();
@@ -62,6 +63,10 @@ QString key_info::KeyInfo::toString(QKeySequence::SequenceFormat format) const {
 	QString keySeqStr(QString::null);
 	keySeqStr.append(modifierStr);
 	keySeqStr.append(keyStr);
+	// If commentStr is not empty, then add a space and print it
+	if (!commentStr.isEmpty()) {
+		keySeqStr.append(" " + commentStr);
+	}
 
 	QINFO_PRINT(global_types::qinfo_level_e::ZERO, keyInfoString,  "Key sequence (key " << this->key << ", modifier " << this->modifier << ") to " << keySeqStr);
 
