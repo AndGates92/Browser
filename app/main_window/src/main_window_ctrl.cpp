@@ -83,7 +83,7 @@ void main_window_ctrl::MainWindowCtrl::connectSignals() {
 	connect(this->tabctrl, &main_window_ctrl_tab::MainWindowCtrlTab::requestTabCountSignal, this, &main_window_ctrl::MainWindowCtrl::getTabCount);
 	connect(this, &main_window_ctrl::MainWindowCtrl::sendTabCountSignal, this->tabctrl, &main_window_ctrl_tab::MainWindowCtrlTab::receiveTabCount);
 
-	// open tab action
+	// open tab action (from fileMenu)
 	connect(this, &main_window_ctrl::MainWindowCtrl::openNewTabSignal, this->tabctrl, &main_window_ctrl_tab::MainWindowCtrlTab::openNewTab);
 
 	// Update info in the info bar following action
