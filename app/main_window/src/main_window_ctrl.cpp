@@ -115,7 +115,7 @@ void main_window_ctrl::MainWindowCtrl::toggleShowMenubar() {
 }
 
 void main_window_ctrl::MainWindowCtrl::closeWindow() {
-	QINFO_PRINT(global_types::qinfo_level_e::ZERO, mainWindowCtrlOverall,  "Close slot: exiting from the browser");
+	QINFO_PRINT(global_types::qinfo_level_e::ZERO, mainWindowCtrlOverall,  "Close slot: quitting from the browser");
 	emit this->closeWindowSignal();
 }
 
@@ -123,7 +123,7 @@ void main_window_ctrl::MainWindowCtrl::executeCommand(QString command) {
 
 	if (command.compare("toggle-menubar") == 0) {
 		this->toggleShowMenubar();
-	} else if (command.compare("exit") == 0) {
+	} else if (command.compare("quit") == 0) {
 		this->closeWindow();
 	} else {
 		this->tabctrl->executeCommand(command);
