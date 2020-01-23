@@ -1,0 +1,18 @@
+{
+	"ToggleMenubar" : {
+		"State" : "TOGGLE MENUBAR",
+		"TextDisplayed" : "show/hide menubar",
+		"Shortcut" : "m",
+		"LongCmd" : "toggle-menubar",
+		"Help" : "This command shows/hides the menubar"
+	},
+
+	"Quit" : {
+		"State" : "QUIT",
+		"TextDisplayed" : "quit browser",
+		"Shortcut" : "q",
+		"LongCmd" : "quit",
+		"Help" : "This command quits the browser"
+	}
+
+}
