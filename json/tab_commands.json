@@ -1,0 +1,57 @@
+{
+	"OpenNewTab" : {
+		"State" : "OPEN TAB",
+		"TextDisplayed" : "open tab",
+		"Shortcut" : "o",
+		"LongCmd" : "open-tab",
+		"Help" : "This command opens a new tab"
+	},
+
+	"CloseTab" : {
+		"State" : "CLOSE TAB",
+		"TextDisplayed" : "close tab",
+		"Shortcut" : "d",
+		"LongCmd" : "close-tab",
+		"Help" : "This command closes a tab"
+	},
+
+	"SearchTab" : {
+		"State" : "SEARCH TAB",
+		"TextDisplayed" : "search tab",
+		"Shortcut" : "s",
+		"LongCmd" : "search-tab",
+		"Help" : "This command searches content in a tab in a new tab"
+	},
+
+	"MoveTab" : {
+		"State" : "MOVE TAB",
+		"TextDisplayed" : "move tab",
+		"Shortcut" : "t",
+		"LongCmd" : "move tab",
+		"Help" : "This command closes a tab"
+	},
+
+	"MoveCursorRight" : {
+		"State" : "MOVE RIGHT",
+		"TextDisplayed" : "move cursor right",
+		"Shortcut" : "h",
+		"LongCmd" : "move-cursor-right",
+		"Help" : "This command moves the current tab to the one on the right"
+	},
+
+	"MoveCursorLeft" : {
+		"State" : "MOVE LEFT",
+		"TextDisplayed" : "move cursor left",
+		"Shortcut" : "l",
+		"LongCmd" : "move-cursor-left",
+		"Help" : "This command moves the current tab to the one on the left"
+	},
+
+	"RefreshTab" : {
+		"State" : "REFRESH TAB",
+		"TextDisplayed" : "refresh tab",
+		"Shortcut" : "r",
+		"LongCmd" : "refresh tab",
+		"Help" : "This command refreshes a tab"
+	}
+}
