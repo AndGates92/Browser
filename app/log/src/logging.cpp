@@ -22,7 +22,6 @@
 /**
 	* @brief bottom information label height
 	* QtMsgType
-	* |---------------|--------|
 	* | Name          | Value  |
 	* |---------------|--------|
 	* | QtDebugMsg    | 0      |
@@ -30,7 +29,6 @@
 	* | QtWarningMsg  | 1      |
 	* | QtCritcalMsg  | 2      |
 	* | QtFatalMsg    | 3      |
-	* |---------------|--------|
 	* Enable messge level if:
 	* - MSG_LEVEL_TYPE is set to QtInfoMsg and trying to enable QtDebugMsg
 	* - MSG_LEVEL_TYPE is set to QtDebugMsg

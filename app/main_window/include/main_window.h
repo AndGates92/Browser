@@ -183,7 +183,7 @@ namespace main_window {
 			/**
 			 * @brief Function: void updateUserInputBar(QString textLabel)
 			 *
-			 * \param text: text to append to userText
+			 * \param textLabel: text to append to userText
 			 *
 			 * This function is the slot to update the user input label
 			 */
@@ -379,6 +379,7 @@ namespace main_window {
 			/**
 			 * @brief Function: void newSearchTab(int index, QString search)
 			 *
+			 * \param index: tab index to be searched
 			 * \param search: string to search
 			 *
 			 * This function search on the tab at index index

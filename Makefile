@@ -86,7 +86,7 @@ LIBS := $(foreach LIB, ${LIB_LIST}, -l${LIB})
 
 # Directory containing source and header files
 APP_DIR = app
-TEST_DIR = test
+TEST_DIR =
 COMP_DIR = $(wildcard $(APP_DIR)/*)
 
 # Directory containing source files
@@ -115,6 +115,9 @@ DOX_CFG_FILENAME = ${PROJ_NAME}.config
 DOX_CFG_FILE = $(DOX_DIR)/$(DOX_CFG_FILENAME)
 
 DOX_DOC_DIR = doc
+
+DOX_COMMENT_SECTION = \#\#\#\#\#\#\#\#\#\#\#\#\#\#\#
+DOX_INPUT_FILE_HEADER = \#\# Input files
 
 # Valgrind variables
 VALGRIND=valgrind
@@ -248,6 +251,20 @@ clean :
 
 doc :
 	$(MKDIR) $(DOX_DOC_DIR)
+	# delete all inputs directories as well as header in doxygen configuration file
+	sed -i '/INPUT/d' $(DOX_CFG_FILE)
+	sed -i '/$(DOX_COMMENT_SECTION)/d' $(DOX_CFG_FILE)
+	sed -i '/$(DOX_INPUT_FILE_HEADER)/d' $(DOX_CFG_FILE)
+	sed -i '$d' $(DOX_CFG_FILE)
+	sed -i '$d' $(DOX_CFG_FILE)
+	# add inputs directories as well as header in doxygen configuration file
+	echo "\n$(DOX_COMMENT_SECTION)" >> $(DOX_CFG_FILE)
+	echo "$(DOX_INPUT_FILE_HEADER)" >> $(DOX_CFG_FILE)
+	echo "$(DOX_COMMENT_SECTION)\n" >> $(DOX_CFG_FILE)
+	echo "INPUT = " >> $(DOX_CFG_FILE);
+	for dir in $(SRC_PATH) $(INCLUDE_PATH); do \
+	  echo "INPUT += $$dir" >> $(DOX_CFG_FILE); \
+	done
 	$(DOXYGEN) $(DOX_CFG_FILE)
 
 .PHONY: all,clean,depend,$(EXE),debug,doc,memleak

@@ -73,7 +73,7 @@ namespace key_sequence {
 			/**
 			 * @brief Function: unsigned int count() const
 			 *
-			 * \return a string with all key sequences
+			 * \return the number of elements stored in the vercot of QKeySequence
 			 *
 			 * This function returns the number of elements stores in the vector of QKeySequence
 			 */

@@ -110,8 +110,8 @@ namespace command_menu {
 			/**
 :			 * @brief Function: void scrollTo(const QModelIndex & index, QAbstractItemView::ScrollHint hint = QAbstractItemView::EnsureVisible)
 			 *
-			 * \param index is the index of the model
-			 * \param hint view will position an item accoridng to the value of hint
+			 * \param index: is the index of the model
+			 * \param hint: view will position an item accoridng to the value of hint
 
 			 * Scroll the view if required to ensure that element at item index is visible
 			 */
@@ -120,7 +120,7 @@ namespace command_menu {
 			/**
 			 * @brief Function: QModelIndex indexAt(const QPoint & point) const
 			 *
-			 * \param point points to search model for
+			 * \param point: points to search model for
 
 			 * \return model index at point point
 			 *
@@ -131,8 +131,8 @@ namespace command_menu {
 			/**
 			 * @brief Function: QModelIndex moveCursor(QAbstractItemView::CursorAction cursorAction, Qt::KeyboardModifiers modifiers)
 			 *
-			 * \param cursorAction action execute by the cursor
-			 * \param modifier enumeration with the keyboard modifer supported by Qt
+			 * \param cursorAction: action execute by the cursor
+			 * \param modifiers: enumeration with the keyboard modifier supported by Qt
 			 *
 			 * \return model index pointing to the next object in the view based on the input arguments
 			 *
@@ -161,7 +161,7 @@ namespace command_menu {
 			/**
 			 * @brief Function: bool isIndexHidden(const QModelIndex & index) const
 			 *
-			 * \param index model index to check whether is idle while the code is running
+			 * \param index: model index to check whether is idle while the code is running
 			 *
 			 * \return if an item is hidden
 			 *
@@ -172,8 +172,8 @@ namespace command_menu {
 			/**
 			 * @brief Function: void setSelection(const QRect & rect, QItemSelectionModel::SelectionFlags command)
 			 *
-			 * \param rect rectangle limiting th earea where flags are applied
-			 * \param command flags to be used 
+			 * \param rect: rectangle limiting th earea where flags are applied
+			 * \param command: flags to be used 
 			 *
 			 * apply flags to item inside of touched by rectangle rect
 			 */
@@ -182,7 +182,7 @@ namespace command_menu {
 			/**
 			 * @brief Function: QRegion visualRegionForSelection(const QItemSelection & selection) const
 			 *
-			 * \param selection to search items for
+			 * \param selection: items to search for
 			 *
 			 * \return region that encapsulates all items in selection selection
 			 *
@@ -193,7 +193,7 @@ namespace command_menu {
 			/**
 			 * @brief Function: QRect visualRect(const QModelIndex & index) const
 			 *
-			 * \param index of item the return the rectangle of
+			 * \param index: index of item to return the rectangle of
 			 *
 			 * \return the rectangle on the viewpoint occupied by item at index
 			 *
