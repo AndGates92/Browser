@@ -185,17 +185,17 @@ void main_window::MainWindow::mainWindowLayout() {
 	layout->addWidget(this->tabs, tabsFromRow, tabsFromColumn, tabsRowSpan, tabsColumnSpan);
 
 	// user input text
-	int searchRowSpan = 1;
-	int searchColumnSpan = 3;
-	int searchFromRow = tabsRowSpan;
-	int searchFromColumn = 0;
-	layout->addWidget(this->userInputText, searchFromRow, searchFromColumn, searchRowSpan, searchColumnSpan);
+	int userTextRowSpan = 1;
+	int userTextColumnSpan = 3;
+	int userTextFromRow = tabsRowSpan;
+	int userTextFromColumn = 0;
+	layout->addWidget(this->userInputText, userTextFromRow, userTextFromColumn, userTextRowSpan, userTextColumnSpan);
 
 	// website URL
 	int websiteRowSpan = 1;
 	int websiteColumnSpan = 5;
 	int websiteFromRow = tabsRowSpan;
-	int websiteFromColumn = searchFromColumn + searchColumnSpan;
+	int websiteFromColumn = userTextFromColumn + userTextColumnSpan;
 	layout->addWidget(this->websiteText, websiteFromRow, websiteFromColumn, websiteRowSpan, websiteColumnSpan);
 
 	// info
