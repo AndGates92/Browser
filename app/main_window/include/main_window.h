@@ -20,6 +20,7 @@
 #include "file_menu.h"
 #include "edit_menu.h"
 #include "tab_widget.h"
+#include "command_menu.h"
 #include "main_window_ctrl.h"
 
 /** @defgroup MainWindowGroup Main Window Doxygen Group
@@ -279,6 +280,12 @@ namespace main_window {
 			 *
 			 */
 			tab_widget::TabWidget * tabs;
+
+			/**
+			 * @brief Command menu 
+			 *
+			 */
+			command_menu::CommandMenu * cmdMenu;
 
 			/**
 			 * @brief Main window control

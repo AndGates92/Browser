@@ -138,6 +138,10 @@ void main_window::MainWindow::fillMainWindow() {
 	// info
 	this->infoText = this->newWindowLabel();
 	this->infoText->setAlignment(Qt::AlignRight | Qt::AlignBottom);
+
+	// info
+	this->cmdMenu = new command_menu::CommandMenu(this);
+	this->cmdMenu->setVisible(false);
 }
 
 void main_window::MainWindow::createTabs() {
@@ -168,30 +172,46 @@ void main_window::MainWindow::mainWindowLayout() {
 	// -------------------------------------------------
 	// |                     <tabs>                    |
 	// |                    <content>                  |
-	// |  <search>   |      <website>     | <tab info> |
+	// | <user text> |      <website>     |   <info>   |
 	// -------------------------------------------------
 
 	QGridLayout * layout = new QGridLayout(this->mainWidget);
+
+	// tabs
 	int tabsRowSpan = 20;
 	int tabsColumnSpan = 10;
 	int tabsFromRow = 0;
 	int tabsFromColumn = 0;
 	layout->addWidget(this->tabs, tabsFromRow, tabsFromColumn, tabsRowSpan, tabsColumnSpan);
+
+	// user input text
 	int searchRowSpan = 1;
 	int searchColumnSpan = 3;
 	int searchFromRow = tabsRowSpan;
 	int searchFromColumn = 0;
 	layout->addWidget(this->userInputText, searchFromRow, searchFromColumn, searchRowSpan, searchColumnSpan);
+
+	// website URL
 	int websiteRowSpan = 1;
 	int websiteColumnSpan = 5;
 	int websiteFromRow = tabsRowSpan;
 	int websiteFromColumn = searchFromColumn + searchColumnSpan;
 	layout->addWidget(this->websiteText, websiteFromRow, websiteFromColumn, websiteRowSpan, websiteColumnSpan);
+
+	// info
 	int infoRowSpan = 1;
 	int infoColumnSpan = 2;
 	int infoFromRow = tabsRowSpan;
 	int infoFromColumn = websiteFromColumn + websiteColumnSpan;
 	layout->addWidget(this->infoText, infoFromRow, infoFromColumn, infoRowSpan, infoColumnSpan);
+
+	// command menu
+	int cmdMenuRowSpan = 3;
+	int cmdMenuColumnSpan = tabsColumnSpan;
+	int cmdMenuFromRow = tabsRowSpan - cmdMenuRowSpan;
+	int cmdMenuFromColumn = 0;
+	layout->addWidget(this->cmdMenu, cmdMenuFromRow, cmdMenuFromColumn, cmdMenuRowSpan, cmdMenuColumnSpan);
+
 
 	layout->setHorizontalSpacing(main_window::horizontalWidgetSpacing);
 	layout->setVerticalSpacing(main_window::verticalWidgetSpacing);
