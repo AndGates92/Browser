@@ -10,6 +10,7 @@
 
 #include <qt5/QtCore/QtDebug>
 #include <qt5/QtCore/QLoggingCategory>
+#include <qt5/QtCore/QJsonValue>
 
 #include <qt5/QtCore/QString>
 #include <qt5/QtCore/QFile>
@@ -64,11 +65,14 @@ namespace json_wrapper {
 			void readJson();
 
 			/**
-			 * @brief Function: void writeJson()
+			 * @brief Function: void writeJson(QString key, QJsonValue jsonVal)
+			 *
+			 * \param key: key of the item to add (available only when the file is a QJsonObject) 
+			 * \param jsonVal: value to add to JSON file
 			 *
 			 * function that write a JSON file from a QString
 			 */
-			void writeJson();
+			void writeJson(QString key, QJsonValue jsonVal);
 
 		private:
 			/**
@@ -81,7 +85,7 @@ namespace json_wrapper {
 			 * @brief JSON file pointer
 			 *
 			 */
-			QFile * filePtr;
+			QFile * jsonFile;
 
 	};
 
