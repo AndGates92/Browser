@@ -18,6 +18,10 @@ command_menu_model::CommandMenuModel::CommandMenuModel(QObject * parent) : QAbst
 	QINFO_PRINT(global_types::qinfo_level_e::ZERO, commandMenuModelOverall,  "Create command menu model");
 }
 
+command_menu_model::CommandMenuModel::~CommandMenuModel() {
+	QINFO_PRINT(global_types::qinfo_level_e::ZERO, commandMenuModelOverall,  "Destoy command menu model");
+
+}
 
 #pragma GCC diagnostic push
 #pragma GCC diagnostic ignored "-Wunused-parameter"

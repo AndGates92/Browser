@@ -36,6 +36,12 @@ tab_widget::TabWidget::TabWidget(QWidget * parent): QTabWidget(parent) {
 
 }
 
+tab_widget::TabWidget::~TabWidget() {
+	QINFO_PRINT(global_types::qinfo_level_e::ZERO, tabWidgetOverall,  "Tab widget destructor");
+
+	delete this->bar;
+}
+
 void tab_widget::TabWidget::resizeEvent(QResizeEvent * event) {
 	QSize previousSize(event->oldSize());
 	QSize newSize(event->size());

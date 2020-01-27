@@ -42,6 +42,13 @@ namespace command_menu_model {
 			 */
 			explicit CommandMenuModel(QObject * parent = Q_NULLPTR);
 
+			/**
+			 * @brief Function: ~CommandMenuModel()
+			 *
+			 * Command menu model destructor
+			 */
+			~CommandMenuModel();
+
 		protected:
 
 		private:

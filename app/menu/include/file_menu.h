@@ -78,6 +78,13 @@ namespace file_menu {
 			 */
 			QAction * exitAction;
 
+			/**
+			 * @brief Function: ~FileMenu()
+			 *
+			 * Destructor of file menu
+			 */
+			~FileMenu();
+
 		protected:
 
 		private slots:

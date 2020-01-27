@@ -46,6 +46,13 @@ namespace menu {
 			 */
 			explicit Menu(QWidget * window = Q_NULLPTR, QMenuBar * menuBar = Q_NULLPTR, const char* menuName = "Unknown", const QKeySequence & key = QKeySequence::UnknownKey);
 
+			/**
+			 * @brief Function: ~Menu()
+			 *
+			 * Destructor of base class menu
+			 */
+			virtual ~Menu();
+
 		public slots:
 
 			/**

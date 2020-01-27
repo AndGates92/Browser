@@ -67,6 +67,13 @@ namespace tab_widget {
 			explicit TabWidget(QWidget * parent = Q_NULLPTR);
 
 			/**
+			 * @brief Function: ~TabWidget()
+			 *
+			 * Tab widget destructor
+			 */
+			~TabWidget();
+
+			/**
 			 * @brief Function: int addTab(QWidget * page, const QString & label)
 			 *
 			 * \param page: widget to fill in

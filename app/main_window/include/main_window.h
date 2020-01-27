@@ -101,6 +101,13 @@ namespace main_window {
 			explicit MainWindow(QWidget * parent = Q_NULLPTR, Qt::WindowFlags flags = Qt::WindowFlags());
 
 			/**
+			 * @brief Function: ~MainWindow()
+			 *
+			 * Main window destructor
+			 */
+			~MainWindow();
+
+			/**
 			 * @brief Function: QMenuBar * getMenuBar()
 			 *
 			 * This function returns the menubar attached to the main window
@@ -276,16 +283,16 @@ namespace main_window {
 			edit_menu::EditMenu * editMenu;
 
 			/**
-			 * @brief Tabs of browser
-			 *
-			 */
-			tab_widget::TabWidget * tabs;
-
-			/**
 			 * @brief Command menu 
 			 *
 			 */
 			command_menu::CommandMenu * cmdMenu;
+
+			/**
+			 * @brief Tabs of browser
+			 *
+			 */
+			tab_widget::TabWidget * tabs;
 
 			/**
 			 * @brief Main window control

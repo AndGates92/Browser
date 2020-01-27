@@ -49,6 +49,7 @@ open_button_window::OpenButtonWindow::~OpenButtonWindow() {
 	delete this->label;
 	delete this->text;
 	delete this->openButton;
+	delete this->browseButton;
 	delete this->cancelButton;
 }
 

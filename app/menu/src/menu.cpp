@@ -25,6 +25,20 @@ menu::Menu::Menu(QWidget * window, QMenuBar * menuBar, const char* menuName, con
 	this->createShortcuts();
 }
 
+menu::Menu::~Menu() {
+
+	QINFO_PRINT(global_types::qinfo_level_e::ZERO, menuOverall,  "menu destructor");
+
+	delete this->winMenu;
+	delete this->expandMenu;
+
+	// Do not call delete on the following members:
+	// - this->menuName -> not create with new;
+	// - this->menuBar -> pointer to the menu bar of the main window and it will be deleted while deleting the main window;
+	// - this->window -> pointer to the main window therefore it will be deleted after the menu;
+
+}
+
 void menu::Menu::createMenu() {
 	//Use QObject::tr as Menu is not a derived class of QObject
 	this->winMenu = this->menuBar->addMenu(QObject::tr(menuName));

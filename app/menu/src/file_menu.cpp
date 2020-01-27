@@ -32,6 +32,17 @@ file_menu::FileMenu::FileMenu(QWidget * window, QMenuBar * menuBar, const char* 
 
 }
 
+file_menu::FileMenu::~FileMenu() {
+
+	QINFO_PRINT(global_types::qinfo_level_e::ZERO, fileMenuOverall,  "file menu destructor");
+
+	delete this->openTabAction;
+	delete this->saveAction;
+	delete this->printAction;
+	delete this->exitAction;
+
+}
+
 void file_menu::FileMenu::createActions() {
 
 	this->openAction = new QAction(tr("Open"), this);

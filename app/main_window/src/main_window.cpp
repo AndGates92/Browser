@@ -36,6 +36,8 @@ Q_LOGGING_CATEGORY(mainWindowTabs, "mainWindow.tabs", MSG_TYPE_LEVEL)
 
 main_window::MainWindow::MainWindow(QWidget * parent, Qt::WindowFlags flags) : QMainWindow(parent, flags) {
 
+	QINFO_PRINT(global_types::qinfo_level_e::ZERO, mainWindowOverall,  "Main window constructor");
+
 	this->setFocusPolicy(Qt::StrongFocus);
 	this->setEnabled(true);
 
@@ -81,6 +83,26 @@ main_window::MainWindow::MainWindow(QWidget * parent, Qt::WindowFlags flags) : Q
 	this->updateInfo();
 }
 
+main_window::MainWindow::~MainWindow() {
+	QINFO_PRINT(global_types::qinfo_level_e::ZERO, mainWindowOverall,  "Main window destructor");
+
+	// Delete menus
+	delete this->fileMenu;
+	delete this->editMenu;
+	delete this->cmdMenu;
+
+	// Label
+	delete this->userInputText;
+	delete this->websiteText;
+	delete this->infoText;
+
+	// Main components
+	delete this->tabs;
+	delete this->ctrl;
+
+	// Main widget
+	delete this->mainWidget;
+}
 
 void main_window::MainWindow::createMainWidget() {
 	this->mainWidget = new QWidget(this);

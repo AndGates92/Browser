@@ -50,6 +50,13 @@ namespace edit_menu {
 			 */
 			explicit EditMenu(QWidget * window = Q_NULLPTR, QMenuBar * menuBar = Q_NULLPTR, const char* menuName = "Unknown", const QKeySequence & key = QKeySequence::UnknownKey);
 
+			/**
+			 * @brief Function: ~EditMenu()
+			 *
+			 * Destructor of edit menu
+			 */
+			~EditMenu();
+
 		protected:
 
 		private slots:

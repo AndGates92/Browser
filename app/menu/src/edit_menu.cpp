@@ -22,9 +22,24 @@ Q_LOGGING_CATEGORY(editMenuAction, "editMenu.action", MSG_TYPE_LEVEL)
 
 edit_menu::EditMenu::EditMenu(QWidget * window, QMenuBar * menuBar, const char* menuName, const QKeySequence & key) : menu::Menu(window,menuBar,menuName,key) {
 
+	QINFO_PRINT(global_types::qinfo_level_e::ZERO, editMenuOverall,  "edit menu constructor");
+
 	this->createActions();
 	this->createMenu();
 
+}
+
+edit_menu::EditMenu::~EditMenu() {
+
+	QINFO_PRINT(global_types::qinfo_level_e::ZERO, editMenuOverall,  "edit menu destructor");
+
+	delete this->undoAction;
+	delete this->redoAction;
+	delete this->cutAction;
+	delete this->copyAction;
+	delete this->pasteAction;
+	delete this->selectAllAction;
+	delete this->findAction;
 }
 
 void edit_menu::EditMenu::createActions() {

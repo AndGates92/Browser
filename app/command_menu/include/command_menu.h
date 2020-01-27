@@ -73,6 +73,13 @@ namespace command_menu {
 			 */
 			explicit CommandMenu(QWidget * parent = Q_NULLPTR);
 
+			/**
+			 * @brief Function: ~CommandMenu()
+			 *
+			 * Command menu destructor
+			 */
+			~CommandMenu();
+
 		protected:
 
 		private:

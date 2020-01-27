@@ -23,6 +23,12 @@ command_menu::CommandMenu::CommandMenu(QWidget * parent) : QAbstractItemView(par
 	this->setModel(this->menuModel);
 }
 
+command_menu::CommandMenu::~CommandMenu() {
+	QINFO_PRINT(global_types::qinfo_level_e::ZERO, commandMenuOverall,  "Destoy command menu");
+
+	delete this->menuModel;
+}
+
 void command_menu::CommandMenu::setProperties() {
 
 	// Set title
