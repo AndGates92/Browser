@@ -45,7 +45,7 @@ open_button_window::OpenButtonWindow::OpenButtonWindow(QWidget * parent, Qt::Win
 }
 
 open_button_window::OpenButtonWindow::~OpenButtonWindow() {
-	QINFO_PRINT(global_types::qinfo_level_e::ZERO, openButtonWindowOverall,  "Destructor");
+	QINFO_PRINT(global_types::qinfo_level_e::ZERO, openButtonWindowOverall,  "Destructor of OpenButtonWindow class");
 	delete this->label;
 	delete this->text;
 	delete this->openButton;
