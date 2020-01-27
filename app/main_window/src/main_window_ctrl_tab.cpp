@@ -15,7 +15,6 @@
 #include <qt5/QtCore/QtDebug>
 
 #include "key_sequence.h"
-#include "main_window_shared_types.h"
 #include "main_window_ctrl_tab.h"
 
 // Categories

@@ -71,6 +71,15 @@ namespace key_sequence {
 			explicit KeySequence(const KeySequence & keySeq);
 
 			/**
+			 * @brief Function: QVector<QKeySequence> getSeqVec() const
+			 *
+			 * \return vector of QKeySequence
+			 *
+			 * This function returns the vector of QKeySequence
+			 */
+			QVector<QKeySequence> getSeqVec() const;
+
+			/**
 			 * @brief Function: unsigned int count() const
 			 *
 			 * \return the number of elements stored in the vercot of QKeySequence
@@ -89,15 +98,6 @@ namespace key_sequence {
 			 * This function returns a string with all key sequences
 			 */
 			QString toString(QKeySequence::SequenceFormat format = QKeySequence::NativeText) const;
-
-			/**
-			 * @brief Function: QVector<QKeySequence> getSeqVec() const
-			 *
-			 * \return vector of QKeySequence
-			 *
-			 * This function returns the vector of QKeySequence
-			 */
-			QVector<QKeySequence> getSeqVec() const;
 
 			/**
 			 * @brief Function: QKeySequence::SequenceMatch matches(const KeySequence & otherSeq)
@@ -199,6 +199,7 @@ namespace key_sequence {
 			 * This function adds a key to the key sequence vector
 			 */
 			void addKey(int key, QKeySequence::SequenceFormat format = QKeySequence::NativeText);
+
 	};
 
 }
