@@ -77,7 +77,7 @@ namespace main_window_ctrl {
 			/**
 			 * @brief Function: ~MainWindowCtrlTab()
 			 *
-			 * Main window tab control constructor
+			 * Main window control constructor
 			 */
 			~MainWindowCtrl();
 

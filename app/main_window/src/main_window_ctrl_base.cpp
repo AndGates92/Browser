@@ -18,5 +18,10 @@ Q_LOGGING_CATEGORY(mainWindowCtrlBaseOverall, "mainWindowCtrlBase.overall", MSG_
 
 main_window_ctrl_base::MainWindowCtrlBase::MainWindowCtrlBase(QWidget * parent, int tabIndex, int tabCount, QString jsonFileName) : parent(parent), currentTabIndex(tabIndex), tabCount(tabCount), mainWindowState(main_window_shared_types::state_e::IDLE), commands(json_parser::JsonParser(jsonFileName, QIODevice::ReadOnly)) {
 
-	QINFO_PRINT(global_types::qinfo_level_e::ZERO, mainWindowCtrlBaseOverall,  "Main window control constructor");
+	QINFO_PRINT(global_types::qinfo_level_e::ZERO, mainWindowCtrlBaseOverall,  "Main window control base classe constructor");
+}
+
+main_window_ctrl_base::MainWindowCtrlBase::~MainWindowCtrlBase() {
+	QINFO_PRINT(global_types::qinfo_level_e::ZERO, mainWindowCtrlBaseOverall,  "Main window control base class destructor");
+
 }

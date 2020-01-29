@@ -44,6 +44,13 @@ namespace main_window_ctrl_base {
 			 */
 			explicit MainWindowCtrlBase(QWidget * parent = Q_NULLPTR, int tabIndex = 0, int tabCount = 0, QString jsonFileName = QString::null);
 
+			/**
+			 * @brief Function: ~MainWindowCtrlBase()
+			 *
+			 * Main window base class control destructor
+			 */
+			virtual ~MainWindowCtrlBase();
+
 		protected:
 
 			/**

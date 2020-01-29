@@ -103,7 +103,7 @@ namespace main_window_ctrl_tab {
 			/**
 			 * @brief Function: ~MainWindowCtrlTab()
 			 *
-			 * Main window tab control constructor
+			 * Main window tab control destructor
 			 */
 			~MainWindowCtrlTab();
 
