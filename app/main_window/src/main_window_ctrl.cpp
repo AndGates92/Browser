@@ -22,12 +22,7 @@ Q_LOGGING_CATEGORY(mainWindowCtrlOverall, "mainWindowCtrl.overall", MSG_TYPE_LEV
 Q_LOGGING_CATEGORY(mainWindowCtrlUserInput, "mainWindowCtrl.userInput", MSG_TYPE_LEVEL)
 Q_LOGGING_CATEGORY(mainWindowCtrlSearch, "mainWindowCtrl.search", MSG_TYPE_LEVEL)
 
-main_window_ctrl::MainWindowCtrl::MainWindowCtrl(QWidget * parent, int tabIndex, int tabCount) : parent(parent) {
-
-	this->mainWindowState = main_window_shared_types::state_e::IDLE;
-	this->userText = QString::null;
-
-	this->tabctrl = new main_window_ctrl_tab::MainWindowCtrlTab(parent, tabIndex, tabCount);
+main_window_ctrl::MainWindowCtrl::MainWindowCtrl(QWidget * parent, int tabIndex, int tabCount) : tabctrl(new main_window_ctrl_tab::MainWindowCtrlTab(parent, tabIndex, tabCount)), mainWindowState(main_window_shared_types::state_e::IDLE), parent(parent), userText(QString::null) {
 
 	// Shortcuts
 	this->createShortcuts();

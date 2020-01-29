@@ -20,6 +20,7 @@
 #include "file_menu.h"
 #include "edit_menu.h"
 #include "tab_widget.h"
+#include "json_parser.h"
 
 /** @defgroup MainWindowCtrlTabGroup Main Window Doxygen Group
  *  Main Window control functions and classes
@@ -58,6 +59,23 @@ namespace main_window_ctrl_tab {
 		 */
 		const QString defaultSearchEngine(https + www + "duckduckgo.com/?q=%1");
 
+		/**
+		 * @brief Path towards JSON file storing informations about commands and shortcuts
+		 *
+		 */
+		const QString commandFilePath("json/");
+
+		/**
+		 * @brief Filename storing informations about commands and shortcuts
+		 *
+		 */
+		const QString commandFileName("tab_commands.json");
+
+		/**
+		 * @brief Full path towards JSON file storing informations about commands and shortcuts
+		 *
+		 */
+		const QString commandFileFullPath(commandFilePath + commandFileName);
 	}
 
 
@@ -393,6 +411,12 @@ namespace main_window_ctrl_tab {
 			 *
 			 */
 			main_window_shared_types::move_value_e moveValueType;
+
+			/**
+			 * @brief tab commands and information
+			 *
+			 */
+			json_parser::JsonParser commands;
 
 			// ================================ START SHORTCUTS ========================================//
 			/**
