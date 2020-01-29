@@ -26,6 +26,24 @@ Q_DECLARE_LOGGING_CATEGORY(jsonWrapperFile)
 namespace json_wrapper {
 
 	/**
+	 * @brief JSON content type
+	 *
+	 */
+	typedef enum class json_content_type_list {
+		OBJECT,   /**< JSON data stores data into an object */
+		ARRAY     /**< JSON file stores data into an array */
+	} json_content_type_e;
+
+	/**
+	 * @brief JSON content structure
+	 *
+	 */
+	typedef struct json_content_list {
+		json_wrapper::json_content_type_e contentType;   /**< JSON content type */
+		QVariant content;                                /**< JSON file content */
+	} json_content_e;
+
+	/**
 	 * @brief JsonWrapper class
 	 *
 	 */
@@ -34,14 +52,15 @@ namespace json_wrapper {
 		public:
 
 			/**
-			 * @brief Function: explicit JsonWrapper(QString fileName, QIODevice::OpenModeFlag openFlags)
+			 * @brief Function: explicit JsonWrapper(QString jsonFileName, QIODevice::OpenModeFlag jsonOpenFlags, json_wrapper::json_content_type_e jsonContentType)
 			 *
-			 * \param fileName: filename of the JSON file
-			 * \param openFlags: flags used to open the file (It must be QIODevice::ReadOnly, QIODevice::WriteOnly QIODevice::ReadWrite and optionally additional flags)
+			 * \param jsonFileName: filename of the JSON file
+			 * \param jsonOpenFlags: flags used to open the file (It must be QIODevice::ReadOnly, QIODevice::WriteOnly QIODevice::ReadWrite and optionally additional flags)
+			 * \param jsonContentType: content type of the JSON file (array or object)
 			 *
 			 * JSON wrapper constructor
 			 */
-			explicit JsonWrapper(QString fileName, QIODevice::OpenModeFlag openFlags);
+			explicit JsonWrapper(QString jsonFileName, QIODevice::OpenModeFlag jsonOpenFlags, json_wrapper::json_content_type_e jsonContentType = json_wrapper::json_content_type_e::OBJECT);
 
 			/**
 			 * @brief Function: ~JsonWrapper()
@@ -55,7 +74,7 @@ namespace json_wrapper {
 			 * @brief JSON file content
 			 *
 			 */
-			QString content;
+			json_wrapper::json_content_e jsonContent;
 
 			/**
 			 * @brief Function: void readJson()
@@ -65,14 +84,23 @@ namespace json_wrapper {
 			void readJson();
 
 			/**
-			 * @brief Function: void writeJson(QString key, QJsonValue jsonVal)
+			 * @brief Function: bool addJsonValue(QString key, QJsonValue jsonVal)
 			 *
 			 * \param key: key of the item to add (available only when the file is a QJsonObject) 
 			 * \param jsonVal: value to add to JSON file
 			 *
-			 * function that write a JSON file from a QString
+			 * \return whether the operation was successful (true) or not (false)
+			 *
+			 * function that adds a JSON value. It doesn't write to the file
 			 */
-			void writeJson(QString key, QJsonValue jsonVal);
+			bool addJsonValue(QString key, QJsonValue jsonVal);
+
+			/**
+			 * @brief Function: void writeJson()
+			 *
+			 * function that write a JSON file
+			 */
+			void writeJson();
 
 		private:
 			/**

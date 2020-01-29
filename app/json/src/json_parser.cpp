@@ -17,10 +17,11 @@ json_parser::JsonParser::JsonParser(QString fileName, QIODevice::OpenModeFlag op
 
 	QINFO_PRINT(global_types::qinfo_level_e::ZERO, jsonParserOverall,  "Creating JSON Wrapper of file " << fileName);
 
+	this->readJson();
+
 }
 
 json_parser::JsonParser::~JsonParser() {
 	QINFO_PRINT(global_types::qinfo_level_e::ZERO, jsonParserOverall,  "Destructor of JsonParser class");
 
 }
-
