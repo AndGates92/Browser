@@ -32,6 +32,16 @@ main_window_ctrl::MainWindowCtrl::MainWindowCtrl(QWidget * parent, int tabIndex,
 
 }
 
+main_window_ctrl::MainWindowCtrl::~MainWindowCtrl() {
+
+	// deleting shortcuts
+	delete this->toggleShowMenuBarKey;
+	delete this->closeKey;
+
+	// deleting tab control
+	delete this->tabctrl;
+}
+
 void main_window_ctrl::MainWindowCtrl::createShortcuts() {
 	QINFO_PRINT(global_types::qinfo_level_e::ZERO, mainWindowCtrlOverall,  "Create shortcuts");
 

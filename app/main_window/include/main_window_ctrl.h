@@ -44,7 +44,7 @@ namespace main_window_ctrl {
 		 * @brief Filename storing informations about commands and shortcuts
 		 *
 		 */
-		const QString commandFileName("tab_commands.json");
+		const QString commandFileName("global_commands.json");
 
 		/**
 		 * @brief Full path towards JSON file storing informations about commands and shortcuts
@@ -73,6 +73,13 @@ namespace main_window_ctrl {
 			 * Main window control constructor
 			 */
 			explicit MainWindowCtrl(QWidget * parent = Q_NULLPTR, int tabIndex = 0, int tabCount = 0);
+
+			/**
+			 * @brief Function: ~MainWindowCtrlTab()
+			 *
+			 * Main window tab control constructor
+			 */
+			~MainWindowCtrl();
 
 			/**
 			 * @brief Function: void keyPressEvent(QKeyEvent * event)

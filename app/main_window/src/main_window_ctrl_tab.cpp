@@ -34,6 +34,19 @@ main_window_ctrl_tab::MainWindowCtrlTab::MainWindowCtrlTab(QWidget * parent, int
 
 }
 
+main_window_ctrl_tab::MainWindowCtrlTab::~MainWindowCtrlTab() {
+
+	// deleting shortcuts
+	delete this->openNewTabKey;
+	delete this->newSearchTabKey;
+	delete this->closeTabKey;
+	delete this->moveTabToKey;
+	delete this->moveLeftKey;
+	delete this->moveRightKey;
+	delete this->refreshUrlKey;
+
+}
+
 void main_window_ctrl_tab::MainWindowCtrlTab::createShortcuts() {
 	QINFO_PRINT(global_types::qinfo_level_e::ZERO, mainWindowCtrlTabOverall,  "Create shortcuts");
 

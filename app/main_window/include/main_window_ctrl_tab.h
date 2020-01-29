@@ -101,6 +101,13 @@ namespace main_window_ctrl_tab {
 			explicit MainWindowCtrlTab(QWidget * parent = Q_NULLPTR, int tabIndex = 0, int tabCount = 0);
 
 			/**
+			 * @brief Function: ~MainWindowCtrlTab()
+			 *
+			 * Main window tab control constructor
+			 */
+			~MainWindowCtrlTab();
+
+			/**
 			 * @brief Function: main_window_shared_types::move_value_e getMoveValueType()
 			 *
 			 * \return move value type
