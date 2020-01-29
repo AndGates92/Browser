@@ -33,11 +33,31 @@ Q_DECLARE_LOGGING_CATEGORY(mainWindowCtrlSearch)
 
 namespace main_window_ctrl {
 
+	namespace {
+		/**
+		 * @brief Path towards JSON file storing informations about commands and shortcuts
+		 *
+		 */
+		const QString commandFilePath("json/");
+
+		/**
+		 * @brief Filename storing informations about commands and shortcuts
+		 *
+		 */
+		const QString commandFileName("tab_commands.json");
+
+		/**
+		 * @brief Full path towards JSON file storing informations about commands and shortcuts
+		 *
+		 */
+		const QString commandFileFullPath(commandFilePath + commandFileName);
+	}
+
 	/**
 	 * @brief MainWindowCtrl class
 	 *
 	 */
-	class MainWindowCtrl : public QObject {
+	class MainWindowCtrl : public main_window_ctrl_base::MainWindowCtrlBase {
 
 		Q_OBJECT
 
@@ -380,18 +400,6 @@ namespace main_window_ctrl {
 			 *
 			 */
 			main_window_ctrl_tab::MainWindowCtrlTab * tabctrl;
-
-			/**
-			 * @brief state of the main window
-			 *
-			 */
-			main_window_shared_types::state_e mainWindowState;
-
-			/**
-			 * @brief parent widget
-			 *
-			 */
-			QWidget * parent;
 
 			/**
 			 * @brief user text

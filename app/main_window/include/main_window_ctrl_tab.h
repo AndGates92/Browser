@@ -20,7 +20,7 @@
 #include "file_menu.h"
 #include "edit_menu.h"
 #include "tab_widget.h"
-#include "json_parser.h"
+#include "main_window_ctrl_base.h"
 
 /** @defgroup MainWindowCtrlTabGroup Main Window Doxygen Group
  *  Main Window control functions and classes
@@ -83,7 +83,7 @@ namespace main_window_ctrl_tab {
 	 * @brief MainWindowCtrlTab class
 	 *
 	 */
-	class MainWindowCtrlTab : public QObject {
+	class MainWindowCtrlTab : public main_window_ctrl_base::MainWindowCtrlBase {
 
 		Q_OBJECT
 
@@ -96,7 +96,7 @@ namespace main_window_ctrl_tab {
 			 * \param tabIndex: current tab index
 			 * \param tabCount: number of opened tabs
 			 *
-			 * Main window control constructor
+			 * Main window tab control constructor
 			 */
 			explicit MainWindowCtrlTab(QWidget * parent = Q_NULLPTR, int tabIndex = 0, int tabCount = 0);
 
@@ -383,40 +383,10 @@ namespace main_window_ctrl_tab {
 		private:
 
 			/**
-			 * @brief parent widget
-			 *
-			 */
-			QWidget * parent;
-
-			/**
-			 * @brief current tab index
-			 *
-			 */
-			int currentTabIndex;
-
-			/**
-			 * @brief number of opened tabs
-			 *
-			 */
-			int tabCount;
-
-			/**
-			 * @brief state of the main window
-			 *
-			 */
-			main_window_shared_types::state_e mainWindowState;
-
-			/**
 			 * @brief type of value of movements in tab bar
 			 *
 			 */
 			main_window_shared_types::move_value_e moveValueType;
-
-			/**
-			 * @brief tab commands and information
-			 *
-			 */
-			json_parser::JsonParser commands;
 
 			// ================================ START SHORTCUTS ========================================//
 			/**

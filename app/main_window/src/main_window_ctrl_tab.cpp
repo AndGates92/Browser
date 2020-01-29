@@ -24,7 +24,7 @@ Q_LOGGING_CATEGORY(mainWindowCtrlTabSearch, "mainWindowCtrlTab.search", MSG_TYPE
 Q_LOGGING_CATEGORY(mainWindowCtrlTabTabs, "mainWindowCtrlTab.tabs", MSG_TYPE_LEVEL)
 
 
-main_window_ctrl_tab::MainWindowCtrlTab::MainWindowCtrlTab(QWidget * parent, int tabIndex, int tabCount) : parent(parent), currentTabIndex(tabIndex), tabCount(tabCount), mainWindowState(main_window_shared_types::state_e::IDLE), moveValueType(main_window_shared_types::move_value_e::IDLE), commands(json_parser::JsonParser(main_window_ctrl_tab::commandFileFullPath, QIODevice::ReadOnly)) {
+main_window_ctrl_tab::MainWindowCtrlTab::MainWindowCtrlTab(QWidget * parent, int tabIndex, int tabCount) : main_window_ctrl_base::MainWindowCtrlBase(parent, tabIndex, tabCount, main_window_ctrl_tab::commandFileFullPath), moveValueType(main_window_shared_types::move_value_e::IDLE) {
 
 	// Shortcuts
 	this->createShortcuts();
