@@ -136,23 +136,6 @@ namespace main_window {
 		#endif // QT_NO_CONTEXTMENU
 
 		signals:
-			/**
-			 * @brief Function: void sendCurrentTabIndexSignal(int currentTabIndex)
-			 *
-			 * \param currentTabIndex: index of the current tab
-			 *
-			 * This function is a signal to send the value of the current tab index
-			 */
-			void sendCurrentTabIndexSignal(int currentTabIndex);
-
-			/**
-			 * @brief Function: void sendTabCountSignal(int tabCount)
-			 *
-			 * \param tabCount: number of tabs
-			 *
-			 * This function is a signal to send the value of the number of opened tab
-			 */
-			void sendTabCountSignal(int tabCount);
 
 		private slots:
 
@@ -349,13 +332,6 @@ namespace main_window {
 			 * This function search on the tab at index index
 			 */
 			void newSearchTab(int index, QString search);
-
-			/**
-			 * @brief Function: void getCurrentTabIndex()
-			 *
-			 * This function sends the current tab index
-			 */
-			void getCurrentTabIndex();
 
 			/**
 			 * @brief Function: void getTabCount()

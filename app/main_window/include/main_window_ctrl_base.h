@@ -34,16 +34,15 @@ namespace main_window_ctrl_base {
 		public:
 
 			/**
-			 * @brief Function: explicit MainWindowCtrlBase(main_window_core::MainWindowCore * windowCore, QWidget * parent = QString::null, int tabIndex = 0, QString jsonFileName = QString::null)
+			 * @brief Function: explicit MainWindowCtrlBase(main_window_core::MainWindowCore * windowCore, QWidget * parent = QString::null, QString jsonFileName = QString::null)
 			 *
 			 * \param windowCore: main window core
 			 * \param parent: parent window
-			 * \param tabIndex: current tab index
 			 * \param jsonFileName: JSON filename
 			 *
 			 * Main window control constructor
 			 */
-			explicit MainWindowCtrlBase(main_window_core::MainWindowCore * windowCore, QWidget * parent = Q_NULLPTR, int tabIndex = 0, QString jsonFileName = QString::null);
+			explicit MainWindowCtrlBase(main_window_core::MainWindowCore * windowCore, QWidget * parent = Q_NULLPTR, QString jsonFileName = QString::null);
 
 			/**
 			 * @brief Function: ~MainWindowCtrlBase()
@@ -64,12 +63,6 @@ namespace main_window_ctrl_base {
 			 *
 			 */
 			main_window_core::MainWindowCore * mainWindowCore;
-
-			/**
-			 * @brief current tab index
-			 *
-			 */
-			int currentTabIndex;
 
 			/**
 			 * @brief state of the main window
@@ -106,6 +99,14 @@ namespace main_window_ctrl_base {
 			 */
 			int getTabCount();
 
+			/**
+			 * @brief Function: int getCurrentTabIndex()
+			 *
+			 * \return the index of the current tab
+			 *
+			 * This function returns the index of the current tab
+			 */
+			int getCurrentTabIndex();
 	};
 
 }

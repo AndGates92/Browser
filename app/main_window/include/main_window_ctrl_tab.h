@@ -90,15 +90,14 @@ namespace main_window_ctrl_tab {
 		public:
 
 			/**
-			 * @brief Function: explicit MainWindowCtrlTab(main_window_core::MainWindowCore * windowCore, QWidget * parent = Q_NULLPTR, int tabIndex = 0)
+			 * @brief Function: explicit MainWindowCtrlTab(main_window_core::MainWindowCore * windowCore, QWidget * parent = Q_NULLPTR)
 			 *
 			 * \param windowCore: main window core
 			 * \param parent: parent window
-			 * \param tabIndex: current tab index
 			 *
 			 * Main window tab control constructor
 			 */
-			explicit MainWindowCtrlTab(main_window_core::MainWindowCore * windowCore, QWidget * parent = Q_NULLPTR, int tabIndex = 0);
+			explicit MainWindowCtrlTab(main_window_core::MainWindowCore * windowCore, QWidget * parent = Q_NULLPTR);
 
 			/**
 			 * @brief Function: ~MainWindowCtrlTab()
@@ -193,15 +192,6 @@ namespace main_window_ctrl_tab {
 			void openNewTab();
 
 			/**
-			 * @brief Function: void receiveCurrentTabIndex(int tabIndex)
-			 *
-			 * \param tabIndex: index of the current tab
-			 *
-			 * This function retrieves the current tab index 
-			 */
-			void receiveCurrentTabIndex(int tabIndex);
-
-			/**
 			 * @brief Function: void receiveState(main_window_shared_types::state_e state)
 			 *
 			 * \param state: state of the main window controller
@@ -285,13 +275,6 @@ namespace main_window_ctrl_tab {
 			 * This function search on the current tab
 			 */
 			void searchCurrentTabSignal(QString search);
-
-			/**
-			 * @brief Function: void requestCurrentTabIndexSignal()
-			 *
-			 * This function is a signal to initiate the request of the current tab index
-			 */
-			void requestCurrentTabIndexSignal();
 
 			/**
 			 * @brief Function: void requestTabCountSignal()
@@ -461,13 +444,6 @@ namespace main_window_ctrl_tab {
 			 * This function executes action on a based on user input
 			 */
 			void executeActionOnOffset(int offset);
-
-			/**
-			 * @brief Function: void updateCurrentTabIndex()
-			 *
-			 * This function retrieves the current tab index
-			 */
-			void updateCurrentTabIndex();
 
 			/**
 			 * @brief Function: void updateTabCount()

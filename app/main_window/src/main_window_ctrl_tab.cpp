@@ -24,7 +24,7 @@ Q_LOGGING_CATEGORY(mainWindowCtrlTabSearch, "mainWindowCtrlTab.search", MSG_TYPE
 Q_LOGGING_CATEGORY(mainWindowCtrlTabTabs, "mainWindowCtrlTab.tabs", MSG_TYPE_LEVEL)
 
 
-main_window_ctrl_tab::MainWindowCtrlTab::MainWindowCtrlTab(main_window_core::MainWindowCore * windowCore, QWidget * parent, int tabIndex) : main_window_ctrl_base::MainWindowCtrlBase(windowCore, parent, tabIndex, main_window_ctrl_tab::commandFileFullPath), moveValueType(main_window_shared_types::move_value_e::IDLE) {
+main_window_ctrl_tab::MainWindowCtrlTab::MainWindowCtrlTab(main_window_core::MainWindowCore * windowCore, QWidget * parent) : main_window_ctrl_base::MainWindowCtrlBase(windowCore, parent, main_window_ctrl_tab::commandFileFullPath), moveValueType(main_window_shared_types::move_value_e::IDLE) {
 
 	// Shortcuts
 	this->createShortcuts();
@@ -138,8 +138,7 @@ void main_window_ctrl_tab::MainWindowCtrlTab::executeActionOnTab(int index) {
 	int tabIndex = main_window_ctrl_tab::emptyUserInput;
 	// index is main_window_ctrl_tab::emptyUserInput if the argument is not passed
 	if (index == main_window_ctrl_tab::emptyUserInput) {
-		this->updateCurrentTabIndex();
-		tabIndex = this->currentTabIndex;
+		tabIndex = this->getCurrentTabIndex();
 	} else {
 		// start indexing tab to close with 0
 		tabIndex = index;
@@ -191,10 +190,9 @@ void main_window_ctrl_tab::MainWindowCtrlTab::executeTabAction(int userInput) {
 		}
 	}
 
-	this->updateCurrentTabIndex();
-	emit this->updateInfoActionSignal(this->currentTabIndex);
-
-	emit this->updateWebsiteSignal(this->currentTabIndex);
+	int tabIndex = this->getCurrentTabIndex();
+	emit this->updateInfoActionSignal(tabIndex);
+	emit this->updateWebsiteSignal(tabIndex);
 }
 
 void main_window_ctrl_tab::MainWindowCtrlTab::processTabIndex(QString userInputStr) {
@@ -303,14 +301,6 @@ void main_window_ctrl_tab::MainWindowCtrlTab::keyPressEvent(QKeyEvent * event) {
 
 }
 
-void main_window_ctrl_tab::MainWindowCtrlTab::updateCurrentTabIndex() {
-	emit this->requestCurrentTabIndexSignal();
-}
-
-void main_window_ctrl_tab::MainWindowCtrlTab::receiveCurrentTabIndex(int tabIndex) {
-	this->currentTabIndex = tabIndex;
-}
-
 void main_window_ctrl_tab::MainWindowCtrlTab::updateState() {
 	emit this->requestStateSignal();
 }
@@ -360,15 +350,13 @@ void main_window_ctrl_tab::MainWindowCtrlTab::convertToAbsTabIndex(int offset, i
 		distance = offset;
 	}
 
-	this->updateCurrentTabIndex();
-
 	int tabCount = this->getTabCount();
 
 	int tabIndexDst = 0;
 	if (sign == 0) {
 		tabIndexDst = distance;
 	} else {
-		tabIndexDst = this->currentTabIndex + (sign * distance);
+		tabIndexDst = this->getCurrentTabIndex() + (sign * distance);
 	}
 	if (offset > tabCount) {
 		int maxTabRange = tabCount - 1;
@@ -416,15 +404,13 @@ QString main_window_ctrl_tab::MainWindowCtrlTab::createTabInfo() {
 
 	QString tabInfo(QString::null);
 
-	this->updateCurrentTabIndex();
-
 	int tabCount = this->getTabCount();
 
 	if (tabCount == 0) {
 		tabInfo.append("No tabs");
 	} else {
 		tabInfo.append("tab ");
-		tabInfo.append(QString("%1").arg(this->currentTabIndex + 1));
+		tabInfo.append(QString("%1").arg(this->getCurrentTabIndex() + 1));
 		tabInfo.append(" out of ");
 		tabInfo.append(QString("%1").arg(tabCount));
 	}

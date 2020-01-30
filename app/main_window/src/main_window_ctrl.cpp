@@ -22,7 +22,7 @@ Q_LOGGING_CATEGORY(mainWindowCtrlOverall, "mainWindowCtrl.overall", MSG_TYPE_LEV
 Q_LOGGING_CATEGORY(mainWindowCtrlUserInput, "mainWindowCtrl.userInput", MSG_TYPE_LEVEL)
 Q_LOGGING_CATEGORY(mainWindowCtrlSearch, "mainWindowCtrl.search", MSG_TYPE_LEVEL)
 
-main_window_ctrl::MainWindowCtrl::MainWindowCtrl(main_window_core::MainWindowCore * windowCore, QWidget * parent, int tabIndex) : main_window_ctrl_base::MainWindowCtrlBase(windowCore, parent, tabIndex, main_window_ctrl::commandFileFullPath), tabctrl(new main_window_ctrl_tab::MainWindowCtrlTab(windowCore, parent, tabIndex)), userText(QString::null) {
+main_window_ctrl::MainWindowCtrl::MainWindowCtrl(main_window_core::MainWindowCore * windowCore, QWidget * parent) : main_window_ctrl_base::MainWindowCtrlBase(windowCore, parent, main_window_ctrl::commandFileFullPath), tabctrl(new main_window_ctrl_tab::MainWindowCtrlTab(windowCore, parent)), userText(QString::null) {
 
 	// Shortcuts
 	this->createShortcuts();
@@ -79,10 +79,6 @@ void main_window_ctrl::MainWindowCtrl::connectSignals() {
 	connect(this->tabctrl, &main_window_ctrl_tab::MainWindowCtrlTab::setStateSignal, this, &main_window_ctrl::MainWindowCtrl::setState);
 	connect(this->tabctrl, &main_window_ctrl_tab::MainWindowCtrlTab::requestStateSignal, this, &main_window_ctrl::MainWindowCtrl::getState);
 	connect(this, &main_window_ctrl::MainWindowCtrl::sendStateSignal, this->tabctrl, &main_window_ctrl_tab::MainWindowCtrlTab::receiveState);
-
-	// share current tab index
-	connect(this->tabctrl, &main_window_ctrl_tab::MainWindowCtrlTab::requestCurrentTabIndexSignal, this, &main_window_ctrl::MainWindowCtrl::getCurrentTabIndex);
-	connect(this, &main_window_ctrl::MainWindowCtrl::sendCurrentTabIndexSignal, this->tabctrl, &main_window_ctrl_tab::MainWindowCtrlTab::receiveCurrentTabIndex);
 
 	// open tab action (from fileMenu)
 	connect(this, &main_window_ctrl::MainWindowCtrl::openNewTabSignal, this->tabctrl, &main_window_ctrl_tab::MainWindowCtrlTab::openNewTab);
@@ -320,14 +316,6 @@ void main_window_ctrl::MainWindowCtrl::getState() {
 
 void main_window_ctrl::MainWindowCtrl::setState(main_window_shared_types::state_e state) {
 	this->mainWindowState = state;
-}
-
-void main_window_ctrl::MainWindowCtrl::getCurrentTabIndex() {
-	emit this->requestCurrentTabIndexSignal();
-}
-
-void main_window_ctrl::MainWindowCtrl::receiveCurrentTabIndex(int tabIndex) {
-	emit this->sendCurrentTabIndexSignal(tabIndex);
 }
 
 void main_window_ctrl::MainWindowCtrl::refreshUrl(int tabIndex) {

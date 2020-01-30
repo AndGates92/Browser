@@ -278,10 +278,6 @@ void main_window::MainWindow::connectSignals() {
 	// show/hide menu bar
 	connect(this->ctrl, &main_window_ctrl::MainWindowCtrl::toggleShowMenubarSignal, this, &main_window::MainWindow::toggleShowMenubar);
 
-	// share current tab index
-	connect(this->ctrl, &main_window_ctrl::MainWindowCtrl::requestCurrentTabIndexSignal, this, &main_window::MainWindow::getCurrentTabIndex);
-	connect(this, &main_window::MainWindow::sendCurrentTabIndexSignal, this->ctrl, &main_window_ctrl::MainWindowCtrl::receiveCurrentTabIndex);
-
 	// Update info bar
 	connect(this->mainWindowCore->tabs, &QTabWidget::currentChanged, this, &main_window::MainWindow::updateInfoSlot);
 	connect(this->mainWindowCore->tabs, &QTabWidget::tabCloseRequested, this, &main_window::MainWindow::updateInfoSlot);
@@ -293,7 +289,7 @@ void main_window::MainWindow::createCtrl() {
 	QINFO_PRINT(global_types::qinfo_level_e::ZERO, mainWindowOverall,  "Create controller");
 
 	// main window control class
-	this->ctrl = new main_window_ctrl::MainWindowCtrl(this->mainWindowCore, this, this->mainWindowCore->tabs->currentIndex());
+	this->ctrl = new main_window_ctrl::MainWindowCtrl(this->mainWindowCore, this);
 }
 
 void main_window::MainWindow::addNewTab(QString search) {
@@ -411,10 +407,6 @@ void main_window::MainWindow::closeWindow() {
 void main_window::MainWindow::toggleShowMenubar() {
 	bool menubarVisible = this->menuBar()->isVisible();
 	this->menuBar()->setVisible(!menubarVisible);
-}
-
-void main_window::MainWindow::getCurrentTabIndex() {
-	emit this->sendCurrentTabIndexSignal(this->mainWindowCore->tabs->currentIndex());
 }
 
 void main_window::MainWindow::keyPressEvent(QKeyEvent * event) {

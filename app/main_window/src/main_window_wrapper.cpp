@@ -18,12 +18,9 @@ Q_LOGGING_CATEGORY(mainWindowWrapperOverall, "mainWindowWrapper.overall", MSG_TY
 
 main_window_core::MainWindowCore * main_window_wrapper::MainWindowWrapper::mainWindowCore = new main_window_core::MainWindowCore();
 
-main_window_wrapper::MainWindowWrapper::MainWindowWrapper(QWidget * parent, Qt::WindowFlags flags) : window(new main_window::MainWindow(this->mainWindowCore, parent, flags)) {
+main_window_wrapper::MainWindowWrapper::MainWindowWrapper(QWidget * parent, Qt::WindowFlags flags) : window(new main_window::MainWindow(this->mainWindowCore, parent, flags)),  ctrl(new main_window_ctrl::MainWindowCtrl(this->mainWindowCore, parent)) {
 
 	QINFO_PRINT(global_types::qinfo_level_e::ZERO, mainWindowWrapperOverall,  "Main window wrapper constructor");
-
-	// main window control class
-	this->ctrl = new main_window_ctrl::MainWindowCtrl(this->mainWindowCore, parent, this->mainWindowCore->tabs->currentIndex());
 
 }
 

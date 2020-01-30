@@ -64,7 +64,7 @@ namespace main_window_ctrl {
 		public:
 
 			/**
-			 * @brief Function: explicit MainWindowCtrl(main_window_core::MainWindowCore * windowCore, QWidget * parent = QString::null, int tabIndex = 0)
+			 * @brief Function: explicit MainWindowCtrl(main_window_core::MainWindowCore * windowCore, QWidget * parent = QString::null)
 			 *
 			 * \param windowCore: main window core
 			 * \param parent: parent window
@@ -72,7 +72,7 @@ namespace main_window_ctrl {
 			 *
 			 * Main window control constructor
 			 */
-			explicit MainWindowCtrl(main_window_core::MainWindowCore * windowCore, QWidget * parent = Q_NULLPTR, int tabIndex = 0);
+			explicit MainWindowCtrl(main_window_core::MainWindowCore * windowCore, QWidget * parent = Q_NULLPTR);
 
 			/**
 			 * @brief Function: ~MainWindowCtrlTab()
@@ -122,15 +122,6 @@ namespace main_window_ctrl {
 			QString getTabInfo();
 
 		public slots:
-			/**
-			 * @brief Function: void receiveCurrentTabIndex(int tabIndex)
-			 *
-			 * \param tabIndex: index of the current tab
-			 *
-			 * This function retrieves the current tab index 
-			 */
-			void receiveCurrentTabIndex(int tabIndex);
-
 			/**
 			 * @brief Function: void openNewTab()
 			 *
