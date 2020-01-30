@@ -11,6 +11,7 @@
 #include <qt5/QtCore/QLoggingCategory>
 
 #include "main_window_shared_types.h"
+#include "main_window_core.h"
 #include "json_parser.h"
 
 /** @defgroup MainWindowCtrlBaseGroup Main Window Doxygen Group
@@ -33,8 +34,9 @@ namespace main_window_ctrl_base {
 		public:
 
 			/**
-			 * @brief Function: explicit MainWindowCtrlBase(QWidget * parent = QString::null, int tabIndex = 0, int tabCount = 0, QString jsonFileName = QString::null)
+			 * @brief Function: explicit MainWindowCtrlBase(main_window_core::MainWindowCore * windowCore, QWidget * parent = QString::null, int tabIndex = 0, int tabCount = 0, QString jsonFileName = QString::null)
 			 *
+			 * \param windowCore: main window core
 			 * \param parent: parent window
 			 * \param tabIndex: current tab index
 			 * \param tabCount: number of opened tabs
@@ -42,7 +44,7 @@ namespace main_window_ctrl_base {
 			 *
 			 * Main window control constructor
 			 */
-			explicit MainWindowCtrlBase(QWidget * parent = Q_NULLPTR, int tabIndex = 0, int tabCount = 0, QString jsonFileName = QString::null);
+			explicit MainWindowCtrlBase(main_window_core::MainWindowCore * windowCore, QWidget * parent = Q_NULLPTR, int tabIndex = 0, int tabCount = 0, QString jsonFileName = QString::null);
 
 			/**
 			 * @brief Function: ~MainWindowCtrlBase()
@@ -52,26 +54,17 @@ namespace main_window_ctrl_base {
 			virtual ~MainWindowCtrlBase();
 
 		protected:
-
-			/**
-			 * @brief Function: void createShortcuts()
-			 *
-			 * This function creates shortcuts for the items on the window
-			 */
-			virtual void createShortcuts() = 0;
-
-			/**
-			 * @brief Function: void connectSignals()
-			 *
-			 * This function connects signals and slots within main window controller
-			 */
-			virtual void connectSignals() = 0;
-
 			/**
 			 * @brief parent widget
 			 *
 			 */
 			QWidget * parent;
+
+			/**
+			 * @brief main window core
+			 *
+			 */
+			main_window_core::MainWindowCore * mainWindowCore;
 
 			/**
 			 * @brief current tab index
@@ -97,8 +90,19 @@ namespace main_window_ctrl_base {
 			 */
 			json_parser::JsonParser commands;
 
+			/**
+			 * @brief Function: void createShortcuts()
+			 *
+			 * This function creates shortcuts for the items on the window
+			 */
+			virtual void createShortcuts() = 0;
 
-
+			/**
+			 * @brief Function: void connectSignals()
+			 *
+			 * This function connects signals and slots within main window controller
+			 */
+			virtual void connectSignals() = 0;
 
 	};
 

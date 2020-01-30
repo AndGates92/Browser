@@ -64,15 +64,16 @@ namespace main_window_ctrl {
 		public:
 
 			/**
-			 * @brief Function: explicit MainWindowCtrl(QWidget * parent = QString::null, int tabIndex = 0, int tabCount = 0)
+			 * @brief Function: explicit MainWindowCtrl(main_window_core::MainWindowCore * windowCore, QWidget * parent = QString::null, int tabIndex = 0, int tabCount = 0)
 			 *
+			 * \param windowCore: main window core
 			 * \param parent: parent window
 			 * \param tabIndex: current tab index
 			 * \param tabCount: number of opened tabs
 			 *
 			 * Main window control constructor
 			 */
-			explicit MainWindowCtrl(QWidget * parent = Q_NULLPTR, int tabIndex = 0, int tabCount = 0);
+			explicit MainWindowCtrl(main_window_core::MainWindowCore * windowCore, QWidget * parent = Q_NULLPTR, int tabIndex = 0, int tabCount = 0);
 
 			/**
 			 * @brief Function: ~MainWindowCtrlTab()

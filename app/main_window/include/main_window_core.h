@@ -19,7 +19,6 @@
 #include "edit_menu.h"
 #include "tab_widget.h"
 #include "command_menu.h"
-#include "main_window_ctrl.h"
 
 /** @defgroup MainWindowCoreGroup Main Window Core Doxygen Group
  *  Main Window core functions and classes

@@ -90,15 +90,16 @@ namespace main_window_ctrl_tab {
 		public:
 
 			/**
-			 * @brief Function: explicit MainWindowCtrlTab(QWidget * parent = Q_NULLPTR, int tabIndex = 0, int tabCount = 0)
+			 * @brief Function: explicit MainWindowCtrlTab(main_window_core::MainWindowCore * windowCore, QWidget * parent = Q_NULLPTR, int tabIndex = 0, int tabCount = 0)
 			 *
+			 * \param windowCore: main window core
 			 * \param parent: parent window
 			 * \param tabIndex: current tab index
 			 * \param tabCount: number of opened tabs
 			 *
 			 * Main window tab control constructor
 			 */
-			explicit MainWindowCtrlTab(QWidget * parent = Q_NULLPTR, int tabIndex = 0, int tabCount = 0);
+			explicit MainWindowCtrlTab(main_window_core::MainWindowCore * windowCore, QWidget * parent = Q_NULLPTR, int tabIndex = 0, int tabCount = 0);
 
 			/**
 			 * @brief Function: ~MainWindowCtrlTab()

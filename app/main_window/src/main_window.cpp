@@ -297,7 +297,7 @@ void main_window::MainWindow::createCtrl() {
 	QINFO_PRINT(global_types::qinfo_level_e::ZERO, mainWindowOverall,  "Create controller");
 
 	// main window control class
-	this->ctrl = new main_window_ctrl::MainWindowCtrl(this, this->mainWindowCore->tabs->currentIndex(), this->mainWindowCore->tabs->count());
+	this->ctrl = new main_window_ctrl::MainWindowCtrl(this->mainWindowCore, this, this->mainWindowCore->tabs->currentIndex(), this->mainWindowCore->tabs->count());
 }
 
 void main_window::MainWindow::addNewTab(QString search) {
