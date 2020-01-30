@@ -34,17 +34,16 @@ namespace main_window_ctrl_base {
 		public:
 
 			/**
-			 * @brief Function: explicit MainWindowCtrlBase(main_window_core::MainWindowCore * windowCore, QWidget * parent = QString::null, int tabIndex = 0, int tabCount = 0, QString jsonFileName = QString::null)
+			 * @brief Function: explicit MainWindowCtrlBase(main_window_core::MainWindowCore * windowCore, QWidget * parent = QString::null, int tabIndex = 0, QString jsonFileName = QString::null)
 			 *
 			 * \param windowCore: main window core
 			 * \param parent: parent window
 			 * \param tabIndex: current tab index
-			 * \param tabCount: number of opened tabs
 			 * \param jsonFileName: JSON filename
 			 *
 			 * Main window control constructor
 			 */
-			explicit MainWindowCtrlBase(main_window_core::MainWindowCore * windowCore, QWidget * parent = Q_NULLPTR, int tabIndex = 0, int tabCount = 0, QString jsonFileName = QString::null);
+			explicit MainWindowCtrlBase(main_window_core::MainWindowCore * windowCore, QWidget * parent = Q_NULLPTR, int tabIndex = 0, QString jsonFileName = QString::null);
 
 			/**
 			 * @brief Function: ~MainWindowCtrlBase()
@@ -73,12 +72,6 @@ namespace main_window_ctrl_base {
 			int currentTabIndex;
 
 			/**
-			 * @brief number of opened tabs
-			 *
-			 */
-			int tabCount;
-
-			/**
 			 * @brief state of the main window
 			 *
 			 */
@@ -103,6 +96,15 @@ namespace main_window_ctrl_base {
 			 * This function connects signals and slots within main window controller
 			 */
 			virtual void connectSignals() = 0;
+
+			/**
+			 * @brief Function: int getTabCount()
+			 *
+			 * \return the number of tabs in the window
+			 *
+			 * This function returns the number of openend tabs
+			 */
+			int getTabCount();
 
 	};
 

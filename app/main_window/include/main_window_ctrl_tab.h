@@ -90,16 +90,15 @@ namespace main_window_ctrl_tab {
 		public:
 
 			/**
-			 * @brief Function: explicit MainWindowCtrlTab(main_window_core::MainWindowCore * windowCore, QWidget * parent = Q_NULLPTR, int tabIndex = 0, int tabCount = 0)
+			 * @brief Function: explicit MainWindowCtrlTab(main_window_core::MainWindowCore * windowCore, QWidget * parent = Q_NULLPTR, int tabIndex = 0)
 			 *
 			 * \param windowCore: main window core
 			 * \param parent: parent window
 			 * \param tabIndex: current tab index
-			 * \param tabCount: number of opened tabs
 			 *
 			 * Main window tab control constructor
 			 */
-			explicit MainWindowCtrlTab(main_window_core::MainWindowCore * windowCore, QWidget * parent = Q_NULLPTR, int tabIndex = 0, int tabCount = 0);
+			explicit MainWindowCtrlTab(main_window_core::MainWindowCore * windowCore, QWidget * parent = Q_NULLPTR, int tabIndex = 0);
 
 			/**
 			 * @brief Function: ~MainWindowCtrlTab()
@@ -201,15 +200,6 @@ namespace main_window_ctrl_tab {
 			 * This function retrieves the current tab index 
 			 */
 			void receiveCurrentTabIndex(int tabIndex);
-
-			/**
-			 * @brief Function: void receiveTabCount(int tabCount)
-			 *
-			 * \param tabCount: number of tabs
-			 *
-			 * This function retrieves the number of open tabs
-			 */
-			void receiveTabCount(int tabCount);
 
 			/**
 			 * @brief Function: void receiveState(main_window_shared_types::state_e state)

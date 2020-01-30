@@ -64,16 +64,15 @@ namespace main_window_ctrl {
 		public:
 
 			/**
-			 * @brief Function: explicit MainWindowCtrl(main_window_core::MainWindowCore * windowCore, QWidget * parent = QString::null, int tabIndex = 0, int tabCount = 0)
+			 * @brief Function: explicit MainWindowCtrl(main_window_core::MainWindowCore * windowCore, QWidget * parent = QString::null, int tabIndex = 0)
 			 *
 			 * \param windowCore: main window core
 			 * \param parent: parent window
 			 * \param tabIndex: current tab index
-			 * \param tabCount: number of opened tabs
 			 *
 			 * Main window control constructor
 			 */
-			explicit MainWindowCtrl(main_window_core::MainWindowCore * windowCore, QWidget * parent = Q_NULLPTR, int tabIndex = 0, int tabCount = 0);
+			explicit MainWindowCtrl(main_window_core::MainWindowCore * windowCore, QWidget * parent = Q_NULLPTR, int tabIndex = 0);
 
 			/**
 			 * @brief Function: ~MainWindowCtrlTab()
@@ -131,15 +130,6 @@ namespace main_window_ctrl {
 			 * This function retrieves the current tab index 
 			 */
 			void receiveCurrentTabIndex(int tabIndex);
-
-			/**
-			 * @brief Function: void receiveTabCount(int tabCount)
-			 *
-			 * \param tabCount: number of tabs
-			 *
-			 * This function retrieves the number of open tabs
-			 */
-			void receiveTabCount(int tabCount);
 
 			/**
 			 * @brief Function: void openNewTab()
@@ -270,13 +260,6 @@ namespace main_window_ctrl {
 			void requestCurrentTabIndexSignal();
 
 			/**
-			 * @brief Function: void requestTabCountSignal()
-			 *
-			 * This function is a signal to initiate the request of the number of opened tabs
-			 */
-			void requestTabCountSignal();
-
-			/**
 			 * @brief Function: void sendCurrentTabIndexSignal(int tabIndex)
 			 *
 			 * \param tabIndex: index of the current tab
@@ -284,15 +267,6 @@ namespace main_window_ctrl {
 			 * This function is a signal to send the value of the current tab index
 			 */
 			void sendCurrentTabIndexSignal(int tabIndex);
-
-			/**
-			 * @brief Function: void sendTabCountSignal(int tabCount)
-			 *
-			 * \param tabCount: number of tabs
-			 *
-			 * This function is a signal to send the value of the number of opened tab
-			 */
-			void sendTabCountSignal(int tabCount);
 
 			/**
 			 * @brief Function: void sendStateSignal(main_window_shared_types::state_e state)
@@ -476,13 +450,6 @@ namespace main_window_ctrl {
 			 * This function sends the current tab index
 			 */
 			void getCurrentTabIndex();
-
-			/**
-			 * @brief Function: void getTabCount()
-			 *
-			 * This function sends the number of openend tabs
-			 */
-			void getTabCount();
 
 			/**
 			 * @brief Function: void getState()

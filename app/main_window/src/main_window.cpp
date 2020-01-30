@@ -282,10 +282,6 @@ void main_window::MainWindow::connectSignals() {
 	connect(this->ctrl, &main_window_ctrl::MainWindowCtrl::requestCurrentTabIndexSignal, this, &main_window::MainWindow::getCurrentTabIndex);
 	connect(this, &main_window::MainWindow::sendCurrentTabIndexSignal, this->ctrl, &main_window_ctrl::MainWindowCtrl::receiveCurrentTabIndex);
 
-	// share tab count
-	connect(this->ctrl, &main_window_ctrl::MainWindowCtrl::requestTabCountSignal, this, &main_window::MainWindow::getTabCount);
-	connect(this, &main_window::MainWindow::sendTabCountSignal, this->ctrl, &main_window_ctrl::MainWindowCtrl::receiveTabCount);
-
 	// Update info bar
 	connect(this->mainWindowCore->tabs, &QTabWidget::currentChanged, this, &main_window::MainWindow::updateInfoSlot);
 	connect(this->mainWindowCore->tabs, &QTabWidget::tabCloseRequested, this, &main_window::MainWindow::updateInfoSlot);
@@ -297,7 +293,7 @@ void main_window::MainWindow::createCtrl() {
 	QINFO_PRINT(global_types::qinfo_level_e::ZERO, mainWindowOverall,  "Create controller");
 
 	// main window control class
-	this->ctrl = new main_window_ctrl::MainWindowCtrl(this->mainWindowCore, this, this->mainWindowCore->tabs->currentIndex(), this->mainWindowCore->tabs->count());
+	this->ctrl = new main_window_ctrl::MainWindowCtrl(this->mainWindowCore, this, this->mainWindowCore->tabs->currentIndex());
 }
 
 void main_window::MainWindow::addNewTab(QString search) {
@@ -419,10 +415,6 @@ void main_window::MainWindow::toggleShowMenubar() {
 
 void main_window::MainWindow::getCurrentTabIndex() {
 	emit this->sendCurrentTabIndexSignal(this->mainWindowCore->tabs->currentIndex());
-}
-
-void main_window::MainWindow::getTabCount() {
-	emit this->sendTabCountSignal(this->mainWindowCore->tabs->count());
 }
 
 void main_window::MainWindow::keyPressEvent(QKeyEvent * event) {

@@ -24,7 +24,7 @@ Q_LOGGING_CATEGORY(mainWindowCtrlTabSearch, "mainWindowCtrlTab.search", MSG_TYPE
 Q_LOGGING_CATEGORY(mainWindowCtrlTabTabs, "mainWindowCtrlTab.tabs", MSG_TYPE_LEVEL)
 
 
-main_window_ctrl_tab::MainWindowCtrlTab::MainWindowCtrlTab(main_window_core::MainWindowCore * windowCore, QWidget * parent, int tabIndex, int tabCount) : main_window_ctrl_base::MainWindowCtrlBase(windowCore, parent, tabIndex, tabCount, main_window_ctrl_tab::commandFileFullPath), moveValueType(main_window_shared_types::move_value_e::IDLE) {
+main_window_ctrl_tab::MainWindowCtrlTab::MainWindowCtrlTab(main_window_core::MainWindowCore * windowCore, QWidget * parent, int tabIndex) : main_window_ctrl_base::MainWindowCtrlBase(windowCore, parent, tabIndex, main_window_ctrl_tab::commandFileFullPath), moveValueType(main_window_shared_types::move_value_e::IDLE) {
 
 	// Shortcuts
 	this->createShortcuts();
@@ -136,7 +136,6 @@ void main_window_ctrl_tab::MainWindowCtrlTab::executeActionOnOffset(int offset) 
 
 void main_window_ctrl_tab::MainWindowCtrlTab::executeActionOnTab(int index) {
 	int tabIndex = main_window_ctrl_tab::emptyUserInput;
-	this->updateTabCount();
 	// index is main_window_ctrl_tab::emptyUserInput if the argument is not passed
 	if (index == main_window_ctrl_tab::emptyUserInput) {
 		this->updateCurrentTabIndex();
@@ -147,7 +146,10 @@ void main_window_ctrl_tab::MainWindowCtrlTab::executeActionOnTab(int index) {
 	}
 
 	this->updateState();
-	if ((this->tabCount > tabIndex) && (tabIndex >= 0)) {
+
+	int tabCount = this->getTabCount();
+
+	if ((tabCount > tabIndex) && (tabIndex >= 0)) {
 		if (this->mainWindowState == main_window_shared_types::state_e::CLOSE_TAB) {
 			emit this->closeTabSignal(tabIndex);
 		} else if (this->mainWindowState == main_window_shared_types::state_e::TAB_MOVE) {
@@ -156,7 +158,7 @@ void main_window_ctrl_tab::MainWindowCtrlTab::executeActionOnTab(int index) {
 			this->convertToAbsTabIndex(tabIndex, 0);
 		}
 	} else {
-		int maxTabRange = this->tabCount;
+		int maxTabRange = tabCount;
 		qWarning(mainWindowCtrlTabTabs) << "Tab " << tabIndex << " doesn't exists. Valid range of tab is the integer number between 1 and " << maxTabRange << "\n";
 	}
 }
@@ -309,14 +311,6 @@ void main_window_ctrl_tab::MainWindowCtrlTab::receiveCurrentTabIndex(int tabInde
 	this->currentTabIndex = tabIndex;
 }
 
-void main_window_ctrl_tab::MainWindowCtrlTab::updateTabCount() {
-	emit this->requestTabCountSignal();
-}
-
-void main_window_ctrl_tab::MainWindowCtrlTab::receiveTabCount(int tabCount) {
-	this->tabCount = tabCount;
-}
-
 void main_window_ctrl_tab::MainWindowCtrlTab::updateState() {
 	emit this->requestStateSignal();
 }
@@ -367,7 +361,8 @@ void main_window_ctrl_tab::MainWindowCtrlTab::convertToAbsTabIndex(int offset, i
 	}
 
 	this->updateCurrentTabIndex();
-	this->updateTabCount();
+
+	int tabCount = this->getTabCount();
 
 	int tabIndexDst = 0;
 	if (sign == 0) {
@@ -375,16 +370,16 @@ void main_window_ctrl_tab::MainWindowCtrlTab::convertToAbsTabIndex(int offset, i
 	} else {
 		tabIndexDst = this->currentTabIndex + (sign * distance);
 	}
-	if (offset > this->tabCount) {
-		int maxTabRange = this->tabCount - 1;
-		qWarning(mainWindowCtrlTabTabs) << "Offset " << offset << " is bigger than the number of tabs " << this->tabCount << " Bringing tab index withing the valid range of tab (between 0 and " << maxTabRange << ")\n";
+	if (offset > tabCount) {
+		int maxTabRange = tabCount - 1;
+		qWarning(mainWindowCtrlTabTabs) << "Offset " << offset << " is bigger than the number of tabs " << tabCount << " Bringing tab index withing the valid range of tab (between 0 and " << maxTabRange << ")\n";
 	}
 	while (tabIndexDst < 0) {
-		tabIndexDst +=  this->tabCount;
+		tabIndexDst +=  tabCount;
 	}
 
 	// Keep tabIndex values within valid range (0 and (tabCount -1))
-	int tabIndex = tabIndexDst % this->tabCount;
+	int tabIndex = tabIndexDst % tabCount;
 
 	if ((this->mainWindowState == main_window_shared_types::state_e::MOVE_RIGHT) || (this->mainWindowState == main_window_shared_types::state_e::MOVE_LEFT)) {
 		emit this->moveCursorSignal(tabIndex);
@@ -422,7 +417,8 @@ QString main_window_ctrl_tab::MainWindowCtrlTab::createTabInfo() {
 	QString tabInfo(QString::null);
 
 	this->updateCurrentTabIndex();
-	this->updateTabCount();
+
+	int tabCount = this->getTabCount();
 
 	if (tabCount == 0) {
 		tabInfo.append("No tabs");
@@ -430,7 +426,7 @@ QString main_window_ctrl_tab::MainWindowCtrlTab::createTabInfo() {
 		tabInfo.append("tab ");
 		tabInfo.append(QString("%1").arg(this->currentTabIndex + 1));
 		tabInfo.append(" out of ");
-		tabInfo.append(QString("%1").arg(this->tabCount));
+		tabInfo.append(QString("%1").arg(tabCount));
 	}
 
 	return tabInfo;

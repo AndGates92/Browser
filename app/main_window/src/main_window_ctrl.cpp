@@ -22,7 +22,7 @@ Q_LOGGING_CATEGORY(mainWindowCtrlOverall, "mainWindowCtrl.overall", MSG_TYPE_LEV
 Q_LOGGING_CATEGORY(mainWindowCtrlUserInput, "mainWindowCtrl.userInput", MSG_TYPE_LEVEL)
 Q_LOGGING_CATEGORY(mainWindowCtrlSearch, "mainWindowCtrl.search", MSG_TYPE_LEVEL)
 
-main_window_ctrl::MainWindowCtrl::MainWindowCtrl(main_window_core::MainWindowCore * windowCore, QWidget * parent, int tabIndex, int tabCount) : main_window_ctrl_base::MainWindowCtrlBase(windowCore, parent, tabIndex, tabCount, main_window_ctrl::commandFileFullPath), tabctrl(new main_window_ctrl_tab::MainWindowCtrlTab(windowCore, parent, tabIndex, tabCount)), userText(QString::null) {
+main_window_ctrl::MainWindowCtrl::MainWindowCtrl(main_window_core::MainWindowCore * windowCore, QWidget * parent, int tabIndex) : main_window_ctrl_base::MainWindowCtrlBase(windowCore, parent, tabIndex, main_window_ctrl::commandFileFullPath), tabctrl(new main_window_ctrl_tab::MainWindowCtrlTab(windowCore, parent, tabIndex)), userText(QString::null) {
 
 	// Shortcuts
 	this->createShortcuts();
@@ -83,10 +83,6 @@ void main_window_ctrl::MainWindowCtrl::connectSignals() {
 	// share current tab index
 	connect(this->tabctrl, &main_window_ctrl_tab::MainWindowCtrlTab::requestCurrentTabIndexSignal, this, &main_window_ctrl::MainWindowCtrl::getCurrentTabIndex);
 	connect(this, &main_window_ctrl::MainWindowCtrl::sendCurrentTabIndexSignal, this->tabctrl, &main_window_ctrl_tab::MainWindowCtrlTab::receiveCurrentTabIndex);
-
-	// share tab count
-	connect(this->tabctrl, &main_window_ctrl_tab::MainWindowCtrlTab::requestTabCountSignal, this, &main_window_ctrl::MainWindowCtrl::getTabCount);
-	connect(this, &main_window_ctrl::MainWindowCtrl::sendTabCountSignal, this->tabctrl, &main_window_ctrl_tab::MainWindowCtrlTab::receiveTabCount);
 
 	// open tab action (from fileMenu)
 	connect(this, &main_window_ctrl::MainWindowCtrl::openNewTabSignal, this->tabctrl, &main_window_ctrl_tab::MainWindowCtrlTab::openNewTab);
@@ -332,14 +328,6 @@ void main_window_ctrl::MainWindowCtrl::getCurrentTabIndex() {
 
 void main_window_ctrl::MainWindowCtrl::receiveCurrentTabIndex(int tabIndex) {
 	emit this->sendCurrentTabIndexSignal(tabIndex);
-}
-
-void main_window_ctrl::MainWindowCtrl::getTabCount() {
-	emit this->requestTabCountSignal();
-}
-
-void main_window_ctrl::MainWindowCtrl::receiveTabCount(int tabCount) {
-	emit this->sendTabCountSignal(tabCount);
 }
 
 void main_window_ctrl::MainWindowCtrl::refreshUrl(int tabIndex) {
