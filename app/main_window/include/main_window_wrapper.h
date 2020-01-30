@@ -13,6 +13,8 @@
 #include <qt5/QtWidgets/QMainWindow>
 
 #include "main_window_core.h"
+#include "main_window_ctrl.h"
+#include "main_window_ctrl_tab.h"
 #include "main_window.h"
 
 /** @defgroup MainWindowWrapperGroup Main Window Wrapper Doxygen Group
@@ -59,9 +61,25 @@ namespace main_window_wrapper {
 
 	private:
 
+		/**
+		 * @brief Main window
+		 *
+		 */
+		main_window::MainWindow * window;
+
+		/**
+		 * @brief Main window core
+		 *
+		 */
 		static main_window_core::MainWindowCore * mainWindowCore;
 
-		main_window::MainWindow * window;
+		/**
+		 * @brief Main window control
+		 *
+		 */
+		main_window_ctrl::MainWindowCtrl * ctrl;
+
+
 
 	};
 

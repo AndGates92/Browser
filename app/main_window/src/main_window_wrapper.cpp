@@ -22,6 +22,9 @@ main_window_wrapper::MainWindowWrapper::MainWindowWrapper(QWidget * parent, Qt::
 
 	QINFO_PRINT(global_types::qinfo_level_e::ZERO, mainWindowWrapperOverall,  "Main window wrapper constructor");
 
+	// main window control class
+	this->ctrl = new main_window_ctrl::MainWindowCtrl(this->mainWindowCore, parent, this->mainWindowCore->tabs->currentIndex());
+
 }
 
 main_window_wrapper::MainWindowWrapper::~MainWindowWrapper() {
@@ -29,6 +32,7 @@ main_window_wrapper::MainWindowWrapper::~MainWindowWrapper() {
 
 	delete this->mainWindowCore;
 	delete this->window;
+	delete this->ctrl;
 
 }
 
