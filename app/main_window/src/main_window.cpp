@@ -34,7 +34,7 @@ Q_LOGGING_CATEGORY(mainWindowCenterWindow, "mainWindow.centerWindow", MSG_TYPE_L
 Q_LOGGING_CATEGORY(mainWindowSearch, "mainWindow.search", MSG_TYPE_LEVEL)
 Q_LOGGING_CATEGORY(mainWindowTabs, "mainWindow.tabs", MSG_TYPE_LEVEL)
 
-main_window::MainWindow::MainWindow(QWidget * parent, Qt::WindowFlags flags) : QMainWindow(parent, flags) {
+main_window::MainWindow::MainWindow(main_window_core::MainWindowCore * core, QWidget * parent, Qt::WindowFlags flags) : QMainWindow(parent, flags), mainWindowCore(core) {
 
 	QINFO_PRINT(global_types::qinfo_level_e::ZERO, mainWindowOverall,  "Main window constructor");
 
@@ -86,32 +86,17 @@ main_window::MainWindow::MainWindow(QWidget * parent, Qt::WindowFlags flags) : Q
 main_window::MainWindow::~MainWindow() {
 	QINFO_PRINT(global_types::qinfo_level_e::ZERO, mainWindowOverall,  "Main window destructor");
 
-	// Delete menus
-	delete this->fileMenu;
-	delete this->editMenu;
-	delete this->cmdMenu;
-
-	// Label
-	delete this->userInputText;
-	delete this->websiteText;
-	delete this->infoText;
-
-	// Main components
-	delete this->tabs;
 	delete this->ctrl;
-
-	// Main widget
-	delete this->mainWidget;
 }
 
 void main_window::MainWindow::createMainWidget() {
-	this->mainWidget = new QWidget(this);
-	this->mainWidget->setAttribute(Qt::WA_DeleteOnClose);
+	this->mainWindowCore->mainWidget = new QWidget(this);
+	this->mainWindowCore->mainWidget->setAttribute(Qt::WA_DeleteOnClose);
 	// Disable widget resizing
-	this->mainWidget->setSizePolicy(QSizePolicy::Ignored, QSizePolicy::Ignored);
-	this->mainWidget->setFocusPolicy(Qt::StrongFocus);
+	this->mainWindowCore->mainWidget->setSizePolicy(QSizePolicy::Ignored, QSizePolicy::Ignored);
+	this->mainWindowCore->mainWidget->setFocusPolicy(Qt::StrongFocus);
 
-	this->mainWidget->setStyleSheet(
+	this->mainWindowCore->mainWidget->setStyleSheet(
 		"QWidget {"
 			"background: brown; "
 			"color: white; "
@@ -119,7 +104,7 @@ void main_window::MainWindow::createMainWidget() {
 			"border: none; "
 		"}"
 	);
-	this->setCentralWidget(this->mainWidget);
+	this->setCentralWidget(this->mainWindowCore->mainWidget);
 }
 
 QLabel * main_window::MainWindow::newWindowLabel() {
@@ -149,31 +134,31 @@ void main_window::MainWindow::fillMainWindow() {
 	this->createTabs();
 
 	// user input
-	this->userInputText = this->newWindowLabel();
-	this->userInputText->setAlignment(Qt::AlignLeft | Qt::AlignBottom);
-	this->userInputText->setFocus(Qt::OtherFocusReason);
+	this->mainWindowCore->userInputText = this->newWindowLabel();
+	this->mainWindowCore->userInputText->setAlignment(Qt::AlignLeft | Qt::AlignBottom);
+	this->mainWindowCore->userInputText->setFocus(Qt::OtherFocusReason);
 
 	// website URL
-	this->websiteText = this->newWindowLabel();
-	this->websiteText->setAlignment(Qt::AlignRight | Qt::AlignBottom);
+	this->mainWindowCore->websiteText = this->newWindowLabel();
+	this->mainWindowCore->websiteText->setAlignment(Qt::AlignRight | Qt::AlignBottom);
 
 	// info
-	this->infoText = this->newWindowLabel();
-	this->infoText->setAlignment(Qt::AlignRight | Qt::AlignBottom);
+	this->mainWindowCore->infoText = this->newWindowLabel();
+	this->mainWindowCore->infoText->setAlignment(Qt::AlignRight | Qt::AlignBottom);
 
 	// info
-	this->cmdMenu = new command_menu::CommandMenu(this);
-	this->cmdMenu->setVisible(false);
+	this->mainWindowCore->cmdMenu = new command_menu::CommandMenu(this);
+	this->mainWindowCore->cmdMenu->setVisible(false);
 }
 
 void main_window::MainWindow::createTabs() {
 	QINFO_PRINT(global_types::qinfo_level_e::ZERO, mainWindowOverall,  "Create tabs");
 
-	this->tabs = new tab_widget::TabWidget(this->mainWidget);
+	this->mainWindowCore->tabs = new tab_widget::TabWidget(this->mainWindowCore->mainWidget);
 	// Disable widget resizing
-	this->tabs->setSizePolicy(QSizePolicy::Ignored, QSizePolicy::Ignored);
+	this->mainWindowCore->tabs->setSizePolicy(QSizePolicy::Ignored, QSizePolicy::Ignored);
 
-	this->tabs->setStyleSheet(
+	this->mainWindowCore->tabs->setStyleSheet(
 		"QTabBar::tab {"
 			"background: gray; "
 			"color: white; "
@@ -197,55 +182,55 @@ void main_window::MainWindow::mainWindowLayout() {
 	// | <user text> |      <website>     |   <info>   |
 	// -------------------------------------------------
 
-	QGridLayout * layout = new QGridLayout(this->mainWidget);
+	QGridLayout * layout = new QGridLayout(this->mainWindowCore->mainWidget);
 
 	// tabs
 	int tabsRowSpan = 20;
 	int tabsColumnSpan = 10;
 	int tabsFromRow = 0;
 	int tabsFromColumn = 0;
-	layout->addWidget(this->tabs, tabsFromRow, tabsFromColumn, tabsRowSpan, tabsColumnSpan);
+	layout->addWidget(this->mainWindowCore->tabs, tabsFromRow, tabsFromColumn, tabsRowSpan, tabsColumnSpan);
 
 	// user input text
 	int userTextRowSpan = 1;
 	int userTextColumnSpan = 3;
 	int userTextFromRow = tabsRowSpan;
 	int userTextFromColumn = 0;
-	layout->addWidget(this->userInputText, userTextFromRow, userTextFromColumn, userTextRowSpan, userTextColumnSpan);
+	layout->addWidget(this->mainWindowCore->userInputText, userTextFromRow, userTextFromColumn, userTextRowSpan, userTextColumnSpan);
 
 	// website URL
 	int websiteRowSpan = 1;
 	int websiteColumnSpan = 5;
 	int websiteFromRow = tabsRowSpan;
 	int websiteFromColumn = userTextFromColumn + userTextColumnSpan;
-	layout->addWidget(this->websiteText, websiteFromRow, websiteFromColumn, websiteRowSpan, websiteColumnSpan);
+	layout->addWidget(this->mainWindowCore->websiteText, websiteFromRow, websiteFromColumn, websiteRowSpan, websiteColumnSpan);
 
 	// info
 	int infoRowSpan = 1;
 	int infoColumnSpan = 2;
 	int infoFromRow = tabsRowSpan;
 	int infoFromColumn = websiteFromColumn + websiteColumnSpan;
-	layout->addWidget(this->infoText, infoFromRow, infoFromColumn, infoRowSpan, infoColumnSpan);
+	layout->addWidget(this->mainWindowCore->infoText, infoFromRow, infoFromColumn, infoRowSpan, infoColumnSpan);
 
 	// command menu
 	int cmdMenuRowSpan = 3;
 	int cmdMenuColumnSpan = tabsColumnSpan;
 	int cmdMenuFromRow = tabsRowSpan - cmdMenuRowSpan;
 	int cmdMenuFromColumn = 0;
-	layout->addWidget(this->cmdMenu, cmdMenuFromRow, cmdMenuFromColumn, cmdMenuRowSpan, cmdMenuColumnSpan);
+	layout->addWidget(this->mainWindowCore->cmdMenu, cmdMenuFromRow, cmdMenuFromColumn, cmdMenuRowSpan, cmdMenuColumnSpan);
 
 
 	layout->setHorizontalSpacing(main_window::horizontalWidgetSpacing);
 	layout->setVerticalSpacing(main_window::verticalWidgetSpacing);
 	layout->setContentsMargins(main_window::leftMargin, main_window::topMargin, main_window::rightMargin, main_window::bottomMargin);
 
-	this->mainWidget->setLayout(layout);
+	this->mainWindowCore->mainWidget->setLayout(layout);
 }
 
 void main_window::MainWindow::fillMenuBar() {
 	QINFO_PRINT(global_types::qinfo_level_e::ZERO, mainWindowOverall,  "Create menus");
-	this->fileMenu = new file_menu::FileMenu(this, this->menuBar(), "File", Qt::Key_F);
-	this->editMenu = new edit_menu::EditMenu(this, this->menuBar(), "Edit", Qt::Key_E);
+	this->mainWindowCore->fileMenu = new file_menu::FileMenu(this, this->menuBar(), "File", Qt::Key_F);
+	this->mainWindowCore->editMenu = new edit_menu::EditMenu(this, this->menuBar(), "Edit", Qt::Key_E);
 }
 
 QMenuBar * main_window::MainWindow::getMenuBar() {
@@ -256,10 +241,10 @@ void main_window::MainWindow::connectSignals() {
 	QINFO_PRINT(global_types::qinfo_level_e::ZERO, mainWindowOverall,  "Connect signals");
 
 	// When the file has been read, then show it on the screen
-	connect(this->fileMenu, &file_menu::FileMenu::updateCenterWindowSignal, this, &main_window::MainWindow::setCenterWindow);
+	connect(this->mainWindowCore->fileMenu, &file_menu::FileMenu::updateCenterWindowSignal, this, &main_window::MainWindow::setCenterWindow);
 
 	// open tab action
-	connect(this->fileMenu->openTabAction, &QAction::triggered, this->ctrl, &main_window_ctrl::MainWindowCtrl::openNewTab);
+	connect(this->mainWindowCore->fileMenu->openTabAction, &QAction::triggered, this->ctrl, &main_window_ctrl::MainWindowCtrl::openNewTab);
 
 	// Update info in the info bar following action
 	connect(this->ctrl, &main_window_ctrl::MainWindowCtrl::updateInfoActionSignal, this, &main_window::MainWindow::updateInfo);
@@ -287,7 +272,7 @@ void main_window::MainWindow::connectSignals() {
 	connect(this->ctrl, &main_window_ctrl::MainWindowCtrl::updateUserInputBarSignal, this, &main_window::MainWindow::updateUserInputBar);
 
 	// Close window
-	connect(this->fileMenu->exitAction, &QAction::triggered, this, &main_window::MainWindow::closeWindow);
+	connect(this->mainWindowCore->fileMenu->exitAction, &QAction::triggered, this, &main_window::MainWindow::closeWindow);
 	connect(this->ctrl, &main_window_ctrl::MainWindowCtrl::closeWindowSignal, this, &main_window::MainWindow::closeWindow);
 
 	// show/hide menu bar
@@ -302,9 +287,9 @@ void main_window::MainWindow::connectSignals() {
 	connect(this, &main_window::MainWindow::sendTabCountSignal, this->ctrl, &main_window_ctrl::MainWindowCtrl::receiveTabCount);
 
 	// Update info bar
-	connect(this->tabs, &QTabWidget::currentChanged, this, &main_window::MainWindow::updateInfoSlot);
-	connect(this->tabs, &QTabWidget::tabCloseRequested, this, &main_window::MainWindow::updateInfoSlot);
-//	connect(this->tabs, &QTabWidget::currentChanged, this->ctrl, &main_window_ctrl::MainWindowCtrl::updateWebsite);
+	connect(this->mainWindowCore->tabs, &QTabWidget::currentChanged, this, &main_window::MainWindow::updateInfoSlot);
+	connect(this->mainWindowCore->tabs, &QTabWidget::tabCloseRequested, this, &main_window::MainWindow::updateInfoSlot);
+//	connect(this->mainWindowCore->tabs, &QTabWidget::currentChanged, this->ctrl, &main_window_ctrl::MainWindowCtrl::updateWebsite);
 
 }
 
@@ -312,18 +297,18 @@ void main_window::MainWindow::createCtrl() {
 	QINFO_PRINT(global_types::qinfo_level_e::ZERO, mainWindowOverall,  "Create controller");
 
 	// main window control class
-	this->ctrl = new main_window_ctrl::MainWindowCtrl(this, this->tabs->currentIndex(), this->tabs->count());
+	this->ctrl = new main_window_ctrl::MainWindowCtrl(this, this->mainWindowCore->tabs->currentIndex(), this->mainWindowCore->tabs->count());
 }
 
 void main_window::MainWindow::addNewTab(QString search) {
-	QWebEngineView * centerWindow = new QWebEngineView(this->mainWidget);
+	QWebEngineView * centerWindow = new QWebEngineView(this->mainWindowCore->mainWidget);
 
 	QINFO_PRINT(global_types::qinfo_level_e::ZERO, mainWindowTabs,  "Open tab with label " << search);
-	int tabIndex = this->tabs->addTab(centerWindow, search);
+	int tabIndex = this->mainWindowCore->tabs->addTab(centerWindow, search);
 	this->newSearchTab(tabIndex, search);
 
 	// Move to the newly opened tab
-	this->tabs->setCurrentIndex(tabIndex);
+	this->mainWindowCore->tabs->setCurrentIndex(tabIndex);
 
 	// Update info label
 	this->updateInfo();
@@ -332,19 +317,19 @@ void main_window::MainWindow::addNewTab(QString search) {
 void main_window::MainWindow::newSearchTab(int index, QString search) {
 	QINFO_PRINT(global_types::qinfo_level_e::ZERO, mainWindowSearch,  "User input " << search << " in tab " << index);
 
-	QWebEngineView * centerWindow = dynamic_cast<QWebEngineView *>(this->tabs->widget(index));
+	QWebEngineView * centerWindow = dynamic_cast<QWebEngineView *>(this->mainWindowCore->tabs->widget(index));
 
 	QString tabTitle = search;
 	QString Url = this->ctrl->getTabUrl(search);
 
-	this->tabs->setTabText(index, tabTitle);
+	this->mainWindowCore->tabs->setTabText(index, tabTitle);
 	centerWindow->setUrl(QUrl(Url));
 
 	this->updateWebsite(index);
 }
 
 void main_window::MainWindow::searchCurrentTab(QString search) {
-	int tabIndex = this->tabs->currentIndex();
+	int tabIndex = this->mainWindowCore->tabs->currentIndex();
 	QINFO_PRINT(global_types::qinfo_level_e::ZERO, mainWindowTabs,  "Search " << search << " in tab " << tabIndex);
 	this->newSearchTab(tabIndex, search);
 }
@@ -363,22 +348,22 @@ void main_window::MainWindow::updateInfo() {
 	QString info(QString::null);
 	info = this->ctrl->getTabInfo();
 
-	this->infoText->setText(info);
+	this->mainWindowCore->infoText->setText(info);
 }
 
 void main_window::MainWindow::updateWebsite(int index) {
 
-	int tabCount = this->tabs->count();
+	int tabCount = this->mainWindowCore->tabs->count();
 
 	if (tabCount > 0) {
-		QWebEngineView * centerWindow = dynamic_cast<QWebEngineView *>(this->tabs->widget(index));
+		QWebEngineView * centerWindow = dynamic_cast<QWebEngineView *>(this->mainWindowCore->tabs->widget(index));
 		QUrl websiteUrl = centerWindow->url();
 
 		QString websiteStr (websiteUrl.toDisplayString(QUrl::FullyDecoded));
 		QINFO_PRINT(global_types::qinfo_level_e::ZERO, mainWindowTabs,  "Set URL in websiteText to " << websiteStr);
-		this->websiteText->setText(websiteStr);
+		this->mainWindowCore->websiteText->setText(websiteStr);
 	} else {
-		this->websiteText->clear();
+		this->mainWindowCore->websiteText->clear();
 	}
 }
 
@@ -386,24 +371,24 @@ void main_window::MainWindow::setCenterWindow(QString str) {
 	QINFO_PRINT(global_types::qinfo_level_e::ZERO, mainWindowCenterWindow,  "Change texts in center window");
 	QINFO_PRINT(global_types::qinfo_level_e::ZERO, mainWindowCenterWindow,  str);
 	// Convert back QWidget to QLabel
-	QLabel * currentWidget = dynamic_cast<QLabel *>(this->tabs->currentWidget());
+	QLabel * currentWidget = dynamic_cast<QLabel *>(this->mainWindowCore->tabs->currentWidget());
 	currentWidget->setText(str);
 	currentWidget->repaint();
 }
 
 void main_window::MainWindow::moveCursor(int tabIndex) {
 	QINFO_PRINT(global_types::qinfo_level_e::ZERO, mainWindowTabs,  "Move cursor to tab " << tabIndex);
-	this->tabs->setCurrentIndex(tabIndex);
+	this->mainWindowCore->tabs->setCurrentIndex(tabIndex);
 }
 
 void main_window::MainWindow::moveTab(int tabIndex) {
-	int tabIndexCurrent = this->tabs->currentIndex();
+	int tabIndexCurrent = this->mainWindowCore->tabs->currentIndex();
 	QINFO_PRINT(global_types::qinfo_level_e::ZERO, mainWindowTabs,  "Move tab " << tabIndexCurrent << " to " << tabIndex);
-	this->tabs->tabBar()->moveTab(tabIndexCurrent, tabIndex);
+	this->mainWindowCore->tabs->tabBar()->moveTab(tabIndexCurrent, tabIndex);
 }
 
 void main_window::MainWindow::refreshUrl(int tabIndex) {
-	QWebEngineView * centerWindow = dynamic_cast<QWebEngineView *>(this->tabs->widget(tabIndex));
+	QWebEngineView * centerWindow = dynamic_cast<QWebEngineView *>(this->mainWindowCore->tabs->widget(tabIndex));
 	QUrl currUrl = centerWindow->url();
 
 	centerWindow->setUrl(QUrl(currUrl));
@@ -411,14 +396,14 @@ void main_window::MainWindow::refreshUrl(int tabIndex) {
 
 void main_window::MainWindow::closeTab(int index) {
 	QINFO_PRINT(global_types::qinfo_level_e::ZERO, mainWindowTabs,  "Close tab " << index);
-	this->tabs->removeTab(index);
+	this->mainWindowCore->tabs->removeTab(index);
 }
 
 void main_window::MainWindow::updateUserInputBar(QString textLabel) {
 	if (textLabel == QString::null) {
-		this->userInputText->clear();
+		this->mainWindowCore->userInputText->clear();
 	} else {
-		this->userInputText->setText(textLabel);
+		this->mainWindowCore->userInputText->setText(textLabel);
 	}
 }
 
@@ -433,11 +418,11 @@ void main_window::MainWindow::toggleShowMenubar() {
 }
 
 void main_window::MainWindow::getCurrentTabIndex() {
-	emit this->sendCurrentTabIndexSignal(this->tabs->currentIndex());
+	emit this->sendCurrentTabIndexSignal(this->mainWindowCore->tabs->currentIndex());
 }
 
 void main_window::MainWindow::getTabCount() {
-	emit this->sendTabCountSignal(this->tabs->count());
+	emit this->sendTabCountSignal(this->mainWindowCore->tabs->count());
 }
 
 void main_window::MainWindow::keyPressEvent(QKeyEvent * event) {
@@ -446,7 +431,7 @@ void main_window::MainWindow::keyPressEvent(QKeyEvent * event) {
 
 	this->ctrl->keyPressEvent(event);
 
-	this->mainWidget->repaint();
+	this->mainWindowCore->mainWidget->repaint();
 }
 
 void main_window::MainWindow::keyReleaseEvent(QKeyEvent * event) {
@@ -455,5 +440,5 @@ void main_window::MainWindow::keyReleaseEvent(QKeyEvent * event) {
 
 	this->ctrl->keyReleaseEvent(event);
 
-	this->mainWidget->repaint();
+	this->mainWindowCore->mainWidget->repaint();
 }

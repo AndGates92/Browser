@@ -14,7 +14,7 @@
 
 #include "global_macros.h"
 #include "global_types.h"
-#include "main_window.h"
+#include "main_window_wrapper.h"
 #include "graphics.h"
 
 
@@ -26,7 +26,7 @@ void graphics::init_graphics(int argc, char** argv) {
 
 	QINFO_PRINT(global_types::qinfo_level_e::ZERO, graphicsOverall,  "Create Application");
 
-	main_window::MainWindow * window = new main_window::MainWindow();
+	main_window_wrapper::MainWindowWrapper * window = new main_window_wrapper::MainWindowWrapper();
 	window->show();
 
 	app.exec();

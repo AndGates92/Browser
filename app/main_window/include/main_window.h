@@ -22,6 +22,7 @@
 #include "tab_widget.h"
 #include "command_menu.h"
 #include "main_window_ctrl.h"
+#include "main_window_core.h"
 
 /** @defgroup MainWindowGroup Main Window Doxygen Group
  *  Main Window functions and classes
@@ -91,14 +92,15 @@ namespace main_window {
 		public:
 
 			/**
-			 * @brief Function: explicit MainWindow(QWidget * parent = Q_NULLPTR, Qt::WindowFlags flags = Qt::WindowFlags())
+			 * @brief Function: explicit MainWindow(main_window_core::MainWindowCore * core, QWidget * parent = Q_NULLPTR, Qt::WindowFlags flags = Qt::WindowFlags())
 			 *
+			 * \param core: main window core
 			 * \param parent: parent window
 			 * \param flags: window flags
 			 *
 			 * Main window constructor
 			 */
-			explicit MainWindow(QWidget * parent = Q_NULLPTR, Qt::WindowFlags flags = Qt::WindowFlags());
+			explicit MainWindow(main_window_core::MainWindowCore * core, QWidget * parent = Q_NULLPTR, Qt::WindowFlags flags = Qt::WindowFlags());
 
 			/**
 			 * @brief Function: ~MainWindow()
@@ -261,62 +263,17 @@ namespace main_window {
 
 		private:
 
-			// main widget
 			/**
-			 * @brief main widget
+			 * @brief main window core
 			 *
 			 */
-			QWidget * mainWidget;
-
-			// File dropdown menu
-			/**
-			 * @brief File menu
-			 *
-			 */
-			file_menu::FileMenu * fileMenu;
-
-			// Edit dropdown menu
-			/**
-			 * @brief Edit menu
-			 *
-			 */
-			edit_menu::EditMenu * editMenu;
-
-			/**
-			 * @brief Command menu 
-			 *
-			 */
-			command_menu::CommandMenu * cmdMenu;
-
-			/**
-			 * @brief Tabs of browser
-			 *
-			 */
-			tab_widget::TabWidget * tabs;
+			main_window_core::MainWindowCore * mainWindowCore;
 
 			/**
 			 * @brief Main window control
 			 *
 			 */
 			main_window_ctrl::MainWindowCtrl * ctrl;
-
-			/**
-			 * @brief user input
-			 *
-			 */
-			QLabel * userInputText;
-
-			/**
-			 * @brief website
-			 *
-			 */
-			QLabel * websiteText;
-
-			/**
-			 * @brief info
-			 *
-			 */
-			QLabel * infoText;
 
 			/**
 			 * @brief Function: void createMainWidget()
