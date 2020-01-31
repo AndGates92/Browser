@@ -107,24 +107,6 @@ namespace main_window_ctrl_tab {
 			~MainWindowCtrlTab();
 
 			/**
-			 * @brief Function: main_window_shared_types::move_value_e getMoveValueType()
-			 *
-			 * \return move value type
-			 *
-			 * This function returns the move value type
-			 */
-			main_window_shared_types::move_value_e getMoveValueType();
-
-			/**
-			 * @brief Function: void getMoveValueType(main_window_shared_types::move_value_e moveValue)
-			 *
-			 * \param moveValue: move value type
-			 *
-			 * This function sets the move value type
-			 */
-			void setMoveValueType(main_window_shared_types::move_value_e moveValue);
-
-			/**
 			 * @brief Function: void processTabIndex(QString userInputStr)
 			 *
 			 * This function converts the string indexStr to an integer and executes desired action on it
@@ -282,16 +264,6 @@ namespace main_window_ctrl_tab {
 			 */
 			void setShortcutEnabledPropertySignal(bool enabled);
 
-			/**
-			 * @brief Function: void setUserInputStrSignal(const main_window_shared_types::text_action_e action, QString text = QString::null)
-			 *
-			 * \param action: action to execute - valid values are: SET, APPEND and CLEAR
-			 * \param text: text to append to userText
-			 *
-			 * This function is the slot to update the user input label
-			 */
-			void setUserInputStrSignal(const main_window_shared_types::text_action_e action, QString text = QString::null);
-
 		private slots:
 
 			/**
@@ -337,12 +309,6 @@ namespace main_window_ctrl_tab {
 			void closeTab();
 
 		private:
-
-			/**
-			 * @brief type of value of movements in tab bar
-			 *
-			 */
-			main_window_shared_types::move_value_e moveValueType;
 
 			// ================================ START SHORTCUTS ========================================//
 			/**

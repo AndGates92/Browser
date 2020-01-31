@@ -59,6 +59,12 @@ namespace main_window_core {
 			 */
 			QWidget * mainWidget;
 
+			/**
+			 * @brief Tabs of browser
+			 *
+			 */
+			tab_widget::TabWidget * tabs;
+
 			// File dropdown menu
 			/**
 			 * @brief File menu
@@ -79,12 +85,7 @@ namespace main_window_core {
 			 */
 			command_menu::CommandMenu * cmdMenu;
 
-			/**
-			 * @brief Tabs of browser
-			 *
-			 */
-			tab_widget::TabWidget * tabs;
-
+			// Labels placed at the bottom of the window
 			/**
 			 * @brief user input
 			 *
@@ -103,11 +104,25 @@ namespace main_window_core {
 			 */
 			QLabel * infoText;
 
+			// Control members
 			/**
 			 * @brief state of the main window
 			 *
 			 */
 			main_window_shared_types::state_e mainWindowState;
+
+			/**
+			 * @brief type of value of movements in tab bar
+			 *
+			 */
+			main_window_shared_types::move_value_e moveValueType;
+
+			/**
+			 * @brief Text typed by the user
+			 *
+			 */
+			QString userText;
+
 
 	};
 

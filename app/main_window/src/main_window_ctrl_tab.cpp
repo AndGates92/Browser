@@ -24,7 +24,7 @@ Q_LOGGING_CATEGORY(mainWindowCtrlTabSearch, "mainWindowCtrlTab.search", MSG_TYPE
 Q_LOGGING_CATEGORY(mainWindowCtrlTabTabs, "mainWindowCtrlTab.tabs", MSG_TYPE_LEVEL)
 
 
-main_window_ctrl_tab::MainWindowCtrlTab::MainWindowCtrlTab(main_window_core::MainWindowCore * windowCore, QWidget * parent) : main_window_ctrl_base::MainWindowCtrlBase(windowCore, parent, main_window_ctrl_tab::commandFileFullPath), moveValueType(main_window_shared_types::move_value_e::IDLE) {
+main_window_ctrl_tab::MainWindowCtrlTab::MainWindowCtrlTab(main_window_core::MainWindowCore * windowCore, QWidget * parent) : main_window_ctrl_base::MainWindowCtrlBase(windowCore, parent, main_window_ctrl_tab::commandFileFullPath) {
 
 	// Shortcuts
 	this->createShortcuts();
@@ -93,26 +93,26 @@ void main_window_ctrl_tab::MainWindowCtrlTab::connectSignals() {
 
 void main_window_ctrl_tab::MainWindowCtrlTab::moveTabTo() {
 	this->mainWindowCore->mainWindowState = main_window_shared_types::state_e::TAB_MOVE;
+	this->printUserInput(main_window_shared_types::text_action_e::CLEAR);
 	emit this->setShortcutEnabledPropertySignal(false);
-	emit this->setUserInputStrSignal(main_window_shared_types::text_action_e::CLEAR);
 }
 
 void main_window_ctrl_tab::MainWindowCtrlTab::moveLeft() {
 	this->mainWindowCore->mainWindowState = main_window_shared_types::state_e::MOVE_LEFT;
+	this->printUserInput(main_window_shared_types::text_action_e::CLEAR);
 	emit this->setShortcutEnabledPropertySignal(false);
-	emit this->setUserInputStrSignal(main_window_shared_types::text_action_e::CLEAR);
 }
 
 void main_window_ctrl_tab::MainWindowCtrlTab::moveRight() {
 	this->mainWindowCore->mainWindowState = main_window_shared_types::state_e::MOVE_RIGHT;
+	this->printUserInput(main_window_shared_types::text_action_e::CLEAR);
 	emit this->setShortcutEnabledPropertySignal(false);
-	emit this->setUserInputStrSignal(main_window_shared_types::text_action_e::CLEAR);
 }
 
 void main_window_ctrl_tab::MainWindowCtrlTab::closeTab() {
 	this->mainWindowCore->mainWindowState = main_window_shared_types::state_e::CLOSE_TAB;
+	this->printUserInput(main_window_shared_types::text_action_e::CLEAR);
 	emit this->setShortcutEnabledPropertySignal(false);
-	emit this->setUserInputStrSignal(main_window_shared_types::text_action_e::CLEAR);
 }
 
 void main_window_ctrl_tab::MainWindowCtrlTab::executeActionOnOffset(int offset) {
@@ -122,9 +122,9 @@ void main_window_ctrl_tab::MainWindowCtrlTab::executeActionOnOffset(int offset) 
 	} else if (this->mainWindowCore->mainWindowState == main_window_shared_types::state_e::MOVE_LEFT) {
 		sign = -1;
 	} else if (this->mainWindowCore->mainWindowState == main_window_shared_types::state_e::TAB_MOVE) {
-		if (this->moveValueType == main_window_shared_types::move_value_e::RIGHT) {
+		if (this->mainWindowCore->moveValueType == main_window_shared_types::move_value_e::RIGHT) {
 			sign = 1;
-		} else if (this->moveValueType == main_window_shared_types::move_value_e::LEFT) {
+		} else if (this->mainWindowCore->moveValueType == main_window_shared_types::move_value_e::LEFT) {
 			sign = -1;
 		}
 	}
@@ -162,15 +162,15 @@ void main_window_ctrl_tab::MainWindowCtrlTab::executeActionOnTab(int index) {
 void main_window_ctrl_tab::MainWindowCtrlTab::openNewTab() {
 	QINFO_PRINT(global_types::qinfo_level_e::ZERO, mainWindowCtrlTabSearch,  "Open new tab");
 	this->mainWindowCore->mainWindowState = main_window_shared_types::state_e::OPEN_TAB;
+	this->printUserInput(main_window_shared_types::text_action_e::CLEAR);
 	emit this->setShortcutEnabledPropertySignal(false);
-	emit this->setUserInputStrSignal(main_window_shared_types::text_action_e::CLEAR);
 }
 
 void main_window_ctrl_tab::MainWindowCtrlTab::newSearchTab() {
 	QINFO_PRINT(global_types::qinfo_level_e::ZERO, mainWindowCtrlTabSearch,  "Search in current tab");
 	this->mainWindowCore->mainWindowState = main_window_shared_types::state_e::SEARCH;
+	this->printUserInput(main_window_shared_types::text_action_e::CLEAR);
 	emit this->setShortcutEnabledPropertySignal(false);
-	emit this->setUserInputStrSignal(main_window_shared_types::text_action_e::CLEAR);
 }
 
 void main_window_ctrl_tab::MainWindowCtrlTab::executeTabAction(int userInput) {
@@ -179,9 +179,9 @@ void main_window_ctrl_tab::MainWindowCtrlTab::executeTabAction(int userInput) {
 	} else if ((this->mainWindowCore->mainWindowState == main_window_shared_types::state_e::MOVE_RIGHT) || (this->mainWindowCore->mainWindowState == main_window_shared_types::state_e::MOVE_LEFT)) {
 		this->executeActionOnOffset(userInput);
 	} else if (this->mainWindowCore->mainWindowState == main_window_shared_types::state_e::TAB_MOVE) {
-	       if ((this->moveValueType == main_window_shared_types::move_value_e::LEFT) || (this->moveValueType == main_window_shared_types::move_value_e::RIGHT)) {
+	       if ((this->mainWindowCore->moveValueType == main_window_shared_types::move_value_e::LEFT) || (this->mainWindowCore->moveValueType == main_window_shared_types::move_value_e::RIGHT)) {
 			this->executeActionOnOffset(userInput);
-		} else if (this->moveValueType == main_window_shared_types::move_value_e::ABSOLUTE) {
+		} else if (this->mainWindowCore->moveValueType == main_window_shared_types::move_value_e::ABSOLUTE) {
 			this->executeActionOnTab(userInput);
 		}
 	}
@@ -241,7 +241,7 @@ void main_window_ctrl_tab::MainWindowCtrlTab::keyReleaseEvent(QKeyEvent * event)
 
 		switch (releasedKey) {
 			case Qt::Key_Escape:
-				this->moveValueType = main_window_shared_types::move_value_e::IDLE;
+				this->mainWindowCore->moveValueType = main_window_shared_types::move_value_e::IDLE;
 				break;
 			case Qt::Key_Backspace:
 				break;
@@ -253,8 +253,8 @@ void main_window_ctrl_tab::MainWindowCtrlTab::keyReleaseEvent(QKeyEvent * event)
 
 void main_window_ctrl_tab::MainWindowCtrlTab::refreshTabUrl() {
 	this->mainWindowCore->mainWindowState = main_window_shared_types::state_e::REFRESH_TAB;
+	this->printUserInput(main_window_shared_types::text_action_e::CLEAR);
 	emit this->setShortcutEnabledPropertySignal(false);
-	emit this->setUserInputStrSignal(main_window_shared_types::text_action_e::CLEAR);
 }
 
 void main_window_ctrl_tab::MainWindowCtrlTab::keyPressEvent(QKeyEvent * event) {
@@ -272,19 +272,19 @@ void main_window_ctrl_tab::MainWindowCtrlTab::keyPressEvent(QKeyEvent * event) {
 		switch (pressedKey) {
 			case Qt::Key_Enter:
 			case Qt::Key_Return:
-				this->moveValueType = main_window_shared_types::move_value_e::IDLE;
+				this->mainWindowCore->moveValueType = main_window_shared_types::move_value_e::IDLE;
 				break;
 			default:
 				if (this->mainWindowCore->mainWindowState == main_window_shared_types::state_e::TAB_MOVE) {
 					if ((pressedKey >= Qt::Key_0) && (pressedKey <= Qt::Key_9)) {
-						if (this->moveValueType == main_window_shared_types::move_value_e::IDLE) {
-							this->moveValueType = main_window_shared_types::move_value_e::ABSOLUTE;
+						if (this->mainWindowCore->moveValueType == main_window_shared_types::move_value_e::IDLE) {
+							this->mainWindowCore->moveValueType = main_window_shared_types::move_value_e::ABSOLUTE;
 						}
-					} else if ((this->moveValueType == main_window_shared_types::move_value_e::IDLE) && ((pressedKey == Qt::Key_H) || (pressedKey == Qt::Key_L) || (pressedKey == Qt::Key_Plus) || (pressedKey == Qt::Key_Minus))) {
+					} else if ((this->mainWindowCore->moveValueType == main_window_shared_types::move_value_e::IDLE) && ((pressedKey == Qt::Key_H) || (pressedKey == Qt::Key_L) || (pressedKey == Qt::Key_Plus) || (pressedKey == Qt::Key_Minus))) {
 						if ((pressedKey == Qt::Key_Plus) || (pressedKey == Qt::Key_L)) {
-							this->moveValueType = main_window_shared_types::move_value_e::RIGHT;
+							this->mainWindowCore->moveValueType = main_window_shared_types::move_value_e::RIGHT;
 						} else {
-							this->moveValueType = main_window_shared_types::move_value_e::LEFT;
+							this->mainWindowCore->moveValueType = main_window_shared_types::move_value_e::LEFT;
 						}
 					}
 				}
@@ -293,14 +293,6 @@ void main_window_ctrl_tab::MainWindowCtrlTab::keyPressEvent(QKeyEvent * event) {
 
 	}
 
-}
-
-main_window_shared_types::move_value_e main_window_ctrl_tab::MainWindowCtrlTab::getMoveValueType() {
-	return this->moveValueType;
-}
-
-void main_window_ctrl_tab::MainWindowCtrlTab::setMoveValueType(main_window_shared_types::move_value_e moveValue) {
-	this->moveValueType = moveValue;
 }
 
 main_window_shared_types::object_type_e main_window_ctrl_tab::MainWindowCtrlTab::setAffectedObject() {

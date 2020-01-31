@@ -160,15 +160,6 @@ namespace main_window_ctrl {
 			void updateWebsiteSignal(int index);
 
 			/**
-			 * @brief Function: void updateUserInputBarSignal(QString textLabel)
-			 *
-			 * \param textLabel: text to write to userInputText
-			 *
-			 * This function is the signal to update the user input label
-			 */
-			void updateUserInputBarSignal(QString textLabel);
-
-			/**
 			 * @brief Function: void searchCurrentTabSignal(QString search)
 			 *
 			 * \param search: string to search
@@ -347,16 +338,6 @@ namespace main_window_ctrl {
 			 */
 			void setAllShortcutEnabledProperty(bool enabled);
 
-			/**
-			 * @brief Function: void formUserInputStr(const main_window_shared_types::text_action_e action, QString text = QString::null)
-			 *
-			 * \param action: action to execute - valid values are: SET, APPEND and CLEAR
-			 * \param text: text to append to userText
-			 *
-			 * This function is the slot to update the user input label
-			 */
-			void formUserInputStr(const main_window_shared_types::text_action_e action, QString text = QString::null);
-
 		private:
 
 			/**
@@ -416,15 +397,6 @@ namespace main_window_ctrl {
 			 * This function executes a command on a based on user input
 			 */
 			void executeCommand(QString command);
-
-			/**
-			 * @brief Function: QString getActionName()
-			 *
-			 * \return string with the text to display as action
-			 *
-			 * Get action name to display in the userInputText label
-			 */
-			QString getActionName();
 
 			/**
 			 * @brief Function: void getCurrentTabIndex()

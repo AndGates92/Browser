@@ -172,15 +172,6 @@ namespace main_window {
 			void setCenterWindow(QString str);
 
 			/**
-			 * @brief Function: void updateUserInputBar(QString textLabel)
-			 *
-			 * \param textLabel: text to append to userText
-			 *
-			 * This function is the slot to update the user input label
-			 */
-			void updateUserInputBar(QString textLabel);
-
-			/**
 			 * @brief Function: void addNewTab(QString search)
 			 *
 			 * \param search: string to search

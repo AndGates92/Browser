@@ -19,6 +19,7 @@
  */
 
 Q_DECLARE_LOGGING_CATEGORY(mainWindowCtrlBaseOverall)
+Q_DECLARE_LOGGING_CATEGORY(mainWindowCtrlBaseUserInput)
 
 namespace main_window_ctrl_base {
 
@@ -100,6 +101,28 @@ namespace main_window_ctrl_base {
 			 * This function returns the index of the current tab
 			 */
 			int getCurrentTabIndex();
+
+			/**
+			 * @brief Function: void printUserInput(const main_window_shared_types::text_action_e action, QString text = QString::null)
+			 *
+			 * \param action: action to execute - valid values are: SET, APPEND and CLEAR
+			 * \param text: text to append to userText
+			 *
+			 * This function is the slot to update the user input label
+			 */
+			void printUserInput(const main_window_shared_types::text_action_e action, QString text = QString::null);
+
+			/**
+			 * @brief Function: QString getActionName()
+			 *
+			 * \return string with the text to display as action
+			 *
+			 * Get action name to display in the userInputText label
+			 */
+			QString getActionName();
+
+		private:
+
 	};
 
 }

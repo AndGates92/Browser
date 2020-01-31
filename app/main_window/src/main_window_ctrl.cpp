@@ -73,7 +73,6 @@ void main_window_ctrl::MainWindowCtrl::connectSignals() {
 	connect(this->closeKey, &QShortcut::activated, this, &main_window_ctrl::MainWindowCtrl::closeWindow);
 
 	connect(this->tabctrl, &main_window_ctrl_tab::MainWindowCtrlTab::setShortcutEnabledPropertySignal, this, &main_window_ctrl::MainWindowCtrl::setAllShortcutEnabledProperty);
-	connect(this->tabctrl, &main_window_ctrl_tab::MainWindowCtrlTab::setUserInputStrSignal, this, &main_window_ctrl::MainWindowCtrl::formUserInputStr);
 
 	// open tab action (from fileMenu)
 	connect(this, &main_window_ctrl::MainWindowCtrl::openNewTabSignal, this->tabctrl, &main_window_ctrl_tab::MainWindowCtrlTab::openNewTab);
@@ -137,7 +136,7 @@ void main_window_ctrl::MainWindowCtrl::keyReleaseEvent(QKeyEvent * event) {
 			case Qt::Key_Escape:
 				this->mainWindowCore->mainWindowState = main_window_shared_types::state_e::IDLE;
 				this->setAllShortcutEnabledProperty(true);
-				this->formUserInputStr(main_window_shared_types::text_action_e::CLEAR);
+				this->printUserInput(main_window_shared_types::text_action_e::CLEAR);
 				break;
 			case Qt::Key_Backspace:
 				QINFO_PRINT(global_types::qinfo_level_e::ZERO, mainWindowCtrlUserInput,  "User typed text " << this->userText);
@@ -145,11 +144,11 @@ void main_window_ctrl::MainWindowCtrl::keyReleaseEvent(QKeyEvent * event) {
 				if (this->userText.isEmpty() == 0) {
 					int endString = this->userText.count() - 1;
 					this->userText.remove(endString, 1);
-					this->formUserInputStr(main_window_shared_types::text_action_e::SET, this->userText);
+					this->printUserInput(main_window_shared_types::text_action_e::SET, this->userText);
 				}
 				// If in state TAB MOVE and the userText is empty after deleting the last character, set the move value to IDLE
 				if ((this->userText.isEmpty() == 1) && (this->mainWindowCore->mainWindowState == main_window_shared_types::state_e::TAB_MOVE)) {
-					this->tabctrl->setMoveValueType(main_window_shared_types::move_value_e::IDLE);
+					this->mainWindowCore->moveValueType = main_window_shared_types::move_value_e::IDLE;
 				}
 				break;
 			default:
@@ -185,16 +184,16 @@ void main_window_ctrl::MainWindowCtrl::keyPressEvent(QKeyEvent * event) {
 				}
 				this->mainWindowCore->mainWindowState = main_window_shared_types::state_e::IDLE;
 				this->setAllShortcutEnabledProperty(true);
-				this->formUserInputStr(main_window_shared_types::text_action_e::CLEAR);
+				this->printUserInput(main_window_shared_types::text_action_e::CLEAR);
 				break;
 			default:
 				if ((this->mainWindowCore->mainWindowState == main_window_shared_types::state_e::OPEN_TAB) || (this->mainWindowCore->mainWindowState == main_window_shared_types::state_e::SEARCH)) {
 					if ((pressedKey >= Qt::Key_Space) && (pressedKey <= Qt::Key_ydiaeresis)) {
-						this->formUserInputStr(main_window_shared_types::text_action_e::APPEND, event->text());
+						this->printUserInput(main_window_shared_types::text_action_e::APPEND, event->text());
 					}
 				} else if ((this->mainWindowCore->mainWindowState == main_window_shared_types::state_e::CLOSE_TAB) || (this->mainWindowCore->mainWindowState == main_window_shared_types::state_e::MOVE_RIGHT) || (this->mainWindowCore->mainWindowState == main_window_shared_types::state_e::MOVE_LEFT)) {
 					if ((pressedKey >= Qt::Key_0) && (pressedKey <= Qt::Key_9)) {
-						this->formUserInputStr(main_window_shared_types::text_action_e::APPEND, event->text());
+						this->printUserInput(main_window_shared_types::text_action_e::APPEND, event->text());
 					} else {
 						qWarning(mainWindowCtrlUserInput) << "Pressed key " << event->text() << ". Only numbers are accepted when executing actions like closing windows or moving in the tab bar\n";
 					}
@@ -204,17 +203,17 @@ void main_window_ctrl::MainWindowCtrl::keyPressEvent(QKeyEvent * event) {
 					// If key h is pressed, then the value is considered to be relative to the current tab and considered to go to the left
 					// If key l is pressed, then the value is considered to be relative to the current tab and considered to go to the right
 					if ((pressedKey >= Qt::Key_0) && (pressedKey <= Qt::Key_9)) {
-						if (this->tabctrl->getMoveValueType() == main_window_shared_types::move_value_e::IDLE) {
-							this->formUserInputStr(main_window_shared_types::text_action_e::CLEAR);
+						if (this->mainWindowCore->moveValueType == main_window_shared_types::move_value_e::IDLE) {
+							this->printUserInput(main_window_shared_types::text_action_e::CLEAR);
 						}
-						this->formUserInputStr(main_window_shared_types::text_action_e::APPEND, event->text());
-					} else if ((this->tabctrl->getMoveValueType() == main_window_shared_types::move_value_e::IDLE) && ((pressedKey == Qt::Key_H) || (pressedKey == Qt::Key_L) || (pressedKey == Qt::Key_Plus) || (pressedKey == Qt::Key_Minus))) {
-						this->formUserInputStr(main_window_shared_types::text_action_e::CLEAR);
+						this->printUserInput(main_window_shared_types::text_action_e::APPEND, event->text());
+					} else if ((this->mainWindowCore->moveValueType == main_window_shared_types::move_value_e::IDLE) && ((pressedKey == Qt::Key_H) || (pressedKey == Qt::Key_L) || (pressedKey == Qt::Key_Plus) || (pressedKey == Qt::Key_Minus))) {
+						this->printUserInput(main_window_shared_types::text_action_e::CLEAR);
 					} else {
 						qWarning(mainWindowCtrlUserInput) << "Pressed key " << event->text() << ". Only numbers and + and - signs are accepted when executing actions like move tabs in the tab bar\n";
 					}
 				} else if (this->mainWindowCore->mainWindowState == main_window_shared_types::state_e::COMMAND) {
-					this->formUserInputStr(main_window_shared_types::text_action_e::APPEND, event->text());
+					this->printUserInput(main_window_shared_types::text_action_e::APPEND, event->text());
 					if (pressedKey >= Qt::Key_Space) {
 						this->executeCommand(this->userText);
 					}
@@ -223,7 +222,7 @@ void main_window_ctrl::MainWindowCtrl::keyPressEvent(QKeyEvent * event) {
 						this->mainWindowCore->mainWindowState = main_window_shared_types::state_e::COMMAND;
 						this->setAllShortcutEnabledProperty(false);
 					}
-					this->formUserInputStr(main_window_shared_types::text_action_e::CLEAR);
+					this->printUserInput(main_window_shared_types::text_action_e::CLEAR);
 				}
 				break;
 		}
@@ -238,64 +237,7 @@ void main_window_ctrl::MainWindowCtrl::setShortcutEnabledProperty(bool enabled) 
 	this->setAllShortcutEnabledProperty(enabled);
 }
 
-QString main_window_ctrl::MainWindowCtrl::getActionName() {
-	QString actionName(QString::null);
 
-	actionName << this->mainWindowCore->mainWindowState;
-
-	if (this->mainWindowCore->mainWindowState == main_window_shared_types::state_e::TAB_MOVE) {
-		if (this->tabctrl->getMoveValueType() == main_window_shared_types::move_value_e::RIGHT) {
-			actionName.append(" right");
-		} else if (this->tabctrl->getMoveValueType() == main_window_shared_types::move_value_e::LEFT) {
-			actionName.append(" left");
-		}
-	}
-
-	// Create lowercase copy of the string
-	actionName = actionName.toLower();
-
-	QINFO_PRINT(global_types::qinfo_level_e::ZERO, mainWindowCtrlUserInput,  "State " << this->mainWindowCore->mainWindowState << " action text " << actionName);
-
-	return actionName;
-}
-
-void main_window_ctrl::MainWindowCtrl::formUserInputStr(const main_window_shared_types::text_action_e action, QString text) {
-
-	QString textPrint(QString::null);
-	if (text == QString::null) {
-		textPrint.append("Not provided");
-	} else {
-		textPrint.append(text);
-	}
-
-	QINFO_PRINT(global_types::qinfo_level_e::ZERO, mainWindowCtrlUserInput,  "Action is " << action << " for user input " << textPrint);
-	switch (action) {
-		case main_window_shared_types::text_action_e::SET:
-			this->userText.clear();
-			this->userText.append(text);
-			break;
-		case main_window_shared_types::text_action_e::APPEND:
-			this->userText.append(text);
-			break;
-		case main_window_shared_types::text_action_e::CLEAR:
-			this->userText.clear();
-			break;
-		default:
-			qWarning(mainWindowCtrlUserInput) << "Unknown action " << action << "\n";
-			break;
-	}
-
-	QString textLabel(QString::null);
-	if (this->mainWindowCore->mainWindowState != main_window_shared_types::state_e::IDLE) {
-		QString userAction(QString::null);
-		if (this->mainWindowCore->mainWindowState != main_window_shared_types::state_e::COMMAND) {
-			userAction = this->getActionName();
-		}
-		textLabel.append(":" + userAction + " " + this->userText);
-
-	}
-	emit this->updateUserInputBarSignal(textLabel);
-}
 
 QString main_window_ctrl::MainWindowCtrl::getTabUrl(QString search) {
 	return this->tabctrl->createUrl(search);

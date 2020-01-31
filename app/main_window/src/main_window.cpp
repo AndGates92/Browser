@@ -111,6 +111,7 @@ QLabel * main_window::MainWindow::newWindowLabel() {
 	label->setAttribute(Qt::WA_DeleteOnClose);
 	label->setFrameStyle(QFrame::NoFrame | QFrame::Sunken);
 	label->setFixedHeight(main_window::labelHeight);
+	label->setTextFormat(Qt::PlainText);
 	// Disable widget resizing
 	label->setSizePolicy(QSizePolicy::Ignored, QSizePolicy::Ignored);
 	label->setStyleSheet(
@@ -267,9 +268,6 @@ void main_window::MainWindow::connectSignals() {
 	// Refresh URL tab
 	connect(this->ctrl, &main_window_ctrl::MainWindowCtrl::refreshUrlSignal, this, &main_window::MainWindow::refreshUrl);
 
-	// Update user input
-	connect(this->ctrl, &main_window_ctrl::MainWindowCtrl::updateUserInputBarSignal, this, &main_window::MainWindow::updateUserInputBar);
-
 	// Close window
 	connect(this->mainWindowCore->fileMenu->exitAction, &QAction::triggered, this, &main_window::MainWindow::closeWindow);
 	connect(this->ctrl, &main_window_ctrl::MainWindowCtrl::closeWindowSignal, this, &main_window::MainWindow::closeWindow);
@@ -388,14 +386,6 @@ void main_window::MainWindow::refreshUrl(int tabIndex) {
 void main_window::MainWindow::closeTab(int index) {
 	QINFO_PRINT(global_types::qinfo_level_e::ZERO, mainWindowTabs,  "Close tab " << index);
 	this->mainWindowCore->tabs->removeTab(index);
-}
-
-void main_window::MainWindow::updateUserInputBar(QString textLabel) {
-	if (textLabel == QString::null) {
-		this->mainWindowCore->userInputText->clear();
-	} else {
-		this->mainWindowCore->userInputText->setText(textLabel);
-	}
 }
 
 void main_window::MainWindow::closeWindow() {
