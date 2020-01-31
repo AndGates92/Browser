@@ -10,7 +10,6 @@
 
 #include <qt5/QtCore/QLoggingCategory>
 
-#include "main_window_shared_types.h"
 #include "main_window_core.h"
 #include "json_parser.h"
 
@@ -63,12 +62,6 @@ namespace main_window_ctrl_base {
 			 *
 			 */
 			main_window_core::MainWindowCore * mainWindowCore;
-
-			/**
-			 * @brief state of the main window
-			 *
-			 */
-			main_window_shared_types::state_e mainWindowState;
 
 			/**
 			 * @brief tab commands and information

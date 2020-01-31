@@ -92,37 +92,36 @@ void main_window_ctrl_tab::MainWindowCtrlTab::connectSignals() {
 
 
 void main_window_ctrl_tab::MainWindowCtrlTab::moveTabTo() {
-	emit this->setStateSignal(main_window_shared_types::state_e::TAB_MOVE);
+	this->mainWindowCore->mainWindowState = main_window_shared_types::state_e::TAB_MOVE;
 	emit this->setShortcutEnabledPropertySignal(false);
 	emit this->setUserInputStrSignal(main_window_shared_types::text_action_e::CLEAR);
 }
 
 void main_window_ctrl_tab::MainWindowCtrlTab::moveLeft() {
-	emit this->setStateSignal(main_window_shared_types::state_e::MOVE_LEFT);
+	this->mainWindowCore->mainWindowState = main_window_shared_types::state_e::MOVE_LEFT;
 	emit this->setShortcutEnabledPropertySignal(false);
 	emit this->setUserInputStrSignal(main_window_shared_types::text_action_e::CLEAR);
 }
 
 void main_window_ctrl_tab::MainWindowCtrlTab::moveRight() {
-	emit this->setStateSignal(main_window_shared_types::state_e::MOVE_RIGHT);
+	this->mainWindowCore->mainWindowState = main_window_shared_types::state_e::MOVE_RIGHT;
 	emit this->setShortcutEnabledPropertySignal(false);
 	emit this->setUserInputStrSignal(main_window_shared_types::text_action_e::CLEAR);
 }
 
 void main_window_ctrl_tab::MainWindowCtrlTab::closeTab() {
-	emit this->setStateSignal(main_window_shared_types::state_e::CLOSE_TAB);
+	this->mainWindowCore->mainWindowState = main_window_shared_types::state_e::CLOSE_TAB;
 	emit this->setShortcutEnabledPropertySignal(false);
 	emit this->setUserInputStrSignal(main_window_shared_types::text_action_e::CLEAR);
 }
 
 void main_window_ctrl_tab::MainWindowCtrlTab::executeActionOnOffset(int offset) {
 	int sign = 0;
-	this->updateState();
-	if (this->mainWindowState == main_window_shared_types::state_e::MOVE_RIGHT) {
+	if (this->mainWindowCore->mainWindowState == main_window_shared_types::state_e::MOVE_RIGHT) {
 		sign = 1;
-	} else if (this->mainWindowState == main_window_shared_types::state_e::MOVE_LEFT) {
+	} else if (this->mainWindowCore->mainWindowState == main_window_shared_types::state_e::MOVE_LEFT) {
 		sign = -1;
-	} else if (this->mainWindowState == main_window_shared_types::state_e::TAB_MOVE) {
+	} else if (this->mainWindowCore->mainWindowState == main_window_shared_types::state_e::TAB_MOVE) {
 		if (this->moveValueType == main_window_shared_types::move_value_e::RIGHT) {
 			sign = 1;
 		} else if (this->moveValueType == main_window_shared_types::move_value_e::LEFT) {
@@ -144,16 +143,14 @@ void main_window_ctrl_tab::MainWindowCtrlTab::executeActionOnTab(int index) {
 		tabIndex = index;
 	}
 
-	this->updateState();
-
 	int tabCount = this->getTabCount();
 
 	if ((tabCount > tabIndex) && (tabIndex >= 0)) {
-		if (this->mainWindowState == main_window_shared_types::state_e::CLOSE_TAB) {
+		if (this->mainWindowCore->mainWindowState == main_window_shared_types::state_e::CLOSE_TAB) {
 			emit this->closeTabSignal(tabIndex);
-		} else if (this->mainWindowState == main_window_shared_types::state_e::TAB_MOVE) {
+		} else if (this->mainWindowCore->mainWindowState == main_window_shared_types::state_e::TAB_MOVE) {
 			this->convertToAbsTabIndex(tabIndex, 0);
-		} else if (this->mainWindowState == main_window_shared_types::state_e::REFRESH_TAB) {
+		} else if (this->mainWindowCore->mainWindowState == main_window_shared_types::state_e::REFRESH_TAB) {
 			this->convertToAbsTabIndex(tabIndex, 0);
 		}
 	} else {
@@ -164,25 +161,24 @@ void main_window_ctrl_tab::MainWindowCtrlTab::executeActionOnTab(int index) {
 
 void main_window_ctrl_tab::MainWindowCtrlTab::openNewTab() {
 	QINFO_PRINT(global_types::qinfo_level_e::ZERO, mainWindowCtrlTabSearch,  "Open new tab");
-	emit this->setStateSignal(main_window_shared_types::state_e::OPEN_TAB);
+	this->mainWindowCore->mainWindowState = main_window_shared_types::state_e::OPEN_TAB;
 	emit this->setShortcutEnabledPropertySignal(false);
 	emit this->setUserInputStrSignal(main_window_shared_types::text_action_e::CLEAR);
 }
 
 void main_window_ctrl_tab::MainWindowCtrlTab::newSearchTab() {
 	QINFO_PRINT(global_types::qinfo_level_e::ZERO, mainWindowCtrlTabSearch,  "Search in current tab");
-	emit this->setStateSignal(main_window_shared_types::state_e::SEARCH);
+	this->mainWindowCore->mainWindowState = main_window_shared_types::state_e::SEARCH;
 	emit this->setShortcutEnabledPropertySignal(false);
 	emit this->setUserInputStrSignal(main_window_shared_types::text_action_e::CLEAR);
 }
 
 void main_window_ctrl_tab::MainWindowCtrlTab::executeTabAction(int userInput) {
-	this->updateState();
-	if (this->mainWindowState == main_window_shared_types::state_e::CLOSE_TAB) {
+	if (this->mainWindowCore->mainWindowState == main_window_shared_types::state_e::CLOSE_TAB) {
 		this->executeActionOnTab(userInput);
-	} else if ((this->mainWindowState == main_window_shared_types::state_e::MOVE_RIGHT) || (this->mainWindowState == main_window_shared_types::state_e::MOVE_LEFT)) {
+	} else if ((this->mainWindowCore->mainWindowState == main_window_shared_types::state_e::MOVE_RIGHT) || (this->mainWindowCore->mainWindowState == main_window_shared_types::state_e::MOVE_LEFT)) {
 		this->executeActionOnOffset(userInput);
-	} else if (this->mainWindowState == main_window_shared_types::state_e::TAB_MOVE) {
+	} else if (this->mainWindowCore->mainWindowState == main_window_shared_types::state_e::TAB_MOVE) {
 	       if ((this->moveValueType == main_window_shared_types::move_value_e::LEFT) || (this->moveValueType == main_window_shared_types::move_value_e::RIGHT)) {
 			this->executeActionOnOffset(userInput);
 		} else if (this->moveValueType == main_window_shared_types::move_value_e::ABSOLUTE) {
@@ -241,8 +237,7 @@ void main_window_ctrl_tab::MainWindowCtrlTab::keyReleaseEvent(QKeyEvent * event)
 	if (event->type() == QEvent::KeyRelease) {
 
 		// Retrieve main window controller state
-		this->updateState();
-		QINFO_PRINT(global_types::qinfo_level_e::ZERO, mainWindowCtrlTabUserInput,  "State " << this->mainWindowState << " key " << keySeq.toString());
+		QINFO_PRINT(global_types::qinfo_level_e::ZERO, mainWindowCtrlTabUserInput,  "State " << this->mainWindowCore->mainWindowState << " key " << keySeq.toString());
 
 		switch (releasedKey) {
 			case Qt::Key_Escape:
@@ -257,7 +252,7 @@ void main_window_ctrl_tab::MainWindowCtrlTab::keyReleaseEvent(QKeyEvent * event)
 }
 
 void main_window_ctrl_tab::MainWindowCtrlTab::refreshTabUrl() {
-	emit this->setStateSignal(main_window_shared_types::state_e::REFRESH_TAB);
+	this->mainWindowCore->mainWindowState = main_window_shared_types::state_e::REFRESH_TAB;
 	emit this->setShortcutEnabledPropertySignal(false);
 	emit this->setUserInputStrSignal(main_window_shared_types::text_action_e::CLEAR);
 }
@@ -272,8 +267,7 @@ void main_window_ctrl_tab::MainWindowCtrlTab::keyPressEvent(QKeyEvent * event) {
 	if (event->type() == QEvent::KeyPress) {
 
 		// Retrieve main window controller state
-		this->updateState();
-		QINFO_PRINT(global_types::qinfo_level_e::ZERO, mainWindowCtrlTabUserInput,  "State " << this->mainWindowState << " key " << keySeq.toString());
+		QINFO_PRINT(global_types::qinfo_level_e::ZERO, mainWindowCtrlTabUserInput,  "State " << this->mainWindowCore->mainWindowState << " key " << keySeq.toString());
 
 		switch (pressedKey) {
 			case Qt::Key_Enter:
@@ -281,7 +275,7 @@ void main_window_ctrl_tab::MainWindowCtrlTab::keyPressEvent(QKeyEvent * event) {
 				this->moveValueType = main_window_shared_types::move_value_e::IDLE;
 				break;
 			default:
-				if (this->mainWindowState == main_window_shared_types::state_e::TAB_MOVE) {
+				if (this->mainWindowCore->mainWindowState == main_window_shared_types::state_e::TAB_MOVE) {
 					if ((pressedKey >= Qt::Key_0) && (pressedKey <= Qt::Key_9)) {
 						if (this->moveValueType == main_window_shared_types::move_value_e::IDLE) {
 							this->moveValueType = main_window_shared_types::move_value_e::ABSOLUTE;
@@ -301,14 +295,6 @@ void main_window_ctrl_tab::MainWindowCtrlTab::keyPressEvent(QKeyEvent * event) {
 
 }
 
-void main_window_ctrl_tab::MainWindowCtrlTab::updateState() {
-	emit this->requestStateSignal();
-}
-
-void main_window_ctrl_tab::MainWindowCtrlTab::receiveState(main_window_shared_types::state_e state) {
-	this->mainWindowState = state;
-}
-
 main_window_shared_types::move_value_e main_window_ctrl_tab::MainWindowCtrlTab::getMoveValueType() {
 	return this->moveValueType;
 }
@@ -322,10 +308,9 @@ main_window_shared_types::object_type_e main_window_ctrl_tab::MainWindowCtrlTab:
 	main_window_shared_types::object_type_e object = main_window_shared_types::object_type_e::UNKNOWN;
 
 	// Retrieve main window controller state
-	this->updateState();
-	if ((this->mainWindowState == main_window_shared_types::state_e::MOVE_RIGHT) || (this->mainWindowState == main_window_shared_types::state_e::MOVE_LEFT)) {
+	if ((this->mainWindowCore->mainWindowState == main_window_shared_types::state_e::MOVE_RIGHT) || (this->mainWindowCore->mainWindowState == main_window_shared_types::state_e::MOVE_LEFT)) {
 		object = main_window_shared_types::object_type_e::CURSOR;
-	} else if (this->mainWindowState == main_window_shared_types::state_e::TAB_MOVE) {
+	} else if (this->mainWindowCore->mainWindowState == main_window_shared_types::state_e::TAB_MOVE) {
 		object = main_window_shared_types::object_type_e::TAB;
 	}
 
@@ -336,14 +321,12 @@ void main_window_ctrl_tab::MainWindowCtrlTab::convertToAbsTabIndex(int offset, i
 
 	Q_ASSERT_X(((sign == 0) || (sign == -1) || (sign == 1)), "main window move", "sign input must be either 0 or -1 or 1");
 
-	this->updateState();
-
 	int distance = 0;
 	// offset is main_window_ctrl_tab::emptyUserInput if the argument is not passed
 	if (offset == main_window_ctrl_tab::emptyUserInput) {
-		if ((this->mainWindowState == main_window_shared_types::state_e::MOVE_RIGHT) || (this->mainWindowState == main_window_shared_types::state_e::MOVE_LEFT) || (this->mainWindowState == main_window_shared_types::state_e::TAB_MOVE)) {
+		if ((this->mainWindowCore->mainWindowState == main_window_shared_types::state_e::MOVE_RIGHT) || (this->mainWindowCore->mainWindowState == main_window_shared_types::state_e::MOVE_LEFT) || (this->mainWindowCore->mainWindowState == main_window_shared_types::state_e::TAB_MOVE)) {
 			distance = 1;
-		} else if (this->mainWindowState == main_window_shared_types::state_e::REFRESH_TAB) {
+		} else if (this->mainWindowCore->mainWindowState == main_window_shared_types::state_e::REFRESH_TAB) {
 			distance = 0;
 		}
 	} else {
@@ -369,11 +352,11 @@ void main_window_ctrl_tab::MainWindowCtrlTab::convertToAbsTabIndex(int offset, i
 	// Keep tabIndex values within valid range (0 and (tabCount -1))
 	int tabIndex = tabIndexDst % tabCount;
 
-	if ((this->mainWindowState == main_window_shared_types::state_e::MOVE_RIGHT) || (this->mainWindowState == main_window_shared_types::state_e::MOVE_LEFT)) {
+	if ((this->mainWindowCore->mainWindowState == main_window_shared_types::state_e::MOVE_RIGHT) || (this->mainWindowCore->mainWindowState == main_window_shared_types::state_e::MOVE_LEFT)) {
 		emit this->moveCursorSignal(tabIndex);
-	} else if (this->mainWindowState == main_window_shared_types::state_e::TAB_MOVE) {
+	} else if (this->mainWindowCore->mainWindowState == main_window_shared_types::state_e::TAB_MOVE) {
 		emit this->moveTabSignal(tabIndex);
-	} else if (this->mainWindowState == main_window_shared_types::state_e::REFRESH_TAB) {
+	} else if (this->mainWindowCore->mainWindowState == main_window_shared_types::state_e::REFRESH_TAB) {
 		emit this->refreshUrlSignal(tabIndex);
 	}
 }

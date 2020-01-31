@@ -16,7 +16,7 @@
 // Categories
 Q_LOGGING_CATEGORY(mainWindowCoreOverall, "mainWindowCore.overall", MSG_TYPE_LEVEL)
 
-main_window_core::MainWindowCore::MainWindowCore() {
+main_window_core::MainWindowCore::MainWindowCore() : mainWidget(Q_NULLPTR), fileMenu(Q_NULLPTR), editMenu(Q_NULLPTR), cmdMenu(Q_NULLPTR), tabs(Q_NULLPTR), userInputText(Q_NULLPTR), websiteText(Q_NULLPTR), infoText(Q_NULLPTR), mainWindowState(main_window_shared_types::state_e::IDLE) {
 
 	QINFO_PRINT(global_types::qinfo_level_e::ZERO, mainWindowCoreOverall,  "Main window core constructor");
 

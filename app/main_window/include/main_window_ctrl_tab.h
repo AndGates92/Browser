@@ -191,15 +191,6 @@ namespace main_window_ctrl_tab {
 			 */
 			void openNewTab();
 
-			/**
-			 * @brief Function: void receiveState(main_window_shared_types::state_e state)
-			 *
-			 * \param state: state of the main window controller
-			 *
-			 * This function retrieves the state of the main window controller 
-			 */
-			void receiveState(main_window_shared_types::state_e state);
-
 		protected:
 
 		signals:
@@ -282,22 +273,6 @@ namespace main_window_ctrl_tab {
 			 * This function is a signal to initiate the request of the number of opened tabs
 			 */
 			void requestTabCountSignal();
-
-			/**
-			 * @brief Function: void requestStateSignal()
-			 *
-			 * This function is a signal to initiate the request of the main window state
-			 */
-			void requestStateSignal();
-
-			/**
-			 * @brief Function: void setStateSignal(main_window_shared_types::state_e state)
-			 *
-			 * \param state: state of the main window controller
-			 *
-			 * This function is a signal to set the state of the main window controller
-			 */
-			void setStateSignal(main_window_shared_types::state_e state);
 
 			/**
 			 * @brief Function: void setShortcutEnabledPropertySignal(bool enabled)
@@ -451,13 +426,6 @@ namespace main_window_ctrl_tab {
 			 * This function updates the number of open tabs
 			 */
 			void updateTabCount();
-
-			/**
-			 * @brief Function: void updateState()
-			 *
-			 * This function retrieves the state of the main window control
-			 */
-			void updateState();
 
 			/**
 			 * @brief Function: void executeTabAction(int userInput = main_window_ctrl_tab::emptyUserInput)

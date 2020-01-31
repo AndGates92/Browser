@@ -19,6 +19,7 @@
 #include "edit_menu.h"
 #include "tab_widget.h"
 #include "command_menu.h"
+#include "main_window_shared_types.h"
 
 /** @defgroup MainWindowCoreGroup Main Window Core Doxygen Group
  *  Main Window core functions and classes
@@ -101,6 +102,12 @@ namespace main_window_core {
 			 *
 			 */
 			QLabel * infoText;
+
+			/**
+			 * @brief state of the main window
+			 *
+			 */
+			main_window_shared_types::state_e mainWindowState;
 
 	};
 

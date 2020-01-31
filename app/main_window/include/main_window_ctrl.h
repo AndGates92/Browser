@@ -259,15 +259,6 @@ namespace main_window_ctrl {
 			 */
 			void sendCurrentTabIndexSignal(int tabIndex);
 
-			/**
-			 * @brief Function: void sendStateSignal(main_window_shared_types::state_e state)
-			 *
-			 * \param state: main window control state
-			 *
-			 * This function is a signal to send the value of the main window control state
-			 */
-			void sendStateSignal(main_window_shared_types::state_e state);
-
 		private slots:
 
 			/**
@@ -441,22 +432,6 @@ namespace main_window_ctrl {
 			 * This function sends the current tab index
 			 */
 			void getCurrentTabIndex();
-
-			/**
-			 * @brief Function: void getState()
-			 *
-			 * This function sends the state of the main window controller
-			 */
-			void getState();
-
-			/**
-			 * @brief Function: void setState(main_window_shared_types::state_e state)
-			 *
-			 * \param state: state of the main window controller
-			 *
-			 * This function sets the state of the main window controller
-			 */
-			void setState(main_window_shared_types::state_e state);
 	};
 
 }
