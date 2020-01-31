@@ -187,7 +187,7 @@ void main_window_ctrl_tab::MainWindowCtrlTab::executeTabAction(int userInput) {
 	}
 
 	int tabIndex = this->getCurrentTabIndex();
-	emit this->updateInfoActionSignal(tabIndex);
+	emit this->updateInfo();
 	emit this->updateWebsiteSignal(tabIndex);
 }
 
@@ -375,20 +375,3 @@ QString main_window_ctrl_tab::MainWindowCtrlTab::createUrl(QString search) {
 	return url;
 }
 
-QString main_window_ctrl_tab::MainWindowCtrlTab::createTabInfo() {
-
-	QString tabInfo(QString::null);
-
-	int tabCount = this->getTabCount();
-
-	if (tabCount == 0) {
-		tabInfo.append("No tabs");
-	} else {
-		tabInfo.append("tab ");
-		tabInfo.append(QString("%1").arg(this->getCurrentTabIndex() + 1));
-		tabInfo.append(" out of ");
-		tabInfo.append(QString("%1").arg(tabCount));
-	}
-
-	return tabInfo;
-}

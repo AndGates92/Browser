@@ -98,3 +98,10 @@ QString main_window_ctrl_base::MainWindowCtrlBase::getActionName() {
 
 	return actionName;
 }
+
+void main_window_ctrl_base::MainWindowCtrlBase::updateInfo() {
+	QString info(QString::null);
+	info = this->mainWindowCore->createTabInfo();
+
+	this->mainWindowCore->infoText->setText(info);
+}

@@ -123,6 +123,14 @@ namespace main_window_core {
 			 */
 			QString userText;
 
+			/**
+			 * @brief Function: void createTabInfo()
+			 *
+			 * \return QString with the information
+			 *
+			 * This function creates the string with the tab information to be displayed at the bottom of the window
+			 */
+			QString createTabInfo();
 
 	};
 

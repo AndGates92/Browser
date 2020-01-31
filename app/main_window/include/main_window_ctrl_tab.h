@@ -147,15 +147,6 @@ namespace main_window_ctrl_tab {
 			QString createUrl(QString search);
 
 			/**
-			 * @brief Function: QString createTabInfo()
-			 *
-			 * \return string with tab information
-			 *
-			 * This function is creates the string to provide tab info to users
-			 */
-			QString createTabInfo();
-
-			/**
 			 * @brief Function: void executeCommand(QString command)
 			 *
 			 * \param command: command to execute.
@@ -176,15 +167,6 @@ namespace main_window_ctrl_tab {
 		protected:
 
 		signals:
-
-			/**
-			 * @brief Function: void updateInfoActionSignal(int index)
-			 *
-			 * \param index: index of tab either closed or clicked
-			 *
-			 * This function is a signal to inform that the info label needs to be updated
-			 */
-			void updateInfoActionSignal(int index);
 
 			/**
 			 * @brief Function: void updateWebsiteSignal(int index)

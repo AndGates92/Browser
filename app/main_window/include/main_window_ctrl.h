@@ -112,15 +112,6 @@ namespace main_window_ctrl {
 			 */
 			QString getTabUrl(QString search);
 
-			/**
-			 * @brief Function: QString getTabInfo()
-			 *
-			 * \return string with tab information
-			 *
-			 * This function is creates the string to provide tab info to users
-			 */
-			QString getTabInfo();
-
 		public slots:
 			/**
 			 * @brief Function: void openNewTab()
@@ -141,15 +132,6 @@ namespace main_window_ctrl {
 		protected:
 
 		signals:
-			/**
-			 * @brief Function: void updateInfoActionSignal(int index)
-			 *
-			 * \param index: index of tab either closed or clicked
-			 *
-			 * This function is a signal to inform that the info label needs to be updated
-			 */
-			void updateInfoActionSignal(int index);
-
 			/**
 			 * @brief Function: void updateWebsiteSignal(int index)
 			 *
@@ -379,15 +361,6 @@ namespace main_window_ctrl {
 			 * This function connects signals and slots within main window controller
 			 */
 			void connectSignals();
-
-			/**
-			 * @brief Function: void updateInfo(int index)
-			 *
-			 * \param index: index of tab either closed or clicked
-			 *
-			 * This function is updates the info label
-			 */
-			void updateInfo(int index);
 
 			/**
 			 * @brief Function: void executeCommand(QString command)

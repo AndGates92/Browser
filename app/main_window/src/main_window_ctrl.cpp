@@ -77,9 +77,6 @@ void main_window_ctrl::MainWindowCtrl::connectSignals() {
 	// open tab action (from fileMenu)
 	connect(this, &main_window_ctrl::MainWindowCtrl::openNewTabSignal, this->tabctrl, &main_window_ctrl_tab::MainWindowCtrlTab::openNewTab);
 
-	// Update info in the info bar following action
-	connect(this->tabctrl, &main_window_ctrl_tab::MainWindowCtrlTab::updateInfoActionSignal, this, &main_window_ctrl::MainWindowCtrl::updateInfo);
-
 	// Update website in info bar
 	connect(this->tabctrl, &main_window_ctrl_tab::MainWindowCtrlTab::updateWebsiteSignal, this, &main_window_ctrl::MainWindowCtrl::updateWebsite);
 
@@ -243,10 +240,6 @@ QString main_window_ctrl::MainWindowCtrl::getTabUrl(QString search) {
 	return this->tabctrl->createUrl(search);
 }
 
-QString main_window_ctrl::MainWindowCtrl::getTabInfo() {
-	return this->tabctrl->createTabInfo();
-}
-
 void main_window_ctrl::MainWindowCtrl::refreshUrl(int tabIndex) {
 	emit this->refreshUrlSignal(tabIndex);
 }
@@ -265,10 +258,6 @@ void main_window_ctrl::MainWindowCtrl::moveCursor(int tabIndex) {
 
 void main_window_ctrl::MainWindowCtrl::addNewTab(QString search) {
 	emit this->addNewTabSignal(search);
-}
-
-void main_window_ctrl::MainWindowCtrl::updateInfo(int index) {
-	emit this->updateInfoActionSignal(index);
 }
 
 void main_window_ctrl::MainWindowCtrl::updateWebsite(int index) {

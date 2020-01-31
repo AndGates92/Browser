@@ -79,7 +79,7 @@ main_window::MainWindow::MainWindow(main_window_core::MainWindowCore * core, QWi
 	this->resize(winSize);
 
 	// Update info label
-	this->updateInfo();
+	this->ctrl->updateInfo();
 }
 
 main_window::MainWindow::~MainWindow() {
@@ -246,9 +246,6 @@ void main_window::MainWindow::connectSignals() {
 	// open tab action
 	connect(this->mainWindowCore->fileMenu->openTabAction, &QAction::triggered, this->ctrl, &main_window_ctrl::MainWindowCtrl::openNewTab);
 
-	// Update info in the info bar following action
-	connect(this->ctrl, &main_window_ctrl::MainWindowCtrl::updateInfoActionSignal, this, &main_window::MainWindow::updateInfo);
-
 	// Update website in info bar
 	connect(this->ctrl, &main_window_ctrl::MainWindowCtrl::updateWebsiteSignal, this, &main_window::MainWindow::updateWebsite);
 
@@ -300,7 +297,7 @@ void main_window::MainWindow::addNewTab(QString search) {
 	this->mainWindowCore->tabs->setCurrentIndex(tabIndex);
 
 	// Update info label
-	this->updateInfo();
+	this->ctrl->updateInfo();
 }
 
 void main_window::MainWindow::newSearchTab(int index, QString search) {
@@ -329,16 +326,10 @@ void main_window::MainWindow::searchCurrentTab(QString search) {
 // In the case of currentChanged signal, index is the current tab
 // In the case of tabCloseRequested signal, index is the closed tab
 void main_window::MainWindow::updateInfoSlot(int index) {
-	this->updateInfo();
+	this->ctrl->updateInfo();
 }
 #pragma GCC diagnostic pop
 
-void main_window::MainWindow::updateInfo() {
-	QString info(QString::null);
-	info = this->ctrl->getTabInfo();
-
-	this->mainWindowCore->infoText->setText(info);
-}
 
 void main_window::MainWindow::updateWebsite(int index) {
 

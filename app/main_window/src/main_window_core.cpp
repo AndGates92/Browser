@@ -41,3 +41,20 @@ main_window_core::MainWindowCore::~MainWindowCore() {
 	// Main widget
 	delete this->mainWidget;
 }
+
+QString main_window_core::MainWindowCore::createTabInfo() {
+
+	int tabCount = this->tabs->count();
+
+	QString tabInfo(QString::null);
+	if (tabCount == 0) {
+		tabInfo.append("No tabs");
+	} else {
+		tabInfo.append("tab ");
+		tabInfo.append(QString("%1").arg(this->tabs->currentIndex() + 1));
+		tabInfo.append(" out of ");
+		tabInfo.append(QString("%1").arg(tabCount));
+	}
+
+	return tabInfo;
+}

@@ -307,13 +307,6 @@ namespace main_window {
 			void connectSignals();
 
 			/**
-			 * @brief Function: void updateInfo()
-			 *
-			 * This function is updates the info label
-			 */
-			void updateInfo();
-
-			/**
 			 * @brief Function: void newSearchTab(int index, QString search)
 			 *
 			 * \param index: tab index to be searched

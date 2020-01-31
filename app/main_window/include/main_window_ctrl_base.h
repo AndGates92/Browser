@@ -51,6 +51,13 @@ namespace main_window_ctrl_base {
 			 */
 			virtual ~MainWindowCtrlBase();
 
+			/**
+			 * @brief Function: void updateInfo()
+			 *
+			 * This function is updates the info label
+			 */
+			void updateInfo();
+
 		protected:
 			/**
 			 * @brief parent widget
