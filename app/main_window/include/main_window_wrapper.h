@@ -62,16 +62,16 @@ namespace main_window_wrapper {
 	private:
 
 		/**
+		 * @brief Main window core
+		 *
+		 */
+		main_window_core::MainWindowCore * mainWindowCore;
+
+		/**
 		 * @brief Main window
 		 *
 		 */
 		main_window::MainWindow * window;
-
-		/**
-		 * @brief Main window core
-		 *
-		 */
-		static main_window_core::MainWindowCore * mainWindowCore;
 
 		/**
 		 * @brief Main window control
