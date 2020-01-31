@@ -369,7 +369,7 @@ namespace main_window_ctrl {
 		private:
 
 			/**
-			 * @brief state of the main window
+			 * @brief main window tab control
 			 *
 			 */
 			main_window_ctrl_tab::MainWindowCtrlTab * tabctrl;
