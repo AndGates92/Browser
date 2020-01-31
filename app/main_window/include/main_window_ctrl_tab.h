@@ -369,13 +369,6 @@ namespace main_window_ctrl_tab {
 			void executeActionOnOffset(int offset);
 
 			/**
-			 * @brief Function: void updateTabCount()
-			 *
-			 * This function updates the number of open tabs
-			 */
-			void updateTabCount();
-
-			/**
 			 * @brief Function: void executeTabAction(int userInput = main_window_ctrl_tab::emptyUserInput)
 			 *
 			 * \param userInput: user input to execute action. If not specified it is default to main_window_ctrl_tab::emptyUserInput
