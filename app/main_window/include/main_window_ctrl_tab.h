@@ -31,6 +31,7 @@ Q_DECLARE_LOGGING_CATEGORY(mainWindowCtrlTabOverall)
 Q_DECLARE_LOGGING_CATEGORY(mainWindowCtrlTabUserInput)
 Q_DECLARE_LOGGING_CATEGORY(mainWindowCtrlTabSearch)
 Q_DECLARE_LOGGING_CATEGORY(mainWindowCtrlTabTabs)
+Q_DECLARE_LOGGING_CATEGORY(mainWindowCtrlTabUrl)
 
 namespace main_window_ctrl_tab {
 	namespace {
@@ -169,15 +170,6 @@ namespace main_window_ctrl_tab {
 		signals:
 
 			/**
-			 * @brief Function: void updateWebsiteSignal(int index)
-			 *
-			 * \param index: index of tab where the website is searched
-			 *
-			 * This function is a signal to inform that the info label needs to be updated
-			 */
-			void updateWebsiteSignal(int index);
-
-			/**
 			 * @brief Function: void moveCursorSignal(int tabIndex)
 			 *
 			 * \param tabIndex: index to move the cursor to
@@ -240,11 +232,11 @@ namespace main_window_ctrl_tab {
 		private slots:
 
 			/**
-			 * @brief Function: void refreshTabUrl()
+			 * @brief Function: void setUpRefreshTabUrl()
 			 *
 			 * This function refresh the url in a tab
 			 */
-			void refreshTabUrl();
+			void setUpRefreshTabUrl();
 
 			/**
 			 * @brief Function: void moveLeft()
@@ -342,13 +334,13 @@ namespace main_window_ctrl_tab {
 			void connectSignals();
 
 			/**
-			 * @brief Function: void executeActionOnTab(int index)
+			 * @brief Function: void executeActionOnTab(int index = main_window_ctrl_tab::emptyUserInput)
 			 *
 			 * \param index: index of tab to execute action on
 			 *
 			 * This function executes action on a based on user input
 			 */
-			void executeActionOnTab(int index);
+			void executeActionOnTab(int index = main_window_ctrl_tab::emptyUserInput);
 
 			/**
 			 * @brief Function: void executeActionOnOffset(int offset)
@@ -422,6 +414,14 @@ namespace main_window_ctrl_tab {
 			 */
 			void updateWebsite(int index);
 
+			/**
+			 * @brief Function: void refreshUrl(int tabIndex)
+			 *
+			 * \param tabIndex: tab index to refresh
+			 *
+			 * This function refreshes a tab as specified by the user
+			 */
+			void refreshUrl(int tabIndex);
 
 	};
 

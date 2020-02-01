@@ -23,6 +23,7 @@ Q_LOGGING_CATEGORY(mainWindowCtrlTabOverall, "mainWindowCtrlTab.overall", MSG_TY
 Q_LOGGING_CATEGORY(mainWindowCtrlTabUserInput, "mainWindowCtrlTab.userInput", MSG_TYPE_LEVEL)
 Q_LOGGING_CATEGORY(mainWindowCtrlTabSearch, "mainWindowCtrlTab.search", MSG_TYPE_LEVEL)
 Q_LOGGING_CATEGORY(mainWindowCtrlTabTabs, "mainWindowCtrlTab.tabs", MSG_TYPE_LEVEL)
+Q_LOGGING_CATEGORY(mainWindowCtrlTabUrl, "mainWindowCtrlTab.url", MSG_TYPE_LEVEL)
 
 
 main_window_ctrl_tab::MainWindowCtrlTab::MainWindowCtrlTab(main_window_core::MainWindowCore * windowCore, QWidget * parent) : main_window_ctrl_base::MainWindowCtrlBase(windowCore, parent, main_window_ctrl_tab::commandFileFullPath) {
@@ -88,7 +89,7 @@ void main_window_ctrl_tab::MainWindowCtrlTab::connectSignals() {
 	connect(this->moveTabToKey, &QShortcut::activated, this, &main_window_ctrl_tab::MainWindowCtrlTab::moveTabTo);
 	connect(this->moveLeftKey, &QShortcut::activated, this, &main_window_ctrl_tab::MainWindowCtrlTab::moveLeft);
 	connect(this->moveRightKey, &QShortcut::activated, this, &main_window_ctrl_tab::MainWindowCtrlTab::moveRight);
-	connect(this->refreshUrlKey, &QShortcut::activated, this, &main_window_ctrl_tab::MainWindowCtrlTab::refreshTabUrl);
+	connect(this->refreshUrlKey, &QShortcut::activated, this, &main_window_ctrl_tab::MainWindowCtrlTab::setUpRefreshTabUrl);
 
 //	connect(this->mainWindowCore->tabs, &QTabWidget::currentChanged, this, &main_window_ctrl_tab::MainWindowCtrlTab::updateWebsite);
 }
@@ -186,7 +187,7 @@ void main_window_ctrl_tab::MainWindowCtrlTab::executeTabAction(int userInput) {
 	main_window_shared_types::state_e windowState = this->mainWindowCore->getMainWindowState();
 	main_window_shared_types::move_value_e moveType = this->mainWindowCore->getMoveValueType();
 
-	if (windowState == main_window_shared_types::state_e::CLOSE_TAB) {
+	if ((windowState == main_window_shared_types::state_e::REFRESH_TAB) || (windowState == main_window_shared_types::state_e::CLOSE_TAB)) {
 		this->executeActionOnTab(userInput);
 	} else if ((windowState == main_window_shared_types::state_e::MOVE_RIGHT) || (windowState == main_window_shared_types::state_e::MOVE_LEFT)) {
 		this->executeActionOnOffset(userInput);
@@ -200,7 +201,7 @@ void main_window_ctrl_tab::MainWindowCtrlTab::executeTabAction(int userInput) {
 
 	int tabIndex = this->mainWindowCore->getCurrentTabIndex();
 	this->updateInfo();
-	emit this->updateWebsiteSignal(tabIndex);
+	emit this->updateWebsite(tabIndex);
 }
 
 void main_window_ctrl_tab::MainWindowCtrlTab::processTabIndex(QString userInputStr) {
@@ -265,7 +266,7 @@ void main_window_ctrl_tab::MainWindowCtrlTab::keyReleaseEvent(QKeyEvent * event)
 	}
 }
 
-void main_window_ctrl_tab::MainWindowCtrlTab::refreshTabUrl() {
+void main_window_ctrl_tab::MainWindowCtrlTab::setUpRefreshTabUrl() {
 	this->mainWindowCore->setMainWindowState(main_window_shared_types::state_e::REFRESH_TAB);
 	this->printUserInput(main_window_shared_types::text_action_e::CLEAR);
 	emit this->setShortcutEnabledPropertySignal(false);
@@ -373,12 +374,14 @@ void main_window_ctrl_tab::MainWindowCtrlTab::convertToAbsTabIndex(int offset, i
 	// Keep tabIndex values within valid range (0 and (tabCount -1))
 	int tabIndex = tabIndexDst % tabCount;
 
+	QINFO_PRINT(global_types::qinfo_level_e::ZERO, mainWindowCtrlTabTabs,  "Convert tab relative offset " << (sign*offset) << " to absolute offset " << tabIndex);
+
 	if ((windowState == main_window_shared_types::state_e::MOVE_RIGHT) || (windowState == main_window_shared_types::state_e::MOVE_LEFT)) {
 		emit this->moveCursorSignal(tabIndex);
 	} else if (windowState == main_window_shared_types::state_e::TAB_MOVE) {
 		emit this->moveTabSignal(tabIndex);
 	} else if (windowState == main_window_shared_types::state_e::REFRESH_TAB) {
-		emit this->refreshUrlSignal(tabIndex);
+		this->refreshUrl(tabIndex);
 	}
 }
 
@@ -447,9 +450,19 @@ void main_window_ctrl_tab::MainWindowCtrlTab::updateWebsite(int index) {
 		QUrl websiteUrl = centerWindow->url();
 
 		QString websiteStr (websiteUrl.toDisplayString(QUrl::FullyDecoded));
-		QINFO_PRINT(global_types::qinfo_level_e::ZERO, mainWindowCtrlTabTabs,  "Set URL in websiteText to " << websiteStr);
+		QINFO_PRINT(global_types::qinfo_level_e::ZERO, mainWindowCtrlTabUrl,  "Set URL in websiteText to " << websiteStr);
 		this->mainWindowCore->websiteText->setText(websiteStr);
 	} else {
 		this->mainWindowCore->websiteText->clear();
 	}
+}
+
+void main_window_ctrl_tab::MainWindowCtrlTab::refreshUrl(int tabIndex) {
+	QWebEngineView * centerWindow = dynamic_cast<QWebEngineView *>(this->mainWindowCore->tabs->widget(tabIndex));
+	QUrl currUrl = centerWindow->url();
+
+	QString urlStr (currUrl.toDisplayString(QUrl::FullyDecoded));
+	QINFO_PRINT(global_types::qinfo_level_e::ZERO, mainWindowCtrlTabUrl,  "Refresh URL " << urlStr);
+
+	centerWindow->setUrl(QUrl(currUrl));
 }

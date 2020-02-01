@@ -201,15 +201,6 @@ namespace main_window {
 			 */
 			void moveTab(int tabIndex);
 
-			/**
-			 * @brief Function: void refreshUrl(int tabIndex)
-			 *
-			 * \param tabIndex: tab index to refresh
-			 *
-			 * This function refreshes a tab as specified by the user
-			 */
-			void refreshUrl(int tabIndex);
-
 		private:
 
 			/**

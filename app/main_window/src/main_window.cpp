@@ -252,9 +252,6 @@ void main_window::MainWindow::connectSignals() {
 	connect(this->ctrl, &main_window_ctrl::MainWindowCtrl::moveCursorSignal, this, &main_window::MainWindow::moveCursor);
 	connect(this->ctrl, &main_window_ctrl::MainWindowCtrl::moveTabSignal, this, &main_window::MainWindow::moveTab);
 
-	// Refresh URL tab
-	connect(this->ctrl, &main_window_ctrl::MainWindowCtrl::refreshUrlSignal, this, &main_window::MainWindow::refreshUrl);
-
 	// Close window
 	connect(this->mainWindowCore->fileMenu->exitAction, &QAction::triggered, this, &main_window::MainWindow::closeWindow);
 	connect(this->ctrl, &main_window_ctrl::MainWindowCtrl::closeWindowSignal, this, &main_window::MainWindow::closeWindow);
@@ -307,12 +304,6 @@ void main_window::MainWindow::moveTab(int tabIndex) {
 	this->mainWindowCore->tabs->tabBar()->moveTab(tabIndexCurrent, tabIndex);
 }
 
-void main_window::MainWindow::refreshUrl(int tabIndex) {
-	QWebEngineView * centerWindow = dynamic_cast<QWebEngineView *>(this->mainWindowCore->tabs->widget(tabIndex));
-	QUrl currUrl = centerWindow->url();
-
-	centerWindow->setUrl(QUrl(currUrl));
-}
 
 void main_window::MainWindow::closeTab(int index) {
 	QINFO_PRINT(global_types::qinfo_level_e::ZERO, mainWindowTabs,  "Close tab " << index);

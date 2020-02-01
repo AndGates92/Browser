@@ -84,9 +84,6 @@ void main_window_ctrl::MainWindowCtrl::connectSignals() {
 	connect(this->tabctrl, &main_window_ctrl_tab::MainWindowCtrlTab::moveTabSignal, this, &main_window_ctrl::MainWindowCtrl::moveTab);
 	connect(this->tabctrl, &main_window_ctrl_tab::MainWindowCtrlTab::moveCursorSignal, this, &main_window_ctrl::MainWindowCtrl::moveCursor);
 
-	// Refresh URL tab
-	connect(this->tabctrl, &main_window_ctrl_tab::MainWindowCtrlTab::refreshUrlSignal, this, &main_window_ctrl::MainWindowCtrl::refreshUrl);
-
 }
 
 void main_window_ctrl::MainWindowCtrl::toggleShowMenubar() {
@@ -173,7 +170,7 @@ void main_window_ctrl::MainWindowCtrl::keyPressEvent(QKeyEvent * event) {
 			case Qt::Key_Return:
 				QINFO_PRINT(global_types::qinfo_level_e::ZERO, mainWindowCtrlUserInput,  "User typed text " << userTypedText);
 
-				if ((windowState == main_window_shared_types::state_e::CLOSE_TAB) || (windowState == main_window_shared_types::state_e::MOVE_RIGHT) || (windowState == main_window_shared_types::state_e::MOVE_LEFT) || (windowState == main_window_shared_types::state_e::TAB_MOVE)) {
+				if ((windowState == main_window_shared_types::state_e::REFRESH_TAB) || (windowState == main_window_shared_types::state_e::CLOSE_TAB) || (windowState == main_window_shared_types::state_e::MOVE_RIGHT) || (windowState == main_window_shared_types::state_e::MOVE_LEFT) || (windowState == main_window_shared_types::state_e::TAB_MOVE)) {
 					this->tabctrl->processTabIndex(userTypedText);
 				}
 				break;
@@ -231,10 +228,6 @@ void main_window_ctrl::MainWindowCtrl::keyPressEvent(QKeyEvent * event) {
 
 void main_window_ctrl::MainWindowCtrl::setShortcutEnabledProperty(bool enabled) {
 	this->setAllShortcutEnabledProperty(enabled);
-}
-
-void main_window_ctrl::MainWindowCtrl::refreshUrl(int tabIndex) {
-	emit this->refreshUrlSignal(tabIndex);
 }
 
 void main_window_ctrl::MainWindowCtrl::closeTab(int index) {

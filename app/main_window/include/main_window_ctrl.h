@@ -159,15 +159,6 @@ namespace main_window_ctrl {
 			void moveTabSignal(int tabIndex);
 
 			/**
-			 * @brief Function: void refreshUrlSignal(int tabIndex)
-			 *
-			 * \param tabIndex: tab index to refresh
-			 *
-			 * This function is a signal to refresh a tab as specified by the user
-			 */
-			void refreshUrlSignal(int tabIndex);
-
-			/**
 			 * @brief Function: void closeTabSignal(int index)
 			 *
 			 * \param index: index of tab to close
@@ -243,15 +234,6 @@ namespace main_window_ctrl {
 			 * This function moves the current tab to a different tab as specified by the user
 			 */
 			void moveTab(int tabIndex);
-
-			/**
-			 * @brief Function: void refreshUrl(int tabIndex)
-			 *
-			 * \param tabIndex: tab index to refresh
-			 *
-			 * This function refreshes a tab as specified by the user
-			 */
-			void refreshUrl(int tabIndex);
 
 			/**
 			 * @brief Function: void setAllShortcutEnabledProperty(bool enabled)
