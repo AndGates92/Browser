@@ -22,7 +22,7 @@ Q_LOGGING_CATEGORY(mainWindowCtrlOverall, "mainWindowCtrl.overall", MSG_TYPE_LEV
 Q_LOGGING_CATEGORY(mainWindowCtrlUserInput, "mainWindowCtrl.userInput", MSG_TYPE_LEVEL)
 Q_LOGGING_CATEGORY(mainWindowCtrlSearch, "mainWindowCtrl.search", MSG_TYPE_LEVEL)
 
-main_window_ctrl::MainWindowCtrl::MainWindowCtrl(main_window_core::MainWindowCore * windowCore, QWidget * parent) : main_window_ctrl_base::MainWindowCtrlBase(windowCore, parent, main_window_ctrl::commandFileFullPath), tabctrl(new main_window_ctrl_tab::MainWindowCtrlTab(windowCore, parent)), userText(QString::null) {
+main_window_ctrl::MainWindowCtrl::MainWindowCtrl(main_window_core::MainWindowCore * windowCore, QWidget * parent) : main_window_ctrl_base::MainWindowCtrlBase(windowCore, parent, main_window_ctrl::commandFileFullPath), tabctrl(new main_window_ctrl_tab::MainWindowCtrlTab(windowCore, parent)) {
 
 	// Shortcuts
 	this->createShortcuts();
@@ -136,15 +136,15 @@ void main_window_ctrl::MainWindowCtrl::keyReleaseEvent(QKeyEvent * event) {
 				this->printUserInput(main_window_shared_types::text_action_e::CLEAR);
 				break;
 			case Qt::Key_Backspace:
-				QINFO_PRINT(global_types::qinfo_level_e::ZERO, mainWindowCtrlUserInput,  "User typed text " << this->userText);
+				QINFO_PRINT(global_types::qinfo_level_e::ZERO, mainWindowCtrlUserInput,  "User typed text " << this->mainWindowCore->userText);
 				// Last position of the string
-				if (this->userText.isEmpty() == 0) {
-					int endString = this->userText.count() - 1;
-					this->userText.remove(endString, 1);
-					this->printUserInput(main_window_shared_types::text_action_e::SET, this->userText);
+				if (this->mainWindowCore->userText.isEmpty() == 0) {
+					int endString = this->mainWindowCore->userText.count() - 1;
+					this->mainWindowCore->userText.remove(endString, 1);
+					this->printUserInput(main_window_shared_types::text_action_e::SET, this->mainWindowCore->userText);
 				}
-				// If in state TAB MOVE and the userText is empty after deleting the last character, set the move value to IDLE
-				if ((this->userText.isEmpty() == 1) && (this->mainWindowCore->mainWindowState == main_window_shared_types::state_e::TAB_MOVE)) {
+				// If in state TAB MOVE and the mainWindowCore->userText is empty after deleting the last character, set the move value to IDLE
+				if ((this->mainWindowCore->userText.isEmpty() == 1) && (this->mainWindowCore->mainWindowState == main_window_shared_types::state_e::TAB_MOVE)) {
 					this->mainWindowCore->moveValueType = main_window_shared_types::move_value_e::IDLE;
 				}
 				break;
@@ -170,14 +170,14 @@ void main_window_ctrl::MainWindowCtrl::keyPressEvent(QKeyEvent * event) {
 		switch (pressedKey) {
 			case Qt::Key_Enter:
 			case Qt::Key_Return:
-				QINFO_PRINT(global_types::qinfo_level_e::ZERO, mainWindowCtrlUserInput,  "User typed text " << this->userText);
+				QINFO_PRINT(global_types::qinfo_level_e::ZERO, mainWindowCtrlUserInput,  "User typed text " << this->mainWindowCore->userText);
 
 				if (this->mainWindowCore->mainWindowState == main_window_shared_types::state_e::OPEN_TAB) {
-					emit this->addNewTabSignal(this->userText);
+					emit this->addNewTabSignal(this->mainWindowCore->userText);
 				} else if (this->mainWindowCore->mainWindowState == main_window_shared_types::state_e::SEARCH) {
-					emit this->searchCurrentTabSignal(this->userText);
+					emit this->searchCurrentTabSignal(this->mainWindowCore->userText);
 				} else if ((this->mainWindowCore->mainWindowState == main_window_shared_types::state_e::CLOSE_TAB) || (this->mainWindowCore->mainWindowState == main_window_shared_types::state_e::MOVE_RIGHT) || (this->mainWindowCore->mainWindowState == main_window_shared_types::state_e::MOVE_LEFT) || (this->mainWindowCore->mainWindowState == main_window_shared_types::state_e::TAB_MOVE)) {
-					this->tabctrl->processTabIndex(this->userText);
+					this->tabctrl->processTabIndex(this->mainWindowCore->userText);
 				}
 				this->mainWindowCore->mainWindowState = main_window_shared_types::state_e::IDLE;
 				this->setAllShortcutEnabledProperty(true);
@@ -212,7 +212,7 @@ void main_window_ctrl::MainWindowCtrl::keyPressEvent(QKeyEvent * event) {
 				} else if (this->mainWindowCore->mainWindowState == main_window_shared_types::state_e::COMMAND) {
 					this->printUserInput(main_window_shared_types::text_action_e::APPEND, event->text());
 					if (pressedKey >= Qt::Key_Space) {
-						this->executeCommand(this->userText);
+						this->executeCommand(this->mainWindowCore->userText);
 					}
 				} else {
 					if (pressedKey == Qt::Key_Colon) {

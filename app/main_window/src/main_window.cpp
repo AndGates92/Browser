@@ -315,7 +315,7 @@ void main_window::MainWindow::newSearchTab(int index, QString search) {
 }
 
 void main_window::MainWindow::searchCurrentTab(QString search) {
-	int tabIndex = this->mainWindowCore->tabs->currentIndex();
+	int tabIndex = this->mainWindowCore->getCurrentTabIndex();
 	QINFO_PRINT(global_types::qinfo_level_e::ZERO, mainWindowTabs,  "Search " << search << " in tab " << tabIndex);
 	this->newSearchTab(tabIndex, search);
 }
@@ -333,7 +333,7 @@ void main_window::MainWindow::updateInfoSlot(int index) {
 
 void main_window::MainWindow::updateWebsite(int index) {
 
-	int tabCount = this->mainWindowCore->tabs->count();
+	int tabCount = this->mainWindowCore->getTabCount();
 
 	if (tabCount > 0) {
 		QWebEngineView * centerWindow = dynamic_cast<QWebEngineView *>(this->mainWindowCore->tabs->widget(index));

@@ -15,6 +15,7 @@
 
 // Categories
 Q_LOGGING_CATEGORY(mainWindowCoreOverall, "mainWindowCore.overall", MSG_TYPE_LEVEL)
+Q_LOGGING_CATEGORY(mainWindowCoreUserInput, "mainWindowCtrlBase.userInput", MSG_TYPE_LEVEL)
 
 main_window_core::MainWindowCore::MainWindowCore() : mainWidget(Q_NULLPTR), tabs(Q_NULLPTR), fileMenu(Q_NULLPTR), editMenu(Q_NULLPTR), cmdMenu(Q_NULLPTR), userInputText(Q_NULLPTR), websiteText(Q_NULLPTR), infoText(Q_NULLPTR), mainWindowState(main_window_shared_types::state_e::IDLE), moveValueType(main_window_shared_types::move_value_e::IDLE), userText(QString::null) {
 
@@ -42,19 +43,51 @@ main_window_core::MainWindowCore::~MainWindowCore() {
 	delete this->mainWidget;
 }
 
-QString main_window_core::MainWindowCore::createTabInfo() {
+int main_window_core::MainWindowCore::getTabCount() {
+	return this->tabs->count();
+}
 
-	int tabCount = this->tabs->count();
+QString main_window_core::MainWindowCore::getActionName() {
+	QString actionName(QString::null);
 
-	QString tabInfo(QString::null);
-	if (tabCount == 0) {
-		tabInfo.append("No tabs");
-	} else {
-		tabInfo.append("tab ");
-		tabInfo.append(QString("%1").arg(this->tabs->currentIndex() + 1));
-		tabInfo.append(" out of ");
-		tabInfo.append(QString("%1").arg(tabCount));
+	actionName << this->mainWindowState;
+
+	if (this->mainWindowState == main_window_shared_types::state_e::TAB_MOVE) {
+		if (this->moveValueType == main_window_shared_types::move_value_e::RIGHT) {
+			actionName.append(" right");
+		} else if (this->moveValueType == main_window_shared_types::move_value_e::LEFT) {
+			actionName.append(" left");
+		}
 	}
 
-	return tabInfo;
+	// Create lowercase copy of the string
+	actionName = actionName.toLower();
+
+	QINFO_PRINT(global_types::qinfo_level_e::ZERO, mainWindowCoreUserInput,  "State " << this->mainWindowState << " action text " << actionName);
+
+	return actionName;
+}
+
+int main_window_core::MainWindowCore::getCurrentTabIndex() {
+	return this->tabs->currentIndex();
+}
+
+
+void main_window_core::MainWindowCore::updateUserInput(const main_window_shared_types::text_action_e action, QString text) {
+
+	switch (action) {
+		case main_window_shared_types::text_action_e::SET:
+			this->userText.clear();
+			this->userText.append(text);
+			break;
+		case main_window_shared_types::text_action_e::APPEND:
+			this->userText.append(text);
+			break;
+		case main_window_shared_types::text_action_e::CLEAR:
+			this->userText.clear();
+			break;
+		default:
+			qWarning(mainWindowCoreUserInput) << "Unknown action " << action << "\n";
+			break;
+	}
 }

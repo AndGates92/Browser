@@ -137,13 +137,13 @@ void main_window_ctrl_tab::MainWindowCtrlTab::executeActionOnTab(int index) {
 	int tabIndex = main_window_ctrl_tab::emptyUserInput;
 	// index is main_window_ctrl_tab::emptyUserInput if the argument is not passed
 	if (index == main_window_ctrl_tab::emptyUserInput) {
-		tabIndex = this->getCurrentTabIndex();
+		tabIndex = this->mainWindowCore->getCurrentTabIndex();
 	} else {
 		// start indexing tab to close with 0
 		tabIndex = index;
 	}
 
-	int tabCount = this->getTabCount();
+	int tabCount = this->mainWindowCore->getTabCount();
 
 	if ((tabCount > tabIndex) && (tabIndex >= 0)) {
 		if (this->mainWindowCore->mainWindowState == main_window_shared_types::state_e::CLOSE_TAB) {
@@ -186,7 +186,7 @@ void main_window_ctrl_tab::MainWindowCtrlTab::executeTabAction(int userInput) {
 		}
 	}
 
-	int tabIndex = this->getCurrentTabIndex();
+	int tabIndex = this->mainWindowCore->getCurrentTabIndex();
 	emit this->updateInfo();
 	emit this->updateWebsiteSignal(tabIndex);
 }
@@ -325,13 +325,13 @@ void main_window_ctrl_tab::MainWindowCtrlTab::convertToAbsTabIndex(int offset, i
 		distance = offset;
 	}
 
-	int tabCount = this->getTabCount();
+	int tabCount = this->mainWindowCore->getTabCount();
 
 	int tabIndexDst = 0;
 	if (sign == 0) {
 		tabIndexDst = distance;
 	} else {
-		tabIndexDst = this->getCurrentTabIndex() + (sign * distance);
+		tabIndexDst = this->mainWindowCore->getCurrentTabIndex() + (sign * distance);
 	}
 	if (offset > tabCount) {
 		int maxTabRange = tabCount - 1;

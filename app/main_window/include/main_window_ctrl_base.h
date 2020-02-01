@@ -92,41 +92,24 @@ namespace main_window_ctrl_base {
 			virtual void connectSignals() = 0;
 
 			/**
-			 * @brief Function: int getTabCount()
-			 *
-			 * \return the number of tabs in the window
-			 *
-			 * This function returns the number of openend tabs
-			 */
-			int getTabCount();
-
-			/**
-			 * @brief Function: int getCurrentTabIndex()
-			 *
-			 * \return the index of the current tab
-			 *
-			 * This function returns the index of the current tab
-			 */
-			int getCurrentTabIndex();
-
-			/**
 			 * @brief Function: void printUserInput(const main_window_shared_types::text_action_e action, QString text = QString::null)
 			 *
 			 * \param action: action to execute - valid values are: SET, APPEND and CLEAR
 			 * \param text: text to append to userText
 			 *
-			 * This function is the slot to update the user input label
+			 * This function updates the user input label
 			 */
 			void printUserInput(const main_window_shared_types::text_action_e action, QString text = QString::null);
 
 			/**
-			 * @brief Function: QString getActionName()
+			 * @brief Function: void createTabInfo()
 			 *
-			 * \return string with the text to display as action
+			 * \return QString with the information
 			 *
-			 * Get action name to display in the userInputText label
+			 * This function creates the string with the tab information to be displayed at the bottom of the window
 			 */
-			QString getActionName();
+			QString createTabInfo();
+
 
 		private:
 

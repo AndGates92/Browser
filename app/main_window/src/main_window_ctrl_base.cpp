@@ -28,14 +28,6 @@ main_window_ctrl_base::MainWindowCtrlBase::~MainWindowCtrlBase() {
 
 }
 
-int main_window_ctrl_base::MainWindowCtrlBase::getTabCount() {
-	return this->mainWindowCore->tabs->count();
-}
-
-int main_window_ctrl_base::MainWindowCtrlBase::getCurrentTabIndex() {
-	return this->mainWindowCore->tabs->currentIndex();
-}
-
 void main_window_ctrl_base::MainWindowCtrlBase::printUserInput(const main_window_shared_types::text_action_e action, QString text) {
 
 	QString textPrint(QString::null);
@@ -47,28 +39,14 @@ void main_window_ctrl_base::MainWindowCtrlBase::printUserInput(const main_window
 
 	QINFO_PRINT(global_types::qinfo_level_e::ZERO, mainWindowCtrlBaseUserInput,  "Action is " << action << " for user input " << textPrint);
 
-	switch (action) {
-		case main_window_shared_types::text_action_e::SET:
-			this->mainWindowCore->userText.clear();
-			this->mainWindowCore->userText.append(text);
-			break;
-		case main_window_shared_types::text_action_e::APPEND:
-			this->mainWindowCore->userText.append(text);
-			break;
-		case main_window_shared_types::text_action_e::CLEAR:
-			this->mainWindowCore->userText.clear();
-			break;
-		default:
-			qWarning(mainWindowCtrlBaseUserInput) << "Unknown action " << action << "\n";
-			break;
-	}
+	this->mainWindowCore->updateUserInput(action, text);
 
 	QString textLabel(QString::null);
 	if (this->mainWindowCore->mainWindowState != main_window_shared_types::state_e::IDLE) {
 		QString userAction(QString::null);
 		if (this->mainWindowCore->mainWindowState != main_window_shared_types::state_e::COMMAND) {
 			// Get action name
-			userAction = this->getActionName();
+			userAction = this->mainWindowCore->getActionName();
 		}
 		// Create string following format: :<action> <userText>
 		textLabel.append(":" + userAction + " " + this->mainWindowCore->userText);
@@ -78,30 +56,26 @@ void main_window_ctrl_base::MainWindowCtrlBase::printUserInput(const main_window
 
 }
 
-QString main_window_ctrl_base::MainWindowCtrlBase::getActionName() {
-	QString actionName(QString::null);
-
-	actionName << this->mainWindowCore->mainWindowState;
-
-	if (this->mainWindowCore->mainWindowState == main_window_shared_types::state_e::TAB_MOVE) {
-		if (this->mainWindowCore->moveValueType == main_window_shared_types::move_value_e::RIGHT) {
-			actionName.append(" right");
-		} else if (this->mainWindowCore->moveValueType == main_window_shared_types::move_value_e::LEFT) {
-			actionName.append(" left");
-		}
-	}
-
-	// Create lowercase copy of the string
-	actionName = actionName.toLower();
-
-	QINFO_PRINT(global_types::qinfo_level_e::ZERO, mainWindowCtrlBaseUserInput,  "State " << this->mainWindowCore->mainWindowState << " action text " << actionName);
-
-	return actionName;
-}
-
 void main_window_ctrl_base::MainWindowCtrlBase::updateInfo() {
 	QString info(QString::null);
-	info = this->mainWindowCore->createTabInfo();
+	info = this->createTabInfo();
 
 	this->mainWindowCore->infoText->setText(info);
+}
+
+QString main_window_ctrl_base::MainWindowCtrlBase::createTabInfo() {
+
+	int tabCount = this->mainWindowCore->getTabCount();
+
+	QString tabInfo(QString::null);
+	if (tabCount == 0) {
+		tabInfo.append("No tabs");
+	} else {
+		tabInfo.append("tab ");
+		tabInfo.append(QString("%1").arg(this->mainWindowCore->getCurrentTabIndex() + 1));
+		tabInfo.append(" out of ");
+		tabInfo.append(QString("%1").arg(tabCount));
+	}
+
+	return tabInfo;
 }

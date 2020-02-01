@@ -328,12 +328,6 @@ namespace main_window_ctrl {
 			 */
 			main_window_ctrl_tab::MainWindowCtrlTab * tabctrl;
 
-			/**
-			 * @brief user text
-			 *
-			 */
-			QString userText;
-
 			// ================================ START SHORTCUTS ========================================//
 			/**
 			 * @brief shortcut to toggle visibility of the menu bar
