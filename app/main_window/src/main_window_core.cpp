@@ -72,7 +72,6 @@ int main_window_core::MainWindowCore::getCurrentTabIndex() {
 	return this->tabs->currentIndex();
 }
 
-
 void main_window_core::MainWindowCore::updateUserInput(const main_window_shared_types::text_action_e action, QString text) {
 
 	switch (action) {
@@ -90,4 +89,24 @@ void main_window_core::MainWindowCore::updateUserInput(const main_window_shared_
 			qWarning(mainWindowCoreUserInput) << "Unknown action " << action << "\n";
 			break;
 	}
+}
+
+main_window_shared_types::state_e main_window_core::MainWindowCore::getMainWindowState() {
+	return this->mainWindowState;
+}
+
+main_window_shared_types::move_value_e main_window_core::MainWindowCore::getMoveValueType() {
+	return this->moveValueType;
+}
+
+QString main_window_core::MainWindowCore::getUserText() {
+	return this->userText;
+}
+
+void main_window_core::MainWindowCore::setMainWindowState(main_window_shared_types::state_e windowState) {
+	this->mainWindowState = windowState;
+}
+
+void main_window_core::MainWindowCore::setMoveValueType(main_window_shared_types::move_value_e moveType) {
+	this->moveValueType = moveType;
 }

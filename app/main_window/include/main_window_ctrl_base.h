@@ -110,7 +110,6 @@ namespace main_window_ctrl_base {
 			 */
 			QString createTabInfo();
 
-
 		private:
 
 	};

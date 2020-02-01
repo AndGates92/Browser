@@ -41,15 +41,17 @@ void main_window_ctrl_base::MainWindowCtrlBase::printUserInput(const main_window
 
 	this->mainWindowCore->updateUserInput(action, text);
 
+	main_window_shared_types::state_e windowState = this->mainWindowCore->getMainWindowState();
+
 	QString textLabel(QString::null);
-	if (this->mainWindowCore->mainWindowState != main_window_shared_types::state_e::IDLE) {
+	if (windowState != main_window_shared_types::state_e::IDLE) {
 		QString userAction(QString::null);
-		if (this->mainWindowCore->mainWindowState != main_window_shared_types::state_e::COMMAND) {
+		if (windowState != main_window_shared_types::state_e::COMMAND) {
 			// Get action name
 			userAction = this->mainWindowCore->getActionName();
 		}
 		// Create string following format: :<action> <userText>
-		textLabel.append(":" + userAction + " " + this->mainWindowCore->userText);
+		textLabel.append(":" + userAction + " " + this->mainWindowCore->getUserText());
 	}
 
 	this->mainWindowCore->userInputText->setText(textLabel);

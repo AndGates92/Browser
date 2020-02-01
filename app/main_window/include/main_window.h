@@ -111,12 +111,16 @@ namespace main_window {
 			/**
 			 * @brief Function: QMenuBar * getMenuBar()
 			 *
+			 * \return the menu bar
+			 *
 			 * This function returns the menubar attached to the main window
 			 */
 			QMenuBar * getMenuBar();
 
 			/**
 			 * @brief Function: QLabel * getCenterWindow()
+			 *
+			 * \return the center window
 			 *
 			 * This function returns the centerWindow attached to the main window
 			 */
