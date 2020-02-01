@@ -75,13 +75,7 @@ void main_window_ctrl::MainWindowCtrl::connectSignals() {
 	connect(this->tabctrl, &main_window_ctrl_tab::MainWindowCtrlTab::setShortcutEnabledPropertySignal, this, &main_window_ctrl::MainWindowCtrl::setAllShortcutEnabledProperty);
 
 	// open tab action (from fileMenu)
-	connect(this, &main_window_ctrl::MainWindowCtrl::openNewTabSignal, this->tabctrl, &main_window_ctrl_tab::MainWindowCtrlTab::openNewTab);
-
-	// Update website in info bar
-	connect(this->tabctrl, &main_window_ctrl_tab::MainWindowCtrlTab::updateWebsiteSignal, this, &main_window_ctrl::MainWindowCtrl::updateWebsite);
-
-	// Add tab
-	connect(this->tabctrl, &main_window_ctrl_tab::MainWindowCtrlTab::addNewTabSignal, this, &main_window_ctrl::MainWindowCtrl::addNewTab);
+	connect(this, &main_window_ctrl::MainWindowCtrl::openNewTabSignal, this->tabctrl, &main_window_ctrl_tab::MainWindowCtrlTab::setUpOpenNewTab);
 
 	// Close tab
 	connect(this->tabctrl, &main_window_ctrl_tab::MainWindowCtrlTab::closeTabSignal, this, &main_window_ctrl::MainWindowCtrl::closeTab);
@@ -89,9 +83,6 @@ void main_window_ctrl::MainWindowCtrl::connectSignals() {
 	// Move tab
 	connect(this->tabctrl, &main_window_ctrl_tab::MainWindowCtrlTab::moveTabSignal, this, &main_window_ctrl::MainWindowCtrl::moveTab);
 	connect(this->tabctrl, &main_window_ctrl_tab::MainWindowCtrlTab::moveCursorSignal, this, &main_window_ctrl::MainWindowCtrl::moveCursor);
-
-	// Search in current tab
-	connect(this->tabctrl, &main_window_ctrl_tab::MainWindowCtrlTab::searchCurrentTabSignal, this, &main_window_ctrl::MainWindowCtrl::searchCurrentTab);
 
 	// Refresh URL tab
 	connect(this->tabctrl, &main_window_ctrl_tab::MainWindowCtrlTab::refreshUrlSignal, this, &main_window_ctrl::MainWindowCtrl::refreshUrl);
@@ -182,16 +173,9 @@ void main_window_ctrl::MainWindowCtrl::keyPressEvent(QKeyEvent * event) {
 			case Qt::Key_Return:
 				QINFO_PRINT(global_types::qinfo_level_e::ZERO, mainWindowCtrlUserInput,  "User typed text " << userTypedText);
 
-				if (windowState == main_window_shared_types::state_e::OPEN_TAB) {
-					emit this->addNewTabSignal(userTypedText);
-				} else if (windowState == main_window_shared_types::state_e::SEARCH) {
-					emit this->searchCurrentTabSignal(userTypedText);
-				} else if ((windowState == main_window_shared_types::state_e::CLOSE_TAB) || (windowState == main_window_shared_types::state_e::MOVE_RIGHT) || (windowState == main_window_shared_types::state_e::MOVE_LEFT) || (windowState == main_window_shared_types::state_e::TAB_MOVE)) {
+				if ((windowState == main_window_shared_types::state_e::CLOSE_TAB) || (windowState == main_window_shared_types::state_e::MOVE_RIGHT) || (windowState == main_window_shared_types::state_e::MOVE_LEFT) || (windowState == main_window_shared_types::state_e::TAB_MOVE)) {
 					this->tabctrl->processTabIndex(userTypedText);
 				}
-				this->mainWindowCore->setMainWindowState(main_window_shared_types::state_e::IDLE);
-				this->setAllShortcutEnabledProperty(true);
-				this->printUserInput(main_window_shared_types::text_action_e::CLEAR);
 				break;
 			default:
 				if ((windowState == main_window_shared_types::state_e::OPEN_TAB) || (windowState == main_window_shared_types::state_e::SEARCH)) {
@@ -237,17 +221,16 @@ void main_window_ctrl::MainWindowCtrl::keyPressEvent(QKeyEvent * event) {
 
 	this->tabctrl->keyPressEvent(event);
 
+	if ((pressedKey == Qt::Key_Return) || (pressedKey == Qt::Key_Enter)) {
+		this->mainWindowCore->setMainWindowState(main_window_shared_types::state_e::IDLE);
+		this->setAllShortcutEnabledProperty(true);
+		this->printUserInput(main_window_shared_types::text_action_e::CLEAR);
+	}
 
 }
 
 void main_window_ctrl::MainWindowCtrl::setShortcutEnabledProperty(bool enabled) {
 	this->setAllShortcutEnabledProperty(enabled);
-}
-
-
-
-QString main_window_ctrl::MainWindowCtrl::getTabUrl(QString search) {
-	return this->tabctrl->createUrl(search);
 }
 
 void main_window_ctrl::MainWindowCtrl::refreshUrl(int tabIndex) {
@@ -264,18 +247,6 @@ void main_window_ctrl::MainWindowCtrl::moveTab(int tabIndex) {
 
 void main_window_ctrl::MainWindowCtrl::moveCursor(int tabIndex) {
 	emit this->moveCursorSignal(tabIndex);
-}
-
-void main_window_ctrl::MainWindowCtrl::addNewTab(QString search) {
-	emit this->addNewTabSignal(search);
-}
-
-void main_window_ctrl::MainWindowCtrl::updateWebsite(int index) {
-	emit this->updateWebsiteSignal(index);
-}
-
-void main_window_ctrl::MainWindowCtrl::searchCurrentTab(QString search) {
-	emit this->searchCurrentTabSignal(search);
 }
 
 void main_window_ctrl::MainWindowCtrl::openNewTab() {

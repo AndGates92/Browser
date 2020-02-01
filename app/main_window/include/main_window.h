@@ -30,7 +30,6 @@
 
 Q_DECLARE_LOGGING_CATEGORY(mainWindowOverall)
 Q_DECLARE_LOGGING_CATEGORY(mainWindowCenterWindow)
-Q_DECLARE_LOGGING_CATEGORY(mainWindowSearch)
 Q_DECLARE_LOGGING_CATEGORY(mainWindowTabs)
 
 namespace main_window {
@@ -176,15 +175,6 @@ namespace main_window {
 			void setCenterWindow(QString str);
 
 			/**
-			 * @brief Function: void addNewTab(QString search)
-			 *
-			 * \param search: string to search
-			 *
-			 * This function adds a new tab to the main window
-			 */
-			void addNewTab(QString search);
-
-			/**
 			 * @brief Function: void closeTab(int index)
 			 *
 			 * \param index: index of tab to close
@@ -192,15 +182,6 @@ namespace main_window {
 			 * This function closes a tab
 			 */
 			void closeTab(int index);
-
-			/**
-			 * @brief Function: void updateWebsite(int index)
-			 *
-			 * \param index: index of tab where the website has to be updated
-			 *
-			 * This function updates the website label
-			 */
-			void updateWebsite(int index);
 
 			/**
 			 * @brief Function: void moveCursor(int tabIndex)
@@ -228,15 +209,6 @@ namespace main_window {
 			 * This function refreshes a tab as specified by the user
 			 */
 			void refreshUrl(int tabIndex);
-
-			/**
-			 * @brief Function: void searchCurrentTab(QString search)
-			 *
-			 * \param search: string to search
-			 *
-			 * This function search on the current tab
-			 */
-			void searchCurrentTab(QString search);
 
 		private:
 
@@ -309,16 +281,6 @@ namespace main_window {
 			 * This function connects signals and slots between main window elements
 			 */
 			void connectSignals();
-
-			/**
-			 * @brief Function: void newSearchTab(int index, QString search)
-			 *
-			 * \param index: tab index to be searched
-			 * \param search: string to search
-			 *
-			 * This function search on the tab at index index
-			 */
-			void newSearchTab(int index, QString search);
 
 			/**
 			 * @brief Function: void getTabCount()

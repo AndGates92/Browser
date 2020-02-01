@@ -102,24 +102,7 @@ namespace main_window_ctrl {
 			 */
 			void keyReleaseEvent(QKeyEvent * event);
 
-			/**
-			 * @brief Function: QString getTabUrl(QString search)
-			 *
-			 * \param search: string to search
-			 * \return string with URL
-			 *
-			 * This function return a strign with the URL on the input from the user
-			 */
-			QString getTabUrl(QString search);
-
 		public slots:
-			/**
-			 * @brief Function: void openNewTab()
-			 *
-			 * This function opens a new tab
-			 */
-			void openNewTab();
-
 			/**
 			 * @brief Function: void setShortcutEnabledProperty(bool enabled)
 			 *
@@ -129,18 +112,11 @@ namespace main_window_ctrl {
 			 */
 			void setShortcutEnabledProperty(bool enabled);
 
+			void openNewTab();
+
 		protected:
 
 		signals:
-			/**
-			 * @brief Function: void updateWebsiteSignal(int index)
-			 *
-			 * \param index: index of tab where the website is searched
-			 *
-			 * This function is a signal to inform that the info label needs to be updated
-			 */
-			void updateWebsiteSignal(int index);
-
 			/**
 			 * @brief Function: void searchCurrentTabSignal(QString search)
 			 *
@@ -192,15 +168,6 @@ namespace main_window_ctrl {
 			void refreshUrlSignal(int tabIndex);
 
 			/**
-			 * @brief Function: void addNewTabSignal(QString search)
-			 *
-			 * \param search: string to search
-			 *
-			 * This function is a signal to add a new tab to the main window
-			 */
-			void addNewTabSignal(QString search);
-
-			/**
 			 * @brief Function: void closeTabSignal(int index)
 			 *
 			 * \param index: index of tab to close
@@ -208,13 +175,6 @@ namespace main_window_ctrl {
 			 * This function is a signal to close a tab
 			 */
 			void closeTabSignal(int index);
-
-			/**
-			 * @brief Function: void openNewTabSignal()
-			 *
-			 * This function is a signal to open a tab
-			 */
-			void openNewTabSignal();
 
 			/**
 			 * @brief Function: void requestCurrentTabIndexSignal()
@@ -231,6 +191,15 @@ namespace main_window_ctrl {
 			 * This function is a signal to send the value of the current tab index
 			 */
 			void sendCurrentTabIndexSignal(int tabIndex);
+
+			/**
+			 * @brief Function: void closeTabSignal(int index)
+			 *
+			 * \param index: index of tab to close
+			 *
+			 * This function is a signal to close a tab
+			 */
+			void openNewTabSignal();
 
 		private slots:
 
@@ -249,15 +218,6 @@ namespace main_window_ctrl {
 			void toggleShowMenubar();
 
 			/**
-			 * @brief Function: void addNewTab(QString search)
-			 *
-			 * \param search: string to search
-			 *
-			 * This function adds a new tab to the main window
-			 */
-			void addNewTab(QString search);
-
-			/**
 			 * @brief Function: void closeTab(int index)
 			 *
 			 * \param index: index of tab to close
@@ -265,15 +225,6 @@ namespace main_window_ctrl {
 			 * This function closes a tab
 			 */
 			void closeTab(int index);
-
-			/**
-			 * @brief Function: void updateWebsite(int index)
-			 *
-			 * \param index: index of tab where the website has to be updated
-			 *
-			 * This function updates the website label
-			 */
-			void updateWebsite(int index);
 
 			/**
 			 * @brief Function: void moveCursor(int tabIndex)
@@ -301,15 +252,6 @@ namespace main_window_ctrl {
 			 * This function refreshes a tab as specified by the user
 			 */
 			void refreshUrl(int tabIndex);
-
-			/**
-			 * @brief Function: void searchCurrentTab(QString search)
-			 *
-			 * \param search: string to search
-			 *
-			 * This function search on the current tab
-			 */
-			void searchCurrentTab(QString search);
 
 			/**
 			 * @brief Function: void setAllShortcutEnabledProperty(bool enabled)

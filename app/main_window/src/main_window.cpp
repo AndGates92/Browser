@@ -30,7 +30,6 @@
 // Categories
 Q_LOGGING_CATEGORY(mainWindowOverall, "mainWindow.overall", MSG_TYPE_LEVEL)
 Q_LOGGING_CATEGORY(mainWindowCenterWindow, "mainWindow.centerWindow", MSG_TYPE_LEVEL)
-Q_LOGGING_CATEGORY(mainWindowSearch, "mainWindow.search", MSG_TYPE_LEVEL)
 Q_LOGGING_CATEGORY(mainWindowTabs, "mainWindow.tabs", MSG_TYPE_LEVEL)
 
 main_window::MainWindow::MainWindow(main_window_core::MainWindowCore * core, QWidget * parent, Qt::WindowFlags flags) : QMainWindow(parent, flags), mainWindowCore(core) {
@@ -246,21 +245,12 @@ void main_window::MainWindow::connectSignals() {
 	// open tab action
 	connect(this->mainWindowCore->fileMenu->openTabAction, &QAction::triggered, this->ctrl, &main_window_ctrl::MainWindowCtrl::openNewTab);
 
-	// Update website in info bar
-	connect(this->ctrl, &main_window_ctrl::MainWindowCtrl::updateWebsiteSignal, this, &main_window::MainWindow::updateWebsite);
-
-	// Add tab
-	connect(this->ctrl, &main_window_ctrl::MainWindowCtrl::addNewTabSignal, this, &main_window::MainWindow::addNewTab);
-
 	// Close tab
 	connect(this->ctrl, &main_window_ctrl::MainWindowCtrl::closeTabSignal, this, &main_window::MainWindow::closeTab);
 
 	// Move tab
 	connect(this->ctrl, &main_window_ctrl::MainWindowCtrl::moveCursorSignal, this, &main_window::MainWindow::moveCursor);
 	connect(this->ctrl, &main_window_ctrl::MainWindowCtrl::moveTabSignal, this, &main_window::MainWindow::moveTab);
-
-	// Search in current tab
-	connect(this->ctrl, &main_window_ctrl::MainWindowCtrl::searchCurrentTabSignal, this, &main_window::MainWindow::searchCurrentTab);
 
 	// Refresh URL tab
 	connect(this->ctrl, &main_window_ctrl::MainWindowCtrl::refreshUrlSignal, this, &main_window::MainWindow::refreshUrl);
@@ -275,7 +265,6 @@ void main_window::MainWindow::connectSignals() {
 	// Update info bar
 	connect(this->mainWindowCore->tabs, &QTabWidget::currentChanged, this, &main_window::MainWindow::updateInfoSlot);
 	connect(this->mainWindowCore->tabs, &QTabWidget::tabCloseRequested, this, &main_window::MainWindow::updateInfoSlot);
-//	connect(this->mainWindowCore->tabs, &QTabWidget::currentChanged, this->ctrl, &main_window_ctrl::MainWindowCtrl::updateWebsite);
 
 }
 
@@ -284,40 +273,6 @@ void main_window::MainWindow::createCtrl() {
 
 	// main window control class
 	this->ctrl = new main_window_ctrl::MainWindowCtrl(this->mainWindowCore, this);
-}
-
-void main_window::MainWindow::addNewTab(QString search) {
-	QWebEngineView * centerWindow = new QWebEngineView(this->mainWindowCore->mainWidget);
-
-	QINFO_PRINT(global_types::qinfo_level_e::ZERO, mainWindowTabs,  "Open tab with label " << search);
-	int tabIndex = this->mainWindowCore->tabs->addTab(centerWindow, search);
-	this->newSearchTab(tabIndex, search);
-
-	// Move to the newly opened tab
-	this->mainWindowCore->tabs->setCurrentIndex(tabIndex);
-
-	// Update info label
-	this->ctrl->updateInfo();
-}
-
-void main_window::MainWindow::newSearchTab(int index, QString search) {
-	QINFO_PRINT(global_types::qinfo_level_e::ZERO, mainWindowSearch,  "User input " << search << " in tab " << index);
-
-	QWebEngineView * centerWindow = dynamic_cast<QWebEngineView *>(this->mainWindowCore->tabs->widget(index));
-
-	QString tabTitle = search;
-	QString Url = this->ctrl->getTabUrl(search);
-
-	this->mainWindowCore->tabs->setTabText(index, tabTitle);
-	centerWindow->setUrl(QUrl(Url));
-
-	this->updateWebsite(index);
-}
-
-void main_window::MainWindow::searchCurrentTab(QString search) {
-	int tabIndex = this->mainWindowCore->getCurrentTabIndex();
-	QINFO_PRINT(global_types::qinfo_level_e::ZERO, mainWindowTabs,  "Search " << search << " in tab " << tabIndex);
-	this->newSearchTab(tabIndex, search);
 }
 
 #pragma GCC diagnostic push
@@ -331,21 +286,6 @@ void main_window::MainWindow::updateInfoSlot(int index) {
 #pragma GCC diagnostic pop
 
 
-void main_window::MainWindow::updateWebsite(int index) {
-
-	int tabCount = this->mainWindowCore->getTabCount();
-
-	if (tabCount > 0) {
-		QWebEngineView * centerWindow = dynamic_cast<QWebEngineView *>(this->mainWindowCore->tabs->widget(index));
-		QUrl websiteUrl = centerWindow->url();
-
-		QString websiteStr (websiteUrl.toDisplayString(QUrl::FullyDecoded));
-		QINFO_PRINT(global_types::qinfo_level_e::ZERO, mainWindowTabs,  "Set URL in websiteText to " << websiteStr);
-		this->mainWindowCore->websiteText->setText(websiteStr);
-	} else {
-		this->mainWindowCore->websiteText->clear();
-	}
-}
 
 void main_window::MainWindow::setCenterWindow(QString str) {
 	QINFO_PRINT(global_types::qinfo_level_e::ZERO, mainWindowCenterWindow,  "Change texts in center window");

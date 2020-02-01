@@ -158,11 +158,11 @@ namespace main_window_ctrl_tab {
 		public slots:
 
 			/**
-			 * @brief Function: void openNewTab()
+			 * @brief Function: void setUpOpenNewTab()
 			 *
-			 * This function opens a new tab
+			 * This function prepares to add a new tab and automatically search the user input
 			 */
-			void openNewTab();
+			void setUpOpenNewTab();
 
 		protected:
 
@@ -223,15 +223,6 @@ namespace main_window_ctrl_tab {
 			void closeTabSignal(int index);
 
 			/**
-			 * @brief Function: void searchCurrentTabSignal(QString search)
-			 *
-			 * \param search: string to search
-			 *
-			 * This function search on the current tab
-			 */
-			void searchCurrentTabSignal(QString search);
-
-			/**
 			 * @brief Function: void requestTabCountSignal()
 			 *
 			 * This function is a signal to initiate the request of the number of opened tabs
@@ -277,11 +268,11 @@ namespace main_window_ctrl_tab {
 			void moveTabTo();
 
 			/**
-			 * @brief Function: void newSearchTab()
+			 * @brief Function: void setUpNewSearchTab()
 			 *
-			 * This function changes the title of a tab
+			 * This function prepares to search the user input
 			 */
-			void newSearchTab();
+			void setUpNewSearchTab();
 
 			/**
 			 * @brief Function: void closeTab()
@@ -393,6 +384,45 @@ namespace main_window_ctrl_tab {
 			 * This function moves to a different tab as specified by the user
 			 */
 			void convertToAbsTabIndex(int offset = main_window_ctrl_tab::emptyUserInput, int sign = 0);
+
+			/**
+			 * @brief Function: void addNewTab(QString search)
+			 *
+			 * \param search: string to search
+			 *
+			 * This function adds a new tab to the main window
+			 */
+			void addNewTab(QString search);
+
+			/**
+			 * @brief Function: void newSearchTab(int index, QString search)
+			 *
+			 * \param index: tab index to be searched
+			 * \param search: string to search
+			 *
+			 * This function search on the tab at index index
+			 */
+			void newSearchTab(int index, QString search);
+
+			/**
+			 * @brief Function: void searchCurrentTab(QString search)
+			 *
+			 * \param search: string to search
+			 *
+			 * This function search on the current tab
+			 */
+			void searchCurrentTab(QString search);
+
+			/**
+			 * @brief Function: void updateWebsite(int index)
+			 *
+			 * \param index: index of tab where the website has to be updated
+			 *
+			 * This function updates the website label
+			 */
+			void updateWebsite(int index);
+
+
 	};
 
 }
