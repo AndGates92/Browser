@@ -249,9 +249,6 @@ void main_window::MainWindow::connectSignals() {
 	// open tab action
 	connect(this->mainWindowCore->topMenuBar->getFileMenu()->openTabAction, &QAction::triggered, this->ctrl, &main_window_ctrl::MainWindowCtrl::openNewTab);
 
-	// Close tab
-	connect(this->ctrl, &main_window_ctrl::MainWindowCtrl::closeTabSignal, this, &main_window::MainWindow::closeTab);
-
 	// Move tab
 	connect(this->ctrl, &main_window_ctrl::MainWindowCtrl::moveCursorSignal, this, &main_window::MainWindow::moveCursor);
 	connect(this->ctrl, &main_window_ctrl::MainWindowCtrl::moveTabSignal, this, &main_window::MainWindow::moveTab);
@@ -306,10 +303,7 @@ void main_window::MainWindow::moveTab(int tabIndex) {
 }
 
 
-void main_window::MainWindow::closeTab(int index) {
-	QINFO_PRINT(global_types::qinfo_level_e::ZERO, mainWindowTabs,  "Close tab " << index);
-	this->mainWindowCore->tabs->removeTab(index);
-}
+
 
 // TODO Delete
 void main_window::MainWindow::closeWindow() {

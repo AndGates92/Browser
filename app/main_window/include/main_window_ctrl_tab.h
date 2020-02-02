@@ -203,15 +203,6 @@ namespace main_window_ctrl_tab {
 			void addNewTabSignal(QString search);
 
 			/**
-			 * @brief Function: void closeTabSignal(int index)
-			 *
-			 * \param index: index of tab to close
-			 *
-			 * This function is a signal to close a tab
-			 */
-			void closeTabSignal(int index);
-
-			/**
 			 * @brief Function: void requestTabCountSignal()
 			 *
 			 * This function is a signal to initiate the request of the number of opened tabs
@@ -264,11 +255,11 @@ namespace main_window_ctrl_tab {
 			void setUpNewSearchTab();
 
 			/**
-			 * @brief Function: void closeTab()
+			 * @brief Function: void setUpCloseTab()
 			 *
 			 * This function closes a tab
 			 */
-			void closeTab();
+			void setUpCloseTab();
 
 		private:
 
@@ -419,6 +410,16 @@ namespace main_window_ctrl_tab {
 			 * This function refreshes a tab as specified by the user
 			 */
 			void refreshUrl(int tabIndex);
+
+			/**
+			 * @brief Function: void closeTab(int index)
+			 *
+			 * \param index: index of tab to close
+			 *
+			 * This function is a signal to close a tab
+			 */
+			void closeTab(int index);
+
 
 	};
 

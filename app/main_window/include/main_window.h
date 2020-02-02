@@ -156,15 +156,6 @@ namespace main_window {
 			void setCenterWindow(QString str);
 
 			/**
-			 * @brief Function: void closeTab(int index)
-			 *
-			 * \param index: index of tab to close
-			 *
-			 * This function closes a tab
-			 */
-			void closeTab(int index);
-
-			/**
 			 * @brief Function: void moveCursor(int tabIndex)
 			 *
 			 * \param tabIndex: index to move the cursor to

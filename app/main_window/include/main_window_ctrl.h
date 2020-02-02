@@ -156,15 +156,6 @@ namespace main_window_ctrl {
 			void moveTabSignal(int tabIndex);
 
 			/**
-			 * @brief Function: void closeTabSignal(int index)
-			 *
-			 * \param index: index of tab to close
-			 *
-			 * This function is a signal to close a tab
-			 */
-			void closeTabSignal(int index);
-
-			/**
 			 * @brief Function: void requestCurrentTabIndexSignal()
 			 *
 			 * This function is a signal to initiate the request of the current tab index
@@ -181,7 +172,7 @@ namespace main_window_ctrl {
 			void sendCurrentTabIndexSignal(int tabIndex);
 
 			/**
-			 * @brief Function: void closeTabSignal(int index)
+			 * @brief Function: void openNewTabSignal(int index)
 			 *
 			 * \param index: index of tab to close
 			 *
@@ -204,15 +195,6 @@ namespace main_window_ctrl {
 			 * This function is the slot to show/hide the menubar
 			 */
 			void toggleShowMenubar();
-
-			/**
-			 * @brief Function: void closeTab(int index)
-			 *
-			 * \param index: index of tab to close
-			 *
-			 * This function closes a tab
-			 */
-			void closeTab(int index);
 
 			/**
 			 * @brief Function: void moveCursor(int tabIndex)
