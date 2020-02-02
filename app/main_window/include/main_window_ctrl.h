@@ -17,9 +17,6 @@
 #include <qt5/QtWidgets/QWidget>
 
 #include "main_window_shared_types.h"
-#include "file_menu.h"
-#include "edit_menu.h"
-#include "tab_widget.h"
 #include "main_window_ctrl_tab.h"
 
 /** @defgroup MainWindowCtrlGroup Main Window Doxygen Group

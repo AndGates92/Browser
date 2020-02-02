@@ -16,10 +16,6 @@
 #include <qt5/QtWidgets/QMenuBar>
 #include <qt5/QtWidgets/QWidget>
 
-#include "file_menu.h"
-#include "edit_menu.h"
-#include "tab_widget.h"
-#include "command_menu.h"
 #include "main_window_ctrl.h"
 #include "main_window_core.h"
 
@@ -108,15 +104,6 @@ namespace main_window {
 			~MainWindow();
 
 			/**
-			 * @brief Function: QMenuBar * getMenuBar()
-			 *
-			 * \return the menu bar
-			 *
-			 * This function returns the menubar attached to the main window
-			 */
-			QMenuBar * getMenuBar();
-
-			/**
 			 * @brief Function: QLabel * getCenterWindow()
 			 *
 			 * \return the center window
@@ -157,13 +144,6 @@ namespace main_window {
 			 * Note: argument index is not used
 			 */
 			void updateInfoSlot(int index);
-
-			/**
-			 * @brief Function: void toggleShowMenubar()
-			 *
-			 * This function is the slot to show/hide the menubar
-			 */
-			void toggleShowMenubar();
 
 			/**
 			 * @brief Function: void setCenterWindow(QString str)
@@ -244,11 +224,11 @@ namespace main_window {
 			void fillMainWindow();
 
 			/**
-			 * @brief Function: void fillMenuBar()
+			 * @brief Function: void createTopMenuBar()
 			 *
-			 * This function fills the menu bar of the main window
+			 * This function creates the menu bar of the main window
 			 */
-			void fillMenuBar();
+			void createTopMenuBar();
 
 			/**
 			 * @brief Function: void mainWindowLayout()

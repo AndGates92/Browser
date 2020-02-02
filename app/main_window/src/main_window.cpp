@@ -22,6 +22,9 @@
 
 #include <qt5/QtCore/QObject>
 
+#include "main_window_menu_bar.h"
+#include "tab_widget.h"
+#include "command_menu.h"
 #include "global_macros.h"
 #include "global_types.h"
 #include "main_window.h"
@@ -47,9 +50,6 @@ main_window::MainWindow::MainWindow(main_window_core::MainWindowCore * core, QWi
 
 	// Control
 	this->createCtrl();
-
-	// Menu bar
-	this->fillMenuBar();
 
 	// Connect signals and slots
 	this->connectSignals();
@@ -130,7 +130,11 @@ void main_window::MainWindow::fillMainWindow() {
 	QINFO_PRINT(global_types::qinfo_level_e::ZERO, mainWindowOverall,  "Fill main window");
 
 	// Customize MainWidget
+	// Tabs
 	this->createTabs();
+
+	// Menu bar
+	this->createTopMenuBar();
 
 	// user input
 	this->mainWindowCore->userInputText = this->newWindowLabel();
@@ -145,7 +149,7 @@ void main_window::MainWindow::fillMainWindow() {
 	this->mainWindowCore->infoText = this->newWindowLabel();
 	this->mainWindowCore->infoText->setAlignment(Qt::AlignRight | Qt::AlignBottom);
 
-	// info
+	// command menu
 	this->mainWindowCore->cmdMenu = new command_menu::CommandMenu(this);
 	this->mainWindowCore->cmdMenu->setVisible(false);
 }
@@ -169,6 +173,16 @@ void main_window::MainWindow::createTabs() {
 	);
 
 }
+
+void main_window::MainWindow::createTopMenuBar() {
+	QINFO_PRINT(global_types::qinfo_level_e::ZERO, mainWindowOverall,  "Create top menu bar");
+
+	this->mainWindowCore->topMenuBar = new main_window_menu_bar::MainWindowMenuBar(this);
+
+	// set menu bar of the main window
+	this->setMenuBar(this->mainWindowCore->topMenuBar);
+}
+
 
 void main_window::MainWindow::mainWindowLayout() {
 
@@ -226,24 +240,14 @@ void main_window::MainWindow::mainWindowLayout() {
 	this->mainWindowCore->mainWidget->setLayout(layout);
 }
 
-void main_window::MainWindow::fillMenuBar() {
-	QINFO_PRINT(global_types::qinfo_level_e::ZERO, mainWindowOverall,  "Create menus");
-	this->mainWindowCore->fileMenu = new file_menu::FileMenu(this, this->menuBar(), "File", Qt::Key_F);
-	this->mainWindowCore->editMenu = new edit_menu::EditMenu(this, this->menuBar(), "Edit", Qt::Key_E);
-}
-
-QMenuBar * main_window::MainWindow::getMenuBar() {
-	return this->menuBar();
-}
-
 void main_window::MainWindow::connectSignals() {
 	QINFO_PRINT(global_types::qinfo_level_e::ZERO, mainWindowOverall,  "Connect signals");
 
 	// When the file has been read, then show it on the screen
-	connect(this->mainWindowCore->fileMenu, &file_menu::FileMenu::updateCenterWindowSignal, this, &main_window::MainWindow::setCenterWindow);
+	connect(this->mainWindowCore->topMenuBar->getFileMenu(), &file_menu::FileMenu::updateCenterWindowSignal, this, &main_window::MainWindow::setCenterWindow);
 
 	// open tab action
-	connect(this->mainWindowCore->fileMenu->openTabAction, &QAction::triggered, this->ctrl, &main_window_ctrl::MainWindowCtrl::openNewTab);
+	connect(this->mainWindowCore->topMenuBar->getFileMenu()->openTabAction, &QAction::triggered, this->ctrl, &main_window_ctrl::MainWindowCtrl::openNewTab);
 
 	// Close tab
 	connect(this->ctrl, &main_window_ctrl::MainWindowCtrl::closeTabSignal, this, &main_window::MainWindow::closeTab);
@@ -253,11 +257,8 @@ void main_window::MainWindow::connectSignals() {
 	connect(this->ctrl, &main_window_ctrl::MainWindowCtrl::moveTabSignal, this, &main_window::MainWindow::moveTab);
 
 	// Close window
-	connect(this->mainWindowCore->fileMenu->exitAction, &QAction::triggered, this, &main_window::MainWindow::closeWindow);
+	connect(this->mainWindowCore->topMenuBar->getFileMenu()->exitAction, &QAction::triggered, this, &main_window::MainWindow::closeWindow);
 	connect(this->ctrl, &main_window_ctrl::MainWindowCtrl::closeWindowSignal, this, &main_window::MainWindow::closeWindow);
-
-	// show/hide menu bar
-	connect(this->ctrl, &main_window_ctrl::MainWindowCtrl::toggleShowMenubarSignal, this, &main_window::MainWindow::toggleShowMenubar);
 
 	// Update info bar
 	connect(this->mainWindowCore->tabs, &QTabWidget::currentChanged, this, &main_window::MainWindow::updateInfoSlot);
@@ -313,11 +314,6 @@ void main_window::MainWindow::closeTab(int index) {
 void main_window::MainWindow::closeWindow() {
 	QINFO_PRINT(global_types::qinfo_level_e::ZERO, mainWindowOverall,  "Close slot: exiting from the browser");
 	this->close();
-}
-
-void main_window::MainWindow::toggleShowMenubar() {
-	bool menubarVisible = this->menuBar()->isVisible();
-	this->menuBar()->setVisible(!menubarVisible);
 }
 
 void main_window::MainWindow::keyPressEvent(QKeyEvent * event) {

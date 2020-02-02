@@ -15,8 +15,7 @@
 #include <qt5/QtWidgets/QMenuBar>
 #include <qt5/QtWidgets/QWidget>
 
-#include "file_menu.h"
-#include "edit_menu.h"
+#include "main_window_menu_bar.h"
 #include "tab_widget.h"
 #include "command_menu.h"
 #include "main_window_shared_types.h"
@@ -138,7 +137,6 @@ namespace main_window_core {
 			 */
 			int getCurrentTabIndex();
 
-
 			// main widget
 			/**
 			 * @brief main widget
@@ -152,19 +150,11 @@ namespace main_window_core {
 			 */
 			tab_widget::TabWidget * tabs;
 
-			// File dropdown menu
 			/**
-			 * @brief File menu
+			 * @brief Top menu bar of browser
 			 *
 			 */
-			file_menu::FileMenu * fileMenu;
-
-			// Edit dropdown menu
-			/**
-			 * @brief Edit menu
-			 *
-			 */
-			edit_menu::EditMenu * editMenu;
+			main_window_menu_bar::MainWindowMenuBar * topMenuBar;
 
 			/**
 			 * @brief Command menu 

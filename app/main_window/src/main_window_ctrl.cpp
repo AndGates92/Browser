@@ -86,10 +86,6 @@ void main_window_ctrl::MainWindowCtrl::connectSignals() {
 
 }
 
-void main_window_ctrl::MainWindowCtrl::toggleShowMenubar() {
-	emit this->toggleShowMenubarSignal();
-}
-
 void main_window_ctrl::MainWindowCtrl::closeWindow() {
 	QINFO_PRINT(global_types::qinfo_level_e::ZERO, mainWindowCtrlOverall,  "Close slot: quitting from the browser");
 	emit this->closeWindowSignal();
@@ -245,3 +241,10 @@ void main_window_ctrl::MainWindowCtrl::moveCursor(int tabIndex) {
 void main_window_ctrl::MainWindowCtrl::openNewTab() {
 	emit this->openNewTabSignal();
 }
+
+void main_window_ctrl::MainWindowCtrl::toggleShowMenubar() {
+	bool menubarVisible = this->mainWindowCore->topMenuBar->isVisible();
+	this->mainWindowCore->topMenuBar->setVisible(!menubarVisible);
+}
+
+

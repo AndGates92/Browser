@@ -17,7 +17,7 @@
 Q_LOGGING_CATEGORY(mainWindowCoreOverall, "mainWindowCore.overall", MSG_TYPE_LEVEL)
 Q_LOGGING_CATEGORY(mainWindowCoreUserInput, "mainWindowCtrlBase.userInput", MSG_TYPE_LEVEL)
 
-main_window_core::MainWindowCore::MainWindowCore() : mainWidget(Q_NULLPTR), tabs(Q_NULLPTR), fileMenu(Q_NULLPTR), editMenu(Q_NULLPTR), cmdMenu(Q_NULLPTR), userInputText(Q_NULLPTR), websiteText(Q_NULLPTR), infoText(Q_NULLPTR), mainWindowState(main_window_shared_types::state_e::IDLE), moveValueType(main_window_shared_types::move_value_e::IDLE), userText(QString::null) {
+main_window_core::MainWindowCore::MainWindowCore() : mainWidget(Q_NULLPTR), tabs(Q_NULLPTR), topMenuBar(Q_NULLPTR), cmdMenu(Q_NULLPTR), userInputText(Q_NULLPTR), websiteText(Q_NULLPTR), infoText(Q_NULLPTR), mainWindowState(main_window_shared_types::state_e::IDLE), moveValueType(main_window_shared_types::move_value_e::IDLE), userText(QString::null) {
 
 	QINFO_PRINT(global_types::qinfo_level_e::ZERO, mainWindowCoreOverall,  "Main window core constructor");
 
@@ -26,15 +26,14 @@ main_window_core::MainWindowCore::MainWindowCore() : mainWidget(Q_NULLPTR), tabs
 main_window_core::MainWindowCore::~MainWindowCore() {
 	QINFO_PRINT(global_types::qinfo_level_e::ZERO, mainWindowCoreOverall,  "Main window core destructor");
 
-	// Delete menus
-	delete this->fileMenu;
-	delete this->editMenu;
-	delete this->cmdMenu;
+	// Menubar
+	delete this->topMenuBar;
 
 	// Label
 	delete this->userInputText;
 	delete this->websiteText;
 	delete this->infoText;
+	delete this->cmdMenu;
 
 	// Main components
 	delete this->tabs;
