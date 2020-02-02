@@ -167,15 +167,6 @@ namespace main_window_ctrl_tab {
 		signals:
 
 			/**
-			 * @brief Function: void moveCursorSignal(int tabIndex)
-			 *
-			 * \param tabIndex: index to move the cursor to
-			 *
-			 * This function is a signal to move the cursor to a different tab as specified by the user
-			 */
-			void moveCursorSignal(int tabIndex);
-
-			/**
 			 * @brief Function: void moveTabSignal(int tabIndex)
 			 *
 			 * \param tabIndex: index to move the tab to
@@ -227,18 +218,18 @@ namespace main_window_ctrl_tab {
 			void setUpRefreshTabUrl();
 
 			/**
-			 * @brief Function: void moveLeft()
+			 * @brief Function: void setUpMoveLeft()
 			 *
 			 * This function moves left in the tabs. It will wrap around if the number of position leads to a negative tab index
 			 */
-			void moveLeft();
+			void setUpMoveLeft();
 
 			/**
-			 * @brief Function: void moveRight()
+			 * @brief Function: void setUpMoveRight()
 			 *
 			 * This function moves right in the tabs. It will wrap around if the number of position leads to a tab index bigger than the max tab counter
 			 */
-			void moveRight();
+			void setUpMoveRight();
 
 			/**
 			 * @brief Function: void setUpMoveTab()
@@ -428,6 +419,16 @@ namespace main_window_ctrl_tab {
 			 * This function moves the current tab to a different tab as specified by the user
 			 */
 			void moveTab(int tabIndex);
+
+			/**
+			 * @brief Function: void moveCursor(int tabIndex)
+			 *
+			 * \param tabIndex: index to move the cursor to
+			 *
+			 * This function moves the cursor to a different tab as specified by the user
+			 */
+			void moveCursor(int tabIndex);
+
 
 	};
 

@@ -138,15 +138,6 @@ namespace main_window_ctrl {
 			void closeWindowSignal();
 
 			/**
-			 * @brief Function: void moveCursorSignal(int tabIndex)
-			 *
-			 * \param tabIndex: index to move the cursor to
-			 *
-			 * This function is a signal to move the cursor to a different tab as specified by the user
-			 */
-			void moveCursorSignal(int tabIndex);
-
-			/**
 			 * @brief Function: void requestCurrentTabIndexSignal()
 			 *
 			 * This function is a signal to initiate the request of the current tab index
@@ -186,15 +177,6 @@ namespace main_window_ctrl {
 			 * This function is the slot to show/hide the menubar
 			 */
 			void toggleShowMenubar();
-
-			/**
-			 * @brief Function: void moveCursor(int tabIndex)
-			 *
-			 * \param tabIndex: index to move the cursor to
-			 *
-			 * This function moves the cursor to a different tab as specified by the user
-			 */
-			void moveCursor(int tabIndex);
 
 			/**
 			 * @brief Function: void setAllShortcutEnabledProperty(bool enabled)

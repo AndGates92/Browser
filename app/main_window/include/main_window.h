@@ -155,15 +155,6 @@ namespace main_window {
 			 */
 			void setCenterWindow(QString str);
 
-			/**
-			 * @brief Function: void moveCursor(int tabIndex)
-			 *
-			 * \param tabIndex: index to move the cursor to
-			 *
-			 * This function moves the cursor to a different tab as specified by the user
-			 */
-			void moveCursor(int tabIndex);
-
 		private:
 
 			/**

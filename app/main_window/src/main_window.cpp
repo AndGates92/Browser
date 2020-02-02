@@ -249,9 +249,6 @@ void main_window::MainWindow::connectSignals() {
 	// open tab action
 	connect(this->mainWindowCore->topMenuBar->getFileMenu()->openTabAction, &QAction::triggered, this->ctrl, &main_window_ctrl::MainWindowCtrl::openNewTab);
 
-	// Move tab
-	connect(this->ctrl, &main_window_ctrl::MainWindowCtrl::moveCursorSignal, this, &main_window::MainWindow::moveCursor);
-
 	// Close window
 	// TODO Delete after movig ctrl out to wrapper
 	connect(this->ctrl, &main_window_ctrl::MainWindowCtrl::closeWindowSignal, this, &main_window::MainWindow::closeWindow);
@@ -288,11 +285,6 @@ void main_window::MainWindow::setCenterWindow(QString str) {
 	QLabel * currentWidget = dynamic_cast<QLabel *>(this->mainWindowCore->tabs->currentWidget());
 	currentWidget->setText(str);
 	currentWidget->repaint();
-}
-
-void main_window::MainWindow::moveCursor(int tabIndex) {
-	QINFO_PRINT(global_types::qinfo_level_e::ZERO, mainWindowTabs,  "Move cursor to tab " << tabIndex);
-	this->mainWindowCore->tabs->setCurrentIndex(tabIndex);
 }
 
 // TODO Delete
