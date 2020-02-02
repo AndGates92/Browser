@@ -4,7 +4,7 @@
  * @copyright
  * @file main_window_ctrl_base.h
  * @author Andrea Gianarda
- * @date 29th of January 2019
+ * @date 29th of January 2020
  * @brief Main Window Control base class header file
 */
 

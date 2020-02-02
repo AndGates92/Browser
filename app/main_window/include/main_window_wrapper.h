@@ -4,7 +4,7 @@
  * @copyright
  * @file main_window_wrapper.h
  * @author Andrea Gianarda
- * @date 30th of January 2019
+ * @date 30th of January 2020
  * @brief Main Window wrapper class header file
 */
 
