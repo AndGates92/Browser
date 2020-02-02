@@ -257,7 +257,7 @@ void main_window::MainWindow::connectSignals() {
 	connect(this->ctrl, &main_window_ctrl::MainWindowCtrl::moveTabSignal, this, &main_window::MainWindow::moveTab);
 
 	// Close window
-	connect(this->mainWindowCore->topMenuBar->getFileMenu()->exitAction, &QAction::triggered, this, &main_window::MainWindow::closeWindow);
+	// TODO Delete after movig ctrl out to wrapper
 	connect(this->ctrl, &main_window_ctrl::MainWindowCtrl::closeWindowSignal, this, &main_window::MainWindow::closeWindow);
 
 	// Update info bar
@@ -311,6 +311,7 @@ void main_window::MainWindow::closeTab(int index) {
 	this->mainWindowCore->tabs->removeTab(index);
 }
 
+// TODO Delete
 void main_window::MainWindow::closeWindow() {
 	QINFO_PRINT(global_types::qinfo_level_e::ZERO, mainWindowOverall,  "Close slot: exiting from the browser");
 	this->close();

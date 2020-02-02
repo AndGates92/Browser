@@ -30,56 +30,63 @@ namespace main_window_wrapper {
 	 * @brief MainWindowWrapper class
 	 *
 	 */
-	class MainWindowWrapper {
+	class MainWindowWrapper : public QObject {
 
-	public:
+		Q_OBJECT
+
+		public:
+				/**
+				 * @brief Function: explicit MainWindowWrapper(QWidget * parent = Q_NULLPTR, Qt::WindowFlags flags = Qt::WindowFlags())
+				 *
+				 * \param parent: parent window
+				 * \param flags: window flags
+				 *
+				 * Main window wrapper constructor
+				 */
+				explicit MainWindowWrapper(QWidget * parent = Q_NULLPTR, Qt::WindowFlags flags = Qt::WindowFlags());
+
+				/**
+				 * @brief Function: ~MainWindowWrapper()
+				 *
+				 * Main window wrapper destructor
+				 */
+				~MainWindowWrapper();
+
+				/**
+				 * @brief Function: void show()
+				 *
+				 * Show main window
+				 */
+				void show();
+
+				/**
+				 * @brief Function: void close()
+				 *
+				 * Close main window
+				 */
+				void close();
+
+		protected:
+
+		private:
+
 			/**
-			 * @brief Function: explicit MainWindowWrapper(QWidget * parent = Q_NULLPTR, Qt::WindowFlags flags = Qt::WindowFlags())
+			 * @brief Main window core
 			 *
-			 * \param parent: parent window
-			 * \param flags: window flags
-			 *
-			 * Main window wrapper constructor
 			 */
-			explicit MainWindowWrapper(QWidget * parent = Q_NULLPTR, Qt::WindowFlags flags = Qt::WindowFlags());
+			main_window_core::MainWindowCore * mainWindowCore;
 
 			/**
-			 * @brief Function: ~MainWindowWrapper()
+			 * @brief Main window
 			 *
-			 * Main window wrapper destructor
 			 */
-			~MainWindowWrapper();
+			main_window::MainWindow * window;
 
 			/**
-			 * @brief Function: void show()
+			 * @brief Main window control
 			 *
-			 * Show main window
 			 */
-			void show();
-
-	protected:
-
-	private:
-
-		/**
-		 * @brief Main window core
-		 *
-		 */
-		main_window_core::MainWindowCore * mainWindowCore;
-
-		/**
-		 * @brief Main window
-		 *
-		 */
-		main_window::MainWindow * window;
-
-		/**
-		 * @brief Main window control
-		 *
-		 */
-		main_window_ctrl::MainWindowCtrl * ctrl;
-
-
+			main_window_ctrl::MainWindowCtrl * ctrl;
 
 	};
 

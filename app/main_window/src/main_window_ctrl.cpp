@@ -69,8 +69,12 @@ void main_window_ctrl::MainWindowCtrl::connectSignals() {
 
 	QINFO_PRINT(global_types::qinfo_level_e::ZERO, mainWindowCtrlOverall,  "Connect signals");
 
+	// show hide menubar
 	connect(this->toggleShowMenuBarKey, &QShortcut::activated, this, &main_window_ctrl::MainWindowCtrl::toggleShowMenubar);
+
+	// Close window
 	connect(this->closeKey, &QShortcut::activated, this, &main_window_ctrl::MainWindowCtrl::closeWindow);
+	connect(this->mainWindowCore->topMenuBar->getFileMenu()->exitAction, &QAction::triggered, this, &main_window_ctrl::MainWindowCtrl::closeWindow);
 
 	connect(this->tabctrl, &main_window_ctrl_tab::MainWindowCtrlTab::setShortcutEnabledPropertySignal, this, &main_window_ctrl::MainWindowCtrl::setAllShortcutEnabledProperty);
 
@@ -84,11 +88,6 @@ void main_window_ctrl::MainWindowCtrl::connectSignals() {
 	connect(this->tabctrl, &main_window_ctrl_tab::MainWindowCtrlTab::moveTabSignal, this, &main_window_ctrl::MainWindowCtrl::moveTab);
 	connect(this->tabctrl, &main_window_ctrl_tab::MainWindowCtrlTab::moveCursorSignal, this, &main_window_ctrl::MainWindowCtrl::moveCursor);
 
-}
-
-void main_window_ctrl::MainWindowCtrl::closeWindow() {
-	QINFO_PRINT(global_types::qinfo_level_e::ZERO, mainWindowCtrlOverall,  "Close slot: quitting from the browser");
-	emit this->closeWindowSignal();
 }
 
 void main_window_ctrl::MainWindowCtrl::executeCommand(QString command) {
@@ -247,4 +246,7 @@ void main_window_ctrl::MainWindowCtrl::toggleShowMenubar() {
 	this->mainWindowCore->topMenuBar->setVisible(!menubarVisible);
 }
 
-
+void main_window_ctrl::MainWindowCtrl::closeWindow() {
+	QINFO_PRINT(global_types::qinfo_level_e::ZERO, mainWindowCtrlOverall,  "Close slot: exiting from the browser");
+	emit this->closeWindowSignal();
+}

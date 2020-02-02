@@ -20,6 +20,7 @@ main_window_wrapper::MainWindowWrapper::MainWindowWrapper(QWidget * parent, Qt::
 
 	QINFO_PRINT(global_types::qinfo_level_e::ZERO, mainWindowWrapperOverall,  "Main window wrapper constructor");
 
+	connect(this->ctrl, &main_window_ctrl::MainWindowCtrl::closeWindowSignal, this, &main_window_wrapper::MainWindowWrapper::close);
 }
 
 main_window_wrapper::MainWindowWrapper::~MainWindowWrapper() {
@@ -32,5 +33,12 @@ main_window_wrapper::MainWindowWrapper::~MainWindowWrapper() {
 }
 
 void main_window_wrapper::MainWindowWrapper::show() {
+	QINFO_PRINT(global_types::qinfo_level_e::ZERO, mainWindowWrapperOverall,  "Show main window");
 	this->window->show();
+}
+
+void main_window_wrapper::MainWindowWrapper::close() {
+	QINFO_PRINT(global_types::qinfo_level_e::ZERO, mainWindowCtrlOverall,  "Close main window");
+	bool success = this->window->close();
+	Q_ASSERT_X(success, "main window close", "Main window close request was not handled properly");
 }
