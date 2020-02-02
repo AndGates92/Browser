@@ -218,13 +218,6 @@ namespace main_window {
 			void connectSignals();
 
 			/**
-			 * @brief Function: void getTabCount()
-			 *
-			 * This function sends the number of openend tabs
-			 */
-			void getTabCount();
-
-			/**
 			 * @brief Function: void keyPressEvent(QKeyEvent * event)
 			 *
 			 * \param event: event coming from keyboard 

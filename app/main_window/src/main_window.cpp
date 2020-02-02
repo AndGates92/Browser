@@ -246,9 +246,6 @@ void main_window::MainWindow::connectSignals() {
 	// When the file has been read, then show it on the screen
 	connect(this->mainWindowCore->topMenuBar->getFileMenu(), &file_menu::FileMenu::updateCenterWindowSignal, this, &main_window::MainWindow::setCenterWindow);
 
-	// open tab action
-	connect(this->mainWindowCore->topMenuBar->getFileMenu()->openTabAction, &QAction::triggered, this->ctrl, &main_window_ctrl::MainWindowCtrl::openNewTab);
-
 	// Close window
 	// TODO Delete after movig ctrl out to wrapper
 	connect(this->ctrl, &main_window_ctrl::MainWindowCtrl::closeWindowSignal, this, &main_window::MainWindow::closeWindow);

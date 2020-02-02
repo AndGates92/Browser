@@ -77,10 +77,6 @@ void main_window_ctrl::MainWindowCtrl::connectSignals() {
 	connect(this->mainWindowCore->topMenuBar->getFileMenu()->exitAction, &QAction::triggered, this, &main_window_ctrl::MainWindowCtrl::closeWindow);
 
 	connect(this->tabctrl, &main_window_ctrl_tab::MainWindowCtrlTab::setShortcutEnabledPropertySignal, this, &main_window_ctrl::MainWindowCtrl::setAllShortcutEnabledProperty);
-
-	// open tab action (from fileMenu)
-	connect(this, &main_window_ctrl::MainWindowCtrl::openNewTabSignal, this->tabctrl, &main_window_ctrl_tab::MainWindowCtrlTab::setUpOpenNewTab);
-
 }
 
 void main_window_ctrl::MainWindowCtrl::executeCommand(QString command) {
@@ -216,10 +212,6 @@ void main_window_ctrl::MainWindowCtrl::keyPressEvent(QKeyEvent * event) {
 
 void main_window_ctrl::MainWindowCtrl::setShortcutEnabledProperty(bool enabled) {
 	this->setAllShortcutEnabledProperty(enabled);
-}
-
-void main_window_ctrl::MainWindowCtrl::openNewTab() {
-	emit this->openNewTabSignal();
 }
 
 void main_window_ctrl::MainWindowCtrl::toggleShowMenubar() {

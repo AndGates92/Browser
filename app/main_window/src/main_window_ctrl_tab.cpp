@@ -96,6 +96,9 @@ void main_window_ctrl_tab::MainWindowCtrlTab::connectSignals() {
 	connect(this->mainWindowCore->tabs, &QTabWidget::currentChanged, this, &main_window_ctrl_tab::MainWindowCtrlTab::updateInfoSlot);
 	connect(this->mainWindowCore->tabs, &QTabWidget::tabCloseRequested, this, &main_window_ctrl_tab::MainWindowCtrlTab::updateInfoSlot);
 
+	// open tab action (from fileMenu)
+	connect(this->mainWindowCore->topMenuBar->getFileMenu()->openTabAction, &QAction::triggered, this, &main_window_ctrl_tab::MainWindowCtrlTab::setUpOpenNewTab);
+
 }
 
 //************************************************************************************

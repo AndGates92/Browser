@@ -109,8 +109,6 @@ namespace main_window_ctrl {
 			 */
 			void setShortcutEnabledProperty(bool enabled);
 
-			void openNewTab();
-
 		protected:
 
 		signals:
@@ -120,15 +118,6 @@ namespace main_window_ctrl {
 			 * This function is a signal to close the main window
 			 */
 			void closeWindowSignal();
-
-			/**
-			 * @brief Function: void openNewTabSignal(int index)
-			 *
-			 * \param index: index of tab to close
-			 *
-			 * This function is a signal to close a tab
-			 */
-			void openNewTabSignal();
 
 		private slots:
 
