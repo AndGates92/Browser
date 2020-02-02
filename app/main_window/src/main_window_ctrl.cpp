@@ -231,3 +231,4 @@ void main_window_ctrl::MainWindowCtrl::closeWindow() {
 	QINFO_PRINT(global_types::qinfo_level_e::ZERO, mainWindowCtrlOverall,  "Close slot: exiting from the browser");
 	emit this->closeWindowSignal();
 }
+

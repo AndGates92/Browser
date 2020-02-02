@@ -92,8 +92,35 @@ void main_window_ctrl_tab::MainWindowCtrlTab::connectSignals() {
 	connect(this->refreshUrlKey, &QShortcut::activated, this, &main_window_ctrl_tab::MainWindowCtrlTab::setUpRefreshTabUrl);
 
 //	connect(this->mainWindowCore->tabs, &QTabWidget::currentChanged, this, &main_window_ctrl_tab::MainWindowCtrlTab::updateWebsite);
+	// Update info bar
+	connect(this->mainWindowCore->tabs, &QTabWidget::currentChanged, this, &main_window_ctrl_tab::MainWindowCtrlTab::updateInfoSlot);
+	connect(this->mainWindowCore->tabs, &QTabWidget::tabCloseRequested, this, &main_window_ctrl_tab::MainWindowCtrlTab::updateInfoSlot);
+
 }
 
+//************************************************************************************
+// Start definition of set up slots
+//************************************************************************************
+void main_window_ctrl_tab::MainWindowCtrlTab::setUpOpenNewTab() {
+	QINFO_PRINT(global_types::qinfo_level_e::ZERO, mainWindowCtrlTabSearch,  "Open new tab");
+	this->mainWindowCore->setMainWindowState(main_window_shared_types::state_e::OPEN_TAB);
+	this->printUserInput(main_window_shared_types::text_action_e::CLEAR);
+	emit this->setShortcutEnabledPropertySignal(false);
+}
+
+void main_window_ctrl_tab::MainWindowCtrlTab::setUpNewSearchTab() {
+	QINFO_PRINT(global_types::qinfo_level_e::ZERO, mainWindowCtrlTabSearch,  "Search in current tab");
+	this->mainWindowCore->setMainWindowState(main_window_shared_types::state_e::SEARCH);
+	this->printUserInput(main_window_shared_types::text_action_e::CLEAR);
+	emit this->setShortcutEnabledPropertySignal(false);
+}
+
+
+void main_window_ctrl_tab::MainWindowCtrlTab::setUpRefreshTabUrl() {
+	this->mainWindowCore->setMainWindowState(main_window_shared_types::state_e::REFRESH_TAB);
+	this->printUserInput(main_window_shared_types::text_action_e::CLEAR);
+	emit this->setShortcutEnabledPropertySignal(false);
+}
 
 void main_window_ctrl_tab::MainWindowCtrlTab::setUpMoveTab() {
 	this->mainWindowCore->setMainWindowState(main_window_shared_types::state_e::TAB_MOVE);
@@ -118,11 +145,91 @@ void main_window_ctrl_tab::MainWindowCtrlTab::setUpCloseTab() {
 	this->printUserInput(main_window_shared_types::text_action_e::CLEAR);
 	emit this->setShortcutEnabledPropertySignal(false);
 }
+//************************************************************************************
+// End definition of set up slots
+//************************************************************************************
 
+//************************************************************************************
+// Start definition of actions
+//************************************************************************************
 void main_window_ctrl_tab::MainWindowCtrlTab::closeTab(int index) {
 	QINFO_PRINT(global_types::qinfo_level_e::ZERO, mainWindowCtrlTabTabs,  "Close tab " << index);
 	this->mainWindowCore->tabs->removeTab(index);
 }
+
+void main_window_ctrl_tab::MainWindowCtrlTab::addNewTab(QString search) {
+	QWebEngineView * centerWindow = new QWebEngineView(this->mainWindowCore->mainWidget);
+
+	QINFO_PRINT(global_types::qinfo_level_e::ZERO, mainWindowCtrlTabTabs,  "Open tab with label " << search);
+	int tabIndex = this->mainWindowCore->tabs->addTab(centerWindow, search);
+	this->newSearchTab(tabIndex, search);
+
+	// Move to the newly opened tab
+	this->mainWindowCore->tabs->setCurrentIndex(tabIndex);
+
+	// Update info label
+	this->updateInfo();
+}
+
+void main_window_ctrl_tab::MainWindowCtrlTab::newSearchTab(int index, QString search) {
+	QINFO_PRINT(global_types::qinfo_level_e::ZERO, mainWindowCtrlTabSearch,  "User input " << search << " in tab " << index);
+
+	QWebEngineView * centerWindow = dynamic_cast<QWebEngineView *>(this->mainWindowCore->tabs->widget(index));
+
+	QString tabTitle = search;
+	QString Url = this->createUrl(search);
+
+	this->mainWindowCore->tabs->setTabText(index, tabTitle);
+	centerWindow->setUrl(QUrl(Url));
+
+	this->updateWebsite(index);
+}
+
+void main_window_ctrl_tab::MainWindowCtrlTab::searchCurrentTab(QString search) {
+	int tabIndex = this->mainWindowCore->getCurrentTabIndex();
+	QINFO_PRINT(global_types::qinfo_level_e::ZERO, mainWindowCtrlTabTabs,  "Search " << search << " in tab " << tabIndex);
+	this->newSearchTab(tabIndex, search);
+}
+
+void main_window_ctrl_tab::MainWindowCtrlTab::updateWebsite(int index) {
+
+	int tabCount = this->mainWindowCore->getTabCount();
+
+	if (tabCount > 0) {
+		QWebEngineView * centerWindow = dynamic_cast<QWebEngineView *>(this->mainWindowCore->tabs->widget(index));
+		QUrl websiteUrl = centerWindow->url();
+
+		QString websiteStr (websiteUrl.toDisplayString(QUrl::FullyDecoded));
+		QINFO_PRINT(global_types::qinfo_level_e::ZERO, mainWindowCtrlTabUrl,  "Set URL in websiteText to " << websiteStr);
+		this->mainWindowCore->websiteText->setText(websiteStr);
+	} else {
+		this->mainWindowCore->websiteText->clear();
+	}
+}
+
+void main_window_ctrl_tab::MainWindowCtrlTab::refreshUrl(int tabIndex) {
+	QWebEngineView * centerWindow = dynamic_cast<QWebEngineView *>(this->mainWindowCore->tabs->widget(tabIndex));
+	QUrl currUrl = centerWindow->url();
+
+	QString urlStr (currUrl.toDisplayString(QUrl::FullyDecoded));
+	QINFO_PRINT(global_types::qinfo_level_e::ZERO, mainWindowCtrlTabUrl,  "Refresh URL " << urlStr);
+
+	centerWindow->setUrl(QUrl(currUrl));
+}
+
+void main_window_ctrl_tab::MainWindowCtrlTab::moveTab(int tabIndex) {
+	int tabIndexCurrent = this->mainWindowCore->tabs->currentIndex();
+	QINFO_PRINT(global_types::qinfo_level_e::ZERO, mainWindowCtrlTabTabs,  "Move tab " << tabIndexCurrent << " to " << tabIndex);
+	this->mainWindowCore->tabs->tabBar()->moveTab(tabIndexCurrent, tabIndex);
+}
+
+void main_window_ctrl_tab::MainWindowCtrlTab::moveCursor(int tabIndex) {
+	QINFO_PRINT(global_types::qinfo_level_e::ZERO, mainWindowCtrlTabTabs,  "Move cursor to tab " << tabIndex);
+	this->mainWindowCore->tabs->setCurrentIndex(tabIndex);
+}
+//************************************************************************************
+// End definition of actions
+//************************************************************************************
 
 void main_window_ctrl_tab::MainWindowCtrlTab::executeActionOnOffset(int offset) {
 	int sign = 0;
@@ -174,20 +281,6 @@ void main_window_ctrl_tab::MainWindowCtrlTab::executeActionOnTab(int index) {
 	}
 }
 
-void main_window_ctrl_tab::MainWindowCtrlTab::setUpOpenNewTab() {
-	QINFO_PRINT(global_types::qinfo_level_e::ZERO, mainWindowCtrlTabSearch,  "Open new tab");
-	this->mainWindowCore->setMainWindowState(main_window_shared_types::state_e::OPEN_TAB);
-	this->printUserInput(main_window_shared_types::text_action_e::CLEAR);
-	emit this->setShortcutEnabledPropertySignal(false);
-}
-
-void main_window_ctrl_tab::MainWindowCtrlTab::setUpNewSearchTab() {
-	QINFO_PRINT(global_types::qinfo_level_e::ZERO, mainWindowCtrlTabSearch,  "Search in current tab");
-	this->mainWindowCore->setMainWindowState(main_window_shared_types::state_e::SEARCH);
-	this->printUserInput(main_window_shared_types::text_action_e::CLEAR);
-	emit this->setShortcutEnabledPropertySignal(false);
-}
-
 void main_window_ctrl_tab::MainWindowCtrlTab::executeTabAction(int userInput) {
 	main_window_shared_types::state_e windowState = this->mainWindowCore->getMainWindowState();
 	main_window_shared_types::move_value_e moveType = this->mainWindowCore->getMoveValueType();
@@ -224,8 +317,6 @@ void main_window_ctrl_tab::MainWindowCtrlTab::processTabIndex(QString userInputS
 		}
 	}
 }
-
-
 
 void main_window_ctrl_tab::MainWindowCtrlTab::executeCommand(QString command) {
 
@@ -269,12 +360,6 @@ void main_window_ctrl_tab::MainWindowCtrlTab::keyReleaseEvent(QKeyEvent * event)
 				break;
 		}
 	}
-}
-
-void main_window_ctrl_tab::MainWindowCtrlTab::setUpRefreshTabUrl() {
-	this->mainWindowCore->setMainWindowState(main_window_shared_types::state_e::REFRESH_TAB);
-	this->printUserInput(main_window_shared_types::text_action_e::CLEAR);
-	emit this->setShortcutEnabledPropertySignal(false);
 }
 
 void main_window_ctrl_tab::MainWindowCtrlTab::keyPressEvent(QKeyEvent * event) {
@@ -412,74 +497,12 @@ QString main_window_ctrl_tab::MainWindowCtrlTab::createUrl(QString search) {
 	return url;
 }
 
-void main_window_ctrl_tab::MainWindowCtrlTab::addNewTab(QString search) {
-	QWebEngineView * centerWindow = new QWebEngineView(this->mainWindowCore->mainWidget);
-
-	QINFO_PRINT(global_types::qinfo_level_e::ZERO, mainWindowCtrlTabTabs,  "Open tab with label " << search);
-	int tabIndex = this->mainWindowCore->tabs->addTab(centerWindow, search);
-	this->newSearchTab(tabIndex, search);
-
-	// Move to the newly opened tab
-	this->mainWindowCore->tabs->setCurrentIndex(tabIndex);
-
-	// Update info label
+#pragma GCC diagnostic push
+#pragma GCC diagnostic ignored "-Wunused-parameter"
+// Function connected to both currentChanged and tabCloseRequested signals
+// In the case of currentChanged signal, index is the current tab
+// In the case of tabCloseRequested signal, index is the closed tab
+void main_window_ctrl_tab::MainWindowCtrlTab::updateInfoSlot(int index) {
 	this->updateInfo();
 }
-
-void main_window_ctrl_tab::MainWindowCtrlTab::newSearchTab(int index, QString search) {
-	QINFO_PRINT(global_types::qinfo_level_e::ZERO, mainWindowCtrlTabSearch,  "User input " << search << " in tab " << index);
-
-	QWebEngineView * centerWindow = dynamic_cast<QWebEngineView *>(this->mainWindowCore->tabs->widget(index));
-
-	QString tabTitle = search;
-	QString Url = this->createUrl(search);
-
-	this->mainWindowCore->tabs->setTabText(index, tabTitle);
-	centerWindow->setUrl(QUrl(Url));
-
-	this->updateWebsite(index);
-}
-
-void main_window_ctrl_tab::MainWindowCtrlTab::searchCurrentTab(QString search) {
-	int tabIndex = this->mainWindowCore->getCurrentTabIndex();
-	QINFO_PRINT(global_types::qinfo_level_e::ZERO, mainWindowCtrlTabTabs,  "Search " << search << " in tab " << tabIndex);
-	this->newSearchTab(tabIndex, search);
-}
-
-void main_window_ctrl_tab::MainWindowCtrlTab::updateWebsite(int index) {
-
-	int tabCount = this->mainWindowCore->getTabCount();
-
-	if (tabCount > 0) {
-		QWebEngineView * centerWindow = dynamic_cast<QWebEngineView *>(this->mainWindowCore->tabs->widget(index));
-		QUrl websiteUrl = centerWindow->url();
-
-		QString websiteStr (websiteUrl.toDisplayString(QUrl::FullyDecoded));
-		QINFO_PRINT(global_types::qinfo_level_e::ZERO, mainWindowCtrlTabUrl,  "Set URL in websiteText to " << websiteStr);
-		this->mainWindowCore->websiteText->setText(websiteStr);
-	} else {
-		this->mainWindowCore->websiteText->clear();
-	}
-}
-
-void main_window_ctrl_tab::MainWindowCtrlTab::refreshUrl(int tabIndex) {
-	QWebEngineView * centerWindow = dynamic_cast<QWebEngineView *>(this->mainWindowCore->tabs->widget(tabIndex));
-	QUrl currUrl = centerWindow->url();
-
-	QString urlStr (currUrl.toDisplayString(QUrl::FullyDecoded));
-	QINFO_PRINT(global_types::qinfo_level_e::ZERO, mainWindowCtrlTabUrl,  "Refresh URL " << urlStr);
-
-	centerWindow->setUrl(QUrl(currUrl));
-}
-
-void main_window_ctrl_tab::MainWindowCtrlTab::moveTab(int tabIndex) {
-	int tabIndexCurrent = this->mainWindowCore->tabs->currentIndex();
-	QINFO_PRINT(global_types::qinfo_level_e::ZERO, mainWindowCtrlTabTabs,  "Move tab " << tabIndexCurrent << " to " << tabIndex);
-	this->mainWindowCore->tabs->tabBar()->moveTab(tabIndexCurrent, tabIndex);
-}
-
-void main_window_ctrl_tab::MainWindowCtrlTab::moveCursor(int tabIndex) {
-	QINFO_PRINT(global_types::qinfo_level_e::ZERO, mainWindowCtrlTabTabs,  "Move cursor to tab " << tabIndex);
-	this->mainWindowCore->tabs->setCurrentIndex(tabIndex);
-}
-
+#pragma GCC diagnostic pop

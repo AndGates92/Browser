@@ -115,43 +115,11 @@ namespace main_window_ctrl {
 
 		signals:
 			/**
-			 * @brief Function: void searchCurrentTabSignal(QString search)
-			 *
-			 * \param search: string to search
-			 *
-			 * This function search on the current tab
-			 */
-			void searchCurrentTabSignal(QString search);
-
-			/**
-			 * @brief Function: void toggleShowMenubarSignal()
-			 *
-			 * This function is the signal to show or hide the menubar
-			 */
-			void toggleShowMenubarSignal();
-
-			/**
-			 * @brief Function: void closeSignal()
+			 * @brief Function: void closeWindowSignal()
 			 *
 			 * This function is a signal to close the main window
 			 */
 			void closeWindowSignal();
-
-			/**
-			 * @brief Function: void requestCurrentTabIndexSignal()
-			 *
-			 * This function is a signal to initiate the request of the current tab index
-			 */
-			void requestCurrentTabIndexSignal();
-
-			/**
-			 * @brief Function: void sendCurrentTabIndexSignal(int tabIndex)
-			 *
-			 * \param tabIndex: index of the current tab
-			 *
-			 * This function is a signal to send the value of the current tab index
-			 */
-			void sendCurrentTabIndexSignal(int tabIndex);
 
 			/**
 			 * @brief Function: void openNewTabSignal(int index)

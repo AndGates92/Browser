@@ -253,10 +253,6 @@ void main_window::MainWindow::connectSignals() {
 	// TODO Delete after movig ctrl out to wrapper
 	connect(this->ctrl, &main_window_ctrl::MainWindowCtrl::closeWindowSignal, this, &main_window::MainWindow::closeWindow);
 
-	// Update info bar
-	connect(this->mainWindowCore->tabs, &QTabWidget::currentChanged, this, &main_window::MainWindow::updateInfoSlot);
-	connect(this->mainWindowCore->tabs, &QTabWidget::tabCloseRequested, this, &main_window::MainWindow::updateInfoSlot);
-
 }
 
 void main_window::MainWindow::createCtrl() {
@@ -266,15 +262,6 @@ void main_window::MainWindow::createCtrl() {
 	this->ctrl = new main_window_ctrl::MainWindowCtrl(this->mainWindowCore, this);
 }
 
-#pragma GCC diagnostic push
-#pragma GCC diagnostic ignored "-Wunused-parameter"
-// Function connected to both currentChanged and tabCloseRequested signals
-// In the case of currentChanged signal, index is the current tab
-// In the case of tabCloseRequested signal, index is the closed tab
-void main_window::MainWindow::updateInfoSlot(int index) {
-	this->ctrl->updateInfo();
-}
-#pragma GCC diagnostic pop
 
 
 

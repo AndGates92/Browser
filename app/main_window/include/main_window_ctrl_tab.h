@@ -165,41 +165,6 @@ namespace main_window_ctrl_tab {
 		protected:
 
 		signals:
-
-			/**
-			 * @brief Function: void moveTabSignal(int tabIndex)
-			 *
-			 * \param tabIndex: index to move the tab to
-			 *
-			 * This function is a signal to move the current tab to another position as specified by the user
-			 */
-			void moveTabSignal(int tabIndex);
-
-			/**
-			 * @brief Function: void refreshUrlSignal(int tabIndex)
-			 *
-			 * \param tabIndex: tab index to refresh
-			 *
-			 * This function is a signal to refresh a tab as specified by the user
-			 */
-			void refreshUrlSignal(int tabIndex);
-
-			/**
-			 * @brief Function: void addNewTabSignal(QString search)
-			 *
-			 * \param search: string to search
-			 *
-			 * This function is a signal to add a new tab to the main window
-			 */
-			void addNewTabSignal(QString search);
-
-			/**
-			 * @brief Function: void requestTabCountSignal()
-			 *
-			 * This function is a signal to initiate the request of the number of opened tabs
-			 */
-			void requestTabCountSignal();
-
 			/**
 			 * @brief Function: void setShortcutEnabledPropertySignal(bool enabled)
 			 *
@@ -251,6 +216,16 @@ namespace main_window_ctrl_tab {
 			 * This function closes a tab
 			 */
 			void setUpCloseTab();
+
+			/**
+			 * @brief Function: void updateInfoSlot(int index)
+			 *
+			 * \param index: index of tab either closed or clicked
+			 *
+			 * This function is the slot to update the info label
+			 * Note: argument index is not used
+			 */
+			void updateInfoSlot(int index);
 
 		private:
 
@@ -357,6 +332,16 @@ namespace main_window_ctrl_tab {
 			void convertToAbsTabIndex(int offset = main_window_ctrl_tab::emptyUserInput, int sign = 0);
 
 			/**
+			 * @brief Function: void updateWebsite(int index)
+			 *
+			 * \param index: index of tab where the website has to be updated
+			 *
+			 * This function updates the website label
+			 */
+			void updateWebsite(int index);
+
+			// ================================ START ACTIONS ========================================//
+			/**
 			 * @brief Function: void addNewTab(QString search)
 			 *
 			 * \param search: string to search
@@ -383,15 +368,6 @@ namespace main_window_ctrl_tab {
 			 * This function search on the current tab
 			 */
 			void searchCurrentTab(QString search);
-
-			/**
-			 * @brief Function: void updateWebsite(int index)
-			 *
-			 * \param index: index of tab where the website has to be updated
-			 *
-			 * This function updates the website label
-			 */
-			void updateWebsite(int index);
 
 			/**
 			 * @brief Function: void refreshUrl(int tabIndex)
@@ -428,7 +404,7 @@ namespace main_window_ctrl_tab {
 			 * This function moves the cursor to a different tab as specified by the user
 			 */
 			void moveCursor(int tabIndex);
-
+			// ================================ END ACTIONS ========================================//
 
 	};
 

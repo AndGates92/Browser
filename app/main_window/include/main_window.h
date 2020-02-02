@@ -137,16 +137,6 @@ namespace main_window {
 			void closeWindow();
 
 			/**
-			 * @brief Function: void updateInfoSlot(int index)
-			 *
-			 * \param index: index of tab either closed or clicked
-			 *
-			 * This function is the slot to update the info label
-			 * Note: argument index is not used
-			 */
-			void updateInfoSlot(int index);
-
-			/**
 			 * @brief Function: void setCenterWindow(QString str)
 			 *
 			 * \param str: text to write in the widget
