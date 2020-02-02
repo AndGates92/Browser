@@ -88,6 +88,7 @@ LIBS := $(foreach LIB, ${LIB_LIST}, -l${LIB})
 APP_DIR = app
 TEST_DIR =
 COMP_DIR = $(wildcard $(APP_DIR)/*)
+SUBCOMP_DIR = $(wildcard $(APP_DIR)/*/*)
 
 # Directory containing source files
 SRC_DIR = src
@@ -130,6 +131,7 @@ VALGRINDLOGOPTS = -v --log-file=$(VALGRINDLOGFILE) --time-stamp=yes
 VALGRINDEXEARGS ?=
 
 DIR_LIST = $(COMP_DIR) \
+           $(SUBCOMP_DIR) \
            $(TEST_DIR)
 
 INCLUDE_PATH := $(foreach DIR, ${DIR_LIST}, $(DIR)/$(INCLUDE_DIR))
