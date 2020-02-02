@@ -54,17 +54,6 @@ void main_window_ctrl::MainWindowCtrl::createShortcuts() {
 	this->closeKey->setKey(Qt::Key_Q);
 }
 
-
-void main_window_ctrl::MainWindowCtrl::setAllShortcutEnabledProperty(bool enabled) {
-	QList<QShortcut *> shortcuts = this->parent->findChildren<QShortcut *>();
-
-	for (QShortcut * shortcut : shortcuts) {
-		key_sequence::KeySequence key(shortcut->key());
-		QINFO_PRINT(global_types::qinfo_level_e::ZERO, mainWindowCtrlTabUserInput,  "Setting enabled for key " << key.toString() << " to " << enabled);
-		shortcut->setEnabled(enabled);
-	}
-}
-
 void main_window_ctrl::MainWindowCtrl::connectSignals() {
 
 	QINFO_PRINT(global_types::qinfo_level_e::ZERO, mainWindowCtrlOverall,  "Connect signals");
@@ -76,7 +65,6 @@ void main_window_ctrl::MainWindowCtrl::connectSignals() {
 	connect(this->closeKey, &QShortcut::activated, this, &main_window_ctrl::MainWindowCtrl::closeWindow);
 	connect(this->mainWindowCore->topMenuBar->getFileMenu()->exitAction, &QAction::triggered, this, &main_window_ctrl::MainWindowCtrl::closeWindow);
 
-	connect(this->tabctrl, &main_window_ctrl_tab::MainWindowCtrlTab::setShortcutEnabledPropertySignal, this, &main_window_ctrl::MainWindowCtrl::setAllShortcutEnabledProperty);
 }
 
 void main_window_ctrl::MainWindowCtrl::executeCommand(QString command) {
@@ -208,10 +196,6 @@ void main_window_ctrl::MainWindowCtrl::keyPressEvent(QKeyEvent * event) {
 		this->printUserInput(main_window_shared_types::text_action_e::CLEAR);
 	}
 
-}
-
-void main_window_ctrl::MainWindowCtrl::setShortcutEnabledProperty(bool enabled) {
-	this->setAllShortcutEnabledProperty(enabled);
 }
 
 void main_window_ctrl::MainWindowCtrl::toggleShowMenubar() {

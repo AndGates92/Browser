@@ -9,9 +9,11 @@
 // Qt libraries
 // QtGlobal defines qWarning
 #include <qt5/QtCore/QtGlobal>
+#include <qt5/QtWidgets/QShortcut>
 
 #include "main_window_ctrl_base.h"
 #include "main_window_shared_types.h"
+#include "key_sequence.h"
 #include "global_types.h"
 #include "global_macros.h"
 
@@ -80,4 +82,14 @@ QString main_window_ctrl_base::MainWindowCtrlBase::createTabInfo() {
 	}
 
 	return tabInfo;
+}
+
+void main_window_ctrl_base::MainWindowCtrlBase::setAllShortcutEnabledProperty(bool enabled) {
+	QList<QShortcut *> shortcuts = this->parent->findChildren<QShortcut *>();
+
+	for (QShortcut * shortcut : shortcuts) {
+		key_sequence::KeySequence key(shortcut->key());
+		QINFO_PRINT(global_types::qinfo_level_e::ZERO, mainWindowCtrlBaseUserInput,  "Setting enabled for key " << key.toString() << " to " << enabled);
+		shortcut->setEnabled(enabled);
+	}
 }

@@ -108,45 +108,45 @@ void main_window_ctrl_tab::MainWindowCtrlTab::setUpOpenNewTab() {
 	QINFO_PRINT(global_types::qinfo_level_e::ZERO, mainWindowCtrlTabSearch,  "Open new tab");
 	this->mainWindowCore->setMainWindowState(main_window_shared_types::state_e::OPEN_TAB);
 	this->printUserInput(main_window_shared_types::text_action_e::CLEAR);
-	emit this->setShortcutEnabledPropertySignal(false);
+	this->setAllShortcutEnabledProperty(false);
 }
 
 void main_window_ctrl_tab::MainWindowCtrlTab::setUpNewSearchTab() {
 	QINFO_PRINT(global_types::qinfo_level_e::ZERO, mainWindowCtrlTabSearch,  "Search in current tab");
 	this->mainWindowCore->setMainWindowState(main_window_shared_types::state_e::SEARCH);
 	this->printUserInput(main_window_shared_types::text_action_e::CLEAR);
-	emit this->setShortcutEnabledPropertySignal(false);
+	this->setAllShortcutEnabledProperty(false);
 }
 
 
 void main_window_ctrl_tab::MainWindowCtrlTab::setUpRefreshTabUrl() {
 	this->mainWindowCore->setMainWindowState(main_window_shared_types::state_e::REFRESH_TAB);
 	this->printUserInput(main_window_shared_types::text_action_e::CLEAR);
-	emit this->setShortcutEnabledPropertySignal(false);
+	this->setAllShortcutEnabledProperty(false);
 }
 
 void main_window_ctrl_tab::MainWindowCtrlTab::setUpMoveTab() {
 	this->mainWindowCore->setMainWindowState(main_window_shared_types::state_e::TAB_MOVE);
 	this->printUserInput(main_window_shared_types::text_action_e::CLEAR);
-	emit this->setShortcutEnabledPropertySignal(false);
+	this->setAllShortcutEnabledProperty(false);
 }
 
 void main_window_ctrl_tab::MainWindowCtrlTab::setUpMoveLeft() {
 	this->mainWindowCore->setMainWindowState(main_window_shared_types::state_e::MOVE_LEFT);
 	this->printUserInput(main_window_shared_types::text_action_e::CLEAR);
-	emit this->setShortcutEnabledPropertySignal(false);
+	this->setAllShortcutEnabledProperty(false);
 }
 
 void main_window_ctrl_tab::MainWindowCtrlTab::setUpMoveRight() {
 	this->mainWindowCore->setMainWindowState(main_window_shared_types::state_e::MOVE_RIGHT);
 	this->printUserInput(main_window_shared_types::text_action_e::CLEAR);
-	emit this->setShortcutEnabledPropertySignal(false);
+	this->setAllShortcutEnabledProperty(false);
 }
 
 void main_window_ctrl_tab::MainWindowCtrlTab::setUpCloseTab() {
 	this->mainWindowCore->setMainWindowState(main_window_shared_types::state_e::CLOSE_TAB);
 	this->printUserInput(main_window_shared_types::text_action_e::CLEAR);
-	emit this->setShortcutEnabledPropertySignal(false);
+	this->setAllShortcutEnabledProperty(false);
 }
 //************************************************************************************
 // End definition of set up slots

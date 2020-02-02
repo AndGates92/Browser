@@ -10,7 +10,6 @@
 
 #include <qt5/QtCore/QLoggingCategory>
 #include <qt5/QtWidgets/QWidget>
-#include <qt5/QtWidgets/QMainWindow>
 
 #include "main_window_core.h"
 #include "main_window_ctrl.h"
@@ -35,36 +34,29 @@ namespace main_window_wrapper {
 		Q_OBJECT
 
 		public:
-				/**
-				 * @brief Function: explicit MainWindowWrapper(QWidget * parent = Q_NULLPTR, Qt::WindowFlags flags = Qt::WindowFlags())
-				 *
-				 * \param parent: parent window
-				 * \param flags: window flags
-				 *
-				 * Main window wrapper constructor
-				 */
-				explicit MainWindowWrapper(QWidget * parent = Q_NULLPTR, Qt::WindowFlags flags = Qt::WindowFlags());
+			/**
+			 * @brief Function: explicit MainWindowWrapper(QWidget * parent = Q_NULLPTR, Qt::WindowFlags flags = Qt::WindowFlags())
+			 *
+			 * \param parent: parent window
+			 * \param flags: window flags
+			 *
+			 * Main window wrapper constructor
+			 */
+			explicit MainWindowWrapper(QWidget * parent = Q_NULLPTR, Qt::WindowFlags flags = Qt::WindowFlags());
 
-				/**
-				 * @brief Function: ~MainWindowWrapper()
-				 *
-				 * Main window wrapper destructor
-				 */
-				~MainWindowWrapper();
+			/**
+			 * @brief Function: ~MainWindowWrapper()
+			 *
+			 * Main window wrapper destructor
+			 */
+			~MainWindowWrapper();
 
-				/**
-				 * @brief Function: void show()
-				 *
-				 * Show main window
-				 */
-				void show();
-
-				/**
-				 * @brief Function: void close()
-				 *
-				 * Close main window
-				 */
-				void close();
+			/**
+			 * @brief Function: void show()
+			 *
+			 * Show main window
+			 */
+			void show();
 
 		protected:
 
@@ -81,12 +73,6 @@ namespace main_window_wrapper {
 			 *
 			 */
 			main_window::MainWindow * window;
-
-			/**
-			 * @brief Main window control
-			 *
-			 */
-			main_window_ctrl::MainWindowCtrl * ctrl;
 
 	};
 

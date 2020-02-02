@@ -164,15 +164,6 @@ namespace main_window_ctrl_tab {
 
 		protected:
 
-		signals:
-			/**
-			 * @brief Function: void setShortcutEnabledPropertySignal(bool enabled)
-			 *
-			 * This function is a signal to set the enabled property of shortcuts
-			 * Once an action is under processing, shortcuts are disabled to ensure that they don't intefere
-			 */
-			void setShortcutEnabledPropertySignal(bool enabled);
-
 		private slots:
 
 			/**

@@ -110,8 +110,16 @@ namespace main_window_ctrl_base {
 			 */
 			QString createTabInfo();
 
-		private:
+			/**
+			 * @brief Function: void setAllShortcutEnabledProperty(bool enabled)
+			 *
+			 * \param enabled: value of enabled property
+			 *
+			 * This function sets the enabled property of all shortcuts of the main window and menus of the main window
+			 */
+			void setAllShortcutEnabledProperty(bool enabled);
 
+		private:
 	};
 
 }

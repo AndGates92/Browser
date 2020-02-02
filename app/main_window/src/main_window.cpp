@@ -40,6 +40,7 @@ main_window::MainWindow::MainWindow(main_window_core::MainWindowCore * core, QWi
 	QINFO_PRINT(global_types::qinfo_level_e::ZERO, mainWindowOverall,  "Main window constructor");
 
 	this->setFocusPolicy(Qt::StrongFocus);
+	this->setFocus(Qt::ActiveWindowFocusReason);
 	this->setEnabled(true);
 
 	// main widget
@@ -247,7 +248,6 @@ void main_window::MainWindow::connectSignals() {
 	connect(this->mainWindowCore->topMenuBar->getFileMenu(), &file_menu::FileMenu::updateCenterWindowSignal, this, &main_window::MainWindow::setCenterWindow);
 
 	// Close window
-	// TODO Delete after movig ctrl out to wrapper
 	connect(this->ctrl, &main_window_ctrl::MainWindowCtrl::closeWindowSignal, this, &main_window::MainWindow::closeWindow);
 
 }
@@ -271,13 +271,15 @@ void main_window::MainWindow::setCenterWindow(QString str) {
 	currentWidget->repaint();
 }
 
-// TODO Delete
 void main_window::MainWindow::closeWindow() {
-	QINFO_PRINT(global_types::qinfo_level_e::ZERO, mainWindowOverall,  "Close slot: exiting from the browser");
-	this->close();
+	QINFO_PRINT(global_types::qinfo_level_e::ZERO, mainWindowOverall,  "Close main window");
+	bool success = this->close();
+	Q_ASSERT_X(success, "main window close", "Main window close request was not handled properly");
 }
 
 void main_window::MainWindow::keyPressEvent(QKeyEvent * event) {
+
+	QINFO_PRINT(global_types::qinfo_level_e::ZERO, mainWindowOverall,  "Key event details: event type: keyPress key: " << event->key() << " modifier: " << event->modifiers());
 
 	QMainWindow::keyPressEvent(event);
 
@@ -287,6 +289,8 @@ void main_window::MainWindow::keyPressEvent(QKeyEvent * event) {
 }
 
 void main_window::MainWindow::keyReleaseEvent(QKeyEvent * event) {
+
+	QINFO_PRINT(global_types::qinfo_level_e::ZERO, mainWindowOverall,  "Key event details: event type: keyRelease key: " << event->key() << " modifier: " << event->modifiers());
 
 	QMainWindow::keyReleaseEvent(event);
 

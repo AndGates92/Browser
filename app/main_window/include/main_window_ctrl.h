@@ -99,16 +99,6 @@ namespace main_window_ctrl {
 			 */
 			void keyReleaseEvent(QKeyEvent * event);
 
-		public slots:
-			/**
-			 * @brief Function: void setShortcutEnabledProperty(bool enabled)
-			 *
-			 * \param enabled: value of enabled property
-			 *
-			 * This function is the slot to set the enabled property of all shortcuts of the main window and menus of the main window
-			 */
-			void setShortcutEnabledProperty(bool enabled);
-
 		protected:
 
 		signals:
@@ -134,15 +124,6 @@ namespace main_window_ctrl {
 			 * This function is the slot to show/hide the menubar
 			 */
 			void toggleShowMenubar();
-
-			/**
-			 * @brief Function: void setAllShortcutEnabledProperty(bool enabled)
-			 *
-			 * \param enabled: value of enabled property
-			 *
-			 * This function sets the enabled property of all shortcuts of the main window and menus of the main window
-			 */
-			void setAllShortcutEnabledProperty(bool enabled);
 
 		private:
 

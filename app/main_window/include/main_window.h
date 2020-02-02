@@ -128,7 +128,6 @@ namespace main_window {
 
 		private slots:
 
-			// TODO Delete
 			/**
 			 * @brief Function: void closeWindow()
 			 *
