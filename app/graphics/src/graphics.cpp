@@ -26,7 +26,7 @@ void graphics::init_graphics(int argc, char** argv) {
 
 	QINFO_PRINT(global_types::qinfo_level_e::ZERO, graphicsOverall,  "Create Application");
 
-	main_window_wrapper::MainWindowWrapper * window = new main_window_wrapper::MainWindowWrapper();
+	main_window_wrapper::MainWindowWrapper * window = new main_window_wrapper::MainWindowWrapper(Q_NULLPTR);
 	window->show();
 
 	app.exec();
