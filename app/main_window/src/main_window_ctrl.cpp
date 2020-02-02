@@ -81,8 +81,6 @@ void main_window_ctrl::MainWindowCtrl::connectSignals() {
 	// open tab action (from fileMenu)
 	connect(this, &main_window_ctrl::MainWindowCtrl::openNewTabSignal, this->tabctrl, &main_window_ctrl_tab::MainWindowCtrlTab::setUpOpenNewTab);
 
-	// Move tab
-	connect(this->tabctrl, &main_window_ctrl_tab::MainWindowCtrlTab::moveTabSignal, this, &main_window_ctrl::MainWindowCtrl::moveTab);
 	connect(this->tabctrl, &main_window_ctrl_tab::MainWindowCtrlTab::moveCursorSignal, this, &main_window_ctrl::MainWindowCtrl::moveCursor);
 
 }
@@ -220,10 +218,6 @@ void main_window_ctrl::MainWindowCtrl::keyPressEvent(QKeyEvent * event) {
 
 void main_window_ctrl::MainWindowCtrl::setShortcutEnabledProperty(bool enabled) {
 	this->setAllShortcutEnabledProperty(enabled);
-}
-
-void main_window_ctrl::MainWindowCtrl::moveTab(int tabIndex) {
-	emit this->moveTabSignal(tabIndex);
 }
 
 void main_window_ctrl::MainWindowCtrl::moveCursor(int tabIndex) {

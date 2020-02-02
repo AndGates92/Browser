@@ -241,11 +241,11 @@ namespace main_window_ctrl_tab {
 			void moveRight();
 
 			/**
-			 * @brief Function: void moveTabTo()
+			 * @brief Function: void setUpMoveTab()
 			 *
 			 * This function moves tab to. It will wrap around if the number of position leads to a negative tab index
 			 */
-			void moveTabTo();
+			void setUpMoveTab();
 
 			/**
 			 * @brief Function: void setUpNewSearchTab()
@@ -420,6 +420,14 @@ namespace main_window_ctrl_tab {
 			 */
 			void closeTab(int index);
 
+			/**
+			 * @brief Function: void moveTab(int tabIndex)
+			 *
+			 * \param tabIndex: index to move the tab to
+			 *
+			 * This function moves the current tab to a different tab as specified by the user
+			 */
+			void moveTab(int tabIndex);
 
 	};
 

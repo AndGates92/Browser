@@ -86,7 +86,7 @@ void main_window_ctrl_tab::MainWindowCtrlTab::connectSignals() {
 	connect(this->openNewTabKey, &QShortcut::activated, this, &main_window_ctrl_tab::MainWindowCtrlTab::setUpOpenNewTab);
 	connect(this->newSearchTabKey, &QShortcut::activated, this, &main_window_ctrl_tab::MainWindowCtrlTab::setUpNewSearchTab);
 	connect(this->closeTabKey, &QShortcut::activated, this, &main_window_ctrl_tab::MainWindowCtrlTab::setUpCloseTab);
-	connect(this->moveTabToKey, &QShortcut::activated, this, &main_window_ctrl_tab::MainWindowCtrlTab::moveTabTo);
+	connect(this->moveTabToKey, &QShortcut::activated, this, &main_window_ctrl_tab::MainWindowCtrlTab::setUpMoveTab);
 	connect(this->moveLeftKey, &QShortcut::activated, this, &main_window_ctrl_tab::MainWindowCtrlTab::moveLeft);
 	connect(this->moveRightKey, &QShortcut::activated, this, &main_window_ctrl_tab::MainWindowCtrlTab::moveRight);
 	connect(this->refreshUrlKey, &QShortcut::activated, this, &main_window_ctrl_tab::MainWindowCtrlTab::setUpRefreshTabUrl);
@@ -95,7 +95,7 @@ void main_window_ctrl_tab::MainWindowCtrlTab::connectSignals() {
 }
 
 
-void main_window_ctrl_tab::MainWindowCtrlTab::moveTabTo() {
+void main_window_ctrl_tab::MainWindowCtrlTab::setUpMoveTab() {
 	this->mainWindowCore->setMainWindowState(main_window_shared_types::state_e::TAB_MOVE);
 	this->printUserInput(main_window_shared_types::text_action_e::CLEAR);
 	emit this->setShortcutEnabledPropertySignal(false);
@@ -236,7 +236,7 @@ void main_window_ctrl_tab::MainWindowCtrlTab::executeCommand(QString command) {
 	} else if (command.compare("close-tab") == 0) {
 		this->setUpCloseTab();
 	} else if (command.compare("move-tab") == 0) {
-		this->moveTabTo();
+		this->setUpMoveTab();
 	} else if (command.compare("move-cursor-left") == 0) {
 		this->moveLeft();
 	} else if (command.compare("move-cursor-right") == 0) {
@@ -384,7 +384,7 @@ void main_window_ctrl_tab::MainWindowCtrlTab::convertToAbsTabIndex(int offset, i
 	if ((windowState == main_window_shared_types::state_e::MOVE_RIGHT) || (windowState == main_window_shared_types::state_e::MOVE_LEFT)) {
 		emit this->moveCursorSignal(tabIndex);
 	} else if (windowState == main_window_shared_types::state_e::TAB_MOVE) {
-		emit this->moveTabSignal(tabIndex);
+		this->moveTab(tabIndex);
 	} else if (windowState == main_window_shared_types::state_e::REFRESH_TAB) {
 		this->refreshUrl(tabIndex);
 	}
@@ -471,3 +471,11 @@ void main_window_ctrl_tab::MainWindowCtrlTab::refreshUrl(int tabIndex) {
 
 	centerWindow->setUrl(QUrl(currUrl));
 }
+
+void main_window_ctrl_tab::MainWindowCtrlTab::moveTab(int tabIndex) {
+	int tabIndexCurrent = this->mainWindowCore->tabs->currentIndex();
+	QINFO_PRINT(global_types::qinfo_level_e::ZERO, mainWindowCtrlTabTabs,  "Move tab " << tabIndexCurrent << " to " << tabIndex);
+	this->mainWindowCore->tabs->tabBar()->moveTab(tabIndexCurrent, tabIndex);
+}
+
+

@@ -147,15 +147,6 @@ namespace main_window_ctrl {
 			void moveCursorSignal(int tabIndex);
 
 			/**
-			 * @brief Function: void moveTabSignal(int tabIndex)
-			 *
-			 * \param tabIndex: index to move the tab to
-			 *
-			 * This function is a signal to move the current tab to another position as specified by the user
-			 */
-			void moveTabSignal(int tabIndex);
-
-			/**
 			 * @brief Function: void requestCurrentTabIndexSignal()
 			 *
 			 * This function is a signal to initiate the request of the current tab index
@@ -204,15 +195,6 @@ namespace main_window_ctrl {
 			 * This function moves the cursor to a different tab as specified by the user
 			 */
 			void moveCursor(int tabIndex);
-
-			/**
-			 * @brief Function: void moveTab(int tabIndex)
-			 *
-			 * \param tabIndex: index to move the tab to
-			 *
-			 * This function moves the current tab to a different tab as specified by the user
-			 */
-			void moveTab(int tabIndex);
 
 			/**
 			 * @brief Function: void setAllShortcutEnabledProperty(bool enabled)

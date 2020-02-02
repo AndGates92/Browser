@@ -164,15 +164,6 @@ namespace main_window {
 			 */
 			void moveCursor(int tabIndex);
 
-			/**
-			 * @brief Function: void moveTab(int tabIndex)
-			 *
-			 * \param tabIndex: index to move the tab to
-			 *
-			 * This function moves the current tab to a different tab as specified by the user
-			 */
-			void moveTab(int tabIndex);
-
 		private:
 
 			/**

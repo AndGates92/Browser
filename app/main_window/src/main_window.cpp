@@ -251,7 +251,6 @@ void main_window::MainWindow::connectSignals() {
 
 	// Move tab
 	connect(this->ctrl, &main_window_ctrl::MainWindowCtrl::moveCursorSignal, this, &main_window::MainWindow::moveCursor);
-	connect(this->ctrl, &main_window_ctrl::MainWindowCtrl::moveTabSignal, this, &main_window::MainWindow::moveTab);
 
 	// Close window
 	// TODO Delete after movig ctrl out to wrapper
@@ -295,15 +294,6 @@ void main_window::MainWindow::moveCursor(int tabIndex) {
 	QINFO_PRINT(global_types::qinfo_level_e::ZERO, mainWindowTabs,  "Move cursor to tab " << tabIndex);
 	this->mainWindowCore->tabs->setCurrentIndex(tabIndex);
 }
-
-void main_window::MainWindow::moveTab(int tabIndex) {
-	int tabIndexCurrent = this->mainWindowCore->tabs->currentIndex();
-	QINFO_PRINT(global_types::qinfo_level_e::ZERO, mainWindowTabs,  "Move tab " << tabIndexCurrent << " to " << tabIndex);
-	this->mainWindowCore->tabs->tabBar()->moveTab(tabIndexCurrent, tabIndex);
-}
-
-
-
 
 // TODO Delete
 void main_window::MainWindow::closeWindow() {
