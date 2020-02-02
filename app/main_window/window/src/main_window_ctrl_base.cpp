@@ -54,6 +54,9 @@ void main_window_ctrl_base::MainWindowCtrlBase::printUserInput(const main_window
 		}
 		// Create string following format: :<action> <userText>
 		textLabel.append(":" + userAction + " " + this->mainWindowCore->getUserText());
+		this->mainWindowCore->userInputText->setVisible(true);
+	} else {
+		this->mainWindowCore->userInputText->setVisible(false);
 	}
 
 	this->mainWindowCore->userInputText->setText(textLabel);

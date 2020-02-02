@@ -141,6 +141,7 @@ void main_window::MainWindow::fillMainWindow() {
 	this->mainWindowCore->userInputText = this->newWindowLabel();
 	this->mainWindowCore->userInputText->setAlignment(Qt::AlignLeft | Qt::AlignBottom);
 	this->mainWindowCore->userInputText->setFocus(Qt::OtherFocusReason);
+	this->mainWindowCore->userInputText->setVisible(false);
 
 	// website URL
 	this->mainWindowCore->websiteText = this->newWindowLabel();
