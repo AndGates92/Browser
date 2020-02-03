@@ -14,7 +14,7 @@
 #include "global_types.h"
 #include "global_macros.h"
 
-Q_LOGGING_CATEGORY(mainWindowBaseOverall, "mainWindowCtrlBase.overall", MSG_TYPE_LEVEL)
+Q_LOGGING_CATEGORY(mainWindowBaseOverall, "mainWindowBase.overall", MSG_TYPE_LEVEL)
 
 main_window_base::MainWindowBase::MainWindowBase(main_window_core::MainWindowCore * core) : windowCore(core) {
 
