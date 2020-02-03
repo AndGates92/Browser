@@ -234,7 +234,6 @@ void main_window::MainWindow::mainWindowLayout() {
 	int cmdMenuFromColumn = 0;
 	layout->addWidget(this->windowCore->cmdMenu, cmdMenuFromRow, cmdMenuFromColumn, cmdMenuRowSpan, cmdMenuColumnSpan);
 
-
 	layout->setHorizontalSpacing(main_window::horizontalWidgetSpacing);
 	layout->setVerticalSpacing(main_window::verticalWidgetSpacing);
 	layout->setContentsMargins(main_window::leftMargin, main_window::topMargin, main_window::rightMargin, main_window::bottomMargin);
