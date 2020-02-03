@@ -61,15 +61,15 @@ namespace main_window_ctrl {
 		public:
 
 			/**
-			 * @brief Function: explicit MainWindowCtrl(main_window_core::MainWindowCore * windowCore, QWidget * parent = QString::null)
+			 * @brief Function: explicit MainWindowCtrl(main_window_core::MainWindowCore * core, QWidget * parent = QString::null)
 			 *
-			 * \param windowCore: main window core
+			 * \param core: main window core
 			 * \param parent: parent window
 			 * \param tabIndex: current tab index
 			 *
 			 * Main window control constructor
 			 */
-			explicit MainWindowCtrl(main_window_core::MainWindowCore * windowCore, QWidget * parent = Q_NULLPTR);
+			explicit MainWindowCtrl(main_window_core::MainWindowCore * core, QWidget * parent = Q_NULLPTR);
 
 			/**
 			 * @brief Function: ~MainWindowCtrlTab()

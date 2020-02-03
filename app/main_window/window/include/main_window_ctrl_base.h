@@ -9,12 +9,13 @@
 */
 
 #include <qt5/QtCore/QLoggingCategory>
+#include <qt5/QtWidgets/QWidget>
 
-#include "main_window_core.h"
+#include "main_window_base.h"
 #include "json_parser.h"
 
 /** @defgroup MainWindowCtrlBaseGroup Main Window Doxygen Group
- *  Main Window control functions and classes
+ *  Main Window base control functions and classes
  *  @{
  */
 
@@ -27,27 +28,27 @@ namespace main_window_ctrl_base {
 	 * @brief MainWindowCtrlBase class
 	 *
 	 */
-	class MainWindowCtrlBase : public QObject {
+	class MainWindowCtrlBase : public QObject, public main_window_base::MainWindowBase {
 
 		Q_OBJECT
 
 		public:
 
 			/**
-			 * @brief Function: explicit MainWindowCtrlBase(main_window_core::MainWindowCore * windowCore, QWidget * parent = QString::null, QString jsonFileName = QString::null)
+			 * @brief Function: explicit MainWindowCtrlBase(main_window_core::MainWindowCore * core, QWidget * parent = QString::null, QString jsonFileName = QString::null)
 			 *
-			 * \param windowCore: main window core
+			 * \param core: main window core
 			 * \param parent: parent window
 			 * \param jsonFileName: JSON filename
 			 *
-			 * Main window control constructor
+			 * Main window control base class constructor
 			 */
-			explicit MainWindowCtrlBase(main_window_core::MainWindowCore * windowCore, QWidget * parent = Q_NULLPTR, QString jsonFileName = QString::null);
+			explicit MainWindowCtrlBase(main_window_core::MainWindowCore * core, QWidget * parent = Q_NULLPTR, QString jsonFileName = QString::null);
 
 			/**
 			 * @brief Function: ~MainWindowCtrlBase()
 			 *
-			 * Main window base class control destructor
+			 * Main window control base class destructor
 			 */
 			virtual ~MainWindowCtrlBase();
 
@@ -64,12 +65,6 @@ namespace main_window_ctrl_base {
 			 *
 			 */
 			QWidget * parent;
-
-			/**
-			 * @brief main window core
-			 *
-			 */
-			main_window_core::MainWindowCore * mainWindowCore;
 
 			/**
 			 * @brief tab commands and information

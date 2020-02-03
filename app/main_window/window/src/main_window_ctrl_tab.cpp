@@ -26,7 +26,7 @@ Q_LOGGING_CATEGORY(mainWindowCtrlTabTabs, "mainWindowCtrlTab.tabs", MSG_TYPE_LEV
 Q_LOGGING_CATEGORY(mainWindowCtrlTabUrl, "mainWindowCtrlTab.url", MSG_TYPE_LEVEL)
 
 
-main_window_ctrl_tab::MainWindowCtrlTab::MainWindowCtrlTab(main_window_core::MainWindowCore * windowCore, QWidget * parent) : main_window_ctrl_base::MainWindowCtrlBase(windowCore, parent, main_window_ctrl_tab::commandFileFullPath) {
+main_window_ctrl_tab::MainWindowCtrlTab::MainWindowCtrlTab(main_window_core::MainWindowCore * core, QWidget * parent) : main_window_ctrl_base::MainWindowCtrlBase(core, parent, main_window_ctrl_tab::commandFileFullPath) {
 
 	// Shortcuts
 	this->createShortcuts();
@@ -91,13 +91,13 @@ void main_window_ctrl_tab::MainWindowCtrlTab::connectSignals() {
 	connect(this->moveRightKey, &QShortcut::activated, this, &main_window_ctrl_tab::MainWindowCtrlTab::setUpMoveRight);
 	connect(this->refreshUrlKey, &QShortcut::activated, this, &main_window_ctrl_tab::MainWindowCtrlTab::setUpRefreshTabUrl);
 
-//	connect(this->mainWindowCore->tabs, &QTabWidget::currentChanged, this, &main_window_ctrl_tab::MainWindowCtrlTab::updateWebsite);
+//	connect(this->windowCore->tabs, &QTabWidget::currentChanged, this, &main_window_ctrl_tab::MainWindowCtrlTab::updateWebsite);
 	// Update info bar
-	connect(this->mainWindowCore->tabs, &QTabWidget::currentChanged, this, &main_window_ctrl_tab::MainWindowCtrlTab::updateInfoSlot);
-	connect(this->mainWindowCore->tabs, &QTabWidget::tabCloseRequested, this, &main_window_ctrl_tab::MainWindowCtrlTab::updateInfoSlot);
+	connect(this->windowCore->tabs, &QTabWidget::currentChanged, this, &main_window_ctrl_tab::MainWindowCtrlTab::updateInfoSlot);
+	connect(this->windowCore->tabs, &QTabWidget::tabCloseRequested, this, &main_window_ctrl_tab::MainWindowCtrlTab::updateInfoSlot);
 
 	// open tab action (from fileMenu)
-	connect(this->mainWindowCore->topMenuBar->getFileMenu()->openTabAction, &QAction::triggered, this, &main_window_ctrl_tab::MainWindowCtrlTab::setUpOpenNewTab);
+	connect(this->windowCore->topMenuBar->getFileMenu()->openTabAction, &QAction::triggered, this, &main_window_ctrl_tab::MainWindowCtrlTab::setUpOpenNewTab);
 
 }
 
@@ -106,45 +106,45 @@ void main_window_ctrl_tab::MainWindowCtrlTab::connectSignals() {
 //************************************************************************************
 void main_window_ctrl_tab::MainWindowCtrlTab::setUpOpenNewTab() {
 	QINFO_PRINT(global_types::qinfo_level_e::ZERO, mainWindowCtrlTabSearch,  "Open new tab");
-	this->mainWindowCore->setMainWindowState(main_window_shared_types::state_e::OPEN_TAB);
+	this->windowCore->setMainWindowState(main_window_shared_types::state_e::OPEN_TAB);
 	this->printUserInput(main_window_shared_types::text_action_e::CLEAR);
 	this->setAllShortcutEnabledProperty(false);
 }
 
 void main_window_ctrl_tab::MainWindowCtrlTab::setUpNewSearchTab() {
 	QINFO_PRINT(global_types::qinfo_level_e::ZERO, mainWindowCtrlTabSearch,  "Search in current tab");
-	this->mainWindowCore->setMainWindowState(main_window_shared_types::state_e::SEARCH);
+	this->windowCore->setMainWindowState(main_window_shared_types::state_e::SEARCH);
 	this->printUserInput(main_window_shared_types::text_action_e::CLEAR);
 	this->setAllShortcutEnabledProperty(false);
 }
 
 
 void main_window_ctrl_tab::MainWindowCtrlTab::setUpRefreshTabUrl() {
-	this->mainWindowCore->setMainWindowState(main_window_shared_types::state_e::REFRESH_TAB);
+	this->windowCore->setMainWindowState(main_window_shared_types::state_e::REFRESH_TAB);
 	this->printUserInput(main_window_shared_types::text_action_e::CLEAR);
 	this->setAllShortcutEnabledProperty(false);
 }
 
 void main_window_ctrl_tab::MainWindowCtrlTab::setUpMoveTab() {
-	this->mainWindowCore->setMainWindowState(main_window_shared_types::state_e::TAB_MOVE);
+	this->windowCore->setMainWindowState(main_window_shared_types::state_e::TAB_MOVE);
 	this->printUserInput(main_window_shared_types::text_action_e::CLEAR);
 	this->setAllShortcutEnabledProperty(false);
 }
 
 void main_window_ctrl_tab::MainWindowCtrlTab::setUpMoveLeft() {
-	this->mainWindowCore->setMainWindowState(main_window_shared_types::state_e::MOVE_LEFT);
+	this->windowCore->setMainWindowState(main_window_shared_types::state_e::MOVE_LEFT);
 	this->printUserInput(main_window_shared_types::text_action_e::CLEAR);
 	this->setAllShortcutEnabledProperty(false);
 }
 
 void main_window_ctrl_tab::MainWindowCtrlTab::setUpMoveRight() {
-	this->mainWindowCore->setMainWindowState(main_window_shared_types::state_e::MOVE_RIGHT);
+	this->windowCore->setMainWindowState(main_window_shared_types::state_e::MOVE_RIGHT);
 	this->printUserInput(main_window_shared_types::text_action_e::CLEAR);
 	this->setAllShortcutEnabledProperty(false);
 }
 
 void main_window_ctrl_tab::MainWindowCtrlTab::setUpCloseTab() {
-	this->mainWindowCore->setMainWindowState(main_window_shared_types::state_e::CLOSE_TAB);
+	this->windowCore->setMainWindowState(main_window_shared_types::state_e::CLOSE_TAB);
 	this->printUserInput(main_window_shared_types::text_action_e::CLEAR);
 	this->setAllShortcutEnabledProperty(false);
 }
@@ -157,18 +157,18 @@ void main_window_ctrl_tab::MainWindowCtrlTab::setUpCloseTab() {
 //************************************************************************************
 void main_window_ctrl_tab::MainWindowCtrlTab::closeTab(int index) {
 	QINFO_PRINT(global_types::qinfo_level_e::ZERO, mainWindowCtrlTabTabs,  "Close tab " << index);
-	this->mainWindowCore->tabs->removeTab(index);
+	this->windowCore->tabs->removeTab(index);
 }
 
 void main_window_ctrl_tab::MainWindowCtrlTab::addNewTab(QString search) {
-	QWebEngineView * centerWindow = new QWebEngineView(this->mainWindowCore->mainWidget);
+	QWebEngineView * centerWindow = new QWebEngineView(this->windowCore->mainWidget);
 
 	QINFO_PRINT(global_types::qinfo_level_e::ZERO, mainWindowCtrlTabTabs,  "Open tab with label " << search);
-	int tabIndex = this->mainWindowCore->tabs->addTab(centerWindow, search);
+	int tabIndex = this->windowCore->tabs->addTab(centerWindow, search);
 	this->newSearchTab(tabIndex, search);
 
 	// Move to the newly opened tab
-	this->mainWindowCore->tabs->setCurrentIndex(tabIndex);
+	this->windowCore->tabs->setCurrentIndex(tabIndex);
 
 	// Update info label
 	this->updateInfo();
@@ -177,41 +177,41 @@ void main_window_ctrl_tab::MainWindowCtrlTab::addNewTab(QString search) {
 void main_window_ctrl_tab::MainWindowCtrlTab::newSearchTab(int index, QString search) {
 	QINFO_PRINT(global_types::qinfo_level_e::ZERO, mainWindowCtrlTabSearch,  "User input " << search << " in tab " << index);
 
-	QWebEngineView * centerWindow = dynamic_cast<QWebEngineView *>(this->mainWindowCore->tabs->widget(index));
+	QWebEngineView * centerWindow = dynamic_cast<QWebEngineView *>(this->windowCore->tabs->widget(index));
 
 	QString tabTitle = search;
 	QString Url = this->createUrl(search);
 
-	this->mainWindowCore->tabs->setTabText(index, tabTitle);
+	this->windowCore->tabs->setTabText(index, tabTitle);
 	centerWindow->setUrl(QUrl(Url));
 
 	this->updateWebsite(index);
 }
 
 void main_window_ctrl_tab::MainWindowCtrlTab::searchCurrentTab(QString search) {
-	int tabIndex = this->mainWindowCore->getCurrentTabIndex();
+	int tabIndex = this->windowCore->getCurrentTabIndex();
 	QINFO_PRINT(global_types::qinfo_level_e::ZERO, mainWindowCtrlTabTabs,  "Search " << search << " in tab " << tabIndex);
 	this->newSearchTab(tabIndex, search);
 }
 
 void main_window_ctrl_tab::MainWindowCtrlTab::updateWebsite(int index) {
 
-	int tabCount = this->mainWindowCore->getTabCount();
+	int tabCount = this->windowCore->getTabCount();
 
 	if (tabCount > 0) {
-		QWebEngineView * centerWindow = dynamic_cast<QWebEngineView *>(this->mainWindowCore->tabs->widget(index));
+		QWebEngineView * centerWindow = dynamic_cast<QWebEngineView *>(this->windowCore->tabs->widget(index));
 		QUrl websiteUrl = centerWindow->url();
 
 		QString websiteStr (websiteUrl.toDisplayString(QUrl::FullyDecoded));
 		QINFO_PRINT(global_types::qinfo_level_e::ZERO, mainWindowCtrlTabUrl,  "Set URL in websiteText to " << websiteStr);
-		this->mainWindowCore->websiteText->setText(websiteStr);
+		this->windowCore->websiteText->setText(websiteStr);
 	} else {
-		this->mainWindowCore->websiteText->clear();
+		this->windowCore->websiteText->clear();
 	}
 }
 
 void main_window_ctrl_tab::MainWindowCtrlTab::refreshUrl(int tabIndex) {
-	QWebEngineView * centerWindow = dynamic_cast<QWebEngineView *>(this->mainWindowCore->tabs->widget(tabIndex));
+	QWebEngineView * centerWindow = dynamic_cast<QWebEngineView *>(this->windowCore->tabs->widget(tabIndex));
 	QUrl currUrl = centerWindow->url();
 
 	QString urlStr (currUrl.toDisplayString(QUrl::FullyDecoded));
@@ -221,14 +221,14 @@ void main_window_ctrl_tab::MainWindowCtrlTab::refreshUrl(int tabIndex) {
 }
 
 void main_window_ctrl_tab::MainWindowCtrlTab::moveTab(int tabIndex) {
-	int tabIndexCurrent = this->mainWindowCore->tabs->currentIndex();
+	int tabIndexCurrent = this->windowCore->tabs->currentIndex();
 	QINFO_PRINT(global_types::qinfo_level_e::ZERO, mainWindowCtrlTabTabs,  "Move tab " << tabIndexCurrent << " to " << tabIndex);
-	this->mainWindowCore->tabs->tabBar()->moveTab(tabIndexCurrent, tabIndex);
+	this->windowCore->tabs->tabBar()->moveTab(tabIndexCurrent, tabIndex);
 }
 
 void main_window_ctrl_tab::MainWindowCtrlTab::moveCursor(int tabIndex) {
 	QINFO_PRINT(global_types::qinfo_level_e::ZERO, mainWindowCtrlTabTabs,  "Move cursor to tab " << tabIndex);
-	this->mainWindowCore->tabs->setCurrentIndex(tabIndex);
+	this->windowCore->tabs->setCurrentIndex(tabIndex);
 }
 //************************************************************************************
 // End definition of actions
@@ -237,8 +237,8 @@ void main_window_ctrl_tab::MainWindowCtrlTab::moveCursor(int tabIndex) {
 void main_window_ctrl_tab::MainWindowCtrlTab::executeActionOnOffset(int offset) {
 	int sign = 0;
 
-	main_window_shared_types::state_e windowState = this->mainWindowCore->getMainWindowState();
-	main_window_shared_types::move_value_e moveType = this->mainWindowCore->getMoveValueType();
+	main_window_shared_types::state_e windowState = this->windowCore->getMainWindowState();
+	main_window_shared_types::move_value_e moveType = this->windowCore->getMoveValueType();
 
 	if (windowState == main_window_shared_types::state_e::MOVE_RIGHT) {
 		sign = 1;
@@ -260,15 +260,15 @@ void main_window_ctrl_tab::MainWindowCtrlTab::executeActionOnTab(int index) {
 	int tabIndex = main_window_ctrl_tab::emptyUserInput;
 	// index is main_window_ctrl_tab::emptyUserInput if the argument is not passed
 	if (index == main_window_ctrl_tab::emptyUserInput) {
-		tabIndex = this->mainWindowCore->getCurrentTabIndex();
+		tabIndex = this->windowCore->getCurrentTabIndex();
 	} else {
 		// start indexing tab to close with 0
 		tabIndex = index;
 	}
 
-	int tabCount = this->mainWindowCore->getTabCount();
+	int tabCount = this->windowCore->getTabCount();
 
-	main_window_shared_types::state_e windowState = this->mainWindowCore->getMainWindowState();
+	main_window_shared_types::state_e windowState = this->windowCore->getMainWindowState();
 
 	if ((tabCount > tabIndex) && (tabIndex >= 0)) {
 		if (windowState == main_window_shared_types::state_e::CLOSE_TAB) {
@@ -285,8 +285,8 @@ void main_window_ctrl_tab::MainWindowCtrlTab::executeActionOnTab(int index) {
 }
 
 void main_window_ctrl_tab::MainWindowCtrlTab::executeTabAction(int userInput) {
-	main_window_shared_types::state_e windowState = this->mainWindowCore->getMainWindowState();
-	main_window_shared_types::move_value_e moveType = this->mainWindowCore->getMoveValueType();
+	main_window_shared_types::state_e windowState = this->windowCore->getMainWindowState();
+	main_window_shared_types::move_value_e moveType = this->windowCore->getMoveValueType();
 
 	if ((windowState == main_window_shared_types::state_e::REFRESH_TAB) || (windowState == main_window_shared_types::state_e::CLOSE_TAB)) {
 		this->executeActionOnTab(userInput);
@@ -300,7 +300,7 @@ void main_window_ctrl_tab::MainWindowCtrlTab::executeTabAction(int userInput) {
 		}
 	}
 
-	int tabIndex = this->mainWindowCore->getCurrentTabIndex();
+	int tabIndex = this->windowCore->getCurrentTabIndex();
 	this->updateInfo();
 	emit this->updateWebsite(tabIndex);
 }
@@ -348,14 +348,14 @@ void main_window_ctrl_tab::MainWindowCtrlTab::keyReleaseEvent(QKeyEvent * event)
 
 	if (event->type() == QEvent::KeyRelease) {
 
-		main_window_shared_types::state_e windowState = this->mainWindowCore->getMainWindowState();
+		main_window_shared_types::state_e windowState = this->windowCore->getMainWindowState();
 
 		// Retrieve main window controller state
 		QINFO_PRINT(global_types::qinfo_level_e::ZERO, mainWindowCtrlTabUserInput,  "State " << windowState << " key " << keySeq.toString());
 
 		switch (releasedKey) {
 			case Qt::Key_Escape:
-				this->mainWindowCore->setMoveValueType(main_window_shared_types::move_value_e::IDLE);
+				this->windowCore->setMoveValueType(main_window_shared_types::move_value_e::IDLE);
 				break;
 			case Qt::Key_Backspace:
 				break;
@@ -374,9 +374,9 @@ void main_window_ctrl_tab::MainWindowCtrlTab::keyPressEvent(QKeyEvent * event) {
 
 	if (event->type() == QEvent::KeyPress) {
 
-		main_window_shared_types::state_e windowState = this->mainWindowCore->getMainWindowState();
-		main_window_shared_types::move_value_e moveType = this->mainWindowCore->getMoveValueType();
-		QString userTypedText = this->mainWindowCore->getUserText();
+		main_window_shared_types::state_e windowState = this->windowCore->getMainWindowState();
+		main_window_shared_types::move_value_e moveType = this->windowCore->getMoveValueType();
+		QString userTypedText = this->windowCore->getUserText();
 
 		// Retrieve main window controller state
 		QINFO_PRINT(global_types::qinfo_level_e::ZERO, mainWindowCtrlTabUserInput,  "State " << windowState << " key " << keySeq.toString());
@@ -386,7 +386,7 @@ void main_window_ctrl_tab::MainWindowCtrlTab::keyPressEvent(QKeyEvent * event) {
 			case Qt::Key_Return:
 				QINFO_PRINT(global_types::qinfo_level_e::ZERO, mainWindowCtrlTabUserInput,  "User typed text " << userTypedText);
 
-				this->mainWindowCore->setMoveValueType(main_window_shared_types::move_value_e::IDLE);
+				this->windowCore->setMoveValueType(main_window_shared_types::move_value_e::IDLE);
 				if (windowState == main_window_shared_types::state_e::OPEN_TAB) {
 					this->addNewTab(userTypedText);
 				} else if (windowState == main_window_shared_types::state_e::SEARCH) {
@@ -397,13 +397,13 @@ void main_window_ctrl_tab::MainWindowCtrlTab::keyPressEvent(QKeyEvent * event) {
 				if (windowState == main_window_shared_types::state_e::TAB_MOVE) {
 					if ((pressedKey >= Qt::Key_0) && (pressedKey <= Qt::Key_9)) {
 						if (moveType == main_window_shared_types::move_value_e::IDLE) {
-							this->mainWindowCore->setMoveValueType(main_window_shared_types::move_value_e::ABSOLUTE);
+							this->windowCore->setMoveValueType(main_window_shared_types::move_value_e::ABSOLUTE);
 						}
 					} else if ((moveType == main_window_shared_types::move_value_e::IDLE) && ((pressedKey == Qt::Key_H) || (pressedKey == Qt::Key_L) || (pressedKey == Qt::Key_Plus) || (pressedKey == Qt::Key_Minus))) {
 						if ((pressedKey == Qt::Key_Plus) || (pressedKey == Qt::Key_L)) {
-							this->mainWindowCore->setMoveValueType(main_window_shared_types::move_value_e::RIGHT);
+							this->windowCore->setMoveValueType(main_window_shared_types::move_value_e::RIGHT);
 						} else {
-							this->mainWindowCore->setMoveValueType(main_window_shared_types::move_value_e::LEFT);
+							this->windowCore->setMoveValueType(main_window_shared_types::move_value_e::LEFT);
 						}
 					}
 				}
@@ -418,7 +418,7 @@ main_window_shared_types::object_type_e main_window_ctrl_tab::MainWindowCtrlTab:
 
 	main_window_shared_types::object_type_e object = main_window_shared_types::object_type_e::UNKNOWN;
 
-	main_window_shared_types::state_e windowState = this->mainWindowCore->getMainWindowState();
+	main_window_shared_types::state_e windowState = this->windowCore->getMainWindowState();
 
 	// Retrieve main window controller state
 	if ((windowState == main_window_shared_types::state_e::MOVE_RIGHT) || (windowState == main_window_shared_types::state_e::MOVE_LEFT)) {
@@ -434,7 +434,7 @@ void main_window_ctrl_tab::MainWindowCtrlTab::convertToAbsTabIndex(int offset, i
 
 	Q_ASSERT_X(((sign == 0) || (sign == -1) || (sign == 1)), "main window move", "sign input must be either 0 or -1 or 1");
 
-	main_window_shared_types::state_e windowState = this->mainWindowCore->getMainWindowState();
+	main_window_shared_types::state_e windowState = this->windowCore->getMainWindowState();
 
 	int distance = 0;
 	// offset is main_window_ctrl_tab::emptyUserInput if the argument is not passed
@@ -448,13 +448,13 @@ void main_window_ctrl_tab::MainWindowCtrlTab::convertToAbsTabIndex(int offset, i
 		distance = offset;
 	}
 
-	int tabCount = this->mainWindowCore->getTabCount();
+	int tabCount = this->windowCore->getTabCount();
 
 	int tabIndexDst = 0;
 	if (sign == 0) {
 		tabIndexDst = distance;
 	} else {
-		tabIndexDst = this->mainWindowCore->getCurrentTabIndex() + (sign * distance);
+		tabIndexDst = this->windowCore->getCurrentTabIndex() + (sign * distance);
 	}
 	if (offset > tabCount) {
 		int maxTabRange = tabCount - 1;

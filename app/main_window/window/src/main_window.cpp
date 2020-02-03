@@ -35,7 +35,7 @@ Q_LOGGING_CATEGORY(mainWindowOverall, "mainWindow.overall", MSG_TYPE_LEVEL)
 Q_LOGGING_CATEGORY(mainWindowCenterWindow, "mainWindow.centerWindow", MSG_TYPE_LEVEL)
 Q_LOGGING_CATEGORY(mainWindowTabs, "mainWindow.tabs", MSG_TYPE_LEVEL)
 
-main_window::MainWindow::MainWindow(main_window_core::MainWindowCore * core, QWidget * parent, Qt::WindowFlags flags) : QMainWindow(parent, flags), mainWindowCore(core) {
+main_window::MainWindow::MainWindow(main_window_core::MainWindowCore * core, QWidget * parent, Qt::WindowFlags flags) : QMainWindow(parent, flags), main_window_base::MainWindowBase(core) {
 
 	QINFO_PRINT(global_types::qinfo_level_e::ZERO, mainWindowOverall,  "Main window constructor");
 
@@ -89,13 +89,13 @@ main_window::MainWindow::~MainWindow() {
 }
 
 void main_window::MainWindow::createMainWidget() {
-	this->mainWindowCore->mainWidget = new QWidget(this);
-	this->mainWindowCore->mainWidget->setAttribute(Qt::WA_DeleteOnClose);
+	this->windowCore->mainWidget = new QWidget(this);
+	this->windowCore->mainWidget->setAttribute(Qt::WA_DeleteOnClose);
 	// Disable widget resizing
-	this->mainWindowCore->mainWidget->setSizePolicy(QSizePolicy::Ignored, QSizePolicy::Ignored);
-	this->mainWindowCore->mainWidget->setFocusPolicy(Qt::StrongFocus);
+	this->windowCore->mainWidget->setSizePolicy(QSizePolicy::Ignored, QSizePolicy::Ignored);
+	this->windowCore->mainWidget->setFocusPolicy(Qt::StrongFocus);
 
-	this->mainWindowCore->mainWidget->setStyleSheet(
+	this->windowCore->mainWidget->setStyleSheet(
 		"QWidget {"
 			"background: brown; "
 			"color: white; "
@@ -103,7 +103,7 @@ void main_window::MainWindow::createMainWidget() {
 			"border: none; "
 		"}"
 	);
-	this->setCentralWidget(this->mainWindowCore->mainWidget);
+	this->setCentralWidget(this->windowCore->mainWidget);
 }
 
 QLabel * main_window::MainWindow::newWindowLabel() {
@@ -138,32 +138,32 @@ void main_window::MainWindow::fillMainWindow() {
 	this->createTopMenuBar();
 
 	// user input
-	this->mainWindowCore->userInputText = this->newWindowLabel();
-	this->mainWindowCore->userInputText->setAlignment(Qt::AlignLeft | Qt::AlignBottom);
-	this->mainWindowCore->userInputText->setFocus(Qt::OtherFocusReason);
-	this->mainWindowCore->userInputText->setVisible(false);
+	this->windowCore->userInputText = this->newWindowLabel();
+	this->windowCore->userInputText->setAlignment(Qt::AlignLeft | Qt::AlignBottom);
+	this->windowCore->userInputText->setFocus(Qt::OtherFocusReason);
+	this->windowCore->userInputText->setVisible(false);
 
 	// website URL
-	this->mainWindowCore->websiteText = this->newWindowLabel();
-	this->mainWindowCore->websiteText->setAlignment(Qt::AlignRight | Qt::AlignBottom);
+	this->windowCore->websiteText = this->newWindowLabel();
+	this->windowCore->websiteText->setAlignment(Qt::AlignRight | Qt::AlignBottom);
 
 	// info
-	this->mainWindowCore->infoText = this->newWindowLabel();
-	this->mainWindowCore->infoText->setAlignment(Qt::AlignRight | Qt::AlignBottom);
+	this->windowCore->infoText = this->newWindowLabel();
+	this->windowCore->infoText->setAlignment(Qt::AlignRight | Qt::AlignBottom);
 
 	// command menu
-	this->mainWindowCore->cmdMenu = new command_menu::CommandMenu(this);
-	this->mainWindowCore->cmdMenu->setVisible(false);
+	this->windowCore->cmdMenu = new command_menu::CommandMenu(this);
+	this->windowCore->cmdMenu->setVisible(false);
 }
 
 void main_window::MainWindow::createTabs() {
 	QINFO_PRINT(global_types::qinfo_level_e::ZERO, mainWindowOverall,  "Create tabs");
 
-	this->mainWindowCore->tabs = new tab_widget::TabWidget(this->mainWindowCore->mainWidget);
+	this->windowCore->tabs = new tab_widget::TabWidget(this->windowCore->mainWidget);
 	// Disable widget resizing
-	this->mainWindowCore->tabs->setSizePolicy(QSizePolicy::Ignored, QSizePolicy::Ignored);
+	this->windowCore->tabs->setSizePolicy(QSizePolicy::Ignored, QSizePolicy::Ignored);
 
-	this->mainWindowCore->tabs->setStyleSheet(
+	this->windowCore->tabs->setStyleSheet(
 		"QTabBar::tab {"
 			"background: gray; "
 			"color: white; "
@@ -179,10 +179,10 @@ void main_window::MainWindow::createTabs() {
 void main_window::MainWindow::createTopMenuBar() {
 	QINFO_PRINT(global_types::qinfo_level_e::ZERO, mainWindowOverall,  "Create top menu bar");
 
-	this->mainWindowCore->topMenuBar = new main_window_menu_bar::MainWindowMenuBar(this);
+	this->windowCore->topMenuBar = new main_window_menu_bar::MainWindowMenuBar(this);
 
 	// set menu bar of the main window
-	this->setMenuBar(this->mainWindowCore->topMenuBar);
+	this->setMenuBar(this->windowCore->topMenuBar);
 }
 
 
@@ -197,56 +197,56 @@ void main_window::MainWindow::mainWindowLayout() {
 	// | <user text> |      <website>     |   <info>   |
 	// -------------------------------------------------
 
-	QGridLayout * layout = new QGridLayout(this->mainWindowCore->mainWidget);
+	QGridLayout * layout = new QGridLayout(this->windowCore->mainWidget);
 
 	// tabs
 	int tabsRowSpan = 20;
 	int tabsColumnSpan = 10;
 	int tabsFromRow = 0;
 	int tabsFromColumn = 0;
-	layout->addWidget(this->mainWindowCore->tabs, tabsFromRow, tabsFromColumn, tabsRowSpan, tabsColumnSpan);
+	layout->addWidget(this->windowCore->tabs, tabsFromRow, tabsFromColumn, tabsRowSpan, tabsColumnSpan);
 
 	// user input text
 	int userTextRowSpan = 1;
 	int userTextColumnSpan = 3;
 	int userTextFromRow = tabsRowSpan;
 	int userTextFromColumn = 0;
-	layout->addWidget(this->mainWindowCore->userInputText, userTextFromRow, userTextFromColumn, userTextRowSpan, userTextColumnSpan);
+	layout->addWidget(this->windowCore->userInputText, userTextFromRow, userTextFromColumn, userTextRowSpan, userTextColumnSpan);
 
 	// website URL
 	int websiteRowSpan = 1;
 	int websiteColumnSpan = 5;
 	int websiteFromRow = tabsRowSpan;
 	int websiteFromColumn = userTextFromColumn + userTextColumnSpan;
-	layout->addWidget(this->mainWindowCore->websiteText, websiteFromRow, websiteFromColumn, websiteRowSpan, websiteColumnSpan);
+	layout->addWidget(this->windowCore->websiteText, websiteFromRow, websiteFromColumn, websiteRowSpan, websiteColumnSpan);
 
 	// info
 	int infoRowSpan = 1;
 	int infoColumnSpan = 2;
 	int infoFromRow = tabsRowSpan;
 	int infoFromColumn = websiteFromColumn + websiteColumnSpan;
-	layout->addWidget(this->mainWindowCore->infoText, infoFromRow, infoFromColumn, infoRowSpan, infoColumnSpan);
+	layout->addWidget(this->windowCore->infoText, infoFromRow, infoFromColumn, infoRowSpan, infoColumnSpan);
 
 	// command menu
 	int cmdMenuRowSpan = 3;
 	int cmdMenuColumnSpan = tabsColumnSpan;
 	int cmdMenuFromRow = tabsRowSpan - cmdMenuRowSpan;
 	int cmdMenuFromColumn = 0;
-	layout->addWidget(this->mainWindowCore->cmdMenu, cmdMenuFromRow, cmdMenuFromColumn, cmdMenuRowSpan, cmdMenuColumnSpan);
+	layout->addWidget(this->windowCore->cmdMenu, cmdMenuFromRow, cmdMenuFromColumn, cmdMenuRowSpan, cmdMenuColumnSpan);
 
 
 	layout->setHorizontalSpacing(main_window::horizontalWidgetSpacing);
 	layout->setVerticalSpacing(main_window::verticalWidgetSpacing);
 	layout->setContentsMargins(main_window::leftMargin, main_window::topMargin, main_window::rightMargin, main_window::bottomMargin);
 
-	this->mainWindowCore->mainWidget->setLayout(layout);
+	this->windowCore->mainWidget->setLayout(layout);
 }
 
 void main_window::MainWindow::connectSignals() {
 	QINFO_PRINT(global_types::qinfo_level_e::ZERO, mainWindowOverall,  "Connect signals");
 
 	// When the file has been read, then show it on the screen
-	connect(this->mainWindowCore->topMenuBar->getFileMenu(), &file_menu::FileMenu::updateCenterWindowSignal, this, &main_window::MainWindow::setCenterWindow);
+	connect(this->windowCore->topMenuBar->getFileMenu(), &file_menu::FileMenu::updateCenterWindowSignal, this, &main_window::MainWindow::setCenterWindow);
 
 	// Close window
 	connect(this->ctrl, &main_window_ctrl::MainWindowCtrl::closeWindowSignal, this, &main_window::MainWindow::closeWindow);
@@ -257,7 +257,7 @@ void main_window::MainWindow::createCtrl() {
 	QINFO_PRINT(global_types::qinfo_level_e::ZERO, mainWindowOverall,  "Create controller");
 
 	// main window control class
-	this->ctrl = new main_window_ctrl::MainWindowCtrl(this->mainWindowCore, this);
+	this->ctrl = new main_window_ctrl::MainWindowCtrl(this->windowCore, this);
 }
 
 
@@ -267,7 +267,7 @@ void main_window::MainWindow::setCenterWindow(QString str) {
 	QINFO_PRINT(global_types::qinfo_level_e::ZERO, mainWindowCenterWindow,  "Change texts in center window");
 	QINFO_PRINT(global_types::qinfo_level_e::ZERO, mainWindowCenterWindow,  str);
 	// Convert back QWidget to QLabel
-	QLabel * currentWidget = dynamic_cast<QLabel *>(this->mainWindowCore->tabs->currentWidget());
+	QLabel * currentWidget = dynamic_cast<QLabel *>(this->windowCore->tabs->currentWidget());
 	currentWidget->setText(str);
 	currentWidget->repaint();
 }
@@ -286,7 +286,7 @@ void main_window::MainWindow::keyPressEvent(QKeyEvent * event) {
 
 	this->ctrl->keyPressEvent(event);
 
-	this->mainWindowCore->mainWidget->repaint();
+	this->windowCore->mainWidget->repaint();
 }
 
 void main_window::MainWindow::keyReleaseEvent(QKeyEvent * event) {
@@ -297,5 +297,5 @@ void main_window::MainWindow::keyReleaseEvent(QKeyEvent * event) {
 
 	this->ctrl->keyReleaseEvent(event);
 
-	this->mainWindowCore->mainWidget->repaint();
+	this->windowCore->mainWidget->repaint();
 }

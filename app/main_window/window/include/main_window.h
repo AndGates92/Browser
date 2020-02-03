@@ -4,7 +4,7 @@
  * @copyright
  * @file main_window.h
  * @author Andrea Gianarda
- * @date 23th of September 2019
+ * @date 23rd of September 2019
  * @brief Main Window header file
 */
 
@@ -17,7 +17,7 @@
 #include <qt5/QtWidgets/QWidget>
 
 #include "main_window_ctrl.h"
-#include "main_window_core.h"
+#include "main_window_base.h"
 
 /** @defgroup MainWindowGroup Main Window Doxygen Group
  *  Main Window functions and classes
@@ -79,7 +79,7 @@ namespace main_window {
 	 * @brief MainWindow class
 	 *
 	 */
-	class MainWindow : public QMainWindow {
+	class MainWindow : public QMainWindow, public main_window_base::MainWindowBase {
 
 		Q_OBJECT
 
@@ -145,12 +145,6 @@ namespace main_window {
 			void setCenterWindow(QString str);
 
 		private:
-
-			/**
-			 * @brief main window core
-			 *
-			 */
-			main_window_core::MainWindowCore * mainWindowCore;
 
 			/**
 			 * @brief Main window control

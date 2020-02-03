@@ -11,7 +11,7 @@
 #include <qt5/QtCore/QLoggingCategory>
 #include <qt5/QtWidgets/QWidget>
 
-#include "main_window_core.h"
+#include "main_window_base.h"
 #include "main_window_ctrl.h"
 #include "main_window_ctrl_tab.h"
 #include "main_window.h"
@@ -29,9 +29,7 @@ namespace main_window_wrapper {
 	 * @brief MainWindowWrapper class
 	 *
 	 */
-	class MainWindowWrapper : public QObject {
-
-		Q_OBJECT
+	class MainWindowWrapper : public main_window_base::MainWindowBase {
 
 		public:
 			/**
@@ -61,12 +59,6 @@ namespace main_window_wrapper {
 		protected:
 
 		private:
-
-			/**
-			 * @brief Main window core
-			 *
-			 */
-			main_window_core::MainWindowCore * mainWindowCore;
 
 			/**
 			 * @brief Main window

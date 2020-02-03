@@ -88,14 +88,14 @@ namespace main_window_ctrl_tab {
 		public:
 
 			/**
-			 * @brief Function: explicit MainWindowCtrlTab(main_window_core::MainWindowCore * windowCore, QWidget * parent = Q_NULLPTR)
+			 * @brief Function: explicit MainWindowCtrlTab(main_window_core::MainWindowCore * core, QWidget * parent = Q_NULLPTR)
 			 *
-			 * \param windowCore: main window core
+			 * \param core: main window core
 			 * \param parent: parent window
 			 *
 			 * Main window tab control constructor
 			 */
-			explicit MainWindowCtrlTab(main_window_core::MainWindowCore * windowCore, QWidget * parent = Q_NULLPTR);
+			explicit MainWindowCtrlTab(main_window_core::MainWindowCore * core, QWidget * parent = Q_NULLPTR);
 
 			/**
 			 * @brief Function: ~MainWindowCtrlTab()

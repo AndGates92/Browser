@@ -22,7 +22,7 @@ Q_LOGGING_CATEGORY(mainWindowCtrlOverall, "mainWindowCtrl.overall", MSG_TYPE_LEV
 Q_LOGGING_CATEGORY(mainWindowCtrlUserInput, "mainWindowCtrl.userInput", MSG_TYPE_LEVEL)
 Q_LOGGING_CATEGORY(mainWindowCtrlSearch, "mainWindowCtrl.search", MSG_TYPE_LEVEL)
 
-main_window_ctrl::MainWindowCtrl::MainWindowCtrl(main_window_core::MainWindowCore * windowCore, QWidget * parent) : main_window_ctrl_base::MainWindowCtrlBase(windowCore, parent, main_window_ctrl::commandFileFullPath), tabctrl(new main_window_ctrl_tab::MainWindowCtrlTab(windowCore, parent)) {
+main_window_ctrl::MainWindowCtrl::MainWindowCtrl(main_window_core::MainWindowCore * core, QWidget * parent) : main_window_ctrl_base::MainWindowCtrlBase(core, parent, main_window_ctrl::commandFileFullPath), tabctrl(new main_window_ctrl_tab::MainWindowCtrlTab(core, parent)) {
 
 	// Shortcuts
 	this->createShortcuts();
@@ -63,7 +63,7 @@ void main_window_ctrl::MainWindowCtrl::connectSignals() {
 
 	// Close window
 	connect(this->closeKey, &QShortcut::activated, this, &main_window_ctrl::MainWindowCtrl::closeWindow);
-	connect(this->mainWindowCore->topMenuBar->getFileMenu()->exitAction, &QAction::triggered, this, &main_window_ctrl::MainWindowCtrl::closeWindow);
+	connect(this->windowCore->topMenuBar->getFileMenu()->exitAction, &QAction::triggered, this, &main_window_ctrl::MainWindowCtrl::closeWindow);
 
 }
 
@@ -85,9 +85,9 @@ void main_window_ctrl::MainWindowCtrl::keyReleaseEvent(QKeyEvent * event) {
 
 	key_sequence::KeySequence keySeq(releasedKey | keyModifiers);
 
-	main_window_shared_types::state_e windowState = this->mainWindowCore->getMainWindowState();
+	main_window_shared_types::state_e windowState = this->windowCore->getMainWindowState();
 
-	QString userTypedText = this->mainWindowCore->getUserText();
+	QString userTypedText = this->windowCore->getUserText();
 
 	if (event->type() == QEvent::KeyRelease) {
 
@@ -95,7 +95,7 @@ void main_window_ctrl::MainWindowCtrl::keyReleaseEvent(QKeyEvent * event) {
 
 		switch (releasedKey) {
 			case Qt::Key_Escape:
-				this->mainWindowCore->setMainWindowState(main_window_shared_types::state_e::IDLE);
+				this->windowCore->setMainWindowState(main_window_shared_types::state_e::IDLE);
 				this->setAllShortcutEnabledProperty(true);
 				this->printUserInput(main_window_shared_types::text_action_e::CLEAR);
 				break;
@@ -109,9 +109,9 @@ void main_window_ctrl::MainWindowCtrl::keyReleaseEvent(QKeyEvent * event) {
 					userTypedText = userTypedText.remove(endString, 1);
 					this->printUserInput(main_window_shared_types::text_action_e::SET, userTypedText);
 				}
-				// If in state TAB MOVE and the mainWindowCore->userText is empty after deleting the last character, set the move value to IDLE
+				// If in state TAB MOVE and the windowCore->userText is empty after deleting the last character, set the move value to IDLE
 				if ((userTypedText.isEmpty() == 1) && (windowState == main_window_shared_types::state_e::TAB_MOVE)) {
-					this->mainWindowCore->setMoveValueType(main_window_shared_types::move_value_e::IDLE);
+					this->windowCore->setMoveValueType(main_window_shared_types::move_value_e::IDLE);
 				}
 				break;
 			default:
@@ -131,9 +131,9 @@ void main_window_ctrl::MainWindowCtrl::keyPressEvent(QKeyEvent * event) {
 
 	if (event->type() == QEvent::KeyPress) {
 
-		main_window_shared_types::state_e windowState = this->mainWindowCore->getMainWindowState();
-		main_window_shared_types::move_value_e moveType = this->mainWindowCore->getMoveValueType();
-		QString userTypedText = this->mainWindowCore->getUserText();
+		main_window_shared_types::state_e windowState = this->windowCore->getMainWindowState();
+		main_window_shared_types::move_value_e moveType = this->windowCore->getMoveValueType();
+		QString userTypedText = this->windowCore->getUserText();
 
 		QINFO_PRINT(global_types::qinfo_level_e::ZERO, mainWindowCtrlUserInput,  "State " << windowState << " key " << keySeq.toString());
 
@@ -179,7 +179,7 @@ void main_window_ctrl::MainWindowCtrl::keyPressEvent(QKeyEvent * event) {
 					}
 				} else {
 					if (pressedKey == Qt::Key_Colon) {
-						this->mainWindowCore->setMainWindowState(main_window_shared_types::state_e::COMMAND);
+						this->windowCore->setMainWindowState(main_window_shared_types::state_e::COMMAND);
 						this->setAllShortcutEnabledProperty(false);
 					}
 					this->printUserInput(main_window_shared_types::text_action_e::CLEAR);
@@ -191,7 +191,7 @@ void main_window_ctrl::MainWindowCtrl::keyPressEvent(QKeyEvent * event) {
 	this->tabctrl->keyPressEvent(event);
 
 	if ((pressedKey == Qt::Key_Return) || (pressedKey == Qt::Key_Enter)) {
-		this->mainWindowCore->setMainWindowState(main_window_shared_types::state_e::IDLE);
+		this->windowCore->setMainWindowState(main_window_shared_types::state_e::IDLE);
 		this->setAllShortcutEnabledProperty(true);
 		this->printUserInput(main_window_shared_types::text_action_e::CLEAR);
 	}
@@ -199,8 +199,8 @@ void main_window_ctrl::MainWindowCtrl::keyPressEvent(QKeyEvent * event) {
 }
 
 void main_window_ctrl::MainWindowCtrl::toggleShowMenubar() {
-	bool menubarVisible = this->mainWindowCore->topMenuBar->isVisible();
-	this->mainWindowCore->topMenuBar->setVisible(!menubarVisible);
+	bool menubarVisible = this->windowCore->topMenuBar->isVisible();
+	this->windowCore->topMenuBar->setVisible(!menubarVisible);
 }
 
 void main_window_ctrl::MainWindowCtrl::closeWindow() {
