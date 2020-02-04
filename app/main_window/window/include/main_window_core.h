@@ -10,14 +10,14 @@
 
 #include <qt5/QtCore/QLoggingCategory>
 #include <qt5/QtWidgets/QMenu>
-#include <qt5/QtWidgets/QLabel>
 #include <qt5/QtWidgets/QAction>
 #include <qt5/QtWidgets/QMenuBar>
 #include <qt5/QtWidgets/QWidget>
 
-#include "main_window_menu_bar.h"
 #include "tab_widget.h"
 #include "command_menu.h"
+#include "main_window_menu_bar.h"
+#include "main_window_status_bar.h"
 #include "main_window_shared_types.h"
 
 /** @defgroup MainWindowCoreGroup Main Window Core Doxygen Group
@@ -77,7 +77,7 @@ namespace main_window_core {
 			 *
 			 * \return the text typed by the user
 			 *
-			 * This function returns the Text typed by the user
+			 * This function returns the text typed by the user
 			 */
 			QString getUserText();
 
@@ -157,29 +157,16 @@ namespace main_window_core {
 			main_window_menu_bar::MainWindowMenuBar * topMenuBar;
 
 			/**
+			 * @brief Bottom menu bar of browser
+			 *
+			 */
+			main_window_status_bar::MainWindowStatusBar * bottomStatusBar;
+
+			/**
 			 * @brief Command menu 
 			 *
 			 */
 			command_menu::CommandMenu * cmdMenu;
-
-			// Labels placed at the bottom of the window
-			/**
-			 * @brief user input
-			 *
-			 */
-			QLabel * userInputText;
-
-			/**
-			 * @brief website
-			 *
-			 */
-			QLabel * websiteText;
-
-			/**
-			 * @brief info
-			 *
-			 */
-			QLabel * infoText;
 
 		private:
 

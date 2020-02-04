@@ -32,12 +32,6 @@ namespace main_window {
 
 	namespace {
 		/**
-		 * @brief bottom information label height
-		 *
-		 */
-		const int labelHeight = 20;
-
-		/**
 		 * @brief horizontal spacing between widgets
 		 *
 		 */
@@ -176,7 +170,7 @@ namespace main_window {
 			/**
 			 * @brief Function: void fillMainWindow()
 			 *
-			 * This function fills the the main window
+			 * This function fills the main window
 			 */
 			void fillMainWindow();
 
@@ -188,20 +182,18 @@ namespace main_window {
 			void createTopMenuBar();
 
 			/**
+			 * @brief Function: void createBottomStatusBar()
+			 *
+			 * This function creates the status bar of the main window
+			 */
+			void createBottomStatusBar();
+
+			/**
 			 * @brief Function: void mainWindowLayout()
 			 *
 			 * This function defined the layout of the main window
 			 */
 			void mainWindowLayout();
-
-			/**
-			 * @brief Function: QLabel * newWindowLabel()
-			 *
-			 * \return configured label
-			 *
-			 * Configure window label
-			 */
-			QLabel * newWindowLabel();
 
 			/**
 			 * @brief Function: void connectSignals()

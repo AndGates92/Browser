@@ -23,6 +23,7 @@
 #include <qt5/QtCore/QObject>
 
 #include "main_window_menu_bar.h"
+#include "main_window_status_bar.h"
 #include "tab_widget.h"
 #include "command_menu.h"
 #include "global_macros.h"
@@ -106,27 +107,6 @@ void main_window::MainWindow::createMainWidget() {
 	this->setCentralWidget(this->windowCore->mainWidget);
 }
 
-QLabel * main_window::MainWindow::newWindowLabel() {
-	QLabel * label = new QLabel("", this);
-	label->setAttribute(Qt::WA_DeleteOnClose);
-	label->setFrameStyle(QFrame::NoFrame | QFrame::Sunken);
-	label->setFixedHeight(main_window::labelHeight);
-	label->setTextFormat(Qt::PlainText);
-	// Disable widget resizing
-	label->setSizePolicy(QSizePolicy::Ignored, QSizePolicy::Ignored);
-	label->setStyleSheet(
-		"QLabel {"
-			"background: black; "
-			"color: white; "
-			"text-align: center; "
-			"border-right: 1px solid black; "
-			"border-left: 1px solid black; "
-		"}"
-	);
-
-	return label;
-}
-
 void main_window::MainWindow::fillMainWindow() {
 	QINFO_PRINT(global_types::qinfo_level_e::ZERO, mainWindowOverall,  "Fill main window");
 
@@ -137,19 +117,8 @@ void main_window::MainWindow::fillMainWindow() {
 	// Menu bar
 	this->createTopMenuBar();
 
-	// user input
-	this->windowCore->userInputText = this->newWindowLabel();
-	this->windowCore->userInputText->setAlignment(Qt::AlignLeft | Qt::AlignBottom);
-	this->windowCore->userInputText->setFocus(Qt::OtherFocusReason);
-	this->windowCore->userInputText->setVisible(false);
-
-	// website URL
-	this->windowCore->websiteText = this->newWindowLabel();
-	this->windowCore->websiteText->setAlignment(Qt::AlignRight | Qt::AlignBottom);
-
-	// info
-	this->windowCore->infoText = this->newWindowLabel();
-	this->windowCore->infoText->setAlignment(Qt::AlignRight | Qt::AlignBottom);
+	// Status bar
+	this->createBottomStatusBar();
 
 	// command menu
 	this->windowCore->cmdMenu = new command_menu::CommandMenu(this);
@@ -185,6 +154,11 @@ void main_window::MainWindow::createTopMenuBar() {
 	this->setMenuBar(this->windowCore->topMenuBar);
 }
 
+void main_window::MainWindow::createBottomStatusBar() {
+	QINFO_PRINT(global_types::qinfo_level_e::ZERO, mainWindowOverall,  "Create top menu bar");
+
+	this->windowCore->bottomStatusBar = new main_window_status_bar::MainWindowStatusBar(this);
+}
 
 void main_window::MainWindow::mainWindowLayout() {
 
@@ -194,7 +168,7 @@ void main_window::MainWindow::mainWindowLayout() {
 	// -------------------------------------------------
 	// |                     <tabs>                    |
 	// |                    <content>                  |
-	// | <user text> |      <website>     |   <info>   |
+	// |                   <statusbar>                 |
 	// -------------------------------------------------
 
 	QGridLayout * layout = new QGridLayout(this->windowCore->mainWidget);
@@ -206,26 +180,12 @@ void main_window::MainWindow::mainWindowLayout() {
 	int tabsFromColumn = 0;
 	layout->addWidget(this->windowCore->tabs, tabsFromRow, tabsFromColumn, tabsRowSpan, tabsColumnSpan);
 
-	// user input text
-	int userTextRowSpan = 1;
-	int userTextColumnSpan = 3;
-	int userTextFromRow = tabsRowSpan;
-	int userTextFromColumn = 0;
-	layout->addWidget(this->windowCore->userInputText, userTextFromRow, userTextFromColumn, userTextRowSpan, userTextColumnSpan);
-
-	// website URL
-	int websiteRowSpan = 1;
-	int websiteColumnSpan = 5;
-	int websiteFromRow = tabsRowSpan;
-	int websiteFromColumn = userTextFromColumn + userTextColumnSpan;
-	layout->addWidget(this->windowCore->websiteText, websiteFromRow, websiteFromColumn, websiteRowSpan, websiteColumnSpan);
-
-	// info
-	int infoRowSpan = 1;
-	int infoColumnSpan = 2;
-	int infoFromRow = tabsRowSpan;
-	int infoFromColumn = websiteFromColumn + websiteColumnSpan;
-	layout->addWidget(this->windowCore->infoText, infoFromRow, infoFromColumn, infoRowSpan, infoColumnSpan);
+	// status bar input text
+	int statusBarRowSpan = 1;
+	int statusBarColumnSpan = tabsColumnSpan;
+	int statusBarFromRow = tabsRowSpan;
+	int statusBarFromColumn = 0;
+	layout->addWidget(this->windowCore->bottomStatusBar, statusBarFromRow, statusBarFromColumn, statusBarRowSpan, statusBarColumnSpan);
 
 	// command menu
 	int cmdMenuRowSpan = 3;

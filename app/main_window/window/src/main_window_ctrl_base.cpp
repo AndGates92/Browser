@@ -54,12 +54,9 @@ void main_window_ctrl_base::MainWindowCtrlBase::printUserInput(const main_window
 		}
 		// Create string following format: :<action> <userText>
 		textLabel.append(":" + userAction + " " + this->windowCore->getUserText());
-		this->windowCore->userInputText->setVisible(true);
-	} else {
-		this->windowCore->userInputText->setVisible(false);
 	}
 
-	this->windowCore->userInputText->setText(textLabel);
+	this->windowCore->bottomStatusBar->getUserInputText()->setText(textLabel);
 
 }
 
@@ -67,7 +64,7 @@ void main_window_ctrl_base::MainWindowCtrlBase::updateInfo() {
 	QString info(QString::null);
 	info = this->createTabInfo();
 
-	this->windowCore->infoText->setText(info);
+	this->windowCore->bottomStatusBar->getInfoText()->setText(info);
 }
 
 QString main_window_ctrl_base::MainWindowCtrlBase::createTabInfo() {

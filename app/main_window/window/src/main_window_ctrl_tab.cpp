@@ -204,9 +204,9 @@ void main_window_ctrl_tab::MainWindowCtrlTab::updateWebsite(int index) {
 
 		QString websiteStr (websiteUrl.toDisplayString(QUrl::FullyDecoded));
 		QINFO_PRINT(global_types::qinfo_level_e::ZERO, mainWindowCtrlTabUrl,  "Set URL in websiteText to " << websiteStr);
-		this->windowCore->websiteText->setText(websiteStr);
+		this->windowCore->bottomStatusBar->getWebsiteText()->setText(websiteStr);
 	} else {
-		this->windowCore->websiteText->clear();
+		this->windowCore->bottomStatusBar->getWebsiteText()->clear();
 	}
 }
 
