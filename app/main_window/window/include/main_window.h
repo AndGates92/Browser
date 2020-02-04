@@ -10,10 +10,6 @@
 
 #include <qt5/QtCore/QLoggingCategory>
 #include <qt5/QtWidgets/QMainWindow>
-#include <qt5/QtWidgets/QMenu>
-#include <qt5/QtWidgets/QLabel>
-#include <qt5/QtWidgets/QAction>
-#include <qt5/QtWidgets/QMenuBar>
 #include <qt5/QtWidgets/QWidget>
 
 #include "main_window_ctrl.h"
@@ -90,15 +86,6 @@ namespace main_window {
 			 * Main window destructor
 			 */
 			~MainWindow();
-
-			/**
-			 * @brief Function: QLabel * getCenterWindow()
-			 *
-			 * \return the center window
-			 *
-			 * This function returns the centerWindow attached to the main window
-			 */
-			QLabel * getCenterWindow();
 
 		protected:
 		#ifndef QT_NO_CONTEXTMENU

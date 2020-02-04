@@ -11,10 +11,9 @@
 #include <qt5/QtCore/QtGlobal>
 #include <qt5/QtWidgets/QVBoxLayout>
 #include <qt5/QtWidgets/QStatusBar>
-#include <qt5/QtWidgets/QShortcut>
 #include <qt5/QtWidgets/QTabBar>
+#include <qt5/QtWidgets/QLabel>
 #include <qt5/QtWebEngineWidgets/QWebEngineView>
-#include <qt5/QtCore/QUrl>
 #include <qt5/QtGui/QKeyEvent>
 
 // Required by qInfo
