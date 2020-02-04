@@ -12,7 +12,6 @@
 #include <qt5/QtWidgets/QVBoxLayout>
 #include <qt5/QtWidgets/QStatusBar>
 #include <qt5/QtWidgets/QTabBar>
-#include <qt5/QtWidgets/QLabel>
 #include <qt5/QtWebEngineWidgets/QWebEngineView>
 #include <qt5/QtGui/QKeyEvent>
 
@@ -190,9 +189,6 @@ void main_window::MainWindow::mainWindowLayout() {
 void main_window::MainWindow::connectSignals() {
 	QINFO_PRINT(global_types::qinfo_level_e::ZERO, mainWindowOverall,  "Connect signals");
 
-	// When the file has been read, then show it on the screen
-	connect(this->windowCore->topMenuBar->getFileMenu(), &file_menu::FileMenu::updateCenterWindowSignal, this, &main_window::MainWindow::setCenterWindow);
-
 	// Close window
 	connect(this->ctrl, &main_window_ctrl::MainWindowCtrl::closeWindowSignal, this, &main_window::MainWindow::closeWindow);
 
@@ -203,18 +199,6 @@ void main_window::MainWindow::createCtrl() {
 
 	// main window control class
 	this->ctrl = new main_window_ctrl::MainWindowCtrl(this->windowCore, this);
-}
-
-
-
-
-void main_window::MainWindow::setCenterWindow(QString str) {
-	QINFO_PRINT(global_types::qinfo_level_e::ZERO, mainWindowCenterWindow,  "Change texts in center window");
-	QINFO_PRINT(global_types::qinfo_level_e::ZERO, mainWindowCenterWindow,  str);
-	// Convert back QWidget to QLabel
-	QLabel * currentWidget = dynamic_cast<QLabel *>(this->windowCore->tabs->currentWidget());
-	currentWidget->setText(str);
-	currentWidget->repaint();
 }
 
 void main_window::MainWindow::closeWindow() {
