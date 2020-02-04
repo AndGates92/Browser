@@ -9,7 +9,7 @@
 // Qt libraries
 // QtGlobal defines qWarning
 #include <qt5/QtCore/QtGlobal>
-#include <qt5/QtWidgets/QGridLayout>
+#include <qt5/QtWidgets/QVBoxLayout>
 #include <qt5/QtWidgets/QStatusBar>
 #include <qt5/QtWidgets/QShortcut>
 #include <qt5/QtWidgets/QTabBar>
@@ -171,28 +171,28 @@ void main_window::MainWindow::mainWindowLayout() {
 	// |                   <statusbar>                 |
 	// -------------------------------------------------
 
-	QGridLayout * layout = new QGridLayout(this->windowCore->mainWidget);
+	QVBoxLayout * layout = new QVBoxLayout(this->windowCore->mainWidget);
 
 	// tabs
 	int tabsRowSpan = 20;
 	int tabsColumnSpan = 10;
 	int tabsFromRow = 0;
 	int tabsFromColumn = 0;
-	layout->addWidget(this->windowCore->tabs, tabsFromRow, tabsFromColumn, tabsRowSpan, tabsColumnSpan);
-
-	// status bar input text
-	int statusBarRowSpan = 1;
-	int statusBarColumnSpan = tabsColumnSpan;
-	int statusBarFromRow = tabsRowSpan;
-	int statusBarFromColumn = 0;
-	layout->addWidget(this->windowCore->bottomStatusBar, statusBarFromRow, statusBarFromColumn, statusBarRowSpan, statusBarColumnSpan);
+	layout->addWidget(this->windowCore->tabs);
 
 	// command menu
 	int cmdMenuRowSpan = 3;
 	int cmdMenuColumnSpan = tabsColumnSpan;
 	int cmdMenuFromRow = tabsRowSpan - cmdMenuRowSpan;
 	int cmdMenuFromColumn = 0;
-	layout->addWidget(this->windowCore->cmdMenu, cmdMenuFromRow, cmdMenuFromColumn, cmdMenuRowSpan, cmdMenuColumnSpan);
+	layout->addWidget(this->windowCore->cmdMenu);
+
+	// status bar input text
+	int statusBarRowSpan = 1;
+	int statusBarColumnSpan = tabsColumnSpan;
+	int statusBarFromRow = tabsRowSpan;
+	int statusBarFromColumn = 0;
+	layout->addWidget(this->windowCore->bottomStatusBar);
 
 	layout->setHorizontalSpacing(main_window::horizontalWidgetSpacing);
 	layout->setVerticalSpacing(main_window::verticalWidgetSpacing);

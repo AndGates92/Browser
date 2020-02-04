@@ -32,12 +32,6 @@ namespace main_window {
 
 	namespace {
 		/**
-		 * @brief horizontal spacing between widgets
-		 *
-		 */
-		const int horizontalWidgetSpacing = 0;
-
-		/**
 		 * @brief vertical spacing between widgets
 		 *
 		 */
