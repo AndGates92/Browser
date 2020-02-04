@@ -101,7 +101,7 @@ void main_window_ctrl_tab::MainWindowCtrlTab::connectSignals() {
 	connect(this->windowCore->topMenuBar->getFileMenu()->openTabAction, &QAction::triggered, this, &main_window_ctrl_tab::MainWindowCtrlTab::setUpOpenNewTab);
 
 	// When the file has been read, then show it on the screen
-	connect(this->windowCore->topMenuBar->getFileMenu(), &file_menu::FileMenu::updateCenterWindowSignal, this, &main_window_ctrl_tab::MainWindowCtrlTab::setCenterWindow);
+	connect(this->windowCore->topMenuBar->getFileMenu(), &file_menu::FileMenu::updateCenterWindowSignal, this, &main_window_ctrl_tab::MainWindowCtrlTab::printStrInCurrentTabWidget);
 }
 
 //************************************************************************************
@@ -513,7 +513,7 @@ void main_window_ctrl_tab::MainWindowCtrlTab::updateInfoSlot(int index) {
 }
 #pragma GCC diagnostic pop
 
-void main_window_ctrl_tab::MainWindowCtrlTab::setCenterWindow(QString str) {
+void main_window_ctrl_tab::MainWindowCtrlTab::printStrInCurrentTabWidget(QString str) {
 	QINFO_PRINT(global_types::qinfo_level_e::ZERO, mainWindowCtrlTabTabs,  "Change texts in center window");
 	QINFO_PRINT(global_types::qinfo_level_e::ZERO, mainWindowCtrlTabTabs,  str);
 	// Convert back QWidget to QLabel

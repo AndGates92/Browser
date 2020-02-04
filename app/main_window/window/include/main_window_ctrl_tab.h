@@ -219,13 +219,13 @@ namespace main_window_ctrl_tab {
 			void updateInfoSlot(int index);
 
 			/**
-			 * @brief Function: void setCenterWindow(QString str)
+			 * @brief Function: void printStrInCurrentTabWidget(QString str)
 			 *
 			 * \param str: text to write in the widget
 			 *
 			 * This function writes the widget with the content of the file read (stored in input argument str)
 			 */
-			void setCenterWindow(QString str);
+			void printStrInCurrentTabWidget(QString str);
 
 		private:
 
