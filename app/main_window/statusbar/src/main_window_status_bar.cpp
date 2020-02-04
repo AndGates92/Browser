@@ -22,6 +22,8 @@ main_window_status_bar::MainWindowStatusBar::MainWindowStatusBar(QWidget * paren
 
 	QINFO_PRINT(global_types::qinfo_level_e::ZERO, mainWindowStatusBarOverall,  "Main window status bar constructor");
 
+	this->setSizePolicy(QSizePolicy::Preferred, QSizePolicy::Fixed);
+
 	// user input
 	this->userInputText = this->newWindowLabel();
 	this->userInputText->setAlignment(Qt::AlignLeft | Qt::AlignBottom);
@@ -55,7 +57,7 @@ QLabel * main_window_status_bar::MainWindowStatusBar::newWindowLabel() {
 	label->setFixedHeight(main_window_status_bar::labelHeight);
 	label->setTextFormat(Qt::PlainText);
 	// Disable widget resizing
-	label->setSizePolicy(QSizePolicy::Ignored, QSizePolicy::Ignored);
+	label->setSizePolicy(QSizePolicy::Preferred, QSizePolicy::Fixed);
 	label->setStyleSheet(
 		"QLabel {"
 			"background: black; "
@@ -105,4 +107,16 @@ QLabel * main_window_status_bar::MainWindowStatusBar::getInfoText() {
 	return this->infoText;
 }
 
+QSize main_window_status_bar::MainWindowStatusBar::minimumSizeHint() {
+	int width = QWidget::minimumSizeHint().width();
+	int height = this->fontMetrics().height() + main_window_status_bar::topMargin + main_window_status_bar::bottomMargin;
 
+	return QSize(width,height);
+}
+
+QSize main_window_status_bar::MainWindowStatusBar::maximumSize() {
+	int width = QWidget::minimumSizeHint().width();
+	int height = this->fontMetrics().height() + main_window_status_bar::topMargin + main_window_status_bar::bottomMargin;
+
+	return QSize(width,height);
+}

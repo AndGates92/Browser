@@ -174,28 +174,15 @@ void main_window::MainWindow::mainWindowLayout() {
 	QVBoxLayout * layout = new QVBoxLayout(this->windowCore->mainWidget);
 
 	// tabs
-	int tabsRowSpan = 20;
-	int tabsColumnSpan = 10;
-	int tabsFromRow = 0;
-	int tabsFromColumn = 0;
 	layout->addWidget(this->windowCore->tabs);
 
 	// command menu
-	int cmdMenuRowSpan = 3;
-	int cmdMenuColumnSpan = tabsColumnSpan;
-	int cmdMenuFromRow = tabsRowSpan - cmdMenuRowSpan;
-	int cmdMenuFromColumn = 0;
 	layout->addWidget(this->windowCore->cmdMenu);
 
-	// status bar input text
-	int statusBarRowSpan = 1;
-	int statusBarColumnSpan = tabsColumnSpan;
-	int statusBarFromRow = tabsRowSpan;
-	int statusBarFromColumn = 0;
+	// status bar
 	layout->addWidget(this->windowCore->bottomStatusBar);
 
-	layout->setHorizontalSpacing(main_window::horizontalWidgetSpacing);
-	layout->setVerticalSpacing(main_window::verticalWidgetSpacing);
+	layout->setSpacing(main_window::verticalWidgetSpacing);
 	layout->setContentsMargins(main_window::leftMargin, main_window::topMargin, main_window::rightMargin, main_window::bottomMargin);
 
 	this->windowCore->mainWidget->setLayout(layout);

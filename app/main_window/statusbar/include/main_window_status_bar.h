@@ -149,6 +149,24 @@ namespace main_window_status_bar {
 			 */
 			void fillStatusBar();
 
+			/**
+			 * @brief Function: QSize minimumSizeHint()
+			 *
+			 * \return return minimum size of the widget
+			 *
+			 * Compute minimum size of the widget
+			 */
+			QSize minimumSizeHint();
+
+			/**
+			 * @brief Function: QSize maximumSizeHint()
+			 *
+			 * \return return maximum size of the widget
+			 *
+			 * Compute maximum size of the widget
+			 */
+			QSize maximumSize();
+
 
 	};
 
