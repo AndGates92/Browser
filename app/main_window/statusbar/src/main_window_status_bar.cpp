@@ -113,10 +113,3 @@ QSize main_window_status_bar::MainWindowStatusBar::minimumSizeHint() {
 
 	return QSize(width,height);
 }
-
-QSize main_window_status_bar::MainWindowStatusBar::maximumSize() {
-	int width = QWidget::minimumSizeHint().width();
-	int height = this->fontMetrics().height() + main_window_status_bar::topMargin + main_window_status_bar::bottomMargin;
-
-	return QSize(width,height);
-}

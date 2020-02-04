@@ -158,16 +158,6 @@ namespace main_window_status_bar {
 			 */
 			QSize minimumSizeHint();
 
-			/**
-			 * @brief Function: QSize maximumSizeHint()
-			 *
-			 * \return return maximum size of the widget
-			 *
-			 * Compute maximum size of the widget
-			 */
-			QSize maximumSize();
-
-
 	};
 
 }
