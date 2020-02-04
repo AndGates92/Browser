@@ -71,6 +71,11 @@ QLabel * main_window_status_bar::MainWindowStatusBar::newWindowLabel() {
 
 void main_window_status_bar::MainWindowStatusBar::fillStatusBar() {
 
+	// Layout
+	// -------------------------------------------------
+	// | <user text> |      <website>     |   <info>   |
+	// -------------------------------------------------
+
 	QHBoxLayout * layout = new QHBoxLayout();
 
 	// user input text
