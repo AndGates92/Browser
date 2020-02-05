@@ -186,13 +186,13 @@ int main_window_ctrl_tab::MainWindowCtrlTab::addNewTab(QString search) {
 void main_window_ctrl_tab::MainWindowCtrlTab::newSearchTab(int index, QString search) {
 	QINFO_PRINT(global_types::qinfo_level_e::ZERO, mainWindowCtrlTabSearch,  "User input " << search << " in tab " << index);
 
-	QWebEngineView * centerWindow = dynamic_cast<QWebEngineView *>(this->windowCore->tabs->widget(index));
+	QWebEngineView * currentTabPage = dynamic_cast<QWebEngineView *>(this->windowCore->tabs->widget(index));
 
 	QString tabTitle = search;
 	QString Url = this->createUrl(search);
 
 	this->windowCore->tabs->setTabText(index, tabTitle);
-	centerWindow->setUrl(QUrl(Url));
+	currentTabPage->setUrl(QUrl(Url));
 
 	this->updateWebsite(index);
 }
@@ -208,8 +208,8 @@ void main_window_ctrl_tab::MainWindowCtrlTab::updateWebsite(int index) {
 	int tabCount = this->windowCore->getTabCount();
 
 	if (tabCount > 0) {
-		QWebEngineView * centerWindow = dynamic_cast<QWebEngineView *>(this->windowCore->tabs->widget(index));
-		QUrl websiteUrl = centerWindow->url();
+		QWebEngineView * currentTabPage = dynamic_cast<QWebEngineView *>(this->windowCore->tabs->widget(index));
+		QUrl websiteUrl = currentTabPage->url();
 
 		QString websiteStr (websiteUrl.toDisplayString(QUrl::FullyDecoded));
 		QINFO_PRINT(global_types::qinfo_level_e::ZERO, mainWindowCtrlTabUrl,  "Set URL in websiteText to " << websiteStr);
@@ -220,13 +220,13 @@ void main_window_ctrl_tab::MainWindowCtrlTab::updateWebsite(int index) {
 }
 
 void main_window_ctrl_tab::MainWindowCtrlTab::refreshUrl(int tabIndex) {
-	QWebEngineView * centerWindow = dynamic_cast<QWebEngineView *>(this->windowCore->tabs->widget(tabIndex));
-	QUrl currUrl = centerWindow->url();
+	QWebEngineView * currentTabPage = dynamic_cast<QWebEngineView *>(this->windowCore->tabs->widget(tabIndex));
+	QUrl currUrl = currentTabPage->url();
 
 	QString urlStr (currUrl.toDisplayString(QUrl::FullyDecoded));
 	QINFO_PRINT(global_types::qinfo_level_e::ZERO, mainWindowCtrlTabUrl,  "Refresh URL " << urlStr);
 
-	centerWindow->setUrl(QUrl(currUrl));
+	currentTabPage->setUrl(QUrl(currUrl));
 }
 
 void main_window_ctrl_tab::MainWindowCtrlTab::moveTab(int tabIndex) {
@@ -539,10 +539,11 @@ void main_window_ctrl_tab::MainWindowCtrlTab::printStrInCurrentTabWidget(const Q
 
 	QINFO_PRINT(global_types::qinfo_level_e::ZERO, mainWindowCtrlTabTabs, "Current tab index is " << currentTabIndex << " and the tab widget has " << tabWidget->count() << " tabs");
 	tabWidget->setTabText(currentTabIndex, title);
-	QLabel * centerWindow = dynamic_cast<QLabel *>(tabWidget->widget(currentTabIndex, true));
-	Q_ASSERT_X((centerWindow != nullptr), "null center window", "Center window is null");
+	QLabel * currentTabPage = dynamic_cast<QLabel *>(tabWidget->widget(currentTabIndex, true));
+	Q_ASSERT_X((currentTabPage != nullptr), "null center window", "Center window is null");
 
 	// Invoke move contructor as tabContent is a reference
 	QString content(std::move(tabContent));
-	centerWindow->setText(content);
+	currentTabPage->setText(content);
+	currentTabPage->repaint();
 }
