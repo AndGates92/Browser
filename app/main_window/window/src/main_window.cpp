@@ -204,7 +204,7 @@ void main_window::MainWindow::createCtrl() {
 void main_window::MainWindow::closeWindow() {
 	QINFO_PRINT(global_types::qinfo_level_e::ZERO, mainWindowOverall,  "Close main window");
 	bool success = this->close();
-	Q_ASSERT_X(success, "main window close", "Main window close request was not handled properly");
+	Q_ASSERT_X(success, "main window close success check", "Main window close request was not handled properly");
 }
 
 void main_window::MainWindow::keyPressEvent(QKeyEvent * event) {

@@ -172,7 +172,7 @@ int main_window_ctrl_tab::MainWindowCtrlTab::addNewTab(QString search) {
 
 	QINFO_PRINT(global_types::qinfo_level_e::ZERO, mainWindowCtrlTabTabs,  "Open tab with label " << search);
 	int tabIndex = this->windowCore->tabs->addTab(centerWindow, search);
-	Q_ASSERT_X((tabIndex != -1), "main window tab creation", "Tab index cannot be -1 as tab was just created");
+	QCRITICAL_PRINT((tabIndex < 0), mainWindowCtrlTabTabs, "Newly create tab has index " << tabIndex << ", It cannot be negative");
 
 	// Move to the newly opened tab
 	this->windowCore->tabs->setCurrentIndex(tabIndex);
@@ -261,7 +261,7 @@ void main_window_ctrl_tab::MainWindowCtrlTab::executeActionOnOffset(int offset) 
 		}
 	}
 
-	Q_ASSERT_X(((sign == -1) || (sign == 1)), "execute movement on offset", "sign input must be either -1 or 1");
+	Q_ASSERT_X(((sign == -1) || (sign == 1)), "sign check to execute movement on offset", "sign input must be either -1 or 1");
 	this->convertToAbsTabIndex(offset, sign);
 }
 
@@ -441,7 +441,7 @@ main_window_shared_types::object_type_e main_window_ctrl_tab::MainWindowCtrlTab:
 
 void main_window_ctrl_tab::MainWindowCtrlTab::convertToAbsTabIndex(int offset, int sign) {
 
-	Q_ASSERT_X(((sign == 0) || (sign == -1) || (sign == 1)), "main window move", "sign input must be either 0 or -1 or 1");
+	Q_ASSERT_X(((sign == 0) || (sign == -1) || (sign == 1)), "tab index convertion sign check", "sign input must be either 0 or -1 or 1");
 
 	main_window_shared_types::state_e windowState = this->windowCore->getMainWindowState();
 
@@ -520,7 +520,7 @@ void main_window_ctrl_tab::MainWindowCtrlTab::updateInfoSlot(int index) {
 #pragma GCC diagnostic pop
 
 void main_window_ctrl_tab::MainWindowCtrlTab::printStrInCurrentTabWidget(const QString & tabTitle, const QString & tabContent) {
-	QINFO_PRINT(global_types::qinfo_level_e::ZERO, mainWindowCtrlTabTabs,  "Set texts in center window");
+	QINFO_PRINT(global_types::qinfo_level_e::ZERO, mainWindowCtrlTabTabs,  "Set text in center window with title " << tabTitle);
 	QINFO_PRINT(global_types::qinfo_level_e::ZERO, mainWindowCtrlTabTabs,  tabContent);
 
 	// Get tabs
@@ -529,15 +529,20 @@ void main_window_ctrl_tab::MainWindowCtrlTab::printStrInCurrentTabWidget(const Q
 	// Get current tab index
 	int currentTabIndex = tabWidget->currentIndex();
 
+	// Invoke move contructor as tabTile is a reference
+	QString title(std::move(tabTitle));
 	// If not tabs, then create one
 	if (currentTabIndex == -1) {
-		currentTabIndex = this->addNewTab(tabTitle);
-		Q_ASSERT_X((currentTabIndex != -1), "positive tab index", "Tab index cannot be negative as tab was just created");
-		Q_ASSERT_X((currentTabIndex < tabWidget->count()), "check tab index value", "Tab index must be smaller than the number of tabs");
+		currentTabIndex = this->addNewTab(title);
+		QCRITICAL_PRINT((currentTabIndex < tabWidget->count()), mainWindowCtrlTabTabs, "Current tab index " << currentTabIndex << " must be larger than the number of tabs " << tabWidget->count());
 	}
-	tabWidget->setTabText(currentTabIndex, tabTitle);
+
+	QINFO_PRINT(global_types::qinfo_level_e::ZERO, mainWindowCtrlTabTabs, "Current tab index is " << currentTabIndex << " and the tab widget has " << tabWidget->count() << " tabs");
+	tabWidget->setTabText(currentTabIndex, title);
 	QLabel * centerWindow = dynamic_cast<QLabel *>(tabWidget->widget(currentTabIndex, true));
 	Q_ASSERT_X((centerWindow != nullptr), "null center window", "Center window is null");
 
-	centerWindow->setText(tabContent);
+	// Invoke move contructor as tabContent is a reference
+	QString content(std::move(tabContent));
+	centerWindow->setText(content);
 }

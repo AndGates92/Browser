@@ -20,7 +20,7 @@ Q_LOGGING_CATEGORY(keyInfoString, "keyInfo.string", MSG_TYPE_LEVEL)
 key_info::KeyInfo::KeyInfo(const QKeySequence & keySeq) {
 
 	// Assert that only1 key is stored in the QKeySequence
-	Q_ASSERT_X((keySeq.count() == 1), "keyInfo to string", "QKeySequence passed to KeyInfo class instance must contain one key sequence");
+	Q_ASSERT_X((keySeq.count() == 1), "key sequence length", "QKeySequence passed to KeyInfo class instance must contain one key sequence");
 
 	// Cast first element of key sequence to int in order to extract the key and the modifier
 	int keyInt = keySeq[0];
