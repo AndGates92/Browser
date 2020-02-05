@@ -162,19 +162,25 @@ void main_window_ctrl_tab::MainWindowCtrlTab::closeTab(int index) {
 	this->windowCore->tabs->removeTab(index);
 }
 
-void main_window_ctrl_tab::MainWindowCtrlTab::addNewTab(QString search) {
+void main_window_ctrl_tab::MainWindowCtrlTab::addNewTabAndSearch(QString search) {
+	int tabIndex = this->addNewTab(search);
+	this->newSearchTab(tabIndex, search);
+}
+
+int main_window_ctrl_tab::MainWindowCtrlTab::addNewTab(QString search) {
 	QWebEngineView * centerWindow = new QWebEngineView(this->windowCore->mainWidget);
 
 	QINFO_PRINT(global_types::qinfo_level_e::ZERO, mainWindowCtrlTabTabs,  "Open tab with label " << search);
 	int tabIndex = this->windowCore->tabs->addTab(centerWindow, search);
 	Q_ASSERT_X((tabIndex != -1), "main window tab creation", "Tab index cannot be -1 as tab was just created");
-	this->newSearchTab(tabIndex, search);
 
 	// Move to the newly opened tab
 	this->windowCore->tabs->setCurrentIndex(tabIndex);
 
 	// Update info label
 	this->updateInfo();
+
+	return tabIndex;
 }
 
 void main_window_ctrl_tab::MainWindowCtrlTab::newSearchTab(int index, QString search) {
@@ -391,7 +397,7 @@ void main_window_ctrl_tab::MainWindowCtrlTab::keyPressEvent(QKeyEvent * event) {
 
 				this->windowCore->setMoveValueType(main_window_shared_types::move_value_e::IDLE);
 				if (windowState == main_window_shared_types::state_e::OPEN_TAB) {
-					this->addNewTab(userTypedText);
+					this->addNewTabAndSearch(userTypedText);
 				} else if (windowState == main_window_shared_types::state_e::SEARCH) {
 					this->searchCurrentTab(userTypedText);
 				}
@@ -525,15 +531,13 @@ void main_window_ctrl_tab::MainWindowCtrlTab::printStrInCurrentTabWidget(const Q
 
 	// If not tabs, then create one
 	if (currentTabIndex == -1) {
-		this->addNewTab(tabTitle);
-		currentTabIndex = tabWidget->currentIndex();
-		Q_ASSERT_X((currentTabIndex != -1), "fill tab content", "Tab index cannot be -1 as tab was just created");
+		currentTabIndex = this->addNewTab(tabTitle);
+		Q_ASSERT_X((currentTabIndex != -1), "positive tab index", "Tab index cannot be negative as tab was just created");
+		Q_ASSERT_X((currentTabIndex < tabWidget->count()), "check tab index value", "Tab index must be smaller than the number of tabs");
 	}
 	tabWidget->setTabText(currentTabIndex, tabTitle);
-	QLabel * centerWindow = dynamic_cast<QLabel *>(this->windowCore->tabs->widget(currentTabIndex));
-	if (centerWindow == nullptr) {
-		qCritical(mainWindowCtrlTabTabs) << "Unable to get tab page at index " << currentTabIndex;
-		exit(EXIT_FAILURE);
-	}
+	QLabel * centerWindow = dynamic_cast<QLabel *>(tabWidget->widget(currentTabIndex, true));
+	Q_ASSERT_X((centerWindow != nullptr), "null center window", "Center window is null");
+
 	centerWindow->setText(tabContent);
 }

@@ -340,15 +340,26 @@ namespace main_window_ctrl_tab {
 			 */
 			void updateWebsite(int index);
 
-			// ================================ START ACTIONS ========================================//
 			/**
-			 * @brief Function: void addNewTab(QString search)
+			 * @brief Function: void addNewTabAndSearch(QString search)
 			 *
 			 * \param search: string to search
 			 *
-			 * This function adds a new tab to the main window
+			 * This function adds a new tab to the tab widget and searches the user string
 			 */
-			void addNewTab(QString search);
+			void addNewTabAndSearch(QString search);
+
+			// ================================ START ACTIONS ========================================//
+			/**
+			 * @brief Function: int addNewTab(QString search)
+			 *
+			 * \param search: string to search
+			 *
+			 * \return the tab index
+			 *
+			 * This function adds a new tab to the tab widget
+			 */
+			int addNewTab(QString search);
 
 			/**
 			 * @brief Function: void newSearchTab(int index, QString search)

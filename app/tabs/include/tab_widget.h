@@ -107,6 +107,18 @@ namespace tab_widget {
 			 */
 			void removeTab(int index);
 
+			/**
+			 * @brief Function: QWidget * widget(int index, bool checkError = true)
+			 *
+			 * \param index: index of the tab to return the widget of
+			 * \param checkError: error out if widget is null
+			 *
+			 * \return widget of tab page
+			 *
+			 * remove a tab from tab widget
+			 */
+			QWidget * widget(int index, bool checkError = true);
+
 		protected:
 			/**
 			 * @brief Function: void resizeEvent(QResizeEvent * event) override
