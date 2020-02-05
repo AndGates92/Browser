@@ -10,7 +10,6 @@
 // QtGlobal defines qWarning
 #include <qt5/QtCore/QtGlobal>
 #include <qt5/QtGui/QKeyEvent>
-#include <qt5/QtWidgets/QLabel>
 #include <qt5/QtWebEngineWidgets/QWebEngineView>
 
 // Required by qInfo
@@ -168,6 +167,7 @@ void main_window_ctrl_tab::MainWindowCtrlTab::addNewTab(QString search) {
 
 	QINFO_PRINT(global_types::qinfo_level_e::ZERO, mainWindowCtrlTabTabs,  "Open tab with label " << search);
 	int tabIndex = this->windowCore->tabs->addTab(centerWindow, search);
+	Q_ASSERT_X((tabIndex != -1), "main window tab creation", "Tab index cannot be -1 as tab was just created");
 	this->newSearchTab(tabIndex, search);
 
 	// Move to the newly opened tab
@@ -513,11 +513,27 @@ void main_window_ctrl_tab::MainWindowCtrlTab::updateInfoSlot(int index) {
 }
 #pragma GCC diagnostic pop
 
-void main_window_ctrl_tab::MainWindowCtrlTab::printStrInCurrentTabWidget(QString str) {
-	QINFO_PRINT(global_types::qinfo_level_e::ZERO, mainWindowCtrlTabTabs,  "Change texts in center window");
-	QINFO_PRINT(global_types::qinfo_level_e::ZERO, mainWindowCtrlTabTabs,  str);
-	// Convert back QWidget to QLabel
-	QLabel * currentWidget = dynamic_cast<QLabel *>(this->windowCore->tabs->currentWidget());
-	currentWidget->setText(str);
-	currentWidget->repaint();
+void main_window_ctrl_tab::MainWindowCtrlTab::printStrInCurrentTabWidget(const QString & tabTitle, const QString & tabContent) {
+	QINFO_PRINT(global_types::qinfo_level_e::ZERO, mainWindowCtrlTabTabs,  "Set texts in center window");
+	QINFO_PRINT(global_types::qinfo_level_e::ZERO, mainWindowCtrlTabTabs,  tabContent);
+
+	// Get tabs
+	tab_widget::TabWidget * tabWidget = this->windowCore->tabs;
+
+	// Get current tab index
+	int currentTabIndex = tabWidget->currentIndex();
+
+	// If not tabs, then create one
+	if (currentTabIndex == -1) {
+		this->addNewTab(tabTitle);
+		currentTabIndex = tabWidget->currentIndex();
+		Q_ASSERT_X((currentTabIndex != -1), "fill tab content", "Tab index cannot be -1 as tab was just created");
+	}
+	tabWidget->setTabText(currentTabIndex, tabTitle);
+	QLabel * centerWindow = dynamic_cast<QLabel *>(this->windowCore->tabs->widget(currentTabIndex));
+	if (centerWindow == nullptr) {
+		qCritical(mainWindowCtrlTabTabs) << "Unable to get tab page at index " << currentTabIndex;
+		exit(EXIT_FAILURE);
+	}
+	centerWindow->setText(tabContent);
 }

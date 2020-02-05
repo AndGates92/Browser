@@ -111,13 +111,14 @@ namespace file_menu {
 			void print();
 
 			/**
-			 * @brief Function: void updateCenterWindow(QString & content)
+			 * @brief Function: void updateCenterWindow(const QString & title, const QString & content)
 			 *
-			 * \param content: content of the file read
+			 * \param title: title of window
+			 * \param content: content of the window
 			 *
 			 * This function is a slot to emit the signal informing the main window that the center window must be updated
 			 */
-			void updateCenterWindow(QString & content);
+			void updateCenterWindow(const QString & title, const QString & content);
 
 		private:
 
@@ -149,13 +150,14 @@ namespace file_menu {
 
 		signals:
 			/**
-			 * @brief Function: void updateCenterWindowSignal(QString & content)
+			 * @brief Function: void updateCenterWindowSignal(const QString & title, const QString & content)
 			 *
+			 * \param title: title of the widget
 			 * \param content: content of the file read
 			 *
 			 * This function is a signal to inform the main window that the center window must be updated
 			 */
-			void updateCenterWindowSignal(QString & content);
+			void updateCenterWindowSignal(const QString & title, const QString & content);
 
 	};
 }

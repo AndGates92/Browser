@@ -91,7 +91,7 @@ void file_menu::FileMenu::print() {
 
 }
 
-void file_menu::FileMenu::updateCenterWindow(QString & content) {
+void file_menu::FileMenu::updateCenterWindow(const QString & title, const QString & content) {
 	QINFO_PRINT(global_types::qinfo_level_e::ZERO, fileMenuOpenAction,  "Send signal to main window to update the center window");
-	emit this->updateCenterWindowSignal(content);
+	emit this->updateCenterWindowSignal(title, content);
 }

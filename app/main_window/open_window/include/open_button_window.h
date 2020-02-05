@@ -135,13 +135,14 @@ namespace open_button_window {
 
 		signals:
 			/**
-			 * @brief Function: void fileRead(QString & content)
+			 * @brief Function: void fileRead(const QString & title, const QString & content)
 			 *
+			 * \param title: title of the widget
 			 * \param content: content of the file read
 			 *
 			 * This function is a signal to inform the menu that the center window must be updated
 			 */
-			void fileRead(QString & content);
+			void fileRead(const QString & title, const QString & content);
 
 	};
 }
