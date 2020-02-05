@@ -50,15 +50,14 @@ main_window_status_bar::MainWindowStatusBar::~MainWindowStatusBar() {
 }
 
 
-QLabel * main_window_status_bar::MainWindowStatusBar::newWindowLabel() {
-	QLabel * label = new QLabel("", this);
-	label->setAttribute(Qt::WA_DeleteOnClose);
-	label->setFrameStyle(QFrame::NoFrame | QFrame::Sunken);
-	label->setFixedHeight(main_window_status_bar::labelHeight);
-	label->setTextFormat(Qt::PlainText);
+elided_label::ElidedLabel * main_window_status_bar::MainWindowStatusBar::newWindowLabel() {
+	elided_label::ElidedLabel * newLabel = new elided_label::ElidedLabel(QString::null, main_window_status_bar::textOrigin, this, this->windowFlags(), Qt::ElideRight);
+	newLabel->setAttribute(Qt::WA_DeleteOnClose);
+	newLabel->setFrameStyle(QFrame::NoFrame | QFrame::Sunken);
+	newLabel->setFixedHeight(main_window_status_bar::textHeight);
+	newLabel->setTextFormat(Qt::PlainText);
 	// Disable widget resizing
-	label->setSizePolicy(QSizePolicy::Preferred, QSizePolicy::Fixed);
-	label->setStyleSheet(
+	newLabel->setStyleSheet(
 		"QLabel {"
 			"background: black; "
 			"color: white; "
@@ -68,7 +67,7 @@ QLabel * main_window_status_bar::MainWindowStatusBar::newWindowLabel() {
 		"}"
 	);
 
-	return label;
+	return newLabel;
 }
 
 void main_window_status_bar::MainWindowStatusBar::fillStatusBar() {
@@ -95,15 +94,15 @@ void main_window_status_bar::MainWindowStatusBar::fillStatusBar() {
 	this->setLayout(layout);
 }
 
-QLabel * main_window_status_bar::MainWindowStatusBar::getUserInputText() {
+elided_label::ElidedLabel * main_window_status_bar::MainWindowStatusBar::getUserInputText() {
 	return this->userInputText;
 }
 
-QLabel * main_window_status_bar::MainWindowStatusBar::getWebsiteText() {
+elided_label::ElidedLabel * main_window_status_bar::MainWindowStatusBar::getWebsiteText() {
 	return this->websiteText;
 }
 
-QLabel * main_window_status_bar::MainWindowStatusBar::getInfoText() {
+elided_label::ElidedLabel * main_window_status_bar::MainWindowStatusBar::getInfoText() {
 	return this->infoText;
 }
 

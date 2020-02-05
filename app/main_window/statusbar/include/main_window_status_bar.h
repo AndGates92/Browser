@@ -10,7 +10,8 @@
 
 #include <qt5/QtCore/QLoggingCategory>
 #include <qt5/QtWidgets/QWidget>
-#include <qt5/QtWidgets/QLabel>
+
+#include "elided_label.h"
 
 /** @defgroup MainWindowStatusBarGroup Main Window StatusBar Doxygen Group
  *  Main Window statusbar functions and classes
@@ -23,10 +24,16 @@ namespace main_window_status_bar {
 
 	namespace {
 		/**
-		 * @brief bottom information label height
+		 * @brief default origin of text in status bar widget
 		 *
 		 */
-		const int labelHeight = 20;
+		const QPoint textOrigin(0,0);
+
+		/**
+		 * @brief bottom information text height
+		 *
+		 */
+		const int textHeight = 20;
 
 		/**
 		 * @brief horizontal spacing between widgets
@@ -84,31 +91,31 @@ namespace main_window_status_bar {
 			~MainWindowStatusBar();
 
 			/**
-			 * Function: QLabel * getUserInputText()
+			 * Function: elided_label::ElidedLabel * getUserInputText()
 			 *
 			 * \return the label containing the text typed by the user
 			 *
 			 * This function returns the label storing the text typed by the user
 			 */
-			QLabel * getUserInputText();
+			elided_label::ElidedLabel * getUserInputText();
 
 			/**
-			 * Function: QLabel * getWebsiteText()
+			 * Function: elided_label::ElidedLabel * getWebsiteText()
 			 *
 			 * \return the label containing the website URL
 			 *
 			 * This function returns the label storing the website URL
 			 */
-			QLabel * getWebsiteText();
+			elided_label::ElidedLabel * getWebsiteText();
 
 			/**
-			 * Function: QLabel * getInfoText()
+			 * Function: elided_label::ElidedLabel * getInfoText()
 			 *
 			 * \return the label containing the text storing information about the webpage/browser
 			 *
 			 * This function returns the label storing information about the webpage/browser
 			 */
-			QLabel * getInfoText();
+			elided_label::ElidedLabel * getInfoText();
 
 		protected:
 
@@ -119,28 +126,28 @@ namespace main_window_status_bar {
 			 * @brief user input
 			 *
 			 */
-			QLabel * userInputText;
+			elided_label::ElidedLabel * userInputText;
 
 			/**
 			 * @brief website
 			 *
 			 */
-			QLabel * websiteText;
+			elided_label::ElidedLabel * websiteText;
 
 			/**
 			 * @brief info
 			 *
 			 */
-			QLabel * infoText;
+			elided_label::ElidedLabel * infoText;
 
 			/**
-			 * @brief Function: QLabel * newWindowLabel()
+			 * @brief Function: elided_label::ElidedLabel * newWindowLabel()
 			 *
 			 * \return configured label
 			 *
 			 * Configure window label
 			 */
-			QLabel * newWindowLabel();
+			elided_label::ElidedLabel * newWindowLabel();
 
 			/**
 			 * @brief Function: void fillStatusBar()
