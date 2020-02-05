@@ -27,6 +27,8 @@ tab_bar::TabBar::TabBar(QWidget * parent, int width): QTabBar(parent), dimension
 	this->setFixedHeight(tab_bar::height);
 	this->setMinimumWidth(tab_bar::minWidth);
 
+	this->setElideMode(Qt::ElideRight);
+
 	QINFO_PRINT(global_types::qinfo_level_e::ZERO, tabBarOverall,  "Current tab size: " << this->dimensions);
 }
 
