@@ -36,7 +36,7 @@
  *
  * \param VERBOSITY : verbosity level
  * \param CATEGORY  : category of the print
- * \param ...       : variable number of arguments to provide to log_info
+ * \param ...       : variable number of arguments to provide to infoMsg
  *
  * Print a message to the log file if the chosen verbosity is less or equal to the default verbosity
  */
