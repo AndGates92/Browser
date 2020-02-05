@@ -148,7 +148,7 @@ void open_button_window::OpenButtonWindow::windowLayout() {
 }
 
 void open_button_window::OpenButtonWindow::fillWindow() {
-	this->label = new QLabel(tr("Open -> "), this);
+	this->label = new elided_label::ElidedLabel(tr("Open -> "), QPoint(0,0), this, this->windowFlags(), Qt::ElideRight);
 	this->label->setFrameStyle(QFrame::NoFrame | QFrame::Sunken);
 	this->label->setAlignment(Qt::AlignCenter);
 

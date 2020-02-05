@@ -10,9 +10,10 @@
 
 #include <qt5/QtCore/QLoggingCategory>
 #include <qt5/QtWidgets/QDialog>
-#include <qt5/QtWidgets/QLabel>
 #include <qt5/QtWidgets/QLineEdit>
 #include <qt5/QtWidgets/QPushButton>
+
+#include "elided_label.h"
 
 /** @defgroup OpenButtonWindowGroup Open Button Window Doxygen Group
  *  Open Button Window functions and classes
@@ -92,7 +93,7 @@ namespace open_button_window {
 			 * @brief label printed next to the user typed text
 			 *
 			 */
-			QLabel * label;
+			elided_label::ElidedLabel * label;
 
 			/**
 			 * @brief user typed text
