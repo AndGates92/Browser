@@ -62,10 +62,8 @@ void open_button_window::OpenButtonWindow::open() {
 
 		QFile userFile(filename);
 		bool fileOpenRet = userFile.open(QIODevice::ReadOnly | QIODevice::Text);
-		if (!fileOpenRet) {
-			qCritical(openButtonWindowOpen) << "Unable to open file " << filename;
-			exit(EXIT_FAILURE);
-		}
+
+		QCRITICAL_PRINT((!fileOpenRet), openButtonWindowOpen, "Unable to open file " << filename);
 
 		QString fileContent("");
 		while(!userFile.atEnd()) {

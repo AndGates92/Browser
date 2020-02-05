@@ -45,10 +45,7 @@ void json_wrapper::JsonWrapper::readJson() {
 
 	// open the file
 	bool openSuccess = this->jsonFile->open(this->openFlags);
-	if (!openSuccess) {
-		qCritical(jsonWrapperFile) << "Unable to open JSON file " << this->jsonFile->fileName() << " for read";
-		exit(EXIT_FAILURE);
-	}
+	QCRITICAL_PRINT((!openSuccess), jsonWrapperFile, "Unable to open JSON file " << this->jsonFile->fileName() << " for read");
 
 	// Copy content into QString
 	QString content(this->jsonFile->readAll());
@@ -62,10 +59,7 @@ void json_wrapper::JsonWrapper::readJson() {
 	QJsonDocument jsonDoc = QJsonDocument(QJsonDocument::fromJson(contentUtf8, jsonParseError));
 
 	// Check if JSON parsing is successful
-	if (jsonDoc.isNull() == 1) {
-		qCritical(jsonWrapperFile) << "Unable to convert UTF8 QString to JSON file because of error " << jsonParseError->errorString() << "(error type " << jsonParseError->error << ")";
-		exit(EXIT_FAILURE);
-	}
+	QCRITICAL_PRINT((jsonDoc.isNull() == 1), jsonWrapperFile, "Unable to convert UTF8 QString to JSON file because of error " << jsonParseError->errorString() << "(error type " << jsonParseError->error << ")");
 
 	if (jsonDoc.isObject() == true) {
 		this->jsonContent.contentType = json_wrapper::json_content_type_e::OBJECT;
@@ -96,10 +90,7 @@ bool json_wrapper::JsonWrapper::addJsonValue(QString key, QJsonValue jsonVal) {
 		// Update JSON object
 		QJsonObject::iterator iter = jsonObj.insert(key, jsonVal);
 		// Ensure that the file is open for read
-		if (iter != jsonObj.end()) {
-			qCritical(jsonWrapperFile) << "Unable to add JSON value of type " << jsonVal.type() << " at key " << key;
-			exit(EXIT_FAILURE);
-		}
+		QCRITICAL_PRINT((iter != jsonObj.end()), jsonWrapperFile, "Unable to add JSON value of type " << jsonVal.type() << " at key " << key);
 
 		// Copy back updated value
 		this->jsonContent.content = QVariant(jsonObj);
@@ -150,17 +141,11 @@ void json_wrapper::JsonWrapper::writeJson() {
 	// open the file
 	// Set QIODevicne to WriteOnly and Truncate to replace the content of the entire file
 	bool openSuccess = this->jsonFile->open(this->openFlags);
-	if (!openSuccess) {
-		qCritical(jsonWrapperFile) << "Unable to open JSON file " << this->jsonFile->fileName() << " for write";
-		exit(EXIT_FAILURE);
-	}
+	QCRITICAL_PRINT((!openSuccess), jsonWrapperFile, "Unable to open JSON file " << this->jsonFile->fileName() << " for write");
 
 	// Write File
 	qint64 writeReturn = this->jsonFile->write(updatedContent);
-	if (writeReturn == -1) {
-		qCritical(jsonWrapperFile) << "Write to JSON file " << this->jsonFile->fileName() << " failed";
-		exit(EXIT_FAILURE);
-	}
+	QCRITICAL_PRINT((writeReturn == -1), jsonWrapperFile, "Write to JSON file " << this->jsonFile->fileName() << " failed");
 
 	this->jsonFile->close();
 }

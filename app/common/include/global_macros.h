@@ -49,6 +49,24 @@
 	}
 
 /**
+ * @brief QINFO_PRINT(CONDITION, CATEGORY, ...)
+ *
+ * \param CONDITION : condition to print the message
+ * \param CATEGORY  : category of the print
+ * \param ...       : variable number of arguments to provide to infoMsg
+ *
+ * Print a message to the log file if the chosen verbosity is less or equal to the default verbosity
+ */
+#define QCRITICAL_PRINT(CONDITION, CATEGORY, ...)\
+	if (CONDITION) { \
+		QDebug criticalMsg(qCritical(CATEGORY)); \
+		criticalMsg.noquote(); \
+		criticalMsg.nospace(); \
+		criticalMsg << __VA_ARGS__; \
+		exit(EXIT_FAILURE);\
+	}
+
+/**
  * @brief QDEBUG_OVERLOAD_PRINT_OP(TYPE)
  *
  * \param TYPE : type to have operator << overloaded for

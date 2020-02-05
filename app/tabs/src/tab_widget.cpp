@@ -102,13 +102,7 @@ void tab_widget::TabWidget::visibility() {
 QWidget * tab_widget::TabWidget::widget(int index, bool checkError) {
 	QWidget * requestedWidget = QTabWidget::widget(index);
 
-	if (checkError == true) {
-		// Check if pointer is null only if error checking is true
-		if (requestedWidget == nullptr) {
-			qCritical(tabWidgetTabs) << "Unable to get tab page at index " << index;
-			exit(EXIT_FAILURE);
-		}
-	}
+	QCRITICAL_PRINT(((checkError == true) && (requestedWidget == nullptr)), tabWidgetTabs, "Unable to get tab page at index " << index);
 
 	return requestedWidget;
 }
