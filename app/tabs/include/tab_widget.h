@@ -129,6 +129,15 @@ namespace tab_widget {
 			 */
 			void resizeEvent(QResizeEvent * event) override;
 
+			/**
+			 * @brief Function: void setTabBar(tab_bar::TabBar * tabBar)
+			 *
+			 * \param tabBar: tab bar linked to the tab widget
+			 *
+			 * add tab bar to tab widget
+			 */
+			void setTabBar(tab_bar::TabBar * tabBar);
+
 		private slots:
 			/**
 			 * @brief Function: void visibility()

@@ -42,6 +42,10 @@ tab_widget::TabWidget::~TabWidget() {
 	delete this->bar;
 }
 
+void tab_widget::TabWidget::setTabBar(tab_bar::TabBar * tabBar) {
+	QTabWidget::setTabBar(static_cast<QTabBar *>(tabBar));
+}
+
 void tab_widget::TabWidget::resizeEvent(QResizeEvent * event) {
 	QSize previousSize(event->oldSize());
 	QSize newSize(event->size());
