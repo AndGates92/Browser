@@ -93,12 +93,6 @@ namespace tab_bar {
 
 		private:
 			/**
-			 * @brief tab bar
-			 *
-			 */
-			QSize dimensions;
-
-			/**
 			 * @brief Function: void keyPressEvent(QKeyEvent * event)
 			 *
 			 * \param event: key event

@@ -17,7 +17,7 @@ Q_LOGGING_CATEGORY(tabBarOverall, "tabBar.overall", MSG_TYPE_LEVEL)
 Q_LOGGING_CATEGORY(tabBarSize, "tabBar.size", MSG_TYPE_LEVEL)
 Q_LOGGING_CATEGORY(tabBarSearch, "tabBar.search", MSG_TYPE_LEVEL)
 
-tab_bar::TabBar::TabBar(QWidget * parent, int width): QTabBar(parent), dimensions(QSize(width, tab_bar::height)) {
+tab_bar::TabBar::TabBar(QWidget * parent, int width): QTabBar(parent) {
 	QINFO_PRINT(global_types::qinfo_level_e::ZERO, tabBarOverall,  "Tab bar constructor");
 
 	this->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Minimum);
@@ -29,14 +29,14 @@ tab_bar::TabBar::TabBar(QWidget * parent, int width): QTabBar(parent), dimension
 
 	this->setElideMode(Qt::ElideRight);
 
-	QINFO_PRINT(global_types::qinfo_level_e::ZERO, tabBarOverall,  "Current tab size: " << this->dimensions);
+	this->setWidth(width);
 }
 
 QSize tab_bar::TabBar::tabSizeHint(int index) const {
 	QINFO_PRINT(global_types::qinfo_level_e::ZERO, tabBarSize,  "Tab bar size hint for tab " << index);
 
-	int barWidth = this->dimensions.width();
-	int barHeight = this->dimensions.height();
+	int barWidth = this->size().width();
+	int barHeight = this->size().height();
 	int tabNumber = this->count();
 
 	int tabWidth = 0;
@@ -57,9 +57,7 @@ QSize tab_bar::TabBar::tabSizeHint(int index) const {
 void tab_bar::TabBar::setWidth(int newWidth) {
 	int tabHeight = tab_bar::height;
 	QINFO_PRINT(global_types::qinfo_level_e::ZERO, tabBarSize,  "Tab bar size width: " << newWidth << " height " << tabHeight);
-	this->dimensions.setWidth(newWidth);
-	this->dimensions.setHeight(tabHeight);
-	this->resize(this->dimensions);
+	this->resize(QSize(newWidth, tabHeight));
 }
 
 void tab_bar::TabBar::keyPressEvent(QKeyEvent * event) {
