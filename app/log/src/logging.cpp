@@ -95,6 +95,7 @@ void logging::handler(QtMsgType type, const QMessageLogContext & context, const 
 			break;
 	}
 
+	logfile.flush();
 	logfile.close();
 
 }
