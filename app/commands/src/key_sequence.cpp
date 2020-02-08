@@ -34,7 +34,7 @@ key_sequence::KeySequence::KeySequence(const QString & keyStr, QKeySequence::Seq
 key_sequence::KeySequence::KeySequence(const QKeySequence & qKeySeq) {
 	unsigned int thisSize = qKeySeq.count();
 
-	for (unsigned int idx; idx < thisSize; idx++) {
+	for (unsigned int idx = 0; idx < thisSize; idx++) {
 		int key = qKeySeq[idx];
 		QINFO_PRINT(global_types::qinfo_level_e::ZERO, keySequenceOverall,  "Key Sequence constructor. Keys are 0x" << QString("%1").arg(key, 0, 16));
 		this->keySeqVec.append(key);
