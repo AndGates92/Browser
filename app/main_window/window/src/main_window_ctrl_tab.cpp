@@ -551,6 +551,7 @@ void main_window_ctrl_tab::MainWindowCtrlTab::printStrInCurrentTabWidget(const Q
 	}
 
 	QINFO_PRINT(global_types::qinfo_level_e::ZERO, mainWindowCtrlTabTabs, "Current tab index is " << currentTabIndex << " and the tab widget has " << tabWidget->count() << " tabs");
+
 	tabWidget->setTabText(currentTabIndex, title);
 	QLabel * currentTabPage = dynamic_cast<QLabel *>(tabWidget->widget(currentTabIndex, true));
 	Q_ASSERT_X((currentTabPage != nullptr), "null center window", "Center window is null");
