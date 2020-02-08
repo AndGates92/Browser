@@ -14,9 +14,9 @@
 #include <qt5/QtWidgets/QMenuBar>
 #include <qt5/QtWidgets/QWidget>
 
-#include "tab_widget.h"
 #include "command_menu.h"
 #include "main_window_menu_bar.h"
+#include "main_window_tab_widget.h"
 #include "main_window_status_bar.h"
 #include "main_window_shared_types.h"
 
@@ -148,7 +148,7 @@ namespace main_window_core {
 			 * @brief Tabs of browser
 			 *
 			 */
-			tab_widget::TabWidget * tabs;
+			main_window_tab_widget::MainWindowTabWidget * tabs;
 
 			/**
 			 * @brief Top menu bar of browser

@@ -18,7 +18,7 @@
 #include "main_window_shared_types.h"
 #include "main_window_ctrl_base.h"
 
-/** @defgroup MainWindowCtrlTabGroup Main Window Doxygen Group
+/** @defgroup MainWindowCtrlTabGroup Main Window Control Tab Doxygen Group
  *  Main Window control functions and classes
  *  @{
  */
@@ -30,6 +30,7 @@ Q_DECLARE_LOGGING_CATEGORY(mainWindowCtrlTabTabs)
 Q_DECLARE_LOGGING_CATEGORY(mainWindowCtrlTabUrl)
 
 namespace main_window_ctrl_tab {
+
 	namespace {
 
 		/**
@@ -73,8 +74,8 @@ namespace main_window_ctrl_tab {
 		 *
 		 */
 		const QString commandFileFullPath(commandFilePath + commandFileName);
-	}
 
+	}
 
 	/**
 	 * @brief MainWindowCtrlTab class
@@ -351,15 +352,17 @@ namespace main_window_ctrl_tab {
 
 			// ================================ START ACTIONS ========================================//
 			/**
-			 * @brief Function: int addNewTab(QString search)
+			 * @brief Function: int addNewTab(QString search, main_window_shared_types::tab_type_e type)
 			 *
 			 * \param search: string to search
+			 * \param type: type of tab to be added
 			 *
 			 * \return the tab index
+			 * \param type: type of content of the tab
 			 *
 			 * This function adds a new tab to the tab widget
 			 */
-			int addNewTab(QString search);
+			int addNewTab(QString search, main_window_shared_types::tab_type_e type);
 
 			/**
 			 * @brief Function: void newSearchTab(int index, QString search)

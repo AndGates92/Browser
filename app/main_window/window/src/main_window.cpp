@@ -22,7 +22,7 @@
 
 #include "main_window_menu_bar.h"
 #include "main_window_status_bar.h"
-#include "tab_widget.h"
+#include "main_window_tab_widget.h"
 #include "command_menu.h"
 #include "global_macros.h"
 #include "global_types.h"
@@ -126,7 +126,7 @@ void main_window::MainWindow::fillMainWindow() {
 void main_window::MainWindow::createTabs() {
 	QINFO_PRINT(global_types::qinfo_level_e::ZERO, mainWindowOverall,  "Create tabs");
 
-	this->windowCore->tabs = new tab_widget::TabWidget(this->windowCore->mainWidget);
+	this->windowCore->tabs = new main_window_tab_widget::MainWindowTabWidget(this->windowCore->mainWidget);
 	// Disable widget resizing
 	this->windowCore->tabs->setSizePolicy(QSizePolicy::Ignored, QSizePolicy::Ignored);
 

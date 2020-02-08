@@ -143,6 +143,36 @@ namespace main_window_shared_types {
 	 */
 	QString & operator<< (QString & str, const main_window_shared_types::text_action_e & action);
 
+	/**
+	 * @brief text action
+	 *
+	 */
+	typedef enum class tab_type_list {
+		WEB_ENGINE,       /**< Tab type is a web engine */
+		LABEL,            /**< Tab type is QLabel */
+		UNKNOWN           /**< Tab type is unknown */
+	} tab_type_e;
+
+	/**
+	 * @brief Function: QDebug & operator<< (QDebug & os, const main_window_shared_types::tab_type_e & type)
+	 *
+	 * \param os: output stream
+	 * \param type: type of the window
+	 *
+	 * Overload << operator to print text type
+	 */
+	QDebug & operator<< (QDebug & os, const main_window_shared_types::tab_type_e & type);
+
+	/**
+	 * @brief Function: QString & operator<< (QString & os, const main_window_shared_types::tab_type_e & type)
+	 *
+	 * \param os: output stream
+	 * \param type: type of the window
+	 *
+	 * Overload << operator to print text type
+	 */
+	QString & operator<< (QString & os, const main_window_shared_types::tab_type_e & type);
+
 }
 
 /** @} */ // End of MainWindowSharedTypesGroup group

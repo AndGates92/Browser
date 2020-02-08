@@ -125,5 +125,23 @@ namespace main_window_shared_types {
 		return str;
 	}
 
+	QDEBUG_OVERLOAD_PRINT_OP(main_window_shared_types::tab_type_e)
+
+	QString & operator<< (QString & str, const main_window_shared_types::tab_type_e & type) {
+
+		switch (type) {
+			case main_window_shared_types::tab_type_e::LABEL:
+				str.append("LABEL");
+				break;
+			case main_window_shared_types::tab_type_e::WEB_ENGINE:
+				str.append("WEB ENGINE");
+				break;
+			default:
+				str.append("Unknown action");
+				break;
+		}
+
+		return str;
+	}
 }
 

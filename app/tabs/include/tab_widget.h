@@ -71,7 +71,7 @@ namespace tab_widget {
 			 *
 			 * Tab widget destructor
 			 */
-			~TabWidget();
+			virtual ~TabWidget();
 
 			/**
 			 * @brief Function: int addTab(QWidget * page, const QString & label)
@@ -115,7 +115,7 @@ namespace tab_widget {
 			 *
 			 * \return widget of tab page
 			 *
-			 * remove a tab from tab widget
+			 * returns a tab from tab widget
 			 */
 			QWidget * widget(int index, bool checkError = true);
 

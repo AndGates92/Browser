@@ -88,8 +88,11 @@ void main_window_ctrl_base::MainWindowCtrlBase::setAllShortcutEnabledProperty(bo
 	QList<QShortcut *> shortcuts = this->parent->findChildren<QShortcut *>();
 
 	for (QShortcut * shortcut : shortcuts) {
-		key_sequence::KeySequence key(shortcut->key());
-		QINFO_PRINT(global_types::qinfo_level_e::ZERO, mainWindowCtrlBaseUserInput,  "Setting enabled for key " << key.toString() << " to " << enabled);
-		shortcut->setEnabled(enabled);
+		// If shortcut key is not defined, then do not do anything
+		if (shortcut->key().count() > 0) {
+			key_sequence::KeySequence key(shortcut->key());
+			QINFO_PRINT(global_types::qinfo_level_e::ZERO, mainWindowCtrlBaseUserInput,  "Setting enabled for key " << key.toString() << " to " << enabled);
+			shortcut->setEnabled(enabled);
+		}
 	}
 }

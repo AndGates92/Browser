@@ -163,15 +163,16 @@ void main_window_ctrl_tab::MainWindowCtrlTab::closeTab(int index) {
 }
 
 void main_window_ctrl_tab::MainWindowCtrlTab::addNewTabAndSearch(QString search) {
-	int tabIndex = this->addNewTab(search);
+	int tabIndex = this->addNewTab(search, main_window_shared_types::tab_type_e::WEB_ENGINE);
 	this->newSearchTab(tabIndex, search);
 }
 
-int main_window_ctrl_tab::MainWindowCtrlTab::addNewTab(QString search) {
-	QWebEngineView * centerWindow = new QWebEngineView(this->windowCore->mainWidget);
+int main_window_ctrl_tab::MainWindowCtrlTab::addNewTab(QString search, main_window_shared_types::tab_type_e type) {
 
 	QINFO_PRINT(global_types::qinfo_level_e::ZERO, mainWindowCtrlTabTabs,  "Open tab with label " << search);
-	int tabIndex = this->windowCore->tabs->addTab(centerWindow, search);
+
+	int tabIndex = this->windowCore->tabs->addEmptyTab(search, type);
+
 	QCRITICAL_PRINT((tabIndex < 0), mainWindowCtrlTabTabs, "Newly create tab has index " << tabIndex << ", It cannot be negative");
 
 	// Move to the newly opened tab
@@ -186,11 +187,13 @@ int main_window_ctrl_tab::MainWindowCtrlTab::addNewTab(QString search) {
 void main_window_ctrl_tab::MainWindowCtrlTab::newSearchTab(int index, QString search) {
 	QINFO_PRINT(global_types::qinfo_level_e::ZERO, mainWindowCtrlTabSearch,  "User input " << search << " in tab " << index);
 
-	QWebEngineView * currentTabPage = dynamic_cast<QWebEngineView *>(this->windowCore->tabs->widget(index));
-
 	QString tabTitle = search;
 	QString Url = this->createUrl(search);
 
+	main_window_shared_types::tab_type_e desiredTabType = main_window_shared_types::tab_type_e::WEB_ENGINE;
+	this->windowCore->tabs->changeTabType(index, desiredTabType);
+
+	QWebEngineView * currentTabPage = dynamic_cast<QWebEngineView *>(this->windowCore->tabs->widget(index));
 	this->windowCore->tabs->setTabText(index, tabTitle);
 	currentTabPage->setUrl(QUrl(Url));
 
@@ -531,10 +534,15 @@ void main_window_ctrl_tab::MainWindowCtrlTab::printStrInCurrentTabWidget(const Q
 
 	// Invoke move contructor as tabTile is a reference
 	QString title(std::move(tabTitle));
+
+	main_window_shared_types::tab_type_e desiredTabType = main_window_shared_types::tab_type_e::LABEL;
+
 	// If not tabs, then create one
 	if (currentTabIndex == -1) {
-		currentTabIndex = this->addNewTab(title);
-		QCRITICAL_PRINT((currentTabIndex < tabWidget->count()), mainWindowCtrlTabTabs, "Current tab index " << currentTabIndex << " must be larger than the number of tabs " << tabWidget->count());
+		currentTabIndex = this->addNewTab(title, desiredTabType);
+		QCRITICAL_PRINT((currentTabIndex >= tabWidget->count()), mainWindowCtrlTabTabs, "Current tab index " << currentTabIndex << " must be larger than the number of tabs " << tabWidget->count());
+	} else {
+		this->windowCore->tabs->changeTabType(currentTabIndex, desiredTabType);
 	}
 
 	QINFO_PRINT(global_types::qinfo_level_e::ZERO, mainWindowCtrlTabTabs, "Current tab index is " << currentTabIndex << " and the tab widget has " << tabWidget->count() << " tabs");
