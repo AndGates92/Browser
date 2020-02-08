@@ -109,6 +109,10 @@ void main_window_tab_widget::MainWindowTabWidget::changeTabType(int index, main_
 		this->removeTab(index);
 		int tabIndex = this->insertEmptyTab(index, QString::null, newType);
 		QCRITICAL_PRINT((tabIndex != index), mainWindowTabWidgetTabs, "Requested index (" << index << ") is different from tab index (" << tabIndex);
+
+		// Move to the newly recreated tab
+		this->setCurrentIndex(index);
+
 	}
 }
 
