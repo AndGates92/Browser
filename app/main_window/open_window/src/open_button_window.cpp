@@ -42,11 +42,13 @@ open_button_window::OpenButtonWindow::OpenButtonWindow(QWidget * parent, Qt::Win
 	// define window layout
 	this->windowLayout();
 
+	// Connect signals and slots
+	this->connectSignals();
+
 }
 
 open_button_window::OpenButtonWindow::~OpenButtonWindow() {
 	QINFO_PRINT(global_types::qinfo_level_e::ZERO, openButtonWindowOverall,  "Destructor of OpenButtonWindow class");
-	delete this->label;
 	delete this->text;
 	delete this->openButton;
 	delete this->browseButton;
@@ -109,31 +111,25 @@ void open_button_window::OpenButtonWindow::cancel() {
 void open_button_window::OpenButtonWindow::windowLayout() {
 	// Layout
 	// -------------------------------------------------
-	// |  <label>  |     <text to open>    | <browse>  |
+	// |           <text to open>          | <browse>  |
 	// |  <open>   |                       | <cancel>  |
 	// -------------------------------------------------
 	QGridLayout * layout = new QGridLayout(this);
-	int labelRowSpan = 1;
-	int labelColumnSpan = 1;
-	int labelFromRow = 0;
-	int labelFromColumn = 0;
-	layout->addWidget(this->label, labelFromRow, labelFromColumn, labelRowSpan, labelColumnSpan);
-	QINFO_PRINT(global_types::qinfo_level_e::ZERO, openButtonWindowLayout,  "Label: start coordinates: row " << labelFromRow << " and column " << labelFromColumn << " width " << labelColumnSpan << " height " << labelRowSpan);
-	int textRowSpan = labelRowSpan;
-	int textColumnSpan = 3;
-	int textFromRow = labelFromRow;
-	int textFromColumn = labelFromColumn + labelColumnSpan;
+	int textRowSpan = 1;
+	int textColumnSpan = 4;
+	int textFromRow = 0;
+	int textFromColumn = 0;
 	layout->addWidget(this->text, textFromRow, textFromColumn, textRowSpan, textColumnSpan);
 	QINFO_PRINT(global_types::qinfo_level_e::ZERO, openButtonWindowLayout,  "Text: start coordinates: row " << textFromRow << " and column " << textFromColumn << " width " << textColumnSpan << " height " << textRowSpan);
-	int browseButtonRowSpan = labelRowSpan;
+	int browseButtonRowSpan = textRowSpan;
 	int browseButtonColumnSpan = 1;
-	int browseButtonFromRow = labelFromRow;
+	int browseButtonFromRow = textFromRow;
 	int browseButtonFromColumn = textFromColumn + textColumnSpan;
 	layout->addWidget(this->browseButton, browseButtonFromRow, browseButtonFromColumn, browseButtonRowSpan, browseButtonColumnSpan);
-	QINFO_PRINT(global_types::qinfo_level_e::ZERO, openButtonWindowLayout,  "Open button: start coordinates: row " << browseButtonFromRow << " and column " << browseButtonFromColumn << " width " << browseButtonColumnSpan << " height " << browseButtonRowSpan);
+	QINFO_PRINT(global_types::qinfo_level_e::ZERO, openButtonWindowLayout,  "Browse button: start coordinates: row " << browseButtonFromRow << " and column " << browseButtonFromColumn << " width " << browseButtonColumnSpan << " height " << browseButtonRowSpan);
 	int openButtonRowSpan = 1;
 	int openButtonColumnSpan = 1;
-	int openButtonFromRow = labelFromRow + labelRowSpan;
+	int openButtonFromRow = textFromRow + textRowSpan;
 	int openButtonFromColumn = 0;
 	layout->addWidget(this->openButton, openButtonFromRow, openButtonFromColumn, openButtonRowSpan, openButtonColumnSpan);
 	QINFO_PRINT(global_types::qinfo_level_e::ZERO, openButtonWindowLayout,  "Open button: start coordinates: row " << openButtonFromRow << " and column " << openButtonFromColumn << " width " << openButtonColumnSpan << " height " << openButtonRowSpan);
@@ -148,17 +144,18 @@ void open_button_window::OpenButtonWindow::windowLayout() {
 }
 
 void open_button_window::OpenButtonWindow::fillWindow() {
-	this->label = new elided_label::ElidedLabel(tr("Open -> "), QPoint(0,0), this, this->windowFlags(), Qt::ElideRight);
-	this->label->setFrameStyle(QFrame::NoFrame | QFrame::Sunken);
-	this->label->setAlignment(Qt::AlignCenter);
-
 	this->text = new QLineEdit(this);
 	this->text->setPlaceholderText(tr("<URL or file to open>"));
 
 	this->openButton = new QPushButton("Open", this);
-	connect(this->openButton, &QPushButton::pressed, this, &open_button_window::OpenButtonWindow::open);
 	this->browseButton = new QPushButton("Browse", this);
-	connect(this->browseButton, &QPushButton::pressed, this, &open_button_window::OpenButtonWindow::browse);
 	this->cancelButton = new QPushButton("Cancel", this);
+}
+
+void open_button_window::OpenButtonWindow::connectSignals() {
+	QINFO_PRINT(global_types::qinfo_level_e::ZERO, openButtonWindowOverall,  "Connect signals");
+
+	connect(this->openButton, &QPushButton::pressed, this, &open_button_window::OpenButtonWindow::open);
+	connect(this->browseButton, &QPushButton::pressed, this, &open_button_window::OpenButtonWindow::browse);
 	connect(this->cancelButton, &QPushButton::released, this, &open_button_window::OpenButtonWindow::cancel);
 }

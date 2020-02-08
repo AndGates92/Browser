@@ -21,6 +21,7 @@
 
 Q_DECLARE_LOGGING_CATEGORY(elidedLabelOverall)
 Q_DECLARE_LOGGING_CATEGORY(elidedLabelElision)
+Q_DECLARE_LOGGING_CATEGORY(elidedLabelPaint)
 
 namespace elided_label {
 

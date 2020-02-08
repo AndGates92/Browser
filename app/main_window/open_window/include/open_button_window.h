@@ -13,8 +13,6 @@
 #include <qt5/QtWidgets/QLineEdit>
 #include <qt5/QtWidgets/QPushButton>
 
-#include "elided_label.h"
-
 /** @defgroup OpenButtonWindowGroup Open Button Window Doxygen Group
  *  Open Button Window functions and classes
  *  @{
@@ -90,12 +88,6 @@ namespace open_button_window {
 		private:
 
 			/**
-			 * @brief label printed next to the user typed text
-			 *
-			 */
-			elided_label::ElidedLabel * label;
-
-			/**
 			 * @brief user typed text
 			 *
 			 */
@@ -132,6 +124,13 @@ namespace open_button_window {
 			 * This function creates widgets that are part of the window
 			 */
 			void fillWindow();
+
+			/**
+			 * @brief Function: void connectSignals()
+			 *
+			 * This function connects signals and slots between main window elements
+			 */
+			void connectSignals();
 
 		signals:
 			/**
