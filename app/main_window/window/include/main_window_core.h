@@ -9,9 +9,6 @@
 */
 
 #include <qt5/QtCore/QLoggingCategory>
-#include <qt5/QtWidgets/QMenu>
-#include <qt5/QtWidgets/QAction>
-#include <qt5/QtWidgets/QMenuBar>
 #include <qt5/QtWidgets/QWidget>
 
 #include "command_menu.h"
