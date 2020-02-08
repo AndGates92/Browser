@@ -98,9 +98,13 @@ void open_button_window::OpenButtonWindow::browse() {
 	QFileDialog * fileBrowser = new QFileDialog(this, Qt::Popup);
 	fileBrowser->setOption(QFileDialog::DontResolveSymlinks, true);
 	fileBrowser->setViewMode(QFileDialog::Detail);
+	// Returns QString::null if user presses Cancel
 	QString filename = fileBrowser->getOpenFileName(this, tr("Open file"), QDir::currentPath(), tr("Web Pages (*.html);;All (*.*)"));
 	QINFO_PRINT(global_types::qinfo_level_e::ZERO, openButtonWindowOpen,  "Selected " << filename);
-	this->text->setText(filename);
+	if (filename != QString::null) {
+		// Do not update text if user presses cancel
+		this->text->setText(filename);
+	}
 }
 
 void open_button_window::OpenButtonWindow::cancel() {
