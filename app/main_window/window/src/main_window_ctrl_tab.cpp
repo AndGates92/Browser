@@ -312,9 +312,14 @@ void main_window_ctrl_tab::MainWindowCtrlTab::executeTabAction(int userInput) {
 		}
 	}
 
-	int tabIndex = this->windowCore->getCurrentTabIndex();
 	this->updateInfo();
-	emit this->updateWebsite(tabIndex);
+
+	int tabIndex = this->windowCore->getCurrentTabIndex();
+	main_window_shared_types::tab_type_e tabType = this->windowCore->tabs->getTabType(tabIndex);
+	if (tabType == main_window_shared_types::tab_type_e::WEB_ENGINE) {
+		// Do not update web page if tab type is not web engine
+		emit this->updateWebsite(tabIndex);
+	}
 }
 
 void main_window_ctrl_tab::MainWindowCtrlTab::processTabIndex(QString userInputStr) {
