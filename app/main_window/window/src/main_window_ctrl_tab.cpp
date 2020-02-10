@@ -91,7 +91,7 @@ void main_window_ctrl_tab::MainWindowCtrlTab::connectSignals() {
 	connect(this->moveRightKey, &QShortcut::activated, this, &main_window_ctrl_tab::MainWindowCtrlTab::setUpMoveRight);
 	connect(this->refreshUrlKey, &QShortcut::activated, this, &main_window_ctrl_tab::MainWindowCtrlTab::setUpRefreshTabUrl);
 
-//	connect(this->windowCore->tabs, &QTabWidget::currentChanged, this, &main_window_ctrl_tab::MainWindowCtrlTab::updateWebsite);
+//	connect(this->windowCore->tabs, &QTabWidget::currentChanged, this, &main_window_ctrl_tab::MainWindowCtrlTab::updateContent);
 	// Update info bar
 	connect(this->windowCore->tabs, &QTabWidget::currentChanged, this, &main_window_ctrl_tab::MainWindowCtrlTab::updateInfoSlot);
 	connect(this->windowCore->tabs, &QTabWidget::tabCloseRequested, this, &main_window_ctrl_tab::MainWindowCtrlTab::updateInfoSlot);
@@ -197,7 +197,7 @@ void main_window_ctrl_tab::MainWindowCtrlTab::newSearchTab(int index, QString se
 	this->windowCore->tabs->setTabText(index, tabTitle);
 	currentTabPage->setUrl(QUrl(Url));
 
-	this->updateWebsite(index);
+	this->updateContent(index);
 }
 
 void main_window_ctrl_tab::MainWindowCtrlTab::searchCurrentTab(QString search) {
@@ -206,25 +206,25 @@ void main_window_ctrl_tab::MainWindowCtrlTab::searchCurrentTab(QString search) {
 	this->newSearchTab(tabIndex, search);
 }
 
-void main_window_ctrl_tab::MainWindowCtrlTab::updateWebsite(int index) {
+void main_window_ctrl_tab::MainWindowCtrlTab::updateContent(int index) {
 
 	int tabCount = this->windowCore->getTabCount();
 	main_window_shared_types::tab_type_e tabType = this->windowCore->tabs->getTabType(index);
 
 	if (tabCount > 0) {
-		QString websiteStr (QString::null);
+		QString contentStr (QString::null);
 		if (tabType == main_window_shared_types::tab_type_e::WEB_ENGINE) {
 			QWebEngineView * currentTabPage = dynamic_cast<QWebEngineView *>(this->windowCore->tabs->widget(index));
 			QUrl websiteUrl = currentTabPage->url();
 
-			websiteStr = websiteUrl.toDisplayString(QUrl::FullyDecoded);
+			contentStr = websiteUrl.toDisplayString(QUrl::FullyDecoded);
 		} else if (tabType == main_window_shared_types::tab_type_e::LABEL) {
-			websiteStr = this->windowCore->tabs->tabText(index);
+			contentStr = this->windowCore->tabs->tabText(index);
 		}
-		QINFO_PRINT(global_types::qinfo_level_e::ZERO, mainWindowCtrlTabUrl,  "Set websiteText for tab at index " << index << " of type " << tabType << " to " << websiteStr);
-		this->windowCore->bottomStatusBar->getWebsiteText()->setText(websiteStr);
+		QINFO_PRINT(global_types::qinfo_level_e::ZERO, mainWindowCtrlTabUrl,  "Set contentPathText for tab at index " << index << " of type " << tabType << " to " << contentStr);
+		this->windowCore->bottomStatusBar->getContentPathText()->setText(contentStr);
 	} else {
-		this->windowCore->bottomStatusBar->getWebsiteText()->clear();
+		this->windowCore->bottomStatusBar->getContentPathText()->clear();
 	}
 }
 
@@ -321,7 +321,7 @@ void main_window_ctrl_tab::MainWindowCtrlTab::executeTabAction(int userInput) {
 	this->updateInfo();
 
 	int tabIndex = this->windowCore->getCurrentTabIndex();
-	this->updateWebsite(tabIndex);
+	this->updateContent(tabIndex);
 }
 
 void main_window_ctrl_tab::MainWindowCtrlTab::processTabIndex(QString userInputStr) {
@@ -560,7 +560,7 @@ void main_window_ctrl_tab::MainWindowCtrlTab::printStrInCurrentTabWidget(const Q
 
 	currentTabPage->setText(tabContent);
 
-	this->updateWebsite(currentTabIndex);
+	this->updateContent(currentTabIndex);
 
 	// Disable events after updating tabs
 	tabWidget->setUpdatesEnabled(true);

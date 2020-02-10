@@ -100,13 +100,13 @@ namespace main_window_status_bar {
 			elided_label::ElidedLabel * getUserInputText();
 
 			/**
-			 * Function: elided_label::ElidedLabel * getWebsiteText()
+			 * Function: elided_label::ElidedLabel * getContentPathText()
 			 *
-			 * \return the label containing the website URL
+			 * \return the label containing the path to the content (i.e. website URL or file path)
 			 *
-			 * This function returns the label storing the website URL
+			 * This function returns the label storing the path to the content (i.e. website URL or file path)
 			 */
-			elided_label::ElidedLabel * getWebsiteText();
+			elided_label::ElidedLabel * getContentPathText();
 
 			/**
 			 * Function: elided_label::ElidedLabel * getInfoText()
@@ -129,10 +129,10 @@ namespace main_window_status_bar {
 			elided_label::ElidedLabel * userInputText;
 
 			/**
-			 * @brief website
+			 * @brief content
 			 *
 			 */
-			elided_label::ElidedLabel * websiteText;
+			elided_label::ElidedLabel * contentPathText;
 
 			/**
 			 * @brief info

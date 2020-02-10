@@ -333,13 +333,13 @@ namespace main_window_ctrl_tab {
 			void convertToAbsTabIndex(int offset = main_window_ctrl_tab::emptyUserInput, global_types::sign_e sign = global_types::sign_e::NOSIGN);
 
 			/**
-			 * @brief Function: void updateWebsite(int index)
+			 * @brief Function: void updateContent(int index)
 			 *
-			 * \param index: index of tab where the website has to be updated
+			 * \param index: index of tab where the content has to be updated
 			 *
-			 * This function updates the website label
+			 * This function updates the content label
 			 */
-			void updateWebsite(int index);
+			void updateContent(int index);
 
 			/**
 			 * @brief Function: void addNewTabAndSearch(QString search)

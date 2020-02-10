@@ -29,9 +29,9 @@ main_window_status_bar::MainWindowStatusBar::MainWindowStatusBar(QWidget * paren
 	this->userInputText->setAlignment(Qt::AlignLeft | Qt::AlignBottom);
 	this->userInputText->setFocus(Qt::OtherFocusReason);
 
-	// website URL
-	this->websiteText = this->newWindowLabel();
-	this->websiteText->setAlignment(Qt::AlignRight | Qt::AlignBottom);
+	// path to the content
+	this->contentPathText = this->newWindowLabel();
+	this->contentPathText->setAlignment(Qt::AlignRight | Qt::AlignBottom);
 
 	// info
 	this->infoText = this->newWindowLabel();
@@ -45,7 +45,7 @@ main_window_status_bar::MainWindowStatusBar::~MainWindowStatusBar() {
 	QINFO_PRINT(global_types::qinfo_level_e::ZERO, mainWindowStatusBarOverall,  "Main window status bar destructor");
 
 	delete this->userInputText;
-	delete this->websiteText;
+	delete this->contentPathText;
 	delete this->infoText;
 }
 
@@ -74,7 +74,7 @@ void main_window_status_bar::MainWindowStatusBar::fillStatusBar() {
 
 	// Layout
 	// -------------------------------------------------
-	// | <user text> |      <website>     |   <info>   |
+	// | <user text> |      <content>     |   <info>   |
 	// -------------------------------------------------
 
 	QHBoxLayout * layout = new QHBoxLayout();
@@ -82,8 +82,8 @@ void main_window_status_bar::MainWindowStatusBar::fillStatusBar() {
 	// user input text
 	layout->addWidget(this->userInputText);
 
-	// website URL
-	layout->addWidget(this->websiteText);
+	// path to the content
+	layout->addWidget(this->contentPathText);
 
 	// info
 	layout->addWidget(this->infoText);
@@ -98,8 +98,8 @@ elided_label::ElidedLabel * main_window_status_bar::MainWindowStatusBar::getUser
 	return this->userInputText;
 }
 
-elided_label::ElidedLabel * main_window_status_bar::MainWindowStatusBar::getWebsiteText() {
-	return this->websiteText;
+elided_label::ElidedLabel * main_window_status_bar::MainWindowStatusBar::getContentPathText() {
+	return this->contentPathText;
 }
 
 elided_label::ElidedLabel * main_window_status_bar::MainWindowStatusBar::getInfoText() {
