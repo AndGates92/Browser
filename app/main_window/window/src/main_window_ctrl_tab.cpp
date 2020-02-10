@@ -209,13 +209,19 @@ void main_window_ctrl_tab::MainWindowCtrlTab::searchCurrentTab(QString search) {
 void main_window_ctrl_tab::MainWindowCtrlTab::updateWebsite(int index) {
 
 	int tabCount = this->windowCore->getTabCount();
+	main_window_shared_types::tab_type_e tabType = this->windowCore->tabs->getTabType(index);
 
 	if (tabCount > 0) {
-		QWebEngineView * currentTabPage = dynamic_cast<QWebEngineView *>(this->windowCore->tabs->widget(index));
-		QUrl websiteUrl = currentTabPage->url();
+		QString websiteStr (QString::null);
+		if (tabType == main_window_shared_types::tab_type_e::WEB_ENGINE) {
+			QWebEngineView * currentTabPage = dynamic_cast<QWebEngineView *>(this->windowCore->tabs->widget(index));
+			QUrl websiteUrl = currentTabPage->url();
 
-		QString websiteStr (websiteUrl.toDisplayString(QUrl::FullyDecoded));
-		QINFO_PRINT(global_types::qinfo_level_e::ZERO, mainWindowCtrlTabUrl,  "Set URL in websiteText to " << websiteStr);
+			websiteStr = websiteUrl.toDisplayString(QUrl::FullyDecoded);
+		} else if (tabType == main_window_shared_types::tab_type_e::LABEL) {
+			websiteStr = this->windowCore->tabs->tabText(index);
+		}
+		QINFO_PRINT(global_types::qinfo_level_e::ZERO, mainWindowCtrlTabUrl,  "Set websiteText for tab at index " << index << " of type " << tabType << " to " << websiteStr);
 		this->windowCore->bottomStatusBar->getWebsiteText()->setText(websiteStr);
 	} else {
 		this->windowCore->bottomStatusBar->getWebsiteText()->clear();
@@ -315,11 +321,7 @@ void main_window_ctrl_tab::MainWindowCtrlTab::executeTabAction(int userInput) {
 	this->updateInfo();
 
 	int tabIndex = this->windowCore->getCurrentTabIndex();
-	main_window_shared_types::tab_type_e tabType = this->windowCore->tabs->getTabType(tabIndex);
-	if (tabType == main_window_shared_types::tab_type_e::WEB_ENGINE) {
-		// Do not update web page if tab type is not web engine
-		emit this->updateWebsite(tabIndex);
-	}
+	this->updateWebsite(tabIndex);
 }
 
 void main_window_ctrl_tab::MainWindowCtrlTab::processTabIndex(QString userInputStr) {
@@ -557,6 +559,8 @@ void main_window_ctrl_tab::MainWindowCtrlTab::printStrInCurrentTabWidget(const Q
 	Q_ASSERT_X((currentTabPage != nullptr), "null center window", "Center window is null");
 
 	currentTabPage->setText(tabContent);
+
+	this->updateWebsite(currentTabIndex);
 
 	// Disable events after updating tabs
 	tabWidget->setUpdatesEnabled(true);
