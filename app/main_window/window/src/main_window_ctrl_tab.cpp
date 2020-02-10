@@ -539,6 +539,9 @@ void main_window_ctrl_tab::MainWindowCtrlTab::printStrInCurrentTabWidget(const Q
 
 	main_window_shared_types::tab_type_e desiredTabType = main_window_shared_types::tab_type_e::LABEL;
 
+	// Disable events while updating tabs
+	tabWidget->setUpdatesEnabled(false);
+
 	// If not tabs, then create one
 	if (currentTabIndex == -1) {
 		currentTabIndex = this->addNewTab(tabTitle, desiredTabType);
@@ -554,5 +557,7 @@ void main_window_ctrl_tab::MainWindowCtrlTab::printStrInCurrentTabWidget(const Q
 	Q_ASSERT_X((currentTabPage != nullptr), "null center window", "Center window is null");
 
 	currentTabPage->setText(tabContent);
-	currentTabPage->repaint();
+
+	// Disable events after updating tabs
+	tabWidget->setUpdatesEnabled(true);
 }
