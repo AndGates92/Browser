@@ -15,6 +15,8 @@
 #include <qt5/QtCore/QRect>
 #include <qt5/QtCore/QModelIndex>
 #include <qt5/QtGui/QRegion>
+#include <qt5/QtGui/QResizeEvent>
+#include <qt5/QtGui/QMouseEvent>
 
 #include "command_menu_model.h"
 
@@ -25,6 +27,11 @@
 
 Q_DECLARE_LOGGING_CATEGORY(commandMenuOverall)
 Q_DECLARE_LOGGING_CATEGORY(commandMenuSettings)
+Q_DECLARE_LOGGING_CATEGORY(commandMenuHashTable)
+Q_DECLARE_LOGGING_CATEGORY(commandMenuViewport)
+Q_DECLARE_LOGGING_CATEGORY(commandMenuCursor)
+Q_DECLARE_LOGGING_CATEGORY(commandMenuScrollBar)
+Q_DECLARE_LOGGING_CATEGORY(commandMenuSelection)
 
 namespace command_menu {
 
@@ -42,6 +49,12 @@ namespace command_menu {
 		const bool autoScrollProp = false;
 
 		/**
+		 * @brief Disable drag and drop mode
+		 *
+		 */
+		const QAbstractItemView::DragDropMode dragDropMode = QAbstractItemView::NoDragDrop;
+
+		/**
 		 * @brief Disable edit trigger
 		 *
 		 */
@@ -51,7 +64,26 @@ namespace command_menu {
 		 * @brief Disable drag and drop mode
 		 *
 		 */
-		const QAbstractItemView::DragDropMode dragDropMode = QAbstractItemView::NoDragDrop;
+		const QAbstractItemView::SelectionBehavior selection = QAbstractItemView::SelectItems;
+
+		/**
+		 * @brief Maximum number of items to be displayed
+		 *
+		 */
+		const int maxVisibleItems = 10;
+
+		/**
+		 * @brief Extra width with respect to the minium required width
+		 *
+		 */
+		const int extraRowWidth = 10;
+
+		/**
+		 * @brief Extra height with respect to the minium required height
+		 *
+		 */
+		const int extraRowHeight = 10;
+
 	}
 
 	/**
@@ -90,6 +122,24 @@ namespace command_menu {
 			command_menu_model::CommandMenuModel * menuModel;
 
 			/**
+			 * @brief Height to be displayed without the need of a scrollbar
+			 *
+			 */
+			mutable int visibleHeight;
+
+			/**
+			 * @brief Width to be displayed without the need of a scrollbar
+			 *
+			 */
+			mutable int visibleWidth;
+
+			/**
+			 * @brief Hash of rectangles of every single row
+			 *
+			 */
+			mutable QHash<int, QRect> itemRect;
+
+			/**
 			 * @brief Function: void setProperties()
 			 *
 			 * Set properties of the command menu
@@ -106,13 +156,13 @@ namespace command_menu {
 			void setModel(command_menu_model::CommandMenuModel * model);
 
 			/**
-			 * @brief Function: QRect visualRect(QModelIndex & index) const
+			 * @brief Function: QRect visualRect(const QModelIndex & index) const
 			 *
 			 * \return rectangle where item at index is
 			 *
 			 * This function returns the rectangle occupied by item at inde 
 			 */
-			QRect visualRect(QModelIndex & index) const;
+			QRect visualRect(const QModelIndex & index) const;
 
 			/**
 :			 * @brief Function: void scrollTo(const QModelIndex & index, QAbstractItemView::ScrollHint hint = QAbstractItemView::EnsureVisible)
@@ -127,7 +177,7 @@ namespace command_menu {
 			/**
 			 * @brief Function: QModelIndex indexAt(const QPoint & point) const
 			 *
-			 * \param point: points to search model for
+			 * \param point: points to search model index for. Its coordinates are in viewport coordinate system
 
 			 * \return model index at point point
 			 *
@@ -193,20 +243,82 @@ namespace command_menu {
 			 *
 			 * \return region that encapsulates all items in selection selection
 			 *
-			 * This function returns from the viewpoint of the items
+			 * This function returns from the viewport of the items
 			 */
 			QRegion visualRegionForSelection(const QItemSelection & selection) const;
 
 			/**
-			 * @brief Function: QRect visualRect(const QModelIndex & index) const
+			 * @brief Function: void updateHashTable() const
 			 *
-			 * \param index: index of item to return the rectangle of
-			 *
-			 * \return the rectangle on the viewpoint occupied by item at index
-			 *
-			 * This function returns the rectangle where the item at index is occupying
+			 * This function updates the hash table where all rows are stored
 			 */
-			QRect visualRect(const QModelIndex & index) const;
+			void updateHashTable() const;
+
+			/**
+			 * @brief Function: QRect viewportRectangle(int row) const
+			 *
+			 * \param row: items to search for
+			 *
+			 * \return the rectangle at row row whose coordinates account for the scrolling
+			 *
+			 * This function returns the rectangle at row row whose coordinates account for the scrolling
+			 */
+			QRect viewportRectangle(int row) const;
+
+			/**
+			 * @brief Function: void scrollContentsBy(int x, int y) const
+			 *
+			 * \param x: scrollbar movement along x axis
+			 * \param y: scrollbar movement along y axis
+			 *
+			 * This function updates the viewport content as a consequence of scrolling
+			 */
+			void scrollContentsBy(int x, int y);
+
+			/**
+			 * @brief Function: void paintEvent(QPaintEvent * event)
+			 *
+			 * \param event: paint event
+			 *
+			 * This function paints all the rectangles
+			 */
+			void paintEvent(QPaintEvent * event);
+
+			/**
+			 * @brief Function: void resizeEvent(QResizeEvent * event)
+			 *
+			 * \param event: resize event
+			 *
+			 * This function is called when the widget is resized
+			 */
+			void resizeEvent(QResizeEvent * event);
+
+			/**
+			 * @brief Function: void mousePressEvent(QMouseEvent * event)
+			 *
+			 * \param event: mouse event
+			 *
+			 * This function is called when a mouse button is pressed
+			 */
+			void mousePressEvent(QMouseEvent * event);
+
+			/**
+			 * @brief Function: void paintRectOutline(QPainter * painter, const QRect & rectangle)
+			 *
+			 * \param painter: pointer to QPainter object
+			 * \param rectangle: rectangle to paint outline
+			 *
+			 * This function paints the rectangle outline
+			 */
+			void paintRectOutline(QPainter * painter, const QRect & rectangle);
+
+			/**
+			 * @brief Function: void updateScrollbars()
+			 *
+			 * This function updates the properties and its steps
+			 */
+			void updateScrollbars();
+
 	};
 
 }
