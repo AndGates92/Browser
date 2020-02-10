@@ -536,14 +536,12 @@ void main_window_ctrl_tab::MainWindowCtrlTab::printStrInCurrentTabWidget(const Q
 	// Get current tab index
 	int currentTabIndex = tabWidget->currentIndex();
 
-	// Invoke move contructor as tabTile is a reference
-	QString title(std::move(tabTitle));
 
 	main_window_shared_types::tab_type_e desiredTabType = main_window_shared_types::tab_type_e::LABEL;
 
 	// If not tabs, then create one
 	if (currentTabIndex == -1) {
-		currentTabIndex = this->addNewTab(title, desiredTabType);
+		currentTabIndex = this->addNewTab(tabTitle, desiredTabType);
 		QCRITICAL_PRINT((currentTabIndex >= tabWidget->count()), mainWindowCtrlTabTabs, "Current tab index " << currentTabIndex << " must be larger than the number of tabs " << tabWidget->count());
 	} else {
 		this->windowCore->tabs->changeTabType(currentTabIndex, desiredTabType);
@@ -551,12 +549,10 @@ void main_window_ctrl_tab::MainWindowCtrlTab::printStrInCurrentTabWidget(const Q
 
 	QINFO_PRINT(global_types::qinfo_level_e::ZERO, mainWindowCtrlTabTabs, "Current tab index is " << currentTabIndex << " and the tab widget has " << tabWidget->count() << " tabs");
 
-	tabWidget->setTabText(currentTabIndex, title);
+	tabWidget->setTabText(currentTabIndex, tabTitle);
 	QLabel * currentTabPage = dynamic_cast<QLabel *>(tabWidget->widget(currentTabIndex, true));
 	Q_ASSERT_X((currentTabPage != nullptr), "null center window", "Center window is null");
 
-	// Invoke move contructor as tabContent is a reference
-	QString content(std::move(tabContent));
-	currentTabPage->setText(content);
+	currentTabPage->setText(tabContent);
 	currentTabPage->repaint();
 }
