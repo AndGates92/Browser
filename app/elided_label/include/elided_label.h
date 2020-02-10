@@ -128,8 +128,6 @@ namespace elided_label {
 			 */
 			void resizeEvent(QResizeEvent * event);
 
-
-
 	};
 
 }
