@@ -99,6 +99,33 @@ namespace tab_widget {
 			int addTab(QWidget * page, const QIcon & icon, const QString & label);
 
 			/**
+			 * @brief Function: int insertTab(int index, QWidget * page, const QString & label)
+			 *
+			 * \param index: index to insert tab to
+			 * \param page: widget to fill in
+			 * \param label: label of the tab
+			 *
+			 * \return tab index
+			 *
+			 * add tab to tab widget at index index
+			 */
+			int insertTab(int index, QWidget * page, const QString & label);
+
+			/**
+			 * @brief Function: int insertTab(int index, QWidget * page, const QIcon & icon, const QString & label)
+			 *
+			 * \param index: index to insert tab to
+			 * \param page: widget to fill in
+			 * \param icon: icon of the tab
+			 * \param label: label of the tab
+			 *
+			 * \return tab index
+			 *
+			 * add tab to tab widget at index index
+			 */
+			int insertTab(int index, QWidget * page, const QIcon & icon, const QString & label);
+
+			/**
 			 * @brief Function: void removeTab(int index)
 			 *
 			 * \param index: index of the tab to remove
@@ -138,15 +165,14 @@ namespace tab_widget {
 			 */
 			void setTabBar(tab_bar::TabBar * tabBar);
 
-		private slots:
-			/**
-			 * @brief Function: void visibility()
-			 *
-			 * Set tab visibility
-			 */
-			void visibility();
-
 		private:
+			/**
+			 * @brief Function: void setVisibleAttribute()
+			 *
+			 * Set tab visible attribute
+			 */
+			void setVisibleAttribute();
+
 			/**
 			 * @brief tab bar
 			 *
@@ -163,12 +189,6 @@ namespace tab_widget {
 			void keyPressEvent(QKeyEvent * event);
 
 		signals:
-			/**
-			 * @brief Function: void tabNumberChange()
-			 *
-			 * This function is the signal triggered when the tab number changes
-			 */
-			void tabNumberChange();
 
 	};
 }

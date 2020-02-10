@@ -142,7 +142,7 @@ int main_window_tab_widget::MainWindowTabWidget::insertEmptyTab(int index, const
 		tabIndex = this->insertTab(index, centerWindow, icon, label, type);
 	} else if (type == main_window_shared_types::tab_type_e::LABEL) {
 		QLabel * centerWindow = new QLabel(this->parentWidget());
-		tabIndex = this->insertTab(index, centerWindow, label, type);
+		tabIndex = this->insertTab(index, centerWindow, icon, label, type);
 	} else {
 		QCRITICAL_PRINT(1, mainWindowTabWidgetTabs, "Unknown tab type");
 	}

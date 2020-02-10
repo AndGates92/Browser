@@ -30,9 +30,7 @@ tab_widget::TabWidget::TabWidget(QWidget * parent): QTabWidget(parent) {
 	this->bar = new tab_bar::TabBar(this, this->size().width());
 	this->setTabBar(this->bar);
 
-	connect(this, &tab_widget::TabWidget::tabNumberChange, this, &tab_widget::TabWidget::visibility);
-
-	emit this->tabNumberChange();
+	this->setVisibleAttribute();
 
 }
 
@@ -72,7 +70,7 @@ void tab_widget::TabWidget::keyPressEvent(QKeyEvent * event) {
 int tab_widget::TabWidget::addTab(QWidget * page, const QString & label) {
 	QINFO_PRINT(global_types::qinfo_level_e::ZERO, tabWidgetTabs,  "Open tab with label " << label);
 	int tabIndex = QTabWidget::addTab(page, label);
-	emit this->tabNumberChange();
+	this->setVisibleAttribute();
 
 	return tabIndex;
 }
@@ -80,7 +78,25 @@ int tab_widget::TabWidget::addTab(QWidget * page, const QString & label) {
 int tab_widget::TabWidget::addTab(QWidget * page, const QIcon & icon, const QString & label) {
 	QINFO_PRINT(global_types::qinfo_level_e::ZERO, tabWidgetTabs,  "Open tab with label " << label);
 	int tabIndex = QTabWidget::addTab(page, icon, label);
-	emit this->tabNumberChange();
+	this->setVisibleAttribute();
+
+	return tabIndex;
+}
+
+int tab_widget::TabWidget::insertTab(int index, QWidget * page, const QString & label) {
+	QINFO_PRINT(global_types::qinfo_level_e::ZERO, tabWidgetTabs,  "Insert tab with label " << label << " at position " << index);
+
+	int tabIndex = QTabWidget::insertTab(index, page, label);
+	this->setVisibleAttribute();
+
+	return tabIndex;
+}
+
+int tab_widget::TabWidget::insertTab(int index, QWidget * page, const QIcon & icon, const QString & label) {
+	QINFO_PRINT(global_types::qinfo_level_e::ZERO, tabWidgetTabs,  "Insert tab with label " << label << " at position " << index);
+
+	int tabIndex = QTabWidget::insertTab(index, page, icon, label);
+	this->setVisibleAttribute();
 
 	return tabIndex;
 }
@@ -88,10 +104,10 @@ int tab_widget::TabWidget::addTab(QWidget * page, const QIcon & icon, const QStr
 void tab_widget::TabWidget::removeTab(int index) {
 	QINFO_PRINT(global_types::qinfo_level_e::ZERO, tabWidgetTabs,  "Close tab " << index);
 	QTabWidget::removeTab(index);
-	emit this->tabNumberChange();
+	this->setVisibleAttribute();
 }
 
-void tab_widget::TabWidget::visibility() {
+void tab_widget::TabWidget::setVisibleAttribute() {
 	int tabCount = this->count();
 	bool visibleFlag = false;
 	if (tabCount == 0) {
