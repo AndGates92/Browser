@@ -81,6 +81,12 @@ void main_window_tab_widget::MainWindowTabWidget::deleteListElement(int index) {
 	}
 }
 
+void main_window_tab_widget::MainWindowTabWidget::moveTab(int indexFrom, int indexTo) {
+	QINFO_PRINT(global_types::qinfo_level_e::ZERO, mainWindowTabWidgetTabs,  "Move tab from " << indexFrom << " to " << indexTo);
+	this->bar->moveTab(indexFrom, indexTo);
+	this->tabTypes.move(indexFrom, indexTo);
+}
+
 QWidget * main_window_tab_widget::MainWindowTabWidget::widget(int index, bool checkError) {
 	QWidget * requestedWidget = tab_widget::TabWidget::widget(index, checkError);
 

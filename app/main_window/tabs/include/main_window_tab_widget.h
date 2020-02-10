@@ -168,6 +168,16 @@ namespace main_window_tab_widget {
 			void removeTab(int index);
 
 			/**
+			 * @brief Function: void moveTab(int indexFrom, int indexTo)
+			 *
+			 * \param indexFrom: index of the tab to move
+			 * \param indexTo: destination of the tab
+			 *
+			 * move a tab from index <indexFrom> to index <indexTo>
+			 */
+			void moveTab(int indexFrom, int indexTo);
+
+			/**
 			 * @brief Function: QWidget * widget(int index, bool checkError = true)
 			 *
 			 * \param index: index of the tab to return the widget of

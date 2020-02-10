@@ -165,6 +165,12 @@ namespace tab_widget {
 			 */
 			void setTabBar(tab_bar::TabBar * tabBar);
 
+			/**
+			 * @brief tab bar
+			 *
+			 */
+			tab_bar::TabBar * bar;
+
 		private:
 			/**
 			 * @brief Function: void setVisibleAttribute()
@@ -172,12 +178,6 @@ namespace tab_widget {
 			 * Set tab visible attribute
 			 */
 			void setVisibleAttribute();
-
-			/**
-			 * @brief tab bar
-			 *
-			 */
-			tab_bar::TabBar * bar;
 
 			/**
 			 * @brief Function: void keyPressEvent(QKeyEvent * event)

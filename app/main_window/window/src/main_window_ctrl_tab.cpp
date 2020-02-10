@@ -241,7 +241,7 @@ void main_window_ctrl_tab::MainWindowCtrlTab::refreshUrl(int tabIndex) {
 void main_window_ctrl_tab::MainWindowCtrlTab::moveTab(int tabIndex) {
 	int tabIndexCurrent = this->windowCore->tabs->currentIndex();
 	QINFO_PRINT(global_types::qinfo_level_e::ZERO, mainWindowCtrlTabTabs,  "Move tab " << tabIndexCurrent << " to " << tabIndex);
-	this->windowCore->tabs->tabBar()->moveTab(tabIndexCurrent, tabIndex);
+	this->windowCore->tabs->moveTab(tabIndexCurrent, tabIndex);
 }
 
 void main_window_ctrl_tab::MainWindowCtrlTab::moveCursor(int tabIndex) {
