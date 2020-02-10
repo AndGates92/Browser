@@ -21,7 +21,7 @@
 Q_LOGGING_CATEGORY(mainWindowTabWidgetOverall, "mainWindowTabWidget.overall", MSG_TYPE_LEVEL)
 Q_LOGGING_CATEGORY(mainWindowTabWidgetTabs, "mainWindowTabWidget.tabs", MSG_TYPE_LEVEL)
 
-main_window_tab_widget::MainWindowTabWidget::MainWindowTabWidget(QWidget * parent): TabWidget(parent), tabTypes(QList<main_window_shared_types::tab_type_e>()) {
+main_window_tab_widget::MainWindowTabWidget::MainWindowTabWidget(QWidget * parent): tab_widget::TabWidget(parent), tabTypes(QList<main_window_shared_types::tab_type_e>()) {
 	QINFO_PRINT(global_types::qinfo_level_e::ZERO, mainWindowTabWidgetOverall,  "Main Window Tab widget constructor");
 
 }
@@ -35,7 +35,7 @@ int main_window_tab_widget::MainWindowTabWidget::addTab(QWidget * page, const QS
 	QINFO_PRINT(global_types::qinfo_level_e::ZERO, mainWindowTabWidgetTabs,  "Open tab with label " << label);
 
 	this->tabTypes.append(type);
-	int tabIndex = TabWidget::addTab(page, label);
+	int tabIndex = tab_widget::TabWidget::addTab(page, label);
 
 	return tabIndex;
 }
@@ -44,7 +44,7 @@ int main_window_tab_widget::MainWindowTabWidget::addTab(QWidget * page, const QI
 	QINFO_PRINT(global_types::qinfo_level_e::ZERO, mainWindowTabWidgetTabs,  "Open tab with label " << label);
 
 	this->tabTypes.append(type);
-	int tabIndex = TabWidget::addTab(page, icon, label);
+	int tabIndex = tab_widget::TabWidget::addTab(page, icon, label);
 
 	return tabIndex;
 }
@@ -53,7 +53,7 @@ int main_window_tab_widget::MainWindowTabWidget::insertTab(int index, QWidget * 
 	QINFO_PRINT(global_types::qinfo_level_e::ZERO, mainWindowTabWidgetTabs,  "Insert tab with label " << label << " at position " << index);
 
 	this->tabTypes.insert(index, type);
-	int tabIndex = TabWidget::insertTab(index, page, label);
+	int tabIndex = tab_widget::TabWidget::insertTab(index, page, label);
 
 	return tabIndex;
 }
@@ -62,14 +62,14 @@ int main_window_tab_widget::MainWindowTabWidget::insertTab(int index, QWidget * 
 	QINFO_PRINT(global_types::qinfo_level_e::ZERO, mainWindowTabWidgetTabs,  "Insert tab with label " << label << " at position " << index);
 
 	this->tabTypes.insert(index, type);
-	int tabIndex = TabWidget::insertTab(index, page, icon, label);
+	int tabIndex = tab_widget::TabWidget::insertTab(index, page, icon, label);
 
 	return tabIndex;
 }
 
 void main_window_tab_widget::MainWindowTabWidget::removeTab(int index) {
 	QINFO_PRINT(global_types::qinfo_level_e::ZERO, mainWindowTabWidgetTabs,  "Close tab " << index);
-	TabWidget::removeTab(index);
+	tab_widget::TabWidget::removeTab(index);
 	this->deleteListElement(index);
 }
 
@@ -82,7 +82,7 @@ void main_window_tab_widget::MainWindowTabWidget::deleteListElement(int index) {
 }
 
 QWidget * main_window_tab_widget::MainWindowTabWidget::widget(int index, bool checkError) {
-	QWidget * requestedWidget = TabWidget::widget(index, checkError);
+	QWidget * requestedWidget = tab_widget::TabWidget::widget(index, checkError);
 
 	return requestedWidget;
 }
