@@ -247,24 +247,24 @@ void main_window_ctrl_tab::MainWindowCtrlTab::moveCursor(int tabIndex) {
 //************************************************************************************
 
 void main_window_ctrl_tab::MainWindowCtrlTab::executeActionOnOffset(int offset) {
-	int sign = 0;
+	global_types::sign_e sign = global_types::sign_e::NOSIGN;
 
 	main_window_shared_types::state_e windowState = this->windowCore->getMainWindowState();
 	main_window_shared_types::move_value_e moveType = this->windowCore->getMoveValueType();
 
 	if (windowState == main_window_shared_types::state_e::MOVE_RIGHT) {
-		sign = 1;
+		sign = global_types::sign_e::PLUS;
 	} else if (windowState == main_window_shared_types::state_e::MOVE_LEFT) {
-		sign = -1;
+		sign = global_types::sign_e::MINUS;
 	} else if (windowState == main_window_shared_types::state_e::TAB_MOVE) {
 		if (moveType == main_window_shared_types::move_value_e::RIGHT) {
-			sign = 1;
+			sign = global_types::sign_e::PLUS;
 		} else if (moveType == main_window_shared_types::move_value_e::LEFT) {
-			sign = -1;
+			sign = global_types::sign_e::MINUS;
 		}
 	}
 
-	Q_ASSERT_X(((sign == -1) || (sign == 1)), "sign check to execute movement on offset", "sign input must be either -1 or 1");
+	Q_ASSERT_X(((sign == global_types::sign_e::MINUS) || (sign == global_types::sign_e::PLUS)), "sign check to execute movement on offset", "sign input must be either global_types::sign_e::MINUS or global_types::sign_e::PLUS");
 	this->convertToAbsTabIndex(offset, sign);
 }
 
@@ -286,9 +286,9 @@ void main_window_ctrl_tab::MainWindowCtrlTab::executeActionOnTab(int index) {
 		if (windowState == main_window_shared_types::state_e::CLOSE_TAB) {
 			this->closeTab(tabIndex);
 		} else if (windowState == main_window_shared_types::state_e::TAB_MOVE) {
-			this->convertToAbsTabIndex(tabIndex, 0);
+			this->convertToAbsTabIndex(tabIndex, global_types::sign_e::NOSIGN);
 		} else if (windowState == main_window_shared_types::state_e::REFRESH_TAB) {
-			this->convertToAbsTabIndex(tabIndex, 0);
+			this->convertToAbsTabIndex(tabIndex, global_types::sign_e::NOSIGN);
 		}
 	} else {
 		int maxTabRange = tabCount;
@@ -447,9 +447,7 @@ main_window_shared_types::object_type_e main_window_ctrl_tab::MainWindowCtrlTab:
 	return object;
 }
 
-void main_window_ctrl_tab::MainWindowCtrlTab::convertToAbsTabIndex(int offset, int sign) {
-
-	Q_ASSERT_X(((sign == 0) || (sign == -1) || (sign == 1)), "tab index convertion sign check", "sign input must be either 0 or -1 or 1");
+void main_window_ctrl_tab::MainWindowCtrlTab::convertToAbsTabIndex(int offset, global_types::sign_e sign) {
 
 	main_window_shared_types::state_e windowState = this->windowCore->getMainWindowState();
 
@@ -466,12 +464,13 @@ void main_window_ctrl_tab::MainWindowCtrlTab::convertToAbsTabIndex(int offset, i
 	}
 
 	int tabCount = this->windowCore->getTabCount();
+	int signInt = static_cast<int>(sign);
 
 	int tabIndexDst = 0;
-	if (sign == 0) {
+	if (sign == global_types::sign_e::NOSIGN) {
 		tabIndexDst = distance;
 	} else {
-		tabIndexDst = this->windowCore->getCurrentTabIndex() + (sign * distance);
+		tabIndexDst = this->windowCore->getCurrentTabIndex() + (signInt * distance);
 	}
 	if (offset > tabCount) {
 		int maxTabRange = tabCount - 1;
@@ -484,7 +483,7 @@ void main_window_ctrl_tab::MainWindowCtrlTab::convertToAbsTabIndex(int offset, i
 	// Keep tabIndex values within valid range (0 and (tabCount -1))
 	int tabIndex = tabIndexDst % tabCount;
 
-	QINFO_PRINT(global_types::qinfo_level_e::ZERO, mainWindowCtrlTabTabs,  "Convert tab relative offset " << (sign*offset) << " to absolute offset " << tabIndex);
+	QINFO_PRINT(global_types::qinfo_level_e::ZERO, mainWindowCtrlTabTabs,  "Convert tab relative offset " << (signInt*offset) << " to absolute offset " << tabIndex);
 
 	if ((windowState == main_window_shared_types::state_e::MOVE_RIGHT) || (windowState == main_window_shared_types::state_e::MOVE_LEFT)) {
 		this->moveCursor(tabIndex);

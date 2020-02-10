@@ -25,6 +25,17 @@ namespace global_types {
 		HIGH    /**< High level of printing */
 	} qinfo_level_e;
 
+	/**
+	 * @brief Verbosity levels
+	 *
+	 */
+	typedef enum class sign_list {
+		MINUS =  -1,   /**< Minus sign */
+		NOSIGN =  0,   /**< No sign */
+		PLUS =    1,   /**< Plus sign */
+	} sign_e;
+
+
 }
 
 /** @} */ // End of GlobalTypesGroup group

@@ -221,9 +221,9 @@ QModelIndex command_menu::CommandMenu::moveCursor(QAbstractItemView::CursorActio
 	if (currIndex.isValid()) {
 		if (((cursorAction == QAbstractItemView::MoveLeft) && (currIndex.row() > 0)) ||
 		    ((cursorAction == QAbstractItemView::MoveRight) && (currIndex.row() < (this->model()->rowCount() - 1)))) {
-			const int offset = ((cursorAction == QAbstractItemView::MoveLeft) ? 1 : -1);
+			const global_types::sign_e sign = ((cursorAction == QAbstractItemView::MoveLeft) ? global_types::sign_e::PLUS : global_types::sign_e::MINUS);
 			// Get previous/next item on the list
-			int rowIdx = currIndex.row() + offset;
+			int rowIdx = currIndex.row() + static_cast<int>(sign);
 			int colIdx = currIndex.column();
 			QModelIndex parentIdx = currIndex.parent();
 			currIndex = this->model()->index(rowIdx, colIdx, parentIdx);
@@ -232,8 +232,8 @@ QModelIndex command_menu::CommandMenu::moveCursor(QAbstractItemView::CursorActio
 
 			// Get the index of the item above/below the current item
 			QFontMetrics fontProperties(this->font());
-			const int offset = ((cursorAction == QAbstractItemView::MoveUp) ? 1 : -1);
-			const int rowHeight = offset * (fontProperties.height() + command_menu::extraRowHeight);
+			const global_types::sign_e sign = ((cursorAction == QAbstractItemView::MoveUp) ? global_types::sign_e::PLUS : global_types::sign_e::MINUS);
+			const int rowHeight = static_cast<int>(sign) * (fontProperties.height() + command_menu::extraRowHeight);
 
 			// Get current rectangle
 			QRect currentRect(this->viewportRectangle(currIndex.row()));

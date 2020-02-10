@@ -323,14 +323,14 @@ namespace main_window_ctrl_tab {
 			main_window_shared_types::object_type_e setAffectedObject();
 
 			/**
-			 * @brief Function: void convertToAbsTabIndex(int offset = main_window_ctrl_tab::emptyUserInput, int sign = 0)
+			 * @brief Function: void convertToAbsTabIndex(int offset = main_window_ctrl_tab::emptyUserInput, global_types::sign_e sign = global_types::sign_e::NOSIGN)
 			 *
 			 * \param offset: relatinve tab index
-			 * \param sign: direction of tab to apply action on: -1 for left move and 1 for right move
+			 * \param sign: direction of tab to apply action on: global_types::sign_e::MINUS for left move and global_types::sign_e::PLUS for right move
 			 *
 			 * This function moves to a different tab as specified by the user
 			 */
-			void convertToAbsTabIndex(int offset = main_window_ctrl_tab::emptyUserInput, int sign = 0);
+			void convertToAbsTabIndex(int offset = main_window_ctrl_tab::emptyUserInput, global_types::sign_e sign = global_types::sign_e::NOSIGN);
 
 			/**
 			 * @brief Function: void updateWebsite(int index)
