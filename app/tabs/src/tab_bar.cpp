@@ -35,7 +35,7 @@ tab_bar::TabBar::TabBar(QWidget * parent, int width): QTabBar(parent) {
 QSize tab_bar::TabBar::tabSizeHint(int index) const {
 	QINFO_PRINT(global_types::qinfo_level_e::ZERO, tabBarSize,  "Tab bar size hint for tab " << index);
 
-	int barWidth = this->size().width();
+	int barWidth = this->parentWidget()->size().width();
 	int barHeight = this->size().height();
 	int tabNumber = this->count();
 
