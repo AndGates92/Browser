@@ -66,7 +66,7 @@ namespace main_window_shared_types {
 	 * @brief Function: QDebug & operator<< (QDebug & os, const main_window_shared_types::state_e & state)
 	 *
 	 * \param os: output stream
-	 * \param state: state to print
+	 * \param state: state of the main window controller
 	 *
 	 * Overload << operator to print state
 	 */
@@ -157,7 +157,7 @@ namespace main_window_shared_types {
 	 * @brief Function: QDebug & operator<< (QDebug & os, const main_window_shared_types::tab_type_e & type)
 	 *
 	 * \param os: output stream
-	 * \param type: type of the window
+	 * \param type: type of the tab
 	 *
 	 * Overload << operator to print text type
 	 */
@@ -167,7 +167,7 @@ namespace main_window_shared_types {
 	 * @brief Function: QString & operator<< (QString & os, const main_window_shared_types::tab_type_e & type)
 	 *
 	 * \param os: output stream
-	 * \param type: type of the window
+	 * \param type: type of the tab
 	 *
 	 * Overload << operator to print text type
 	 */
