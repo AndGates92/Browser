@@ -15,7 +15,7 @@ Q_LOGGING_CATEGORY(jsonParserFile, "jsonParser.file", MSG_TYPE_LEVEL)
 
 json_parser::JsonParser::JsonParser(QString fileName, QIODevice::OpenModeFlag openFlags) : json_wrapper::JsonWrapper::JsonWrapper(fileName,openFlags) {
 
-	QINFO_PRINT(global_types::qinfo_level_e::ZERO, jsonParserOverall,  "Creating JSON Wrapper of file " << fileName);
+	QINFO_PRINT(global_types::qinfo_level_e::ZERO, jsonParserOverall,  "Creating JSON Parser of file " << fileName);
 
 	this->readJson();
 
