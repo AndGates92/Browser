@@ -101,12 +101,23 @@ namespace json_wrapper {
 			 *
 			 */
 			json_wrapper::json_content_type_e type;
+
 			/**
 			 * @brief Function: void readJson()
 			 *
 			 * function that reads a JSON file and stores into a QString
 			 */
 			void readJson();
+
+			/**
+			 * @brief Function: void walkJsonGroupValue(const QJsonValue & content, void (*actionFunc)(const QJsonValue, QJsonValue &))
+			 *
+			 * \param content: input content to walk through
+			 * \param actionFunc: action function. The first argument is the input value and the second argument is the output
+			 *
+			 * function that walks through a JSON file
+			 */
+			void walkJson(const QJsonValue & content, void (*actionFunc)(const QJsonValue, QJsonValue &));
 
 			/**
 			 * @brief Function: bool addJsonValue(QJsonValue jsonVal, QString key = QString::null)
@@ -139,15 +150,6 @@ namespace json_wrapper {
 			 *
 			 */
 			QFile * jsonFile;
-
-			/**
-			 * @brief Function: void walkJsonGroupValue(const QJsonValue & content)
-			 *
-			 * \param content: input content to walk through
-			 *
-			 * function that walks through a JSON file
-			 */
-			void walkJson(const QJsonValue & content);
 	};
 
 }
