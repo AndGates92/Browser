@@ -110,14 +110,14 @@ namespace json_wrapper {
 			void readJson();
 
 			/**
-			 * @brief Function: void walkJsonGroupValue(const QJsonValue & content, void (*actionFunc)(const QJsonValue, QJsonValue &))
+			 * @brief Function: void walkJsonGroupValue(const QJsonValue & content, QJsonValue (*actionFunc)(const QJsonValue &, const QJsonValue &), QJsonValue & result)
 			 *
 			 * \param content: input content to walk through
 			 * \param actionFunc: action function. The first argument is the input value and the second argument is the output
 			 *
 			 * function that walks through a JSON file
 			 */
-			void walkJson(const QJsonValue & content, void (*actionFunc)(const QJsonValue, QJsonValue &));
+			void walkJson(const QJsonValue & content, QJsonValue (*actionFunc)(const QJsonValue &, const QJsonValue &), QJsonValue & result);
 
 			/**
 			 * @brief Function: bool addJsonValue(QJsonValue jsonVal, QString key = QString::null)

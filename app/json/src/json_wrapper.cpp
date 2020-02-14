@@ -100,10 +100,15 @@ void json_wrapper::JsonWrapper::readJson() {
 		QCRITICAL_PRINT(true, jsonWrapperFile, "Invalid data type");
 	}
 
-	this->walkJson(this->jsonContent, nullptr);
+	QJsonValue dummyResult(QJsonValue::Undefined);
+	this->walkJson(this->jsonContent, nullptr, dummyResult);
 }
 
-void json_wrapper::JsonWrapper::walkJson(const QJsonValue & content, void (*actionFunc)(const QJsonValue, QJsonValue &)) {
+void json_wrapper::JsonWrapper::walkJson(const QJsonValue & content, QJsonValue (*actionFunc)(const QJsonValue &, const QJsonValue &), QJsonValue & result) {
+
+	if (actionFunc != nullptr) {
+		result = actionFunc(content, result);
+	}
 
 	switch (content.type()) {
 		case QJsonValue::Object:
@@ -115,7 +120,7 @@ void json_wrapper::JsonWrapper::walkJson(const QJsonValue & content, void (*acti
 			for (QStringList::const_iterator keyIter = jsonKeys.cbegin(); keyIter != jsonKeys.cend(); keyIter++) {
 				QINFO_PRINT(global_types::qinfo_level_e::ZERO, jsonWrapperFileContent, "JSON key: " << *keyIter);
 				const QJsonValue value(jsonObject.value(*keyIter));
-				this->walkJson(value, actionFunc);
+				this->walkJson(value, actionFunc, result);
 			}
 			break;
 		}
@@ -125,7 +130,7 @@ void json_wrapper::JsonWrapper::walkJson(const QJsonValue & content, void (*acti
 			const QJsonArray & jsonArray (content.toArray());
 			// Iterat over all elements of array
 			for (QJsonArray::const_iterator arrayIter = jsonArray.begin(); arrayIter != jsonArray.end(); arrayIter++) {
-				this->walkJson(*arrayIter, actionFunc);
+				this->walkJson(*arrayIter, actionFunc, result);
 			}
 			break;
 		}
