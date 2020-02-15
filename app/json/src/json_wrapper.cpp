@@ -102,6 +102,7 @@ void json_wrapper::JsonWrapper::readJson() {
 
 	QJsonValue dummyResult(QJsonValue::Undefined);
 	this->walkJson(this->jsonContent, nullptr, dummyResult);
+
 }
 
 void json_wrapper::JsonWrapper::walkJson(const QJsonValue & content, QJsonValue (*actionFunc)(const QJsonValue &, const QJsonValue &), QJsonValue & result) {
@@ -116,6 +117,7 @@ void json_wrapper::JsonWrapper::walkJson(const QJsonValue & content, QJsonValue 
 			QINFO_PRINT(global_types::qinfo_level_e::ZERO, jsonWrapperFileContent, "Printing JSON Object");
 			const QJsonObject & jsonObject (content.toObject());
 			const QStringList & jsonKeys (jsonObject.keys());
+
 			// Iterate over all key of the object
 			for (QStringList::const_iterator keyIter = jsonKeys.cbegin(); keyIter != jsonKeys.cend(); keyIter++) {
 				QINFO_PRINT(global_types::qinfo_level_e::ZERO, jsonWrapperFileContent, "JSON key: " << *keyIter);
@@ -155,54 +157,101 @@ void json_wrapper::JsonWrapper::walkJson(const QJsonValue & content, QJsonValue 
 	}
 }
 
-bool json_wrapper::JsonWrapper::addJsonValue(QJsonValue jsonVal, QString key) {
+void json_wrapper::JsonWrapper::addJsonValue(QJsonValue & content, const QJsonValue & val, const QString & key) {
 
-	QINFO_PRINT(global_types::qinfo_level_e::ZERO, jsonWrapperFile,  "Append JSON value of type " << jsonVal.type());
+	QINFO_PRINT(global_types::qinfo_level_e::ZERO, jsonWrapperFile,  "Append JSON value of type " << val.type());
 
-	bool ret = false;
-
-	if (this->jsonContent.isObject() == true) {
+	if (content.isObject() == true) {
 
 		// Create a pointer to the JSON content
-		QJsonObject jsonObj = this->jsonContent.toObject();
+		QJsonObject jsonObj = content.toObject();
 
-		// Update JSON object
-		QJsonObject::iterator iter = jsonObj.insert(key, jsonVal);
-		// Ensure that the file is open for read
-		QCRITICAL_PRINT((iter != jsonObj.end()), jsonWrapperFile, "Unable to add JSON value of type " << jsonVal.type() << " at key " << key);
+		// If key is not provided, then it is expected that a QJsonObject is added to the input QJsonObject content.
+		// All pairs key-value of QJsonValue val are added on the first level of the hierarchy
+		if (key.isEmpty() == true) {
 
-		// Copy back updated value
-		this->jsonContent = QJsonValue(jsonObj);
-
-		ret = true;
-
-	} else if (this->jsonContent.isArray() == true) {
-
-		// Create a pointer to the JSON content
-		QJsonArray jsonArray = this->jsonContent.toArray();
-
-		// Update JSON array
-		jsonArray.push_front(jsonVal);
-
-		// Copy back updated value
-		this->jsonContent = QJsonValue(jsonArray);
-
-		ret = true;
-
-	} else if (this->jsonContent.isUndefined() == true) {
-		if (key.isNull()) {
-			this->jsonContent = jsonVal;
+			if (val.isObject() == true) {
+				QJsonObject newObject (val.toObject());
+				this->appendJsonObject(jsonObj, newObject);
+			} else {
+				QCRITICAL_PRINT((val.isObject() == false), jsonWrapperFileContent, "Cannot add non-JSON object without key to a JSON object");
+			}
 		} else {
+			// Insert to JSON object
+			this->insertToJsonObject(jsonObj, key, val);
+		}
+
+		// Copy back updated value
+		content = QJsonValue(jsonObj);
+
+	} else if (content.isArray() == true) {
+
+		// Create a pointer to the JSON content
+		QJsonArray jsonArray = content.toArray();
+
+		if (key.isEmpty() == true) {
+			// Update JSON array
+			jsonArray.push_front(val);
+		} else {
+			QJsonObject newObj;
+			// Insert to JSON object
+			this->insertToJsonObject(newObj, key, val);
+
+			// Push new QJsonObject to the front
+			jsonArray.push_front(newObj);
+		}
+
+		// Copy back updated value
+		content = QJsonValue(jsonArray);
+
+	} else if ((content.isUndefined() == true) || (content.isNull() == true)) {
+		if (key.isEmpty()) {
+			// Copy val to content if it is an JSON object or a JSON array
+			if ((content.isArray() == true) || (content.isObject() == true)) {
+				content = val;
+			} else {
+				// Push val to an intermediate array and then copy it to content
+				QJsonArray jsonArray;
+				jsonArray.push_front(val);
+				content = jsonArray;
+			}
+		} else {
+			// Create an intermediate JSON object to pair key and val
 			QJsonObject jsonObj;
-			jsonObj.insert(key, jsonVal);
-			this->jsonContent = QJsonValue(jsonObj);
+			jsonObj.insert(key, val);
+			content = QJsonValue(jsonObj);
 		}
 	} else {
-		QCRITICAL_PRINT(true, jsonWrapperFile, "Unknown type " << this->jsonContent.type());
+		QCRITICAL_PRINT(true, jsonWrapperFile, "Cannot add new value to QJsonValue of type " << content.type());
 	}
 
-	return ret;
+}
 
+void json_wrapper::JsonWrapper::appendJsonObject(QJsonObject & jsonObj, const QJsonObject & newObj) {
+	const QStringList & jsonKeys (newObj.keys());
+
+	// Iterate over all key of the object
+	for (QStringList::const_iterator keyIter = jsonKeys.cbegin(); keyIter != jsonKeys.cend(); keyIter++) {
+		// Warn if key already exists and subsequently replace it
+		if (jsonObj.contains(*keyIter) == true) {
+			QWARNING_PRINT(jsonWrapperFileContent, "key " << *keyIter << " already exists");
+			QJsonObject::const_iterator objIter = jsonObj.find(*keyIter);
+			QJsonValue dummyDuplResult(QJsonValue::Undefined);
+			this->walkJson(*objIter, nullptr, dummyDuplResult);
+		}
+		QINFO_PRINT(global_types::qinfo_level_e::ZERO, jsonWrapperFileContent, "Adding JSON key: " << *keyIter);
+		const QJsonValue value(newObj.value(*keyIter));
+		QJsonValue dummyResult(QJsonValue::Undefined);
+		this->walkJson(value, nullptr, dummyResult);
+		jsonObj.insert(*keyIter, value);
+	}
+}
+
+void json_wrapper::JsonWrapper::insertToJsonObject(QJsonObject & jsonObj, const QString & key, const QJsonValue & val) {
+	// Update JSON object
+	QJsonObject::iterator iter = jsonObj.insert(key, val);
+	// Ensure that the insertion was successful
+	QCRITICAL_PRINT((iter != jsonObj.end()), jsonWrapperFile, "Unable to add JSON value of type " << val.type() << " at key " << key);
 }
 
 void json_wrapper::JsonWrapper::writeJson() {

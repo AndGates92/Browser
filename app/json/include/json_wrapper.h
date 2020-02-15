@@ -113,23 +113,22 @@ namespace json_wrapper {
 			 * @brief Function: void walkJsonGroupValue(const QJsonValue & content, QJsonValue (*actionFunc)(const QJsonValue &, const QJsonValue &), QJsonValue & result)
 			 *
 			 * \param content: input content to walk through
-			 * \param actionFunc: action function. The first argument is the input value and the second argument is the output
+			 * \param actionFunc: action function. The first argument is the input value and the second argument is the value to process
 			 *
 			 * function that walks through a JSON file
 			 */
 			void walkJson(const QJsonValue & content, QJsonValue (*actionFunc)(const QJsonValue &, const QJsonValue &), QJsonValue & result);
 
 			/**
-			 * @brief Function: bool addJsonValue(QJsonValue jsonVal, QString key = QString::null)
+			 * @brief Function: void addJsonValue(QJsonValue & content, QJsonValue val, const QString & key = QString::null)
 			 *
-			 * \param key: key of the item to add (available only when the file is a QJsonObject) 
-			 * \param jsonVal: value to add to JSON file
-			 *
-			 * \return whether the operation was successful (true) or not (false)
+			 * \param content: input content to add to
+			 * \param key: key of the item to add (available only when the file is a QJsonObject)
+			 * \param val: value to add to JSON value
 			 *
 			 * function that adds a JSON value. It doesn't write to the file
 			 */
-			bool addJsonValue(QJsonValue jsonVal, QString key = QString::null);
+			void addJsonValue(QJsonValue & content, const QJsonValue & val, const QString & key = QString::null);
 
 			/**
 			 * @brief Function: void writeJson()
@@ -150,6 +149,28 @@ namespace json_wrapper {
 			 *
 			 */
 			QFile * jsonFile;
+
+			/**
+			 * @brief Function: void appendJsonObject(QJsonObject & jsonObj, const QJsonObject & newObj)
+			 *
+			 * \param jsonObj: JSON object to be appended
+			 * \param newObj: JSON object to append
+			 *
+			 * function that adds a JSON object
+			 */
+			void appendJsonObject(QJsonObject & jsonObj, const QJsonObject & newObj);
+
+			/**
+			 * @brief Function: void insertToJsonObject(QJsonObject & jsonObj, const QString & key, QJsonValue val)
+			 *
+			 * \param jsonObj: jsonObj to be updated
+			 * \param key: key of the item to add
+			 * \param val: value to add to JSON object
+			 *
+			 * function that inserts a JSON value to a JSON object and check the operation is successful
+			 */
+			void insertToJsonObject(QJsonObject & jsonObj, const QString & key, const QJsonValue & val);
+
 	};
 
 }
