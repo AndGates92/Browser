@@ -32,6 +32,20 @@
 #endif
 
 /**
+ * @brief QDEBUG_PRINT(CATEGORY, ...)
+ *
+ * \param CATEGORY  : category of the print
+ * \param ...       : variable number of arguments to provide to warningMsg
+ *
+ * Print a debug message to the log file
+ */
+#define QDEBUG_PRINT(CATEGORY, ...)\
+	QDebug debugMsg(qDebug(CATEGORY)); \
+	debugMsg.noquote(); \
+	debugMsg.nospace(); \
+	debugMsg << __VA_ARGS__; \
+
+/**
  * @brief QINFO_PRINT(VERBOSITY, CATEGORY, ...)
  *
  * \param VERBOSITY : verbosity level
@@ -54,7 +68,7 @@
  * \param CATEGORY  : category of the print
  * \param ...       : variable number of arguments to provide to warningMsg
  *
- * Print a message to the log file if the chosen verbosity is less or equal to the default verbosity
+ * Print a warning message to the log file
  */
 #define QWARNING_PRINT(CATEGORY, ...)\
 	QDebug warningMsg(qWarning(CATEGORY)); \
@@ -63,13 +77,13 @@
 	warningMsg << __VA_ARGS__; \
 
 /**
- * @brief QINFO_PRINT(CONDITION, CATEGORY, ...)
+ * @brief QCRITICAL_PRINT(CONDITION, CATEGORY, ...)
  *
  * \param CONDITION : condition to print the message
  * \param CATEGORY  : category of the print
  * \param ...       : variable number of arguments to provide to infoMsg
  *
- * Print a message to the log file if the chosen verbosity is less or equal to the default verbosity
+ * Print a critical message to the log file is the condition is true
  */
 #define QCRITICAL_PRINT(CONDITION, CATEGORY, ...)\
 	if (CONDITION) { \
@@ -79,6 +93,20 @@
 		criticalMsg << __VA_ARGS__; \
 		exit(EXIT_FAILURE);\
 	}
+
+/**
+ * @brief QFATAL_PRINT(CATEGORY, ...)
+ *
+ * \param CATEGORY  : category of the print
+ * \param ...       : variable number of arguments to provide to warningMsg
+ *
+ * Print a fatal message to the log file
+ */
+#define QFATAL_PRINT(CATEGORY, ...)\
+	QDebug warningMsg(qFatal(CATEGORY)); \
+	warningMsg.noquote(); \
+	warningMsg.nospace(); \
+	warningMsg << __VA_ARGS__; \
 
 /**
  * @brief QDEBUG_OVERLOAD_PRINT_OP(TYPE)
