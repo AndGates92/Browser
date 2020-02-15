@@ -49,6 +49,20 @@
 	}
 
 /**
+ * @brief QWARNING_PRINT(CATEGORY, ...)
+ *
+ * \param CATEGORY  : category of the print
+ * \param ...       : variable number of arguments to provide to warningMsg
+ *
+ * Print a message to the log file if the chosen verbosity is less or equal to the default verbosity
+ */
+#define QWARNING_PRINT(CATEGORY, ...)\
+	QDebug warningMsg(qWarning(CATEGORY)); \
+	warningMsg.noquote(); \
+	warningMsg.nospace(); \
+	warningMsg << __VA_ARGS__; \
+
+/**
  * @brief QINFO_PRINT(CONDITION, CATEGORY, ...)
  *
  * \param CONDITION : condition to print the message
