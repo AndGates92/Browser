@@ -15,28 +15,7 @@
 
 namespace main_window_shared_types {
 
-	QDEBUG_OVERLOAD_PRINT_OP(main_window_shared_types::object_type_e)
-
-	QString & operator<< (QString & str, const main_window_shared_types::object_type_e & object) {
-
-		switch (object) {
-			case main_window_shared_types::object_type_e::CURSOR:
-				str.append("CURSOR");
-				break;
-			case main_window_shared_types::object_type_e::TAB:
-				str.append("TAB");
-				break;
-			case main_window_shared_types::object_type_e::UNKNOWN:
-				str.append("UNKNOWN");
-				break;
-			default:
-				str.append("Unknown action");
-				break;
-		}
-
-		return str;
-	}
-
+	// Overload << operator for move_value_e
 	QDEBUG_OVERLOAD_PRINT_OP(main_window_shared_types::move_value_e)
 
 	QString & operator<< (QString & str, const main_window_shared_types::move_value_e & value_type) {

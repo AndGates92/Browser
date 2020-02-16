@@ -16,35 +16,7 @@
  */
 namespace main_window_shared_types {
 
-	/**
-	 * @brief list of objects to execute actions on 
-	 *
-	 */
-	typedef enum class object_type_list {
-		CURSOR,              /**< cursor */
-		TAB,                 /**< tab */
-		UNKNOWN              /**< unknown object */
-	} object_type_e;
-
-	/**
-	 * @brief Function: QDebug & operator<< (QDebug & os, const main_window::MainWindow::object_type_e & object)
-	 *
-	 * \param os: output stream
-	 * \param object: object type the action is applied on
-	 *
-	 * Overload << operator to print they object type the action is execute on
-	 */
-	QDebug & operator<< (QDebug & os, const main_window_shared_types::object_type_e & object);
-
-	/**
-	 * @brief Function: QString & operator<< (QString & str, const main_window::MainWindow::object_type_e & object)
-	 *
-	 * \param str: text stream
-	 * \param object: object type the action is applied on
-	 *
-	 * Overload << operator to print they object type the action is execute on
-	 */
-	QString & operator<< (QString & str, const main_window_shared_types::object_type_e & object);
+	Q_NAMESPACE
 
 	/**
 	 * @brief states
@@ -61,6 +33,12 @@ namespace main_window_shared_types {
 		TAB_MOVE,         /**< Move tab */
 		SEARCH            /**< Search on same tab */
 	} state_e;
+
+	/**
+	 * @brief register state_e with meta-object system
+	 *
+	 */
+	Q_ENUM_NS(main_window_shared_types::state_e)
 
 	/**
 	 * @brief Function: QDebug & operator<< (QDebug & os, const main_window_shared_types::state_e & state)
@@ -94,6 +72,12 @@ namespace main_window_shared_types {
 	} move_value_e;
 
 	/**
+	 * @brief register move_value_e with meta-object system
+	 *
+	 */
+	Q_ENUM_NS(main_window_shared_types::move_value_e)
+
+	/**
 	 * @brief Function: QDebug & operator<< (QDebug & os, const main_window_shared_types::move_value_e & value_type)
 	 *
 	 * \param os: output stream
@@ -124,6 +108,12 @@ namespace main_window_shared_types {
 	} text_action_e;
 
 	/**
+	 * @brief register text_action_e with meta-object system
+	 *
+	 */
+	Q_ENUM_NS(main_window_shared_types::text_action_e)
+
+	/**
 	 * @brief Function: QDebug & operator<< (QDebug & os, const main_window_shared_types::text_action_e & action)
 	 *
 	 * \param os: output stream
@@ -152,6 +142,12 @@ namespace main_window_shared_types {
 		LABEL,            /**< Tab type is QLabel */
 		UNKNOWN           /**< Tab type is unknown */
 	} tab_type_e;
+
+	/**
+	 * @brief register tab_type_e with meta-object system
+	 *
+	 */
+	Q_ENUM_NS(main_window_shared_types::tab_type_e)
 
 	/**
 	 * @brief Function: QDebug & operator<< (QDebug & os, const main_window_shared_types::tab_type_e & type)
