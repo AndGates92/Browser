@@ -432,22 +432,6 @@ void main_window_ctrl_tab::MainWindowCtrlTab::keyPressEvent(QKeyEvent * event) {
 
 }
 
-main_window_shared_types::object_type_e main_window_ctrl_tab::MainWindowCtrlTab::setAffectedObject() {
-
-	main_window_shared_types::object_type_e object = main_window_shared_types::object_type_e::UNKNOWN;
-
-	main_window_shared_types::state_e windowState = this->windowCore->getMainWindowState();
-
-	// Retrieve main window controller state
-	if ((windowState == main_window_shared_types::state_e::MOVE_RIGHT) || (windowState == main_window_shared_types::state_e::MOVE_LEFT)) {
-		object = main_window_shared_types::object_type_e::CURSOR;
-	} else if (windowState == main_window_shared_types::state_e::TAB_MOVE) {
-		object = main_window_shared_types::object_type_e::TAB;
-	}
-
-	return object;
-}
-
 void main_window_ctrl_tab::MainWindowCtrlTab::convertToAbsTabIndex(int offset, global_types::sign_e sign) {
 
 	main_window_shared_types::state_e windowState = this->windowCore->getMainWindowState();
@@ -486,12 +470,20 @@ void main_window_ctrl_tab::MainWindowCtrlTab::convertToAbsTabIndex(int offset, g
 
 	QINFO_PRINT(global_types::qinfo_level_e::ZERO, mainWindowCtrlTabTabs,  "Convert tab relative offset " << (signInt*offset) << " to absolute offset " << tabIndex);
 
-	if ((windowState == main_window_shared_types::state_e::MOVE_RIGHT) || (windowState == main_window_shared_types::state_e::MOVE_LEFT)) {
-		this->moveCursor(tabIndex);
-	} else if (windowState == main_window_shared_types::state_e::TAB_MOVE) {
-		this->moveTab(tabIndex);
-	} else if (windowState == main_window_shared_types::state_e::REFRESH_TAB) {
-		this->refreshUrl(tabIndex);
+	switch (windowState) {
+		case main_window_shared_types::state_e::MOVE_RIGHT:
+		case main_window_shared_types::state_e::MOVE_LEFT:
+			this->moveCursor(tabIndex);
+			break;
+		case main_window_shared_types::state_e::TAB_MOVE:
+			this->moveTab(tabIndex);
+			break;
+		case main_window_shared_types::state_e::REFRESH_TAB:
+			this->refreshUrl(tabIndex);
+			break;
+		default:
+			QCRITICAL_PRINT(true, mainWindowCtrlTabTabs, "Undefined action when in state " << windowState);
+			break;
 	}
 }
 

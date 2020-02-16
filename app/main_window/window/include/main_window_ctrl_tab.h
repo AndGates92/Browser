@@ -316,13 +316,6 @@ namespace main_window_ctrl_tab {
 			void executeTabAction(int userInput = main_window_ctrl_tab::emptyUserInput);
 
 			/**
-			 * @brief Function: main_window_shared_types::object_type_e setAffectedObject()
-			 *
-			 * This function return the object type the action is applied on
-			 */
-			main_window_shared_types::object_type_e setAffectedObject();
-
-			/**
 			 * @brief Function: void convertToAbsTabIndex(int offset = main_window_ctrl_tab::emptyUserInput, global_types::sign_e sign = global_types::sign_e::NOSIGN)
 			 *
 			 * \param offset: relatinve tab index
