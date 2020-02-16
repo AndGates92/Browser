@@ -7,7 +7,6 @@
  */
 
 // Qt libraries
-// QtGlobal defines qWarning
 #include <qt5/QtCore/QtGlobal>
 #include <qt5/QtGui/QKeyEvent>
 
@@ -155,7 +154,7 @@ void main_window_ctrl::MainWindowCtrl::keyPressEvent(QKeyEvent * event) {
 					if ((pressedKey >= Qt::Key_0) && (pressedKey <= Qt::Key_9)) {
 						this->printUserInput(main_window_shared_types::text_action_e::APPEND, event->text());
 					} else {
-						qWarning(mainWindowCtrlUserInput) << "Pressed key " << event->text() << ". Only numbers are accepted when executing actions like closing windows or moving in the tab bar\n";
+						QWARNING_PRINT(mainWindowCtrlUserInput, "Pressed key " << event->text() << ". Only numbers are accepted when executing actions like closing windows or moving in the tab bar");
 					}
 				} else if (windowState == main_window_shared_types::state_e::TAB_MOVE) {
 					// If no sign is provided, the tab is considered as absolute value
@@ -170,7 +169,7 @@ void main_window_ctrl::MainWindowCtrl::keyPressEvent(QKeyEvent * event) {
 					} else if ((moveType == main_window_shared_types::move_value_e::IDLE) && ((pressedKey == Qt::Key_H) || (pressedKey == Qt::Key_L) || (pressedKey == Qt::Key_Plus) || (pressedKey == Qt::Key_Minus))) {
 						this->printUserInput(main_window_shared_types::text_action_e::CLEAR);
 					} else {
-						qWarning(mainWindowCtrlUserInput) << "Pressed key " << event->text() << ". Only numbers and + and - signs are accepted when executing actions like move tabs in the tab bar\n";
+						QWARNING_PRINT(mainWindowCtrlUserInput, "Pressed key " << event->text() << ". Only numbers and + and - signs are accepted when executing actions like move tabs in the tab bar");
 					}
 				} else if (windowState == main_window_shared_types::state_e::COMMAND) {
 					this->printUserInput(main_window_shared_types::text_action_e::APPEND, event->text());

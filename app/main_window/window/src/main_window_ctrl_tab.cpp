@@ -7,7 +7,6 @@
  */
 
 // Qt libraries
-// QtGlobal defines qWarning
 #include <qt5/QtCore/QtGlobal>
 #include <qt5/QtGui/QKeyEvent>
 #include <qt5/QtWebEngineWidgets/QWebEngineView>
@@ -298,7 +297,7 @@ void main_window_ctrl_tab::MainWindowCtrlTab::executeActionOnTab(int index) {
 		}
 	} else {
 		int maxTabRange = tabCount;
-		qWarning(mainWindowCtrlTabTabs) << "Tab " << tabIndex << " doesn't exists. Valid range of tab is the integer number between 1 and " << maxTabRange << "\n";
+		QWARNING_PRINT(mainWindowCtrlTabTabs, "Tab " << tabIndex << " doesn't exists. Valid range of tab is the integer number between 1 and " << maxTabRange);
 	}
 }
 
@@ -335,7 +334,7 @@ void main_window_ctrl_tab::MainWindowCtrlTab::processTabIndex(QString userInputS
 			QINFO_PRINT(global_types::qinfo_level_e::ZERO, mainWindowCtrlTabUserInput,  "user input succesfully converted to integer: string " << userInputStr << " integer " << userInputInt);
 			this->executeTabAction(userInputInt);
 		} else {
-			qWarning(mainWindowCtrlTabTabs) << "tab index " << userInputStr << " is not made up by numbers only\n";
+			QWARNING_PRINT(mainWindowCtrlTabTabs, "tab index " << userInputStr << " is not made up by numbers only");
 		}
 	}
 }
@@ -476,7 +475,7 @@ void main_window_ctrl_tab::MainWindowCtrlTab::convertToAbsTabIndex(int offset, g
 	}
 	if (offset > tabCount) {
 		int maxTabRange = tabCount - 1;
-		qWarning(mainWindowCtrlTabTabs) << "Offset " << offset << " is bigger than the number of tabs " << tabCount << " Bringing tab index withing the valid range of tab (between 0 and " << maxTabRange << ")\n";
+		QWARNING_PRINT(mainWindowCtrlTabTabs, "Offset " << offset << " is bigger than the number of tabs " << tabCount << " Bringing tab index withing the valid range of tab (between 0 and " << maxTabRange);
 	}
 	while (tabIndexDst < 0) {
 		tabIndexDst +=  tabCount;

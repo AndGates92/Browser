@@ -8,7 +8,6 @@
 
 #include <iostream>
 // Qt libraries
-// QtGlobal defines qWarning
 #include <qt5/QtCore/QtGlobal>
 
 #include "menu_bar.h"

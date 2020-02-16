@@ -7,7 +7,6 @@
  */
 
 // Qt libraries
-// QtGlobal defines qWarning
 #include <qt5/QtCore/QtGlobal>
 
 #include "main_window_base.h"

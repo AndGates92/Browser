@@ -8,7 +8,6 @@
 
 #include <iostream>
 // Qt libraries
-// QtGlobal defines qWarning
 #include <qt5/QtCore/QtGlobal>
 
 #include "main_window_core.h"
@@ -83,7 +82,7 @@ void main_window_core::MainWindowCore::updateUserInput(const main_window_shared_
 			this->userText.clear();
 			break;
 		default:
-			qWarning(mainWindowCoreUserInput) << "Unknown action " << action << "\n";
+			QCRITICAL_PRINT(true, mainWindowCoreUserInput, "Unknown action " << action);
 			break;
 	}
 }

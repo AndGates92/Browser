@@ -7,7 +7,6 @@
  */
 
 // Qt libraries
-// QtGlobal defines qWarning
 #include <qt5/QtCore/QtGlobal>
 #include <qt5/QtWidgets/QVBoxLayout>
 #include <qt5/QtWidgets/QStatusBar>
