@@ -170,7 +170,7 @@ namespace main_window_shared_types {
 	QString & operator<< (QString & str, const main_window_shared_types::tab_type_e & type);
 
 	/**
-	 * @brief Function: QString & operator+ (QString & str, const main_window_shared_types::tab_type_e & type)
+	 * @brief Function: const QString operator+ (const QString & str, const main_window_shared_types::tab_type_e & type)
 	 *
 	 * \param str: text stream
 	 * \param type: type of the tab
