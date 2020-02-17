@@ -6,8 +6,6 @@
  * @brief Logging functions
  */
 
-#include <iostream>
-
 #include <qt5/QtCore/QMessageLogContext>
 #include <qt5/QtCore/QTextStream>
 #include <qt5/QtCore/QString>
@@ -16,6 +14,7 @@
 // Get pointer to default category
 #include <qt5/QtCore/QLoggingCategory>
 
+#include "exception_macros.h"
 #include "global_macros.h"
 #include "logging.h"
 
@@ -69,11 +68,8 @@ void logging::handler(QtMsgType type, const QMessageLogContext & context, const 
 		info_str.append(context.function);
 	}
 
-	if (!logfile.open(QIODevice::Append | QIODevice::WriteOnly | QIODevice::Text)) {
-		const QString filename(logfile.fileName());
-		std::cerr << "Unable to open file " << filename.toStdString() << std::endl;
-		exit(EXIT_FAILURE);
-	}
+	bool success = logfile.open(QIODevice::Append | QIODevice::WriteOnly | QIODevice::Text);
+	QEXCEPTION_ACTION_COND((!success), throw, "Unable to open file " + logfile.fileName());
 
 	QTextStream ologfile(&logfile);
 
