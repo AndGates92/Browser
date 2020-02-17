@@ -95,18 +95,14 @@
 	}
 
 /**
- * @brief QFATAL_PRINT(CATEGORY, ...)
+ * @brief QFATAL_PRINT(MSG)
  *
- * \param CATEGORY  : category of the print
- * \param ...       : variable number of arguments to provide to fatalMsg
+ * \param MSG  : text to print
  *
  * Print a fatal message to the log file
  */
-#define QFATAL_PRINT(CATEGORY, ...)\
-	QDebug warningMsg(qFatal(CATEGORY)); \
-	warningMsg.noquote(); \
-	warningMsg.nospace(); \
-	warningMsg << __VA_ARGS__; \
+#define QFATAL_PRINT(MSG) \
+	qFatal(#MSG);
 
 /**
  * @brief QDEBUG_OVERLOAD_PRINT_OP(TYPE)

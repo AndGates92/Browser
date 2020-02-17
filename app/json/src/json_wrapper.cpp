@@ -14,6 +14,7 @@
 #include "json_wrapper.h"
 #include "global_macros.h"
 #include "global_types.h"
+#include "exception_macros.h"
 
 Q_LOGGING_CATEGORY(jsonWrapperOverall, "jsonWrapper.overall", MSG_TYPE_LEVEL)
 Q_LOGGING_CATEGORY(jsonWrapperFile, "jsonWrapper.file", MSG_TYPE_LEVEL)
@@ -68,7 +69,7 @@ void json_wrapper::JsonWrapper::readJson() {
 
 	// open the file
 	bool openSuccess = this->jsonFile->open(this->openFlags);
-	QCRITICAL_PRINT((!openSuccess), jsonWrapperFile, "Unable to open JSON file " << this->jsonFile->fileName() << " for read");
+	QEXCEPTION_ACTION_COND((!openSuccess), throw,  "Unable to open JSON file " + this->jsonFile->fileName() + " for read");
 
 	// Copy content into QString
 	QString content(this->jsonFile->readAll());
@@ -82,7 +83,7 @@ void json_wrapper::JsonWrapper::readJson() {
 	QJsonDocument jsonDoc = QJsonDocument(QJsonDocument::fromJson(contentUtf8, jsonParseError));
 
 	// Check if JSON parsing is successful
-	QCRITICAL_PRINT((jsonDoc.isNull() == 1), jsonWrapperFile, "Unable to convert UTF8 QString to JSON file because of error " << jsonParseError->errorString() << "(error type " << jsonParseError->error << ")");
+	QEXCEPTION_ACTION_COND((jsonDoc.isNull() == 1), throw,  "Unable to convert UTF8 QString to JSON file because of error " + jsonParseError->errorString() + "(error type " + jsonParseError->error + ")");
 
 	if (jsonDoc.isObject() == true) {
 		QJsonObject jsonObj(jsonDoc.object());
@@ -93,11 +94,11 @@ void json_wrapper::JsonWrapper::readJson() {
 		Q_ASSERT_X((jsonArray.empty() == false), "JSON array is empty", "JSON file has an empty array");
 		this->jsonContent = QJsonValue(jsonArray);
 	} else if (jsonDoc.isEmpty() == true) {
-		QCRITICAL_PRINT(true, jsonWrapperFile, "Cannot read empty JSON file");
+		QEXCEPTION_ACTION(throw,  "Cannot read empty JSON file");
 	} else if (jsonDoc.isNull() == true) {
-		QCRITICAL_PRINT(true, jsonWrapperFile, "Cannot read null JSON file");
+		QEXCEPTION_ACTION(throw,  "Cannot read null JSON file");
 	} else {
-		QCRITICAL_PRINT(true, jsonWrapperFile, "Invalid data type");
+		QEXCEPTION_ACTION(throw,  "Invalid data type");
 	}
 
 	QJsonValue dummyResult(QJsonValue::Undefined);
@@ -152,7 +153,7 @@ void json_wrapper::JsonWrapper::walkJson(const QJsonValue & content, QJsonValue 
 			QINFO_PRINT(global_types::qinfo_level_e::ZERO, jsonWrapperFileContent, "Value is undefined");
 			break;
 		default:
-			QCRITICAL_PRINT(true, jsonWrapperFile, "Unknown type " << content.type());
+			QEXCEPTION_ACTION(throw,  "Unknown type " + content.type());
 			break;
 	}
 }
@@ -174,7 +175,7 @@ void json_wrapper::JsonWrapper::addJsonValue(QJsonValue & content, const QJsonVa
 				QJsonObject newObject (val.toObject());
 				this->appendJsonObject(jsonObj, newObject);
 			} else {
-				QCRITICAL_PRINT((val.isObject() == false), jsonWrapperFileContent, "Cannot add non-JSON object without key to a JSON object");
+				QEXCEPTION_ACTION_COND((val.isObject() == false), throw,  "Cannot add non-JSON object without key to a JSON object");
 			}
 		} else {
 			// Insert to JSON object
@@ -222,7 +223,7 @@ void json_wrapper::JsonWrapper::addJsonValue(QJsonValue & content, const QJsonVa
 			content = QJsonValue(jsonObj);
 		}
 	} else {
-		QCRITICAL_PRINT(true, jsonWrapperFile, "Cannot add new value to QJsonValue of type " << content.type());
+		QEXCEPTION_ACTION(throw,  "Cannot add new value to QJsonValue of type " + content.type());
 	}
 
 }
@@ -251,7 +252,7 @@ void json_wrapper::JsonWrapper::insertToJsonObject(QJsonObject & jsonObj, const 
 	// Update JSON object
 	QJsonObject::iterator iter = jsonObj.insert(key, val);
 	// Ensure that the insertion was successful
-	QCRITICAL_PRINT((iter != jsonObj.end()), jsonWrapperFile, "Unable to add JSON value of type " << val.type() << " at key " << key);
+	QEXCEPTION_ACTION_COND((iter != jsonObj.end()), throw,  "Unable to add JSON value of type " + val.type() + " at key " + key);
 }
 
 void json_wrapper::JsonWrapper::writeJson() {
@@ -267,7 +268,7 @@ void json_wrapper::JsonWrapper::writeJson() {
 	} else if (this->jsonContent.isArray() == true) {
 		jsonDoc = QJsonDocument(this->jsonContent.toArray());
 	} else {
-		QCRITICAL_PRINT(true, jsonWrapperFile, "Invalid data type");
+		QEXCEPTION_ACTION(throw,  "Invalid data type of JSON file content");
 	}
 
 	// Write updated JSON content to QByteArray
@@ -276,11 +277,11 @@ void json_wrapper::JsonWrapper::writeJson() {
 	// open the file
 	// Set QIODevicne to WriteOnly and Truncate to replace the content of the entire file
 	bool openSuccess = this->jsonFile->open(this->openFlags);
-	QCRITICAL_PRINT((!openSuccess), jsonWrapperFile, "Unable to open JSON file " << this->jsonFile->fileName() << " for write");
+	QEXCEPTION_ACTION_COND((!openSuccess), throw,  "Unable to open JSON file " + this->jsonFile->fileName() + " for write");
 
 	// Write File
 	qint64 writeReturn = this->jsonFile->write(updatedContent);
-	QCRITICAL_PRINT((writeReturn == -1), jsonWrapperFile, "Write to JSON file " << this->jsonFile->fileName() << " failed");
+	QEXCEPTION_ACTION_COND((writeReturn == -1), throw,  "Write to JSON file " + this->jsonFile->fileName() + " failed");
 
 	this->jsonFile->close();
 }

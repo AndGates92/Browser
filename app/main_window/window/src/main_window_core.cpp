@@ -11,6 +11,7 @@
 #include <qt5/QtCore/QtGlobal>
 
 #include "main_window_core.h"
+#include "exception_macros.h"
 
 // Categories
 Q_LOGGING_CATEGORY(mainWindowCoreOverall, "mainWindowCore.overall", MSG_TYPE_LEVEL)
@@ -82,7 +83,7 @@ void main_window_core::MainWindowCore::updateUserInput(const main_window_shared_
 			this->userText.clear();
 			break;
 		default:
-			QCRITICAL_PRINT(true, mainWindowCoreUserInput, "Unknown action " << action);
+			QEXCEPTION_ACTION(throw,  "Unknown action " + action);
 			break;
 	}
 }

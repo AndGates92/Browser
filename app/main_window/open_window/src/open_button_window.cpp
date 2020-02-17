@@ -19,6 +19,7 @@
 #include "global_macros.h"
 #include "global_types.h"
 #include "open_button_window.h"
+#include "exception_macros.h"
 
 
 // Categories
@@ -65,7 +66,7 @@ void open_button_window::OpenButtonWindow::open() {
 		QFile userFile(filename);
 		bool fileOpenRet = userFile.open(QIODevice::ReadOnly | QIODevice::Text);
 
-		QCRITICAL_PRINT((!fileOpenRet), openButtonWindowOpen, "Unable to open file " << filename);
+		QEXCEPTION_ACTION_COND((!fileOpenRet), throw, "Unable to open file " + filename);
 
 		QString fileContent("");
 		while(!userFile.atEnd()) {

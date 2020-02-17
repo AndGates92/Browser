@@ -12,6 +12,7 @@
 #include <qt5/QtGui/QKeyEvent>
 
 #include "tab_widget.h"
+#include "exception_macros.h"
 
 // Categories
 Q_LOGGING_CATEGORY(tabWidgetOverall, "tabWidget.overall", MSG_TYPE_LEVEL)
@@ -122,7 +123,7 @@ void tab_widget::TabWidget::setVisibleAttribute() {
 QWidget * tab_widget::TabWidget::widget(int index, bool checkError) {
 	QWidget * requestedWidget = QTabWidget::widget(index);
 
-	QCRITICAL_PRINT(((checkError == true) && (requestedWidget == nullptr)), tabWidgetTabs, "Unable to get tab page at index " << index);
+	QEXCEPTION_ACTION_COND(((checkError == true) && (requestedWidget == nullptr)), throw,  "Unable to get tab page at index " + index);
 
 	return requestedWidget;
 }

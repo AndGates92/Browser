@@ -6,9 +6,13 @@
  * @brief Main function of the program
  */
 
-#include <iostream>
+#include <qt5/QtCore/QtDebug>
+#include <qt5/QtCore/QtGlobal>
 #include <qt5/QtCore/QtMessageHandler>
+#include <qt5/QtCore/QUnhandledException>
 
+#include "global_macros.h"
+#include "browser_exception.h"
 #include "logging.h"
 #include "graphics.h"
 
@@ -27,9 +31,17 @@
  */
 
 int main (int argc, char* argv[]) {
-	logging::set_default_category();
-	qInstallMessageHandler(logging::handler);
-	graphics::init_graphics(argc, argv);
+
+	try {
+		logging::set_default_category();
+		qInstallMessageHandler(logging::handler);
+		graphics::init_graphics(argc, argv);
+	} catch (browser_exception::BrowserException bexc) {
+		QString bexcPrint(bexc.print());
+		QFATAL_PRINT(bexcPrint.toStdString().c_str());
+	} catch (QUnhandledException unhandledexc) {
+		QFATAL_PRINT("Got unhandled exception");
+	}
 
 	return EXIT_SUCCESS;
 }

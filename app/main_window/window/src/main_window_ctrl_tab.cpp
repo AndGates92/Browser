@@ -16,6 +16,7 @@
 
 #include "key_sequence.h"
 #include "main_window_ctrl_tab.h"
+#include "exception_macros.h"
 
 // Categories
 Q_LOGGING_CATEGORY(mainWindowCtrlTabOverall, "mainWindowCtrlTab.overall", MSG_TYPE_LEVEL)
@@ -172,7 +173,7 @@ int main_window_ctrl_tab::MainWindowCtrlTab::addNewTab(QString search, main_wind
 
 	int tabIndex = this->windowCore->tabs->addEmptyTab(search, type);
 
-	QCRITICAL_PRINT((tabIndex < 0), mainWindowCtrlTabTabs, "Newly create tab has index " << tabIndex << ", It cannot be negative");
+	QEXCEPTION_ACTION_COND((tabIndex < 0), throw, "It cannot be negative");
 
 	// Move to the newly opened tab
 	this->windowCore->tabs->setCurrentIndex(tabIndex);
@@ -482,7 +483,7 @@ void main_window_ctrl_tab::MainWindowCtrlTab::convertToAbsTabIndex(int offset, g
 			this->refreshUrl(tabIndex);
 			break;
 		default:
-			QCRITICAL_PRINT(true, mainWindowCtrlTabTabs, "Undefined action when in state " << windowState);
+			QEXCEPTION_ACTION(throw,  "Undefined action when in state " + windowState);
 			break;
 	}
 }
@@ -538,7 +539,7 @@ void main_window_ctrl_tab::MainWindowCtrlTab::printStrInCurrentTabWidget(const Q
 	// If not tabs, then create one
 	if (currentTabIndex == -1) {
 		currentTabIndex = this->addNewTab(tabTitle, desiredTabType);
-		QCRITICAL_PRINT((currentTabIndex >= tabWidget->count()), mainWindowCtrlTabTabs, "Current tab index " << currentTabIndex << " must be larger than the number of tabs " << tabWidget->count());
+		QEXCEPTION_ACTION_COND((currentTabIndex >= tabWidget->count()), throw,  "Current tab index " + currentTabIndex + " must be larger than the number of tabs " + tabWidget->count());
 	} else {
 		this->windowCore->tabs->changeTabType(currentTabIndex, desiredTabType);
 	}
