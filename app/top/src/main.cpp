@@ -38,6 +38,7 @@ int main (int argc, char* argv[]) {
 		graphics::init_graphics(argc, argv);
 	} catch (browser_exception::BrowserException bexc) {
 		QString bexcPrint(bexc.print());
+		// QFatal expects a const char *
 		QFATAL_PRINT(bexcPrint.toStdString().c_str());
 	} catch (QUnhandledException unhandledexc) {
 		QFATAL_PRINT("Got unhandled exception");
