@@ -51,7 +51,7 @@ namespace main_window_shared_types {
 	QDebug & operator<< (QDebug & os, const main_window_shared_types::state_e & state);
 
 	/**
-	 * @brief Function: QTextStream & operator<< (QDebug & os, const main_window_shared_types::state_e & state)
+	 * @brief Function: QString & operator<< (QString & os, const main_window_shared_types::state_e & state)
 	 *
 	 * \param str: text stream
 	 * \param state: state of the main window controller
@@ -59,6 +59,16 @@ namespace main_window_shared_types {
 	 * Overload << operator to print state
 	 */
 	QString & operator<< (QString & str, const main_window_shared_types::state_e & state);
+
+	/**
+	 * @brief Function: const QString operator<< (const QString & os, const main_window_shared_types::state_e & state)
+	 *
+	 * \param str: text stream
+	 * \param state: state of the main window controller
+	 *
+	 * Overload + operator to print state
+	 */
+	const QString operator+ (const QString & str, const main_window_shared_types::state_e & state);
 
 	/**
 	 * @brief move info
@@ -98,6 +108,16 @@ namespace main_window_shared_types {
 	QString & operator<< (QString & str, const main_window_shared_types::move_value_e & value_type);
 
 	/**
+	 * @brief Function: const QString operator+ (const QString & str, const main_window_shared_types::move_value_e & value_type)
+	 *
+	 * \param str: text stream
+	 * \param value_type: move type
+	 *
+	 * Overload + operator to print the move type
+	 */
+	const QString operator+ (const QString & str, const main_window_shared_types::move_value_e & value_type);
+
+	/**
 	 * @brief text action 
 	 *
 	 */
@@ -132,6 +152,16 @@ namespace main_window_shared_types {
 	 * Overload << operator to print text action in the status bar
 	 */
 	QString & operator<< (QString & str, const main_window_shared_types::text_action_e & action);
+
+	/**
+	 * @brief Function: const QString operator+ (const QString & str, const main_window_shared_types::text_action_e & action)
+	 *
+	 * \param str: text stream
+	 * \param action: action applied on the text in the status bar
+	 *
+	 * Overload + operator to print text action in the status bar
+	 */
+	const QString operator+ (const QString & str, const main_window_shared_types::text_action_e & action);
 
 	/**
 	 * @brief text action

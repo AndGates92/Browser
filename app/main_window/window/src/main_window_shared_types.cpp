@@ -16,7 +16,7 @@
 namespace main_window_shared_types {
 
 	// Overload << operator for move_value_e
-	QDEBUG_OVERLOAD_PRINT_OP(main_window_shared_types::move_value_e)
+	OVERLOAD_OPERATORS_CUSTOM_TYPE(main_window_shared_types::move_value_e)
 
 	QString & operator<< (QString & str, const main_window_shared_types::move_value_e & value_type) {
 
@@ -42,7 +42,7 @@ namespace main_window_shared_types {
 	}
 
 	// Overload << operator for state_e
-	QDEBUG_OVERLOAD_PRINT_OP(main_window_shared_types::state_e)
+	OVERLOAD_OPERATORS_CUSTOM_TYPE(main_window_shared_types::state_e)
 
 	QString & operator<< (QString & str, const main_window_shared_types::state_e & state) {
 
@@ -82,7 +82,7 @@ namespace main_window_shared_types {
 		return str;
 	}
 
-	QDEBUG_OVERLOAD_PRINT_OP(main_window_shared_types::text_action_e)
+	OVERLOAD_OPERATORS_CUSTOM_TYPE(main_window_shared_types::text_action_e)
 
 	QString & operator<< (QString & str, const main_window_shared_types::text_action_e & action) {
 
