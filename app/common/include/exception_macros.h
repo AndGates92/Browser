@@ -16,29 +16,31 @@
  */
 
 /**
- * @brief QEXCEPTION_THROW_COND(CONDITION, ...)
+ * @brief QEXCEPTION_ACTION_COND(CONDITION, ACTION, ...)
  *
- * \param CONDITION : condition to throw the exception
+ * \param CONDITION : condition to execute action on exception
+ * \param ACTION    : action on exception
  * \param ...       : variable number of arguments to provide to infoMsg
  *
- * Throw an exception if CONDITION Is true
+ * Execute action on an exception if CONDITION Is true
  */
-#define QEXCEPTION_THROW_COND(CONDITION, ...)\
+#define QEXCEPTION_ACTION_COND(CONDITION, ACTION, ...)\
 	if (CONDITION) { \
-		QEXCEPTION_THROW(...); \
+		QEXCEPTION_ACTION(ACTION, ...); \
 	}
 
 /**
- * @brief QEXCEPTION_THROW(...)
+ * @brief QEXCEPTION_ACTION(...)
  *
+ * \param ACTION    : action on exception
  * \param ...       : variable number of arguments to provide to infoMsg
  *
- * Throw an exception
+ * Execute action on an exception
  */
-#define QEXCEPTION_THROW(...)\
+#define QEXCEPTION_ACTION(ACTION, ...)\
 	QString str(QString::null); \
 	str + __VA_ARGS__; \
-	throw browser_exception::BrowserException(str);
+	ACTION browser_exception::BrowserException(str);
 
 /** @} */ // End of ExceptionMacrosGroup group
 

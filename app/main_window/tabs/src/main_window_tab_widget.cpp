@@ -184,7 +184,7 @@ int main_window_tab_widget::MainWindowTabWidget::addEmptyTab(const QIcon & icon,
 		QLabel * centerWindow = new QLabel(this->parentWidget());
 		tabIndex = this->addTab(centerWindow, label, type);
 	} else {
-		QEXCEPTION_THROW("Unable to add new empty tab as the privided tab type " + type + " is not recognized");
+		QEXCEPTION_ACTION(throw, "Unable to add new empty tab as the privided tab type " + type + " is not recognized");
 	}
 
 	return tabIndex;
