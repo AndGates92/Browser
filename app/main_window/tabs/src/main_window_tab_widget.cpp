@@ -14,6 +14,7 @@
 // Required by qInfo
 #include <qt5/QtCore/QtDebug>
 
+#include "exception_macros.h"
 #include "main_window_tab_widget.h"
 
 // Categories
@@ -183,7 +184,7 @@ int main_window_tab_widget::MainWindowTabWidget::addEmptyTab(const QIcon & icon,
 		QLabel * centerWindow = new QLabel(this->parentWidget());
 		tabIndex = this->addTab(centerWindow, label, type);
 	} else {
-		QCRITICAL_PRINT(1, mainWindowTabWidgetTabs, "Unknown tab type");
+		QEXCEPTION_THROW("Unable to add new empty tab as the privided tab type " + type + " is not recognized");
 	}
 
 	return tabIndex;

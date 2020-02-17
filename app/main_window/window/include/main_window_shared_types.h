@@ -160,14 +160,24 @@ namespace main_window_shared_types {
 	QDebug & operator<< (QDebug & os, const main_window_shared_types::tab_type_e & type);
 
 	/**
-	 * @brief Function: QString & operator<< (QString & os, const main_window_shared_types::tab_type_e & type)
+	 * @brief Function: QString & operator<< (QString & str, const main_window_shared_types::tab_type_e & type)
 	 *
-	 * \param os: output stream
+	 * \param str: text stream
 	 * \param type: type of the tab
 	 *
 	 * Overload << operator to print text type
 	 */
-	QString & operator<< (QString & os, const main_window_shared_types::tab_type_e & type);
+	QString & operator<< (QString & str, const main_window_shared_types::tab_type_e & type);
+
+	/**
+	 * @brief Function: QString & operator+ (QString & str, const main_window_shared_types::tab_type_e & type)
+	 *
+	 * \param str: text stream
+	 * \param type: type of the tab
+	 *
+	 * Overload + operator to print text type
+	 */
+	const QString operator+ (const QString & str, const main_window_shared_types::tab_type_e & type);
 
 }
 

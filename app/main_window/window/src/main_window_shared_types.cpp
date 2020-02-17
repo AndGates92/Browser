@@ -104,7 +104,7 @@ namespace main_window_shared_types {
 		return str;
 	}
 
-	QDEBUG_OVERLOAD_PRINT_OP(main_window_shared_types::tab_type_e)
+	OVERLOAD_OPERATORS_CUSTOM_TYPE(main_window_shared_types::tab_type_e)
 
 	QString & operator<< (QString & str, const main_window_shared_types::tab_type_e & type) {
 

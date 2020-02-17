@@ -35,7 +35,7 @@
  * @brief QDEBUG_PRINT(CATEGORY, ...)
  *
  * \param CATEGORY  : category of the print
- * \param ...       : variable number of arguments to provide to warningMsg
+ * \param ...       : variable number of arguments to provide to debugMsg
  *
  * Print a debug message to the log file
  */
@@ -98,7 +98,7 @@
  * @brief QFATAL_PRINT(CATEGORY, ...)
  *
  * \param CATEGORY  : category of the print
- * \param ...       : variable number of arguments to provide to warningMsg
+ * \param ...       : variable number of arguments to provide to fatalMsg
  *
  * Print a fatal message to the log file
  */
@@ -123,6 +123,69 @@
 		os << str; \
 		return os; \
 	}
+
+/**
+ * @brief QSTRING_OVERLOAD_PLUS_OP(TYPE)
+ *
+ * \param TYPE : type to have operator + overloaded for
+ *
+ * Creates function overloading operator + for a type Type.
+ */
+#define QSTRING_OVERLOAD_PLUS_OP(TYPE) \
+	const QString operator+ (const QString & str, const TYPE & var) { \
+		QString mergedStr(QString::null); \
+		QTextStream(&mergedStr) << str; \
+		mergedStr << var; \
+		return str; \
+	}
+
+/**
+ * @brief QSTRING_OVERLOAD_PLUS_OP(TYPE)
+ *
+ * \param TYPE : type to have operator overloaded for
+ *
+ * Creates function overloading operator + and operator << for a type Type.
+ */
+#define OVERLOAD_OPERATORS_CUSTOM_TYPE(TYPE) \
+	QDEBUG_OVERLOAD_PRINT_OP(TYPE) \
+	QSTRING_OVERLOAD_PLUS_OP(TYPE)
+
+#define CUSTOM_TYPE_HEADER(TYPE) \
+	/** \
+	 * @brief register tab_type_e with meta-object system \
+	 *
+	 */ \
+	Q_ENUM_NS(TYPE) \
+	\
+	/** \
+	 * @brief Function: QDebug & operator<< (QDebug & os, const TYPE & type) \
+	 * \
+	 * \param os: output stream \
+	 * \param type: type of the tab \
+	 * \
+	 * Overload << operator to print text type \
+	 */ \
+	QDebug & operator<< (QDebug & os, const TYPE & type); \
+\
+	/** \
+	 * @brief Function: QString & operator<< (QString & str, const TYPE & type) \
+	 * \
+	 * \param str: text stream \
+	 * \param type: type of the tab \
+	 * \
+	 * Overload << operator to print text type \
+	 */ \
+	QString & operator<< (QString & str, const TYPE & type); \
+	\
+	/** \
+	 * @brief Function: QString & operator+ (QString & str, const TYPE & type) \
+	 * \
+	 * \param str: text stream \
+	 * \param type: type of the tab \
+	 * \
+	 * Overload << operator to print text type \
+	 */ \
+	QString & operator+ (QString & str, const TYPE & type);
 
 
 /** @} */ // End of GlobalMacrosGroup group
