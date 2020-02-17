@@ -114,6 +114,7 @@ namespace json_wrapper {
 			 *
 			 * \param content: input content to walk through
 			 * \param actionFunc: action function. The first argument is the input value and the second argument is the value to process
+			 * \param result: result of the action function
 			 *
 			 * function that walks through a JSON file
 			 */

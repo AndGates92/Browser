@@ -64,7 +64,6 @@ namespace main_window_ctrl {
 			 *
 			 * \param core: main window core
 			 * \param parent: parent window
-			 * \param tabIndex: current tab index
 			 *
 			 * Main window control constructor
 			 */

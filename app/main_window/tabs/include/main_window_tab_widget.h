@@ -51,7 +51,6 @@ namespace main_window_tab_widget {
 			/**
 			 * @brief Function: int addEmptyTab(const QString & label, main_window_shared_types::tab_type_e & type)
 			 *
-			 * \param page: widget to fill in
 			 * \param label: label of the tab
 			 * \param type: type of the tab
 			 *
@@ -64,7 +63,6 @@ namespace main_window_tab_widget {
 			/**
 			 * @brief Function: int addEmptyTab(const QIcon & icon, const QString & label, main_window_shared_types::tab_type_e & type)
 			 *
-			 * \param page: widget to fill in
 			 * \param icon: icon of the tab
 			 * \param label: label of the tab
 			 * \param type: type of the tab
@@ -173,7 +171,7 @@ namespace main_window_tab_widget {
 			 * \param indexFrom: index of the tab to move
 			 * \param indexTo: destination of the tab
 			 *
-			 * move a tab from index <indexFrom> to index <indexTo>
+			 * move a tab from index indexFrom to index indexTo
 			 */
 			void moveTab(int indexFrom, int indexTo);
 
