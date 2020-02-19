@@ -20,13 +20,11 @@ Q_LOGGING_CATEGORY(mainWindowCtrlBaseOverall, "mainWindowCtrlBase.overall", MSG_
 Q_LOGGING_CATEGORY(mainWindowCtrlBaseUserInput, "mainWindowCtrlBase.userInput", MSG_TYPE_LEVEL)
 
 main_window_ctrl_base::MainWindowCtrlBase::MainWindowCtrlBase(main_window_core::MainWindowCore * core, QWidget * parent, QString jsonFileName) : QObject(parent), main_window_base::MainWindowBase(core), parent(parent), commands(json_parser::JsonParser(jsonFileName, QIODevice::ReadOnly)) {
-
 	QINFO_PRINT(global_types::qinfo_level_e::ZERO, mainWindowCtrlBaseOverall,  "Main window control base classe constructor");
 }
 
 main_window_ctrl_base::MainWindowCtrlBase::~MainWindowCtrlBase() {
 	QINFO_PRINT(global_types::qinfo_level_e::ZERO, mainWindowCtrlBaseOverall,  "Main window control base class destructor");
-
 }
 
 void main_window_ctrl_base::MainWindowCtrlBase::printUserInput(const main_window_shared_types::text_action_e action, QString text) {
