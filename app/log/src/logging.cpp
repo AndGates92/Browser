@@ -75,23 +75,22 @@ void logging::handler(QtMsgType type, const QMessageLogContext & context, const 
 
 	switch(type) {
 		case QtDebugMsg:
-			ologfile << "Debug" << info_str << " " << message << "\n";
+			ologfile << "Debug" << info_str << " " << message << endl;
 			break;
 		case QtInfoMsg:
-			ologfile << "Info" << info_str << " " << message <<  "\n";
+			ologfile << "Info" << info_str << " " << message <<  endl;
 			break;
 		case QtWarningMsg:
-			ologfile << "Warning" << info_str << " " << message << "\n";
+			ologfile << "Warning" << info_str << " " << message << endl;
 			break;
 		case QtCriticalMsg:
-			ologfile << "Critical" << info_str << " " << message << "\n";
+			ologfile << "Critical" << info_str << " " << message << endl;
 			break;
 		case QtFatalMsg:
-			ologfile << "Fatal" << info_str << " " << message << "\n";
+			ologfile << "Fatal" << info_str << " " << message << endl;
 			break;
 	}
 
-	logfile.flush();
 	logfile.close();
 
 }
