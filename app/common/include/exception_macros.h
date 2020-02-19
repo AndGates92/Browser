@@ -30,7 +30,7 @@
 	}
 
 /**
- * @brief QEXCEPTION_ACTION(...)
+ * @brief QEXCEPTION_ACTION(ACTION, ...)
  *
  * \param ACTION    : action on exception
  * \param ...       : variable number of arguments to provide to infoMsg
@@ -39,7 +39,7 @@
  */
 #define QEXCEPTION_ACTION(ACTION, ...)\
 	QString str(QString::null); \
-	str + __VA_ARGS__; \
+	QTextStream(&str) << __VA_ARGS__; \
 	ACTION browser_exception::BrowserException(str);
 
 /** @} */ // End of ExceptionMacrosGroup group

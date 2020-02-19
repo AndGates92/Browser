@@ -121,6 +121,21 @@
 	}
 
 /**
+ * @brief QSTRING_OVERLOAD_PRINT_OP(TYPE)
+ *
+ * \param TYPE : type to have operator << overloaded for
+ *
+ * Creates function overloading operator << for a type Type.
+ * It needs the type to be coverted to a QString
+ */
+#define QSTRING_OVERLOAD_PRINT_OP(TYPE) \
+	QString operator<< (const QString & str, const TYPE & var) { \
+		QString mergedStr(QString::null); \
+		QTextStream(&mergedStr) << str <<  var; \
+		return mergedStr; \
+	}
+
+/**
  * @brief QSTRING_OVERLOAD_PLUS_OP(TYPE)
  *
  * \param TYPE : type to have operator + overloaded for
@@ -130,13 +145,12 @@
 #define QSTRING_OVERLOAD_PLUS_OP(TYPE) \
 	const QString operator+ (const QString & str, const TYPE & var) { \
 		QString mergedStr(QString::null); \
-		QTextStream(&mergedStr) << str; \
-		mergedStr << var; \
+		QTextStream(&mergedStr) << str << var; \
 		return str; \
 	}
 
 /**
- * @brief QSTRING_OVERLOAD_PLUS_OP(TYPE)
+ * @brief OVERLOAD_OPERATORS_CUSTOM_TYPE(TYPE)
  *
  * \param TYPE : type to have operator overloaded for
  *
@@ -144,6 +158,7 @@
  */
 #define OVERLOAD_OPERATORS_CUSTOM_TYPE(TYPE) \
 	QDEBUG_OVERLOAD_PRINT_OP(TYPE) \
+	QSTRING_OVERLOAD_PRINT_OP(TYPE) \
 	QSTRING_OVERLOAD_PLUS_OP(TYPE)
 
 /** @} */ // End of GlobalMacrosGroup group
