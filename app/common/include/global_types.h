@@ -35,7 +35,6 @@ namespace global_types {
 		PLUS =    1,   /**< Plus sign */
 	} sign_e;
 
-
 }
 
 /** @} */ // End of GlobalTypesGroup group
