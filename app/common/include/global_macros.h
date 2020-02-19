@@ -149,6 +149,20 @@
 	}
 
 /**
+ * @brief QTEXTSTREAM_OVERLOAD_PRINT_OP(TYPE)
+ *
+ * \param TYPE : type to have operator << overloaded for
+ *
+ * Creates function overloading operator << for a type Type.
+ */
+#define QTEXTSTREAM_OVERLOAD_PRINT_OP(TYPE) \
+	QTextStream & operator<< (QTextStream & str, const TYPE & value) { \
+		QString valStr(global_functions::qEnumToQString<TYPE>(value)); \
+		str << valStr; \
+		return str; \
+	}
+
+/**
  * @brief OVERLOAD_OPERATORS_CUSTOM_TYPE(TYPE)
  *
  * \param TYPE : type to have operator overloaded for
@@ -158,6 +172,7 @@
 #define OVERLOAD_OPERATORS_CUSTOM_TYPE(TYPE) \
 	QDEBUG_OVERLOAD_PRINT_OP(TYPE) \
 	QSTRING_OVERLOAD_PRINT_OP(TYPE) \
+	QTEXTSTREAM_OVERLOAD_PRINT_OP(TYPE) \
 	QSTRING_OVERLOAD_PLUS_OP(TYPE)
 
 /** @} */ // End of GlobalMacrosGroup group
