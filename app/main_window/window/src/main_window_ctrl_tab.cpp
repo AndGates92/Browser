@@ -483,7 +483,7 @@ void main_window_ctrl_tab::MainWindowCtrlTab::convertToAbsTabIndex(int offset, g
 			this->refreshUrl(tabIndex);
 			break;
 		default:
-			QEXCEPTION_ACTION(throw,  "Undefined action when in state " + windowState);
+			QEXCEPTION_ACTION(throw,  "Undefined action when in state " << windowState);
 			break;
 	}
 }
@@ -539,7 +539,7 @@ void main_window_ctrl_tab::MainWindowCtrlTab::printStrInCurrentTabWidget(const Q
 	// If not tabs, then create one
 	if (currentTabIndex == -1) {
 		currentTabIndex = this->addNewTab(tabTitle, desiredTabType);
-		QEXCEPTION_ACTION_COND((currentTabIndex >= tabWidget->count()), throw,  "Current tab index " + currentTabIndex + " must be larger than the number of tabs " + tabWidget->count());
+		QEXCEPTION_ACTION_COND((currentTabIndex >= tabWidget->count()), throw,  "Current tab index " << currentTabIndex << " must be larger than the number of tabs " << tabWidget->count());
 	} else {
 		this->windowCore->tabs->changeTabType(currentTabIndex, desiredTabType);
 	}

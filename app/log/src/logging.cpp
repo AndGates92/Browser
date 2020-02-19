@@ -69,7 +69,7 @@ void logging::handler(QtMsgType type, const QMessageLogContext & context, const 
 	}
 
 	bool success = logfile.open(QIODevice::Append | QIODevice::WriteOnly | QIODevice::Text);
-	QEXCEPTION_ACTION_COND((!success), throw, "Unable to open file " + logfile.fileName());
+	QEXCEPTION_ACTION_COND((!success), throw, "Unable to open file " << logfile.fileName());
 
 	QTextStream ologfile(&logfile);
 

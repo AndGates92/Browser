@@ -75,7 +75,7 @@ void main_window_tab_widget::MainWindowTabWidget::removeTab(int index) {
 
 void main_window_tab_widget::MainWindowTabWidget::deleteListElement(int index) {
 
-	QEXCEPTION_ACTION_COND(((index < 0) || (index >= this->tabTypes.count())), throw,  "Index must be larger or equal to 0 and smaller than the number of elements in the QList " + this->tabTypes.count() + ". Got " + index + ".");
+	QEXCEPTION_ACTION_COND(((index < 0) || (index >= this->tabTypes.count())), throw,  "Index must be larger or equal to 0 and smaller than the number of elements in the QList " << this->tabTypes.count() << ". Got " << index << ".");
 	if (this->tabTypes.isEmpty() == false) {
 		this->tabTypes.removeAt(index);
 	}
@@ -97,7 +97,7 @@ main_window_shared_types::tab_type_e main_window_tab_widget::MainWindowTabWidget
 
 	main_window_shared_types::tab_type_e tabType = main_window_shared_types::tab_type_e::UNKNOWN;
 
-	QEXCEPTION_ACTION_COND(((index < 0) || (index >= this->tabTypes.count())), throw,  "Index must be larger or equal to 0 and smaller than the number of elements in the QList " + this->tabTypes.count() + ". Got " + index + ".");
+	QEXCEPTION_ACTION_COND(((index < 0) || (index >= this->tabTypes.count())), throw,  "Index must be larger or equal to 0 and smaller than the number of elements in the QList " << this->tabTypes.count() << ". Got " << index << ".");
 
 	if (this->tabTypes.isEmpty() == false) {
 		tabType = this->tabTypes.at(index);
@@ -114,7 +114,7 @@ void main_window_tab_widget::MainWindowTabWidget::changeTabType(int index, main_
 	if (currentType != newType) {
 		this->removeTab(index);
 		int tabIndex = this->insertEmptyTab(index, QString::null, newType);
-		QEXCEPTION_ACTION_COND((tabIndex != index), throw, "Requested index (" + index + ") is different from tab index (" + tabIndex);
+		QEXCEPTION_ACTION_COND((tabIndex != index), throw, "Requested index (" << index << ") is different from tab index (" << tabIndex);
 
 		// Move to the newly recreated tab
 		this->setCurrentIndex(index);
@@ -133,7 +133,7 @@ int main_window_tab_widget::MainWindowTabWidget::insertEmptyTab(int index, const
 		QLabel * centerWindow = new QLabel(this->parentWidget());
 		tabIndex = this->insertTab(index, centerWindow, label, type);
 	} else {
-		QEXCEPTION_ACTION(throw, "Unable to insert new empty tab as the provided tab type " + type + " is not recognized");
+		QEXCEPTION_ACTION(throw, "Unable to insert new empty tab as the provided tab type " << type << " is not recognized");
 	}
 
 	return tabIndex;
@@ -150,7 +150,7 @@ int main_window_tab_widget::MainWindowTabWidget::insertEmptyTab(int index, const
 		QLabel * centerWindow = new QLabel(this->parentWidget());
 		tabIndex = this->insertTab(index, centerWindow, icon, label, type);
 	} else {
-		QEXCEPTION_ACTION(throw, "Unable to insert new empty tab as the provided tab type " + type + " is not recognized");
+		QEXCEPTION_ACTION(throw, "Unable to insert new empty tab as the provided tab type " << type << " is not recognized");
 	}
 
 	return tabIndex;
@@ -167,7 +167,7 @@ int main_window_tab_widget::MainWindowTabWidget::addEmptyTab(const QString & lab
 		QLabel * centerWindow = new QLabel(this->parentWidget());
 		tabIndex = this->addTab(centerWindow, label, type);
 	} else {
-		QEXCEPTION_ACTION(throw, "Unable to add new empty tab as the provided tab type " + type + " is not recognized");
+		QEXCEPTION_ACTION(throw, "Unable to add new empty tab as the provided tab type " << type << " is not recognized");
 	}
 
 	return tabIndex;
@@ -184,7 +184,7 @@ int main_window_tab_widget::MainWindowTabWidget::addEmptyTab(const QIcon & icon,
 		QLabel * centerWindow = new QLabel(this->parentWidget());
 		tabIndex = this->addTab(centerWindow, label, type);
 	} else {
-		QEXCEPTION_ACTION(throw, "Unable to add new empty tab as the provided tab type " + type + " is not recognized");
+		QEXCEPTION_ACTION(throw, "Unable to add new empty tab as the provided tab type " << type << " is not recognized");
 	}
 
 	return tabIndex;

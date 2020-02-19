@@ -29,6 +29,7 @@ main_window_ctrl::MainWindowCtrl::MainWindowCtrl(main_window_core::MainWindowCor
 	// Connect signals and slots
 	this->connectSignals();
 
+	this->commands.findKeyValue("dada");
 }
 
 main_window_ctrl::MainWindowCtrl::~MainWindowCtrl() {

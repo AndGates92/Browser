@@ -123,7 +123,7 @@ void tab_widget::TabWidget::setVisibleAttribute() {
 QWidget * tab_widget::TabWidget::widget(int index, bool checkError) {
 	QWidget * requestedWidget = QTabWidget::widget(index);
 
-	QEXCEPTION_ACTION_COND(((checkError == true) && (requestedWidget == nullptr)), throw,  "Unable to get tab page at index " + index);
+	QEXCEPTION_ACTION_COND(((checkError == true) && (requestedWidget == nullptr)), throw,  "Unable to get tab page at index " << index);
 
 	return requestedWidget;
 }
