@@ -42,3 +42,9 @@ QString browser_exception::BrowserException::print() const {
 	QINFO_PRINT(global_types::qinfo_level_e::ZERO, browserExceptionPrint, "Print exception message: " << this->message);
 	return this->message;
 }
+
+void browser_exception::printException(QString message) {
+	QTextStream errStream(stderr);
+	// endl write a carriage return and flushed the stream
+	errStream << "Exception caught: " << message << endl;
+}

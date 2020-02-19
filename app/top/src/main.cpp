@@ -29,7 +29,6 @@
  * Decodes the arguments and call functions for further processing
  *
  */
-
 int main (int argc, char* argv[]) {
 
 	try {
@@ -37,11 +36,12 @@ int main (int argc, char* argv[]) {
 		qInstallMessageHandler(logging::handler);
 		graphics::init_graphics(argc, argv);
 	} catch (browser_exception::BrowserException bexc) {
-		QString bexcPrint(bexc.print());
-		// QFatal expects a const char *
-		QFATAL_PRINT(bexcPrint.toStdString().c_str());
+		QString bexcMsg(bexc.print());
+		browser_exception::printException(bexcMsg);
+		return EXIT_FAILURE;
 	} catch (QUnhandledException unhandledexc) {
-		QFATAL_PRINT("Got unhandled exception");
+		browser_exception::printException("Got unhandled exception");
+		return EXIT_FAILURE;
 	}
 
 	return EXIT_SUCCESS;

@@ -22,6 +22,15 @@ Q_DECLARE_LOGGING_CATEGORY(browserExceptionPrint)
 namespace browser_exception {
 
 	/**
+	 * @brief Function: void printException(QString message) const
+	 *
+	 * \param message: message of the exception
+	 *
+	 * Print message on stderr
+	 */
+	void printException(QString message);
+
+	/**
 	 * @brief BrowserException class
 	 *
 	 */
