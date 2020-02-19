@@ -69,7 +69,7 @@ void json_wrapper::JsonWrapper::readJson() {
 
 	// open the file
 	bool openSuccess = this->jsonFile->open(this->openFlags);
-	QEXCEPTION_ACTION_COND((!openSuccess), throw,  "Unable to open JSON file " + this->jsonFile->fileName() + " for read");
+	QEXCEPTION_ACTION_COND((!openSuccess), throw,  "Unable to open JSON file " << this->jsonFile->fileName() << " for read");
 
 	// Copy content into QString
 	QString content(this->jsonFile->readAll());
@@ -83,7 +83,7 @@ void json_wrapper::JsonWrapper::readJson() {
 	QJsonDocument jsonDoc = QJsonDocument(QJsonDocument::fromJson(contentUtf8, jsonParseError));
 
 	// Check if JSON parsing is successful
-	QEXCEPTION_ACTION_COND((jsonDoc.isNull() == 1), throw,  "Unable to convert UTF8 QString to JSON file because of error " + jsonParseError->errorString() + "(error type " + jsonParseError->error + ")");
+	QEXCEPTION_ACTION_COND((jsonDoc.isNull() == 1), throw,  "Unable to convert UTF8 QString to JSON file because of error " << jsonParseError->errorString() << "(error type " << jsonParseError->error << ")");
 
 	if (jsonDoc.isObject() == true) {
 		QJsonObject jsonObj(jsonDoc.object());
@@ -101,16 +101,11 @@ void json_wrapper::JsonWrapper::readJson() {
 		QEXCEPTION_ACTION(throw,  "Invalid data type");
 	}
 
-	QJsonValue dummyResult(QJsonValue::Undefined);
-	this->walkJson(this->jsonContent, nullptr, dummyResult);
+	this->walkJson(this->jsonContent);
 
 }
 
-void json_wrapper::JsonWrapper::walkJson(const QJsonValue & content, QJsonValue (*actionFunc)(const QJsonValue &, const QJsonValue &), QJsonValue & result) {
-
-	if (actionFunc != nullptr) {
-		result = actionFunc(content, result);
-	}
+void json_wrapper::JsonWrapper::walkJson(const QJsonValue & content) {
 
 	switch (content.type()) {
 		case QJsonValue::Object:
@@ -123,7 +118,7 @@ void json_wrapper::JsonWrapper::walkJson(const QJsonValue & content, QJsonValue 
 			for (QStringList::const_iterator keyIter = jsonKeys.cbegin(); keyIter != jsonKeys.cend(); keyIter++) {
 				QINFO_PRINT(global_types::qinfo_level_e::ZERO, jsonWrapperFileContent, "JSON key: " << *keyIter);
 				const QJsonValue value(jsonObject.value(*keyIter));
-				this->walkJson(value, actionFunc, result);
+				this->walkJson(value);
 			}
 			break;
 		}
@@ -131,9 +126,9 @@ void json_wrapper::JsonWrapper::walkJson(const QJsonValue & content, QJsonValue 
 		{
 			QINFO_PRINT(global_types::qinfo_level_e::ZERO, jsonWrapperFileContent, "Printing JSON Array");
 			const QJsonArray & jsonArray (content.toArray());
-			// Iterat over all elements of array
+			// Iterate over all elements of array
 			for (QJsonArray::const_iterator arrayIter = jsonArray.begin(); arrayIter != jsonArray.end(); arrayIter++) {
-				this->walkJson(*arrayIter, actionFunc, result);
+				this->walkJson(*arrayIter);
 			}
 			break;
 		}
@@ -153,7 +148,7 @@ void json_wrapper::JsonWrapper::walkJson(const QJsonValue & content, QJsonValue 
 			QINFO_PRINT(global_types::qinfo_level_e::ZERO, jsonWrapperFileContent, "Value is undefined");
 			break;
 		default:
-			QEXCEPTION_ACTION(throw,  "Unknown type " + content.type());
+			QEXCEPTION_ACTION(throw,  "Unknown type " << content.type());
 			break;
 	}
 }
@@ -223,7 +218,7 @@ void json_wrapper::JsonWrapper::addJsonValue(QJsonValue & content, const QJsonVa
 			content = QJsonValue(jsonObj);
 		}
 	} else {
-		QEXCEPTION_ACTION(throw,  "Cannot add new value to QJsonValue of type " + content.type());
+		QEXCEPTION_ACTION(throw,  "Cannot add new value to QJsonValue of type " << content.type());
 	}
 
 }
@@ -237,13 +232,11 @@ void json_wrapper::JsonWrapper::appendJsonObject(QJsonObject & jsonObj, const QJ
 		if (jsonObj.contains(*keyIter) == true) {
 			QWARNING_PRINT(jsonWrapperFileContent, "key " << *keyIter << " already exists");
 			QJsonObject::const_iterator objIter = jsonObj.find(*keyIter);
-			QJsonValue dummyDuplResult(QJsonValue::Undefined);
-			this->walkJson(*objIter, nullptr, dummyDuplResult);
+			this->walkJson(*objIter);
 		}
 		QINFO_PRINT(global_types::qinfo_level_e::ZERO, jsonWrapperFileContent, "Adding JSON key: " << *keyIter);
 		const QJsonValue value(newObj.value(*keyIter));
-		QJsonValue dummyResult(QJsonValue::Undefined);
-		this->walkJson(value, nullptr, dummyResult);
+		this->walkJson(value);
 		jsonObj.insert(*keyIter, value);
 	}
 }
@@ -252,7 +245,7 @@ void json_wrapper::JsonWrapper::insertToJsonObject(QJsonObject & jsonObj, const 
 	// Update JSON object
 	QJsonObject::iterator iter = jsonObj.insert(key, val);
 	// Ensure that the insertion was successful
-	QEXCEPTION_ACTION_COND((iter != jsonObj.end()), throw,  "Unable to add JSON value of type " + val.type() + " at key " + key);
+	QEXCEPTION_ACTION_COND((iter != jsonObj.end()), throw,  "Unable to add JSON value of type " << val.type() << " at key " << key);
 }
 
 void json_wrapper::JsonWrapper::writeJson() {
@@ -277,11 +270,11 @@ void json_wrapper::JsonWrapper::writeJson() {
 	// open the file
 	// Set QIODevicne to WriteOnly and Truncate to replace the content of the entire file
 	bool openSuccess = this->jsonFile->open(this->openFlags);
-	QEXCEPTION_ACTION_COND((!openSuccess), throw,  "Unable to open JSON file " + this->jsonFile->fileName() + " for write");
+	QEXCEPTION_ACTION_COND((!openSuccess), throw,  "Unable to open JSON file " << this->jsonFile->fileName() << " for write");
 
 	// Write File
 	qint64 writeReturn = this->jsonFile->write(updatedContent);
-	QEXCEPTION_ACTION_COND((writeReturn == -1), throw,  "Write to JSON file " + this->jsonFile->fileName() + " failed");
+	QEXCEPTION_ACTION_COND((writeReturn == -1), throw,  "Write to JSON file " << this->jsonFile->fileName() << " failed");
 
 	this->jsonFile->close();
 }
