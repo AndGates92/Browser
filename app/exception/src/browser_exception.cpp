@@ -22,7 +22,7 @@ Q_LOGGING_CATEGORY(browserExceptionOverall, "browserException.overall", MSG_TYPE
 Q_LOGGING_CATEGORY(browserExceptionPrint, "browserException.print", MSG_TYPE_LEVEL)
 
 browser_exception::BrowserException::BrowserException(const QString & msg) : message(msg) {
-	QINFO_PRINT(global_types::qinfo_level_e::ZERO, browserExceptionOverall, "Browser exception is being created");
+	QINFO_PRINT(global_types::qinfo_level_e::ZERO, browserExceptionOverall, "Browser exception is being created with message " << this->message);
 }
 
 browser_exception::BrowserException::~BrowserException() {
