@@ -91,7 +91,6 @@
 		criticalMsg.noquote(); \
 		criticalMsg.nospace(); \
 		criticalMsg << __VA_ARGS__; \
-		exit(EXIT_FAILURE);\
 	}
 
 /**
@@ -102,7 +101,7 @@
  * Print a fatal message to the log file
  */
 #define QFATAL_PRINT(MSG) \
-	qFatal(#MSG);
+	qFatal(MSG);
 
 /**
  * @brief QDEBUG_OVERLOAD_PRINT_OP(TYPE)
