@@ -65,7 +65,7 @@ QString json_parser::JsonParser::searchJson(const QJsonValue & content, QString 
 	switch (content.type()) {
 		case QJsonValue::Object:
 		{
-			QINFO_PRINT(global_types::qinfo_level_e::ZERO, jsonWrapperFileContent, "Printing JSON Object");
+			QINFO_PRINT(global_types::qinfo_level_e::ZERO, jsonWrapperFileContent, "Searching in JSON Object");
 			const QJsonObject jsonObject (content.toObject());
 
 			// search key in current JSON object or keep looking for it
@@ -75,7 +75,7 @@ QString json_parser::JsonParser::searchJson(const QJsonValue & content, QString 
 		}
 		case QJsonValue::Array:
 		{
-			QINFO_PRINT(global_types::qinfo_level_e::ZERO, jsonWrapperFileContent, "Printing JSON Array");
+			QINFO_PRINT(global_types::qinfo_level_e::ZERO, jsonWrapperFileContent, "Searching in JSON Array");
 			const QJsonArray & jsonArray (content.toArray());
 			// Iterate over all elements of array
 			for (QJsonArray::const_iterator arrayIter = jsonArray.begin(); arrayIter != jsonArray.end(); arrayIter++) {
@@ -84,8 +84,8 @@ QString json_parser::JsonParser::searchJson(const QJsonValue & content, QString 
 			break;
 		}
 		default:
-			QINFO_PRINT(global_types::qinfo_level_e::ZERO, jsonWrapperFileContent, "Cannot find key in type " << content.type() << ". Expected values are array or object");
-			QEXCEPTION_ACTION(throw, "Cannot find key in type " << content.type() << ". Expected values are array or object");
+			QINFO_PRINT(global_types::qinfo_level_e::ZERO, jsonWrapperFileContent, "Cannot find key in type " << content.type() << ". Expected values are array (" << QJsonValue::Array << ") or object (" << QJsonValue::Object << ")");
+//			QEXCEPTION_ACTION(throw, "Cannot find key in type " << content.type() << ". Expected values are array (" << QJsonValue::Array << ") or object (" << QJsonValue::Object << ")");
 			break;
 	}
 
