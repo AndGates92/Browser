@@ -174,6 +174,16 @@ namespace main_window_ctrl {
 			 * This function sends the current tab index
 			 */
 			void getCurrentTabIndex();
+
+			/**
+			 * @brief Function: void setStateAction(main_window_shared_types::state_e windowState, QKeyEvent * event)
+			 *
+			 * \param windowState: state the window is into.
+			 * \param event: key event.
+			 *
+			 * This function executes a command on a based on user input
+			 */
+			void setStateAction(main_window_shared_types::state_e windowState, QKeyEvent * event);
 	};
 
 }

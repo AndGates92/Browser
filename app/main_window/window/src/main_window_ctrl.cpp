@@ -15,6 +15,7 @@
 
 #include "key_sequence.h"
 #include "main_window_ctrl.h"
+#include "exception_macros.h"
 
 // Categories
 Q_LOGGING_CATEGORY(mainWindowCtrlOverall, "mainWindowCtrl.overall", MSG_TYPE_LEVEL)
@@ -29,7 +30,12 @@ main_window_ctrl::MainWindowCtrl::MainWindowCtrl(main_window_core::MainWindowCor
 	// Connect signals and slots
 	this->connectSignals();
 
-	this->commands.findKeyValue("dada");
+	QMap<QString, QString> testKey1 = this->commands.findKeyValue("dada");
+	QMap<QString, QString> testKey = this->commands.findKeyValue("Help");
+
+	for(QMap<QString, QString>::const_iterator iter = testKey.cbegin(); iter != testKey.cend(); iter++) {
+		QINFO_PRINT(global_types::qinfo_level_e::ZERO, mainWindowCtrlOverall,  "key " << iter.key() << " value " << iter.value());
+	}
 }
 
 main_window_ctrl::MainWindowCtrl::~MainWindowCtrl() {
@@ -132,7 +138,6 @@ void main_window_ctrl::MainWindowCtrl::keyPressEvent(QKeyEvent * event) {
 	if (event->type() == QEvent::KeyPress) {
 
 		main_window_shared_types::state_e windowState = this->windowCore->getMainWindowState();
-		main_window_shared_types::move_value_e moveType = this->windowCore->getMoveValueType();
 		QString userTypedText = this->windowCore->getUserText();
 
 		QINFO_PRINT(global_types::qinfo_level_e::ZERO, mainWindowCtrlUserInput,  "State " << windowState << " key " << keySeq.toString());
@@ -147,43 +152,7 @@ void main_window_ctrl::MainWindowCtrl::keyPressEvent(QKeyEvent * event) {
 				}
 				break;
 			default:
-				if ((windowState == main_window_shared_types::state_e::OPEN_TAB) || (windowState == main_window_shared_types::state_e::SEARCH)) {
-					if ((pressedKey >= Qt::Key_Space) && (pressedKey <= Qt::Key_ydiaeresis)) {
-						this->printUserInput(main_window_shared_types::text_action_e::APPEND, event->text());
-					}
-				} else if ((windowState == main_window_shared_types::state_e::CLOSE_TAB) || (windowState == main_window_shared_types::state_e::MOVE_RIGHT) || (windowState == main_window_shared_types::state_e::MOVE_LEFT)) {
-					if ((pressedKey >= Qt::Key_0) && (pressedKey <= Qt::Key_9)) {
-						this->printUserInput(main_window_shared_types::text_action_e::APPEND, event->text());
-					} else {
-						QWARNING_PRINT(mainWindowCtrlUserInput, "Pressed key " << event->text() << ". Only numbers are accepted when executing actions like closing windows or moving in the tab bar");
-					}
-				} else if (windowState == main_window_shared_types::state_e::TAB_MOVE) {
-					// If no sign is provided, the tab is considered as absolute value
-					// If + or - sign is provided, then the value is considered to be relative to the current tab
-					// If key h is pressed, then the value is considered to be relative to the current tab and considered to go to the left
-					// If key l is pressed, then the value is considered to be relative to the current tab and considered to go to the right
-					if ((pressedKey >= Qt::Key_0) && (pressedKey <= Qt::Key_9)) {
-						if (moveType == main_window_shared_types::move_value_e::IDLE) {
-							this->printUserInput(main_window_shared_types::text_action_e::CLEAR);
-						}
-						this->printUserInput(main_window_shared_types::text_action_e::APPEND, event->text());
-					} else if ((moveType == main_window_shared_types::move_value_e::IDLE) && ((pressedKey == Qt::Key_H) || (pressedKey == Qt::Key_L) || (pressedKey == Qt::Key_Plus) || (pressedKey == Qt::Key_Minus))) {
-						this->printUserInput(main_window_shared_types::text_action_e::CLEAR);
-					} else {
-						QWARNING_PRINT(mainWindowCtrlUserInput, "Pressed key " << event->text() << ". Only numbers and + and - signs are accepted when executing actions like move tabs in the tab bar");
-					}
-				} else if (windowState == main_window_shared_types::state_e::COMMAND) {
-					this->printUserInput(main_window_shared_types::text_action_e::APPEND, event->text());
-					if (pressedKey >= Qt::Key_Space) {
-						this->executeCommand(userTypedText);
-					}
-				} else {
-					if (pressedKey == Qt::Key_Colon) {
-						this->windowCore->setMainWindowState(main_window_shared_types::state_e::COMMAND);
-						this->setAllShortcutEnabledProperty(false);
-					}
-					this->printUserInput(main_window_shared_types::text_action_e::CLEAR);
-				}
+				this->setStateAction(windowState, event);
 				break;
 		}
 	}
@@ -196,6 +165,63 @@ void main_window_ctrl::MainWindowCtrl::keyPressEvent(QKeyEvent * event) {
 		this->printUserInput(main_window_shared_types::text_action_e::CLEAR);
 	}
 
+}
+
+void main_window_ctrl::MainWindowCtrl::setStateAction(main_window_shared_types::state_e windowState, QKeyEvent * event) {
+
+	int pressedKey = event->key();
+	main_window_shared_types::move_value_e moveType = this->windowCore->getMoveValueType();
+	QString userTypedText = this->windowCore->getUserText();
+
+	switch (windowState) {
+		case main_window_shared_types::state_e::OPEN_TAB:
+		case main_window_shared_types::state_e::SEARCH:
+			if ((pressedKey >= Qt::Key_Space) && (pressedKey <= Qt::Key_ydiaeresis)) {
+				this->printUserInput(main_window_shared_types::text_action_e::APPEND, event->text());
+			}
+			break;
+		case main_window_shared_types::state_e::CLOSE_TAB:
+		case main_window_shared_types::state_e::MOVE_RIGHT:
+		case main_window_shared_types::state_e::MOVE_LEFT:
+			if ((pressedKey >= Qt::Key_0) && (pressedKey <= Qt::Key_9)) {
+				this->printUserInput(main_window_shared_types::text_action_e::APPEND, event->text());
+			} else {
+				QWARNING_PRINT(mainWindowCtrlUserInput, "Pressed key " << event->text() << ". Only numbers are accepted when executing actions like closing windows or moving in the tab bar");
+			}
+			break;
+		case main_window_shared_types::state_e::TAB_MOVE:
+			// If no sign is provided, the tab is considered as absolute value
+			// If + or - sign is provided, then the value is considered to be relative to the current tab
+			// If key h is pressed, then the value is considered to be relative to the current tab and considered to go to the left
+			// If key l is pressed, then the value is considered to be relative to the current tab and considered to go to the right
+			if ((pressedKey >= Qt::Key_0) && (pressedKey <= Qt::Key_9)) {
+				if (moveType == main_window_shared_types::move_value_e::IDLE) {
+					this->printUserInput(main_window_shared_types::text_action_e::CLEAR);
+				}
+				this->printUserInput(main_window_shared_types::text_action_e::APPEND, event->text());
+			} else if ((moveType == main_window_shared_types::move_value_e::IDLE) && ((pressedKey == Qt::Key_H) || (pressedKey == Qt::Key_L) || (pressedKey == Qt::Key_Plus) || (pressedKey == Qt::Key_Minus))) {
+				this->printUserInput(main_window_shared_types::text_action_e::CLEAR);
+			} else {
+				QWARNING_PRINT(mainWindowCtrlUserInput, "Pressed key " << event->text() << ". Only numbers and + and - signs are accepted when executing actions like move tabs in the tab bar");
+			}
+			break;
+		case main_window_shared_types::state_e::COMMAND:
+			this->printUserInput(main_window_shared_types::text_action_e::APPEND, event->text());
+			if (pressedKey >= Qt::Key_Space) {
+				this->executeCommand(userTypedText);
+			}
+			break;
+		case main_window_shared_types::state_e::IDLE:
+			if (pressedKey == Qt::Key_Colon) {
+				this->windowCore->setMainWindowState(main_window_shared_types::state_e::COMMAND);
+				this->setAllShortcutEnabledProperty(false);
+			}
+			this->printUserInput(main_window_shared_types::text_action_e::CLEAR);
+			break;
+		default:
+			QEXCEPTION_ACTION(throw,  "Unknown state " << windowState);
+			break;
+	}
 }
 
 void main_window_ctrl::MainWindowCtrl::toggleShowMenubar() {
