@@ -3,6 +3,8 @@
 DATE_FORMAT = %a %d %b %Y
 TIME_FORMAT = %H:%M:%S
 
+TIMESTAMP = ${shell date "+${DATE_FORMAT} ${TIME_FORMAT}"}
+
 # Makefile variables
 VERBOSE =
 VERBOSE_ECHO = @
@@ -169,22 +171,22 @@ EXE = $(BIN_DIR)/$(EXE_NAME)
 $(EXE) : $(MOC_OBJS) $(OBJS)
 	$(MKDIR) $(LOG_DIR)
 	$(MKDIR) $(@D)
-	$(VERBOSE_ECHO)echo "[${shell date "+${DATE_FORMAT} ${TIME_FORMAT}"}] Compiling $(@F). Object files are: $^"
+	$(VERBOSE_ECHO)echo "[${TIMESTAMP}] Compiling $(@F). Object files are: $^"
 	$(CC) $(CFLAGS) $(INCLUDES) -o $@ $(DFLAGS) $(BEHFLAGS) $(CEXTRAFLAGS) $^ $(LIBS)
 
 $(OBJ_DIR)/%.$(OBJ_EXT) : %.$(SRC_EXT)
 	$(MKDIR) $(@D)
-	$(VERBOSE_ECHO)echo "[${shell date "+${DATE_FORMAT} ${TIME_FORMAT}"}] Compiling $(<F) and creating object $@"
+	$(VERBOSE_ECHO)echo "[${TIMESTAMP}] Compiling $(<F) and creating object $@"
 	$(CC) $(CFLAGS) $(INCLUDES) -c $< $(DFLAGS) $(BEHFLAGS) $(CEXTRAFLAGS) -o $@ $(LIBS)
 
 $(MOC_SRC_DIR)/%.$(SRC_EXT) : %.$(HEADER_EXT)
 	$(MKDIR) $(@D)
-	$(VERBOSE_ECHO)echo "[${shell date "+${DATE_FORMAT} ${TIME_FORMAT}"}] Compiling $(<F) and creating moc source $@"
+	$(VERBOSE_ECHO)echo "[${TIMESTAMP}] Compiling $(<F) and creating moc source $@"
 	$(MOC) $(DFLAGS) $(BEHFLAGS) $(CEXTRAFLAGS) $(INCLUDE_HEADERS) $< -o $@
 
 $(MOC_OBJ_DIR)/%.$(MOC_OBJ_EXT) : $(MOC_SRC_DIR)/%.$(SRC_EXT)
 	$(MKDIR) $(@D)
-	$(VERBOSE_ECHO)echo "[${shell date "+${DATE_FORMAT} ${TIME_FORMAT}"}] Compiling $(<F) and creating moc object $@"
+	$(VERBOSE_ECHO)echo "[${TIMESTAMP}] Compiling $(<F) and creating moc object $@"
 	$(CC) $(CFLAGS) $(INCLUDES) -c $< $(DFLAGS) $(BEHFLAGS) $(CEXTRAFLAGS) -o $@ $(LIBS)
 
 $(DEPFILE) : $(SRCS)
@@ -192,60 +194,60 @@ $(DEPFILE) : $(SRCS)
 	$(CC) $(CFLAGS) $(DEPENDFLAG) $(INCLUDES) $^ > $(DEPFILE)
 
 all : $(EXE)
-	$(VERBOSE_ECHO)echo "[${shell date "+${DATE_FORMAT} ${TIME_FORMAT}"}] Compile $(PROJ_NAME)"
+	$(VERBOSE_ECHO)echo "[${TIMESTAMP}] Compile $(PROJ_NAME)"
 
 depend : $(DEPFILE)
-	$(VERBOSE_ECHO)echo "[${shell date "+${DATE_FORMAT} ${TIME_FORMAT}"}] Create dependencies for $(PROJ_NAME)"
+	$(VERBOSE_ECHO)echo "[${TIMESTAMP}] Create dependencies for $(PROJ_NAME)"
 
 memleak : $(EXE)
 	valgrind $(MEMCHECKOPTS) $(VALGRINDTOOLOPTS) $(VALGRINDLOGOPTS) $(EXE) $(VALGRINDEXEARGS)
 
 debug :
-	$(VERBOSE_ECHO)echo "[${shell date "+${DATE_FORMAT} ${TIME_FORMAT}"}] Language: $(PROG_LANG)"
-	$(VERBOSE_ECHO)echo "[${shell date "+${DATE_FORMAT} ${TIME_FORMAT}"}] Compiler: $(CC)"
-	$(VERBOSE_ECHO)echo "[${shell date "+${DATE_FORMAT} ${TIME_FORMAT}"}] Compiler options:"
-	$(VERBOSE_ECHO)echo "[${shell date "+${DATE_FORMAT} ${TIME_FORMAT}"}] --> $(PROG_LANG) flags: $(CFLAGS)"
-	$(VERBOSE_ECHO)echo "[${shell date "+${DATE_FORMAT} ${TIME_FORMAT}"}] --> $(PROG_LANG) extra flags: $(CEXTRAFLAGS)"
-	$(VERBOSE_ECHO)echo "[${shell date "+${DATE_FORMAT} ${TIME_FORMAT}"}] --> Behaviour flags: $(BEHFLAGS)"
-	$(VERBOSE_ECHO)echo "[${shell date "+${DATE_FORMAT} ${TIME_FORMAT}"}] --> logging defines: $(LOG_DEFINES)"
-	$(VERBOSE_ECHO)echo "[${shell date "+${DATE_FORMAT} ${TIME_FORMAT}"}] --> Math libs: $(MATHLIBS)"
-	$(VERBOSE_ECHO)echo "[${shell date "+${DATE_FORMAT} ${TIME_FORMAT}"}] --> OpenGL GLUT libraries: $(GLUTLIBS)"
-	$(VERBOSE_ECHO)echo "[${shell date "+${DATE_FORMAT} ${TIME_FORMAT}"}] --> X11 libraries: $(X11LIBS)"
-	$(VERBOSE_ECHO)echo "[${shell date "+${DATE_FORMAT} ${TIME_FORMAT}"}] --> Qt libraries: $(QTLIBS)"
-	$(VERBOSE_ECHO)echo "[${shell date "+${DATE_FORMAT} ${TIME_FORMAT}"}] Files lists:"
-	$(VERBOSE_ECHO)echo "[${shell date "+${DATE_FORMAT} ${TIME_FORMAT}"}] --> Source files: $(SRCS)"
-	$(VERBOSE_ECHO)echo "[${shell date "+${DATE_FORMAT} ${TIME_FORMAT}"}] --> Header files: $(HEADERS)"
-	$(VERBOSE_ECHO)echo "[${shell date "+${DATE_FORMAT} ${TIME_FORMAT}"}] --> moc source files: $(notdir $(MOC_SRCS))"
-	$(VERBOSE_ECHO)echo "[${shell date "+${DATE_FORMAT} ${TIME_FORMAT}"}] --> Object files: $(notdir $(OBJS))"
-	$(VERBOSE_ECHO)echo "[${shell date "+${DATE_FORMAT} ${TIME_FORMAT}"}] --> moc object files: $(notdir $(MOC_OBJS))"
-	$(VERBOSE_ECHO)echo "[${shell date "+${DATE_FORMAT} ${TIME_FORMAT}"}] --> Executable file: $(notdir $(EXE_NAME))"
-	$(VERBOSE_ECHO)echo "[${shell date "+${DATE_FORMAT} ${TIME_FORMAT}"}] Directories lists:"
-	$(VERBOSE_ECHO)echo "[${shell date "+${DATE_FORMAT} ${TIME_FORMAT}"}] --> Source directories: $(SRC_PATH)"
-	$(VERBOSE_ECHO)echo "[${shell date "+${DATE_FORMAT} ${TIME_FORMAT}"}] --> moc source directories: $(MOC_SRC_DIR)"
-	$(VERBOSE_ECHO)echo "[${shell date "+${DATE_FORMAT} ${TIME_FORMAT}"}] --> Include directories: $(INCLUDE_PATH)"
-	$(VERBOSE_ECHO)echo "[${shell date "+${DATE_FORMAT} ${TIME_FORMAT}"}] --> Include Qt library path: $(INCLUDE_QT_LIBS)"
-	$(VERBOSE_ECHO)echo "[${shell date "+${DATE_FORMAT} ${TIME_FORMAT}"}] --> Exeutable directory: $(BIN_DIR)"
-	$(VERBOSE_ECHO)echo "[${shell date "+${DATE_FORMAT} ${TIME_FORMAT}"}] --> Log directory: $(LOG_DIR)"
+	$(VERBOSE_ECHO)echo "[${TIMESTAMP}] Language: $(PROG_LANG)"
+	$(VERBOSE_ECHO)echo "[${TIMESTAMP}] Compiler: $(CC)"
+	$(VERBOSE_ECHO)echo "[${TIMESTAMP}] Compiler options:"
+	$(VERBOSE_ECHO)echo "[${TIMESTAMP}] --> $(PROG_LANG) flags: $(CFLAGS)"
+	$(VERBOSE_ECHO)echo "[${TIMESTAMP}] --> $(PROG_LANG) extra flags: $(CEXTRAFLAGS)"
+	$(VERBOSE_ECHO)echo "[${TIMESTAMP}] --> Behaviour flags: $(BEHFLAGS)"
+	$(VERBOSE_ECHO)echo "[${TIMESTAMP}] --> logging defines: $(LOG_DEFINES)"
+	$(VERBOSE_ECHO)echo "[${TIMESTAMP}] --> Math libs: $(MATHLIBS)"
+	$(VERBOSE_ECHO)echo "[${TIMESTAMP}] --> OpenGL GLUT libraries: $(GLUTLIBS)"
+	$(VERBOSE_ECHO)echo "[${TIMESTAMP}] --> X11 libraries: $(X11LIBS)"
+	$(VERBOSE_ECHO)echo "[${TIMESTAMP}] --> Qt libraries: $(QTLIBS)"
+	$(VERBOSE_ECHO)echo "[${TIMESTAMP}] Files lists:"
+	$(VERBOSE_ECHO)echo "[${TIMESTAMP}] --> Source files: $(SRCS)"
+	$(VERBOSE_ECHO)echo "[${TIMESTAMP}] --> Header files: $(HEADERS)"
+	$(VERBOSE_ECHO)echo "[${TIMESTAMP}] --> moc source files: $(notdir $(MOC_SRCS))"
+	$(VERBOSE_ECHO)echo "[${TIMESTAMP}] --> Object files: $(notdir $(OBJS))"
+	$(VERBOSE_ECHO)echo "[${TIMESTAMP}] --> moc object files: $(notdir $(MOC_OBJS))"
+	$(VERBOSE_ECHO)echo "[${TIMESTAMP}] --> Executable file: $(notdir $(EXE_NAME))"
+	$(VERBOSE_ECHO)echo "[${TIMESTAMP}] Directories lists:"
+	$(VERBOSE_ECHO)echo "[${TIMESTAMP}] --> Source directories: $(SRC_PATH)"
+	$(VERBOSE_ECHO)echo "[${TIMESTAMP}] --> moc source directories: $(MOC_SRC_DIR)"
+	$(VERBOSE_ECHO)echo "[${TIMESTAMP}] --> Include directories: $(INCLUDE_PATH)"
+	$(VERBOSE_ECHO)echo "[${TIMESTAMP}] --> Include Qt library path: $(INCLUDE_QT_LIBS)"
+	$(VERBOSE_ECHO)echo "[${TIMESTAMP}] --> Exeutable directory: $(BIN_DIR)"
+	$(VERBOSE_ECHO)echo "[${TIMESTAMP}] --> Log directory: $(LOG_DIR)"
 
 clean_byprod :
-	$(VERBOSE_ECHO)echo "[${shell date "+${DATE_FORMAT} ${TIME_FORMAT}"}] Remove object files: $(OBJS)"
+	$(VERBOSE_ECHO)echo "[${TIMESTAMP}] Remove object files: $(OBJS)"
 	rm -rf $(OBJ_DIR)
-	$(VERBOSE_ECHO)echo "[${shell date "+${DATE_FORMAT} ${TIME_FORMAT}"}] Remove moc object files: $(MOC_OBJS)"
+	$(VERBOSE_ECHO)echo "[${TIMESTAMP}] Remove moc object files: $(MOC_OBJS)"
 	rm -rf $(MOC_OBJ_DIR)
-	$(VERBOSE_ECHO)echo "[${shell date "+${DATE_FORMAT} ${TIME_FORMAT}"}] Remove moc source files: $(MOC_SRCS)"
+	$(VERBOSE_ECHO)echo "[${TIMESTAMP}] Remove moc source files: $(MOC_SRCS)"
 	rm -rf $(MOC_SRC_DIR)
-	$(VERBOSE_ECHO)echo "[${shell date "+${DATE_FORMAT} ${TIME_FORMAT}"}] Remove dependencies directory: $(DEP_DIR)"
+	$(VERBOSE_ECHO)echo "[${TIMESTAMP}] Remove dependencies directory: $(DEP_DIR)"
 	rm -rf $(DEP_DIR)
-	$(VERBOSE_ECHO)echo "[${shell date "+${DATE_FORMAT} ${TIME_FORMAT}"}] Remove doxygen documentation directory: $(DOX_DOC_DIR)"
+	$(VERBOSE_ECHO)echo "[${TIMESTAMP}] Remove doxygen documentation directory: $(DOX_DOC_DIR)"
 	rm -rf $(DOX_DOC_DIR)
-	$(VERBOSE_ECHO)echo "[${shell date "+${DATE_FORMAT} ${TIME_FORMAT}"}] Clean by-product completed"
+	$(VERBOSE_ECHO)echo "[${TIMESTAMP}] Clean by-product completed"
 
 clean_prog :
-	$(VERBOSE_ECHO)echo "[${shell date "+${DATE_FORMAT} ${TIME_FORMAT}"}] Remove binary directory: $(BIN_DIR)"
+	$(VERBOSE_ECHO)echo "[${TIMESTAMP}] Remove binary directory: $(BIN_DIR)"
 	rm -rf $(BIN_DIR)
-	$(VERBOSE_ECHO)echo "[${shell date "+${DATE_FORMAT} ${TIME_FORMAT}"}] Remove log directory: $(LOG_DIR)"
+	$(VERBOSE_ECHO)echo "[${TIMESTAMP}] Remove log directory: $(LOG_DIR)"
 	rm -rf $(LOG_DIR)
-	$(VERBOSE_ECHO)echo "[${shell date "+${DATE_FORMAT} ${TIME_FORMAT}"}] Clean program completed"
+	$(VERBOSE_ECHO)echo "[${TIMESTAMP}] Clean program completed"
 
 clean :
 	make clean_prog
