@@ -38,7 +38,7 @@ namespace main_window_shared_types {
 	 * @brief register state_e with meta-object system
 	 *
 	 */
-	Q_ENUM_NS(main_window_shared_types::state_e)
+	Q_ENUM_NS(state_list)
 
 	/**
 	 * @brief Function: QDebug & operator<< (QDebug & os, const main_window_shared_types::state_e & state)
@@ -68,7 +68,7 @@ namespace main_window_shared_types {
 	 *
 	 * Overload << operator to print state
 	 */
-	QString operator<< (const QString & str, const main_window_shared_types::state_e & state);
+	QString & operator<< (QString & str, const main_window_shared_types::state_e & state);
 
 	/**
 	 * @brief Function: const QString operator<< (const QString & str, const main_window_shared_types::state_e & state)
@@ -95,7 +95,7 @@ namespace main_window_shared_types {
 	 * @brief register move_value_e with meta-object system
 	 *
 	 */
-	Q_ENUM_NS(main_window_shared_types::move_value_e)
+	Q_ENUM_NS(move_value_list)
 
 	/**
 	 * @brief Function: QDebug & operator<< (QDebug & os, const main_window_shared_types::move_value_e & value_type)
@@ -125,7 +125,7 @@ namespace main_window_shared_types {
 	 *
 	 * Overload << operator to print the move type
 	 */
-	QString operator<< (const QString & str, const main_window_shared_types::move_value_e & value_type);
+	QString & operator<< (QString & str, const main_window_shared_types::move_value_e & value_type);
 
 	/**
 	 * @brief Function: const QString operator+ (const QString & str, const main_window_shared_types::move_value_e & value_type)
@@ -151,7 +151,7 @@ namespace main_window_shared_types {
 	 * @brief register text_action_e with meta-object system
 	 *
 	 */
-	Q_ENUM_NS(main_window_shared_types::text_action_e)
+	Q_ENUM_NS(text_action_list)
 
 	/**
 	 * @brief Function: QDebug & operator<< (QDebug & os, const main_window_shared_types::text_action_e & action)
@@ -181,7 +181,7 @@ namespace main_window_shared_types {
 	 *
 	 * Overload << operator to print text action in the status bar
 	 */
-	QString operator<< (const QString & str, const main_window_shared_types::text_action_e & action);
+	QString & operator<< (QString & str, const main_window_shared_types::text_action_e & action);
 
 	/**
 	 * @brief Function: const QString operator+ (const QString & str, const main_window_shared_types::text_action_e & action)
@@ -207,7 +207,7 @@ namespace main_window_shared_types {
 	 * @brief register tab_type_e with meta-object system
 	 *
 	 */
-	Q_ENUM_NS(main_window_shared_types::tab_type_e)
+	Q_ENUM_NS(tab_type_list)
 
 	/**
 	 * @brief Function: QDebug & operator<< (QDebug & os, const main_window_shared_types::tab_type_e & type)
@@ -237,7 +237,7 @@ namespace main_window_shared_types {
 	 *
 	 * Overload << operator to print text type
 	 */
-	QString operator<< (const QString & str, const main_window_shared_types::tab_type_e & type);
+	QString & operator<< (QString & str, const main_window_shared_types::tab_type_e & type);
 
 	/**
 	 * @brief Function: const QString operator+ (const QString & str, const main_window_shared_types::tab_type_e & type)

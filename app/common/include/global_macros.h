@@ -9,6 +9,7 @@
 */
 
 #include "global_types.h"
+#include "global_functions.h"
 
 /** @defgroup GlobalMacrosGroup Global Macros Doxygen Group
  *  Global Macros
@@ -112,9 +113,9 @@
  * It needs the type to be coverted to a QString
  */
 #define QDEBUG_OVERLOAD_PRINT_OP(TYPE) \
-	QDebug & operator<< (QDebug & os, const TYPE & var) { \
+	QDebug & operator<< (QDebug & os, const TYPE & value) { \
 		QString str(QString::null); \
-		str << var; \
+		str << value; \
 		os << str; \
 		return os; \
 	}
@@ -128,10 +129,10 @@
  * It needs the type to be coverted to a QString
  */
 #define QSTRING_OVERLOAD_PRINT_OP(TYPE) \
-	QString operator<< (const QString & str, const TYPE & var) { \
-		QString mergedStr(QString::null); \
-		QTextStream(&mergedStr) << str <<  var; \
-		return mergedStr; \
+	QString & operator<< (QString & str, const TYPE & value) { \
+		QString valStr(global_functions::qEnumToQString<TYPE>(value)); \
+		str.append(valStr); \
+		return str; \
 	}
 
 /**
@@ -142,9 +143,9 @@
  * Creates function overloading operator + for a type Type.
  */
 #define QSTRING_OVERLOAD_PLUS_OP(TYPE) \
-	const QString operator+ (const QString & str, const TYPE & var) { \
+	const QString operator+ (const QString & str, const TYPE & value) { \
 		QString mergedStr(QString::null); \
-		QTextStream(&mergedStr) << str << var; \
+		QTextStream(&mergedStr) << str << value; \
 		return str; \
 	}
 
