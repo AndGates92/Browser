@@ -10,7 +10,6 @@
 
 #include <qt5/QtCore/QTextStream>
 
-#include "global_functions.h"
 #include "global_macros.h"
 #include "main_window_shared_types.h"
 

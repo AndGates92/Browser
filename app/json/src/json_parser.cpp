@@ -12,7 +12,6 @@
 #include "json_parser.h"
 #include "global_macros.h"
 #include "global_types.h"
-#include "global_functions.h"
 #include "exception_macros.h"
 
 Q_LOGGING_CATEGORY(jsonParserOverall, "jsonParser.overall", MSG_TYPE_LEVEL)
