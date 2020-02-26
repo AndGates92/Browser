@@ -5,6 +5,7 @@ memleak=0
 compile=0
 tests=0
 clean=0
+cleanbyproduct=0
 debug=0
 doc=0
 
@@ -34,13 +35,14 @@ usage () {
 	echo "[`date "+${DATE_FORMAT} ${TIME_FORMAT}"`]  - Usage:"
 	echo "[`date "+${DATE_FORMAT} ${TIME_FORMAT}"`]  - >$0 <options>"
 	echo "[`date "+${DATE_FORMAT} ${TIME_FORMAT}"`]"
-	echo "[`date "+${DATE_FORMAT} ${TIME_FORMAT}"`]       --clean|-c:	delete generated files"
-	echo "[`date "+${DATE_FORMAT} ${TIME_FORMAT}"`]       --doc|-d:		generate documentation"
-	echo "[`date "+${DATE_FORMAT} ${TIME_FORMAT}"`]       --debug|-g:	dump makefile flags to ${LOGDIR}/${DEBUGLOG}"
-	echo "[`date "+${DATE_FORMAT} ${TIME_FORMAT}"`]       --compile|-co:	compile only"
-	echo "[`date "+${DATE_FORMAT} ${TIME_FORMAT}"`]       --memleak|-m:	compile and check memory leaks using valgrind" 
-	echo "[`date "+${DATE_FORMAT} ${TIME_FORMAT}"`]       --test|-t:	compile and run tests"
-	echo "[`date "+${DATE_FORMAT} ${TIME_FORMAT}"`]       --help|-h:	print this help"
+	echo "[`date "+${DATE_FORMAT} ${TIME_FORMAT}"`]       --clean|-c:		delete generated files before start compilation"
+	echo "[`date "+${DATE_FORMAT} ${TIME_FORMAT}"`]       --cleanbyproduct|-cbp:	delete generated files during compilation"
+	echo "[`date "+${DATE_FORMAT} ${TIME_FORMAT}"`]       --doc|-d:			generate documentation"
+	echo "[`date "+${DATE_FORMAT} ${TIME_FORMAT}"`]       --debug|-g:		dump makefile flags to ${LOGDIR}/${DEBUGLOG}"
+	echo "[`date "+${DATE_FORMAT} ${TIME_FORMAT}"`]       --compile|-co:		compile only"
+	echo "[`date "+${DATE_FORMAT} ${TIME_FORMAT}"`]       --memleak|-m:		compile and check memory leaks using valgrind" 
+	echo "[`date "+${DATE_FORMAT} ${TIME_FORMAT}"`]       --test|-t:		compile and run tests"
+	echo "[`date "+${DATE_FORMAT} ${TIME_FORMAT}"`]       --help|-h:		print this help"
 }
 
 if [ $# -lt 1 ]; then
@@ -56,7 +58,6 @@ do
 			shift 1
 			;;
 		--test|-t)
-			compile=1
 			tests=1
 			shift 1
 			;;
@@ -65,12 +66,15 @@ do
 			shift 1
 			;;
 		--memleak|-m)
-			compile=1
 			memleak=1
 			shift 1
 			;;
 		--debug|-g)
 			debug=1
+			shift 1
+			;;
+		--cleanbyproduct|-cbp)
+			cleanbyproduct=1
 			shift 1
 			;;
 		--clean|-c)
@@ -113,7 +117,7 @@ if [ ${compile} -eq 1 ]; then
 fi
 
 if [ ${tests} -eq 1 ]; then
-	echo "[`date "+${DATE_FORMAT} ${TIME_FORMAT}"`] --> Executable logfile name hard wall: ${EXELOG}"
+	echo "[`date "+${DATE_FORMAT} ${TIME_FORMAT}"`] --> Executable logfile: ${EXELOG}"
 fi
 
 if [ ${doc} -eq 1 ]; then
@@ -159,7 +163,9 @@ if [ ${compile} -eq 1 ]; then
 	echo "[`date "+${DATE_FORMAT} ${TIME_FORMAT}"`] ========================================================================="
 	(set -x; \
 	 make all LOG_DIR=${LOGDIR} LOGFILENAME=${EXELOG} PROJ_NAME=${PROJNAME} EXE_NAME=${EXENAME} BIN_DIR=${EXEDIR} VERBOSITY=${VERBOSITY} CEXTRAFLAGS=${CEXTRAFLAGS} 2> ${LOGDIR}/${COMPLOG})
+fi
 
+if [ ${cleanbyproduct} -eq 1 ]; then
 	echo "[`date "+${DATE_FORMAT} ${TIME_FORMAT}"`] ========================================================================="
 	echo "[`date "+${DATE_FORMAT} ${TIME_FORMAT}"`] Clean by-product"
 	echo "[`date "+${DATE_FORMAT} ${TIME_FORMAT}"`] ========================================================================="
