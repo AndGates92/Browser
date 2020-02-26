@@ -175,7 +175,7 @@ $(EXE) : $(MOC_OBJS) $(OBJS)
 $(OBJ_DIR)/%.$(OBJ_EXT) : %.$(SRC_EXT)
 	$(MKDIR) $(@D)
 	$(VERBOSE_ECHO)echo "[${shell date "+${DATE_FORMAT} ${TIME_FORMAT}"}] Compiling $(<F) and creating object $@"
-	$(CC) $(CFLAGS) $(INCLUDES)  -c $< $(DFLAGS) $(BEHFLAGS) $(CEXTRAFLAGS) -o $@ $(LIBS)
+	$(CC) $(CFLAGS) $(INCLUDES) -c $< $(DFLAGS) $(BEHFLAGS) $(CEXTRAFLAGS) -o $@ $(LIBS)
 
 $(MOC_SRC_DIR)/%.$(SRC_EXT) : %.$(HEADER_EXT)
 	$(MKDIR) $(@D)
