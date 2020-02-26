@@ -56,8 +56,6 @@ QMap<QString, QString> json_parser::JsonParser::findKeyValue(QString key) {
 
 }
 
-
-
 QString json_parser::JsonParser::searchJson(const QJsonValue & content, QString key) {
 
 	QString value(QString::null);
