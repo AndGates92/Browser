@@ -60,6 +60,7 @@ QString main_window_core::MainWindowCore::getActionName() {
 
 	// Create lowercase copy of the string
 	actionNameText = actionNameText.toLower();
+	actionNameText = actionNameText.replace(QChar('_'), QChar(' '), Qt::CaseInsensitive);
 
 	QINFO_PRINT(global_types::qinfo_level_e::ZERO, mainWindowCoreUserInput,  "State " << this->mainWindowState << " action text " << actionNameText);
 
