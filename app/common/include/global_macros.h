@@ -130,7 +130,7 @@
  */
 #define QSTRING_OVERLOAD_PRINT_OP(TYPE) \
 	QString & operator<< (QString & str, const TYPE & value) { \
-		QString valStr(global_functions::qEnumToQString<TYPE>(value)); \
+		QString valStr(global_functions::qEnumToQString<TYPE>(value, false)); \
 		str.append(valStr); \
 		return str; \
 	}
@@ -158,7 +158,7 @@
  */
 #define QTEXTSTREAM_OVERLOAD_PRINT_OP(TYPE) \
 	QTextStream & operator<< (QTextStream & str, const TYPE & value) { \
-		QString valStr(global_functions::qEnumToQString<TYPE>(value)); \
+		QString valStr(global_functions::qEnumToQString<TYPE>(value, false)); \
 		str << valStr; \
 		return str; \
 	}

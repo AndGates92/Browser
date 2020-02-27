@@ -45,24 +45,25 @@ int main_window_core::MainWindowCore::getTabCount() {
 }
 
 QString main_window_core::MainWindowCore::getActionName() {
-	QString actionName(QString::null);
+	QString actionNameText(QString::null);
 
-	actionName << this->mainWindowState;
+	QString actionName(global_functions::qEnumToQString<main_window_shared_types::state_list>(this->mainWindowState, true));
+	actionNameText.append(actionName);
 
 	if (this->mainWindowState == main_window_shared_types::state_e::TAB_MOVE) {
 		if (this->moveValueType == main_window_shared_types::move_value_e::RIGHT) {
-			actionName.append(" right");
+			actionNameText.append(" right");
 		} else if (this->moveValueType == main_window_shared_types::move_value_e::LEFT) {
-			actionName.append(" left");
+			actionNameText.append(" left");
 		}
 	}
 
 	// Create lowercase copy of the string
-	actionName = actionName.toLower();
+	actionNameText = actionNameText.toLower();
 
-	QINFO_PRINT(global_types::qinfo_level_e::ZERO, mainWindowCoreUserInput,  "State " << this->mainWindowState << " action text " << actionName);
+	QINFO_PRINT(global_types::qinfo_level_e::ZERO, mainWindowCoreUserInput,  "State " << this->mainWindowState << " action text " << actionNameText);
 
-	return actionName;
+	return actionNameText;
 }
 
 int main_window_core::MainWindowCore::getCurrentTabIndex() {

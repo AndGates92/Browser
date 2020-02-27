@@ -22,21 +22,22 @@
 namespace global_functions {
 
 	/**
-	 * @brief Function: QString qEnumToQString(const qenum value)
+	 * @brief Function: QString qEnumToQString(const qenum value, const bool printEnumKeyOnly = false)
 	 *
 	 * \param value: enumerator to be converted to a string
+	 * \param printEnumKeyOnly: boolean to choose whether the namespace and enumerator type name are printed. True means print only enumator key and false means print key as well as scope and type name
 	 *
-	 * \return enumerator converted to a std::string
+	 * \return enumerator converted to a QString
 	 *
-	 * This function converts an enumerator registered with the Qt Meta-Object system to a string
+	 * This function converts an enumerator registered with the Qt Meta-Object system to a QString
 	 */
 	template<typename qenum>
-	QString qEnumToQString(const qenum value);
+	QString qEnumToQString(const qenum value, const bool printEnumKeyOnly = false);
 }
 /** @} */ // End of GlobalFunctionsGroup group
 
 template<typename qenum>
-QString global_functions::qEnumToQString(const qenum value) {
+QString global_functions::qEnumToQString(const qenum value, const bool printEnumKeyOnly) {
 
 	QMetaEnum metaEnum(QMetaEnum::fromType<qenum>());
 	// Convert enumeration value to std::string
@@ -46,10 +47,14 @@ QString global_functions::qEnumToQString(const qenum value) {
 	QEXCEPTION_ACTION_COND((valueStr.empty() == true), throw,  "Convertion of enuerator " << metaEnum.scope() << "::" << metaEnum.name() << " to string return a null std::string");
 
 	QString fullValueStr(QString::null);
-	fullValueStr.append(metaEnum.scope());
-	fullValueStr.append("::");
-	fullValueStr.append(metaEnum.name());
-	fullValueStr.append("::");
+
+	if (printEnumKeyOnly == false) {
+		fullValueStr.append(metaEnum.scope());
+		fullValueStr.append("::");
+		fullValueStr.append(metaEnum.name());
+		fullValueStr.append("::");
+	}
+
 	fullValueStr.append(valueStr.c_str());
 
 	return fullValueStr;
