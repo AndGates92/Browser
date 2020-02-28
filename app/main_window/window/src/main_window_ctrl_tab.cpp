@@ -433,6 +433,18 @@ void main_window_ctrl_tab::MainWindowCtrlTab::keyPressEvent(QKeyEvent * event) {
 
 }
 
+void main_window_ctrl_tab::MainWindowCtrlTab::setStateAction(main_window_shared_types::state_e windowState, QKeyEvent * event) {
+
+	int pressedKey = event->key();
+
+	switch (windowState) {
+		default:
+			QINFO_PRINT(global_types::qinfo_level_e::ZERO, mainWindowCtrlTabUserInput,  "Window in state " << windowState << " Key pressed is " << event->text() << "(ID " << pressedKey << ")");
+			break;
+	}
+
+}
+
 void main_window_ctrl_tab::MainWindowCtrlTab::convertToAbsTabIndex(int offset, global_types::sign_e sign) {
 
 	main_window_shared_types::state_e windowState = this->windowCore->getMainWindowState();

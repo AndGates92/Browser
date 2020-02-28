@@ -181,7 +181,7 @@ namespace main_window_ctrl {
 			 * \param windowState: state the window is into.
 			 * \param event: key event.
 			 *
-			 * This function executes a command on a based on user input
+			 * This function executes a command on a based on user input and the state the window is in
 			 */
 			void setStateAction(main_window_shared_types::state_e windowState, QKeyEvent * event);
 	};

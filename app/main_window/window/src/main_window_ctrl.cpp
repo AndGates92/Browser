@@ -108,7 +108,7 @@ void main_window_ctrl::MainWindowCtrl::keyReleaseEvent(QKeyEvent * event) {
 			case Qt::Key_Backspace:
 				QINFO_PRINT(global_types::qinfo_level_e::ZERO, mainWindowCtrlUserInput,  "User typed text " << userTypedText);
 				// Last position of the string
-				if (userTypedText.isEmpty() == 0) {
+				if (userTypedText.isEmpty() == false) {
 					// Compute position of the last character in the string
 					int endString = userTypedText.count() - 1;
 					// Delete last character of the string
@@ -116,7 +116,7 @@ void main_window_ctrl::MainWindowCtrl::keyReleaseEvent(QKeyEvent * event) {
 					this->printUserInput(main_window_shared_types::text_action_e::SET, userTypedText);
 				}
 				// If in state TAB MOVE and the windowCore->userText is empty after deleting the last character, set the move value to IDLE
-				if ((userTypedText.isEmpty() == 1) && (windowState == main_window_shared_types::state_e::TAB_MOVE)) {
+				if ((userTypedText.isEmpty() == true) && (windowState == main_window_shared_types::state_e::TAB_MOVE)) {
 					this->windowCore->setMoveValueType(main_window_shared_types::move_value_e::IDLE);
 				}
 				break;

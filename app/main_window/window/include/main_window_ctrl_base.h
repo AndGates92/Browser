@@ -114,6 +114,15 @@ namespace main_window_ctrl_base {
 			 */
 			void setAllShortcutEnabledProperty(bool enabled);
 
+			/**
+			 * @brief Function: virtual void setStateAction(main_window_shared_types::state_e windowState, QKeyEvent * event)
+			 *
+			 * \param windowState: state the window is into.
+			 * \param event: key event.
+			 *
+			 * This function is abstract and it executes a command on a based on user input and the window state
+			 */
+			virtual void setStateAction(main_window_shared_types::state_e windowState, QKeyEvent * event) = 0;
 		private:
 	};
 
