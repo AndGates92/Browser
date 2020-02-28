@@ -1,7 +1,7 @@
 #!/bin/sh
 
 # set -x shows commands as they are executed
-# In this script, echo commands will not be printed
+# In this script, echo commands will not be printed - hence set +x will be set (see echotimestamp function)
 
 # Shell script settings
 memleak=0
