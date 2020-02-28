@@ -1,5 +1,8 @@
 #!/bin/sh
 
+# set -x shows commands as they are executed
+# In this script, echo commands will not be printed
+
 # Shell script settings
 memleak=0
 compile=0
@@ -31,18 +34,24 @@ BEHFLAGS=
 DATE_FORMAT="%a %d %b %Y"
 TIME_FORMAT=%H:%M:%S
 
+echotimestamp () {
+	# set +x do not print commands as they are executed
+	(set +x; \
+	echo "[`date "+${DATE_FORMAT} ${TIME_FORMAT}"`]  - $1")
+}
+
 usage () {
-	echo "[`date "+${DATE_FORMAT} ${TIME_FORMAT}"`]  - Usage:"
-	echo "[`date "+${DATE_FORMAT} ${TIME_FORMAT}"`]  - >$0 <options>"
-	echo "[`date "+${DATE_FORMAT} ${TIME_FORMAT}"`]"
-	echo "[`date "+${DATE_FORMAT} ${TIME_FORMAT}"`]       --clean|-c:		delete generated files before start compilation"
-	echo "[`date "+${DATE_FORMAT} ${TIME_FORMAT}"`]       --cleanbyproduct|-cbp:	delete generated files during compilation"
-	echo "[`date "+${DATE_FORMAT} ${TIME_FORMAT}"`]       --doc|-d:			generate documentation"
-	echo "[`date "+${DATE_FORMAT} ${TIME_FORMAT}"`]       --debug|-g:		dump makefile flags to ${LOGDIR}/${DEBUGLOG}"
-	echo "[`date "+${DATE_FORMAT} ${TIME_FORMAT}"`]       --compile|-co:		compile only"
-	echo "[`date "+${DATE_FORMAT} ${TIME_FORMAT}"`]       --memleak|-m:		compile and check memory leaks using valgrind" 
-	echo "[`date "+${DATE_FORMAT} ${TIME_FORMAT}"`]       --test|-t:		compile and run tests"
-	echo "[`date "+${DATE_FORMAT} ${TIME_FORMAT}"`]       --help|-h:		print this help"
+	echotimestamp "  - Usage:"
+	echotimestamp "  - >$0 <options>"
+	echotimestamp ""
+	echotimestamp "       --clean|-c:		delete generated files before start compilation"
+	echotimestamp "       --cleanbyproduct|-cbp:	delete generated files during compilation"
+	echotimestamp "       --doc|-d:			generate documentation"
+	echotimestamp "       --debug|-g:		dump makefile flags to ${LOGDIR}/${DEBUGLOG}"
+	echotimestamp "       --compile|-co:		compile only"
+	echotimestamp "       --memleak|-m:		compile and check memory leaks using valgrind" 
+	echotimestamp "       --test|-t:		compile and run tests"
+	echotimestamp "       --help|-h:		print this help"
 }
 
 if [ $# -lt 1 ]; then
@@ -86,7 +95,7 @@ do
 			exit 0
 			;;
 		?*)
-			echo "[`date "+${DATE_FORMAT} ${TIME_FORMAT}"`] Illegal argument $1"
+			echotimestamp " Illegal argument $1"
 			usage
 			exit 0
 			;;
@@ -94,113 +103,117 @@ do
 done
 
 if [ ${compile} -eq 1 ] || [ ${doc} -eq 1 ] || [ ${memleak} -eq 1 ]; then
-	echo "[`date "+${DATE_FORMAT} ${TIME_FORMAT}"`] Run script variables"
-	echo "[`date "+${DATE_FORMAT} ${TIME_FORMAT}"`] ========================================================================="
-	echo "[`date "+${DATE_FORMAT} ${TIME_FORMAT}"`] EXECUTABLE"
-	echo "[`date "+${DATE_FORMAT} ${TIME_FORMAT}"`] ========================================================================="
-	echo "[`date "+${DATE_FORMAT} ${TIME_FORMAT}"`] --> Directory of the executable: ${EXEDIR}"
-	echo "[`date "+${DATE_FORMAT} ${TIME_FORMAT}"`] --> Executable filename: ${EXENAME}"
+	echotimestamp " Run script variables"
+	echotimestamp " ========================================================================="
+	echotimestamp " EXECUTABLE"
+	echotimestamp " ========================================================================="
+	echotimestamp " --> Directory of the executable: ${EXEDIR}"
+	echotimestamp " --> Executable filename: ${EXENAME}"
 	echo "\n"
 fi
 
-echo "[`date "+${DATE_FORMAT} ${TIME_FORMAT}"`] ========================================================================="
-echo "[`date "+${DATE_FORMAT} ${TIME_FORMAT}"`] LOGS"
-echo "[`date "+${DATE_FORMAT} ${TIME_FORMAT}"`] ========================================================================="
-echo "[`date "+${DATE_FORMAT} ${TIME_FORMAT}"`] --> Logfile directory: ${LOGDIRR}"
+echotimestamp " ========================================================================="
+echotimestamp " LOGS"
+echotimestamp " ========================================================================="
+echotimestamp " --> Logfile directory: ${LOGDIRR}"
 
 if [ ${debug} -eq 1 ]; then
-	echo "[`date "+${DATE_FORMAT} ${TIME_FORMAT}"`] --> Debug logfile name: ${DEBUGLOG}"
+	echotimestamp " --> Debug logfile name: ${DEBUGLOG}"
 fi
 
 if [ ${compile} -eq 1 ]; then
-	echo "[`date "+${DATE_FORMAT} ${TIME_FORMAT}"`] --> Compile logfile name: ${COMPLOG}"
+	echotimestamp " --> Compile logfile name: ${COMPLOG}"
 fi
 
 if [ ${tests} -eq 1 ]; then
-	echo "[`date "+${DATE_FORMAT} ${TIME_FORMAT}"`] --> Executable logfile: ${EXELOG}"
+	echotimestamp " --> Executable logfile: ${EXELOG}"
 fi
 
 if [ ${doc} -eq 1 ]; then
-	echo "[`date "+${DATE_FORMAT} ${TIME_FORMAT}"`] --> Documentation logfile name: ${DOCLOG}"
+	echotimestamp " --> Documentation logfile name: ${DOCLOG}"
 fi
 
 if [ ${memleak} -eq 1 ]; then
-	echo "[`date "+${DATE_FORMAT} ${TIME_FORMAT}"`] --> Valgrind test set logfile name: ${VALGRINDTESLOG}"
-	echo "[`date "+${DATE_FORMAT} ${TIME_FORMAT}"`] --> Valgrind test label logfile name: ${VALGRINDNOINPUTLOG}"
-	echo "[`date "+${DATE_FORMAT} ${TIME_FORMAT}"`] --> Valgrind all input files logfile name: ${VALGRINDALLLOG}"
-	echo "[`date "+${DATE_FORMAT} ${TIME_FORMAT}"`] --> Valgrind executable logfile name: ${EXEVALGRINDLOG}"
+	echotimestamp " --> Valgrind test set logfile name: ${VALGRINDTESLOG}"
+	echotimestamp " --> Valgrind test label logfile name: ${VALGRINDNOINPUTLOG}"
+	echotimestamp " --> Valgrind all input files logfile name: ${VALGRINDALLLOG}"
+	echotimestamp " --> Valgrind executable logfile name: ${EXEVALGRINDLOG}"
 fi
 
 echo "\n"
 
 if [ ${clean} -eq 1 ]; then
-	echo "[`date "+${DATE_FORMAT} ${TIME_FORMAT}"`] ========================================================================="
-	echo "[`date "+${DATE_FORMAT} ${TIME_FORMAT}"`] Clean workspace"
-	echo "[`date "+${DATE_FORMAT} ${TIME_FORMAT}"`] ========================================================================="
+	echotimestamp " ========================================================================="
+	echotimestamp " Clean workspace"
+	echotimestamp " ========================================================================="
 	(set -x; \
 	 make clean LOG_DIR=${LOGDIR} PROJ_NAME=${PROJNAME} EXE_NAME=${EXENAME} BIN_DIR=${EXEDIR})
+elif [ ${compile} -eq 1 ]; then
+	# Delete executable in order to avoid using the previous one if compile fails and running tests
+	(set -x; \
+	 /bin/rm -rf ${EXEDIR}/${EXENAME})
 fi
 
 if [ ${compile} -eq 1 ] || [ ${tests} -eq 1 ] || [ ${debug} -eq 1 ] || [ ${doc} -eq 1 ] || [ ${memleak} -eq 1 ]; then
-	echo "[`date "+${DATE_FORMAT} ${TIME_FORMAT}"`] ========================================================================="
-	echo "[`date "+${DATE_FORMAT} ${TIME_FORMAT}"`] Create log directory"
-	echo "[`date "+${DATE_FORMAT} ${TIME_FORMAT}"`] ========================================================================="
+	echotimestamp " ========================================================================="
+	echotimestamp " Create log directory"
+	echotimestamp " ========================================================================="
 	(set -x; \
 	 mkdir -p ${LOGDIR})
 fi
 
 if [ ${debug} -eq 1 ]; then
-	echo "[`date "+${DATE_FORMAT} ${TIME_FORMAT}"`] ========================================================================="
-	echo "[`date "+${DATE_FORMAT} ${TIME_FORMAT}"`] Makefile variables"
-	echo "[`date "+${DATE_FORMAT} ${TIME_FORMAT}"`] ========================================================================="
+	echotimestamp " ========================================================================="
+	echotimestamp " Makefile variables"
+	echotimestamp " ========================================================================="
 	(set -x; \
 	 make debug LOG_DIR=${LOGDIR} LOGFILENAME=${EXELOG} PROJ_NAME=${PROJNAME} EXE_NAME=${EXENAME} BIN_DIR=${EXEDIR} CEXTRAFLAGS=${CEXTRAFLAGS} > ${LOGDIR}/${DEBUGLOG})
 fi
 
 if [ ${compile} -eq 1 ]; then
-	echo "[`date "+${DATE_FORMAT} ${TIME_FORMAT}"`] ========================================================================="
-	echo "[`date "+${DATE_FORMAT} ${TIME_FORMAT}"`] Compile sources"
-	echo "[`date "+${DATE_FORMAT} ${TIME_FORMAT}"`] ========================================================================="
+	echotimestamp " ========================================================================="
+	echotimestamp " Compile sources"
+	echotimestamp " ========================================================================="
 	(set -x; \
 	 make all LOG_DIR=${LOGDIR} LOGFILENAME=${EXELOG} PROJ_NAME=${PROJNAME} EXE_NAME=${EXENAME} BIN_DIR=${EXEDIR} VERBOSITY=${VERBOSITY} CEXTRAFLAGS=${CEXTRAFLAGS} 2> ${LOGDIR}/${COMPLOG})
 fi
 
 if [ ${cleanbyproduct} -eq 1 ]; then
-	echo "[`date "+${DATE_FORMAT} ${TIME_FORMAT}"`] ========================================================================="
-	echo "[`date "+${DATE_FORMAT} ${TIME_FORMAT}"`] Clean by-product"
-	echo "[`date "+${DATE_FORMAT} ${TIME_FORMAT}"`] ========================================================================="
+	echotimestamp " ========================================================================="
+	echotimestamp " Clean by-product"
+	echotimestamp " ========================================================================="
 	(set -x; \
 	 make clean_byprod LOG_DIR=${LOGDIR} PROJ_NAME=${PROJNAME} EXE_NAME=${EXENAME} BIN_DIR=${EXEDIR})
 fi
 
 if [ ${tests} -eq 1 ]; then
 	if [ -f ./${EXEDIR}/${EXENAME} ]; then
-		echo "[`date "+${DATE_FORMAT} ${TIME_FORMAT}"`] ========================================================================="
-		echo "[`date "+${DATE_FORMAT} ${TIME_FORMAT}"`] Run program"
-		echo "[`date "+${DATE_FORMAT} ${TIME_FORMAT}"`] ========================================================================="
-		echo "[`date "+${DATE_FORMAT} ${TIME_FORMAT}"`] START: Testing with no input file"
+		echotimestamp " ========================================================================="
+		echotimestamp " Run program"
+		echotimestamp " ========================================================================="
+		echotimestamp " START: Testing with no input file"
 		(set -x; \
 		 ./${EXEDIR}/${EXENAME})
-		echo "[`date "+${DATE_FORMAT} ${TIME_FORMAT}"`] COMPLETED: Testing with no input file"
+		echotimestamp " COMPLETED: Testing with no input file"
 	else
-		echo "[`date "+${DATE_FORMAT} ${TIME_FORMAT}"`] FAILED: Compilation failed"
+		echotimestamp " FAILED: Compilation failed"
 	fi
 fi
 
 if [ ${doc} -eq 1 ]; then
-	echo "[`date "+${DATE_FORMAT} ${TIME_FORMAT}"`] ========================================================================="
-	echo "[`date "+${DATE_FORMAT} ${TIME_FORMAT}"`] Compile documetation"
-	echo "[`date "+${DATE_FORMAT} ${TIME_FORMAT}"`] ========================================================================="
+	echotimestamp " ========================================================================="
+	echotimestamp " Compile documetation"
+	echotimestamp " ========================================================================="
 	(set -x; \
 	 make doc LOG_DIR=${LOGDIR} LOGFILENAME=${EXELOG} PROJ_NAME=${PROJNAME} EXE_NAME=${EXENAME} BIN_DIR=${EXEDIR} CEXTRAFLAGS=${CEXTRAFLAGS} > ${LOGDIR}/${DOCLOG})
 fi
 
 if [ ${memleak} -eq 1 ]; then
-	echo "[`date "+${DATE_FORMAT} ${TIME_FORMAT}"`] ========================================================================="
-	echo "[`date "+${DATE_FORMAT} ${TIME_FORMAT}"`] Check memory leaks"
-	echo "[`date "+${DATE_FORMAT} ${TIME_FORMAT}"`] ========================================================================="
-	echo "[`date "+${DATE_FORMAT} ${TIME_FORMAT}"`] START: Valgrind with no input file"
+	echotimestamp " ========================================================================="
+	echotimestamp " Check memory leaks"
+	echotimestamp " ========================================================================="
+	echotimestamp " START: Valgrind with no input file"
 	(set -x; \
 	 make memleak LOG_DIR=${LOGDIR} LOGFILENAME=${EXEVALGRINDLOG} PROJ_NAME=${PROJNAME} EXE_NAME=${EXENAME} BIN_DIR=${EXEDIR} VERBOSITY=${VERBOSITY} VALGRINDLOGFILENAME=${VALGRINDNOINPUTLOG} VALGRINDEXEARGS="")
-	echo "[`date "+${DATE_FORMAT} ${TIME_FORMAT}"`] COMPLETED: Valgrind with no input file"
+	echotimestamp " COMPLETED: Valgrind with no input file"
 fi
