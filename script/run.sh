@@ -176,6 +176,14 @@ if [ ${compile} -eq 1 ]; then
 	echotimestamp " ========================================================================="
 	(set -x; \
 	 make all LOG_DIR=${LOGDIR} LOGFILENAME=${EXELOG} PROJ_NAME=${PROJNAME} EXE_NAME=${EXENAME} BIN_DIR=${EXEDIR} VERBOSITY=${VERBOSITY} CEXTRAFLAGS=${CEXTRAFLAGS} 2> ${LOGDIR}/${COMPLOG})
+	# If make returns code 2, it means it encountered errors
+	retCode=$?
+	if [ ${retCode} -eq 2 ]; then
+		echotimestamp " FAILED: Compilation failed as Malefile return code is ${retCode}"
+		exit 1
+	else
+		echotimestamp " SUCCEED: Compilation succeeded as Malefile return code is ${retCode}"
+	fi
 fi
 
 if [ ${cleanbyproduct} -eq 1 ]; then
@@ -196,7 +204,7 @@ if [ ${tests} -eq 1 ]; then
 		 ./${EXEDIR}/${EXENAME})
 		echotimestamp " COMPLETED: Testing with no input file"
 	else
-		echotimestamp " FAILED: Compilation failed"
+		echotimestamp " FAILED: Compilation failed - Cannot find  ./${EXEDIR}/${EXENAME}"
 	fi
 fi
 
