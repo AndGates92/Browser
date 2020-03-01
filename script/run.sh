@@ -179,10 +179,10 @@ if [ ${compile} -eq 1 ]; then
 	# If make returns code 2, it means it encountered errors
 	retCode=$?
 	if [ ${retCode} -eq 2 ]; then
-		echotimestamp " FAILED: Compilation failed as Malefile return code is ${retCode}"
+		echotimestamp " FAILED: Compilation failed as Makefile return code is ${retCode}"
 		exit 1
 	else
-		echotimestamp " SUCCEED: Compilation succeeded as Malefile return code is ${retCode}"
+		echotimestamp " SUCCEED: Compilation succeeded as Makefile return code is ${retCode}"
 	fi
 fi
 
