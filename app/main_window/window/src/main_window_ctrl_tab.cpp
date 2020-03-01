@@ -394,7 +394,6 @@ void main_window_ctrl_tab::MainWindowCtrlTab::keyPressEvent(QKeyEvent * event) {
 	if (event->type() == QEvent::KeyPress) {
 
 		main_window_shared_types::state_e windowState = this->windowCore->getMainWindowState();
-		main_window_shared_types::move_value_e moveType = this->windowCore->getMoveValueType();
 		QString userTypedText = this->windowCore->getUserText();
 
 		// Retrieve main window controller state
@@ -413,19 +412,7 @@ void main_window_ctrl_tab::MainWindowCtrlTab::keyPressEvent(QKeyEvent * event) {
 				}
 				break;
 			default:
-				if (windowState == main_window_shared_types::state_e::TAB_MOVE) {
-					if ((pressedKey >= Qt::Key_0) && (pressedKey <= Qt::Key_9)) {
-						if (moveType == main_window_shared_types::move_value_e::IDLE) {
-							this->windowCore->setMoveValueType(main_window_shared_types::move_value_e::ABSOLUTE);
-						}
-					} else if ((moveType == main_window_shared_types::move_value_e::IDLE) && ((pressedKey == Qt::Key_H) || (pressedKey == Qt::Key_L) || (pressedKey == Qt::Key_Plus) || (pressedKey == Qt::Key_Minus))) {
-						if ((pressedKey == Qt::Key_Plus) || (pressedKey == Qt::Key_L)) {
-							this->windowCore->setMoveValueType(main_window_shared_types::move_value_e::RIGHT);
-						} else {
-							this->windowCore->setMoveValueType(main_window_shared_types::move_value_e::LEFT);
-						}
-					}
-				}
+				this->setStateAction(windowState, event);
 				break;
 		}
 
@@ -436,8 +423,22 @@ void main_window_ctrl_tab::MainWindowCtrlTab::keyPressEvent(QKeyEvent * event) {
 void main_window_ctrl_tab::MainWindowCtrlTab::setStateAction(main_window_shared_types::state_e windowState, QKeyEvent * event) {
 
 	int pressedKey = event->key();
+	main_window_shared_types::move_value_e moveType = this->windowCore->getMoveValueType();
 
 	switch (windowState) {
+		case main_window_shared_types::state_e::TAB_MOVE:
+			if ((pressedKey >= Qt::Key_0) && (pressedKey <= Qt::Key_9)) {
+				if (moveType == main_window_shared_types::move_value_e::IDLE) {
+					this->windowCore->setMoveValueType(main_window_shared_types::move_value_e::ABSOLUTE);
+				}
+			} else if ((moveType == main_window_shared_types::move_value_e::IDLE) && ((pressedKey == Qt::Key_H) || (pressedKey == Qt::Key_L) || (pressedKey == Qt::Key_Plus) || (pressedKey == Qt::Key_Minus))) {
+				if ((pressedKey == Qt::Key_Plus) || (pressedKey == Qt::Key_L)) {
+					this->windowCore->setMoveValueType(main_window_shared_types::move_value_e::RIGHT);
+				} else {
+					this->windowCore->setMoveValueType(main_window_shared_types::move_value_e::LEFT);
+				}
+			}
+			break;
 		default:
 			QINFO_PRINT(global_types::qinfo_level_e::ZERO, mainWindowCtrlTabUserInput,  "Window in state " << windowState << " Key pressed is " << event->text() << "(ID " << pressedKey << ")");
 			break;
