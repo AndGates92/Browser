@@ -268,6 +268,8 @@ void main_window_ctrl_tab::MainWindowCtrlTab::executeActionOnOffset(int offset) 
 		} else if (moveType == main_window_shared_types::move_value_e::LEFT) {
 			sign = global_types::sign_e::MINUS;
 		}
+	} else {
+		QEXCEPTION_ACTION(throw,  "Requested to execute tab action in invalid window state " << windowState);
 	}
 
 	Q_ASSERT_X(((sign == global_types::sign_e::MINUS) || (sign == global_types::sign_e::PLUS)), "sign check to execute movement on offset", "sign input must be either global_types::sign_e::MINUS or global_types::sign_e::PLUS");
@@ -315,7 +317,11 @@ void main_window_ctrl_tab::MainWindowCtrlTab::executeTabAction(int userInput) {
 			this->executeActionOnOffset(userInput);
 		} else if (moveType == main_window_shared_types::move_value_e::ABSOLUTE) {
 			this->executeActionOnTab(userInput);
+		} else {
+			QEXCEPTION_ACTION(throw,  "Undefined direction of movement of tabs. Currently set to " << moveType);
 		}
+	} else {
+		QEXCEPTION_ACTION(throw,  "Undefined tab action when in state " << windowState);
 	}
 
 	this->updateInfo();
@@ -330,6 +336,7 @@ void main_window_ctrl_tab::MainWindowCtrlTab::processTabIndex(QString userInputS
 		this->executeTabAction();
 	} else {
 		bool conversionSuccessful = false;
+		// Convert string un a number in base 10
 		int userInputInt = userInputStr.toInt(&conversionSuccessful, 10);
 		if (conversionSuccessful == true) {
 			QINFO_PRINT(global_types::qinfo_level_e::ZERO, mainWindowCtrlTabUserInput,  "user input succesfully converted to integer: string " << userInputStr << " integer " << userInputInt);
@@ -403,13 +410,14 @@ void main_window_ctrl_tab::MainWindowCtrlTab::keyPressEvent(QKeyEvent * event) {
 			case Qt::Key_Enter:
 			case Qt::Key_Return:
 				QINFO_PRINT(global_types::qinfo_level_e::ZERO, mainWindowCtrlTabUserInput,  "User typed text " << userTypedText);
-
-				this->windowCore->setMoveValueType(main_window_shared_types::move_value_e::IDLE);
 				if (windowState == main_window_shared_types::state_e::OPEN_TAB) {
 					this->addNewTabAndSearch(userTypedText);
 				} else if (windowState == main_window_shared_types::state_e::SEARCH) {
 					this->searchCurrentTab(userTypedText);
+				} else if ((windowState == main_window_shared_types::state_e::REFRESH_TAB) || (windowState == main_window_shared_types::state_e::CLOSE_TAB) || (windowState == main_window_shared_types::state_e::MOVE_RIGHT) || (windowState == main_window_shared_types::state_e::MOVE_LEFT) || (windowState == main_window_shared_types::state_e::TAB_MOVE)) {
+					this->processTabIndex(userTypedText);
 				}
+				this->windowCore->setMoveValueType(main_window_shared_types::move_value_e::IDLE);
 				break;
 			default:
 				this->setStateAction(windowState, event);

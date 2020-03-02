@@ -146,10 +146,6 @@ void main_window_ctrl::MainWindowCtrl::keyPressEvent(QKeyEvent * event) {
 			case Qt::Key_Enter:
 			case Qt::Key_Return:
 				QINFO_PRINT(global_types::qinfo_level_e::ZERO, mainWindowCtrlUserInput,  "User typed text " << userTypedText);
-
-				if ((windowState == main_window_shared_types::state_e::REFRESH_TAB) || (windowState == main_window_shared_types::state_e::CLOSE_TAB) || (windowState == main_window_shared_types::state_e::MOVE_RIGHT) || (windowState == main_window_shared_types::state_e::MOVE_LEFT) || (windowState == main_window_shared_types::state_e::TAB_MOVE)) {
-					this->tabctrl->processTabIndex(userTypedText);
-				}
 				break;
 			default:
 				this->setStateAction(windowState, event);
@@ -219,7 +215,7 @@ void main_window_ctrl::MainWindowCtrl::setStateAction(main_window_shared_types::
 			this->printUserInput(main_window_shared_types::text_action_e::CLEAR);
 			break;
 		default:
-			QEXCEPTION_ACTION(throw,  "Unknown state " << windowState);
+			QINFO_PRINT(global_types::qinfo_level_e::ZERO, mainWindowCtrlTabUserInput,  "Window in state " << windowState << " Key pressed is " << event->text() << "(ID " << pressedKey << ")");
 			break;
 	}
 }
