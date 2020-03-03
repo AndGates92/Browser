@@ -166,7 +166,6 @@ void main_window_ctrl::MainWindowCtrl::keyPressEvent(QKeyEvent * event) {
 void main_window_ctrl::MainWindowCtrl::setStateAction(main_window_shared_types::state_e windowState, QKeyEvent * event) {
 
 	int pressedKey = event->key();
-	main_window_shared_types::move_value_e moveType = this->windowCore->getMoveValueType();
 	QString userTypedText = this->windowCore->getUserText();
 
 	switch (windowState) {
@@ -183,22 +182,6 @@ void main_window_ctrl::MainWindowCtrl::setStateAction(main_window_shared_types::
 				this->printUserInput(main_window_shared_types::text_action_e::APPEND, event->text());
 			} else {
 				QWARNING_PRINT(mainWindowCtrlUserInput, "Pressed key " << event->text() << ". Only numbers are accepted when executing actions like closing windows or moving in the tab bar");
-			}
-			break;
-		case main_window_shared_types::state_e::TAB_MOVE:
-			// If no sign is provided, the tab is considered as absolute value
-			// If + or - sign is provided, then the value is considered to be relative to the current tab
-			// If key h is pressed, then the value is considered to be relative to the current tab and considered to go to the left
-			// If key l is pressed, then the value is considered to be relative to the current tab and considered to go to the right
-			if ((pressedKey >= Qt::Key_0) && (pressedKey <= Qt::Key_9)) {
-				if (moveType == main_window_shared_types::move_value_e::IDLE) {
-					this->printUserInput(main_window_shared_types::text_action_e::CLEAR);
-				}
-				this->printUserInput(main_window_shared_types::text_action_e::APPEND, event->text());
-			} else if ((moveType == main_window_shared_types::move_value_e::IDLE) && ((pressedKey == Qt::Key_H) || (pressedKey == Qt::Key_L) || (pressedKey == Qt::Key_Plus) || (pressedKey == Qt::Key_Minus))) {
-				this->printUserInput(main_window_shared_types::text_action_e::CLEAR);
-			} else {
-				QWARNING_PRINT(mainWindowCtrlUserInput, "Pressed key " << event->text() << ". Only numbers and + and - signs are accepted when executing actions like move tabs in the tab bar");
 			}
 			break;
 		case main_window_shared_types::state_e::COMMAND:

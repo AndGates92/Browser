@@ -291,12 +291,17 @@ void main_window_ctrl_tab::MainWindowCtrlTab::executeActionOnTab(int index) {
 	main_window_shared_types::state_e windowState = this->windowCore->getMainWindowState();
 
 	if ((tabCount > tabIndex) && (tabIndex >= 0)) {
-		if (windowState == main_window_shared_types::state_e::CLOSE_TAB) {
-			this->closeTab(tabIndex);
-		} else if (windowState == main_window_shared_types::state_e::TAB_MOVE) {
-			this->convertToAbsTabIndex(tabIndex, global_types::sign_e::NOSIGN);
-		} else if (windowState == main_window_shared_types::state_e::REFRESH_TAB) {
-			this->convertToAbsTabIndex(tabIndex, global_types::sign_e::NOSIGN);
+		switch (windowState) {
+			case main_window_shared_types::state_e::CLOSE_TAB:
+				this->closeTab(tabIndex);
+				break;
+			case main_window_shared_types::state_e::TAB_MOVE:
+			case main_window_shared_types::state_e::REFRESH_TAB:
+				this->convertToAbsTabIndex(tabIndex, global_types::sign_e::NOSIGN);
+				break;
+			default:
+				QEXCEPTION_ACTION(throw,  "Undefined action to execute when in state " << windowState);
+				break;
 		}
 	} else {
 		int maxTabRange = tabCount;
@@ -308,20 +313,27 @@ void main_window_ctrl_tab::MainWindowCtrlTab::executeTabAction(int userInput) {
 	main_window_shared_types::state_e windowState = this->windowCore->getMainWindowState();
 	main_window_shared_types::move_value_e moveType = this->windowCore->getMoveValueType();
 
-	if ((windowState == main_window_shared_types::state_e::REFRESH_TAB) || (windowState == main_window_shared_types::state_e::CLOSE_TAB)) {
-		this->executeActionOnTab(userInput);
-	} else if ((windowState == main_window_shared_types::state_e::MOVE_RIGHT) || (windowState == main_window_shared_types::state_e::MOVE_LEFT)) {
-		this->executeActionOnOffset(userInput);
-	} else if (windowState == main_window_shared_types::state_e::TAB_MOVE) {
-	       if ((moveType == main_window_shared_types::move_value_e::LEFT) || (moveType == main_window_shared_types::move_value_e::RIGHT)) {
-			this->executeActionOnOffset(userInput);
-		} else if (moveType == main_window_shared_types::move_value_e::ABSOLUTE) {
+	switch (windowState) {
+		case main_window_shared_types::state_e::REFRESH_TAB:
+		case main_window_shared_types::state_e::CLOSE_TAB:
 			this->executeActionOnTab(userInput);
-		} else {
-			QEXCEPTION_ACTION(throw,  "Undefined direction of movement of tabs. Currently set to " << moveType);
-		}
-	} else {
-		QEXCEPTION_ACTION(throw,  "Undefined tab action when in state " << windowState);
+			break;
+		case main_window_shared_types::state_e::MOVE_RIGHT:
+		case main_window_shared_types::state_e::MOVE_LEFT:
+			this->executeActionOnOffset(userInput);
+			break;
+		case main_window_shared_types::state_e::TAB_MOVE:
+			if ((moveType == main_window_shared_types::move_value_e::LEFT) || (moveType == main_window_shared_types::move_value_e::RIGHT)) {
+				this->executeActionOnOffset(userInput);
+			} else if (moveType == main_window_shared_types::move_value_e::ABSOLUTE) {
+				this->executeActionOnTab(userInput);
+			} else {
+				QEXCEPTION_ACTION(throw,  "Undefined direction of movement of tabs. Currently set to " << moveType);
+			}
+			break;
+		default:
+			QEXCEPTION_ACTION(throw,  "Undefined tab action when in state " << windowState);
+			break;
 	}
 
 	this->updateInfo();
@@ -410,12 +422,23 @@ void main_window_ctrl_tab::MainWindowCtrlTab::keyPressEvent(QKeyEvent * event) {
 			case Qt::Key_Enter:
 			case Qt::Key_Return:
 				QINFO_PRINT(global_types::qinfo_level_e::ZERO, mainWindowCtrlTabUserInput,  "User typed text " << userTypedText);
-				if (windowState == main_window_shared_types::state_e::OPEN_TAB) {
-					this->addNewTabAndSearch(userTypedText);
-				} else if (windowState == main_window_shared_types::state_e::SEARCH) {
-					this->searchCurrentTab(userTypedText);
-				} else if ((windowState == main_window_shared_types::state_e::REFRESH_TAB) || (windowState == main_window_shared_types::state_e::CLOSE_TAB) || (windowState == main_window_shared_types::state_e::MOVE_RIGHT) || (windowState == main_window_shared_types::state_e::MOVE_LEFT) || (windowState == main_window_shared_types::state_e::TAB_MOVE)) {
-					this->processTabIndex(userTypedText);
+				switch (windowState) {
+					case main_window_shared_types::state_e::OPEN_TAB:
+						this->addNewTabAndSearch(userTypedText);
+						break;
+					case main_window_shared_types::state_e::SEARCH:
+						this->searchCurrentTab(userTypedText);
+						break;
+					case main_window_shared_types::state_e::REFRESH_TAB:
+					case main_window_shared_types::state_e::CLOSE_TAB:
+					case main_window_shared_types::state_e::MOVE_RIGHT:
+					case main_window_shared_types::state_e::MOVE_LEFT:
+					case main_window_shared_types::state_e::TAB_MOVE:
+						this->processTabIndex(userTypedText);
+						break;
+					default:
+						// Do nothing by default
+						break;
 				}
 				this->windowCore->setMoveValueType(main_window_shared_types::move_value_e::IDLE);
 				break;
@@ -435,15 +458,27 @@ void main_window_ctrl_tab::MainWindowCtrlTab::setStateAction(main_window_shared_
 
 	switch (windowState) {
 		case main_window_shared_types::state_e::TAB_MOVE:
-			if ((pressedKey >= Qt::Key_0) && (pressedKey <= Qt::Key_9)) {
-				if (moveType == main_window_shared_types::move_value_e::IDLE) {
+			if (moveType == main_window_shared_types::move_value_e::IDLE) {
+				// If no sign is provided, the tab is considered as absolute value
+				// If + or - sign is provided, then the value is considered to be relative to the current tab
+				// If key h is pressed, then the value is considered to be relative to the current tab and considered to go to the left
+				// If key l is pressed, then the value is considered to be relative to the current tab and considered to go to the right
+				if ((pressedKey >= Qt::Key_0) && (pressedKey <= Qt::Key_9)) {
 					this->windowCore->setMoveValueType(main_window_shared_types::move_value_e::ABSOLUTE);
-				}
-			} else if ((moveType == main_window_shared_types::move_value_e::IDLE) && ((pressedKey == Qt::Key_H) || (pressedKey == Qt::Key_L) || (pressedKey == Qt::Key_Plus) || (pressedKey == Qt::Key_Minus))) {
-				if ((pressedKey == Qt::Key_Plus) || (pressedKey == Qt::Key_L)) {
+					this->printUserInput(main_window_shared_types::text_action_e::APPEND, event->text());
+				} else if ((pressedKey == Qt::Key_Plus) || (pressedKey == Qt::Key_L)) {
 					this->windowCore->setMoveValueType(main_window_shared_types::move_value_e::RIGHT);
-				} else {
+				} else if ((pressedKey == Qt::Key_H) || (pressedKey == Qt::Key_Minus)) {
 					this->windowCore->setMoveValueType(main_window_shared_types::move_value_e::LEFT);
+				} else {
+					QWARNING_PRINT(mainWindowCtrlTabUserInput, "Pressed key " << event->text() << ". Only numbers and + and - signs are accepted when executing actions like move tabs in the tab bar");
+				}
+			} else {
+				if ((pressedKey >= Qt::Key_0) && (pressedKey <= Qt::Key_9)) {
+					this->windowCore->setMoveValueType(main_window_shared_types::move_value_e::ABSOLUTE);
+					this->printUserInput(main_window_shared_types::text_action_e::APPEND, event->text());
+				} else {
+					QWARNING_PRINT(mainWindowCtrlTabUserInput, "Pressed key " << event->text() << ". Only numbers accepted when executing actions like move tabs in the tab bar");
 				}
 			}
 			break;

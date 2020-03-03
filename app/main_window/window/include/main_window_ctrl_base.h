@@ -59,6 +59,27 @@ namespace main_window_ctrl_base {
 			 */
 			void updateInfo();
 
+			/**
+			 * @brief Function: virtual void keyPressEvent(QKeyEvent * event)
+			 *
+			 * \param event: event coming from keyboard
+			 *
+			 * This function handles event coming from the keyboard
+			 * Escape is not triggered in keyPressedEvent
+			 * Re-implement key pressed event
+			 */
+			virtual void keyPressEvent(QKeyEvent * event) = 0;
+
+			/**
+			 * @brief Function: virtual void keyReleaseEvent(QKeyEvent * event)
+			 *
+			 * \param event: event coming from keyboard
+			 *
+			 * This function handles event coming from the keyboard
+			 * Re-implement key released event
+			 */
+			virtual void keyReleaseEvent(QKeyEvent * event) = 0;
+
 		protected:
 			/**
 			 * @brief parent widget
@@ -123,6 +144,7 @@ namespace main_window_ctrl_base {
 			 * This function is abstract and it executes a command on a based on user input and the window state
 			 */
 			virtual void setStateAction(main_window_shared_types::state_e windowState, QKeyEvent * event) = 0;
+
 		private:
 	};
 

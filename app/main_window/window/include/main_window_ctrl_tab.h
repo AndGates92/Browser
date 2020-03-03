@@ -114,10 +114,10 @@ namespace main_window_ctrl_tab {
 			/**
 			 * @brief Function: void keyPressEvent(QKeyEvent * event)
 			 *
-			 * \param event: event coming from keyboard 
+			 * \param event: event coming from keyboard
 			 *
 			 * This function handles event coming from the keyboard
-			 * Escape is not triggered in keyPressedEvent 
+			 * Escape is not triggered in keyPressedEvent
 			 * Re-implement key pressed event
 			 */
 			void keyPressEvent(QKeyEvent * event);
