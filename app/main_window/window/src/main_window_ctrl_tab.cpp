@@ -457,6 +457,21 @@ void main_window_ctrl_tab::MainWindowCtrlTab::setStateAction(main_window_shared_
 	main_window_shared_types::move_value_e moveType = this->windowCore->getMoveValueType();
 
 	switch (windowState) {
+		case main_window_shared_types::state_e::OPEN_TAB:
+		case main_window_shared_types::state_e::SEARCH:
+			if ((pressedKey >= Qt::Key_Space) && (pressedKey <= Qt::Key_ydiaeresis)) {
+				this->printUserInput(main_window_shared_types::text_action_e::APPEND, event->text());
+			}
+			break;
+		case main_window_shared_types::state_e::CLOSE_TAB:
+		case main_window_shared_types::state_e::MOVE_RIGHT:
+		case main_window_shared_types::state_e::MOVE_LEFT:
+			if ((pressedKey >= Qt::Key_0) && (pressedKey <= Qt::Key_9)) {
+				this->printUserInput(main_window_shared_types::text_action_e::APPEND, event->text());
+			} else {
+				QWARNING_PRINT(mainWindowCtrlTabUserInput, "Pressed key " << event->text() << ". Only numbers are accepted when executing actions like closing windows or moving in the tab bar");
+			}
+			break;
 		case main_window_shared_types::state_e::TAB_MOVE:
 			if (moveType == main_window_shared_types::move_value_e::IDLE) {
 				// If no sign is provided, the tab is considered as absolute value
