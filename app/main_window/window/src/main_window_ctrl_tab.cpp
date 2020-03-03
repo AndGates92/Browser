@@ -387,6 +387,7 @@ void main_window_ctrl_tab::MainWindowCtrlTab::keyReleaseEvent(QKeyEvent * event)
 	if (event->type() == QEvent::KeyRelease) {
 
 		main_window_shared_types::state_e windowState = this->windowCore->getMainWindowState();
+		QString userTypedText = this->windowCore->getUserText();
 
 		// Retrieve main window controller state
 		QINFO_PRINT(global_types::qinfo_level_e::ZERO, mainWindowCtrlTabUserInput,  "State " << windowState << " key " << keySeq.toString());
@@ -396,6 +397,12 @@ void main_window_ctrl_tab::MainWindowCtrlTab::keyReleaseEvent(QKeyEvent * event)
 				this->windowCore->setMoveValueType(main_window_shared_types::move_value_e::IDLE);
 				break;
 			case Qt::Key_Backspace:
+				QINFO_PRINT(global_types::qinfo_level_e::ZERO, mainWindowCtrlTabUserInput,  "User typed text " << userTypedText);
+				// If in state TAB MOVE and the windowCore->userText is empty after deleting the last character, set the move value to IDLE
+				if ((userTypedText.isEmpty() == true) && (windowState == main_window_shared_types::state_e::TAB_MOVE)) {
+					this->windowCore->setMoveValueType(main_window_shared_types::move_value_e::IDLE);
+					this->printUserInput(main_window_shared_types::text_action_e::CLEAR);
+				}
 				break;
 			default:
 				break;

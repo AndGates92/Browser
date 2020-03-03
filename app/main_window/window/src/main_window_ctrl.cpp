@@ -115,10 +115,6 @@ void main_window_ctrl::MainWindowCtrl::keyReleaseEvent(QKeyEvent * event) {
 					userTypedText = userTypedText.remove(endString, 1);
 					this->printUserInput(main_window_shared_types::text_action_e::SET, userTypedText);
 				}
-				// If in state TAB MOVE and the windowCore->userText is empty after deleting the last character, set the move value to IDLE
-				if ((userTypedText.isEmpty() == true) && (windowState == main_window_shared_types::state_e::TAB_MOVE)) {
-					this->windowCore->setMoveValueType(main_window_shared_types::move_value_e::IDLE);
-				}
 				break;
 			default:
 				break;
