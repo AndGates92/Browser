@@ -468,14 +468,15 @@ void main_window_ctrl_tab::MainWindowCtrlTab::setStateAction(main_window_shared_
 					this->printUserInput(main_window_shared_types::text_action_e::APPEND, event->text());
 				} else if ((pressedKey == Qt::Key_Plus) || (pressedKey == Qt::Key_L)) {
 					this->windowCore->setMoveValueType(main_window_shared_types::move_value_e::RIGHT);
+					this->printUserInput(main_window_shared_types::text_action_e::CLEAR);
 				} else if ((pressedKey == Qt::Key_H) || (pressedKey == Qt::Key_Minus)) {
 					this->windowCore->setMoveValueType(main_window_shared_types::move_value_e::LEFT);
+					this->printUserInput(main_window_shared_types::text_action_e::CLEAR);
 				} else {
 					QWARNING_PRINT(mainWindowCtrlTabUserInput, "Pressed key " << event->text() << ". Only numbers and + and - signs are accepted when executing actions like move tabs in the tab bar");
 				}
 			} else {
 				if ((pressedKey >= Qt::Key_0) && (pressedKey <= Qt::Key_9)) {
-					this->windowCore->setMoveValueType(main_window_shared_types::move_value_e::ABSOLUTE);
 					this->printUserInput(main_window_shared_types::text_action_e::APPEND, event->text());
 				} else {
 					QWARNING_PRINT(mainWindowCtrlTabUserInput, "Pressed key " << event->text() << ". Only numbers accepted when executing actions like move tabs in the tab bar");
