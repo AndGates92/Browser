@@ -12,6 +12,7 @@
 #include <qt5/QtWidgets/QWidget>
 
 #include "elided_label.h"
+#include "progress_bar.h"
 
 /** @defgroup MainWindowStatusBarGroup Main Window StatusBar Doxygen Group
  *  Main Window statusbar functions and classes
@@ -67,7 +68,7 @@ namespace main_window_status_bar {
 	}
 
 	/**
-	 * @brief MainWindowWrapper class
+	 * @brief MainWindowStatusBar class
 	 *
 	 */
 	class MainWindowStatusBar : public QWidget {
@@ -117,6 +118,15 @@ namespace main_window_status_bar {
 			 */
 			elided_label::ElidedLabel * getInfoText();
 
+			/**
+			 * Function: progress_bar::ProgressBar * getLoadBar()
+			 *
+			 * \return the bar storing the value of the progress in loading a page
+			 *
+			 * This function returns the bar storing the value of the progress in loading a page
+			 */
+			progress_bar::ProgressBar * getLoadBar();
+
 		protected:
 
 		private:
@@ -139,6 +149,12 @@ namespace main_window_status_bar {
 			 *
 			 */
 			elided_label::ElidedLabel * infoText;
+
+			/**
+			 * @brief load bar
+			 *
+			 */
+			progress_bar::ProgressBar * loadBar;
 
 			/**
 			 * @brief Function: elided_label::ElidedLabel * newWindowLabel()

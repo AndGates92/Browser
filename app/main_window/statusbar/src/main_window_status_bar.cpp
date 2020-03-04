@@ -36,6 +36,9 @@ main_window_status_bar::MainWindowStatusBar::MainWindowStatusBar(QWidget * paren
 	this->infoText = this->newWindowLabel();
 	this->infoText->setAlignment(Qt::AlignRight | Qt::AlignBottom);
 
+	// info
+	this->loadBar = new progress_bar::ProgressBar(this);
+
 	// Populate statusbar
 	this->fillStatusBar();
 }
@@ -46,8 +49,8 @@ main_window_status_bar::MainWindowStatusBar::~MainWindowStatusBar() {
 	delete this->userInputText;
 	delete this->contentPathText;
 	delete this->infoText;
+	delete this->loadBar;
 }
-
 
 elided_label::ElidedLabel * main_window_status_bar::MainWindowStatusBar::newWindowLabel() {
 	elided_label::ElidedLabel * newLabel = new elided_label::ElidedLabel(QString::null, main_window_status_bar::textOrigin, this, this->windowFlags(), Qt::ElideRight);
@@ -72,9 +75,9 @@ elided_label::ElidedLabel * main_window_status_bar::MainWindowStatusBar::newWind
 void main_window_status_bar::MainWindowStatusBar::fillStatusBar() {
 
 	// Layout
-	// -------------------------------------------------
-	// | <user text> |      <content>     |   <info>   |
-	// -------------------------------------------------
+	// ------------------------------------------------------------------
+	// | <user text> |      <content>     |   <info>   | <progress bar> |
+	// ------------------------------------------------------------------
 
 	QHBoxLayout * layout = new QHBoxLayout();
 
@@ -86,6 +89,9 @@ void main_window_status_bar::MainWindowStatusBar::fillStatusBar() {
 
 	// info
 	layout->addWidget(this->infoText);
+
+	// load bar
+	layout->addWidget(this->loadBar);
 
 	layout->setSpacing(main_window_status_bar::horizontalWidgetSpacing);
 	layout->setContentsMargins(main_window_status_bar::leftMargin, main_window_status_bar::topMargin, main_window_status_bar::rightMargin, main_window_status_bar::bottomMargin);
@@ -103,6 +109,10 @@ elided_label::ElidedLabel * main_window_status_bar::MainWindowStatusBar::getCont
 
 elided_label::ElidedLabel * main_window_status_bar::MainWindowStatusBar::getInfoText() {
 	return this->infoText;
+}
+
+progress_bar::ProgressBar * main_window_status_bar::MainWindowStatusBar::getLoadBar() {
+	return this->loadBar;
 }
 
 QSize main_window_status_bar::MainWindowStatusBar::minimumSizeHint() {
