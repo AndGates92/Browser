@@ -473,6 +473,7 @@ void main_window_ctrl_tab::MainWindowCtrlTab::setStateAction(main_window_shared_
 		case main_window_shared_types::state_e::CLOSE_TAB:
 		case main_window_shared_types::state_e::MOVE_RIGHT:
 		case main_window_shared_types::state_e::MOVE_LEFT:
+		case main_window_shared_types::state_e::REFRESH_TAB:
 			if ((pressedKey >= Qt::Key_0) && (pressedKey <= Qt::Key_9)) {
 				this->printUserInput(main_window_shared_types::text_action_e::APPEND, event->text());
 			} else {
