@@ -520,10 +520,18 @@ void main_window_ctrl_tab::MainWindowCtrlTab::convertToAbsTabIndex(int offset, g
 	int distance = 0;
 	// offset is main_window_ctrl_tab::emptyUserInput if the argument is not passed
 	if (offset == main_window_ctrl_tab::emptyUserInput) {
-		if ((windowState == main_window_shared_types::state_e::MOVE_RIGHT) || (windowState == main_window_shared_types::state_e::MOVE_LEFT) || (windowState == main_window_shared_types::state_e::TAB_MOVE)) {
-			distance = 1;
-		} else if (windowState == main_window_shared_types::state_e::REFRESH_TAB) {
-			distance = 0;
+		switch (windowState) {
+			case main_window_shared_types::state_e::MOVE_RIGHT:
+			case main_window_shared_types::state_e::MOVE_LEFT:
+			case main_window_shared_types::state_e::TAB_MOVE:
+				distance = 1;
+				break;
+			case main_window_shared_types::state_e::REFRESH_TAB:
+				distance = 0;
+				break;
+			default:
+				QEXCEPTION_ACTION(throw,  "Unable to compute distance when in state " << windowState);
+				break;
 		}
 	} else {
 		distance = offset;
