@@ -296,8 +296,10 @@ void main_window_ctrl_tab::MainWindowCtrlTab::executeActionOnTab(int index) {
 				this->closeTab(tabIndex);
 				break;
 			case main_window_shared_types::state_e::TAB_MOVE:
-			case main_window_shared_types::state_e::REFRESH_TAB:
 				this->convertToAbsTabIndex(tabIndex, global_types::sign_e::NOSIGN);
+				break;
+			case main_window_shared_types::state_e::REFRESH_TAB:
+				this->refreshUrl(tabIndex);
 				break;
 			default:
 				QEXCEPTION_ACTION(throw,  "Undefined action to execute when in state " << windowState);
@@ -526,9 +528,6 @@ void main_window_ctrl_tab::MainWindowCtrlTab::convertToAbsTabIndex(int offset, g
 			case main_window_shared_types::state_e::TAB_MOVE:
 				distance = 1;
 				break;
-			case main_window_shared_types::state_e::REFRESH_TAB:
-				distance = 0;
-				break;
 			default:
 				QEXCEPTION_ACTION(throw,  "Unable to compute distance when in state " << windowState);
 				break;
@@ -566,9 +565,6 @@ void main_window_ctrl_tab::MainWindowCtrlTab::convertToAbsTabIndex(int offset, g
 			break;
 		case main_window_shared_types::state_e::TAB_MOVE:
 			this->moveTab(tabIndex);
-			break;
-		case main_window_shared_types::state_e::REFRESH_TAB:
-			this->refreshUrl(tabIndex);
 			break;
 		default:
 			QEXCEPTION_ACTION(throw,  "Undefined action when in state " << windowState);
