@@ -235,7 +235,7 @@ void main_window_ctrl_tab::MainWindowCtrlTab::refreshUrl(int tabIndex) {
 	QString urlStr (currUrl.toDisplayString(QUrl::FullyDecoded));
 	QINFO_PRINT(global_types::qinfo_level_e::ZERO, mainWindowCtrlTabUrl,  "Refresh URL " << urlStr);
 
-	currentTabPage->setUrl(QUrl(currUrl));
+	currentTabPage->load(QUrl(currUrl));
 }
 
 void main_window_ctrl_tab::MainWindowCtrlTab::moveTab(int tabIndex) {
