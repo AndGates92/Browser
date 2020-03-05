@@ -30,10 +30,21 @@ progress_bar::ProgressBar::ProgressBar(QWidget * parent) : QProgressBar(parent) 
 	this->setSizePolicy(QSizePolicy::Preferred, QSizePolicy::Minimum);
 
 	// Hide the bar at the start
-	this->setVisible(true);
+	this->setVisible(false);
 }
 
 progress_bar::ProgressBar::~ProgressBar() {
 	QINFO_PRINT(global_types::qinfo_level_e::ZERO, progressBarOverall,  "Progress bar destructor");
 }
 
+void progress_bar::ProgressBar::startLoading() {
+	this->setVisible(true);
+}
+
+void progress_bar::ProgressBar::endLoading(bool success) {
+
+	QEXCEPTION_ACTION_COND((!success), throw,  "Operation didn't complete succesfully");
+
+	// Hide progress bar after operation completes
+	this->setVisible(false);
+}

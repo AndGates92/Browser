@@ -74,6 +74,22 @@ namespace progress_bar {
 			 */
 			~ProgressBar();
 
+			/**
+			 * @brief Function: void startLoading()
+			 *
+			 * This function executes actions to perform at the start of a loading operation
+			 */
+			void startLoading();
+
+			/**
+			 * @brief Function: void endLoading(bool success)
+			 *
+			 * \param success: loading success flag
+			 *
+			 * This function executes actions to perform at the end of a loading operation
+			 */
+			void endLoading(bool success);
+
 		protected:
 
 		private:

@@ -276,12 +276,6 @@ namespace main_window_ctrl_tab {
 			// ================================ END SHORTCUTS ========================================//
 
 			/**
-			 * @brief last processed tab
-			 *
-			 */
-			QWebEngineView * currentTabPage;
-
-			/**
 			 * @brief Function: void createShortcuts()
 			 *
 			 * This function creates shortcuts for the items on the window
