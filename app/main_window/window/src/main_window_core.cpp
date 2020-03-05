@@ -29,11 +29,13 @@ main_window_core::MainWindowCore::~MainWindowCore() {
 	// Menubar
 	delete this->topMenuBar;
 
-	// Label
+	// Status bar
 	delete this->bottomStatusBar;
+
+	// Command menu
 	delete this->cmdMenu;
 
-	// Main components
+	// tabs
 	delete this->tabs;
 
 	// Main widget
