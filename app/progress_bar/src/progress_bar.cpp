@@ -35,6 +35,5 @@ progress_bar::ProgressBar::ProgressBar(QWidget * parent) : QProgressBar(parent) 
 
 progress_bar::ProgressBar::~ProgressBar() {
 	QINFO_PRINT(global_types::qinfo_level_e::ZERO, progressBarOverall,  "Progress bar destructor");
-
 }
 
