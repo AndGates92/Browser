@@ -27,6 +27,10 @@ Q_LOGGING_CATEGORY(mainWindowCtrlTabUrl, "mainWindowCtrlTab.url", MSG_TYPE_LEVEL
 
 main_window_ctrl_tab::MainWindowCtrlTab::MainWindowCtrlTab(main_window_core::MainWindowCore * core, QWidget * parent) : main_window_ctrl_base::MainWindowCtrlBase(core, parent, main_window_ctrl_tab::commandFileFullPath) {
 
+	this->addNewTabAndSearch(QString::null);
+	int tabIndex = this->windowCore->tabs->currentIndex();
+	this->currentTabPage = dynamic_cast<QWebEngineView *>(this->windowCore->tabs->widget(tabIndex));
+
 	// Shortcuts
 	this->createShortcuts();
 
@@ -100,6 +104,10 @@ void main_window_ctrl_tab::MainWindowCtrlTab::connectSignals() {
 
 	// When the file has been read, then show it on the screen
 	connect(this->windowCore->topMenuBar->getFileMenu(), &file_menu::FileMenu::updateCenterWindowSignal, this, &main_window_ctrl_tab::MainWindowCtrlTab::printStrInCurrentTabWidget);
+
+//	connect(this->currentTabPage, &QWebEngineView::loadStarted, this->windowCore->bottomStatusBar->getLoadBar(), &progress_bar::ProgressBar::makeProgressBarVisible);
+	connect(this->currentTabPage, &QWebEngineView::loadProgress, this->windowCore->bottomStatusBar->getLoadBar(), &progress_bar::ProgressBar::setValue);
+//	connect(this->currentTabPage, &QWebEngineView::loadFinished, this->windowCore->bottomStatusBar->getLoadBar(), &progress_bar::ProgressBar::makeProgressBarInvisible);
 }
 
 //************************************************************************************

@@ -30,7 +30,7 @@ progress_bar::ProgressBar::ProgressBar(QWidget * parent) : QProgressBar(parent) 
 	this->setSizePolicy(QSizePolicy::Preferred, QSizePolicy::Minimum);
 
 	// Hide the bar at the start
-	this->setVisible(false);
+	this->setVisible(true);
 }
 
 progress_bar::ProgressBar::~ProgressBar() {
