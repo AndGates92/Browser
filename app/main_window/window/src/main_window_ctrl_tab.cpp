@@ -9,7 +9,6 @@
 // Qt libraries
 #include <qt5/QtCore/QtGlobal>
 #include <qt5/QtGui/QKeyEvent>
-#include <qt5/QtWebEngineWidgets/QWebEngineView>
 
 // Required by qInfo
 #include <qt5/QtCore/QtDebug>
@@ -214,8 +213,8 @@ void main_window_ctrl_tab::MainWindowCtrlTab::updateContent(int index) {
 	if (tabCount > 0) {
 		QString contentStr (QString::null);
 		if (tabType == main_window_shared_types::tab_type_e::WEB_ENGINE) {
-			QWebEngineView * currentTabPage = dynamic_cast<QWebEngineView *>(this->windowCore->tabs->widget(index));
-			QUrl websiteUrl = currentTabPage->url();
+			this->currentTabPage = dynamic_cast<QWebEngineView *>(this->windowCore->tabs->widget(index));
+			QUrl websiteUrl = this->currentTabPage->url();
 
 			contentStr = websiteUrl.toDisplayString(QUrl::FullyDecoded);
 		} else if (tabType == main_window_shared_types::tab_type_e::LABEL) {
@@ -229,13 +228,13 @@ void main_window_ctrl_tab::MainWindowCtrlTab::updateContent(int index) {
 }
 
 void main_window_ctrl_tab::MainWindowCtrlTab::refreshUrl(int tabIndex) {
-	QWebEngineView * currentTabPage = dynamic_cast<QWebEngineView *>(this->windowCore->tabs->widget(tabIndex));
-	QUrl currUrl = currentTabPage->url();
+	this->currentTabPage = dynamic_cast<QWebEngineView *>(this->windowCore->tabs->widget(tabIndex));
+	QUrl currUrl = this->currentTabPage->url();
 
 	QString urlStr (currUrl.toDisplayString(QUrl::FullyDecoded));
 	QINFO_PRINT(global_types::qinfo_level_e::ZERO, mainWindowCtrlTabUrl,  "Refresh URL " << urlStr);
 
-	currentTabPage->load(QUrl(currUrl));
+	this->currentTabPage->load(QUrl(currUrl));
 }
 
 void main_window_ctrl_tab::MainWindowCtrlTab::moveTab(int tabIndex) {
@@ -631,10 +630,10 @@ void main_window_ctrl_tab::MainWindowCtrlTab::printStrInCurrentTabWidget(const Q
 	QINFO_PRINT(global_types::qinfo_level_e::ZERO, mainWindowCtrlTabTabs, "Current tab index is " << currentTabIndex << " and the tab widget has " << tabWidget->count() << " tabs");
 
 	tabWidget->setTabText(currentTabIndex, tabTitle);
-	QLabel * currentTabPage = dynamic_cast<QLabel *>(tabWidget->widget(currentTabIndex, true));
-	Q_ASSERT_X((currentTabPage != nullptr), "null center window", "Center window is null");
+	QLabel * currentTabPageLabel = dynamic_cast<QLabel *>(tabWidget->widget(currentTabIndex, true));
+	Q_ASSERT_X((currentTabPageLabel != nullptr), "null center window", "Center window is null");
 
-	currentTabPage->setText(tabContent);
+	currentTabPageLabel->setText(tabContent);
 
 	this->updateContent(currentTabIndex);
 

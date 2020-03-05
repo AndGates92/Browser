@@ -14,6 +14,7 @@
 #include <qt5/QtWidgets/QAction>
 #include <qt5/QtWidgets/QMenuBar>
 #include <qt5/QtWidgets/QWidget>
+#include <qt5/QtWebEngineWidgets/QWebEngineView>
 
 #include "main_window_shared_types.h"
 #include "main_window_ctrl_base.h"
@@ -273,6 +274,12 @@ namespace main_window_ctrl_tab {
 			 */
 			QShortcut * moveTabToKey;
 			// ================================ END SHORTCUTS ========================================//
+
+			/**
+			 * @brief last processed tab
+			 *
+			 */
+			QWebEngineView * currentTabPage;
 
 			/**
 			 * @brief Function: void createShortcuts()
