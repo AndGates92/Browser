@@ -25,31 +25,31 @@ namespace progress_bar {
 		 * @brief default progres bar alignment
 		 *
 		 */
-		const Qt::Alignment progressAlignment = (Qt::AlignHCenter | Qt::AlignVCenter);
+		constexpr Qt::Alignment progressAlignment = (Qt::AlignHCenter | Qt::AlignVCenter);
 
 		/**
 		 * @brief default direction of the text
 		 *
 		 */
-		const QProgressBar::Direction progressTextDirection = QProgressBar::TopToBottom;
+		constexpr QProgressBar::Direction progressTextDirection = QProgressBar::TopToBottom;
 
 		/**
 		 * @brief default visible text flag
 		 *
 		 */
-		const bool progressTextVisible = true;
+		constexpr bool progressTextVisible = true;
 
 		/**
 		 * @brief default format of the text
 		 *
 		 */
-		const QString barTextFormat("%p%");
+		constexpr QString barTextFormat("%p%");
 
 		/**
 		 * @brief default inverted progress flag
 		 *
 		 */
-		const bool invertedProgress = false;
+		constexpr bool invertedProgress = false;
 	}
 
 	/**

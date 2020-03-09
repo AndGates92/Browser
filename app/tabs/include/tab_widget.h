@@ -39,13 +39,13 @@ namespace tab_widget {
 		 * @brief minimum height
 		 *
 		 */
-		const int minHeight = 200; // px
+		constexpr int minHeight = 200;// px
 
 		/**
 		 * @brief minimum width
 		 *
 		 */
-		const int minWidth = 100; // px
+		constexpr int minWidth = 100;// px
 	}
 
 	/**

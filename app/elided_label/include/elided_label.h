@@ -30,13 +30,13 @@ namespace elided_label {
 		 * @brief Default x coordinate of QLabel retangle origincommand menu title
 		 *
 		 */
-		const int labelOriginX = 0;
+		constexpr int labelOriginX = 0;
 
 		/**
 		 * @brief Default y coordinate of QLabel retangle origincommand menu title
 		 *
 		 */
-		const int labelOriginY = 0;
+		constexpr int labelOriginY = 0;
 
 	}
 

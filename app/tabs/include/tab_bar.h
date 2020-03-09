@@ -35,13 +35,13 @@ namespace tab_bar {
 		 * @brief height
 		 *
 		 */
-		const int height = 15; // px
+		constexpr int height = 15;// px
 
 		/**
 		 * @brief minimum width
 		 *
 		 */
-		const int minWidth = 50; // px
+		constexpr int minWidth = 50;// px
 	}
 
 	/**
