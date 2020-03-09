@@ -23,6 +23,12 @@ main_window_status_bar::MainWindowStatusBar::MainWindowStatusBar(QWidget * paren
 
 	this->setSizePolicy(QSizePolicy::Preferred, QSizePolicy::Fixed);
 
+	this->setStyleSheet(
+		"QWidget {"
+			"background-color: black; "
+		"}"
+	);
+
 	// user input
 	this->userInputText = this->newWindowLabel();
 	this->userInputText->setAlignment(Qt::AlignLeft | Qt::AlignBottom);
@@ -37,7 +43,7 @@ main_window_status_bar::MainWindowStatusBar::MainWindowStatusBar(QWidget * paren
 	this->infoText->setAlignment(Qt::AlignRight | Qt::AlignBottom);
 
 	// info
-	this->loadBar = new progress_bar::ProgressBar(this);
+	this->loadBar = this->newProgressBar();
 
 	// Populate statusbar
 	this->fillStatusBar();
@@ -58,18 +64,46 @@ elided_label::ElidedLabel * main_window_status_bar::MainWindowStatusBar::newWind
 	newLabel->setFrameStyle(QFrame::NoFrame | QFrame::Sunken);
 	newLabel->setFixedHeight(main_window_status_bar::textHeight);
 	newLabel->setTextFormat(Qt::PlainText);
-	// Disable widget resizing
+	// Set style sheet from the parent object because it can be customized based on the parent object properties
 	newLabel->setStyleSheet(
 		"QLabel {"
-			"background: black; "
+			// Backgorund color to be inherited from the parent one
+			"background: inherit; "
+			// Text color
+			// Set to white as status bar backgorund color is black
 			"color: white; "
 			"text-align: center; "
-			"border-right: 1px solid black; "
-			"border-left: 1px solid black; "
+			"border-right: 1px solid inherit; "
+			"border-left: 1px solid inherit; "
 		"}"
 	);
 
 	return newLabel;
+}
+
+progress_bar::ProgressBar * main_window_status_bar::MainWindowStatusBar::newProgressBar() {
+	progress_bar::ProgressBar * bar = new progress_bar::ProgressBar(this);
+
+	// Set style sheet from the parent object because it can be customized based on the parent object properties
+	bar->setStyleSheet(
+		"QProgressBar {"
+			// Backgorund color to be inherited from the parent one
+			"background-color: inherit; "
+			"text-align: center; "
+			// Text color
+			// Set to black as progress bar backgorund color is white
+			"color: black; "
+			"border: 1px solid inherit; "
+			// How rounded borders are. No rounding in this case
+			"border-radius: 0px; "
+		"}"
+		"QProgressBar::chunk {"
+			// Set to white as status bar backgorund color is black
+			"background-color: white; "
+		"}"
+	);
+
+	return bar;
 }
 
 void main_window_status_bar::MainWindowStatusBar::fillStatusBar() {

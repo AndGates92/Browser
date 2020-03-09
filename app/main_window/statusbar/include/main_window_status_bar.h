@@ -166,6 +166,15 @@ namespace main_window_status_bar {
 			elided_label::ElidedLabel * newWindowLabel();
 
 			/**
+			 * @brief Function: progress_bar::ProgressBar * newProgressBar()
+			 *
+			 * \return configured progress bar
+			 *
+			 * Configure progress bar
+			 */
+			progress_bar::ProgressBar * newProgressBar();
+
+			/**
 			 * @brief Function: void fillStatusBar()
 			 *
 			 * This function fills the status bar
