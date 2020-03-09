@@ -38,6 +38,7 @@ progress_bar::ProgressBar::~ProgressBar() {
 }
 
 void progress_bar::ProgressBar::startLoading() {
+	this->setValue(0);
 	this->setVisible(true);
 }
 
@@ -47,4 +48,16 @@ void progress_bar::ProgressBar::endLoading(bool success) {
 
 	// Hide progress bar after operation completes
 	this->setVisible(false);
+}
+
+QSize progress_bar::ProgressBar::minimumSizeHint() {
+	return this->sizeHint();
+}
+
+QSize progress_bar::ProgressBar::sizeHint() {
+	QWidget * parent = this->parentWidget();
+	int width = parent->minimumSizeHint().width();
+	int height = parent->fontMetrics().height() + progress_bar::topMargin + progress_bar::bottomMargin;
+
+	return QSize(width,height);
 }

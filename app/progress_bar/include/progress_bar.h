@@ -50,6 +50,18 @@ namespace progress_bar {
 		 *
 		 */
 		const bool invertedProgress = false;
+
+		/**
+		 * @brief top margin between widget and window
+		 *
+		 */
+		const int topMargin = 0;
+
+		/**
+		 * @brief bottom margin between widget and window
+		 *
+		 */
+		const int bottomMargin = 0;
 	}
 
 	/**
@@ -93,6 +105,26 @@ namespace progress_bar {
 		protected:
 
 		private:
+
+			/**
+			 * @brief Function: QSize minimumSizeHint()
+			 *
+			 * \return return minimum size of the widget
+			 *
+			 * Compute minimum size of the widget
+			 */
+			QSize minimumSizeHint();
+
+			/**
+			 * @brief Function: QSize sizeHint()
+			 *
+			 * \return return recommended size of the widget
+			 *
+			 * Compute recommendend size of the widget
+			 */
+			QSize sizeHint();
+
+
 
 	};
 
