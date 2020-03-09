@@ -56,8 +56,14 @@ QSize progress_bar::ProgressBar::minimumSizeHint() {
 
 QSize progress_bar::ProgressBar::sizeHint() {
 	QWidget * parent = this->parentWidget();
-	int width = parent->minimumSizeHint().width();
-	int height = parent->fontMetrics().height() + progress_bar::topMargin + progress_bar::bottomMargin;
+	int width;
+	if (parent == Q_NULLPTR) {
+		width = QWidget::sizeHint().width();
+	} else {
+		width = parent->sizeHint().width();
+	}
+
+	const int height = this->fontMetrics().height();
 
 	return QSize(width,height);
 }
