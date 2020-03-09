@@ -64,9 +64,9 @@ void elided_label::ElidedLabel::paintEvent(QPaintEvent * event) {
 		event->accept();
 		QPainter textPainter(this);
 		const QRect dimensions = this->geometry();
-		QINFO_PRINT(global_types::qinfo_level_e::ZERO, elidedLabelPaint,  "Drawing elided text " << this->elisionText);
-		QINFO_PRINT(global_types::qinfo_level_e::ZERO, elidedLabelPaint,  "Origin " << this->origin);
-		QINFO_PRINT(global_types::qinfo_level_e::ZERO, elidedLabelPaint,  "Dimensions width " << dimensions.width() << " height " << dimensions.height());
+		QINFO_PRINT(global_types::qinfo_level_e::ZERO, elidedLabelPaint, "Drawing elided text " << this->elisionText);
+		QINFO_PRINT(global_types::qinfo_level_e::ZERO, elidedLabelPaint, "Origin " << this->origin);
+		QINFO_PRINT(global_types::qinfo_level_e::ZERO, elidedLabelPaint, "Dimensions width " << dimensions.width() << " height " << dimensions.height());
 		textPainter.drawText(this->origin.x(), this->origin.y(), dimensions.width(), dimensions.height(), this->alignment(), this->elisionText);
 	}
 }
