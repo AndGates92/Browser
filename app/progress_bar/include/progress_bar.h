@@ -50,18 +50,6 @@ namespace progress_bar {
 		 *
 		 */
 		const bool invertedProgress = false;
-
-		/**
-		 * @brief top margin between widget and window
-		 *
-		 */
-		const int topMargin = 0;
-
-		/**
-		 * @brief bottom margin between widget and window
-		 *
-		 */
-		const int bottomMargin = 0;
 	}
 
 	/**
