@@ -54,7 +54,7 @@ namespace key_info {
 		};
 
 		typedef std::unordered_map<Qt::Key, Qt::KeyboardModifier, KeyInfoHash, KeyInfoEqualTo> modifierKeyMap;
-		const static modifierKeyMap modifierKeys = {
+		constexpr modifierKeyMap modifierKeys = {
 			{ Qt::Key_Shift, Qt::ShiftModifier },
 			{ Qt::Key_Control, Qt::ControlModifier },
 			{ Qt::Key_Alt, Qt::AltModifier },
@@ -64,7 +64,7 @@ namespace key_info {
 		};
 	
 		typedef std::unordered_map<Qt::Key, QString, KeyInfoHash, KeyInfoEqualTo> specialKeyMap;
-		const static specialKeyMap specialKeys = {
+		constexpr specialKeyMap specialKeys = {
 			ADD_KEY_TO_MAP(Super_L, Super L),
 			ADD_KEY_TO_MAP(Super_R, Super R),
 			ADD_KEY_TO_MAP(Hyper_L, Hyper L),
