@@ -75,6 +75,8 @@ elided_label::ElidedLabel * main_window_status_bar::MainWindowStatusBar::newWind
 			"text-align: center; "
 			"border-right: 1px solid inherit; "
 			"border-left: 1px solid inherit; "
+			// Inherit font
+			"font: inherit; "
 		"}"
 	);
 
@@ -93,13 +95,20 @@ progress_bar::ProgressBar * main_window_status_bar::MainWindowStatusBar::newProg
 			// Text color
 			// Set to black as progress bar backgorund color is white
 			"color: black; "
-			"border: 1px solid inherit; "
 			// How rounded borders are. No rounding in this case
 			"border-radius: 0px; "
+			"border-right: 1px solid inherit; "
+			"border-left: 1px solid inherit; "
+			// Inherit font
+			"font: inherit; "
 		"}"
 		"QProgressBar::chunk {"
 			// Set to white as status bar backgorund color is black
 			"background-color: white; "
+			"margin-left: 2px; "
+			"margin-right: 2px; "
+			"margin-top: 4px; "
+			"margin-bottom: 4px; "
 		"}"
 	);
 
