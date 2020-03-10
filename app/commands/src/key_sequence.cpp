@@ -90,18 +90,17 @@ QVector<QKeySequence> key_sequence::KeySequence::getSeqVec() const {
 	return this->keySeqVec;
 }
 
-QKeySequence::SequenceMatch key_sequence::KeySequence::matches(const key_sequence::KeySequence & otherSeq) {
-	unsigned int thisSize = this->count();
-	unsigned int otherSize = otherSeq.count();
+QKeySequence::SequenceMatch key_sequence::KeySequence::matches(const key_sequence::KeySequence & otherSeq) const {
+	const unsigned int thisSize = this->count();
+	const unsigned int otherSize = otherSeq.count();
 
 	// if this object vector has more than elements than the other one, then there is no match
 	if (thisSize > otherSize) {
 		return QKeySequence::NoMatch;
 	}
 
-	QVector<QKeySequence> otherKeySeq(otherSeq.getSeqVec());
+	const QVector<QKeySequence> otherKeySeq(otherSeq.getSeqVec());
 
-	//for (QVector<QKeySequence>::const_iterator cIter = this->keySeqVec.cbegin(), QVector<QKeySequence>::const_iterator cOtherIter = otherKeySeq.cbegin(); cIter != this->keySeqVec.cend(); cIter++, cOtherIter++) {
 	for (QVector<QKeySequence>::const_iterator cIter = this->keySeqVec.cbegin(), cOtherIter = otherKeySeq.cbegin(); cIter != this->keySeqVec.cend(); cIter++, cOtherIter++) {
 		// if elements are different. then return NoMatch
 		if (*cIter != *cOtherIter) {

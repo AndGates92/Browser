@@ -100,7 +100,7 @@ namespace key_sequence {
 			QString toString(QKeySequence::SequenceFormat format = QKeySequence::NativeText) const;
 
 			/**
-			 * @brief Function: QKeySequence::SequenceMatch matches(const KeySequence & otherSeq)
+			 * @brief Function: QKeySequence::SequenceMatch matches(const KeySequence & otherSeq) const
 			 *
 			 * \param otherSeq: key sequence to match against
 			 *
@@ -111,7 +111,7 @@ namespace key_sequence {
 			 * - QKeySequence::PartialMatch if this object has fewer elements than the other one and the other object contains all elements of this object in the same order and position
 			 * - QKeySequence::NoMatch otherwise (i.e. if this object has more elements than the other one or elements are not the same)
 			 */
-			QKeySequence::SequenceMatch matches(const KeySequence & otherSeq);
+			QKeySequence::SequenceMatch matches(const KeySequence & otherSeq) const;
 
 			// Operator overloading
 			/**
