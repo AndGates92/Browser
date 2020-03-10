@@ -105,7 +105,7 @@ void json_wrapper::JsonWrapper::readJson() {
 
 }
 
-void json_wrapper::JsonWrapper::walkJson(const QJsonValue & content) {
+void json_wrapper::JsonWrapper::walkJson(const QJsonValue & content) const {
 
 	switch (content.type()) {
 		case QJsonValue::Object:

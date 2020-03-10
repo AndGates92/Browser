@@ -42,11 +42,11 @@ main_window_core::MainWindowCore::~MainWindowCore() {
 	delete this->mainWidget;
 }
 
-int main_window_core::MainWindowCore::getTabCount() {
+int main_window_core::MainWindowCore::getTabCount() const {
 	return this->tabs->count();
 }
 
-QString main_window_core::MainWindowCore::getActionName() {
+QString main_window_core::MainWindowCore::getActionName() const {
 	QString actionNameText(QString::null);
 
 	QString actionName(global_functions::qEnumToQString<main_window_shared_types::state_list>(this->mainWindowState, true));
@@ -69,8 +69,28 @@ QString main_window_core::MainWindowCore::getActionName() {
 	return actionNameText;
 }
 
-int main_window_core::MainWindowCore::getCurrentTabIndex() {
+int main_window_core::MainWindowCore::getCurrentTabIndex() const {
 	return this->tabs->currentIndex();
+}
+
+main_window_shared_types::state_e main_window_core::MainWindowCore::getMainWindowState() const {
+	return this->mainWindowState;
+}
+
+main_window_shared_types::move_value_e main_window_core::MainWindowCore::getMoveValueType() const {
+	return this->moveValueType;
+}
+
+QString main_window_core::MainWindowCore::getUserText() const {
+	return this->userText;
+}
+
+void main_window_core::MainWindowCore::setMainWindowState(main_window_shared_types::state_e windowState) {
+	this->mainWindowState = windowState;
+}
+
+void main_window_core::MainWindowCore::setMoveValueType(main_window_shared_types::move_value_e moveType) {
+	this->moveValueType = moveType;
 }
 
 void main_window_core::MainWindowCore::updateUserInput(const main_window_shared_types::text_action_e action, QString text) {
@@ -92,22 +112,4 @@ void main_window_core::MainWindowCore::updateUserInput(const main_window_shared_
 	}
 }
 
-main_window_shared_types::state_e main_window_core::MainWindowCore::getMainWindowState() {
-	return this->mainWindowState;
-}
 
-main_window_shared_types::move_value_e main_window_core::MainWindowCore::getMoveValueType() {
-	return this->moveValueType;
-}
-
-QString main_window_core::MainWindowCore::getUserText() {
-	return this->userText;
-}
-
-void main_window_core::MainWindowCore::setMainWindowState(main_window_shared_types::state_e windowState) {
-	this->mainWindowState = windowState;
-}
-
-void main_window_core::MainWindowCore::setMoveValueType(main_window_shared_types::move_value_e moveType) {
-	this->moveValueType = moveType;
-}

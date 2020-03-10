@@ -56,7 +56,7 @@ QMap<QString, QString> json_parser::JsonParser::findKeyValue(QString key) {
 
 }
 
-QString json_parser::JsonParser::searchJson(const QJsonValue & content, QString key) {
+QString json_parser::JsonParser::searchJson(const QJsonValue & content, QString key) const {
 
 	QString value(QString::null);
 	switch (content.type()) {
@@ -89,7 +89,7 @@ QString json_parser::JsonParser::searchJson(const QJsonValue & content, QString 
 	return value;
 }
 
-QString json_parser::JsonParser::searchJsonObject(const QJsonObject & object, QString key) {
+QString json_parser::JsonParser::searchJsonObject(const QJsonObject & object, QString key) const {
 	QString valueStr(QString::null);
 	if (object.contains(key) == true) {
 		QJsonObject::const_iterator iter = object.constFind(key);

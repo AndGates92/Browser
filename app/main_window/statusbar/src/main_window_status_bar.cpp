@@ -142,23 +142,23 @@ void main_window_status_bar::MainWindowStatusBar::fillStatusBar() {
 	this->setLayout(layout);
 }
 
-elided_label::ElidedLabel * main_window_status_bar::MainWindowStatusBar::getUserInputText() {
+elided_label::ElidedLabel * main_window_status_bar::MainWindowStatusBar::getUserInputText() const {
 	return this->userInputText;
 }
 
-elided_label::ElidedLabel * main_window_status_bar::MainWindowStatusBar::getContentPathText() {
+elided_label::ElidedLabel * main_window_status_bar::MainWindowStatusBar::getContentPathText() const {
 	return this->contentPathText;
 }
 
-elided_label::ElidedLabel * main_window_status_bar::MainWindowStatusBar::getInfoText() {
+elided_label::ElidedLabel * main_window_status_bar::MainWindowStatusBar::getInfoText() const {
 	return this->infoText;
 }
 
-progress_bar::ProgressBar * main_window_status_bar::MainWindowStatusBar::getLoadBar() {
+progress_bar::ProgressBar * main_window_status_bar::MainWindowStatusBar::getLoadBar() const {
 	return this->loadBar;
 }
 
-QSize main_window_status_bar::MainWindowStatusBar::minimumSizeHint() {
+QSize main_window_status_bar::MainWindowStatusBar::minimumSizeHint() const {
 	int width = QWidget::minimumSizeHint().width();
 	int height = this->fontMetrics().height() + main_window_status_bar::topMargin + main_window_status_bar::bottomMargin;
 

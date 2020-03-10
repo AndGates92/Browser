@@ -52,35 +52,62 @@ namespace main_window_core {
 			// Getters
 			// Control members
 			/**
-			 * Function: main_window_shared_types::state_e getMainWindowState()
+			 * Function: main_window_shared_types::state_e getMainWindowState() const
 			 *
 			 * \return the state of the main window
 			 *
 			 * This function returns the state of the main window
 			 */
-			main_window_shared_types::state_e getMainWindowState();
+			main_window_shared_types::state_e getMainWindowState() const;
 
 			/**
-			 * Function: main_window_shared_types::move_value_e getMoveValueType()
+			 * Function: main_window_shared_types::move_value_e getMoveValueType() const
 			 *
 			 * \return the type of value of movements in tab bar
 			 *
 			 * This function returns the type of value of movements in the tab bar
 			 */
-			main_window_shared_types::move_value_e getMoveValueType();
+			main_window_shared_types::move_value_e getMoveValueType() const;
 
 			/**
-			 * Function: QString getUserText()
+			 * Function: QString getUserText() const
 			 *
 			 * \return the text typed by the user
 			 *
 			 * This function returns the text typed by the user
 			 */
-			QString getUserText();
+			QString getUserText() const;
+
+			/**
+			 * @brief Function: int getTabCount() const
+			 *
+			 * \return the number of tabs in the window
+			 *
+			 * This function returns the number of openend tabs
+			 */
+			int getTabCount() const;
+
+			/**
+			 * @brief Function: QString getActionName() const
+			 *
+			 * \return string with the text to display as action
+			 *
+			 * Get action name to display in the userInputText label
+			 */
+			QString getActionName() const;
+
+			/**
+			 * @brief Function: int getCurrentTabIndex() const
+			 *
+			 * \return the index of the current tab
+			 *
+			 * This function returns the index of the current tab
+			 */
+			int getCurrentTabIndex() const;
 
 			// Setters
 			/**
-			 * Function: main_window_shared_types::state_e getMainWindowState(main_window_shared_types::state_e windowState)
+			 * Function: main_window_shared_types::state_e setMainWindowState(main_window_shared_types::state_e windowState)
 			 *
 			 * \param windowState: state of the main window
 			 *
@@ -106,33 +133,6 @@ namespace main_window_core {
 			 * This function updates the user input string
 			 */
 			void updateUserInput(const main_window_shared_types::text_action_e action, QString text = QString::null);
-
-			/**
-			 * @brief Function: int getTabCount()
-			 *
-			 * \return the number of tabs in the window
-			 *
-			 * This function returns the number of openend tabs
-			 */
-			int getTabCount();
-
-			/**
-			 * @brief Function: QString getActionName()
-			 *
-			 * \return string with the text to display as action
-			 *
-			 * Get action name to display in the userInputText label
-			 */
-			QString getActionName();
-
-			/**
-			 * @brief Function: int getCurrentTabIndex()
-			 *
-			 * \return the index of the current tab
-			 *
-			 * This function returns the index of the current tab
-			 */
-			int getCurrentTabIndex();
 
 			// main widget
 			/**

@@ -48,22 +48,22 @@ namespace main_window_menu_bar {
 			~MainWindowMenuBar();
 
 			/**
-			 * @brief Function: ~getFileMenu()
+			 * @brief Function: ~getFileMenu() const
 			 *
 			 * \return the file menu
 			 *
 			 * This function returns the file menu
 			 */
-			file_menu::FileMenu * getFileMenu();
+			file_menu::FileMenu * getFileMenu() const;
 
 			/**
-			 * @brief Function: ~getEditMenu()
+			 * @brief Function: ~getEditMenu() const
 			 *
 			 * \return the edit menu
 			 *
 			 * This function returns the edit menu
 			 */
-			edit_menu::EditMenu * getEditMenu();
+			edit_menu::EditMenu * getEditMenu() const;
 		protected:
 
 		private:

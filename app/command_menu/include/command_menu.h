@@ -46,43 +46,43 @@ namespace command_menu {
 		 * @brief Disable auto scroll - user will have to press a key to scroll down
 		 *
 		 */
-		const bool autoScrollProp = false;
+		constexpr bool autoScrollProp = false;
 
 		/**
 		 * @brief Disable drag and drop mode
 		 *
 		 */
-		const QAbstractItemView::DragDropMode dragDropMode = QAbstractItemView::NoDragDrop;
+		constexpr QAbstractItemView::DragDropMode dragDropMode = QAbstractItemView::NoDragDrop;
 
 		/**
 		 * @brief Disable edit trigger
 		 *
 		 */
-		const QAbstractItemView::EditTrigger editTrigger = QAbstractItemView::NoEditTriggers;
+		constexpr QAbstractItemView::EditTrigger editTrigger = QAbstractItemView::NoEditTriggers;
 
 		/**
 		 * @brief Disable drag and drop mode
 		 *
 		 */
-		const QAbstractItemView::SelectionBehavior selection = QAbstractItemView::SelectItems;
+		constexpr QAbstractItemView::SelectionBehavior selection = QAbstractItemView::SelectItems;
 
 		/**
 		 * @brief Maximum number of items to be displayed
 		 *
 		 */
-		const int maxVisibleItems = 10;
+		constexpr int maxVisibleItems = 10;
 
 		/**
 		 * @brief Extra width with respect to the minium required width
 		 *
 		 */
-		const int extraRowWidth = 10;
+		constexpr int extraRowWidth = 10;
 
 		/**
 		 * @brief Extra height with respect to the minium required height
 		 *
 		 */
-		const int extraRowHeight = 10;
+		constexpr int extraRowHeight = 10;
 
 	}
 

@@ -55,7 +55,7 @@ QSize progress_bar::ProgressBar::minimumSizeHint() {
 }
 
 QSize progress_bar::ProgressBar::sizeHint() {
-	QWidget * parent = this->parentWidget();
+	const QWidget * parent = this->parentWidget();
 	int width;
 	if (parent == Q_NULLPTR) {
 		width = QWidget::sizeHint().width();

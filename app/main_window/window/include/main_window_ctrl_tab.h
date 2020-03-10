@@ -38,7 +38,7 @@ namespace main_window_ctrl_tab {
 		 * @brief invalid tab index - default value of optional argument index of executeActionOnTab function
 		 *
 		 */
-		const int emptyUserInput = -1;
+		constexpr int emptyUserInput = -1;
 
 		/**
 		 * @brief https string

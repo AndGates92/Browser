@@ -63,7 +63,7 @@ namespace json_parser {
 		private:
 
 			/**
-			 * @brief Function: QString searchJson(const QJsonValue & content, QString key)
+			 * @brief Function: QString searchJson(const QJsonValue & content, QString key) const
 			 *
 			 * \param content: content to search for the key
 			 * \param key: key to search for
@@ -72,10 +72,10 @@ namespace json_parser {
 			 *
 			 * This function iterates over a JSON value and looks for a key
 			 */
-			QString searchJson(const QJsonValue & content, QString key);
+			QString searchJson(const QJsonValue & content, QString key) const;
 
 			/**
-			 * @brief Function: QString searchJsonObject(const QJsonObject & object, QString key)
+			 * @brief Function: QString searchJsonObject(const QJsonObject & object, QString key) const
 			 *
 			 * \param object: object to look the key into
 			 * \param key: key to search for
@@ -84,7 +84,7 @@ namespace json_parser {
 			 *
 			 * This function searches a key in the current JSON object or keep looking for it
 			 */
-			QString searchJsonObject(const QJsonObject & content, QString key);
+			QString searchJsonObject(const QJsonObject & content, QString key) const;
 	};
 
 }

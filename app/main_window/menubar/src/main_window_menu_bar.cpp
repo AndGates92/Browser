@@ -36,12 +36,12 @@ void main_window_menu_bar::MainWindowMenuBar::fillMenuBar() {
 	this->editMenu = new edit_menu::EditMenu(this->window, this, "Edit", Qt::Key_E);
 }
 
-file_menu::FileMenu * main_window_menu_bar::MainWindowMenuBar::getFileMenu() {
+file_menu::FileMenu * main_window_menu_bar::MainWindowMenuBar::getFileMenu() const {
 	return this->fileMenu;
 }
 
 
-edit_menu::EditMenu * main_window_menu_bar::MainWindowMenuBar::getEditMenu() {
+edit_menu::EditMenu * main_window_menu_bar::MainWindowMenuBar::getEditMenu() const {
 	return this->editMenu;
 }
 

@@ -31,31 +31,31 @@ namespace main_window {
 		 * @brief vertical spacing between widgets
 		 *
 		 */
-		const int verticalWidgetSpacing = 0;
+		constexpr int verticalWidgetSpacing = 0;
 
 		/**
 		 * @brief left margin between widget and window
 		 *
 		 */
-		const int leftMargin = 0;
+		constexpr int leftMargin = 0;
 
 		/**
 		 * @brief right margin between widget and window
 		 *
 		 */
-		const int rightMargin = 0;
+		constexpr int rightMargin = 0;
 
 		/**
 		 * @brief top margin between widget and window
 		 *
 		 */
-		const int topMargin = 0;
+		constexpr int topMargin = 0;
 
 		/**
 		 * @brief bottom margin between widget and window
 		 *
 		 */
-		const int bottomMargin = 0;
+		constexpr int bottomMargin = 0;
 
 	}
 

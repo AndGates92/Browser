@@ -43,7 +43,7 @@ namespace progress_bar {
 		 * @brief default format of the text
 		 *
 		 */
-		constexpr QString barTextFormat("%p%");
+		const QString barTextFormat("%p%");
 
 		/**
 		 * @brief default inverted progress flag
@@ -111,8 +111,6 @@ namespace progress_bar {
 			 * Compute recommendend size of the widget
 			 */
 			QSize sizeHint();
-
-
 
 	};
 

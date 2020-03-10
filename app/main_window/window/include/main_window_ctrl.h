@@ -169,13 +169,6 @@ namespace main_window_ctrl {
 			void executeCommand(QString command);
 
 			/**
-			 * @brief Function: void getCurrentTabIndex()
-			 *
-			 * This function sends the current tab index
-			 */
-			void getCurrentTabIndex();
-
-			/**
 			 * @brief Function: void setStateAction(main_window_shared_types::state_e windowState, QKeyEvent * event)
 			 *
 			 * \param windowState: state the window is into.
@@ -184,6 +177,7 @@ namespace main_window_ctrl {
 			 * This function executes a command on a based on user input and the state the window is in
 			 */
 			void setStateAction(main_window_shared_types::state_e windowState, QKeyEvent * event);
+
 	};
 
 }

@@ -34,37 +34,37 @@ namespace main_window_status_bar {
 		 * @brief bottom information text height
 		 *
 		 */
-		const int textHeight = 20;
+		constexpr int textHeight = 20;
 
 		/**
 		 * @brief horizontal spacing between widgets
 		 *
 		 */
-		const int horizontalWidgetSpacing = 0;
+		constexpr int horizontalWidgetSpacing = 0;
 
 		/**
 		 * @brief left margin between widget and window
 		 *
 		 */
-		const int leftMargin = 0;
+		constexpr int leftMargin = 0;
 
 		/**
 		 * @brief right margin between widget and window
 		 *
 		 */
-		const int rightMargin = 0;
+		constexpr int rightMargin = 0;
 
 		/**
 		 * @brief top margin between widget and window
 		 *
 		 */
-		const int topMargin = 0;
+		constexpr int topMargin = 0;
 
 		/**
 		 * @brief bottom margin between widget and window
 		 *
 		 */
-		const int bottomMargin = 0;
+		constexpr int bottomMargin = 0;
 	}
 
 	/**
@@ -92,40 +92,40 @@ namespace main_window_status_bar {
 			~MainWindowStatusBar();
 
 			/**
-			 * Function: elided_label::ElidedLabel * getUserInputText()
+			 * Function: elided_label::ElidedLabel * getUserInputText() const
 			 *
 			 * \return the label containing the text typed by the user
 			 *
 			 * This function returns the label storing the text typed by the user
 			 */
-			elided_label::ElidedLabel * getUserInputText();
+			elided_label::ElidedLabel * getUserInputText() const;
 
 			/**
-			 * Function: elided_label::ElidedLabel * getContentPathText()
+			 * Function: elided_label::ElidedLabel * getContentPathText() const
 			 *
 			 * \return the label containing the path to the content (i.e. website URL or file path)
 			 *
 			 * This function returns the label storing the path to the content (i.e. website URL or file path)
 			 */
-			elided_label::ElidedLabel * getContentPathText();
+			elided_label::ElidedLabel * getContentPathText() const;
 
 			/**
-			 * Function: elided_label::ElidedLabel * getInfoText()
+			 * Function: elided_label::ElidedLabel * getInfoText() const
 			 *
 			 * \return the label containing the text storing information about the webpage/browser
 			 *
 			 * This function returns the label storing information about the webpage/browser
 			 */
-			elided_label::ElidedLabel * getInfoText();
+			elided_label::ElidedLabel * getInfoText() const;
 
 			/**
-			 * Function: progress_bar::ProgressBar * getLoadBar()
+			 * Function: progress_bar::ProgressBar * getLoadBar() const
 			 *
 			 * \return the bar storing the value of the progress in loading a page
 			 *
 			 * This function returns the bar storing the value of the progress in loading a page
 			 */
-			progress_bar::ProgressBar * getLoadBar();
+			progress_bar::ProgressBar * getLoadBar() const;
 
 		protected:
 
@@ -182,13 +182,13 @@ namespace main_window_status_bar {
 			void fillStatusBar();
 
 			/**
-			 * @brief Function: QSize minimumSizeHint()
+			 * @brief Function: QSize minimumSizeHint() const
 			 *
 			 * \return return minimum size of the widget
 			 *
 			 * Compute minimum size of the widget
 			 */
-			QSize minimumSizeHint();
+			QSize minimumSizeHint() const;
 
 	};
 
