@@ -28,7 +28,7 @@ namespace menu {
 	 * @brief Menu class
 	 *
 	 */
-	class Menu : public QObject {
+	class Menu : public QWidget {
 
 		Q_OBJECT
 
@@ -65,12 +65,6 @@ namespace menu {
 			void setEnabledProperty(bool enabled);
 
 		protected:
-
-			/**
-			 * @brief parent window
-			 *
-			 */
-			QWidget * window;
 
 			/**
 			 * @brief menu bar
