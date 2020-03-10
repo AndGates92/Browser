@@ -16,12 +16,12 @@
 
 Q_LOGGING_CATEGORY(menuBarOverall, "menuBar.overall", MSG_TYPE_LEVEL)
 
-menu_bar::MenuBar::MenuBar(QWidget * window) : QMenuBar(window), window(window) {
-	QINFO_PRINT(global_types::qinfo_level_e::ZERO, menuBarOverall,  "Main window menu bar constructor");
+menu_bar::MenuBar::MenuBar(QWidget * window) : QMenuBar(window) {
+	QINFO_PRINT(global_types::qinfo_level_e::ZERO, menuBarOverall,  "Menu bar constructor");
 
 }
 
 menu_bar::MenuBar::~MenuBar() {
-	QINFO_PRINT(global_types::qinfo_level_e::ZERO, menuBarOverall,  "Main window menu bar desstructor");
+	QINFO_PRINT(global_types::qinfo_level_e::ZERO, menuBarOverall,  "Menu bar desstructor");
 
 }

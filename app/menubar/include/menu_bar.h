@@ -45,15 +45,9 @@ namespace menu_bar {
 
 		protected:
 			/**
-			 * @brief window the menu bar belongs to
-			 *
-			 */
-			QWidget * window;
-
-			/**
 			 * @brief Function: void fillMenuBar()
 			 *
-			 * This function fills the menu bar of the main window
+			 * This function fills the menu bar
 			 */
 			virtual void fillMenuBar() = 0;
 

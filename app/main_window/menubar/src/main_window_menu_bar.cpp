@@ -32,8 +32,8 @@ main_window_menu_bar::MainWindowMenuBar::~MainWindowMenuBar() {
 
 void main_window_menu_bar::MainWindowMenuBar::fillMenuBar() {
 	QINFO_PRINT(global_types::qinfo_level_e::ZERO, mainWindowMenuBarOverall,  "Create menus");
-	this->fileMenu = new file_menu::FileMenu(this->window, this, "File", Qt::Key_F);
-	this->editMenu = new edit_menu::EditMenu(this->window, this, "Edit", Qt::Key_E);
+	this->fileMenu = new file_menu::FileMenu(this->parentWidget(), this, "File", Qt::Key_F);
+	this->editMenu = new edit_menu::EditMenu(this->parentWidget(), this, "Edit", Qt::Key_E);
 }
 
 file_menu::FileMenu * main_window_menu_bar::MainWindowMenuBar::getFileMenu() const {
