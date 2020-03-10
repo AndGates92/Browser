@@ -115,7 +115,7 @@ namespace key_sequence {
 
 			// Operator overloading
 			/**
-			 * @brief Function: bool operator<(const KeySequence & otherSeq)
+			 * @brief Function: bool operator<(const KeySequence & otherSeq) const
 			 *
 			 * \param otherSeq: key sequence to compare
 			 *
@@ -126,7 +126,7 @@ namespace key_sequence {
 			bool operator< (const KeySequence & otherSeq) const;
 
 			/**
-			 * @brief Function: bool operator>(const KeySequence & otherSeq)
+			 * @brief Function: bool operator>(const KeySequence & otherSeq) const
 			 *
 			 * \param otherSeq: key sequence to compare
 			 *
@@ -137,7 +137,7 @@ namespace key_sequence {
 			bool operator> (const KeySequence & otherSeq) const;
 
 			/**
-			 * @brief Function: bool operator<=(const KeySequence & otherSeq)
+			 * @brief Function: bool operator<=(const KeySequence & otherSeq) const
 			 *
 			 * \param otherSeq: key sequence to compare
 			 *
@@ -148,7 +148,7 @@ namespace key_sequence {
 			bool operator<= (const KeySequence & otherSeq) const;
 
 			/**
-			 * @brief Function: bool operator>=(const KeySequence & otherSeq)
+			 * @brief Function: bool operator>=(const KeySequence & otherSeq) const
 			 *
 			 * \param otherSeq: key sequence to compare
 			 *
@@ -159,7 +159,7 @@ namespace key_sequence {
 			bool operator>= (const KeySequence & otherSeq) const;
 
 			/**
-			 * @brief Function: bool operator==(const KeySequence & otherSeq)
+			 * @brief Function: bool operator==(const KeySequence & otherSeq) const
 			 *
 			 * \param otherSeq: key sequence to compare
 			 *
@@ -170,7 +170,7 @@ namespace key_sequence {
 			bool operator== (const KeySequence & otherSeq) const;
 
 			/**
-			 * @brief Function: bool operator!=(const KeySequence & otherSeq)
+			 * @brief Function: bool operator!=(const KeySequence & otherSeq) const
 			 *
 			 * \param otherSeq: key sequence to compare
 			 *
