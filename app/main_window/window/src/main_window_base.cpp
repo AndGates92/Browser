@@ -15,7 +15,7 @@
 
 Q_LOGGING_CATEGORY(mainWindowBaseOverall, "mainWindowBase.overall", MSG_TYPE_LEVEL)
 
-main_window_base::MainWindowBase::MainWindowBase(main_window_core::MainWindowCore * core) : windowCore(core) {
+main_window_base::MainWindowBase::MainWindowBase(QSharedPointer<main_window_core::MainWindowCore> core) : windowCore(core) {
 
 	QINFO_PRINT(global_types::qinfo_level_e::ZERO, mainWindowBaseOverall,  "Main window base classe constructor");
 }
@@ -23,4 +23,5 @@ main_window_base::MainWindowBase::MainWindowBase(main_window_core::MainWindowCor
 main_window_base::MainWindowBase::~MainWindowBase() {
 	QINFO_PRINT(global_types::qinfo_level_e::ZERO, mainWindowBaseOverall,  "Main window base class destructor");
 
+	this->windowCore.clear();
 }

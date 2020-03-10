@@ -78,7 +78,7 @@ namespace main_window {
 			 *
 			 * Main window constructor
 			 */
-			explicit MainWindow(main_window_core::MainWindowCore * core, QWidget * parent = Q_NULLPTR, Qt::WindowFlags flags = Qt::WindowFlags());
+			explicit MainWindow(QSharedPointer<main_window_core::MainWindowCore> core, QWidget * parent = Q_NULLPTR, Qt::WindowFlags flags = Qt::WindowFlags());
 
 			/**
 			 * @brief Function: ~MainWindow()

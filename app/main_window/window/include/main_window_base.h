@@ -9,6 +9,7 @@
 */
 
 #include <qt5/QtCore/QLoggingCategory>
+#include <qt5/QtCore/QSharedPointer>
 
 #include "main_window_core.h"
 
@@ -30,13 +31,13 @@ namespace main_window_base {
 		public:
 
 			/**
-			 * @brief Function: explicit MainWindowBase(main_window_core::MainWindowCore * core)
+			 * @brief Function: explicit MainWindowBase(QSharedPointer<main_window_core::MainWindowCore> core)
 			 *
 			 * \param core: main window core
 			 *
 			 * Main window base constructor
 			 */
-			explicit MainWindowBase(main_window_core::MainWindowCore * core);
+			explicit MainWindowBase(QSharedPointer<main_window_core::MainWindowCore> core);
 
 			/**
 			 * @brief Function: ~MainWindowBase()
@@ -50,7 +51,7 @@ namespace main_window_base {
 			 * @brief main window core
 			 *
 			 */
-			main_window_core::MainWindowCore * windowCore;
+			QSharedPointer<main_window_core::MainWindowCore> windowCore;
 
 		private:
 	};

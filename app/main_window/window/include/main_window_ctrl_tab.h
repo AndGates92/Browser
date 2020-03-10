@@ -96,7 +96,7 @@ namespace main_window_ctrl_tab {
 			 *
 			 * Main window tab control constructor
 			 */
-			explicit MainWindowCtrlTab(main_window_core::MainWindowCore * core, QWidget * parent = Q_NULLPTR);
+			explicit MainWindowCtrlTab(QSharedPointer<main_window_core::MainWindowCore> core, QWidget * parent = Q_NULLPTR);
 
 			/**
 			 * @brief Function: ~MainWindowCtrlTab()
