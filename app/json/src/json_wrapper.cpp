@@ -49,9 +49,6 @@ json_wrapper::JsonWrapper::JsonWrapper(QString jsonFileName, QIODevice::OpenMode
 	// Ensure that the file is open for read or write or both
 	Q_ASSERT_X(((this->openFlags & QIODevice::ReadOnly) || (this->openFlags & QIODevice::WriteOnly)), "JsonWrapper constructor", "JSON file not requested to be opened for read or write");
 
-	// Create file
-	this->jsonFile = new QFile(jsonFileName);
-
 }
 
 json_wrapper::JsonWrapper::~JsonWrapper() {
