@@ -51,6 +51,8 @@ main_window_ctrl::MainWindowCtrl::~MainWindowCtrl() {
 void main_window_ctrl::MainWindowCtrl::createShortcuts() {
 	QINFO_PRINT(global_types::qinfo_level_e::ZERO, mainWindowCtrlOverall,  "Create shortcuts");
 
+	QWidget * parent = this->parentWidget();
+
 	// m will hide/show the menu bar
 	this->toggleShowMenuBarKey = new QShortcut(parent);
 	this->toggleShowMenuBarKey->setKey(Qt::Key_M);

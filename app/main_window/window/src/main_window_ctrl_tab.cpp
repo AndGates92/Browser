@@ -51,6 +51,8 @@ main_window_ctrl_tab::MainWindowCtrlTab::~MainWindowCtrlTab() {
 void main_window_ctrl_tab::MainWindowCtrlTab::createShortcuts() {
 	QINFO_PRINT(global_types::qinfo_level_e::ZERO, mainWindowCtrlTabOverall,  "Create shortcuts");
 
+	QWidget * parent = this->parentWidget();
+
 	// o will open a new tab
 	this->openNewTabKey = new QShortcut(parent);
 	this->openNewTabKey->setKey(Qt::Key_O);

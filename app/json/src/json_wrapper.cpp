@@ -82,6 +82,8 @@ void json_wrapper::JsonWrapper::readJson() {
 	// Check if JSON parsing is successful
 	QEXCEPTION_ACTION_COND((jsonDoc.isNull() == 1), throw,  "Unable to convert UTF8 QString to JSON file because of error " << jsonParseError->errorString() << "(error type " << jsonParseError->error << ")");
 
+	delete jsonParseError;
+
 	if (jsonDoc.isObject() == true) {
 		QJsonObject jsonObj(jsonDoc.object());
 		Q_ASSERT_X((jsonObj.empty() == false), "JSON object is empty", "JSON file has an empty object");

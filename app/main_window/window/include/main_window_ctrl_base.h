@@ -28,7 +28,7 @@ namespace main_window_ctrl_base {
 	 * @brief MainWindowCtrlBase class
 	 *
 	 */
-	class MainWindowCtrlBase : public QObject, public main_window_base::MainWindowBase {
+	class MainWindowCtrlBase : public QWidget, public main_window_base::MainWindowBase {
 
 		Q_OBJECT
 
@@ -81,12 +81,6 @@ namespace main_window_ctrl_base {
 			virtual void keyReleaseEvent(QKeyEvent * event) = 0;
 
 		protected:
-			/**
-			 * @brief parent widget
-			 *
-			 */
-			QWidget * parent;
-
 			/**
 			 * @brief tab commands and information
 			 *
