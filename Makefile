@@ -125,7 +125,7 @@ DOX_INPUT_FILE_HEADER = \#\# Input files
 # Valgrind variables
 VALGRIND=valgrind
 
-MEMCHECKOPTS = --leak-check=full --error-limit=no --show-leak-kinds=all --track-origins=yes
+MEMCHECKOPTS = --tool=memcheck --leak-check=full --error-limit=no --show-leak-kinds=all --track-origins=yes
 VALGRINDTOOLOPTS =
 VALGRINDLOGFILENAME ?= valgrind.log
 VALGRINDLOGFILE = $(LOG_DIR)/$(VALGRINDLOGFILENAME)
