@@ -29,6 +29,29 @@ main_window_tab_widget::MainWindowTabWidget::MainWindowTabWidget(QWidget * paren
 main_window_tab_widget::MainWindowTabWidget::~MainWindowTabWidget() {
 	QINFO_PRINT(global_types::qinfo_level_e::ZERO, mainWindowTabWidgetOverall,  "Main Window Tab widget destructor");
 
+	const int idx = 0;
+
+	// Delete all tabs until the count reaches 0
+	// Always delete the first tab as for every deletion, all subsequents are shifted back
+	while(this->count() > 0) {
+		main_window_shared_types::tab_type_e type = this->getTabType(idx);
+
+		QWidget * centerWindow = this->widget(idx);
+		if (type == main_window_shared_types::tab_type_e::WEB_ENGINE) {
+			QWebEngineView * webEngine = (QWebEngineView *) centerWindow;
+			delete webEngine;
+		} else if (type == main_window_shared_types::tab_type_e::LABEL) {
+			QLabel * label = (QLabel *) centerWindow;
+			delete label;
+		} else {
+			Q_ASSERT_X(true, "Invalid tab type", "Unable to delete provided tab as type is not recognized");
+		}
+		this->removeTab(idx);
+	}
+
+	Q_ASSERT_X((this->tabTypes.empty() == false), "tab type list not empty", "List of tab types is not empty");
+
+	this->tabTypes.clear();
 }
 
 int main_window_tab_widget::MainWindowTabWidget::addTab(QWidget * page, const QString & label, main_window_shared_types::tab_type_e & type) {
