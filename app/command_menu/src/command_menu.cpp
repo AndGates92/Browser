@@ -21,12 +21,11 @@ Q_LOGGING_CATEGORY(commandMenuCursor, "commandMenu.cursor", MSG_TYPE_LEVEL)
 Q_LOGGING_CATEGORY(commandMenuScrollBar, "commandMenu.scrollBar", MSG_TYPE_LEVEL)
 Q_LOGGING_CATEGORY(commandMenuSelection, "commandMenu.selection", MSG_TYPE_LEVEL)
 
-command_menu::CommandMenu::CommandMenu(QWidget * parent) : QAbstractItemView(parent), visibleHeight(0), visibleWidth(parent->width()) {
+command_menu::CommandMenu::CommandMenu(QWidget * parent) : QAbstractItemView(parent), menuModel(new command_menu_model::CommandMenuModel(parent)), visibleHeight(0), visibleWidth(parent->width()) {
 
 	QINFO_PRINT(global_types::qinfo_level_e::ZERO, commandMenuOverall,  "Create command menu");
 	this->setProperties();
 
-	this->menuModel = new command_menu_model::CommandMenuModel(parent);
 	this->setModel(this->menuModel);
 
 	// Hide scrollbars
