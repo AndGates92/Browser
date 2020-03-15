@@ -174,12 +174,17 @@ int main_window_ctrl_tab::MainWindowCtrlTab::addNewTab(QString search, main_wind
 	QINFO_PRINT(global_types::qinfo_level_e::ZERO, mainWindowCtrlTabTabs,  "Open tab with label " << search);
 
 	int tabIndex = this->windowCore->tabs->addEmptyTab(search, type);
-	QWebEngineView * currentTabPage = dynamic_cast<QWebEngineView *>(this->windowCore->tabs->widget(tabIndex));
+	try {
+		QWebEngineView * currentTabPage = dynamic_cast<QWebEngineView *>(this->windowCore->tabs->widget(tabIndex));
 
-	// Connect signals and slots for a newly created tab
-	connect(currentTabPage, &QWebEngineView::loadStarted, this->windowCore->bottomStatusBar->getLoadBar(), &progress_bar::ProgressBar::startLoading);
-	connect(currentTabPage, &QWebEngineView::loadProgress, this->windowCore->bottomStatusBar->getLoadBar(), &progress_bar::ProgressBar::setValue);
-	connect(currentTabPage, &QWebEngineView::loadFinished, this->windowCore->bottomStatusBar->getLoadBar(), &progress_bar::ProgressBar::endLoading);
+		// Connect signals and slots for a newly created tab
+		connect(currentTabPage, &QWebEngineView::loadStarted, this->windowCore->bottomStatusBar->getLoadBar(), &progress_bar::ProgressBar::startLoading);
+		connect(currentTabPage, &QWebEngineView::loadProgress, this->windowCore->bottomStatusBar->getLoadBar(), &progress_bar::ProgressBar::setValue);
+		connect(currentTabPage, &QWebEngineView::loadFinished, this->windowCore->bottomStatusBar->getLoadBar(), &progress_bar::ProgressBar::endLoading);
+
+	} catch (const std::bad_cast & badCastE) {
+		QEXCEPTION_ACTION(throw, badCastE.what());
+	}
 
 	QEXCEPTION_ACTION_COND((tabIndex < 0), throw, "It cannot be negative");
 
@@ -200,10 +205,14 @@ void main_window_ctrl_tab::MainWindowCtrlTab::newSearchTab(int index, QString se
 
 	main_window_shared_types::tab_type_e desiredTabType = main_window_shared_types::tab_type_e::WEB_ENGINE;
 	this->windowCore->tabs->changeTabType(index, desiredTabType);
-
-	QWebEngineView * currentTabPage = dynamic_cast<QWebEngineView *>(this->windowCore->tabs->widget(index));
 	this->windowCore->tabs->setTabText(index, tabTitle);
-	currentTabPage->setUrl(QUrl(Url));
+
+	try {
+		QWebEngineView * currentTabPage = dynamic_cast<QWebEngineView *>(this->windowCore->tabs->widget(index));
+		currentTabPage->setUrl(QUrl(Url));
+	} catch (const std::bad_cast & badCastE) {
+		QEXCEPTION_ACTION(throw, badCastE.what());
+	}
 
 	this->updateContent(index);
 }
@@ -222,10 +231,13 @@ void main_window_ctrl_tab::MainWindowCtrlTab::updateContent(int index) {
 	if (tabCount > 0) {
 		QString contentStr (QString::null);
 		if (tabType == main_window_shared_types::tab_type_e::WEB_ENGINE) {
-			QWebEngineView * currentTabPage = dynamic_cast<QWebEngineView *>(this->windowCore->tabs->widget(index));
-			QUrl websiteUrl = currentTabPage->url();
-
-			contentStr = websiteUrl.toDisplayString(QUrl::FullyDecoded);
+			try {
+				QWebEngineView * currentTabPage = dynamic_cast<QWebEngineView *>(this->windowCore->tabs->widget(index));
+				QUrl websiteUrl = currentTabPage->url();
+				contentStr = websiteUrl.toDisplayString(QUrl::FullyDecoded);
+			} catch (const std::bad_cast & badCastE) {
+				QEXCEPTION_ACTION(throw, badCastE.what());
+			}
 		} else if (tabType == main_window_shared_types::tab_type_e::LABEL) {
 			contentStr = this->windowCore->tabs->tabText(index);
 		}
@@ -237,13 +249,17 @@ void main_window_ctrl_tab::MainWindowCtrlTab::updateContent(int index) {
 }
 
 void main_window_ctrl_tab::MainWindowCtrlTab::refreshUrl(int tabIndex) {
-	QWebEngineView * currentTabPage = dynamic_cast<QWebEngineView *>(this->windowCore->tabs->widget(tabIndex));
-	QUrl currUrl = currentTabPage->url();
+	try {
+		QWebEngineView * currentTabPage = dynamic_cast<QWebEngineView *>(this->windowCore->tabs->widget(tabIndex));
+		QUrl currUrl = currentTabPage->url();
 
-	QString urlStr (currUrl.toDisplayString(QUrl::FullyDecoded));
-	QINFO_PRINT(global_types::qinfo_level_e::ZERO, mainWindowCtrlTabUrl,  "Refresh URL " << urlStr);
+		QString urlStr (currUrl.toDisplayString(QUrl::FullyDecoded));
+		QINFO_PRINT(global_types::qinfo_level_e::ZERO, mainWindowCtrlTabUrl,  "Refresh URL " << urlStr);
 
-	currentTabPage->load(QUrl(currUrl));
+		currentTabPage->load(QUrl(currUrl));
+	} catch (const std::bad_cast & badCastE) {
+		QEXCEPTION_ACTION(throw, badCastE.what());
+	}
 }
 
 void main_window_ctrl_tab::MainWindowCtrlTab::moveTab(int tabIndex) {
