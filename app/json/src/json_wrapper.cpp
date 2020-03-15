@@ -51,6 +51,88 @@ json_wrapper::JsonWrapper::JsonWrapper(QString jsonFileName, QIODevice::OpenMode
 
 }
 
+json_wrapper::JsonWrapper::JsonWrapper(const json_wrapper::JsonWrapper & rhs) : jsonContent(rhs.jsonContent), type(rhs.type), openFlags(rhs.openFlags), jsonFile(rhs.jsonFile) {
+
+	QINFO_PRINT(global_types::qinfo_level_e::ZERO, jsonWrapperOverall,  "Copy constructor json wrapper");
+
+}
+
+json_wrapper::JsonWrapper & json_wrapper::JsonWrapper::operator=(const json_wrapper::JsonWrapper & rhs) {
+
+	QINFO_PRINT(global_types::qinfo_level_e::ZERO, jsonWrapperOverall,  "Copy assignment operator for json wrapper");
+
+	// If rhs points to the same address as this, then return this
+	if (&rhs == this) {
+		return *this;
+	}
+
+	if (this->jsonContent != rhs.jsonContent) {
+		this->jsonContent = rhs.jsonContent;
+	}
+
+	if (this->type != rhs.type) {
+		this->type = rhs.type;
+	}
+
+	if (this->openFlags != rhs.openFlags) {
+		this->openFlags = rhs.openFlags;
+	}
+
+	if (this->jsonFile != rhs.jsonFile) {
+		if (this->jsonFile != Q_NULLPTR) {
+			delete this->jsonFile;
+		}
+		this->jsonFile = rhs.jsonFile;
+	}
+
+	return *this;
+}
+
+json_wrapper::JsonWrapper::JsonWrapper(json_wrapper::JsonWrapper && rhs) : jsonContent(std::move(rhs.jsonContent)), type(std::move(rhs.type)), openFlags(std::move(rhs.openFlags)), jsonFile(std::move(rhs.jsonFile)) {
+	QINFO_PRINT(global_types::qinfo_level_e::ZERO, jsonWrapperOverall,  "Move constructor json wrapper");
+
+	// Reset rhs
+	rhs.jsonContent = QJsonValue::Undefined;
+	rhs.type = json_wrapper::json_content_type_e::UNKNOWN;
+	rhs.openFlags = QIODevice::NotOpen;
+	rhs.jsonFile = Q_NULLPTR;
+}
+
+json_wrapper::JsonWrapper & json_wrapper::JsonWrapper::operator=(json_wrapper::JsonWrapper && rhs) {
+
+	QINFO_PRINT(global_types::qinfo_level_e::ZERO, jsonWrapperOverall,  "Move assignment operator for json wrapper");
+
+	// If rhs points to the same address as this, then return this
+	if (&rhs == this) {
+		return *this;
+	}
+
+	if (this->jsonContent != rhs.jsonContent) {
+		this->jsonContent = std::move(rhs.jsonContent);
+	}
+	rhs.jsonContent = QJsonValue::Undefined;
+
+	if (this->type != rhs.type) {
+		this->type = std::move(rhs.type);
+	}
+	rhs.type = json_wrapper::json_content_type_e::UNKNOWN;
+
+	if (this->openFlags != rhs.openFlags) {
+		this->openFlags = std::move(rhs.openFlags);
+	}
+	rhs.openFlags = QIODevice::NotOpen;
+
+	if (this->jsonFile != rhs.jsonFile) {
+		if (this->jsonFile != Q_NULLPTR) {
+			delete this->jsonFile;
+		}
+		this->jsonFile = std::move(rhs.jsonFile);
+	}
+	rhs.jsonFile = Q_NULLPTR;
+
+	return *this;
+}
+
 json_wrapper::JsonWrapper::~JsonWrapper() {
 	QINFO_PRINT(global_types::qinfo_level_e::ZERO, jsonWrapperOverall,  "Destructor of JsonWrapper class");
 

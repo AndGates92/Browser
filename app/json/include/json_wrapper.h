@@ -31,8 +31,9 @@ namespace json_wrapper {
 	 *
 	 */
 	typedef enum class json_content_type_list {
-		OBJECT,   /**< JSON data stores data into an object */
-		ARRAY     /**< JSON file stores data into an array */
+		OBJECT,    /**< JSON data stores data into an object */
+		ARRAY,     /**< JSON file stores data into an array */
+		UNKNOWN    /**< JSON file stores data into an unknown data structure */
 	} json_content_type_e;
 
 	/**
@@ -81,6 +82,44 @@ namespace json_wrapper {
 			 * JSON wrapper constructor
 			 */
 			explicit JsonWrapper(QString jsonFileName, QIODevice::OpenModeFlag jsonOpenFlags);
+
+			// Move and copy constructor
+			/**
+			 * @brief Function: JsonWrapper(const json_wrapper::JsonWrapper & rhs)
+			 *
+			 * param rhs: class to copy
+			 *
+			 * Command Menu copy constructor
+			 */
+			explicit JsonWrapper(const json_wrapper::JsonWrapper & rhs);
+
+			/**
+			 * @brief Function: JsonWrapper::JsonWrapper(json_wrapper::JsonWrapper && rhs)
+			 *
+			 * param rhs: class to move
+			 *
+			 * Command Menu move constructor
+			 */
+			explicit JsonWrapper(json_wrapper::JsonWrapper && rhs);
+
+			// Move and copy assignment operators
+			/**
+			 * @brief Function: JsonWrapper & operator=(const json_wrapper::JsonWrapper & rhs)
+			 *
+			 * param rhs: class to copy
+			 *
+			 * Command Menu copy assignment operator
+			 */
+			JsonWrapper & operator=(const json_wrapper::JsonWrapper & rhs);
+
+			/**
+			 * @brief Function: JsonWrapper & operator=(json_wrapper::JsonWrapper && rhs)
+			 *
+			 * param rhs: class to move
+			 *
+			 * Command Menu move assignment operator
+			 */
+			JsonWrapper & operator=(json_wrapper::JsonWrapper && rhs);
 
 			/**
 			 * @brief Function: ~JsonWrapper()

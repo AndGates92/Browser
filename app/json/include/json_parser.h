@@ -44,6 +44,44 @@ namespace json_parser {
 			 */
 			explicit JsonParser(QString fileName, QIODevice::OpenModeFlag openFlags);
 
+			// Move and copy constructor
+			/**
+			 * @brief Function: JsonParser(const json_parser::JsonParser & rhs)
+			 *
+			 * param rhs: class to copy
+			 *
+			 * Command Menu copy constructor
+			 */
+			explicit JsonParser(const json_parser::JsonParser & rhs);
+
+			/**
+			 * @brief Function: JsonParser::JsonParser(json_parser::JsonParser && rhs)
+			 *
+			 * param rhs: class to move
+			 *
+			 * Command Menu move constructor
+			 */
+			explicit JsonParser(json_parser::JsonParser && rhs);
+
+			// Move and copy assignment operators
+			/**
+			 * @brief Function: JsonParser & operator=(const json_parser::JsonParser & rhs)
+			 *
+			 * param rhs: class to copy
+			 *
+			 * Command Menu copy assignment operator
+			 */
+			JsonParser & operator=(const json_parser::JsonParser & rhs);
+
+			/**
+			 * @brief Function: JsonParser & operator=(json_parser::JsonParser && rhs)
+			 *
+			 * param rhs: class to move
+			 *
+			 * Command Menu move assignment operator
+			 */
+			JsonParser & operator=(json_parser::JsonParser && rhs);
+
 			/**
 			 * @brief Function: ~JsonParser()
 			 *

@@ -26,6 +26,44 @@ json_parser::JsonParser::JsonParser(QString fileName, QIODevice::OpenModeFlag op
 
 }
 
+json_parser::JsonParser::JsonParser(const json_parser::JsonParser & rhs) : json_wrapper::JsonWrapper(rhs) {
+
+	QINFO_PRINT(global_types::qinfo_level_e::ZERO, jsonParserOverall,  "Copy constructor json parser");
+
+}
+
+json_parser::JsonParser & json_parser::JsonParser::operator=(const json_parser::JsonParser & rhs) {
+
+	QINFO_PRINT(global_types::qinfo_level_e::ZERO, jsonParserOverall,  "Copy assignment operator for json parser");
+
+	// If rhs points to the same address as this, then return this
+	if (&rhs == this) {
+		return *this;
+	}
+
+	this->json_wrapper::JsonWrapper::operator=(rhs);
+	return *this;
+}
+
+json_parser::JsonParser::JsonParser(json_parser::JsonParser && rhs) : json_wrapper::JsonWrapper(std::move(rhs)) {
+
+	QINFO_PRINT(global_types::qinfo_level_e::ZERO, jsonParserOverall,  "Move constructor json parser");
+}
+
+json_parser::JsonParser & json_parser::JsonParser::operator=(json_parser::JsonParser && rhs) {
+
+	QINFO_PRINT(global_types::qinfo_level_e::ZERO, jsonParserOverall,  "Move assignment operator for json parser");
+
+	// If rhs points to the same address as this, then return this
+	if (&rhs == this) {
+		return *this;
+	}
+
+	this->json_wrapper::JsonWrapper::operator=(rhs);
+
+	return *this;
+}
+
 json_parser::JsonParser::~JsonParser() {
 	QINFO_PRINT(global_types::qinfo_level_e::ZERO, jsonParserOverall,  "Destructor of JsonParser class");
 
@@ -82,7 +120,6 @@ QString json_parser::JsonParser::searchJson(const QJsonValue & content, QString 
 		}
 		default:
 			QINFO_PRINT(global_types::qinfo_level_e::ZERO, jsonWrapperFileContent, "Cannot find key in type " << content.type() << ". Expected values are array (" << QJsonValue::Array << ") or object (" << QJsonValue::Object << ")");
-//			QEXCEPTION_ACTION(throw, "Cannot find key in type " << content.type() << ". Expected values are array (" << QJsonValue::Array << ") or object (" << QJsonValue::Object << ")");
 			break;
 	}
 
