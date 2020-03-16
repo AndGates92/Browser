@@ -39,6 +39,44 @@ namespace main_window_base {
 			 */
 			explicit MainWindowBase(QSharedPointer<main_window_core::MainWindowCore> core);
 
+			// Move and copy constructor
+			/**
+			 * @brief Function: MainWindowBase(const main_window_base::MainWindowBase & rhs)
+			 *
+			 * \param rhs: class to copy
+			 *
+			 * Command MainWindowBase copy constructor
+			 */
+			explicit MainWindowBase(const main_window_base::MainWindowBase & rhs);
+
+			/**
+			 * @brief Function: MainWindowBase(main_window_base::MainWindowBase && rhs)
+			 *
+			 * \param rhs: class to move
+			 *
+			 * Command MainWindowBase move constructor
+			 */
+			explicit MainWindowBase(main_window_base::MainWindowBase && rhs);
+
+			// Move and copy assignment operators
+			/**
+			 * @brief Function: MainWindowBase & operator=(const main_window_base::MainWindowBase & rhs)
+			 *
+			 * \param rhs: class to copy
+			 *
+			 * Command MainWindowBase copy assignment operator
+			 */
+			MainWindowBase & operator=(const main_window_base::MainWindowBase & rhs);
+
+			/**
+			 * @brief Function: MainWindowBase & operator=(main_window_base::MainWindowBase && rhs)
+			 *
+			 * \param rhs: class to move
+			 *
+			 * Command MainWindowBase move assignment operator
+			 */
+			MainWindowBase & operator=(main_window_base::MainWindowBase && rhs);
+
 			/**
 			 * @brief Function: ~MainWindowBase()
 			 *

@@ -20,6 +20,48 @@ main_window_base::MainWindowBase::MainWindowBase(QSharedPointer<main_window_core
 	QINFO_PRINT(global_types::qinfo_level_e::ZERO, mainWindowBaseOverall,  "Main window base classe constructor");
 }
 
+main_window_base::MainWindowBase::MainWindowBase(const main_window_base::MainWindowBase & rhs) : windowCore(rhs.windowCore) {
+
+	QINFO_PRINT(global_types::qinfo_level_e::ZERO, mainWindowBaseOverall,  "Copy constructor main window base");
+
+}
+
+main_window_base::MainWindowBase & main_window_base::MainWindowBase::operator=(const main_window_base::MainWindowBase & rhs) {
+
+	QINFO_PRINT(global_types::qinfo_level_e::ZERO, mainWindowBaseOverall,  "Copy assignment operator for main window base");
+
+	// If rhs points to the same address as this, then return this
+	if (&rhs == this) {
+		return *this;
+	}
+
+	if (this->windowCore != rhs.windowCore) {
+		this->windowCore = rhs.windowCore;
+	}
+
+	return *this;
+}
+
+main_window_base::MainWindowBase::MainWindowBase(main_window_base::MainWindowBase && rhs) : windowCore(std::move(rhs.windowCore)) {
+	QINFO_PRINT(global_types::qinfo_level_e::ZERO, mainWindowBaseOverall,  "Move constructor main window base");
+}
+
+main_window_base::MainWindowBase & main_window_base::MainWindowBase::operator=(main_window_base::MainWindowBase && rhs) {
+
+	QINFO_PRINT(global_types::qinfo_level_e::ZERO, mainWindowBaseOverall,  "Move assignment operator for main window base");
+
+	// If rhs points to the same address as this, then return this
+	if (&rhs == this) {
+		return *this;
+	}
+
+	if (this->windowCore != rhs.windowCore) {
+		this->windowCore = std::move(rhs.windowCore);
+	}
+
+	return *this;
+}
+
 main_window_base::MainWindowBase::~MainWindowBase() {
 	QINFO_PRINT(global_types::qinfo_level_e::ZERO, mainWindowBaseOverall,  "Main window base class destructor");
 
