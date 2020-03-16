@@ -120,6 +120,17 @@ namespace file_menu {
 			 */
 			void updateCenterWindow(const QString & title, const QString & content);
 
+		signals:
+			/**
+			 * @brief Function: void updateCenterWindowSignal(const QString & title, const QString & content)
+			 *
+			 * \param title: title of the widget
+			 * \param content: content of the file read
+			 *
+			 * This function is a signal to inform the main window that the center window must be updated
+			 */
+			void updateCenterWindowSignal(const QString & title, const QString & content);
+
 		private:
 
 			/**
@@ -148,16 +159,43 @@ namespace file_menu {
 			 */
 			void createActions();
 
-		signals:
+			// Move and copy constructor
 			/**
-			 * @brief Function: void updateCenterWindowSignal(const QString & title, const QString & content)
+			 * @brief Function: FileMenu(const file_menu::FileMenu & rhs)
 			 *
-			 * \param title: title of the widget
-			 * \param content: content of the file read
+			 * \param rhs: class to copy
 			 *
-			 * This function is a signal to inform the main window that the center window must be updated
+			 * Command FileMenu copy constructor
 			 */
-			void updateCenterWindowSignal(const QString & title, const QString & content);
+			explicit FileMenu(const file_menu::FileMenu & rhs) = delete;
+
+			/**
+			 * @brief Function: FileMenu(file_menu::FileMenu && rhs)
+			 *
+			 * \param rhs: class to move
+			 *
+			 * Command FileMenu move constructor
+			 */
+			explicit FileMenu(file_menu::FileMenu && rhs) = delete;
+
+			// Move and copy assignment operators
+			/**
+			 * @brief Function: FileMenu & operator=(const file_menu::FileMenu & rhs)
+			 *
+			 * \param rhs: class to copy
+			 *
+			 * Command FileMenu copy assignment operator
+			 */
+			FileMenu & operator=(const file_menu::FileMenu & rhs) = delete;
+
+			/**
+			 * @brief Function: FileMenu & operator=(file_menu::FileMenu && rhs)
+			 *
+			 * \param rhs: class to move
+			 *
+			 * Command FileMenu move assignment operator
+			 */
+			FileMenu & operator=(file_menu::FileMenu && rhs) = delete;
 
 	};
 }

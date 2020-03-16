@@ -88,9 +88,47 @@ namespace main_window_menu_bar {
 			 */
 			void fillMenuBar();
 
+			// Move and copy constructor
+			/**
+			 * @brief Function: MainWindowMenuBar(const main_window_menu_bar::MainWindowMenuBar & rhs)
+			 *
+			 * \param rhs: class to copy
+			 *
+			 * Command MainWindowMenuBar copy constructor
+			 */
+			explicit MainWindowMenuBar(const main_window_menu_bar::MainWindowMenuBar & rhs) = delete;
+
+			/**
+			 * @brief Function: MainWindowMenuBar(main_window_menu_bar::MainWindowMenuBar && rhs)
+			 *
+			 * \param rhs: class to move
+			 *
+			 * Command MainWindowMenuBar move constructor
+			 */
+			explicit MainWindowMenuBar(main_window_menu_bar::MainWindowMenuBar && rhs) = delete;
+
+			// Move and copy assignment operators
+			/**
+			 * @brief Function: MainWindowMenuBar & operator=(const main_window_menu_bar::MainWindowMenuBar & rhs)
+			 *
+			 * \param rhs: class to copy
+			 *
+			 * Command MainWindowMenuBar copy assignment operator
+			 */
+			MainWindowMenuBar & operator=(const main_window_menu_bar::MainWindowMenuBar & rhs) = delete;
+
+			/**
+			 * @brief Function: MainWindowMenuBar & operator=(main_window_menu_bar::MainWindowMenuBar && rhs)
+			 *
+			 * \param rhs: class to move
+			 *
+			 * Command MainWindowMenuBar move assignment operator
+			 */
+			MainWindowMenuBar & operator=(main_window_menu_bar::MainWindowMenuBar && rhs) = delete;
+
 	};
 
 }
-/** @} */ // End of MainWindowMenuBar group
+/** @} */ // End of MainWindowMenuBarGroup group
 
 #endif // MAIN_WINDOW_MENU_BAR_H

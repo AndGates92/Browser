@@ -195,6 +195,44 @@ namespace main_window {
 			 */
 			void keyReleaseEvent(QKeyEvent * event);
 
+			// Move and copy constructor
+			/**
+			 * @brief Function: MainWindow(const main_window::MainWindow & rhs)
+			 *
+			 * \param rhs: class to copy
+			 *
+			 * Command MainWindow copy constructor
+			 */
+			explicit MainWindow(const main_window::MainWindow & rhs) = delete;
+
+			/**
+			 * @brief Function: MainWindow(main_window::MainWindow && rhs)
+			 *
+			 * \param rhs: class to move
+			 *
+			 * Command MainWindow move constructor
+			 */
+			explicit MainWindow(main_window::MainWindow && rhs) = delete;
+
+			// Move and copy assignment operators
+			/**
+			 * @brief Function: MainWindow & operator=(const main_window::MainWindow & rhs)
+			 *
+			 * \param rhs: class to copy
+			 *
+			 * Command MainWindow copy assignment operator
+			 */
+			MainWindow & operator=(const main_window::MainWindow & rhs) = delete;
+
+			/**
+			 * @brief Function: MainWindow & operator=(main_window::MainWindow && rhs)
+			 *
+			 * \param rhs: class to move
+			 *
+			 * Command MainWindow move assignment operator
+			 */
+			MainWindow & operator=(main_window::MainWindow && rhs) = delete;
+
 	};
 
 }

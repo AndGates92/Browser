@@ -167,6 +167,45 @@ namespace edit_menu {
 			 * This function creates actions that will be added to the menu
 			 */
 			void createActions();
+
+			// Move and copy constructor
+			/**
+			 * @brief Function: EditMenu(const edit_menu::EditMenu & rhs)
+			 *
+			 * \param rhs: class to copy
+			 *
+			 * Command EditMenu copy constructor
+			 */
+			explicit EditMenu(const edit_menu::EditMenu & rhs) = delete;
+
+			/**
+			 * @brief Function: EditMenu(edit_menu::EditMenu && rhs)
+			 *
+			 * \param rhs: class to move
+			 *
+			 * Command EditMenu move constructor
+			 */
+			explicit EditMenu(edit_menu::EditMenu && rhs) = delete;
+
+			// Move and copy assignment operators
+			/**
+			 * @brief Function: EditMenu & operator=(const edit_menu::EditMenu & rhs)
+			 *
+			 * \param rhs: class to copy
+			 *
+			 * Command EditMenu copy assignment operator
+			 */
+			EditMenu & operator=(const edit_menu::EditMenu & rhs) = delete;
+
+			/**
+			 * @brief Function: EditMenu & operator=(edit_menu::EditMenu && rhs)
+			 *
+			 * \param rhs: class to move
+			 *
+			 * Command EditMenu move assignment operator
+			 */
+			EditMenu & operator=(edit_menu::EditMenu && rhs) = delete;
+
 	};
 }
 /** @} */ // End of EditMenuGroup group

@@ -85,8 +85,19 @@ namespace open_button_window {
 			 */
 			void cancel();
 
-		private:
+		signals:
+			/**
+			 * @brief Function: void fileRead(const QString & title, const QString & content)
+			 *
+			 * \param title: title of the widget
+			 * \param content: content of the file read
+			 *
+			 * This function is a signal to inform the menu that the center window must be updated
+			 */
+			void fileRead(const QString & title, const QString & content);
 
+
+		private:
 			/**
 			 * @brief user typed text
 			 *
@@ -132,16 +143,43 @@ namespace open_button_window {
 			 */
 			void connectSignals();
 
-		signals:
+			// Move and copy constructor
 			/**
-			 * @brief Function: void fileRead(const QString & title, const QString & content)
+			 * @brief Function: OpenButtonWindow(const open_button_window::OpenButtonWindow & rhs)
 			 *
-			 * \param title: title of the widget
-			 * \param content: content of the file read
+			 * \param rhs: class to copy
 			 *
-			 * This function is a signal to inform the menu that the center window must be updated
+			 * Command OpenButtonWindow copy constructor
 			 */
-			void fileRead(const QString & title, const QString & content);
+			explicit OpenButtonWindow(const open_button_window::OpenButtonWindow & rhs) = delete;
+
+			/**
+			 * @brief Function: OpenButtonWindow(open_button_window::OpenButtonWindow && rhs)
+			 *
+			 * \param rhs: class to move
+			 *
+			 * Command OpenButtonWindow move constructor
+			 */
+			explicit OpenButtonWindow(open_button_window::OpenButtonWindow && rhs) = delete;
+
+			// Move and copy assignment operators
+			/**
+			 * @brief Function: OpenButtonWindow & operator=(const open_button_window::OpenButtonWindow & rhs)
+			 *
+			 * \param rhs: class to copy
+			 *
+			 * Command OpenButtonWindow copy assignment operator
+			 */
+			OpenButtonWindow & operator=(const open_button_window::OpenButtonWindow & rhs) = delete;
+
+			/**
+			 * @brief Function: OpenButtonWindow & operator=(open_button_window::OpenButtonWindow && rhs)
+			 *
+			 * \param rhs: class to move
+			 *
+			 * Command OpenButtonWindow move assignment operator
+			 */
+			OpenButtonWindow & operator=(open_button_window::OpenButtonWindow && rhs) = delete;
 
 	};
 }

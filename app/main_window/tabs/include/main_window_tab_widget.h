@@ -226,6 +226,44 @@ namespace main_window_tab_widget {
 			 */
 			void deleteListElement(int index);
 
+			// Move and copy constructor
+			/**
+			 * @brief Function: MainWindowTabWidget(const main_window_tab_widget::MainWindowTabWidget & rhs)
+			 *
+			 * \param rhs: class to copy
+			 *
+			 * Command MainWindowTabWidget copy constructor
+			 */
+			explicit MainWindowTabWidget(const main_window_tab_widget::MainWindowTabWidget & rhs) = delete;
+
+			/**
+			 * @brief Function: MainWindowTabWidget(main_window_tab_widget::MainWindowTabWidget && rhs)
+			 *
+			 * \param rhs: class to move
+			 *
+			 * Command MainWindowTabWidget move constructor
+			 */
+			explicit MainWindowTabWidget(main_window_tab_widget::MainWindowTabWidget && rhs) = delete;
+
+			// Move and copy assignment operators
+			/**
+			 * @brief Function: MainWindowTabWidget & operator=(const main_window_tab_widget::MainWindowTabWidget & rhs)
+			 *
+			 * \param rhs: class to copy
+			 *
+			 * Command MainWindowTabWidget copy assignment operator
+			 */
+			MainWindowTabWidget & operator=(const main_window_tab_widget::MainWindowTabWidget & rhs) = delete;
+
+			/**
+			 * @brief Function: MainWindowTabWidget & operator=(main_window_tab_widget::MainWindowTabWidget && rhs)
+			 *
+			 * \param rhs: class to move
+			 *
+			 * Command MainWindowTabWidget move assignment operator
+			 */
+			MainWindowTabWidget & operator=(main_window_tab_widget::MainWindowTabWidget && rhs) = delete;
+
 	};
 
 }
