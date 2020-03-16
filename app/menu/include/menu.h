@@ -47,7 +47,7 @@ namespace menu {
 			explicit Menu(QWidget * window = Q_NULLPTR, QMenuBar * menuBar = Q_NULLPTR, const char* menuName = "Unknown", const QKeySequence & key = QKeySequence::UnknownKey);
 
 			/**
-			 * @brief Function: ~Menu()
+			 * @brief Function: virtual ~Menu()
 			 *
 			 * Destructor of base class menu
 			 */
@@ -119,8 +119,46 @@ namespace menu {
 			 */
 			void createShortcuts();
 
+			// Move and copy constructor
+			/**
+			 * @brief Function: Menu(const menu::Menu & rhs)
+			 *
+			 * \param rhs: class to copy
+			 *
+			 * Command Menu copy constructor
+			 */
+			explicit Menu(const menu::Menu & rhs) = delete;
+
+			/**
+			 * @brief Function: Menu(menu::Menu && rhs)
+			 *
+			 * \param rhs: class to move
+			 *
+			 * Command Menu move constructor
+			 */
+			explicit Menu(menu::Menu && rhs) = delete;
+
+			// Move and copy assignment operators
+			/**
+			 * @brief Function: Menu & operator=(const menu::Menu & rhs)
+			 *
+			 * \param rhs: class to copy
+			 *
+			 * Command Menu copy assignment operator
+			 */
+			Menu & operator=(const menu::Menu & rhs) = delete;
+
+			/**
+			 * @brief Function: Menu & operator=(menu::Menu && rhs)
+			 *
+			 * \param rhs: class to move
+			 *
+			 * Command Menu move assignment operator
+			 */
+			Menu & operator=(menu::Menu && rhs) = delete;
+
 	};
 }
 /** @} */ // End of MenuGroup group
 
-#endif // GRAPHICS_H
+#endif // MENU_H
