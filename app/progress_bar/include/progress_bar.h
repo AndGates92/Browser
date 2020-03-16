@@ -112,6 +112,44 @@ namespace progress_bar {
 			 */
 			QSize sizeHint();
 
+			// Move and copy constructor
+			/**
+			 * @brief Function: ProgressBar(const progress_bar::ProgressBar & rhs)
+			 *
+			 * \param rhs: class to copy
+			 *
+			 * Command Menu copy constructor
+			 */
+			explicit ProgressBar(const progress_bar::ProgressBar & rhs) = delete;
+
+			/**
+			 * @brief Function: ProgressBar(progress_bar::ProgressBar && rhs)
+			 *
+			 * \param rhs: class to move
+			 *
+			 * Command Menu move constructor
+			 */
+			explicit ProgressBar(progress_bar::ProgressBar && rhs) = delete;
+
+			// Move and copy assignment operators
+			/**
+			 * @brief Function: ProgressBar & operator=(const progress_bar::ProgressBar & rhs)
+			 *
+			 * \param rhs: class to copy
+			 *
+			 * Command Menu copy assignment operator
+			 */
+			ProgressBar & operator=(const progress_bar::ProgressBar & rhs) = delete;
+
+			/**
+			 * @brief Function: ProgressBar & operator=(progress_bar::ProgressBar && rhs)
+			 *
+			 * \param rhs: class to move
+			 *
+			 * Command Menu move assignment operator
+			 */
+			ProgressBar & operator=(progress_bar::ProgressBar && rhs) = delete;
+
 	};
 
 }
