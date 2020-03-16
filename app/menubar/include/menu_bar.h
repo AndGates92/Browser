@@ -52,6 +52,43 @@ namespace menu_bar {
 			virtual void fillMenuBar() = 0;
 
 		private:
+			// Move and copy constructor
+			/**
+			 * @brief Function: MenuBar(const menu_bar::MenuBar & rhs)
+			 *
+			 * \param rhs: class to copy
+			 *
+			 * Command Menu copy constructor
+			 */
+			explicit MenuBar(const menu_bar::MenuBar & rhs) = delete;
+
+			/**
+			 * @brief Function: MenuBar(menu_bar::MenuBar && rhs)
+			 *
+			 * \param rhs: class to move
+			 *
+			 * Command Menu move constructor
+			 */
+			explicit MenuBar(menu_bar::MenuBar && rhs) = delete;
+
+			// Move and copy assignment operators
+			/**
+			 * @brief Function: MenuBar & operator=(const menu_bar::MenuBar & rhs)
+			 *
+			 * \param rhs: class to copy
+			 *
+			 * Command Menu copy assignment operator
+			 */
+			MenuBar & operator=(const menu_bar::MenuBar & rhs) = delete;
+
+			/**
+			 * @brief Function: MenuBar & operator=(menu_bar::MenuBar && rhs)
+			 *
+			 * \param rhs: class to move
+			 *
+			 * Command Menu move assignment operator
+			 */
+	
 	};
 
 }
