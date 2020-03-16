@@ -112,6 +112,45 @@ namespace command_menu_model {
 			 */
 			QVariant data(const QModelIndex & index, int role = Qt::DisplayRole) const;
 
+			// Move and copy constructor
+			/**
+			 * @brief Function: CommandMenuModel(const command_menu_model::CommandMenuModel & rhs)
+			 *
+			 * param rhs: class to copy
+			 *
+			 * Command Menu Model copy constructor
+			 */
+			explicit CommandMenuModel(const command_menu_model::CommandMenuModel & rhs) = delete;
+
+			/**
+			 * @brief Function: CommandMenuModel(command_menu_model::CommandMenuModel && rhs)
+			 *
+			 * param rhs: class to move
+			 *
+			 * Command Menu Model move constructor
+			 */
+			explicit CommandMenuModel(command_menu_model::CommandMenuModel && rhs) = delete;
+
+			// Move and copy assignment operators
+			/**
+			 * @brief Function: CommandMenuModel & operator=(const command_menu_model::CommandMenuModel & rhs)
+			 *
+			 * param rhs: class to copy
+			 *
+			 * Command Menu Model copy assignment operator
+			 */
+			CommandMenuModel & operator=(const command_menu_model::CommandMenuModel & rhs) = delete;
+
+			/**
+			 * @brief Function: CommandMenuModel & operator=(command_menu_model::CommandMenuModel && rhs)
+			 *
+			 * param rhs: class to move
+			 *
+			 * Command Menu Model move assignment operator
+			 */
+			CommandMenuModel & operator=(command_menu_model::CommandMenuModel && rhs) = delete;
+
+
 	};
 }
 /** @} */ // End of CommandMenuModelGroup group
