@@ -48,18 +48,18 @@ namespace json_parser {
 			/**
 			 * @brief Function: JsonParser(const json_parser::JsonParser & rhs)
 			 *
-			 * param rhs: class to copy
+			 * \param rhs: class to copy
 			 *
-			 * Command Menu copy constructor
+			 * JSON parser copy constructor
 			 */
 			explicit JsonParser(const json_parser::JsonParser & rhs);
 
 			/**
 			 * @brief Function: JsonParser::JsonParser(json_parser::JsonParser && rhs)
 			 *
-			 * param rhs: class to move
+			 * \param rhs: class to move
 			 *
-			 * Command Menu move constructor
+			 * JSON parser move constructor
 			 */
 			explicit JsonParser(json_parser::JsonParser && rhs);
 
@@ -67,18 +67,18 @@ namespace json_parser {
 			/**
 			 * @brief Function: JsonParser & operator=(const json_parser::JsonParser & rhs)
 			 *
-			 * param rhs: class to copy
+			 * \param rhs: class to copy
 			 *
-			 * Command Menu copy assignment operator
+			 * JSON parser copy assignment operator
 			 */
 			JsonParser & operator=(const json_parser::JsonParser & rhs);
 
 			/**
 			 * @brief Function: JsonParser & operator=(json_parser::JsonParser && rhs)
 			 *
-			 * param rhs: class to move
+			 * \param rhs: class to move
 			 *
-			 * Command Menu move assignment operator
+			 * JSON parser move assignment operator
 			 */
 			JsonParser & operator=(json_parser::JsonParser && rhs);
 
@@ -90,9 +90,13 @@ namespace json_parser {
 			~JsonParser();
 
 			/**
-			 * @brief Function: ~JsonParser()
+			 * @brief Function: QMap<QString, QString> findKeyValue(QString key)
 			 *
-			 * JSON parser destructor
+			 * \param key: key to look for in the JSON file
+			 *
+			 * \return the pair key-value value th matches
+			 *
+			 * Finds all values matching the key in the JSON file
 			 */
 			QMap<QString, QString> findKeyValue(QString key);
 

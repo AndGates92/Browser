@@ -87,18 +87,18 @@ namespace json_wrapper {
 			/**
 			 * @brief Function: JsonWrapper(const json_wrapper::JsonWrapper & rhs)
 			 *
-			 * param rhs: class to copy
+			 * \param rhs: class to copy
 			 *
-			 * Command Menu copy constructor
+			 * JSON wrapper copy constructor
 			 */
 			explicit JsonWrapper(const json_wrapper::JsonWrapper & rhs);
 
 			/**
 			 * @brief Function: JsonWrapper::JsonWrapper(json_wrapper::JsonWrapper && rhs)
 			 *
-			 * param rhs: class to move
+			 * \param rhs: class to move
 			 *
-			 * Command Menu move constructor
+			 * JSON wrapper move constructor
 			 */
 			explicit JsonWrapper(json_wrapper::JsonWrapper && rhs);
 
@@ -106,18 +106,18 @@ namespace json_wrapper {
 			/**
 			 * @brief Function: JsonWrapper & operator=(const json_wrapper::JsonWrapper & rhs)
 			 *
-			 * param rhs: class to copy
+			 * \param rhs: class to copy
 			 *
-			 * Command Menu copy assignment operator
+			 * JSON wrapper copy assignment operator
 			 */
 			JsonWrapper & operator=(const json_wrapper::JsonWrapper & rhs);
 
 			/**
 			 * @brief Function: JsonWrapper & operator=(json_wrapper::JsonWrapper && rhs)
 			 *
-			 * param rhs: class to move
+			 * \param rhs: class to move
 			 *
-			 * Command Menu move assignment operator
+			 * JSON wrapper move assignment operator
 			 */
 			JsonWrapper & operator=(json_wrapper::JsonWrapper && rhs);
 

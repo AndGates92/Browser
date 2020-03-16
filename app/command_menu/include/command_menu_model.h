@@ -116,7 +116,7 @@ namespace command_menu_model {
 			/**
 			 * @brief Function: CommandMenuModel(const command_menu_model::CommandMenuModel & rhs)
 			 *
-			 * param rhs: class to copy
+			 * \param rhs: class to copy
 			 *
 			 * Command Menu Model copy constructor
 			 */
@@ -125,7 +125,7 @@ namespace command_menu_model {
 			/**
 			 * @brief Function: CommandMenuModel(command_menu_model::CommandMenuModel && rhs)
 			 *
-			 * param rhs: class to move
+			 * \param rhs: class to move
 			 *
 			 * Command Menu Model move constructor
 			 */
@@ -135,7 +135,7 @@ namespace command_menu_model {
 			/**
 			 * @brief Function: CommandMenuModel & operator=(const command_menu_model::CommandMenuModel & rhs)
 			 *
-			 * param rhs: class to copy
+			 * \param rhs: class to copy
 			 *
 			 * Command Menu Model copy assignment operator
 			 */
@@ -144,7 +144,7 @@ namespace command_menu_model {
 			/**
 			 * @brief Function: CommandMenuModel & operator=(command_menu_model::CommandMenuModel && rhs)
 			 *
-			 * param rhs: class to move
+			 * \param rhs: class to move
 			 *
 			 * Command Menu Model move assignment operator
 			 */

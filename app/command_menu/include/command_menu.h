@@ -323,7 +323,7 @@ namespace command_menu {
 			/**
 			 * @brief Function: CommandMenu(const command_menu::CommandMenu & rhs)
 			 *
-			 * param rhs: class to copy
+			 * \param rhs: class to copy
 			 *
 			 * Command Menu copy constructor
 			 */
@@ -332,7 +332,7 @@ namespace command_menu {
 			/**
 			 * @brief Function: CommandMenu(command_menu::CommandMenu && rhs)
 			 *
-			 * param rhs: class to move
+			 * \param rhs: class to move
 			 *
 			 * Command Menu move constructor
 			 */
@@ -342,7 +342,7 @@ namespace command_menu {
 			/**
 			 * @brief Function: CommandMenu & operator=(const command_menu::CommandMenu & rhs)
 			 *
-			 * param rhs: class to copy
+			 * \param rhs: class to copy
 			 *
 			 * Command Menu copy assignment operator
 			 */
@@ -351,7 +351,7 @@ namespace command_menu {
 			/**
 			 * @brief Function: CommandMenu & operator=(command_menu::CommandMenu && rhs)
 			 *
-			 * param rhs: class to move
+			 * \param rhs: class to move
 			 *
 			 * Command Menu move assignment operator
 			 */
