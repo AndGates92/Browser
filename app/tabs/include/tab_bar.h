@@ -101,6 +101,44 @@ namespace tab_bar {
 			 */
 			void keyPressEvent(QKeyEvent * event);
 
+			// Move and copy constructor
+			/**
+			 * @brief Function: TabBar(const tab_bar::TabBar & rhs)
+			 *
+			 * \param rhs: class to copy
+			 *
+			 * Command Menu copy constructor
+			 */
+			explicit TabBar(const tab_bar::TabBar & rhs) = delete;
+
+			/**
+			 * @brief Function: TabBar(tab_bar::TabBar && rhs)
+			 *
+			 * \param rhs: class to move
+			 *
+			 * Command Menu move constructor
+			 */
+			explicit TabBar(tab_bar::TabBar && rhs) = delete;
+
+			// Move and copy assignment operators
+			/**
+			 * @brief Function: TabBar & operator=(const tab_bar::TabBar & rhs)
+			 *
+			 * \param rhs: class to copy
+			 *
+			 * Command Menu copy assignment operator
+			 */
+			TabBar & operator=(const tab_bar::TabBar & rhs) = delete;
+
+			/**
+			 * @brief Function: TabBar & operator=(tab_bar::TabBar && rhs)
+			 *
+			 * \param rhs: class to move
+			 *
+			 * Command Menu move assignment operator
+			 */
+			TabBar & operator=(tab_bar::TabBar && rhs) = delete;
+
 	};
 }
 /** @} */ // End of TabBarGroup group

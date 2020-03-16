@@ -188,6 +188,44 @@ namespace tab_widget {
 			 */
 			void keyPressEvent(QKeyEvent * event);
 
+			// Move and copy constructor
+			/**
+			 * @brief Function: TabWidget(const tab_widget::TabWidget & rhs)
+			 *
+			 * \param rhs: class to copy
+			 *
+			 * Command Menu copy constructor
+			 */
+			explicit TabWidget(const tab_widget::TabWidget & rhs) = delete;
+
+			/**
+			 * @brief Function: TabWidget(tab_widget::TabWidget && rhs)
+			 *
+			 * \param rhs: class to move
+			 *
+			 * Command Menu move constructor
+			 */
+			explicit TabWidget(tab_widget::TabWidget && rhs) = delete;
+
+			// Move and copy assignment operators
+			/**
+			 * @brief Function: TabWidget & operator=(const tab_widget::TabWidget & rhs)
+			 *
+			 * \param rhs: class to copy
+			 *
+			 * Command Menu copy assignment operator
+			 */
+			TabWidget & operator=(const tab_widget::TabWidget & rhs) = delete;
+
+			/**
+			 * @brief Function: TabWidget & operator=(tab_widget::TabWidget && rhs)
+			 *
+			 * \param rhs: class to move
+			 *
+			 * Command Menu move assignment operator
+			 */
+			TabWidget & operator=(tab_widget::TabWidget && rhs) = delete;
+
 		signals:
 
 	};
