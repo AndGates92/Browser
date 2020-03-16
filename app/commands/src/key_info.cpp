@@ -32,6 +32,67 @@ key_info::KeyInfo::KeyInfo(const QKeySequence & keySeq) {
 
 }
 
+key_info::KeyInfo::KeyInfo(const key_info::KeyInfo & rhs) : key(rhs.key), modifier(rhs.modifier) {
+
+	QINFO_PRINT(global_types::qinfo_level_e::ZERO, keyInfoOverall,  "Copy constructor key info");
+
+}
+
+key_info::KeyInfo & key_info::KeyInfo::operator=(const key_info::KeyInfo & rhs) {
+
+	QINFO_PRINT(global_types::qinfo_level_e::ZERO, keyInfoOverall,  "Copy assignment operator for key info");
+
+	// If rhs points to the same address as this, then return this
+	if (&rhs == this) {
+		return *this;
+	}
+
+	if (this->key != rhs.key) {
+		this->key = rhs.key;
+	}
+
+	if (this->modifier != rhs.modifier) {
+		this->modifier = rhs.modifier;
+	}
+
+	return *this;
+}
+
+key_info::KeyInfo::KeyInfo(key_info::KeyInfo && rhs) : key(std::move(rhs.key)), modifier(std::move(rhs.modifier)) {
+
+	QINFO_PRINT(global_types::qinfo_level_e::ZERO, keyInfoOverall,  "Move constructor key info");
+
+	rhs.key = Qt::Key_unknown;
+	rhs.modifier = Qt::NoModifier;
+}
+
+key_info::KeyInfo & key_info::KeyInfo::operator=(key_info::KeyInfo && rhs) {
+
+	QINFO_PRINT(global_types::qinfo_level_e::ZERO, keyInfoOverall,  "Move assignment operator for key info");
+
+	// If rhs points to the same address as this, then return this
+	if (&rhs == this) {
+		return *this;
+	}
+
+	if (this->key != rhs.key) {
+		this->key = std::move(rhs.key);
+	}
+	rhs.key = Qt::Key_unknown;
+
+	if (this->modifier != rhs.modifier) {
+		this->modifier = std::move(rhs.modifier);
+	}
+	rhs.modifier = Qt::NoModifier;
+
+	return *this;
+}
+
+key_info::KeyInfo::~KeyInfo() {
+	QINFO_PRINT(global_types::qinfo_level_e::ZERO, keyInfoOverall,  "Destructor of KeyInfo class");
+
+}
+
 QString key_info::KeyInfo::toString(QKeySequence::SequenceFormat format) const {
 
 	// Convert key to string

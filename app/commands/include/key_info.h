@@ -164,6 +164,51 @@ namespace key_info {
 			 */
 			explicit KeyInfo(const QKeySequence & keySeq);
 
+			// Move and copy constructor
+			/**
+			 * @brief Function: KeyInfo(const key_info::KeyInfo & rhs)
+			 *
+			 * \param rhs: class to copy
+			 *
+			 * JSON parser copy constructor
+			 */
+			explicit KeyInfo(const key_info::KeyInfo & rhs);
+
+			/**
+			 * @brief Function: KeyInfo::KeyInfo(key_info::KeyInfo && rhs)
+			 *
+			 * \param rhs: class to move
+			 *
+			 * JSON parser move constructor
+			 */
+			explicit KeyInfo(key_info::KeyInfo && rhs);
+
+			// Move and copy assignment operators
+			/**
+			 * @brief Function: KeyInfo & operator=(const key_info::KeyInfo & rhs)
+			 *
+			 * \param rhs: class to copy
+			 *
+			 * JSON parser copy assignment operator
+			 */
+			KeyInfo & operator=(const key_info::KeyInfo & rhs);
+
+			/**
+			 * @brief Function: KeyInfo & operator=(key_info::KeyInfo && rhs)
+			 *
+			 * \param rhs: class to move
+			 *
+			 * JSON parser move assignment operator
+			 */
+			KeyInfo & operator=(key_info::KeyInfo && rhs);
+
+			/**
+			 * @brief Function: ~KeyInfo()
+			 *
+			 * JSON parser destructor
+			 */
+			~KeyInfo();
+
 			/**
 			 * @brief Function: QString toString(QKeySequence::SequenceFormat format = QKeySequence::NativeText) const
 			 *

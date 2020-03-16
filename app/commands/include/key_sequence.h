@@ -61,14 +61,50 @@ namespace key_sequence {
 			 */
 			explicit KeySequence(const QKeySequence & qKeySeq);
 
+			// Move and copy constructor
 			/**
-			 * @brief Function: explicit KeySequence(const KeySequence & keySeq)
+			 * @brief Function: KeySequence(const key_sequence::KeySequence & rhs)
 			 *
-			 * \param keySeq: key sequence to copy
+			 * \param rhs: class to copy
 			 *
-			 * Key Sequence copy constructor
+			 * JSON parser copy constructor
 			 */
-			explicit KeySequence(const KeySequence & keySeq);
+			explicit KeySequence(const key_sequence::KeySequence & rhs);
+
+			/**
+			 * @brief Function: KeySequence::KeySequence(key_sequence::KeySequence && rhs)
+			 *
+			 * \param rhs: class to move
+			 *
+			 * JSON parser move constructor
+			 */
+			explicit KeySequence(key_sequence::KeySequence && rhs);
+
+			// Move and copy assignment operators
+			/**
+			 * @brief Function: KeySequence & operator=(const key_sequence::KeySequence & rhs)
+			 *
+			 * \param rhs: class to copy
+			 *
+			 * JSON parser copy assignment operator
+			 */
+			KeySequence & operator=(const key_sequence::KeySequence & rhs);
+
+			/**
+			 * @brief Function: KeySequence & operator=(key_sequence::KeySequence && rhs)
+			 *
+			 * \param rhs: class to move
+			 *
+			 * JSON parser move assignment operator
+			 */
+			KeySequence & operator=(key_sequence::KeySequence && rhs);
+
+			/**
+			 * @brief Function: ~KeySequence()
+			 *
+			 * JSON parser destructor
+			 */
+			~KeySequence();
 
 			/**
 			 * @brief Function: QVector<QKeySequence> getSeqVec() const

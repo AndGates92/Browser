@@ -31,6 +31,14 @@ key_sequence::KeySequence::KeySequence(const QString & keyStr, QKeySequence::Seq
 	}
 }
 
+key_sequence::KeySequence::KeySequence(int key0, int key1, int key2, int key3) {
+	QINFO_PRINT(global_types::qinfo_level_e::ZERO, keySequenceOverall,  "Key Sequence constructor: key0 0x" << QString("%1").arg(key0, 0, 16) << " key1 0x" << QString("%1").arg(key1, 0, 16) << " key2 0x" << QString("%1").arg(key2, 0, 16) << " key3 0x" << QString("%1").arg(key3, 0, 16));
+	this->addKey(key0);
+	this->addKey(key1);
+	this->addKey(key2);
+	this->addKey(key3);
+}
+
 key_sequence::KeySequence::KeySequence(const QKeySequence & qKeySeq) {
 	unsigned int thisSize = qKeySeq.count();
 
@@ -41,17 +49,59 @@ key_sequence::KeySequence::KeySequence(const QKeySequence & qKeySeq) {
 	}
 }
 
-key_sequence::KeySequence::KeySequence(int key0, int key1, int key2, int key3) {
-	QINFO_PRINT(global_types::qinfo_level_e::ZERO, keySequenceOverall,  "Key Sequence constructor: key0 0x" << QString("%1").arg(key0, 0, 16) << " key1 0x" << QString("%1").arg(key1, 0, 16) << " key2 0x" << QString("%1").arg(key2, 0, 16) << " key3 0x" << QString("%1").arg(key3, 0, 16));
-	this->addKey(key0);
-	this->addKey(key1);
-	this->addKey(key2);
-	this->addKey(key3);
+key_sequence::KeySequence::KeySequence(const key_sequence::KeySequence & rhs) : keySeqVec(rhs.keySeqVec) {
+
+	QINFO_PRINT(global_types::qinfo_level_e::ZERO, keySequenceOverall,  "Copy constructor key sequence");
+
 }
 
-key_sequence::KeySequence::KeySequence(const key_sequence::KeySequence & keySeq) {
-	QINFO_PRINT(global_types::qinfo_level_e::ZERO, keySequenceOverall,  "Key Sequence copy constructor. Keys are " << keySeq.toString());
-	this->keySeqVec = keySeq.getSeqVec();
+key_sequence::KeySequence & key_sequence::KeySequence::operator=(const key_sequence::KeySequence & rhs) {
+
+	QINFO_PRINT(global_types::qinfo_level_e::ZERO, keySequenceOverall,  "Copy assignment operator for key sequence");
+
+	// If rhs points to the same address as this, then return this
+	if (&rhs == this) {
+		return *this;
+	}
+
+	if (this->keySeqVec != rhs.keySeqVec) {
+		this->keySeqVec = rhs.keySeqVec;
+	}
+
+	return *this;
+}
+
+key_sequence::KeySequence::KeySequence(key_sequence::KeySequence && rhs) : keySeqVec(std::move(rhs.keySeqVec)) {
+
+	QINFO_PRINT(global_types::qinfo_level_e::ZERO, keySequenceOverall,  "Move constructor key sequence");
+
+	rhs.keySeqVec.clear();
+	QVector<QKeySequence>().swap(rhs.keySeqVec);
+	QEXCEPTION_ACTION_COND((rhs.keySeqVec.capacity() == 0), throw,  "Released all memory used by vector but capacity is still non-zero - actual capacity " << rhs.keySeqVec.capacity());
+}
+
+key_sequence::KeySequence & key_sequence::KeySequence::operator=(key_sequence::KeySequence && rhs) {
+
+	QINFO_PRINT(global_types::qinfo_level_e::ZERO, keySequenceOverall,  "Move assignment operator for key sequence");
+
+	// If rhs points to the same address as this, then return this
+	if (&rhs == this) {
+		return *this;
+	}
+
+	if (this->keySeqVec != rhs.keySeqVec) {
+		this->keySeqVec = std::move(rhs.keySeqVec);
+	}
+	rhs.keySeqVec.clear();
+	QVector<QKeySequence>().swap(rhs.keySeqVec);
+	QEXCEPTION_ACTION_COND((rhs.keySeqVec.capacity() == 0), throw,  "Released all memory used by vector but capacity is still non-zero - actual capacity " << rhs.keySeqVec.capacity());
+
+	return *this;
+}
+
+key_sequence::KeySequence::~KeySequence() {
+	QINFO_PRINT(global_types::qinfo_level_e::ZERO, keySequenceOverall,  "Destructor of KeySequence class");
+
 }
 
 void key_sequence::KeySequence::addKey(int key, QKeySequence::SequenceFormat format) {
