@@ -42,6 +42,44 @@ namespace main_window_core {
 			 */
 			explicit MainWindowCore();
 
+			// Move and copy constructor
+			/**
+			 * @brief Function: MainWindowCore(const main_window_core::MainWindowCore & rhs)
+			 *
+			 * \param rhs: class to copy
+			 *
+			 * Command MainWindowCore copy constructor
+			 */
+			explicit MainWindowCore(const main_window_core::MainWindowCore & rhs);
+
+			/**
+			 * @brief Function: MainWindowCore(main_window_core::MainWindowCore && rhs)
+			 *
+			 * \param rhs: class to move
+			 *
+			 * Command MainWindowCore move constructor
+			 */
+			explicit MainWindowCore(main_window_core::MainWindowCore && rhs);
+
+			// Move and copy assignment operators
+			/**
+			 * @brief Function: MainWindowCore & operator=(const main_window_core::MainWindowCore & rhs)
+			 *
+			 * \param rhs: class to copy
+			 *
+			 * Command MainWindowCore copy assignment operator
+			 */
+			MainWindowCore & operator=(const main_window_core::MainWindowCore & rhs);
+
+			/**
+			 * @brief Function: MainWindowCore & operator=(main_window_core::MainWindowCore && rhs)
+			 *
+			 * \param rhs: class to move
+			 *
+			 * Command MainWindowCore move assignment operator
+			 */
+			MainWindowCore & operator=(main_window_core::MainWindowCore && rhs);
+
 			/**
 			 * @brief Function: ~MainWindowCore()
 			 *
