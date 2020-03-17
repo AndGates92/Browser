@@ -56,6 +56,9 @@ main_window_base::MainWindowBase & main_window_base::MainWindowBase::operator=(m
 	}
 
 	if (this->windowCore != rhs.windowCore) {
+		if (this->windowCore.isNull() == false) {
+			this->windowCore.reset();
+		}
 		this->windowCore = std::move(rhs.windowCore);
 	}
 
