@@ -424,6 +424,44 @@ namespace main_window_ctrl_tab {
 			void moveCursor(int tabIndex);
 			// ================================ END ACTIONS ========================================//
 
+			// Move and copy constructor
+			/**
+			 * @brief Function: MainWindowCtrlTab(const main_window_ctrl_tab::MainWindowCtrlTab & rhs)
+			 *
+			 * \param rhs: class to copy
+			 *
+			 * Command MainWindowCtrlTab copy constructor
+			 */
+			explicit MainWindowCtrlTab(const main_window_ctrl_tab::MainWindowCtrlTab & rhs) = delete;
+
+			/**
+			 * @brief Function: MainWindowCtrlTab(main_window_ctrl_tab::MainWindowCtrlTab && rhs)
+			 *
+			 * \param rhs: class to move
+			 *
+			 * Command MainWindowCtrlTab move constructor
+			 */
+			explicit MainWindowCtrlTab(main_window_ctrl_tab::MainWindowCtrlTab && rhs) = delete;
+
+			// Move and copy assignment operators
+			/**
+			 * @brief Function: MainWindowCtrlTab & operator=(const main_window_ctrl_tab::MainWindowCtrlTab & rhs)
+			 *
+			 * \param rhs: class to copy
+			 *
+			 * Command MainWindowCtrlTab copy assignment operator
+			 */
+			MainWindowCtrlTab & operator=(const main_window_ctrl_tab::MainWindowCtrlTab & rhs) = delete;
+
+			/**
+			 * @brief Function: MainWindowCtrlTab & operator=(main_window_ctrl_tab::MainWindowCtrlTab && rhs)
+			 *
+			 * \param rhs: class to move
+			 *
+			 * Command MainWindowCtrlTab move assignment operator
+			 */
+			MainWindowCtrlTab & operator=(main_window_ctrl_tab::MainWindowCtrlTab && rhs) = delete;
+
 	};
 
 }

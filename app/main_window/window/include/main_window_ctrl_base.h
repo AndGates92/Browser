@@ -140,6 +140,44 @@ namespace main_window_ctrl_base {
 			virtual void setStateAction(main_window_shared_types::state_e windowState, QKeyEvent * event) = 0;
 
 		private:
+			// Move and copy constructor
+			/**
+			 * @brief Function: MainWindowCtrlBase(const main_window_ctrl_base::MainWindowCtrlBase & rhs)
+			 *
+			 * \param rhs: class to copy
+			 *
+			 * Command MainWindowCtrlBase copy constructor
+			 */
+			explicit MainWindowCtrlBase(const main_window_ctrl_base::MainWindowCtrlBase & rhs) = delete;
+
+			/**
+			 * @brief Function: MainWindowCtrlBase(main_window_ctrl_base::MainWindowCtrlBase && rhs)
+			 *
+			 * \param rhs: class to move
+			 *
+			 * Command MainWindowCtrlBase move constructor
+			 */
+			explicit MainWindowCtrlBase(main_window_ctrl_base::MainWindowCtrlBase && rhs) = delete;
+
+			// Move and copy assignment operators
+			/**
+			 * @brief Function: MainWindowCtrlBase & operator=(const main_window_ctrl_base::MainWindowCtrlBase & rhs)
+			 *
+			 * \param rhs: class to copy
+			 *
+			 * Command MainWindowCtrlBase copy assignment operator
+			 */
+			MainWindowCtrlBase & operator=(const main_window_ctrl_base::MainWindowCtrlBase & rhs) = delete;
+
+			/**
+			 * @brief Function: MainWindowCtrlBase & operator=(main_window_ctrl_base::MainWindowCtrlBase && rhs)
+			 *
+			 * \param rhs: class to move
+			 *
+			 * Command MainWindowCtrlBase move assignment operator
+			 */
+			MainWindowCtrlBase & operator=(main_window_ctrl_base::MainWindowCtrlBase && rhs) = delete;
+
 	};
 
 }

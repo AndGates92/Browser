@@ -178,6 +178,44 @@ namespace main_window_ctrl {
 			 */
 			void setStateAction(main_window_shared_types::state_e windowState, QKeyEvent * event);
 
+			// Move and copy constructor
+			/**
+			 * @brief Function: MainWindowCtrl(const main_window_ctrl::MainWindowCtrl & rhs)
+			 *
+			 * \param rhs: class to copy
+			 *
+			 * Command MainWindowCtrl copy constructor
+			 */
+			explicit MainWindowCtrl(const main_window_ctrl::MainWindowCtrl & rhs) = delete;
+
+			/**
+			 * @brief Function: MainWindowCtrl(main_window_ctrl::MainWindowCtrl && rhs)
+			 *
+			 * \param rhs: class to move
+			 *
+			 * Command MainWindowCtrl move constructor
+			 */
+			explicit MainWindowCtrl(main_window_ctrl::MainWindowCtrl && rhs) = delete;
+
+			// Move and copy assignment operators
+			/**
+			 * @brief Function: MainWindowCtrl & operator=(const main_window_ctrl::MainWindowCtrl & rhs)
+			 *
+			 * \param rhs: class to copy
+			 *
+			 * Command MainWindowCtrl copy assignment operator
+			 */
+			MainWindowCtrl & operator=(const main_window_ctrl::MainWindowCtrl & rhs) = delete;
+
+			/**
+			 * @brief Function: MainWindowCtrl & operator=(main_window_ctrl::MainWindowCtrl && rhs)
+			 *
+			 * \param rhs: class to move
+			 *
+			 * Command MainWindowCtrl move assignment operator
+			 */
+			MainWindowCtrl & operator=(main_window_ctrl::MainWindowCtrl && rhs) = delete;
+
 	};
 
 }
