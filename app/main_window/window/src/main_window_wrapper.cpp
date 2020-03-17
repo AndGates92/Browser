@@ -21,6 +21,57 @@ main_window_wrapper::MainWindowWrapper::MainWindowWrapper(QWidget * parent, Qt::
 
 }
 
+main_window_wrapper::MainWindowWrapper::MainWindowWrapper(const main_window_wrapper::MainWindowWrapper & rhs) : main_window_base::MainWindowBase(rhs), window(rhs.window) {
+	QINFO_PRINT(global_types::qinfo_level_e::ZERO, mainWindowWrapperOverall,  "Copy constructor main window wrapper");
+
+}
+main_window_wrapper::MainWindowWrapper & main_window_wrapper::MainWindowWrapper::operator=(const main_window_wrapper::MainWindowWrapper & rhs) {
+
+	QINFO_PRINT(global_types::qinfo_level_e::ZERO, mainWindowWrapperOverall,  "Copy assignment operator for main window wrapper");
+
+	// If rhs points to the same address as this, then return this
+	if (&rhs == this) {
+		return *this;
+	}
+
+	if (this->window != rhs.window) {
+		this->window = rhs.window;
+	}
+
+	this->main_window_base::MainWindowBase::operator=(rhs);
+
+	return *this;
+}
+
+main_window_wrapper::MainWindowWrapper::MainWindowWrapper(main_window_wrapper::MainWindowWrapper && rhs) : main_window_base::MainWindowBase(std::move(rhs)), window(std::move(rhs.window)) {
+	QINFO_PRINT(global_types::qinfo_level_e::ZERO, mainWindowWrapperOverall,  "Move constructor main window wrapper");
+
+	// Reset rhs
+	rhs.window = Q_NULLPTR;
+}
+
+main_window_wrapper::MainWindowWrapper & main_window_wrapper::MainWindowWrapper::operator=(main_window_wrapper::MainWindowWrapper && rhs) {
+
+	QINFO_PRINT(global_types::qinfo_level_e::ZERO, mainWindowWrapperOverall,  "Move assignment operator for main window wrapper");
+
+	// If rhs points to the same address as this, then return this
+	if (&rhs == this) {
+		return *this;
+	}
+
+	if (this->window != rhs.window) {
+		if (this->window != Q_NULLPTR) {
+			delete this->window;
+		}
+		this->window = std::move(rhs.window);
+	}
+	rhs.window = Q_NULLPTR;
+
+	this->main_window_base::MainWindowBase::operator=(rhs);
+
+	return *this;
+}
+
 main_window_wrapper::MainWindowWrapper::~MainWindowWrapper() {
 	QINFO_PRINT(global_types::qinfo_level_e::ZERO, mainWindowWrapperOverall,  "Main window wrapper destructor");
 

@@ -42,6 +42,44 @@ namespace main_window_wrapper {
 			 */
 			explicit MainWindowWrapper(QWidget * parent = Q_NULLPTR, Qt::WindowFlags flags = Qt::WindowFlags());
 
+			// Move and copy constructor
+			/**
+			 * @brief Function: MainWindowWrapper(const main_window_wrapper::MainWindowWrapper & rhs)
+			 *
+			 * \param rhs: class to copy
+			 *
+			 * Command MainWindowWrapper copy constructor
+			 */
+			explicit MainWindowWrapper(const main_window_wrapper::MainWindowWrapper & rhs);
+
+			/**
+			 * @brief Function: MainWindowWrapper(main_window_wrapper::MainWindowWrapper && rhs)
+			 *
+			 * \param rhs: class to move
+			 *
+			 * Command MainWindowWrapper move constructor
+			 */
+			explicit MainWindowWrapper(main_window_wrapper::MainWindowWrapper && rhs);
+
+			// Move and copy assignment operators
+			/**
+			 * @brief Function: MainWindowWrapper & operator=(const main_window_wrapper::MainWindowWrapper & rhs)
+			 *
+			 * \param rhs: class to copy
+			 *
+			 * Command MainWindowWrapper copy assignment operator
+			 */
+			MainWindowWrapper & operator=(const main_window_wrapper::MainWindowWrapper & rhs);
+
+			/**
+			 * @brief Function: MainWindowWrapper & operator=(main_window_wrapper::MainWindowWrapper && rhs)
+			 *
+			 * \param rhs: class to move
+			 *
+			 * Command MainWindowWrapper move assignment operator
+			 */
+			MainWindowWrapper & operator=(main_window_wrapper::MainWindowWrapper && rhs);
+
 			/**
 			 * @brief Function: ~MainWindowWrapper()
 			 *
