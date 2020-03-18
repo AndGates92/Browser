@@ -25,7 +25,9 @@ Q_LOGGING_CATEGORY(mainWindowCtrlTabTabs, "mainWindowCtrlTab.tabs", MSG_TYPE_LEV
 Q_LOGGING_CATEGORY(mainWindowCtrlTabUrl, "mainWindowCtrlTab.url", MSG_TYPE_LEVEL)
 
 
-main_window_ctrl_tab::MainWindowCtrlTab::MainWindowCtrlTab(QSharedPointer<main_window_core::MainWindowCore> core, QWidget * parent) : main_window_ctrl_base::MainWindowCtrlBase(core, parent, main_window_ctrl_tab::commandFileFullPath) {
+main_window_ctrl_tab::MainWindowCtrlTab::MainWindowCtrlTab(std::shared_ptr<main_window_core::MainWindowCore> core, QWidget * parent) : main_window_ctrl_base::MainWindowCtrlBase(core, parent, main_window_ctrl_tab::commandFileFullPath) {
+
+	QINFO_PRINT(global_types::qinfo_level_e::ZERO, mainWindowCtrlTabOverall,  "Main window tab control constructor");
 
 	// Shortcuts
 	this->createShortcuts();
@@ -36,6 +38,8 @@ main_window_ctrl_tab::MainWindowCtrlTab::MainWindowCtrlTab(QSharedPointer<main_w
 }
 
 main_window_ctrl_tab::MainWindowCtrlTab::~MainWindowCtrlTab() {
+
+	QINFO_PRINT(global_types::qinfo_level_e::ZERO, mainWindowCtrlTabOverall,  "Main window tab control destructor");
 
 	// deleting shortcuts
 	delete this->openNewTabKey;

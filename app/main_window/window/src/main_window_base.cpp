@@ -15,9 +15,9 @@
 
 Q_LOGGING_CATEGORY(mainWindowBaseOverall, "mainWindowBase.overall", MSG_TYPE_LEVEL)
 
-main_window_base::MainWindowBase::MainWindowBase(QSharedPointer<main_window_core::MainWindowCore> core) : windowCore(core) {
+main_window_base::MainWindowBase::MainWindowBase(std::shared_ptr<main_window_core::MainWindowCore> core) : windowCore(core) {
 
-	QINFO_PRINT(global_types::qinfo_level_e::ZERO, mainWindowBaseOverall,  "Main window base classe constructor");
+	QINFO_PRINT(global_types::qinfo_level_e::ZERO, mainWindowBaseOverall,  "Main window base class constructor");
 }
 
 main_window_base::MainWindowBase::MainWindowBase(const main_window_base::MainWindowBase & rhs) : windowCore(rhs.windowCore) {
@@ -56,7 +56,7 @@ main_window_base::MainWindowBase & main_window_base::MainWindowBase::operator=(m
 	}
 
 	if (this->windowCore != rhs.windowCore) {
-		if (this->windowCore.isNull() == false) {
+		if (this->windowCore != nullptr) {
 			this->windowCore.reset();
 		}
 		this->windowCore = std::move(rhs.windowCore);
@@ -67,6 +67,4 @@ main_window_base::MainWindowBase & main_window_base::MainWindowBase::operator=(m
 
 main_window_base::MainWindowBase::~MainWindowBase() {
 	QINFO_PRINT(global_types::qinfo_level_e::ZERO, mainWindowBaseOverall,  "Main window base class destructor");
-
-	this->windowCore.clear();
 }

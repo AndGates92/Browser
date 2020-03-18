@@ -22,7 +22,9 @@ Q_LOGGING_CATEGORY(mainWindowCtrlOverall, "mainWindowCtrl.overall", MSG_TYPE_LEV
 Q_LOGGING_CATEGORY(mainWindowCtrlUserInput, "mainWindowCtrl.userInput", MSG_TYPE_LEVEL)
 Q_LOGGING_CATEGORY(mainWindowCtrlSearch, "mainWindowCtrl.search", MSG_TYPE_LEVEL)
 
-main_window_ctrl::MainWindowCtrl::MainWindowCtrl(QSharedPointer<main_window_core::MainWindowCore> core, QWidget * parent) : main_window_ctrl_base::MainWindowCtrlBase(core, parent, main_window_ctrl::commandFileFullPath), tabctrl(new main_window_ctrl_tab::MainWindowCtrlTab(core, parent)) {
+main_window_ctrl::MainWindowCtrl::MainWindowCtrl(std::shared_ptr<main_window_core::MainWindowCore> core, QWidget * parent) : main_window_ctrl_base::MainWindowCtrlBase(core, parent, main_window_ctrl::commandFileFullPath), tabctrl(new main_window_ctrl_tab::MainWindowCtrlTab(core, parent)) {
+
+	QINFO_PRINT(global_types::qinfo_level_e::ZERO, mainWindowCtrlOverall,  "Main window control constructor");
 
 	// Shortcuts
 	this->createShortcuts();
@@ -40,12 +42,15 @@ main_window_ctrl::MainWindowCtrl::MainWindowCtrl(QSharedPointer<main_window_core
 
 main_window_ctrl::MainWindowCtrl::~MainWindowCtrl() {
 
+	QINFO_PRINT(global_types::qinfo_level_e::ZERO, mainWindowCtrlOverall,  "Main window control destructor");
+
 	// deleting shortcuts
 	delete this->toggleShowMenuBarKey;
 	delete this->closeKey;
 
 	// deleting tab control
 	delete this->tabctrl;
+
 }
 
 void main_window_ctrl::MainWindowCtrl::createShortcuts() {
