@@ -36,20 +36,16 @@ main_window_tab_widget::MainWindowTabWidget::~MainWindowTabWidget() {
 	while(this->count() > 0) {
 		main_window_shared_types::tab_type_e type = this->getTabType(idx);
 
-		QWidget * centerWindow = this->widget(idx);
-		if (type == main_window_shared_types::tab_type_e::WEB_ENGINE) {
-			QWebEngineView * webEngine = (QWebEngineView *) centerWindow;
-			delete webEngine;
-		} else if (type == main_window_shared_types::tab_type_e::LABEL) {
-			QLabel * label = (QLabel *) centerWindow;
-			delete label;
-		} else {
-			Q_ASSERT_X(true, "Invalid tab type", "Unable to delete provided tab as type is not recognized");
-		}
+		Q_ASSERT_X(((type == main_window_shared_types::tab_type_e::LABEL) || (type == main_window_shared_types::tab_type_e::WEB_ENGINE)), "Invalid tab type", "Unable to delete provided tab as type is not recognized");
 		this->removeTab(idx);
+		QINFO_PRINT(global_types::qinfo_level_e::ZERO, mainWindowTabWidgetOverall,  "Removing tab type " << type);
 	}
 
-	Q_ASSERT_X((this->tabTypes.empty() == false), "tab type list not empty", "List of tab types is not empty");
+	for(QList<main_window_shared_types::tab_type_e>::const_iterator it = this->tabTypes.constBegin(); it != this->tabTypes.constEnd(); it++) {
+		QWARNING_PRINT(mainWindowTabWidgetOverall,  "Tab type still not deleted " << (*it));
+	}
+
+	Q_ASSERT_X((this->tabTypes.empty() == true), "tab type list not empty", "List of tab types is not empty");
 
 	this->tabTypes.clear();
 }
