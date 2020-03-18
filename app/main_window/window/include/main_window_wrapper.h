@@ -44,15 +44,6 @@ namespace main_window_wrapper {
 
 			// Move and copy constructor
 			/**
-			 * @brief Function: MainWindowWrapper(const main_window_wrapper::MainWindowWrapper & rhs)
-			 *
-			 * \param rhs: class to copy
-			 *
-			 * Command MainWindowWrapper copy constructor
-			 */
-			explicit MainWindowWrapper(const main_window_wrapper::MainWindowWrapper & rhs);
-
-			/**
 			 * @brief Function: MainWindowWrapper(main_window_wrapper::MainWindowWrapper && rhs)
 			 *
 			 * \param rhs: class to move
@@ -60,16 +51,6 @@ namespace main_window_wrapper {
 			 * Command MainWindowWrapper move constructor
 			 */
 			explicit MainWindowWrapper(main_window_wrapper::MainWindowWrapper && rhs);
-
-			// Move and copy assignment operators
-			/**
-			 * @brief Function: MainWindowWrapper & operator=(const main_window_wrapper::MainWindowWrapper & rhs)
-			 *
-			 * \param rhs: class to copy
-			 *
-			 * Command MainWindowWrapper copy assignment operator
-			 */
-			MainWindowWrapper & operator=(const main_window_wrapper::MainWindowWrapper & rhs);
 
 			/**
 			 * @brief Function: MainWindowWrapper & operator=(main_window_wrapper::MainWindowWrapper && rhs)
@@ -102,7 +83,27 @@ namespace main_window_wrapper {
 			 * @brief Main window
 			 *
 			 */
-			main_window::MainWindow * window;
+			std::unique_ptr<main_window::MainWindow> window;
+
+			/**
+			 * @brief Function: MainWindowWrapper(const main_window_wrapper::MainWindowWrapper & rhs)
+			 *
+			 * \param rhs: class to copy
+			 *
+			 * Command MainWindowWrapper copy constructor
+			 */
+			explicit MainWindowWrapper(const main_window_wrapper::MainWindowWrapper & rhs) = delete;
+
+			// Move and copy assignment operators
+			/**
+			 * @brief Function: MainWindowWrapper & operator=(const main_window_wrapper::MainWindowWrapper & rhs)
+			 *
+			 * \param rhs: class to copy
+			 *
+			 * Command MainWindowWrapper copy assignment operator
+			 */
+			MainWindowWrapper & operator=(const main_window_wrapper::MainWindowWrapper & rhs) = delete;
+
 
 	};
 
