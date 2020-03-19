@@ -8,6 +8,8 @@
  * @brief Main Window core class header file
 */
 
+#include <memory>
+
 #include <qt5/QtCore/QLoggingCategory>
 #include <qt5/QtWidgets/QWidget>
 
@@ -44,15 +46,6 @@ namespace main_window_core {
 
 			// Move and copy constructor
 			/**
-			 * @brief Function: MainWindowCore(const main_window_core::MainWindowCore & rhs)
-			 *
-			 * \param rhs: class to copy
-			 *
-			 * Command MainWindowCore copy constructor
-			 */
-			explicit MainWindowCore(const main_window_core::MainWindowCore & rhs);
-
-			/**
 			 * @brief Function: MainWindowCore(main_window_core::MainWindowCore && rhs)
 			 *
 			 * \param rhs: class to move
@@ -60,16 +53,6 @@ namespace main_window_core {
 			 * Command MainWindowCore move constructor
 			 */
 			explicit MainWindowCore(main_window_core::MainWindowCore && rhs);
-
-			// Move and copy assignment operators
-			/**
-			 * @brief Function: MainWindowCore & operator=(const main_window_core::MainWindowCore & rhs)
-			 *
-			 * \param rhs: class to copy
-			 *
-			 * Command MainWindowCore copy assignment operator
-			 */
-			MainWindowCore & operator=(const main_window_core::MainWindowCore & rhs);
 
 			/**
 			 * @brief Function: MainWindowCore & operator=(main_window_core::MainWindowCore && rhs)
@@ -177,31 +160,31 @@ namespace main_window_core {
 			 * @brief main widget
 			 *
 			 */
-			QWidget * mainWidget;
+			std::shared_ptr<QWidget> mainWidget;
 
 			/**
 			 * @brief Tabs of browser
 			 *
 			 */
-			main_window_tab_widget::MainWindowTabWidget * tabs;
+			std::unique_ptr<main_window_tab_widget::MainWindowTabWidget> tabs;
 
 			/**
 			 * @brief Top menu bar of browser
 			 *
 			 */
-			main_window_menu_bar::MainWindowMenuBar * topMenuBar;
+			std::unique_ptr<main_window_menu_bar::MainWindowMenuBar> topMenuBar;
 
 			/**
 			 * @brief Bottom menu bar of browser
 			 *
 			 */
-			main_window_status_bar::MainWindowStatusBar * bottomStatusBar;
+			std::unique_ptr<main_window_status_bar::MainWindowStatusBar> bottomStatusBar;
 
 			/**
 			 * @brief Command menu 
 			 *
 			 */
-			command_menu::CommandMenu * cmdMenu;
+			std::unique_ptr<command_menu::CommandMenu> cmdMenu;
 
 		private:
 
@@ -223,6 +206,26 @@ namespace main_window_core {
 			 *
 			 */
 			QString userText;
+
+			/**
+			 * @brief Function: MainWindowCore(const main_window_core::MainWindowCore & rhs)
+			 *
+			 * \param rhs: class to copy
+			 *
+			 * Command MainWindowCore copy constructor
+			 */
+			explicit MainWindowCore(const main_window_core::MainWindowCore & rhs) = delete;
+
+			// Move and copy assignment operators
+			/**
+			 * @brief Function: MainWindowCore & operator=(const main_window_core::MainWindowCore & rhs)
+			 *
+			 * \param rhs: class to copy
+			 *
+			 * Command MainWindowCore copy assignment operator
+			 */
+			MainWindowCore & operator=(const main_window_core::MainWindowCore & rhs) = delete;
+
 
 	};
 
