@@ -118,18 +118,18 @@ namespace main_window {
 			main_window_ctrl::MainWindowCtrl * ctrl;
 
 			/**
-			 * @brief Function: void createMainWidget()
+			 * @brief Function: void customizeMainWidget()
 			 *
-			 * This function creates and customizes the main widget
+			 * This function customizes the main widget
 			 */
-			void createMainWidget();
+			void customizeMainWidget();
 
 			/**
-			 * @brief Function: void createTabs()
+			 * @brief Function: void customizeTabs()
 			 *
-			 * This function creates and customizes QTabWidget
+			 * This function customizes QTabWidget
 			 */
-			void createTabs();
+			void customizeTabs();
 
 			/**
 			 * @brief Function: void createCtrl()
@@ -146,18 +146,18 @@ namespace main_window {
 			void fillMainWindow();
 
 			/**
-			 * @brief Function: void createTopMenuBar()
+			 * @brief Function: void customizeTopMenuBar()
 			 *
-			 * This function creates the menu bar of the main window
+			 * This function customizes the menu bar of the main window
 			 */
-			void createTopMenuBar();
+			void customizeTopMenuBar();
 
 			/**
-			 * @brief Function: void createBottomStatusBar()
+			 * @brief Function: void customizeBottomStatusBar()
 			 *
-			 * This function creates the status bar of the main window
+			 * This function customizes the status bar of the main window
 			 */
-			void createBottomStatusBar();
+			void customizeBottomStatusBar();
 
 			/**
 			 * @brief Function: void mainWindowLayout()

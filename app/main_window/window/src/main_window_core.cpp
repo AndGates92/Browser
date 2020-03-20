@@ -17,7 +17,7 @@
 Q_LOGGING_CATEGORY(mainWindowCoreOverall, "mainWindowCore.overall", MSG_TYPE_LEVEL)
 Q_LOGGING_CATEGORY(mainWindowCoreUserInput, "mainWindowCtrlBase.userInput", MSG_TYPE_LEVEL)
 
-main_window_core::MainWindowCore::MainWindowCore() : mainWidget(Q_NULLPTR), tabs(Q_NULLPTR), topMenuBar(Q_NULLPTR), bottomStatusBar(Q_NULLPTR), cmdMenu(Q_NULLPTR), mainWindowState(main_window_shared_types::state_e::IDLE), moveValueType(main_window_shared_types::move_value_e::IDLE), userText(QString::null) {
+main_window_core::MainWindowCore::MainWindowCore(QWidget * parentWindow) : mainWidget(new QWidget(parentWindow)), tabs(new main_window_tab_widget::MainWindowTabWidget(this->mainWidget)), topMenuBar(new main_window_menu_bar::MainWindowMenuBar(parentWindow)), bottomStatusBar(new main_window_status_bar::MainWindowStatusBar(parentWindow)), cmdMenu(new command_menu::CommandMenu(parentWindow)), mainWindowState(main_window_shared_types::state_e::IDLE), moveValueType(main_window_shared_types::move_value_e::IDLE), userText(QString::null) {
 
 	QINFO_PRINT(global_types::qinfo_level_e::ZERO, mainWindowCoreOverall,  "Main window core constructor");
 

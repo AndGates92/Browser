@@ -33,7 +33,7 @@ Q_LOGGING_CATEGORY(mainWindowOverall, "mainWindow.overall", MSG_TYPE_LEVEL)
 Q_LOGGING_CATEGORY(mainWindowCenterWindow, "mainWindow.centerWindow", MSG_TYPE_LEVEL)
 Q_LOGGING_CATEGORY(mainWindowTabs, "mainWindow.tabs", MSG_TYPE_LEVEL)
 
-main_window::MainWindow::MainWindow(QWidget * parent, Qt::WindowFlags flags) : QMainWindow(parent, flags), main_window_base::MainWindowBase(QSharedPointer<main_window_core::MainWindowCore>(new main_window_core::MainWindowCore())) {
+main_window::MainWindow::MainWindow(QWidget * parent, Qt::WindowFlags flags) : QMainWindow(parent, flags), main_window_base::MainWindowBase(QSharedPointer<main_window_core::MainWindowCore>(new main_window_core::MainWindowCore(this))) {
 
 	QINFO_PRINT(global_types::qinfo_level_e::ZERO, mainWindowOverall,  "Main window constructor");
 
@@ -42,7 +42,7 @@ main_window::MainWindow::MainWindow(QWidget * parent, Qt::WindowFlags flags) : Q
 	this->setEnabled(true);
 
 	// main widget
-	this->createMainWidget();
+	this->customizeMainWidget();
 
 	// main window body
 	this->fillMainWindow();
@@ -86,8 +86,7 @@ main_window::MainWindow::~MainWindow() {
 	delete this->ctrl;
 }
 
-void main_window::MainWindow::createMainWidget() {
-	this->windowCore->mainWidget = new QWidget(this);
+void main_window::MainWindow::customizeMainWidget() {
 	this->windowCore->mainWidget->setAttribute(Qt::WA_DeleteOnClose);
 	// Disable widget resizing
 	this->windowCore->mainWidget->setSizePolicy(QSizePolicy::Ignored, QSizePolicy::Ignored);
@@ -109,23 +108,21 @@ void main_window::MainWindow::fillMainWindow() {
 
 	// Customize MainWidget
 	// Tabs
-	this->createTabs();
+	this->customizeTabs();
 
 	// Menu bar
-	this->createTopMenuBar();
+	this->customizeTopMenuBar();
 
 	// Status bar
-	this->createBottomStatusBar();
+	this->customizeBottomStatusBar();
 
 	// command menu
-	this->windowCore->cmdMenu = new command_menu::CommandMenu(this);
 	this->windowCore->cmdMenu->setVisible(false);
 }
 
-void main_window::MainWindow::createTabs() {
-	QINFO_PRINT(global_types::qinfo_level_e::ZERO, mainWindowOverall,  "Create tabs");
+void main_window::MainWindow::customizeTabs() {
+	QINFO_PRINT(global_types::qinfo_level_e::ZERO, mainWindowOverall,  "Customize tabs");
 
-	this->windowCore->tabs = new main_window_tab_widget::MainWindowTabWidget(this->windowCore->mainWidget);
 	// Disable widget resizing
 	this->windowCore->tabs->setSizePolicy(QSizePolicy::Ignored, QSizePolicy::Ignored);
 
@@ -142,19 +139,16 @@ void main_window::MainWindow::createTabs() {
 
 }
 
-void main_window::MainWindow::createTopMenuBar() {
-	QINFO_PRINT(global_types::qinfo_level_e::ZERO, mainWindowOverall,  "Create top menu bar");
-
-	this->windowCore->topMenuBar = new main_window_menu_bar::MainWindowMenuBar(this);
+void main_window::MainWindow::customizeTopMenuBar() {
+	QINFO_PRINT(global_types::qinfo_level_e::ZERO, mainWindowOverall,  "Customize top menu bar");
 
 	// set menu bar of the main window
 	this->setMenuBar(this->windowCore->topMenuBar);
 }
 
-void main_window::MainWindow::createBottomStatusBar() {
-	QINFO_PRINT(global_types::qinfo_level_e::ZERO, mainWindowOverall,  "Create top menu bar");
+void main_window::MainWindow::customizeBottomStatusBar() {
+	QINFO_PRINT(global_types::qinfo_level_e::ZERO, mainWindowOverall,  "Customize top menu bar");
 
-	this->windowCore->bottomStatusBar = new main_window_status_bar::MainWindowStatusBar(this);
 }
 
 void main_window::MainWindow::mainWindowLayout() {
