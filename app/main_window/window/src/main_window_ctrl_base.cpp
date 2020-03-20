@@ -19,7 +19,7 @@
 Q_LOGGING_CATEGORY(mainWindowCtrlBaseOverall, "mainWindowCtrlBase.overall", MSG_TYPE_LEVEL)
 Q_LOGGING_CATEGORY(mainWindowCtrlBaseUserInput, "mainWindowCtrlBase.userInput", MSG_TYPE_LEVEL)
 
-main_window_ctrl_base::MainWindowCtrlBase::MainWindowCtrlBase(std::shared_ptr<main_window_core::MainWindowCore> core, QWidget * parent, QString jsonFileName) : QWidget(parent), main_window_base::MainWindowBase(core), commands(json_parser::JsonParser(jsonFileName, QIODevice::ReadOnly)) {
+main_window_ctrl_base::MainWindowCtrlBase::MainWindowCtrlBase(QSharedPointer<main_window_core::MainWindowCore> core, QWidget * parent, QString jsonFileName) : QWidget(parent), main_window_base::MainWindowBase(core), commands(json_parser::JsonParser(jsonFileName, QIODevice::ReadOnly)) {
 	QINFO_PRINT(global_types::qinfo_level_e::ZERO, mainWindowCtrlBaseOverall,  "Main window control base classe constructor");
 }
 

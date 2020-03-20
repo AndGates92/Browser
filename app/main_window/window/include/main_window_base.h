@@ -8,8 +8,6 @@
  * @brief Main Window base class header file
 */
 
-#include <memory>
-
 #include <qt5/QtCore/QLoggingCategory>
 #include <qt5/QtCore/QSharedPointer>
 
@@ -33,13 +31,13 @@ namespace main_window_base {
 		public:
 
 			/**
-			 * @brief Function: explicit MainWindowBase(std::shared_ptr<main_window_core::MainWindowCore> core)
+			 * @brief Function: explicit MainWindowBase(QSharedPointer<main_window_core::MainWindowCore> core)
 			 *
 			 * \param core: main window core
 			 *
 			 * Main window base constructor
 			 */
-			explicit MainWindowBase(std::shared_ptr<main_window_core::MainWindowCore> core);
+			explicit MainWindowBase(QSharedPointer<main_window_core::MainWindowCore> core);
 
 			// Move and copy constructor
 			/**
@@ -91,7 +89,7 @@ namespace main_window_base {
 			 * @brief main window core
 			 *
 			 */
-			std::shared_ptr<main_window_core::MainWindowCore> windowCore;
+			QSharedPointer<main_window_core::MainWindowCore> windowCore;
 
 		private:
 	};

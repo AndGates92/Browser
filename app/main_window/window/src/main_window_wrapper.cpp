@@ -15,7 +15,7 @@
 // Categories
 Q_LOGGING_CATEGORY(mainWindowWrapperOverall, "mainWindowWrapper.overall", MSG_TYPE_LEVEL)
 
-main_window_wrapper::MainWindowWrapper::MainWindowWrapper(QWidget * parent, Qt::WindowFlags flags) : main_window_base::MainWindowBase(std::shared_ptr<main_window_core::MainWindowCore>(std::make_shared<main_window_core::MainWindowCore>())), window(new main_window::MainWindow(this->windowCore, parent, flags)) {
+main_window_wrapper::MainWindowWrapper::MainWindowWrapper(QWidget * parent, Qt::WindowFlags flags) : main_window_base::MainWindowBase(QSharedPointer<main_window_core::MainWindowCore>(new main_window_core::MainWindowCore())), window(new main_window::MainWindow(this->windowCore, parent, flags)) {
 
 	QINFO_PRINT(global_types::qinfo_level_e::ZERO, mainWindowWrapperOverall,  "Main window wrapper constructor");
 
