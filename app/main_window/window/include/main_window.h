@@ -116,7 +116,7 @@ namespace main_window {
 			 * @brief Main window control
 			 *
 			 */
-			std::unique_ptr<main_window_ctrl::MainWindowCtrl> ctrl;
+			main_window_ctrl::MainWindowCtrl * ctrl;
 
 			/**
 			 * @brief Function: void createMainWidget()

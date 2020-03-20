@@ -83,11 +83,11 @@ main_window::MainWindow::MainWindow(std::shared_ptr<main_window_core::MainWindow
 main_window::MainWindow::~MainWindow() {
 	QINFO_PRINT(global_types::qinfo_level_e::ZERO, mainWindowOverall,  "Main window destructor");
 
-	this->ctrl.reset(nullptr);
+	delete this->ctrl;
 }
 
 void main_window::MainWindow::createMainWidget() {
-	this->windowCore->mainWidget = std::shared_ptr<QWidget>(new QWidget(this));
+	this->windowCore->mainWidget = new QWidget(this);
 	this->windowCore->mainWidget->setAttribute(Qt::WA_DeleteOnClose);
 	// Disable widget resizing
 	this->windowCore->mainWidget->setSizePolicy(QSizePolicy::Ignored, QSizePolicy::Ignored);
@@ -101,7 +101,7 @@ void main_window::MainWindow::createMainWidget() {
 			"border: none; "
 		"}"
 	);
-	this->setCentralWidget(this->windowCore->mainWidget.get());
+	this->setCentralWidget(this->windowCore->mainWidget);
 }
 
 void main_window::MainWindow::fillMainWindow() {
@@ -118,14 +118,14 @@ void main_window::MainWindow::fillMainWindow() {
 	this->createBottomStatusBar();
 
 	// command menu
-	this->windowCore->cmdMenu = std::unique_ptr<command_menu::CommandMenu>(new command_menu::CommandMenu(this));
+	this->windowCore->cmdMenu = new command_menu::CommandMenu(this);
 	this->windowCore->cmdMenu->setVisible(false);
 }
 
 void main_window::MainWindow::createTabs() {
 	QINFO_PRINT(global_types::qinfo_level_e::ZERO, mainWindowOverall,  "Create tabs");
 
-	this->windowCore->tabs = std::unique_ptr<main_window_tab_widget::MainWindowTabWidget>(new main_window_tab_widget::MainWindowTabWidget(this->windowCore->mainWidget.get()));
+	this->windowCore->tabs = new main_window_tab_widget::MainWindowTabWidget(this->windowCore->mainWidget);
 	// Disable widget resizing
 	this->windowCore->tabs->setSizePolicy(QSizePolicy::Ignored, QSizePolicy::Ignored);
 
@@ -145,16 +145,16 @@ void main_window::MainWindow::createTabs() {
 void main_window::MainWindow::createTopMenuBar() {
 	QINFO_PRINT(global_types::qinfo_level_e::ZERO, mainWindowOverall,  "Create top menu bar");
 
-	this->windowCore->topMenuBar = std::unique_ptr<main_window_menu_bar::MainWindowMenuBar>(new main_window_menu_bar::MainWindowMenuBar(this));
+	this->windowCore->topMenuBar = new main_window_menu_bar::MainWindowMenuBar(this);
 
 	// set menu bar of the main window
-	this->setMenuBar(this->windowCore->topMenuBar.get());
+	this->setMenuBar(this->windowCore->topMenuBar);
 }
 
 void main_window::MainWindow::createBottomStatusBar() {
 	QINFO_PRINT(global_types::qinfo_level_e::ZERO, mainWindowOverall,  "Create top menu bar");
 
-	this->windowCore->bottomStatusBar = std::unique_ptr<main_window_status_bar::MainWindowStatusBar>(new main_window_status_bar::MainWindowStatusBar(this));
+	this->windowCore->bottomStatusBar = new main_window_status_bar::MainWindowStatusBar(this);
 }
 
 void main_window::MainWindow::mainWindowLayout() {
@@ -168,28 +168,28 @@ void main_window::MainWindow::mainWindowLayout() {
 	// |                   <statusbar>                 |
 	// -------------------------------------------------
 
-	std::unique_ptr<QVBoxLayout> layout(new QVBoxLayout(this->windowCore->mainWidget.get()));
+	QVBoxLayout * layout = new QVBoxLayout(this->windowCore->mainWidget);
 
 	// tabs
-	layout->addWidget(this->windowCore->tabs.get());
+	layout->addWidget(this->windowCore->tabs);
 
 	// command menu
-	layout->addWidget(this->windowCore->cmdMenu.get());
+	layout->addWidget(this->windowCore->cmdMenu);
 
 	// status bar
-	layout->addWidget(this->windowCore->bottomStatusBar.get());
+	layout->addWidget(this->windowCore->bottomStatusBar);
 
 	layout->setSpacing(main_window::verticalWidgetSpacing);
 	layout->setContentsMargins(main_window::leftMargin, main_window::topMargin, main_window::rightMargin, main_window::bottomMargin);
 
-	this->windowCore->mainWidget->setLayout(layout.release());
+	this->windowCore->mainWidget->setLayout(layout);
 }
 
 void main_window::MainWindow::connectSignals() {
 	QINFO_PRINT(global_types::qinfo_level_e::ZERO, mainWindowOverall,  "Connect signals");
 
 	// Close window
-	connect(this->ctrl.get(), &main_window_ctrl::MainWindowCtrl::closeWindowSignal, this, &main_window::MainWindow::closeWindow);
+	connect(this->ctrl, &main_window_ctrl::MainWindowCtrl::closeWindowSignal, this, &main_window::MainWindow::closeWindow);
 
 }
 
@@ -197,7 +197,7 @@ void main_window::MainWindow::createCtrl() {
 	QINFO_PRINT(global_types::qinfo_level_e::ZERO, mainWindowOverall,  "Create controller");
 
 	// main window control class
-	this->ctrl = std::unique_ptr<main_window_ctrl::MainWindowCtrl>(new main_window_ctrl::MainWindowCtrl(this->windowCore, this));
+	this->ctrl = new main_window_ctrl::MainWindowCtrl(this->windowCore, this);
 }
 
 void main_window::MainWindow::closeWindow() {

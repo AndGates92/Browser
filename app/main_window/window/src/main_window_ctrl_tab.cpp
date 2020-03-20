@@ -98,8 +98,8 @@ void main_window_ctrl_tab::MainWindowCtrlTab::connectSignals() {
 
 //	connect(this->windowCore->tabs, &QTabWidget::currentChanged, this, &main_window_ctrl_tab::MainWindowCtrlTab::updateContent);
 	// Update info bar
-	connect(this->windowCore->tabs.get(), &QTabWidget::currentChanged, this, &main_window_ctrl_tab::MainWindowCtrlTab::updateInfoSlot);
-	connect(this->windowCore->tabs.get(), &QTabWidget::tabCloseRequested, this, &main_window_ctrl_tab::MainWindowCtrlTab::updateInfoSlot);
+	connect(this->windowCore->tabs, &QTabWidget::currentChanged, this, &main_window_ctrl_tab::MainWindowCtrlTab::updateInfoSlot);
+	connect(this->windowCore->tabs, &QTabWidget::tabCloseRequested, this, &main_window_ctrl_tab::MainWindowCtrlTab::updateInfoSlot);
 
 	// open tab action (from fileMenu)
 	connect(this->windowCore->topMenuBar->getFileMenu()->openTabAction, &QAction::triggered, this, &main_window_ctrl_tab::MainWindowCtrlTab::setUpOpenNewTab);
@@ -637,7 +637,7 @@ void main_window_ctrl_tab::MainWindowCtrlTab::printStrInCurrentTabWidget(const Q
 	QINFO_PRINT(global_types::qinfo_level_e::ZERO, mainWindowCtrlTabTabs,  tabContent);
 
 	// Get tabs
-	main_window_tab_widget::MainWindowTabWidget * tabWidget(this->windowCore->tabs.get());
+	tab_widget::TabWidget * tabWidget = this->windowCore->tabs;
 
 	// Get current tab index
 	int currentTabIndex = tabWidget->currentIndex();

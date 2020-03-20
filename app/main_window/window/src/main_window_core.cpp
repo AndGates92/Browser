@@ -23,6 +23,71 @@ main_window_core::MainWindowCore::MainWindowCore() : mainWidget(Q_NULLPTR), tabs
 
 }
 
+main_window_core::MainWindowCore::MainWindowCore(const main_window_core::MainWindowCore & rhs) : mainWidget(rhs.mainWidget), tabs(rhs.tabs), topMenuBar(rhs.topMenuBar), bottomStatusBar(rhs.bottomStatusBar), cmdMenu(rhs.cmdMenu), mainWindowState(rhs.mainWindowState), moveValueType(rhs.moveValueType), userText(rhs.userText) {
+
+	QINFO_PRINT(global_types::qinfo_level_e::ZERO, mainWindowCoreOverall,  "Copy constructor main window core");
+
+}
+
+main_window_core::MainWindowCore & main_window_core::MainWindowCore::operator=(const main_window_core::MainWindowCore & rhs) {
+
+	QINFO_PRINT(global_types::qinfo_level_e::ZERO, mainWindowCoreOverall,  "Copy assignment operator for main window core");
+
+	// If rhs points to the same address as this, then return this
+	if (&rhs == this) {
+		return *this;
+	}
+
+	if (this->mainWidget != rhs.mainWidget) {
+		if (this->mainWidget != Q_NULLPTR) {
+			delete this->mainWidget;
+		}
+		this->mainWidget = rhs.mainWidget;
+	}
+
+	if (this->tabs != rhs.tabs) {
+		if (this->tabs != Q_NULLPTR) {
+			delete this->tabs;
+		}
+		this->tabs = rhs.tabs;
+	}
+
+	if (this->topMenuBar != rhs.topMenuBar) {
+		if (this->topMenuBar != Q_NULLPTR) {
+			delete this->topMenuBar;
+		}
+		this->topMenuBar = rhs.topMenuBar;
+	}
+
+	if (this->bottomStatusBar != rhs.bottomStatusBar) {
+		if (this->bottomStatusBar != Q_NULLPTR) {
+			delete this->bottomStatusBar;
+		}
+		this->bottomStatusBar = rhs.bottomStatusBar;
+	}
+
+	if (this->cmdMenu != rhs.cmdMenu) {
+		if (this->cmdMenu != Q_NULLPTR) {
+			delete this->cmdMenu;
+		}
+		this->cmdMenu = rhs.cmdMenu;
+	}
+
+	if (this->mainWindowState != rhs.mainWindowState) {
+		this->mainWindowState = rhs.mainWindowState;
+	}
+
+	if (this->moveValueType != rhs.moveValueType) {
+		this->moveValueType = rhs.moveValueType;
+	}
+
+	if (this->userText != rhs.userText) {
+		this->userText = rhs.userText;
+	}
+
+	return *this;
+}
+
 main_window_core::MainWindowCore::MainWindowCore(main_window_core::MainWindowCore && rhs) : mainWidget(std::move(rhs.mainWidget)), tabs(std::move(rhs.tabs)), topMenuBar(std::move(rhs.topMenuBar)), bottomStatusBar(std::move(rhs.bottomStatusBar)), cmdMenu(std::move(rhs.cmdMenu)), mainWindowState(std::move(rhs.mainWindowState)), moveValueType(std::move(rhs.moveValueType)), userText(std::move(rhs.userText)) {
 	QINFO_PRINT(global_types::qinfo_level_e::ZERO, mainWindowCoreOverall,  "Move constructor main window core");
 
@@ -48,7 +113,7 @@ main_window_core::MainWindowCore & main_window_core::MainWindowCore::operator=(m
 
 	if (this->mainWidget != rhs.mainWidget) {
 		if (this->mainWidget != Q_NULLPTR) {
-			this->mainWidget.reset();
+			delete this->mainWidget;
 		}
 		this->mainWidget = std::move(rhs.mainWidget);
 	}
@@ -56,7 +121,7 @@ main_window_core::MainWindowCore & main_window_core::MainWindowCore::operator=(m
 
 	if (this->tabs != rhs.tabs) {
 		if (this->tabs != Q_NULLPTR) {
-			this->tabs.reset(nullptr);
+			delete this->tabs;
 		}
 		this->tabs = std::move(rhs.tabs);
 	}
@@ -64,15 +129,15 @@ main_window_core::MainWindowCore & main_window_core::MainWindowCore::operator=(m
 
 	if (this->topMenuBar != rhs.topMenuBar) {
 		if (this->topMenuBar != Q_NULLPTR) {
-			this->topMenuBar.reset(nullptr);
+			delete this->topMenuBar;
 		}
 		this->topMenuBar = std::move(rhs.topMenuBar);
 	}
-	rhs.topMenuBar.reset(nullptr);
+	rhs.topMenuBar = Q_NULLPTR;
 
 	if (this->bottomStatusBar != rhs.bottomStatusBar) {
 		if (this->bottomStatusBar != Q_NULLPTR) {
-			this->bottomStatusBar.reset(nullptr);
+			delete this->bottomStatusBar;
 		}
 		this->bottomStatusBar = std::move(rhs.bottomStatusBar);
 	}
@@ -80,7 +145,7 @@ main_window_core::MainWindowCore & main_window_core::MainWindowCore::operator=(m
 
 	if (this->cmdMenu != rhs.cmdMenu) {
 		if (this->cmdMenu != Q_NULLPTR) {
-			this->cmdMenu.reset(nullptr);
+			delete this->cmdMenu;
 		}
 		this->cmdMenu = std::move(rhs.cmdMenu);
 	}
@@ -108,19 +173,19 @@ main_window_core::MainWindowCore::~MainWindowCore() {
 	QINFO_PRINT(global_types::qinfo_level_e::ZERO, mainWindowCoreOverall,  "Main window core destructor");
 
 	// Menubar
-	this->topMenuBar.reset(nullptr);
+	delete this->topMenuBar;
 
 	// Status bar
-	this->bottomStatusBar.reset(nullptr);
+	delete this->bottomStatusBar;
 
 	// Command menu
-	this->cmdMenu.reset(nullptr);
+	delete this->cmdMenu;
 
 	// tabs
-	this->tabs.reset(nullptr);
+	delete this->tabs;
 
 	// Main widget
-	this->mainWidget.reset();
+	delete this->mainWidget;
 }
 
 int main_window_core::MainWindowCore::getTabCount() const {
