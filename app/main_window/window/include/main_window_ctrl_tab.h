@@ -424,6 +424,24 @@ namespace main_window_ctrl_tab {
 			void moveCursor(int tabIndex);
 			// ================================ END ACTIONS ========================================//
 
+			/**
+			 * @brief Function: void disconnectProgressBar(int tabIndex)
+			 *
+			 * \param tabIndex: index of the tab to disconnect signals from
+			 *
+			 * This function disconnects progress bar signal from a tab
+			 */
+			void disconnectProgressBar(int tabIndex);
+
+			/**
+			 * @brief Function: void connectProgressBar(int tabIndex)
+			 *
+			 * \param tabIndex: index of the tab to connect signals from
+			 *
+			 * This function connects progress bar signal from a tab
+			 */
+			void connectProgressBar(int tabIndex);
+
 			// Move and copy constructor
 			/**
 			 * @brief Function: MainWindowCtrlTab(const main_window_ctrl_tab::MainWindowCtrlTab & rhs)

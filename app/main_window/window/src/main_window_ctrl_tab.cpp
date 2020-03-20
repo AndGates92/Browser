@@ -173,18 +173,17 @@ int main_window_ctrl_tab::MainWindowCtrlTab::addNewTab(QString search, main_wind
 
 	QINFO_PRINT(global_types::qinfo_level_e::ZERO, mainWindowCtrlTabTabs,  "Open tab with label " << search);
 
-	int tabIndex = this->windowCore->tabs->addEmptyTab(search, type);
-	try {
-		QWebEngineView * currentTabPage = dynamic_cast<QWebEngineView *>(this->windowCore->tabs->widget(tabIndex));
-
-		// Connect signals and slots for a newly created tab
-		connect(currentTabPage, &QWebEngineView::loadStarted, this->windowCore->bottomStatusBar->getLoadBar(), &progress_bar::ProgressBar::startLoading);
-		connect(currentTabPage, &QWebEngineView::loadProgress, this->windowCore->bottomStatusBar->getLoadBar(), &progress_bar::ProgressBar::setValue);
-		connect(currentTabPage, &QWebEngineView::loadFinished, this->windowCore->bottomStatusBar->getLoadBar(), &progress_bar::ProgressBar::endLoading);
-
-	} catch (const std::bad_cast & badCastE) {
-		QEXCEPTION_ACTION(throw, badCastE.what());
+	int tabCount = this->windowCore->getTabCount();
+	if (tabCount > 0) {
+		// Disconnect signals only if at least 1 tabs is already present
+		int currentTabIndex = this->windowCore->getCurrentTabIndex();
+		this->disconnectProgressBar(currentTabIndex);
 	}
+
+	int tabIndex = this->windowCore->tabs->addEmptyTab(search, type);
+
+	// Connect signals from tab the cursor is pointing to
+	this->connectProgressBar(tabIndex);
 
 	QEXCEPTION_ACTION_COND((tabIndex < 0), throw, "It cannot be negative");
 
@@ -269,9 +268,50 @@ void main_window_ctrl_tab::MainWindowCtrlTab::moveTab(int tabIndex) {
 }
 
 void main_window_ctrl_tab::MainWindowCtrlTab::moveCursor(int tabIndex) {
+	// Disconnect signals from tab the cursor was pointing to
+	int currentTabIndex = this->windowCore->getCurrentTabIndex();
+	this->disconnectProgressBar(currentTabIndex);
+
 	QINFO_PRINT(global_types::qinfo_level_e::ZERO, mainWindowCtrlTabTabs,  "Move cursor to tab " << tabIndex);
 	this->windowCore->tabs->setCurrentIndex(tabIndex);
+	// Connect signals from tab the cursor is pointing to
+	this->connectProgressBar(tabIndex);
 }
+
+void main_window_ctrl_tab::MainWindowCtrlTab::connectProgressBar(int tabIndex) {
+	main_window_shared_types::tab_type_e tabType = this->windowCore->tabs->getTabType(tabIndex);
+	if (tabType == main_window_shared_types::tab_type_e::WEB_ENGINE) {
+		try {
+			QWebEngineView * currentTabPage = dynamic_cast<QWebEngineView *>(this->windowCore->tabs->widget(tabIndex));
+
+			// Connect signals and slots for a newly created tab
+			connect(currentTabPage, &QWebEngineView::loadStarted, this->windowCore->bottomStatusBar->getLoadBar(), &progress_bar::ProgressBar::startLoading);
+			connect(currentTabPage, &QWebEngineView::loadProgress, this->windowCore->bottomStatusBar->getLoadBar(), &progress_bar::ProgressBar::setValue);
+			connect(currentTabPage, &QWebEngineView::loadFinished, this->windowCore->bottomStatusBar->getLoadBar(), &progress_bar::ProgressBar::endLoading);
+
+		} catch (const std::bad_cast & badCastE) {
+			QEXCEPTION_ACTION(throw, badCastE.what());
+		}
+	}
+}
+
+void main_window_ctrl_tab::MainWindowCtrlTab::disconnectProgressBar(int tabIndex) {
+	main_window_shared_types::tab_type_e tabType = this->windowCore->tabs->getTabType(tabIndex);
+	if (tabType == main_window_shared_types::tab_type_e::WEB_ENGINE) {
+		try {
+			QWebEngineView * currentTabPage = dynamic_cast<QWebEngineView *>(this->windowCore->tabs->widget(tabIndex));
+
+			// Connect signals and slots for a newly created tab
+			disconnect(currentTabPage, &QWebEngineView::loadStarted, this->windowCore->bottomStatusBar->getLoadBar(), &progress_bar::ProgressBar::startLoading);
+			disconnect(currentTabPage, &QWebEngineView::loadProgress, this->windowCore->bottomStatusBar->getLoadBar(), &progress_bar::ProgressBar::setValue);
+			disconnect(currentTabPage, &QWebEngineView::loadFinished, this->windowCore->bottomStatusBar->getLoadBar(), &progress_bar::ProgressBar::endLoading);
+
+		} catch (const std::bad_cast & badCastE) {
+			QEXCEPTION_ACTION(throw, badCastE.what());
+		}
+	}
+}
+
 //************************************************************************************
 // End definition of actions
 //************************************************************************************
