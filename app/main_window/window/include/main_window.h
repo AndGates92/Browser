@@ -70,15 +70,14 @@ namespace main_window {
 		public:
 
 			/**
-			 * @brief Function: explicit MainWindow(main_window_core::MainWindowCore * core, QWidget * parent = Q_NULLPTR, Qt::WindowFlags flags = Qt::WindowFlags())
+			 * @brief Function: explicit MainWindow(QWidget * parent = Q_NULLPTR, Qt::WindowFlags flags = Qt::WindowFlags())
 			 *
-			 * \param core: main window core
 			 * \param parent: parent window
 			 * \param flags: window flags
 			 *
 			 * Main window constructor
 			 */
-			explicit MainWindow(QSharedPointer<main_window_core::MainWindowCore> core, QWidget * parent = Q_NULLPTR, Qt::WindowFlags flags = Qt::WindowFlags());
+			explicit MainWindow(QWidget * parent = Q_NULLPTR, Qt::WindowFlags flags = Qt::WindowFlags());
 
 			/**
 			 * @brief Function: ~MainWindow()
