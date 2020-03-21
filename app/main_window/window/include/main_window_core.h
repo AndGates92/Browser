@@ -101,13 +101,13 @@ namespace main_window_core {
 			main_window_shared_types::state_e getMainWindowState() const;
 
 			/**
-			 * Function: main_window_shared_types::move_value_e getMoveValueType() const
+			 * Function: main_window_shared_types::offset_type_e getOffsetType() const
 			 *
 			 * \return the type of value of movements in tab bar
 			 *
 			 * This function returns the type of value of movements in the tab bar
 			 */
-			main_window_shared_types::move_value_e getMoveValueType() const;
+			main_window_shared_types::offset_type_e getOffsetType() const;
 
 			/**
 			 * Function: QString getUserText() const
@@ -156,13 +156,13 @@ namespace main_window_core {
 			void setMainWindowState(main_window_shared_types::state_e windowState);
 
 			/**
-			 * Function: main_window_shared_types::move_value_e getMoveValueType(main_window_shared_types::move_value_e moveType)
+			 * Function: void setOffsetType(main_window_shared_types::offset_type_e moveType)
 			 *
 			 * \param moveType: type of value of movements in tab bar
 			 *
 			 * This function returns the type of value of movements in the tab bar
 			 */
-			void setMoveValueType(main_window_shared_types::move_value_e moveType);
+			void setOffsetType(main_window_shared_types::offset_type_e moveType);
 
 			/**
 			 * @brief Function: void updateUserInput(const main_window_shared_types::text_action_e action, QString text = QString::null)
@@ -218,7 +218,7 @@ namespace main_window_core {
 			 * @brief type of value of movements in tab bar
 			 *
 			 */
-			main_window_shared_types::move_value_e moveValueType;
+			main_window_shared_types::offset_type_e offsetType;
 
 			/**
 			 * @brief Text typed by the user

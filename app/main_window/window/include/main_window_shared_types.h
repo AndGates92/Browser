@@ -84,58 +84,58 @@ namespace main_window_shared_types {
 	 * @brief move info
 	 *
 	 */
-	typedef enum class move_value_list {
+	typedef enum class offset_type_list {
 		IDLE,             /**< Idle state - no user input */
 		LEFT,             /**< Left movement */
 		RIGHT,            /**< Right movement */
 		ABSOLUTE          /**< Absolute value - action on the tab index equal to value */
-	} move_value_e;
+	} offset_type_e;
 
 	/**
-	 * @brief register move_value_e with meta-object system
+	 * @brief register offset_type_e with meta-object system
 	 *
 	 */
-	Q_ENUM_NS(move_value_list)
+	Q_ENUM_NS(offset_type_list)
 
 	/**
-	 * @brief Function: QDebug & operator<< (QDebug & os, const main_window_shared_types::move_value_e & value_type)
+	 * @brief Function: QDebug & operator<< (QDebug & os, const main_window_shared_types::offset_type_e & value_type)
 	 *
 	 * \param os: output stream
 	 * \param value_type: move type
 	 *
 	 * Overload << operator to print the move type
 	 */
-	QDebug & operator<< (QDebug & os, const main_window_shared_types::move_value_e & value_type);
+	QDebug & operator<< (QDebug & os, const main_window_shared_types::offset_type_e & value_type);
 
 	/**
-	 * @brief Function: QTextStream & operator<< (QTextStream & str, const main_window_shared_types::move_value_e & value_type)
+	 * @brief Function: QTextStream & operator<< (QTextStream & str, const main_window_shared_types::offset_type_e & value_type)
 	 *
 	 * \param str: text stream
 	 * \param value_type: move type
 	 *
 	 * Overload << operator to print the move type
 	 */
-	QTextStream & operator<< (QTextStream & str, const main_window_shared_types::move_value_e & value_type);
+	QTextStream & operator<< (QTextStream & str, const main_window_shared_types::offset_type_e & value_type);
 
 	/**
-	 * @brief Function: QString & operator<< (QString & str, const main_window_shared_types::move_value_e & value_type)
+	 * @brief Function: QString & operator<< (QString & str, const main_window_shared_types::offset_type_e & value_type)
 	 *
 	 * \param str: text stream
 	 * \param value_type: move type
 	 *
 	 * Overload << operator to print the move type
 	 */
-	QString & operator<< (QString & str, const main_window_shared_types::move_value_e & value_type);
+	QString & operator<< (QString & str, const main_window_shared_types::offset_type_e & value_type);
 
 	/**
-	 * @brief Function: const QString operator+ (const QString & str, const main_window_shared_types::move_value_e & value_type)
+	 * @brief Function: const QString operator+ (const QString & str, const main_window_shared_types::offset_type_e & value_type)
 	 *
 	 * \param str: text stream
 	 * \param value_type: move type
 	 *
 	 * Overload + operator to print the move type
 	 */
-	const QString operator+ (const QString & str, const main_window_shared_types::move_value_e & value_type);
+	const QString operator+ (const QString & str, const main_window_shared_types::offset_type_e & value_type);
 
 	/**
 	 * @brief text action 

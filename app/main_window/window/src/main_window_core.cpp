@@ -17,13 +17,13 @@
 Q_LOGGING_CATEGORY(mainWindowCoreOverall, "mainWindowCore.overall", MSG_TYPE_LEVEL)
 Q_LOGGING_CATEGORY(mainWindowCoreUserInput, "mainWindowCtrlBase.userInput", MSG_TYPE_LEVEL)
 
-main_window_core::MainWindowCore::MainWindowCore(QWidget * parentWindow) : mainWidget(new QWidget(parentWindow)), tabs(new main_window_tab_widget::MainWindowTabWidget(this->mainWidget)), topMenuBar(new main_window_menu_bar::MainWindowMenuBar(parentWindow)), bottomStatusBar(new main_window_status_bar::MainWindowStatusBar(parentWindow)), cmdMenu(new command_menu::CommandMenu(parentWindow)), mainWindowState(main_window_shared_types::state_e::IDLE), moveValueType(main_window_shared_types::move_value_e::IDLE), userText(QString::null) {
+main_window_core::MainWindowCore::MainWindowCore(QWidget * parentWindow) : mainWidget(new QWidget(parentWindow)), tabs(new main_window_tab_widget::MainWindowTabWidget(this->mainWidget)), topMenuBar(new main_window_menu_bar::MainWindowMenuBar(parentWindow)), bottomStatusBar(new main_window_status_bar::MainWindowStatusBar(parentWindow)), cmdMenu(new command_menu::CommandMenu(parentWindow)), mainWindowState(main_window_shared_types::state_e::IDLE), offsetType(main_window_shared_types::offset_type_e::IDLE), userText(QString::null) {
 
 	QINFO_PRINT(global_types::qinfo_level_e::ZERO, mainWindowCoreOverall,  "Main window core constructor");
 
 }
 
-main_window_core::MainWindowCore::MainWindowCore(const main_window_core::MainWindowCore & rhs) : mainWidget(rhs.mainWidget), tabs(rhs.tabs), topMenuBar(rhs.topMenuBar), bottomStatusBar(rhs.bottomStatusBar), cmdMenu(rhs.cmdMenu), mainWindowState(rhs.mainWindowState), moveValueType(rhs.moveValueType), userText(rhs.userText) {
+main_window_core::MainWindowCore::MainWindowCore(const main_window_core::MainWindowCore & rhs) : mainWidget(rhs.mainWidget), tabs(rhs.tabs), topMenuBar(rhs.topMenuBar), bottomStatusBar(rhs.bottomStatusBar), cmdMenu(rhs.cmdMenu), mainWindowState(rhs.mainWindowState), offsetType(rhs.offsetType), userText(rhs.userText) {
 
 	QINFO_PRINT(global_types::qinfo_level_e::ZERO, mainWindowCoreOverall,  "Copy constructor main window core");
 
@@ -77,8 +77,8 @@ main_window_core::MainWindowCore & main_window_core::MainWindowCore::operator=(c
 		this->mainWindowState = rhs.mainWindowState;
 	}
 
-	if (this->moveValueType != rhs.moveValueType) {
-		this->moveValueType = rhs.moveValueType;
+	if (this->offsetType != rhs.offsetType) {
+		this->offsetType = rhs.offsetType;
 	}
 
 	if (this->userText != rhs.userText) {
@@ -88,7 +88,7 @@ main_window_core::MainWindowCore & main_window_core::MainWindowCore::operator=(c
 	return *this;
 }
 
-main_window_core::MainWindowCore::MainWindowCore(main_window_core::MainWindowCore && rhs) : mainWidget(std::move(rhs.mainWidget)), tabs(std::move(rhs.tabs)), topMenuBar(std::move(rhs.topMenuBar)), bottomStatusBar(std::move(rhs.bottomStatusBar)), cmdMenu(std::move(rhs.cmdMenu)), mainWindowState(std::move(rhs.mainWindowState)), moveValueType(std::move(rhs.moveValueType)), userText(std::move(rhs.userText)) {
+main_window_core::MainWindowCore::MainWindowCore(main_window_core::MainWindowCore && rhs) : mainWidget(std::move(rhs.mainWidget)), tabs(std::move(rhs.tabs)), topMenuBar(std::move(rhs.topMenuBar)), bottomStatusBar(std::move(rhs.bottomStatusBar)), cmdMenu(std::move(rhs.cmdMenu)), mainWindowState(std::move(rhs.mainWindowState)), offsetType(std::move(rhs.offsetType)), userText(std::move(rhs.userText)) {
 	QINFO_PRINT(global_types::qinfo_level_e::ZERO, mainWindowCoreOverall,  "Move constructor main window core");
 
 	// Reset rhs
@@ -98,7 +98,7 @@ main_window_core::MainWindowCore::MainWindowCore(main_window_core::MainWindowCor
 	rhs.bottomStatusBar = Q_NULLPTR;
 	rhs.cmdMenu = Q_NULLPTR;
 	rhs.mainWindowState = main_window_shared_types::state_e::IDLE;
-	rhs.moveValueType = main_window_shared_types::move_value_e::IDLE;
+	rhs.offsetType = main_window_shared_types::offset_type_e::IDLE;
 	rhs.userText = QString::null;
 }
 
@@ -156,10 +156,10 @@ main_window_core::MainWindowCore & main_window_core::MainWindowCore::operator=(m
 	}
 	rhs.mainWindowState = main_window_shared_types::state_e::IDLE;
 
-	if (this->moveValueType != rhs.moveValueType) {
-		this->moveValueType = std::move(rhs.moveValueType);
+	if (this->offsetType != rhs.offsetType) {
+		this->offsetType = std::move(rhs.offsetType);
 	}
-	rhs.moveValueType = main_window_shared_types::move_value_e::IDLE;
+	rhs.offsetType = main_window_shared_types::offset_type_e::IDLE;
 
 	if (this->userText != rhs.userText) {
 		this->userText = std::move(rhs.userText);
@@ -199,9 +199,9 @@ QString main_window_core::MainWindowCore::getActionName() const {
 	actionNameText.append(actionName);
 
 	if (this->mainWindowState == main_window_shared_types::state_e::TAB_MOVE) {
-		if (this->moveValueType == main_window_shared_types::move_value_e::RIGHT) {
+		if (this->offsetType == main_window_shared_types::offset_type_e::RIGHT) {
 			actionNameText.append(" right");
-		} else if (this->moveValueType == main_window_shared_types::move_value_e::LEFT) {
+		} else if (this->offsetType == main_window_shared_types::offset_type_e::LEFT) {
 			actionNameText.append(" left");
 		}
 	}
@@ -223,8 +223,8 @@ main_window_shared_types::state_e main_window_core::MainWindowCore::getMainWindo
 	return this->mainWindowState;
 }
 
-main_window_shared_types::move_value_e main_window_core::MainWindowCore::getMoveValueType() const {
-	return this->moveValueType;
+main_window_shared_types::offset_type_e main_window_core::MainWindowCore::getOffsetType() const {
+	return this->offsetType;
 }
 
 QString main_window_core::MainWindowCore::getUserText() const {
@@ -235,8 +235,8 @@ void main_window_core::MainWindowCore::setMainWindowState(main_window_shared_typ
 	this->mainWindowState = windowState;
 }
 
-void main_window_core::MainWindowCore::setMoveValueType(main_window_shared_types::move_value_e moveType) {
-	this->moveValueType = moveType;
+void main_window_core::MainWindowCore::setOffsetType(main_window_shared_types::offset_type_e moveType) {
+	this->offsetType = moveType;
 }
 
 void main_window_core::MainWindowCore::updateUserInput(const main_window_shared_types::text_action_e action, QString text) {

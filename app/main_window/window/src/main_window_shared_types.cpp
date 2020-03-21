@@ -15,8 +15,8 @@
 
 namespace main_window_shared_types {
 
-	// Overload << operator for move_value_e
-	OVERLOAD_OPERATORS_CUSTOM_TYPE(main_window_shared_types::move_value_e)
+	// Overload << operator for offset_type_e
+	OVERLOAD_OPERATORS_CUSTOM_TYPE(main_window_shared_types::offset_type_e)
 
 	// Overload << operator for state_e
 	OVERLOAD_OPERATORS_CUSTOM_TYPE(main_window_shared_types::state_e)
