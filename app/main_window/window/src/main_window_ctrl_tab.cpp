@@ -92,17 +92,16 @@ void main_window_ctrl_tab::MainWindowCtrlTab::connectSignals() {
 	connect(this->moveRightKey, &QShortcut::activated, this, &main_window_ctrl_tab::MainWindowCtrlTab::setUpMoveRight);
 	connect(this->refreshUrlKey, &QShortcut::activated, this, &main_window_ctrl_tab::MainWindowCtrlTab::setUpRefreshTabUrl);
 
-//	connect(this->windowCore->tabs, &QTabWidget::currentChanged, this, &main_window_ctrl_tab::MainWindowCtrlTab::updateContent);
+//	connect(this->windowCore->tabs, &main_window_tab_widget::MainWindowTabWidget::currentChanged, this, &main_window_ctrl_tab::MainWindowCtrlTab::updateContent);
 	// Update info bar
-	connect(this->windowCore->tabs, &QTabWidget::currentChanged, this, &main_window_ctrl_tab::MainWindowCtrlTab::updateInfoSlot);
-	connect(this->windowCore->tabs, &QTabWidget::tabCloseRequested, this, &main_window_ctrl_tab::MainWindowCtrlTab::updateInfoSlot);
+	connect(this->windowCore->tabs, &main_window_tab_widget::MainWindowTabWidget::currentChanged, this, &main_window_ctrl_tab::MainWindowCtrlTab::updateInfoSlot);
+	connect(this->windowCore->tabs, &main_window_tab_widget::MainWindowTabWidget::tabCloseRequested, this, &main_window_ctrl_tab::MainWindowCtrlTab::updateInfoSlot);
 
 	// open tab action (from fileMenu)
 	connect(this->windowCore->topMenuBar->getFileMenu()->openTabAction, &QAction::triggered, this, &main_window_ctrl_tab::MainWindowCtrlTab::setUpOpenNewTab);
 
 	// When the file has been read, then show it on the screen
 	connect(this->windowCore->topMenuBar->getFileMenu(), &file_menu::FileMenu::updateCenterWindowSignal, this, &main_window_ctrl_tab::MainWindowCtrlTab::printStrInCurrentTabWidget);
-
 }
 
 //************************************************************************************
