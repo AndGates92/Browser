@@ -247,16 +247,21 @@ void main_window_ctrl_tab::MainWindowCtrlTab::updateContent(int index) {
 }
 
 void main_window_ctrl_tab::MainWindowCtrlTab::refreshUrl(int tabIndex) {
-	try {
-		QWebEngineView * currentTabPage = dynamic_cast<QWebEngineView *>(this->windowCore->tabs->widget(tabIndex));
-		QUrl currUrl = currentTabPage->url();
+	main_window_shared_types::tab_type_e tabType = this->windowCore->tabs->getTabType(tabIndex);
+	if (tabType == main_window_shared_types::tab_type_e::WEB_ENGINE) {
+		try {
+			QWebEngineView * currentTabPage = dynamic_cast<QWebEngineView *>(this->windowCore->tabs->widget(tabIndex));
+			QUrl currUrl = currentTabPage->url();
 
-		QString urlStr (currUrl.toDisplayString(QUrl::FullyDecoded));
-		QINFO_PRINT(global_types::qinfo_level_e::ZERO, mainWindowCtrlTabUrl,  "Refresh URL " << urlStr);
+			QString urlStr (currUrl.toDisplayString(QUrl::FullyDecoded));
+			QINFO_PRINT(global_types::qinfo_level_e::ZERO, mainWindowCtrlTabUrl,  "Refresh URL " << urlStr);
 
-		currentTabPage->load(QUrl(currUrl));
-	} catch (const std::bad_cast & badCastE) {
-		QEXCEPTION_ACTION(throw, badCastE.what());
+			currentTabPage->load(QUrl(currUrl));
+		} catch (const std::bad_cast & badCastE) {
+			QEXCEPTION_ACTION(throw, badCastE.what());
+		}
+	} else if (tabType == main_window_shared_types::tab_type_e::LABEL) {
+		// TODO
 	}
 }
 
@@ -292,6 +297,8 @@ void main_window_ctrl_tab::MainWindowCtrlTab::connectProgressBar(int tabIndex) {
 		} catch (const std::bad_cast & badCastE) {
 			QEXCEPTION_ACTION(throw, badCastE.what());
 		}
+	} else if (tabType == main_window_shared_types::tab_type_e::LABEL) {
+		// TODO
 	}
 }
 
@@ -313,6 +320,8 @@ void main_window_ctrl_tab::MainWindowCtrlTab::disconnectProgressBar(int tabIndex
 		} catch (const std::bad_cast & badCastE) {
 			QEXCEPTION_ACTION(throw, badCastE.what());
 		}
+	} else if (tabType == main_window_shared_types::tab_type_e::LABEL) {
+		// TODO
 	}
 }
 
