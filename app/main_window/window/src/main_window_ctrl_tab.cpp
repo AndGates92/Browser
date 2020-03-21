@@ -279,6 +279,7 @@ void main_window_ctrl_tab::MainWindowCtrlTab::moveCursor(int tabIndex) {
 
 void main_window_ctrl_tab::MainWindowCtrlTab::connectProgressBar(int tabIndex) {
 	main_window_shared_types::tab_type_e tabType = this->windowCore->tabs->getTabType(tabIndex);
+	QINFO_PRINT(global_types::qinfo_level_e::ZERO, mainWindowCtrlTabTabs,  "Connect signals from " << tabType << " object of tab " << tabIndex << " to progress bar slots");
 	if (tabType == main_window_shared_types::tab_type_e::WEB_ENGINE) {
 		try {
 			QWebEngineView * currentTabPage = dynamic_cast<QWebEngineView *>(this->windowCore->tabs->widget(tabIndex));
@@ -296,6 +297,7 @@ void main_window_ctrl_tab::MainWindowCtrlTab::connectProgressBar(int tabIndex) {
 
 void main_window_ctrl_tab::MainWindowCtrlTab::disconnectProgressBar(int tabIndex) {
 	main_window_shared_types::tab_type_e tabType = this->windowCore->tabs->getTabType(tabIndex);
+	QINFO_PRINT(global_types::qinfo_level_e::ZERO, mainWindowCtrlTabTabs,  "Disconnect signals from " << tabType << " object of tab " << tabIndex << " to progress bar slots");
 	if (tabType == main_window_shared_types::tab_type_e::WEB_ENGINE) {
 		try {
 			QWebEngineView * currentTabPage = dynamic_cast<QWebEngineView *>(this->windowCore->tabs->widget(tabIndex));
