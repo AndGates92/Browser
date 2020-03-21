@@ -283,11 +283,11 @@ void main_window_ctrl_tab::MainWindowCtrlTab::connectProgressBar(int tabIndex) {
 	if (tabType == main_window_shared_types::tab_type_e::WEB_ENGINE) {
 		try {
 			QWebEngineView * currentTabPage = dynamic_cast<QWebEngineView *>(this->windowCore->tabs->widget(tabIndex));
+			progress_bar::ProgressBar * loadBar = this->windowCore->bottomStatusBar->getLoadBar();
 
-			// Connect signals and slots for a newly created tab
-			connect(currentTabPage, &QWebEngineView::loadStarted, this->windowCore->bottomStatusBar->getLoadBar(), &progress_bar::ProgressBar::startLoading);
-			connect(currentTabPage, &QWebEngineView::loadProgress, this->windowCore->bottomStatusBar->getLoadBar(), &progress_bar::ProgressBar::setValue);
-			connect(currentTabPage, &QWebEngineView::loadFinished, this->windowCore->bottomStatusBar->getLoadBar(), &progress_bar::ProgressBar::endLoading);
+			connect(currentTabPage, &QWebEngineView::loadStarted, loadBar, &progress_bar::ProgressBar::startLoading);
+			connect(currentTabPage, &QWebEngineView::loadProgress, loadBar, &progress_bar::ProgressBar::setValue);
+			connect(currentTabPage, &QWebEngineView::loadFinished, loadBar, &progress_bar::ProgressBar::endLoading);
 
 		} catch (const std::bad_cast & badCastE) {
 			QEXCEPTION_ACTION(throw, badCastE.what());
@@ -300,11 +300,14 @@ void main_window_ctrl_tab::MainWindowCtrlTab::disconnectProgressBar(int tabIndex
 	if (tabType == main_window_shared_types::tab_type_e::WEB_ENGINE) {
 		try {
 			QWebEngineView * currentTabPage = dynamic_cast<QWebEngineView *>(this->windowCore->tabs->widget(tabIndex));
+			progress_bar::ProgressBar * loadBar = this->windowCore->bottomStatusBar->getLoadBar();
 
-			// Connect signals and slots for a newly created tab
-			disconnect(currentTabPage, &QWebEngineView::loadStarted, this->windowCore->bottomStatusBar->getLoadBar(), &progress_bar::ProgressBar::startLoading);
-			disconnect(currentTabPage, &QWebEngineView::loadProgress, this->windowCore->bottomStatusBar->getLoadBar(), &progress_bar::ProgressBar::setValue);
-			disconnect(currentTabPage, &QWebEngineView::loadFinished, this->windowCore->bottomStatusBar->getLoadBar(), &progress_bar::ProgressBar::endLoading);
+			disconnect(currentTabPage, &QWebEngineView::loadStarted, loadBar, &progress_bar::ProgressBar::startLoading);
+			disconnect(currentTabPage, &QWebEngineView::loadProgress, loadBar, &progress_bar::ProgressBar::setValue);
+			disconnect(currentTabPage, &QWebEngineView::loadFinished, loadBar, &progress_bar::ProgressBar::endLoading);
+
+			// Make load bar invisible as we are disconnecting slots
+			loadBar->setVisible(false);
 
 		} catch (const std::bad_cast & badCastE) {
 			QEXCEPTION_ACTION(throw, badCastE.what());
