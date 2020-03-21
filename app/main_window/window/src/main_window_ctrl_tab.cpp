@@ -681,7 +681,7 @@ void main_window_ctrl_tab::MainWindowCtrlTab::updateInfoSlot(int index) {
 }
 #pragma GCC diagnostic pop
 
-void main_window_ctrl_tab::MainWindowCtrlTab::printStrInCurrentTabWidget(const QString & tabTitle, const QString & tabContent) {
+void main_window_ctrl_tab::MainWindowCtrlTab::printStrInCurrentTabWidget(const QString & tabTitle, const QString & tabContent, const void * data) {
 	QINFO_PRINT(global_types::qinfo_level_e::ZERO, mainWindowCtrlTabTabs,  "Set text in center window with title " << tabTitle);
 	QINFO_PRINT(global_types::qinfo_level_e::ZERO, mainWindowCtrlTabTabs,  tabContent);
 
@@ -693,6 +693,12 @@ void main_window_ctrl_tab::MainWindowCtrlTab::printStrInCurrentTabWidget(const Q
 
 
 	main_window_shared_types::tab_type_e desiredTabType = main_window_shared_types::tab_type_e::LABEL;
+
+	// START -> data test
+	const QString * filenamePtr = (const QString *) data;
+	const QString filename(*filenamePtr);
+	QINFO_PRINT(global_types::qinfo_level_e::ZERO, mainWindowCtrlTabTabs,  "data test filename: " << filename);
+	// END -> data test
 
 	// Disable events while updating tabs
 	tabWidget->setUpdatesEnabled(false);

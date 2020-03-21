@@ -87,14 +87,15 @@ namespace open_button_window {
 
 		signals:
 			/**
-			 * @brief Function: void fileRead(const QString & title, const QString & content)
+			 * @brief Function: void fileRead(const QString & title, const QString & content, const void * data)
 			 *
 			 * \param title: title of the widget
 			 * \param content: content of the file read
+			 * \param data: extra data to be passed through
 			 *
 			 * This function is a signal to inform the menu that the center window must be updated
 			 */
-			void fileRead(const QString & title, const QString & content);
+			void fileRead(const QString & title, const QString & content, const void * data);
 
 
 		private:

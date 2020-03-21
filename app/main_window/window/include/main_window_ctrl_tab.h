@@ -220,14 +220,15 @@ namespace main_window_ctrl_tab {
 			void updateInfoSlot(int index);
 
 			/**
-			 * @brief Function: void printStrInCurrentTabWidget(const QString & tabTile, const QString tabContent)
+			 * @brief Function: void printStrInCurrentTabWidget(const QString & tabTile, const QString & tabContent, const void * data)
 			 *
 			 * \param tabTile: tab title
 			 * \param tabContent: text to write in the widget
+			 * \param data: extra data to be passed through
 			 *
 			 * This function writes the widget with the content of the file read (stored in input argument str)
 			 */
-			void printStrInCurrentTabWidget(const QString & tabTile, const QString & tabContent);
+			void printStrInCurrentTabWidget(const QString & tabTile, const QString & tabContent, const void * data);
 
 		private:
 

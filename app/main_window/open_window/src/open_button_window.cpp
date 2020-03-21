@@ -84,7 +84,7 @@ void open_button_window::OpenButtonWindow::open() {
 
 		QString title("file:");
 		title.append(filename);
-		emit this->fileRead(title, fileContent);
+		emit this->fileRead(title, fileContent, &filename);
 
 		QINFO_PRINT(global_types::qinfo_level_e::ZERO, openButtonWindowOpen,  "Close " << filename);
 		userFile.close();
