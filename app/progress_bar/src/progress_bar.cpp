@@ -44,6 +44,12 @@ void progress_bar::ProgressBar::startLoading() {
 void progress_bar::ProgressBar::setValue(int value) {
 	this->setVisible(true);
 	QProgressBar::setValue(value);
+
+	// When tabs are refreshed, loadFinished is not send therefore endLoadign slot is not called
+	// Forcing call endLoading
+	if (value == this->maximum()) {
+		this->endLoading(true);
+	}
 }
 
 void progress_bar::ProgressBar::endLoading(bool success) {
