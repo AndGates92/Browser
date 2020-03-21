@@ -235,8 +235,8 @@ void main_window_core::MainWindowCore::setMainWindowState(main_window_shared_typ
 	this->mainWindowState = windowState;
 }
 
-void main_window_core::MainWindowCore::setOffsetType(main_window_shared_types::offset_type_e moveType) {
-	this->offsetType = moveType;
+void main_window_core::MainWindowCore::setOffsetType(main_window_shared_types::offset_type_e type) {
+	this->offsetType = type;
 }
 
 void main_window_core::MainWindowCore::updateUserInput(const main_window_shared_types::text_action_e action, QString text) {

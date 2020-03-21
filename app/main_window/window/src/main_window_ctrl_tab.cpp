@@ -322,16 +322,16 @@ void main_window_ctrl_tab::MainWindowCtrlTab::executeActionOnOffset(int offset) 
 	global_types::sign_e sign = global_types::sign_e::NOSIGN;
 
 	main_window_shared_types::state_e windowState = this->windowCore->getMainWindowState();
-	main_window_shared_types::offset_type_e moveType = this->windowCore->getOffsetType();
+	main_window_shared_types::offset_type_e offsetType = this->windowCore->getOffsetType();
 
 	if (windowState == main_window_shared_types::state_e::MOVE_RIGHT) {
 		sign = global_types::sign_e::PLUS;
 	} else if (windowState == main_window_shared_types::state_e::MOVE_LEFT) {
 		sign = global_types::sign_e::MINUS;
 	} else if (windowState == main_window_shared_types::state_e::TAB_MOVE) {
-		if (moveType == main_window_shared_types::offset_type_e::RIGHT) {
+		if (offsetType == main_window_shared_types::offset_type_e::RIGHT) {
 			sign = global_types::sign_e::PLUS;
-		} else if (moveType == main_window_shared_types::offset_type_e::LEFT) {
+		} else if (offsetType == main_window_shared_types::offset_type_e::LEFT) {
 			sign = global_types::sign_e::MINUS;
 		}
 	} else {
@@ -379,7 +379,7 @@ void main_window_ctrl_tab::MainWindowCtrlTab::executeActionOnTab(int index) {
 
 void main_window_ctrl_tab::MainWindowCtrlTab::executeTabAction(int userInput) {
 	main_window_shared_types::state_e windowState = this->windowCore->getMainWindowState();
-	main_window_shared_types::offset_type_e moveType = this->windowCore->getOffsetType();
+	main_window_shared_types::offset_type_e offsetType = this->windowCore->getOffsetType();
 
 	switch (windowState) {
 		case main_window_shared_types::state_e::REFRESH_TAB:
@@ -391,12 +391,12 @@ void main_window_ctrl_tab::MainWindowCtrlTab::executeTabAction(int userInput) {
 			this->executeActionOnOffset(userInput);
 			break;
 		case main_window_shared_types::state_e::TAB_MOVE:
-			if ((moveType == main_window_shared_types::offset_type_e::LEFT) || (moveType == main_window_shared_types::offset_type_e::RIGHT)) {
+			if ((offsetType == main_window_shared_types::offset_type_e::LEFT) || (offsetType == main_window_shared_types::offset_type_e::RIGHT)) {
 				this->executeActionOnOffset(userInput);
-			} else if (moveType == main_window_shared_types::offset_type_e::ABSOLUTE) {
+			} else if (offsetType == main_window_shared_types::offset_type_e::ABSOLUTE) {
 				this->executeActionOnTab(userInput);
 			} else {
-				QEXCEPTION_ACTION(throw,  "Undefined direction of movement of tabs. Currently set to " << moveType);
+				QEXCEPTION_ACTION(throw,  "Undefined direction of movement of tabs. Currently set to " << offsetType);
 			}
 			break;
 		default:
@@ -529,7 +529,7 @@ void main_window_ctrl_tab::MainWindowCtrlTab::keyPressEvent(QKeyEvent * event) {
 void main_window_ctrl_tab::MainWindowCtrlTab::setStateAction(main_window_shared_types::state_e windowState, QKeyEvent * event) {
 
 	int pressedKey = event->key();
-	main_window_shared_types::offset_type_e moveType = this->windowCore->getOffsetType();
+	main_window_shared_types::offset_type_e offsetType = this->windowCore->getOffsetType();
 
 	switch (windowState) {
 		case main_window_shared_types::state_e::OPEN_TAB:
@@ -549,7 +549,7 @@ void main_window_ctrl_tab::MainWindowCtrlTab::setStateAction(main_window_shared_
 			}
 			break;
 		case main_window_shared_types::state_e::TAB_MOVE:
-			if (moveType == main_window_shared_types::offset_type_e::IDLE) {
+			if (offsetType == main_window_shared_types::offset_type_e::IDLE) {
 				// If no sign is provided, the tab is considered as absolute value
 				// If + or - sign is provided, then the value is considered to be relative to the current tab
 				// If key h is pressed, then the value is considered to be relative to the current tab and considered to go to the left

@@ -156,13 +156,13 @@ namespace main_window_core {
 			void setMainWindowState(main_window_shared_types::state_e windowState);
 
 			/**
-			 * Function: void setOffsetType(main_window_shared_types::offset_type_e moveType)
+			 * Function: void setOffsetType(main_window_shared_types::offset_type_e type)
 			 *
-			 * \param moveType: type of value of movements in tab bar
+			 * \param type: type of value of movements in tab bar
 			 *
 			 * This function returns the type of value of movements in the tab bar
 			 */
-			void setOffsetType(main_window_shared_types::offset_type_e moveType);
+			void setOffsetType(main_window_shared_types::offset_type_e type);
 
 			/**
 			 * @brief Function: void updateUserInput(const main_window_shared_types::text_action_e action, QString text = QString::null)
