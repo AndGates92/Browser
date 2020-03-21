@@ -57,6 +57,9 @@ namespace progress_bar {
 	 *
 	 */
 	class ProgressBar : public QProgressBar {
+
+		Q_OBJECT
+
 		public:
 			/**
 			 * @brief Function: explicit ProgressBar(QWidget * parent = Q_NULLPTR)
@@ -74,12 +77,22 @@ namespace progress_bar {
 			 */
 			~ProgressBar();
 
+		public slots:
 			/**
 			 * @brief Function: void startLoading()
 			 *
 			 * This function executes actions to perform at the start of a loading operation
 			 */
 			void startLoading();
+
+			/**
+			 * @brief Function: void setValue(int value)
+			 *
+			 * \param value: value to set the bar to
+			 *
+			 * This function executes actions to set teh progress bar to the desired value
+			 */
+			void setValue(int value);
 
 			/**
 			 * @brief Function: void endLoading(bool success)

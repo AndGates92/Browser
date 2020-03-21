@@ -39,7 +39,11 @@ progress_bar::ProgressBar::~ProgressBar() {
 
 void progress_bar::ProgressBar::startLoading() {
 	this->setValue(0);
+}
+
+void progress_bar::ProgressBar::setValue(int value) {
 	this->setVisible(true);
+	QProgressBar::setValue(value);
 }
 
 void progress_bar::ProgressBar::endLoading(bool success) {
