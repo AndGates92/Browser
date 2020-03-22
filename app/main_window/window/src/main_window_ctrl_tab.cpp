@@ -101,7 +101,7 @@ void main_window_ctrl_tab::MainWindowCtrlTab::connectSignals() {
 	connect(this->windowCore->topMenuBar->getFileMenu()->openTabAction, &QAction::triggered, this, &main_window_ctrl_tab::MainWindowCtrlTab::setUpOpenNewTab);
 
 	// When the file has been read, then show it on the screen
-	connect(this->windowCore->topMenuBar->getFileMenu(), &file_menu::FileMenu::updateCenterWindowSignal, this, &main_window_ctrl_tab::MainWindowCtrlTab::printStrInCurrentTabWidget);
+	connect(this->windowCore->topMenuBar->getFileMenu(), &file_menu::FileMenu::updateCenterWindowSignal, this, &main_window_ctrl_tab::MainWindowCtrlTab::printStrInCurrentTab);
 }
 
 //************************************************************************************
@@ -681,7 +681,7 @@ void main_window_ctrl_tab::MainWindowCtrlTab::updateInfoSlot(int index) {
 }
 #pragma GCC diagnostic pop
 
-void main_window_ctrl_tab::MainWindowCtrlTab::printStrInCurrentTabWidget(const QString & tabTitle, const QString & tabContent, const void * data) {
+void main_window_ctrl_tab::MainWindowCtrlTab::printStrInCurrentTab(const QString & tabTitle, const QString & tabContent, const void * data) {
 	QINFO_PRINT(global_types::qinfo_level_e::ZERO, mainWindowCtrlTabTabs,  "Set text in center window with title " << tabTitle);
 	QINFO_PRINT(global_types::qinfo_level_e::ZERO, mainWindowCtrlTabTabs,  tabContent);
 
