@@ -13,6 +13,7 @@
 
 #include "json_wrapper.h"
 #include "global_macros.h"
+#include "type_print_macros.h"
 #include "global_types.h"
 #include "exception_macros.h"
 

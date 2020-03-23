@@ -12,6 +12,7 @@
 
 #include "main_window_core.h"
 #include "exception_macros.h"
+#include "global_functions.h"
 
 // Categories
 Q_LOGGING_CATEGORY(mainWindowCoreOverall, "mainWindowCore.overall", MSG_TYPE_LEVEL)

@@ -9,7 +9,6 @@
 */
 
 #include "global_types.h"
-#include "global_functions.h"
 
 /** @defgroup GlobalMacrosGroup Global Macros Doxygen Group
  *  Global Macros
@@ -103,78 +102,6 @@
  */
 #define QFATAL_PRINT(MSG) \
 	qFatal(MSG);
-
-/**
- * @brief QDEBUG_OVERLOAD_PRINT_OP(TYPE)
- *
- * \param TYPE : type to have operator << overloaded for
- *
- * Creates function overloading operator << for a type Type.
- * It needs the type to be coverted to a QString
- */
-#define QDEBUG_OVERLOAD_PRINT_OP(TYPE) \
-	QDebug & operator<< (QDebug & os, const TYPE & value) { \
-		QString str(QString::null); \
-		str << value; \
-		os << str; \
-		return os; \
-	}
-
-/**
- * @brief QSTRING_OVERLOAD_PRINT_OP(TYPE)
- *
- * \param TYPE : type to have operator << overloaded for
- *
- * Creates function overloading operator << for a type Type.
- * It needs the type to be coverted to a QString
- */
-#define QSTRING_OVERLOAD_PRINT_OP(TYPE) \
-	QString & operator<< (QString & str, const TYPE & value) { \
-		QString valStr(global_functions::qEnumToQString<TYPE>(value, false)); \
-		str.append(valStr); \
-		return str; \
-	}
-
-/**
- * @brief QSTRING_OVERLOAD_PLUS_OP(TYPE)
- *
- * \param TYPE : type to have operator + overloaded for
- *
- * Creates function overloading operator + for a type Type.
- */
-#define QSTRING_OVERLOAD_PLUS_OP(TYPE) \
-	const QString operator+ (const QString & str, const TYPE & value) { \
-		QString mergedStr(QString::null); \
-		QTextStream(&mergedStr) << str << value; \
-		return str; \
-	}
-
-/**
- * @brief QTEXTSTREAM_OVERLOAD_PRINT_OP(TYPE)
- *
- * \param TYPE : type to have operator << overloaded for
- *
- * Creates function overloading operator << for a type Type.
- */
-#define QTEXTSTREAM_OVERLOAD_PRINT_OP(TYPE) \
-	QTextStream & operator<< (QTextStream & str, const TYPE & value) { \
-		QString valStr(global_functions::qEnumToQString<TYPE>(value, false)); \
-		str << valStr; \
-		return str; \
-	}
-
-/**
- * @brief OVERLOAD_OPERATORS_CUSTOM_TYPE(TYPE)
- *
- * \param TYPE : type to have operator overloaded for
- *
- * Creates function overloading operator + and operator << for a type Type.
- */
-#define OVERLOAD_OPERATORS_CUSTOM_TYPE(TYPE) \
-	QDEBUG_OVERLOAD_PRINT_OP(TYPE) \
-	QSTRING_OVERLOAD_PRINT_OP(TYPE) \
-	QTEXTSTREAM_OVERLOAD_PRINT_OP(TYPE) \
-	QSTRING_OVERLOAD_PLUS_OP(TYPE)
 
 /** @} */ // End of GlobalMacrosGroup group
 

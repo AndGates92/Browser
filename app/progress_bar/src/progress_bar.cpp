@@ -10,6 +10,7 @@
 #include <qt5/QtCore/QtGlobal>
 
 #include "progress_bar.h"
+#include "exception_macros.h"
 #include "global_macros.h"
 #include "global_types.h"
 
