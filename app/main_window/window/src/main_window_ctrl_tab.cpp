@@ -164,11 +164,11 @@ void main_window_ctrl_tab::MainWindowCtrlTab::closeTab(int index) {
 }
 
 void main_window_ctrl_tab::MainWindowCtrlTab::addNewTabAndSearch(QString search) {
-	int tabIndex = this->addNewTab(search, main_window_shared_types::tab_type_e::WEB_ENGINE);
+	int tabIndex = this->addNewTab(search, main_window_shared_types::tab_type_e::WEB_ENGINE, nullptr);
 	this->newSearchTab(tabIndex, search);
 }
 
-int main_window_ctrl_tab::MainWindowCtrlTab::addNewTab(QString search, main_window_shared_types::tab_type_e type) {
+int main_window_ctrl_tab::MainWindowCtrlTab::addNewTab(QString search, main_window_shared_types::tab_type_e type, const void * data) {
 
 	QINFO_PRINT(global_types::qinfo_level_e::ZERO, mainWindowCtrlTabTabs,  "Open tab with label " << search);
 
@@ -179,7 +179,7 @@ int main_window_ctrl_tab::MainWindowCtrlTab::addNewTab(QString search, main_wind
 		this->disconnectProgressBar(currentTabIndex);
 	}
 
-	int tabIndex = this->windowCore->tabs->addEmptyTab(search, type);
+	int tabIndex = this->windowCore->tabs->addEmptyTab(search, type, data);
 
 	// Connect signals from tab the cursor is pointing to
 	this->connectProgressBar(tabIndex);
@@ -705,10 +705,10 @@ void main_window_ctrl_tab::MainWindowCtrlTab::printStrInCurrentTab(const QString
 
 	// If not tabs, then create one
 	if (currentTabIndex == -1) {
-		currentTabIndex = this->addNewTab(tabTitle, desiredTabType);
+		currentTabIndex = this->addNewTab(tabTitle, desiredTabType, data);
 		QEXCEPTION_ACTION_COND((currentTabIndex >= tabWidget->count()), throw,  "Current tab index " << currentTabIndex << " must be larger than the number of tabs " << tabWidget->count());
 	} else {
-		this->windowCore->tabs->changeTabType(currentTabIndex, desiredTabType);
+		this->windowCore->tabs->changeTabType(currentTabIndex, desiredTabType, data);
 	}
 
 	QINFO_PRINT(global_types::qinfo_level_e::ZERO, mainWindowCtrlTabTabs, "Current tab index is " << currentTabIndex << " and the tab widget has " << tabWidget->count() << " tabs");
