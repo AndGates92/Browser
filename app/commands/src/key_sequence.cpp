@@ -9,10 +9,11 @@
 // Qt libraries
 #include <qt5/QtCore/QLoggingCategory>
 
-#include "global_types.h"
-#include "global_macros.h"
 #include "key_info.h"
 #include "key_sequence.h"
+#include "exception_macros.h"
+#include "global_types.h"
+#include "global_macros.h"
 
 // Categories
 Q_LOGGING_CATEGORY(keySequenceOverall, "keySequence.overall", MSG_TYPE_LEVEL)
