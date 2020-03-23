@@ -10,7 +10,7 @@
 
 #include <qt5/QtCore/QTextStream>
 
-#include "global_macros.h"
+#include "type_print_macros.h"
 #include "main_window_shared_types.h"
 
 namespace main_window_shared_types {

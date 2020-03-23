@@ -41,44 +41,64 @@ namespace main_window_shared_types {
 	Q_ENUM_NS(state_list)
 
 	/**
-	 * @brief Function: QDebug & operator<< (QDebug & os, const main_window_shared_types::state_e & state)
+	 * @brief Function: QDebug & operator<< (QDebug & os, const main_window_shared_types::state_e & value)
 	 *
 	 * \param os: output stream
-	 * \param state: state of the main window controller
+	 * \param value: state of the main window controller
 	 *
 	 * Overload << operator to print state
 	 */
-	QDebug & operator<< (QDebug & os, const main_window_shared_types::state_e & state);
+	QDebug & operator<< (QDebug & os, const main_window_shared_types::state_e & value);
 
 	/**
-	 * @brief Function: QTextStream & operator<< (QTextStream & str, const main_window_shared_types::state_e & state)
+	 * @brief Function: QTextStream & operator<< (QTextStream & str, const main_window_shared_types::state_e & value)
 	 *
 	 * \param str: text stream
-	 * \param state: state of the main window controller
+	 * \param value: state of the main window controller
 	 *
 	 * Overload << operator to print state
 	 */
-	QTextStream & operator<< (QTextStream & str, const main_window_shared_types::state_e & state);
+	QTextStream & operator<< (QTextStream & str, const main_window_shared_types::state_e & value);
 
 	/**
-	 * @brief Function: QString & operator<< (QString & str, const main_window_shared_types::state_e & state)
+	 * @brief Function: QString & operator<< (QString & str, const main_window_shared_types::state_e & value)
 	 *
 	 * \param str: text stream
-	 * \param state: state of the main window controller
+	 * \param value: state of the main window controller
 	 *
 	 * Overload << operator to print state
 	 */
-	QString & operator<< (QString & str, const main_window_shared_types::state_e & state);
+	QString & operator<< (QString & str, const main_window_shared_types::state_e & value);
 
 	/**
-	 * @brief Function: const QString operator<< (const QString & str, const main_window_shared_types::state_e & state)
+	 * @brief Function: const QString operator<< (const QString & str, const main_window_shared_types::state_e & value)
 	 *
 	 * \param str: text stream
-	 * \param state: state of the main window controller
+	 * \param value: state of the main window controller
 	 *
 	 * Overload + operator to print state
 	 */
-	const QString operator+ (const QString & str, const main_window_shared_types::state_e & state);
+	const QString operator+ (const QString & str, const main_window_shared_types::state_e & value);
+
+	/**
+	 * @brief Function: const std::string operator+ (const char * str, const main_window_shared_types::state_e & value)
+	 *
+	 * \param str: text stream
+	 * \param value: state of the main window controller
+	 *
+	 * Overload + operator to print state
+	 */
+	const std::string operator+ (const char * str, const main_window_shared_types::state_e & value);
+
+	/**
+	 * @brief Function: const std::string operator+ (const std::string & str, const main_window_shared_types::state_e & value)
+	 *
+	 * \param str: text stream
+	 * \param value: state of the main window controller
+	 *
+	 * Overload + operator to print state
+	 */
+	const std::string operator+ (const std::string & str, const main_window_shared_types::state_e & value);
 
 	/**
 	 * @brief move info
@@ -98,44 +118,64 @@ namespace main_window_shared_types {
 	Q_ENUM_NS(offset_type_list)
 
 	/**
-	 * @brief Function: QDebug & operator<< (QDebug & os, const main_window_shared_types::offset_type_e & value_type)
+	 * @brief Function: QDebug & operator<< (QDebug & os, const main_window_shared_types::offset_type_e & value)
 	 *
 	 * \param os: output stream
-	 * \param value_type: move type
+	 * \param value: move type
 	 *
 	 * Overload << operator to print the move type
 	 */
-	QDebug & operator<< (QDebug & os, const main_window_shared_types::offset_type_e & value_type);
+	QDebug & operator<< (QDebug & os, const main_window_shared_types::offset_type_e & value);
 
 	/**
-	 * @brief Function: QTextStream & operator<< (QTextStream & str, const main_window_shared_types::offset_type_e & value_type)
+	 * @brief Function: QTextStream & operator<< (QTextStream & str, const main_window_shared_types::offset_type_e & value)
 	 *
 	 * \param str: text stream
-	 * \param value_type: move type
+	 * \param value: move type
 	 *
 	 * Overload << operator to print the move type
 	 */
-	QTextStream & operator<< (QTextStream & str, const main_window_shared_types::offset_type_e & value_type);
+	QTextStream & operator<< (QTextStream & str, const main_window_shared_types::offset_type_e & value);
 
 	/**
-	 * @brief Function: QString & operator<< (QString & str, const main_window_shared_types::offset_type_e & value_type)
+	 * @brief Function: QString & operator<< (QString & str, const main_window_shared_types::offset_type_e & value)
 	 *
 	 * \param str: text stream
-	 * \param value_type: move type
+	 * \param value: move type
 	 *
 	 * Overload << operator to print the move type
 	 */
-	QString & operator<< (QString & str, const main_window_shared_types::offset_type_e & value_type);
+	QString & operator<< (QString & str, const main_window_shared_types::offset_type_e & value);
 
 	/**
-	 * @brief Function: const QString operator+ (const QString & str, const main_window_shared_types::offset_type_e & value_type)
+	 * @brief Function: const QString operator+ (const QString & str, const main_window_shared_types::offset_type_e & value)
 	 *
 	 * \param str: text stream
-	 * \param value_type: move type
+	 * \param value: move type
 	 *
 	 * Overload + operator to print the move type
 	 */
-	const QString operator+ (const QString & str, const main_window_shared_types::offset_type_e & value_type);
+	const QString operator+ (const QString & str, const main_window_shared_types::offset_type_e & value);
+
+	/**
+	 * @brief Function: const std::string operator+ (const char * str, const main_window_shared_types::offset_type_e & value)
+	 *
+	 * \param str: text stream
+	 * \param value: move type
+	 *
+	 * Overload + operator to print text move
+	 */
+	const std::string operator+ (const char * str, const main_window_shared_types::offset_type_e & value);
+
+	/**
+	 * @brief Function: const std::string operator+ (const std::string & str, const main_window_shared_types::offset_type_e & value)
+	 *
+	 * \param str: text stream
+	 * \param value: move type
+	 *
+	 * Overload + operator to print text move
+	 */
+	const std::string operator+ (const std::string & str, const main_window_shared_types::offset_type_e & value);
 
 	/**
 	 * @brief text action 
@@ -154,44 +194,64 @@ namespace main_window_shared_types {
 	Q_ENUM_NS(text_action_list)
 
 	/**
-	 * @brief Function: QDebug & operator<< (QDebug & os, const main_window_shared_types::text_action_e & action)
+	 * @brief Function: QDebug & operator<< (QDebug & os, const main_window_shared_types::text_action_e & value)
 	 *
 	 * \param os: output stream
-	 * \param action: action applied on the text in the status bar
+	 * \param value: action applied on the text in the status bar
 	 *
 	 * Overload << operator to print text action in the status bar
 	 */
-	QDebug & operator<< (QDebug & os, const main_window_shared_types::text_action_e & action);
+	QDebug & operator<< (QDebug & os, const main_window_shared_types::text_action_e & value);
 
 	/**
-	 * @brief Function: QTextStream & operator<< (QTextStream & str, const main_window_shared_types::text_action_e & action)
+	 * @brief Function: QTextStream & operator<< (QTextStream & str, const main_window_shared_types::text_action_e & value)
 	 *
 	 * \param str: text stream
-	 * \param action: action applied on the text in the status bar
+	 * \param value: action applied on the text in the status bar
 	 *
 	 * Overload << operator to print text action in the status bar
 	 */
-	QTextStream & operator<< (QTextStream & str, const main_window_shared_types::text_action_e & action);
+	QTextStream & operator<< (QTextStream & str, const main_window_shared_types::text_action_e & value);
 
 	/**
-	 * @brief Function: QString & operator<< (QString & str, const main_window_shared_types::text_action_e & action)
+	 * @brief Function: QString & operator<< (QString & str, const main_window_shared_types::text_action_e & value)
 	 *
 	 * \param str: text stream
-	 * \param action: action applied on the text in the status bar
+	 * \param value: action applied on the text in the status bar
 	 *
 	 * Overload << operator to print text action in the status bar
 	 */
-	QString & operator<< (QString & str, const main_window_shared_types::text_action_e & action);
+	QString & operator<< (QString & str, const main_window_shared_types::text_action_e & value);
 
 	/**
-	 * @brief Function: const QString operator+ (const QString & str, const main_window_shared_types::text_action_e & action)
+	 * @brief Function: const QString operator+ (const QString & str, const main_window_shared_types::text_action_e & value)
 	 *
 	 * \param str: text stream
-	 * \param action: action applied on the text in the status bar
+	 * \param value: action applied on the text in the status bar
 	 *
 	 * Overload + operator to print text action in the status bar
 	 */
-	const QString operator+ (const QString & str, const main_window_shared_types::text_action_e & action);
+	const QString operator+ (const QString & str, const main_window_shared_types::text_action_e & value);
+
+	/**
+	 * @brief Function: const std::string operator+ (const char * str, const main_window_shared_types::text_action_e & value)
+	 *
+	 * \param str: text stream
+	 * \param value: action applied on the text in the status bar
+	 *
+	 * Overload + operator to print text action
+	 */
+	const std::string operator+ (const char * str, const main_window_shared_types::text_action_e & value);
+
+	/**
+	 * @brief Function: const std::string operator+ (const std::string & str, const main_window_shared_types::text_action_e & value)
+	 *
+	 * \param str: text stream
+	 * \param value: action applied on the text in the status bar
+	 *
+	 * Overload + operator to print text action
+	 */
+	const std::string operator+ (const std::string & str, const main_window_shared_types::text_action_e & value);
 
 	/**
 	 * @brief text action
@@ -210,44 +270,64 @@ namespace main_window_shared_types {
 	Q_ENUM_NS(tab_type_list)
 
 	/**
-	 * @brief Function: QDebug & operator<< (QDebug & os, const main_window_shared_types::tab_type_e & type)
+	 * @brief Function: QDebug & operator<< (QDebug & os, const main_window_shared_types::tab_type_e & value)
 	 *
 	 * \param os: output stream
-	 * \param type: type of the tab
+	 * \param value: type of the tab
 	 *
 	 * Overload << operator to print text type
 	 */
-	QDebug & operator<< (QDebug & os, const main_window_shared_types::tab_type_e & type);
+	QDebug & operator<< (QDebug & os, const main_window_shared_types::tab_type_e & value);
 
 	/**
-	 * @brief Function: QTextStream & operator<< (QTextStream & str, const main_window_shared_types::tab_type_e & type)
+	 * @brief Function: QTextStream & operator<< (QTextStream & str, const main_window_shared_types::tab_type_e & value)
 	 *
 	 * \param str: text stream
-	 * \param type: type of the tab
+	 * \param value: type of the tab
 	 *
 	 * Overload << operator to print text type
 	 */
-	QTextStream & operator<< (QTextStream & str, const main_window_shared_types::tab_type_e & type);
+	QTextStream & operator<< (QTextStream & str, const main_window_shared_types::tab_type_e & value);
 
 	/**
-	 * @brief Function: QString & operator<< (QString & str, const main_window_shared_types::tab_type_e & type)
+	 * @brief Function: QString & operator<< (QString & str, const main_window_shared_types::tab_type_e & value)
 	 *
 	 * \param str: text stream
-	 * \param type: type of the tab
+	 * \param value: type of the tab
 	 *
 	 * Overload << operator to print text type
 	 */
-	QString & operator<< (QString & str, const main_window_shared_types::tab_type_e & type);
+	QString & operator<< (QString & str, const main_window_shared_types::tab_type_e & value);
 
 	/**
-	 * @brief Function: const QString operator+ (const QString & str, const main_window_shared_types::tab_type_e & type)
+	 * @brief Function: const QString operator+ (const QString & str, const main_window_shared_types::tab_type_e & value)
 	 *
 	 * \param str: text stream
-	 * \param type: type of the tab
+	 * \param value: type of the tab
 	 *
 	 * Overload + operator to print text type
 	 */
-	const QString operator+ (const QString & str, const main_window_shared_types::tab_type_e & type);
+	const QString operator+ (const QString & str, const main_window_shared_types::tab_type_e & value);
+
+	/**
+	 * @brief Function: const std::string operator+ (const char * str, const main_window_shared_types::tab_type_e & value)
+	 *
+	 * \param str: text stream
+	 * \param value: type of the tab
+	 *
+	 * Overload + operator to print text type
+	 */
+	const std::string operator+ (const char * str, const main_window_shared_types::tab_type_e & value);
+
+	/**
+	 * @brief Function: const std::string operator+ (const std::string & str, const main_window_shared_types::tab_type_e & value)
+	 *
+	 * \param str: text stream
+	 * \param value: type of the tab
+	 *
+	 * Overload + operator to print text type
+	 */
+	const std::string operator+ (const std::string & str, const main_window_shared_types::tab_type_e & value);
 
 }
 
