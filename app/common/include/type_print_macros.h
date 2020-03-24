@@ -135,6 +135,26 @@
 	const std::string operator+ (const std::string & str, const TYPE & value); \
 	const std::string operator+ (const char * cStr, const TYPE & value);
 
+/**
+ * @brief PRINT_LIST(VERBOSITY, CATEGORY, TYPE, NAME, LIST)
+ *
+ * \param TYPE : type to have operator overloaded for
+ * \param VERBOSITY: verbosity level
+ * \param CATEGORY: print category
+ * \param NAME: name of the list
+ * \param LIST: list to print
+ *
+ * Print all elements of a list
+ */
+#define PRINT_LIST(VERBOSITY, CATEGORY, TYPE, NAME, LIST) \
+	std::for_each( \
+		LIST.cbegin(), \
+		LIST.cend(), \
+		[&](const TYPE & el) { \
+			QINFO_PRINT(VERBOSITY, CATEGORY,  "[ List " << NAME << " ] Element " << el.qprint()); \
+		} \
+	);
+
 /** @} */ // End of TypePrintMacrosGroup group
 
 #endif // TYPE_PRINT_MACROS_H

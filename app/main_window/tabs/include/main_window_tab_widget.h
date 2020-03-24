@@ -58,7 +58,7 @@ namespace main_window_tab_widget {
 		 *
 		 * This functions prints tab data info to QString
 		 */
-		QString qprint() const;
+		const QString qprint() const;
 	};
 
 	/**

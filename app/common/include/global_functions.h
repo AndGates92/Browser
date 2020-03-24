@@ -49,18 +49,6 @@ namespace global_functions {
 	template<typename type>
 	void moveListElements(std::list<type> & l, int from, int to);
 
-	/**
-	 * @brief Function: void printList(const global_types::qinfo_level_e & verbosity, const QLoggingCategory & category, const std::string & name, const std::list<type> & l)
-	 *
-	 * \param verbosity: verbosity level
-	 * \param category: print category
-	 * \param name: name of the list
-	 * \param l: list to print
-	 *
-	 * This function allows to print all elements of a list
-	 */
-	template<typename type>
-	void printList(const global_types::qinfo_level_e & verbosity, const QLoggingCategory & category (), const std::string & name, const std::list<type> & l);
 }
 /** @} */ // End of GlobalFunctionsGroup group
 
@@ -107,19 +95,6 @@ void global_functions::moveListElements(std::list<type> & l, int from, int to) {
 
 	// Delete element at position from as it has already copied at position to
 	l.erase(fromIter);
-
-}
-
-template<typename type>
-void global_functions::printList(const global_types::qinfo_level_e & verbosity, const QLoggingCategory & category (), const std::string & name, const std::list<type> & l) {
-
-	std::for_each(
-		l.cbegin(),
-		l.cend(),
-		[&verbosity, &category, &name](const type & el) {
-			QINFO_PRINT(verbosity, category,  "[ List " << name.c_str() << " ] Element " << el.qprint());
-		}
-	);
 
 }
 

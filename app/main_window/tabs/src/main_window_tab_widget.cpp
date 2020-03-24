@@ -15,6 +15,7 @@
 #include <qt5/QtCore/QtDebug>
 
 #include "main_window_tab_widget.h"
+#include "type_print_macros.h"
 #include "exception_macros.h"
 #include "global_functions.h"
 
@@ -29,7 +30,7 @@ main_window_tab_widget::tab_data_s::tab_data_s(main_window_shared_types::tab_typ
 
 }
 
-QString main_window_tab_widget::tab_data_s::qprint() const {
+const QString main_window_tab_widget::tab_data_s::qprint() const {
 	const std::string tabDataInfo = this->print();
 	const QString qStr (tabDataInfo.c_str());
 
@@ -180,9 +181,9 @@ void main_window_tab_widget::MainWindowTabWidget::deleteListElement(int index) {
 void main_window_tab_widget::MainWindowTabWidget::moveTab(int indexFrom, int indexTo) {
 	QINFO_PRINT(global_types::qinfo_level_e::ZERO, mainWindowTabWidgetTabs, "Move tab from " << indexFrom << " to " << indexTo);
 	this->bar->moveTab(indexFrom, indexTo);
-	global_functions::printList<main_window_tab_widget::tab_data_s>(global_types::qinfo_level_e::ZERO, mainWindowTabWidgetTabs, "tabData before", this->tabData);
+	PRINT_LIST(global_types::qinfo_level_e::ZERO, mainWindowTabWidgetTabs, main_window_tab_widget::tab_data_s, "tabData before", this->tabData);
 	global_functions::moveListElements<main_window_tab_widget::tab_data_s>(this->tabData, indexFrom, indexTo);
-	global_functions::printList<main_window_tab_widget::tab_data_s>(global_types::qinfo_level_e::ZERO, mainWindowTabWidgetTabs, "tabData after", this->tabData);
+	PRINT_LIST(global_types::qinfo_level_e::ZERO, mainWindowTabWidgetTabs, main_window_tab_widget::tab_data_s, "tabData after", this->tabData);
 }
 
 QWidget * main_window_tab_widget::MainWindowTabWidget::widget(int index, bool checkError) {
