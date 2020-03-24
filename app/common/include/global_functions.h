@@ -77,7 +77,7 @@ QString global_functions::qEnumToQString(const qenum value, const bool printEnum
 }
 
 template<typename type>
-void global_functions::moveListElements(std::list<type> & l, int from, int to) {
+void global_functions::moveListElements(std::list<type> & l, const int from, const int to) {
 
 	const int lSize = l.size();
 
@@ -91,7 +91,7 @@ void global_functions::moveListElements(std::list<type> & l, int from, int to) {
 
 	// insert element at index from at index to using iterator range (iter, firstEl, lastEl)
 	// firstEl is always included whereas the element pointer by lastEl is not
-	l.insert(toIter, fromIter, fromIter);
+	l.emplace(toIter, *fromIter);
 
 	// Delete element at position from as it has already copied at position to
 	l.erase(fromIter);
