@@ -43,6 +43,13 @@ namespace main_window_tab_widget {
 		tab_data_s(main_window_shared_types::tab_type_e tabType = main_window_shared_types::tab_type_e::UNKNOWN, const void * tabData = nullptr);
 
 		/**
+		 * @brief Function: ~tab_data_s()
+		 *
+		 * tab data structure destructor
+		 */
+		~tab_data_s();
+
+		/**
 		 * @brief Function: std::string print() const
 		 *
 		 * \return tab data converted to std::string

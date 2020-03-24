@@ -695,8 +695,7 @@ void main_window_ctrl_tab::MainWindowCtrlTab::printStrInCurrentTab(const QString
 	main_window_shared_types::tab_type_e desiredTabType = main_window_shared_types::tab_type_e::LABEL;
 
 	// START -> data test
-	const QString * filenamePtr = (const QString *) data;
-	const QString filename(*filenamePtr);
+	const char * filename = static_cast<const char *>(data);
 	QINFO_PRINT(global_types::qinfo_level_e::ZERO, mainWindowCtrlTabTabs,  "data test filename: " << filename);
 	// END -> data test
 

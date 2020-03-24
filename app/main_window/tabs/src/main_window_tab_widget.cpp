@@ -30,6 +30,10 @@ main_window_tab_widget::tab_data_s::tab_data_s(main_window_shared_types::tab_typ
 
 }
 
+main_window_tab_widget::tab_data_s::~tab_data_s() {
+
+}
+
 const QString main_window_tab_widget::tab_data_s::qprint() const {
 	const std::string tabDataInfo = this->print();
 	const QString qStr (tabDataInfo.c_str());
@@ -51,10 +55,9 @@ std::string main_window_tab_widget::tab_data_s::print() const {
 			if (type == main_window_shared_types::tab_type_e::WEB_ENGINE) {
 				QEXCEPTION_ACTION(throw, "Unexpected non-null pointer for type " << type);
 			} else if (type == main_window_shared_types::tab_type_e::LABEL) {
-				const QString * filenamePtr = reinterpret_cast<const QString *>(data);
-				const QString filename(*filenamePtr);
+				const char * filename = static_cast<const char *>(data);
 
-				structInfo = structInfo + " filename: " + filename.toStdString();
+				structInfo = structInfo + " filename: " + filename;
 			} else {
 				QEXCEPTION_ACTION(throw, "Unknown type " << type << ". Cannot get extra data.");
 			}

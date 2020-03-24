@@ -6,6 +6,8 @@
  * @brief Open Button Window functions
  */
 
+#include <string>
+
 // Qt libraries
 // Required by qInfo
 #include <qt5/QtCore/QtDebug>
@@ -57,7 +59,7 @@ open_button_window::OpenButtonWindow::~OpenButtonWindow() {
 }
 
 void open_button_window::OpenButtonWindow::open() {
-	QString filename(text->displayText());
+	const QString filename(text->displayText());
 
 	// Do not try to open and read file if the name is empty
 	if (!filename.isEmpty()) {
@@ -84,7 +86,10 @@ void open_button_window::OpenButtonWindow::open() {
 
 		QString title("file:");
 		title.append(filename);
-		emit this->fileRead(title, fileContent, &filename);
+
+		std::string filenameStr(filename.toStdString());
+
+		emit this->fileRead(title, fileContent, strdup(filenameStr.c_str()));
 
 		QINFO_PRINT(global_types::qinfo_level_e::ZERO, openButtonWindowOpen,  "Close " << filename);
 		userFile.close();
