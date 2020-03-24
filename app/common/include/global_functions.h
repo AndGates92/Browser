@@ -38,7 +38,7 @@ namespace global_functions {
 	QString qEnumToQString(const qenum value, const bool printEnumKeyOnly = false);
 
 	/**
-	 * @brief Function: void moveListElements(std::list<type> & l, int from, int to)
+	 * @brief Function: void moveListElements(std::list<type> & l, cons int & from, const int & to)
 	 *
 	 * \param l: list whose elements are to be moved
 	 * \param from: position where the element to move is
@@ -47,7 +47,7 @@ namespace global_functions {
 	 * This function moves an element of the list l from position from to position to
 	 */
 	template<typename type>
-	void moveListElements(std::list<type> & l, int from, int to);
+	void moveListElements(std::list<type> & l, const int & from, const int & to);
 
 }
 /** @} */ // End of GlobalFunctionsGroup group
@@ -77,7 +77,7 @@ QString global_functions::qEnumToQString(const qenum value, const bool printEnum
 }
 
 template<typename type>
-void global_functions::moveListElements(std::list<type> & l, const int from, const int to) {
+void global_functions::moveListElements(std::list<type> & l, const int & from, const int & to) {
 
 	const int lSize = l.size();
 
@@ -92,6 +92,18 @@ void global_functions::moveListElements(std::list<type> & l, const int from, con
 	// insert element at index from at index to using iterator range (iter, firstEl, lastEl)
 	// firstEl is always included whereas the element pointer by lastEl is not
 	l.emplace(toIter, *fromIter);
+
+	QINFO_PRINT(global_types::qinfo_level_e::ZERO, ,  "from " << from << " to " << to << " old size " << lSize << " new size " << l.size()); 
+	QINFO_PRINT(global_types::qinfo_level_e::ZERO, ,  "from el " << fromIter->qprint()); 
+	QINFO_PRINT(global_types::qinfo_level_e::ZERO, ,  "to el " << toIter->qprint()); 
+
+	std::for_each(
+		l.cbegin(),
+		l.cend(),
+		[&](const type & el) { 
+			QINFO_PRINT(global_types::qinfo_level_e::ZERO, ,  "[ List inside move ] Element " << el.qprint()); 
+		} 
+	);
 
 	// Delete element at position from as it has already copied at position to
 	l.erase(fromIter);
