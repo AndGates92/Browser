@@ -85,25 +85,19 @@ void global_functions::moveListElements(std::list<type> & l, const int & from, c
 	QEXCEPTION_ACTION_COND((lSize < from), throw,  "Trying to access element at position " << from << " of a list that has " << lSize << " elements");
 	std::advance(fromIter, from);
 
-	auto toIter = l.begin();
-	QEXCEPTION_ACTION_COND((lSize < to), throw,  "Trying to move element at position " << from << " to position " << to << " of a list that has " << lSize << " elements");
-	std::advance(toIter, to);
+	auto toAdjustedIter = l.begin();
+	const int offset = (from < to) ? 1 : 0;
+	const int toAdjusted = to + offset;
+	QEXCEPTION_ACTION_COND((lSize < toAdjusted), throw,  "Trying to move element at position " << from << " to position " << to << " of a list that has " << lSize << " elements");
+	if (toAdjusted == lSize) {
+		toAdjustedIter = l.end();
+	} else {
+		std::advance(toAdjustedIter, toAdjusted);
+	}
 
 	// insert element at index from at index to using iterator range (iter, firstEl, lastEl)
 	// firstEl is always included whereas the element pointer by lastEl is not
-	l.emplace(toIter, *fromIter);
-
-	QINFO_PRINT(global_types::qinfo_level_e::ZERO, ,  "from " << from << " to " << to << " old size " << lSize << " new size " << l.size()); 
-	QINFO_PRINT(global_types::qinfo_level_e::ZERO, ,  "from el " << fromIter->qprint()); 
-	QINFO_PRINT(global_types::qinfo_level_e::ZERO, ,  "to el " << toIter->qprint()); 
-
-	std::for_each(
-		l.cbegin(),
-		l.cend(),
-		[&](const type & el) { 
-			QINFO_PRINT(global_types::qinfo_level_e::ZERO, ,  "[ List inside move ] Element " << el.qprint()); 
-		} 
-	);
+	l.emplace(toAdjustedIter, *fromIter);
 
 	// Delete element at position from as it has already copied at position to
 	l.erase(fromIter);
