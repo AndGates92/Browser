@@ -688,9 +688,6 @@ void main_window_ctrl_tab::MainWindowCtrlTab::printStrInCurrentTab(const QString
 	// Get tabs
 	tab_widget::TabWidget * tabWidget = this->windowCore->tabs;
 
-	// Get current tab index
-	int currentTabIndex = tabWidget->currentIndex();
-
 	const main_window_shared_types::tab_type_e desiredTabType = main_window_shared_types::tab_type_e::LABEL;
 
 	// START -> data test
@@ -701,15 +698,21 @@ void main_window_ctrl_tab::MainWindowCtrlTab::printStrInCurrentTab(const QString
 	// Disable events while updating tabs
 	tabWidget->setUpdatesEnabled(false);
 
+	int tabCount = this->windowCore->getTabCount();
+
+	// Get current tab index
+	int currentTabIndex = tabWidget->currentIndex();
+
 	// If not tabs, then create one
-	if (currentTabIndex == -1) {
+	if (tabCount == 0) {
 		currentTabIndex = this->addNewTab(tabTitle, desiredTabType, data);
-		QEXCEPTION_ACTION_COND((currentTabIndex >= tabWidget->count()), throw,  "Current tab index " << currentTabIndex << " must be larger than the number of tabs " << tabWidget->count());
+		tabCount = this->windowCore->getTabCount();
+		QEXCEPTION_ACTION_COND((currentTabIndex >= tabCount), throw,  "Current tab index " << currentTabIndex << " must be larger than the number of tabs " << tabCount);
 	} else {
 		this->windowCore->tabs->changeTabType(currentTabIndex, desiredTabType, data);
 	}
 
-	QINFO_PRINT(global_types::qinfo_level_e::ZERO, mainWindowCtrlTabTabs, "Current tab index is " << currentTabIndex << " and the tab widget has " << tabWidget->count() << " tabs");
+	QINFO_PRINT(global_types::qinfo_level_e::ZERO, mainWindowCtrlTabTabs, "Current tab index is " << currentTabIndex << " and the tab widget has " << tabCount << " tabs");
 
 	tabWidget->setTabText(currentTabIndex, tabTitle);
 	QLabel * currentTabPageLabel = dynamic_cast<QLabel *>(tabWidget->widget(currentTabIndex, true));

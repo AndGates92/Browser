@@ -41,7 +41,7 @@ key_sequence::KeySequence::KeySequence(int key0, int key1, int key2, int key3) {
 }
 
 key_sequence::KeySequence::KeySequence(const QKeySequence & qKeySeq) {
-	unsigned int thisSize = qKeySeq.count();
+	const unsigned int thisSize = qKeySeq.count();
 
 	for (unsigned int idx = 0; idx < thisSize; idx++) {
 		int key = qKeySeq[idx];
