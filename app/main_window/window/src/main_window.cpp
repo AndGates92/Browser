@@ -60,7 +60,7 @@ main_window::MainWindow::MainWindow(QWidget * parent, Qt::WindowFlags flags) : Q
 	this->statusBar()->showMessage(msg);
 	this->statusBar()->hide();
 
-	setWindowTitle(tr("Browser"));
+	this->setWindowTitle(tr("Browser"));
 
 	this->setStyleSheet(
 		"QMainWindow {"
@@ -73,7 +73,7 @@ main_window::MainWindow::MainWindow(QWidget * parent, Qt::WindowFlags flags) : Q
 
 	this->setAttribute(Qt::WA_DeleteOnClose);
 
-	QSize winSize(320,400);
+	const QSize winSize(320,400);
 	this->resize(winSize);
 
 	// Update info label
@@ -196,7 +196,7 @@ void main_window::MainWindow::createCtrl() {
 
 void main_window::MainWindow::closeWindow() {
 	QINFO_PRINT(global_types::qinfo_level_e::ZERO, mainWindowOverall,  "Close main window");
-	bool success = this->close();
+	const bool success = this->close();
 	Q_ASSERT_X(success, "main window close success check", "Main window close request was not handled properly");
 }
 

@@ -186,7 +186,7 @@ namespace command_menu {
 			QModelIndex indexAt(const QPoint & point) const;
 
 			/**
-			 * @brief Function: QModelIndex moveCursor(QAbstractItemView::CursorAction cursorAction, Qt::KeyboardModifiers modifiers)
+			 * @brief Function: QModelIndex moveCursor(const QAbstractItemView::CursorAction cursorAction, const Qt::KeyboardModifiers modifiers)
 			 *
 			 * \param cursorAction: action execute by the cursor
 			 * \param modifiers: enumeration with the keyboard modifier supported by Qt
@@ -195,7 +195,7 @@ namespace command_menu {
 			 *
 			 * This function returns the model index pointing to the next object in the view based on the input arguments
 			 */
-			QModelIndex moveCursor(QAbstractItemView::CursorAction cursorAction, Qt::KeyboardModifiers modifiers);
+			QModelIndex moveCursor(const QAbstractItemView::CursorAction cursorAction, const Qt::KeyboardModifiers modifiers);
 
 			/**
 			 * @brief Function: int horizontalOffset() const
@@ -255,7 +255,7 @@ namespace command_menu {
 			void updateHashTable() const;
 
 			/**
-			 * @brief Function: QRect viewportRectangle(int row) const
+			 * @brief Function: QRect viewportRectangle(const int row) const
 			 *
 			 * \param row: items to search for
 			 *
@@ -263,17 +263,17 @@ namespace command_menu {
 			 *
 			 * This function returns the rectangle at row row whose coordinates account for the scrolling
 			 */
-			QRect viewportRectangle(int row) const;
+			QRect viewportRectangle(const int row) const;
 
 			/**
-			 * @brief Function: void scrollContentsBy(int x, int y) const
+			 * @brief Function: void scrollContentsBy(const int x, const int y) const
 			 *
 			 * \param x: scrollbar movement along x axis
 			 * \param y: scrollbar movement along y axis
 			 *
 			 * This function updates the viewport content as a consequence of scrolling
 			 */
-			void scrollContentsBy(int x, int y);
+			void scrollContentsBy(const int x, const int y);
 
 			/**
 			 * @brief Function: void paintEvent(QPaintEvent * event)

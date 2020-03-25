@@ -40,7 +40,7 @@ void main_window_ctrl_base::MainWindowCtrlBase::printUserInput(const main_window
 
 	this->windowCore->updateUserInput(action, text);
 
-	main_window_shared_types::state_e windowState = this->windowCore->getMainWindowState();
+	const main_window_shared_types::state_e windowState = this->windowCore->getMainWindowState();
 
 	QString textLabel(QString::null);
 	if (windowState != main_window_shared_types::state_e::IDLE) {
@@ -58,15 +58,14 @@ void main_window_ctrl_base::MainWindowCtrlBase::printUserInput(const main_window
 }
 
 void main_window_ctrl_base::MainWindowCtrlBase::updateInfo() {
-	QString info(QString::null);
-	info = this->createTabInfo();
+	const QString info(this->createTabInfo());
 
 	this->windowCore->bottomStatusBar->getInfoText()->setText(info);
 }
 
 QString main_window_ctrl_base::MainWindowCtrlBase::createTabInfo() {
 
-	int tabCount = this->windowCore->getTabCount();
+	const int tabCount = this->windowCore->getTabCount();
 
 	QString tabInfo(QString::null);
 	if (tabCount == 0) {
@@ -81,8 +80,8 @@ QString main_window_ctrl_base::MainWindowCtrlBase::createTabInfo() {
 	return tabInfo;
 }
 
-void main_window_ctrl_base::MainWindowCtrlBase::setAllShortcutEnabledProperty(bool enabled) {
-	QList<QShortcut *> shortcuts = this->parentWidget()->findChildren<QShortcut *>();
+void main_window_ctrl_base::MainWindowCtrlBase::setAllShortcutEnabledProperty(const bool enabled) {
+	const QList<QShortcut *> shortcuts = this->parentWidget()->findChildren<QShortcut *>();
 
 	for (QShortcut * shortcut : shortcuts) {
 		key_sequence::KeySequence key(shortcut->key());

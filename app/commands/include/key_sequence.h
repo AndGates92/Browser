@@ -125,7 +125,7 @@ namespace key_sequence {
 			unsigned int count() const;
 
 			/**
-			 * @brief Function: QString toString(QKeySequence::SequenceFormat format = QKeySequence::NativeText) const
+			 * @brief Function: QString toString(const QKeySequence::SequenceFormat format = QKeySequence::NativeText) const
 			 *
 			 * \param format: format of key string
 			 *
@@ -133,7 +133,7 @@ namespace key_sequence {
 			 *
 			 * This function returns a string with all key sequences
 			 */
-			QString toString(QKeySequence::SequenceFormat format = QKeySequence::NativeText) const;
+			QString toString(const QKeySequence::SequenceFormat format = QKeySequence::NativeText) const;
 
 			/**
 			 * @brief Function: QKeySequence::SequenceMatch matches(const KeySequence & otherSeq) const

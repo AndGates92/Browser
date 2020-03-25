@@ -108,7 +108,7 @@ key_sequence::KeySequence::~KeySequence() {
 void key_sequence::KeySequence::addKey(int key, QKeySequence::SequenceFormat format) {
 	if (key != Qt::Key_unknown) {
 		QINFO_PRINT(global_types::qinfo_level_e::ZERO, keySequenceOverall,  "Adding 0x" << QString("%1").arg(int(key), 0, 16) << " to key sequence vector");
-		QKeySequence keySeq(key, format);
+		const QKeySequence keySeq(key, format);
 		this->keySeqVec.append(keySeq);
 	}
 }
@@ -117,7 +117,7 @@ unsigned int key_sequence::KeySequence::count() const {
 	return this->keySeqVec.size();
 }
 
-QString key_sequence::KeySequence::toString(QKeySequence::SequenceFormat format) const {
+QString key_sequence::KeySequence::toString(const QKeySequence::SequenceFormat format) const {
 
 	QStringList keySeqList;
 
@@ -132,7 +132,7 @@ QString key_sequence::KeySequence::toString(QKeySequence::SequenceFormat format)
 	}
 
 	QString separator(",");
-	QString keyStr(keySeqList.join(separator));
+	const QString keyStr(keySeqList.join(separator));
 
 	return keyStr;
 }

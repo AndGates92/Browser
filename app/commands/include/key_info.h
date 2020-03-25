@@ -234,7 +234,7 @@ namespace key_info {
 			Qt::KeyboardModifier modifier;
 
 			/**
-			 * @brief Function: QString keyToString(Qt::Key keyPrint, QKeySequence::SequenceFormat format = QKeySequence::NativeText) const
+			 * @brief Function: QString keyToString(const Qt::Key keyPrint, const QKeySequence::SequenceFormat format = QKeySequence::NativeText) const
 			 *
 			 * \param keyPrint: key
 			 * \param format: format of key string
@@ -243,10 +243,10 @@ namespace key_info {
 			 *
 			 * This function returns a string with the key converted to a string
 			 */
-			QString keyToString(Qt::Key keyPrint, QKeySequence::SequenceFormat format = QKeySequence::NativeText) const;
+			QString keyToString(const Qt::Key keyPrint, const QKeySequence::SequenceFormat format = QKeySequence::NativeText) const;
 
 			/**
-			 * @brief Function: QString modifierToString(Qt::KeyboardModifier keyPrint, QKeySequence::SequenceFormat format = QKeySequence::NativeText) const
+			 * @brief Function: QString modifierToString(const Qt::KeyboardModifier keyPrint, const QKeySequence::SequenceFormat format = QKeySequence::NativeText) const
 			 *
 			 * \param modifierPrint: modifier
 			 * \param format: format of key string
@@ -255,10 +255,10 @@ namespace key_info {
 			 *
 			 * This function returns a string with the modifier converted to a string 
 			 */
-			QString modifierToString(Qt::KeyboardModifier modifierPrint, QKeySequence::SequenceFormat format = QKeySequence::NativeText) const;
+			QString modifierToString(const Qt::KeyboardModifier modifierPrint, const QKeySequence::SequenceFormat format = QKeySequence::NativeText) const;
 
 			/**
-			 * @brief Function: bool isKeyPrintable(Qt::Key keyCheck) const
+			 * @brief Function: bool isKeyPrintable(const Qt::Key keyCheck) const
 			 *
 			 * \param keyCheck: key
 			 *
@@ -266,7 +266,7 @@ namespace key_info {
 			 *
 			 * This function returns whether a key is printable (i.e. character) or not
 			 */
-			bool isKeyPrintable(Qt::Key keyCheck) const;
+			bool isKeyPrintable(const Qt::Key keyCheck) const;
 	};
 
 }

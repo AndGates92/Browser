@@ -119,7 +119,7 @@ QString key_info::KeyInfo::toString(QKeySequence::SequenceFormat format) const {
 		tmpModifier &= ~(modifierKey->second);
 	}
 
-	QString modifierStr(this->modifierToString(Qt::KeyboardModifier(tmpModifier), format));
+	const QString modifierStr(this->modifierToString(Qt::KeyboardModifier(tmpModifier), format));
 
 	QString keySeqStr(QString::null);
 	keySeqStr.append(modifierStr);
@@ -135,7 +135,7 @@ QString key_info::KeyInfo::toString(QKeySequence::SequenceFormat format) const {
 
 }
 
-QString key_info::KeyInfo::keyToString(Qt::Key keyPrint, QKeySequence::SequenceFormat format) const {
+QString key_info::KeyInfo::keyToString(const Qt::Key keyPrint, const QKeySequence::SequenceFormat format) const {
 	specialKeyMap::const_iterator specialKey = key_info::specialKeys.find(keyPrint);
 
 	QString keyStr(QString::null);
@@ -151,7 +151,7 @@ QString key_info::KeyInfo::keyToString(Qt::Key keyPrint, QKeySequence::SequenceF
 	return keyStr;
 }
 
-QString key_info::KeyInfo::modifierToString(Qt::KeyboardModifier modifierPrint, QKeySequence::SequenceFormat format) const {
+QString key_info::KeyInfo::modifierToString(const Qt::KeyboardModifier modifierPrint, const QKeySequence::SequenceFormat format) const {
 	QString modifierStr(QString::null);
 
 	// Concert to key sequence
@@ -163,7 +163,7 @@ QString key_info::KeyInfo::modifierToString(Qt::KeyboardModifier modifierPrint, 
 
 }
 
-bool key_info::KeyInfo::isKeyPrintable(Qt::Key keyCheck) const {
+bool key_info::KeyInfo::isKeyPrintable(const Qt::Key keyCheck) const {
 	bool isPrintable = false;
 
 	if ((keyCheck >= Qt::Key_A) && (keyCheck <= Qt::Key_ydiaeresis)) {

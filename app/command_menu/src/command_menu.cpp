@@ -72,7 +72,7 @@ void command_menu::CommandMenu::updateHashTable() const {
 
 	QINFO_PRINT(global_types::qinfo_level_e::ZERO, commandMenuHashTable,  "Update Hash Table");
 
-	QFontMetrics fontProperties(this->font());
+	const QFontMetrics fontProperties(this->font());
 
 	const int rowHeight = fontProperties.height() + command_menu::extraRowHeight;
 //	const int maxWidgetWidth = this->viewport()->width();
@@ -85,14 +85,14 @@ void command_menu::CommandMenu::updateHashTable() const {
 	QINFO_PRINT(global_types::qinfo_level_e::ZERO, commandMenuHashTable,  "Number of items in model " << numberItemsInModel);
 
 	for (int row = 0; row < numberItemsInModel; row++) {
-		QModelIndex rowIndex(this->model()->index(row, 0, this->rootIndex()));
-		QString text = this->model()->data(rowIndex).toString();
-		int textWidth = fontProperties.width(text);
+		const QModelIndex rowIndex(this->model()->index(row, 0, this->rootIndex()));
+		const QString text = this->model()->data(rowIndex).toString();
+		const int textWidth = fontProperties.width(text);
 
-		int rowWidth = textWidth + command_menu::extraRowWidth;
+		const int rowWidth = textWidth + command_menu::extraRowWidth;
 
 		// Add element to hash table
-		QRect item = QRect(xItem, yItem, rowWidth, rowHeight);
+		const QRect item = QRect(xItem, yItem, rowWidth, rowHeight);
 		itemRect[row] = item;
 
 		QINFO_PRINT(global_types::qinfo_level_e::ZERO, commandMenuHashTable,  "Adding item " << item << " to the hash table at row " << row);
@@ -110,12 +110,12 @@ void command_menu::CommandMenu::updateHashTable() const {
 }
 
 // Compute rectangle used by an item
-QRect command_menu::CommandMenu::viewportRectangle(int row) const {
+QRect command_menu::CommandMenu::viewportRectangle(const int row) const {
 
 	this->updateHashTable();
 
 	QRect viewportRect = QRect();
-	QRect currentRect(this->itemRect.value(row));
+	const QRect currentRect(this->itemRect.value(row));
 	if (currentRect.isEmpty()) {
 		QINFO_PRINT(global_types::qinfo_level_e::ZERO, commandMenuViewport,  "Current rectangle is empty");
 		viewportRect = currentRect;
@@ -145,24 +145,24 @@ QRect command_menu::CommandMenu::visualRect(const QModelIndex & index) const {
 	return rectOnViewport;
 }
 
-void command_menu::CommandMenu::scrollTo(const QModelIndex & index, QAbstractItemView::ScrollHint hint) {
+void command_menu::CommandMenu::scrollTo(const QModelIndex & index, const QAbstractItemView::ScrollHint hint) {
 
-	QINFO_PRINT(global_types::qinfo_level_e::ZERO, commandMenuScrollBar,  "Scroll hint" << hint);
+	QINFO_PRINT(global_types::qinfo_level_e::ZERO, commandMenuScrollBar,  "Scroll hint" << hint << " is ignored");
 
-	QRect viewportRect(this->viewport()->rect());
-	QRect itemRectInViewportCoord(this->visualRect(index));
+	const QRect viewportRect(this->viewport()->rect());
+	const QRect itemRectInViewportCoord(this->visualRect(index));
 
 	// item boundary
-	int itemTopSide = itemRectInViewportCoord.top();
-	int itemBottomSide = itemRectInViewportCoord.bottom();
-	int itemLeftSide = itemRectInViewportCoord.left();
-	int itemRightSide = itemRectInViewportCoord.right();
+	const int itemTopSide = itemRectInViewportCoord.top();
+	const int itemBottomSide = itemRectInViewportCoord.bottom();
+	const int itemLeftSide = itemRectInViewportCoord.left();
+	const int itemRightSide = itemRectInViewportCoord.right();
 
 	// viewport boundary
-	int viewportTopSide = viewportRect.top();
-	int viewportBottomSide = viewportRect.bottom();
-	int viewportLeftSide = viewportRect.left();
-	int viewportRightSide = viewportRect.right();
+	const int viewportTopSide = viewportRect.top();
+	const int viewportBottomSide = viewportRect.bottom();
+	const int viewportLeftSide = viewportRect.left();
+	const int viewportRightSide = viewportRect.right();
 
 	int vValue = 0;
 	// scrollbar position + item position - viewport position
@@ -211,7 +211,7 @@ QModelIndex command_menu::CommandMenu::indexAt(const QPoint &point) const {
 	return QModelIndex();
 }
 
-QModelIndex command_menu::CommandMenu::moveCursor(QAbstractItemView::CursorAction cursorAction, Qt::KeyboardModifiers modifiers) {
+QModelIndex command_menu::CommandMenu::moveCursor(const QAbstractItemView::CursorAction cursorAction, const Qt::KeyboardModifiers modifiers) {
 
 	QINFO_PRINT(global_types::qinfo_level_e::ZERO, commandMenuCursor,  "Cursor action " << cursorAction << " modifiers " << modifiers);
 
@@ -222,8 +222,8 @@ QModelIndex command_menu::CommandMenu::moveCursor(QAbstractItemView::CursorActio
 		    ((cursorAction == QAbstractItemView::MoveRight) && (currIndex.row() < (this->model()->rowCount() - 1)))) {
 			const global_types::sign_e sign = ((cursorAction == QAbstractItemView::MoveLeft) ? global_types::sign_e::PLUS : global_types::sign_e::MINUS);
 			// Get previous/next item on the list
-			int rowIdx = currIndex.row() + static_cast<int>(sign);
-			int colIdx = currIndex.column();
+			const int rowIdx = currIndex.row() + static_cast<int>(sign);
+			const int colIdx = currIndex.column();
 			QModelIndex parentIdx = currIndex.parent();
 			currIndex = this->model()->index(rowIdx, colIdx, parentIdx);
 		} else if (((cursorAction == QAbstractItemView::MoveUp)    && (currIndex.row() > 0)) ||
@@ -262,22 +262,22 @@ QModelIndex command_menu::CommandMenu::moveCursor(QAbstractItemView::CursorActio
 }
 
 int command_menu::CommandMenu::horizontalOffset() const {
-	int offset = this->horizontalScrollBar()->value();
+	const int offset = this->horizontalScrollBar()->value();
 	QINFO_PRINT(global_types::qinfo_level_e::ZERO, commandMenuScrollBar,  "Horizontal scrollbar offset " << offset);
 	return offset;
 }
 
 int command_menu::CommandMenu::verticalOffset() const {
-	int offset = this->verticalScrollBar()->value();
+	const int offset = this->verticalScrollBar()->value();
 	QINFO_PRINT(global_types::qinfo_level_e::ZERO, commandMenuScrollBar,  "Vertical scrollbar offset " << offset);
 	return offset;
 }
 
 bool command_menu::CommandMenu::isIndexHidden(const QModelIndex & index) const {
-	bool isHidden = false;
+	const bool isHidden = false;
 
-	int rowIdx = index.row();
-	int colIdx = index.column();
+	const int rowIdx = index.row();
+	const int colIdx = index.column();
 
 	QINFO_PRINT(global_types::qinfo_level_e::ZERO, commandMenuCursor,  "Index iat row " << rowIdx << " and column " << colIdx << " has hidden attribute set to " << isHidden);
 
@@ -343,7 +343,7 @@ QRegion command_menu::CommandMenu::visualRegionForSelection(const QItemSelection
 	return region;
 }
 
-void command_menu::CommandMenu::scrollContentsBy(int x, int y) {
+void command_menu::CommandMenu::scrollContentsBy(const int x, const int y) {
 	QINFO_PRINT(global_types::qinfo_level_e::ZERO, commandMenuScrollBar,  "Set dirty region to point (" << x << ", " << y << ")");
 	this->scrollDirtyRegion(x,y);
 	QINFO_PRINT(global_types::qinfo_level_e::ZERO, commandMenuScrollBar,  "Scroll to point (" << x << ", " << y << ")");
@@ -399,13 +399,13 @@ void command_menu::CommandMenu::updateScrollbars() {
 
 	QFontMetrics fontProperties(this->font());
 
-	int viewportWidth = this->viewport()->width();
+	const int viewportWidth = this->viewport()->width();
 	this->horizontalScrollBar()->setSingleStep(fontProperties.width("n"));
 	this->horizontalScrollBar()->setPageStep(viewportWidth);
 	this->horizontalScrollBar()->setRange(0, qMax(0, (this->visibleWidth - viewportWidth)));
 
 	const int rowHeight = fontProperties.height() + command_menu::extraRowHeight;
-	int viewportHeight = this->viewport()->height();
+	const int viewportHeight = this->viewport()->height();
 	this->horizontalScrollBar()->setSingleStep(rowHeight);
 	this->horizontalScrollBar()->setPageStep(viewportHeight);
 	this->horizontalScrollBar()->setRange(0, qMax(0, (this->visibleHeight - viewportHeight)));
