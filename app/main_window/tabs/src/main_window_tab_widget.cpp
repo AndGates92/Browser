@@ -97,7 +97,7 @@ main_window_tab_widget::MainWindowTabWidget::~MainWindowTabWidget() {
 	}
 
 	for(std::list<main_window_tab_widget::tab_data_s>::const_iterator it = this->tabData.cbegin(); it != this->tabData.cend(); it++) {
-		QWARNING_PRINT(mainWindowTabWidgetOverall,  "Tab type still not deleted - Content: " << (*it).qprint());
+		QWARNING_PRINT(mainWindowTabWidgetOverall,  "Tab type still not deleted - Content: " << it->qprint());
 	}
 
 	Q_ASSERT_X((this->tabData.empty() == true), "tab type list not empty", "List of tab types is not empty");
