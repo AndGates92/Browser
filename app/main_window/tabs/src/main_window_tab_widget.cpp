@@ -44,7 +44,7 @@ const QString main_window_tab_widget::tab_data_s::qprint() const {
 std::string main_window_tab_widget::tab_data_s::print() const {
 	std::string structInfo;
 
-	main_window_shared_types::tab_type_e thisType = this->type;
+	const main_window_shared_types::tab_type_e thisType = this->type;
 
 	structInfo = structInfo + " type: " + type;
 
@@ -71,8 +71,8 @@ std::string main_window_tab_widget::tab_data_s::print() const {
 	return structInfo;
 }
 
-static main_window_tab_widget::tab_data_s makeTabData(const main_window_shared_types::tab_type_e & type, const void * data) {
-	main_window_tab_widget::tab_data_s newData({type, data});
+static const main_window_tab_widget::tab_data_s makeTabData(const main_window_shared_types::tab_type_e & type, const void * data) {
+	const main_window_tab_widget::tab_data_s newData({type, data});
 	return newData;
 }
 
@@ -113,7 +113,7 @@ int main_window_tab_widget::MainWindowTabWidget::addTab(QWidget * page, const QS
 	} catch (const std::bad_alloc & badAllocE) {
 		QEXCEPTION_ACTION(throw, badAllocE.what());
 	}
-	int tabIndex = tab_widget::TabWidget::addTab(page, label);
+	const int tabIndex = tab_widget::TabWidget::addTab(page, label);
 
 	return tabIndex;
 }
@@ -126,7 +126,7 @@ int main_window_tab_widget::MainWindowTabWidget::addTab(QWidget * page, const QI
 	} catch (const std::bad_alloc & badAllocE) {
 		QEXCEPTION_ACTION(throw, badAllocE.what());
 	}
-	int tabIndex = tab_widget::TabWidget::addTab(page, icon, label);
+	const int tabIndex = tab_widget::TabWidget::addTab(page, icon, label);
 
 	return tabIndex;
 }
@@ -142,7 +142,7 @@ int main_window_tab_widget::MainWindowTabWidget::insertTab(const int & index, QW
 		QEXCEPTION_ACTION(throw, badAllocE.what());
 	}
 
-	int tabIndex = tab_widget::TabWidget::insertTab(index, page, label);
+	const int tabIndex = tab_widget::TabWidget::insertTab(index, page, label);
 
 	return tabIndex;
 }
@@ -158,7 +158,7 @@ int main_window_tab_widget::MainWindowTabWidget::insertTab(const int & index, QW
 		QEXCEPTION_ACTION(throw, badAllocE.what());
 	}
 
-	int tabIndex = tab_widget::TabWidget::insertTab(index, page, icon, label);
+	const int tabIndex = tab_widget::TabWidget::insertTab(index, page, icon, label);
 
 	return tabIndex;
 }
@@ -171,7 +171,7 @@ void main_window_tab_widget::MainWindowTabWidget::removeTab(const int & index) {
 
 void main_window_tab_widget::MainWindowTabWidget::deleteListElement(const int & index) {
 
-	int tabDataSize = this->tabData.size();
+	const int tabDataSize = this->tabData.size();
 	QEXCEPTION_ACTION_COND(((index < 0) || (index >= tabDataSize)), throw,  "Index must be larger or equal to 0 and smaller than the number of elements in the QList " << tabDataSize << ". Got " << index << ".");
 
 	if (this->tabData.empty() == false) {
@@ -197,7 +197,7 @@ main_window_shared_types::tab_type_e main_window_tab_widget::MainWindowTabWidget
 
 	main_window_shared_types::tab_type_e tabType = main_window_shared_types::tab_type_e::UNKNOWN;
 
-	int tabDataSize = this->tabData.size();
+	const int tabDataSize = this->tabData.size();
 	QEXCEPTION_ACTION_COND(((index < 0) || (index >= tabDataSize)), throw,  "Index must be larger or equal to 0 and smaller than the number of elements in the QList " << tabDataSize << ". Got " << index << ".");
 
 	if (this->tabData.empty() == false) {
@@ -211,12 +211,12 @@ main_window_shared_types::tab_type_e main_window_tab_widget::MainWindowTabWidget
 
 void main_window_tab_widget::MainWindowTabWidget::changeTabType(const int & index, const main_window_shared_types::tab_type_e newType, const void * data) {
 
-	main_window_shared_types::tab_type_e currentType = this->getTabType(index);
+	const main_window_shared_types::tab_type_e currentType = this->getTabType(index);
 	QINFO_PRINT(global_types::qinfo_level_e::ZERO, mainWindowTabWidgetTabs, "Current tab index is " << index << " and it is of type " << currentType << ". Desired type is " << newType);
 
 	if (currentType != newType) {
 		this->removeTab(index);
-		int tabIndex = this->insertEmptyTab(index, QString::null, newType, data);
+		const int tabIndex = this->insertEmptyTab(index, QString::null, newType, data);
 		QEXCEPTION_ACTION_COND((tabIndex != index), throw, "Requested index (" << index << ") is different from tab index (" << tabIndex);
 
 		// Move to the newly recreated tab

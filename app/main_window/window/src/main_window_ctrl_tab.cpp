@@ -164,7 +164,7 @@ void main_window_ctrl_tab::MainWindowCtrlTab::closeTab(const int & index) {
 }
 
 void main_window_ctrl_tab::MainWindowCtrlTab::addNewTabAndSearch(const QString & search) {
-	int tabIndex = this->addNewTab(search, main_window_shared_types::tab_type_e::WEB_ENGINE, nullptr);
+	const int tabIndex = this->addNewTab(search, main_window_shared_types::tab_type_e::WEB_ENGINE, nullptr);
 	this->newSearchTab(tabIndex, search);
 }
 
@@ -172,14 +172,14 @@ int main_window_ctrl_tab::MainWindowCtrlTab::addNewTab(const QString & search, c
 
 	QINFO_PRINT(global_types::qinfo_level_e::ZERO, mainWindowCtrlTabTabs,  "Open tab with label " << search);
 
-	int tabCount = this->windowCore->getTabCount();
+	const int tabCount = this->windowCore->getTabCount();
 	if (tabCount > 0) {
 		// Disconnect signals only if at least 1 tabs is already present
 		int currentTabIndex = this->windowCore->getCurrentTabIndex();
 		this->disconnectProgressBar(currentTabIndex);
 	}
 
-	int tabIndex = this->windowCore->tabs->addEmptyTab(search, type, data);
+	const int tabIndex = this->windowCore->tabs->addEmptyTab(search, type, data);
 
 	// Connect signals from tab the cursor is pointing to
 	this->connectProgressBar(tabIndex);
@@ -198,10 +198,10 @@ int main_window_ctrl_tab::MainWindowCtrlTab::addNewTab(const QString & search, c
 void main_window_ctrl_tab::MainWindowCtrlTab::newSearchTab(const int & index, const QString & search) {
 	QINFO_PRINT(global_types::qinfo_level_e::ZERO, mainWindowCtrlTabSearch,  "User input " << search << " in tab " << index);
 
-	QString tabTitle = search;
-	QString Url = this->createUrl(search);
+	const QString tabTitle = search;
+	const QString Url = this->createUrl(search);
 
-	main_window_shared_types::tab_type_e desiredTabType = main_window_shared_types::tab_type_e::WEB_ENGINE;
+	const main_window_shared_types::tab_type_e desiredTabType = main_window_shared_types::tab_type_e::WEB_ENGINE;
 	this->windowCore->tabs->changeTabType(index, desiredTabType);
 	this->windowCore->tabs->setTabText(index, tabTitle);
 
@@ -216,22 +216,22 @@ void main_window_ctrl_tab::MainWindowCtrlTab::newSearchTab(const int & index, co
 }
 
 void main_window_ctrl_tab::MainWindowCtrlTab::searchCurrentTab(const QString & search) {
-	int tabIndex = this->windowCore->getCurrentTabIndex();
+	const int tabIndex = this->windowCore->getCurrentTabIndex();
 	QINFO_PRINT(global_types::qinfo_level_e::ZERO, mainWindowCtrlTabTabs,  "Search " << search << " in tab " << tabIndex);
 	this->newSearchTab(tabIndex, search);
 }
 
 void main_window_ctrl_tab::MainWindowCtrlTab::updateContent(const int & index) {
 
-	int tabCount = this->windowCore->getTabCount();
-	main_window_shared_types::tab_type_e tabType = this->windowCore->tabs->getTabType(index);
+	const int tabCount = this->windowCore->getTabCount();
+	const main_window_shared_types::tab_type_e tabType = this->windowCore->tabs->getTabType(index);
 
 	if (tabCount > 0) {
 		QString contentStr (QString::null);
 		if (tabType == main_window_shared_types::tab_type_e::WEB_ENGINE) {
 			try {
-				QWebEngineView * currentTabPage = dynamic_cast<QWebEngineView *>(this->windowCore->tabs->widget(index));
-				QUrl websiteUrl = currentTabPage->url();
+				const QWebEngineView * currentTabPage = dynamic_cast<QWebEngineView *>(this->windowCore->tabs->widget(index));
+				const QUrl websiteUrl = currentTabPage->url();
 				contentStr = websiteUrl.toDisplayString(QUrl::FullyDecoded);
 			} catch (const std::bad_cast & badCastE) {
 				QEXCEPTION_ACTION(throw, badCastE.what());
@@ -247,13 +247,13 @@ void main_window_ctrl_tab::MainWindowCtrlTab::updateContent(const int & index) {
 }
 
 void main_window_ctrl_tab::MainWindowCtrlTab::refreshUrl(const int & tabIndex) {
-	main_window_shared_types::tab_type_e tabType = this->windowCore->tabs->getTabType(tabIndex);
+	const main_window_shared_types::tab_type_e tabType = this->windowCore->tabs->getTabType(tabIndex);
 	if (tabType == main_window_shared_types::tab_type_e::WEB_ENGINE) {
 		try {
 			QWebEngineView * currentTabPage = dynamic_cast<QWebEngineView *>(this->windowCore->tabs->widget(tabIndex));
-			QUrl currUrl = currentTabPage->url();
+			const QUrl currUrl = currentTabPage->url();
 
-			QString urlStr (currUrl.toDisplayString(QUrl::FullyDecoded));
+			const QString urlStr (currUrl.toDisplayString(QUrl::FullyDecoded));
 			QINFO_PRINT(global_types::qinfo_level_e::ZERO, mainWindowCtrlTabUrl,  "Refresh URL " << urlStr);
 
 			currentTabPage->load(QUrl(currUrl));
@@ -273,7 +273,7 @@ void main_window_ctrl_tab::MainWindowCtrlTab::moveTab(const int & tabIndex) {
 
 void main_window_ctrl_tab::MainWindowCtrlTab::moveCursor(const int & tabIndex) {
 	// Disconnect signals from tab the cursor was pointing to
-	int currentTabIndex = this->windowCore->getCurrentTabIndex();
+	const int currentTabIndex = this->windowCore->getCurrentTabIndex();
 	this->disconnectProgressBar(currentTabIndex);
 
 	QINFO_PRINT(global_types::qinfo_level_e::ZERO, mainWindowCtrlTabTabs,  "Move cursor to tab " << tabIndex);
@@ -283,12 +283,12 @@ void main_window_ctrl_tab::MainWindowCtrlTab::moveCursor(const int & tabIndex) {
 }
 
 void main_window_ctrl_tab::MainWindowCtrlTab::connectProgressBar(const int & tabIndex) {
-	main_window_shared_types::tab_type_e tabType = this->windowCore->tabs->getTabType(tabIndex);
+	const main_window_shared_types::tab_type_e tabType = this->windowCore->tabs->getTabType(tabIndex);
 	QINFO_PRINT(global_types::qinfo_level_e::ZERO, mainWindowCtrlTabTabs,  "Connect signals from " << tabType << " object of tab " << tabIndex << " to progress bar slots");
 	if (tabType == main_window_shared_types::tab_type_e::WEB_ENGINE) {
 		try {
-			QWebEngineView * currentTabPage = dynamic_cast<QWebEngineView *>(this->windowCore->tabs->widget(tabIndex));
-			progress_bar::ProgressBar * loadBar = this->windowCore->bottomStatusBar->getLoadBar();
+			const QWebEngineView * currentTabPage = dynamic_cast<QWebEngineView *>(this->windowCore->tabs->widget(tabIndex));
+			const progress_bar::ProgressBar * loadBar = this->windowCore->bottomStatusBar->getLoadBar();
 
 			connect(currentTabPage, &QWebEngineView::loadStarted, loadBar, &progress_bar::ProgressBar::startLoading);
 			connect(currentTabPage, &QWebEngineView::loadProgress, loadBar, &progress_bar::ProgressBar::setValue);
@@ -303,11 +303,11 @@ void main_window_ctrl_tab::MainWindowCtrlTab::connectProgressBar(const int & tab
 }
 
 void main_window_ctrl_tab::MainWindowCtrlTab::disconnectProgressBar(const int & tabIndex) {
-	main_window_shared_types::tab_type_e tabType = this->windowCore->tabs->getTabType(tabIndex);
+	const main_window_shared_types::tab_type_e tabType = this->windowCore->tabs->getTabType(tabIndex);
 	QINFO_PRINT(global_types::qinfo_level_e::ZERO, mainWindowCtrlTabTabs,  "Disconnect signals from " << tabType << " object of tab " << tabIndex << " to progress bar slots");
 	if (tabType == main_window_shared_types::tab_type_e::WEB_ENGINE) {
 		try {
-			QWebEngineView * currentTabPage = dynamic_cast<QWebEngineView *>(this->windowCore->tabs->widget(tabIndex));
+			const QWebEngineView * currentTabPage = dynamic_cast<QWebEngineView *>(this->windowCore->tabs->widget(tabIndex));
 			progress_bar::ProgressBar * loadBar = this->windowCore->bottomStatusBar->getLoadBar();
 
 			disconnect(currentTabPage, &QWebEngineView::loadStarted, loadBar, &progress_bar::ProgressBar::startLoading);
@@ -315,7 +315,7 @@ void main_window_ctrl_tab::MainWindowCtrlTab::disconnectProgressBar(const int & 
 			disconnect(currentTabPage, &QWebEngineView::loadFinished, loadBar, &progress_bar::ProgressBar::endLoading);
 
 			// Make load bar invisible as we are disconnecting slots
-			loadBar->setVisible(false);
+				loadBar->setVisible(false);
 
 		} catch (const std::bad_cast & badCastE) {
 			QEXCEPTION_ACTION(throw, badCastE.what());
@@ -332,8 +332,8 @@ void main_window_ctrl_tab::MainWindowCtrlTab::disconnectProgressBar(const int & 
 void main_window_ctrl_tab::MainWindowCtrlTab::executeActionOnOffset(const int & offset) {
 	global_types::sign_e sign = global_types::sign_e::NOSIGN;
 
-	main_window_shared_types::state_e windowState = this->windowCore->getMainWindowState();
-	main_window_shared_types::offset_type_e offsetType = this->windowCore->getOffsetType();
+	const main_window_shared_types::state_e windowState = this->windowCore->getMainWindowState();
+	const main_window_shared_types::offset_type_e offsetType = this->windowCore->getOffsetType();
 
 	if (windowState == main_window_shared_types::state_e::MOVE_RIGHT) {
 		sign = global_types::sign_e::PLUS;
@@ -363,9 +363,9 @@ void main_window_ctrl_tab::MainWindowCtrlTab::executeActionOnTab(const int & ind
 		tabIndex = index;
 	}
 
-	int tabCount = this->windowCore->getTabCount();
+	const int tabCount = this->windowCore->getTabCount();
 
-	main_window_shared_types::state_e windowState = this->windowCore->getMainWindowState();
+	const main_window_shared_types::state_e windowState = this->windowCore->getMainWindowState();
 
 	if ((tabCount > tabIndex) && (tabIndex >= 0)) {
 		switch (windowState) {
@@ -383,14 +383,14 @@ void main_window_ctrl_tab::MainWindowCtrlTab::executeActionOnTab(const int & ind
 				break;
 		}
 	} else {
-		int maxTabRange = tabCount;
+		const int maxTabRange = tabCount;
 		QWARNING_PRINT(mainWindowCtrlTabTabs, "Tab " << tabIndex << " doesn't exists. Valid range of tab is the integer number between 1 and " << maxTabRange);
 	}
 }
 
 void main_window_ctrl_tab::MainWindowCtrlTab::executeTabAction(const int & userInput) {
-	main_window_shared_types::state_e windowState = this->windowCore->getMainWindowState();
-	main_window_shared_types::offset_type_e offsetType = this->windowCore->getOffsetType();
+	const main_window_shared_types::state_e windowState = this->windowCore->getMainWindowState();
+	const main_window_shared_types::offset_type_e offsetType = this->windowCore->getOffsetType();
 
 	switch (windowState) {
 		case main_window_shared_types::state_e::REFRESH_TAB:
@@ -417,7 +417,7 @@ void main_window_ctrl_tab::MainWindowCtrlTab::executeTabAction(const int & userI
 
 	this->updateInfo();
 
-	int tabIndex = this->windowCore->getCurrentTabIndex();
+	const int tabIndex = this->windowCore->getCurrentTabIndex();
 	this->updateContent(tabIndex);
 }
 
@@ -428,7 +428,7 @@ void main_window_ctrl_tab::MainWindowCtrlTab::processTabIndex(const QString & us
 	} else {
 		bool conversionSuccessful = false;
 		// Convert string un a number in base 10
-		int userInputInt = userInputStr.toInt(&conversionSuccessful, 10);
+		const int userInputInt = userInputStr.toInt(&conversionSuccessful, 10);
 		if (conversionSuccessful == true) {
 			QINFO_PRINT(global_types::qinfo_level_e::ZERO, mainWindowCtrlTabUserInput,  "user input succesfully converted to integer: string " << userInputStr << " integer " << userInputInt);
 			this->executeTabAction(userInputInt);
@@ -458,15 +458,15 @@ void main_window_ctrl_tab::MainWindowCtrlTab::executeCommand(const QString & com
 
 void main_window_ctrl_tab::MainWindowCtrlTab::keyReleaseEvent(QKeyEvent * event) {
 
-	int releasedKey = event->key();
-	Qt::KeyboardModifiers keyModifiers = event->modifiers();
+	const int releasedKey = event->key();
+	const Qt::KeyboardModifiers keyModifiers = event->modifiers();
 
-	key_sequence::KeySequence keySeq(releasedKey | keyModifiers);
+	const key_sequence::KeySequence keySeq(releasedKey | keyModifiers);
 
 	if (event->type() == QEvent::KeyRelease) {
 
-		main_window_shared_types::state_e windowState = this->windowCore->getMainWindowState();
-		QString userTypedText = this->windowCore->getUserText();
+		const main_window_shared_types::state_e windowState = this->windowCore->getMainWindowState();
+		const QString userTypedText = this->windowCore->getUserText();
 
 		// Retrieve main window controller state
 		QINFO_PRINT(global_types::qinfo_level_e::ZERO, mainWindowCtrlTabUserInput,  "State " << windowState << " key " << keySeq.toString());
@@ -491,10 +491,10 @@ void main_window_ctrl_tab::MainWindowCtrlTab::keyReleaseEvent(QKeyEvent * event)
 
 void main_window_ctrl_tab::MainWindowCtrlTab::keyPressEvent(QKeyEvent * event) {
 
-	int pressedKey = event->key();
-	Qt::KeyboardModifiers keyModifiers = event->modifiers();
+	const int pressedKey = event->key();
+	const Qt::KeyboardModifiers keyModifiers = event->modifiers();
 
-	key_sequence::KeySequence keySeq(pressedKey | keyModifiers);
+	const key_sequence::KeySequence keySeq(pressedKey | keyModifiers);
 
 	if (event->type() == QEvent::KeyPress) {
 
@@ -539,8 +539,8 @@ void main_window_ctrl_tab::MainWindowCtrlTab::keyPressEvent(QKeyEvent * event) {
 
 void main_window_ctrl_tab::MainWindowCtrlTab::setStateAction(const main_window_shared_types::state_e & windowState, QKeyEvent * event) {
 
-	int pressedKey = event->key();
-	main_window_shared_types::offset_type_e offsetType = this->windowCore->getOffsetType();
+	const int pressedKey = event->key();
+	const main_window_shared_types::offset_type_e offsetType = this->windowCore->getOffsetType();
 
 	switch (windowState) {
 		case main_window_shared_types::state_e::OPEN_TAB:
@@ -613,8 +613,8 @@ void main_window_ctrl_tab::MainWindowCtrlTab::convertToAbsTabIndex(const int & o
 		distance = offset;
 	}
 
-	int tabCount = this->windowCore->getTabCount();
-	int signInt = static_cast<int>(sign);
+	const int tabCount = this->windowCore->getTabCount();
+	const int signInt = static_cast<int>(sign);
 
 	int tabIndexDst = 0;
 	if (sign == global_types::sign_e::NOSIGN) {
@@ -631,7 +631,7 @@ void main_window_ctrl_tab::MainWindowCtrlTab::convertToAbsTabIndex(const int & o
 	}
 
 	// Keep tabIndex values within valid range (0 and (tabCount -1))
-	int tabIndex = tabIndexDst % tabCount;
+	const int tabIndex = tabIndexDst % tabCount;
 
 	QINFO_PRINT(global_types::qinfo_level_e::ZERO, mainWindowCtrlTabTabs,  "Convert tab relative offset " << (signInt*offset) << " to absolute offset " << tabIndex);
 
@@ -650,9 +650,9 @@ void main_window_ctrl_tab::MainWindowCtrlTab::convertToAbsTabIndex(const int & o
 }
 
 QString main_window_ctrl_tab::MainWindowCtrlTab::createUrl(const QString & search) {
-	bool containsSpace = search.contains(" ");
-	bool containsWww = search.contains(main_window_ctrl_tab::www);
-	int numberDots = search.count(".");
+	const bool containsSpace = search.contains(" ");
+	const bool containsWww = search.contains(main_window_ctrl_tab::www);
+	const int numberDots = search.count(".");
 
 	QString url(QString::null);
 
@@ -691,8 +691,7 @@ void main_window_ctrl_tab::MainWindowCtrlTab::printStrInCurrentTab(const QString
 	// Get current tab index
 	int currentTabIndex = tabWidget->currentIndex();
 
-
-	main_window_shared_types::tab_type_e desiredTabType = main_window_shared_types::tab_type_e::LABEL;
+	const main_window_shared_types::tab_type_e desiredTabType = main_window_shared_types::tab_type_e::LABEL;
 
 	// START -> data test
 	const char * filename = static_cast<const char *>(data);

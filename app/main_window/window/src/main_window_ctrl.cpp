@@ -88,12 +88,12 @@ void main_window_ctrl::MainWindowCtrl::executeCommand(const QString & command) {
 
 void main_window_ctrl::MainWindowCtrl::keyReleaseEvent(QKeyEvent * event) {
 
-	int releasedKey = event->key();
-	Qt::KeyboardModifiers keyModifiers = event->modifiers();
+	const int releasedKey = event->key();
+	const Qt::KeyboardModifiers keyModifiers = event->modifiers();
 
-	key_sequence::KeySequence keySeq(releasedKey | keyModifiers);
+	const key_sequence::KeySequence keySeq(releasedKey | keyModifiers);
 
-	main_window_shared_types::state_e windowState = this->windowCore->getMainWindowState();
+	const main_window_shared_types::state_e windowState = this->windowCore->getMainWindowState();
 
 	QString userTypedText = this->windowCore->getUserText();
 
@@ -112,7 +112,7 @@ void main_window_ctrl::MainWindowCtrl::keyReleaseEvent(QKeyEvent * event) {
 				// Last position of the string
 				if (userTypedText.isEmpty() == false) {
 					// Compute position of the last character in the string
-					int endString = userTypedText.count() - 1;
+					const int endString = userTypedText.count() - 1;
 					// Delete last character of the string
 					userTypedText = userTypedText.remove(endString, 1);
 					this->printUserInput(main_window_shared_types::text_action_e::SET, userTypedText);
@@ -128,10 +128,10 @@ void main_window_ctrl::MainWindowCtrl::keyReleaseEvent(QKeyEvent * event) {
 
 void main_window_ctrl::MainWindowCtrl::keyPressEvent(QKeyEvent * event) {
 
-	int pressedKey = event->key();
-	Qt::KeyboardModifiers keyModifiers = event->modifiers();
+	const int pressedKey = event->key();
+	const Qt::KeyboardModifiers keyModifiers = event->modifiers();
 
-	key_sequence::KeySequence keySeq(pressedKey | keyModifiers);
+	const key_sequence::KeySequence keySeq(pressedKey | keyModifiers);
 
 	if (event->type() == QEvent::KeyPress) {
 
@@ -163,7 +163,7 @@ void main_window_ctrl::MainWindowCtrl::keyPressEvent(QKeyEvent * event) {
 
 void main_window_ctrl::MainWindowCtrl::setStateAction(const main_window_shared_types::state_e & windowState, QKeyEvent * event) {
 
-	int pressedKey = event->key();
+	const int pressedKey = event->key();
 	const QString userTypedText = this->windowCore->getUserText();
 
 	switch (windowState) {
@@ -187,7 +187,7 @@ void main_window_ctrl::MainWindowCtrl::setStateAction(const main_window_shared_t
 }
 
 void main_window_ctrl::MainWindowCtrl::toggleShowMenubar() {
-	bool menubarVisible = this->windowCore->topMenuBar->isVisible();
+	const bool menubarVisible = this->windowCore->topMenuBar->isVisible();
 	this->windowCore->topMenuBar->setVisible(!menubarVisible);
 }
 
