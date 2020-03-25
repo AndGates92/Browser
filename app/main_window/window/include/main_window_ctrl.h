@@ -160,23 +160,23 @@ namespace main_window_ctrl {
 			void connectSignals();
 
 			/**
-			 * @brief Function: void executeCommand(QString command)
+			 * @brief Function: void executeCommand(const QString & command)
 			 *
 			 * \param command: command to execute.
 			 *
 			 * This function executes a command on a based on user input
 			 */
-			void executeCommand(QString command);
+			void executeCommand(const QString & command);
 
 			/**
-			 * @brief Function: void setStateAction(main_window_shared_types::state_e windowState, QKeyEvent * event)
+			 * @brief Function: void setStateAction(const main_window_shared_types::state_e & windowState, QKeyEvent * event)
 			 *
 			 * \param windowState: state the window is into.
 			 * \param event: key event.
 			 *
 			 * This function executes a command on a based on user input and the state the window is in
 			 */
-			void setStateAction(main_window_shared_types::state_e windowState, QKeyEvent * event);
+			void setStateAction(const main_window_shared_types::state_e & windowState, QKeyEvent * event);
 
 			// Move and copy constructor
 			/**

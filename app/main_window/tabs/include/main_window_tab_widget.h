@@ -93,7 +93,7 @@ namespace main_window_tab_widget {
 			~MainWindowTabWidget();
 
 			/**
-			 * @brief Function: int addEmptyTab(const QString & label, main_window_shared_types::tab_type_e & type, const void * data = nullptr)
+			 * @brief Function: int addEmptyTab(const QString & label, const main_window_shared_types::tab_type_e & type, const void * data = nullptr)
 			 *
 			 * \param label: label of the tab
 			 * \param type: type of the tab
@@ -103,10 +103,10 @@ namespace main_window_tab_widget {
 			 *
 			 * add tab to tab widget
 			 */
-			int addEmptyTab(const QString & label, main_window_shared_types::tab_type_e & type, const void * data = nullptr);
+			int addEmptyTab(const QString & label, const main_window_shared_types::tab_type_e & type, const void * data = nullptr);
 
 			/**
-			 * @brief Function: int addEmptyTab(const QIcon & icon, const QString & label, main_window_shared_types::tab_type_e & type, const void * data = nullptr)
+			 * @brief Function: int addEmptyTab(const QIcon & icon, const QString & label, const main_window_shared_types::tab_type_e & type, const void * data = nullptr)
 			 *
 			 * \param icon: icon of the tab
 			 * \param label: label of the tab
@@ -117,10 +117,10 @@ namespace main_window_tab_widget {
 			 *
 			 * add tab to tab widget
 			 */
-			int addEmptyTab(const QIcon & icon, const QString & label, main_window_shared_types::tab_type_e & type, const void * data = nullptr);
+			int addEmptyTab(const QIcon & icon, const QString & label, const main_window_shared_types::tab_type_e & type, const void * data = nullptr);
 
 			/**
-			 * @brief Function: int insertEmptyTab(int index, const QString & label, main_window_shared_types::tab_type_e & type, const void * data = nullptr)
+			 * @brief Function: int insertEmptyTab(const int & index, const QString & label, const main_window_shared_types::tab_type_e & type, const void * data = nullptr)
 			 *
 			 * \param index: index to insert tab to
 			 * \param label: label of the tab
@@ -131,10 +131,10 @@ namespace main_window_tab_widget {
 			 *
 			 * add tab to tab widget at index index
 			 */
-			int insertEmptyTab(int index, const QString & label, main_window_shared_types::tab_type_e & type, const void * data = nullptr);
+			int insertEmptyTab(const int & index, const QString & label, const main_window_shared_types::tab_type_e & type, const void * data = nullptr);
 
 			/**
-			 * @brief Function: int insertEmptyTab(int index, const QIcon & icon, const QString & label, main_window_shared_types::tab_type_e & type, const void * data = nullptr)
+			 * @brief Function: int insertEmptyTab(const int & index, const QIcon & icon, const QString & label, const main_window_shared_types::tab_type_e & type, const void * data = nullptr)
 			 *
 			 * \param index: index to insert tab to
 			 * \param icon: icon of the tab
@@ -146,10 +146,10 @@ namespace main_window_tab_widget {
 			 *
 			 * add tab to tab widget at index index
 			 */
-			int insertEmptyTab(int index, const QIcon & icon, const QString & label, main_window_shared_types::tab_type_e & type, const void * data = nullptr);
+			int insertEmptyTab(const int & index, const QIcon & icon, const QString & label, const main_window_shared_types::tab_type_e & type, const void * data = nullptr);
 
 			/**
-			 * @brief Function: int addTab(QWidget * page, const QString & label, main_window_shared_types::tab_type_e & type, const void * data = nullptr)
+			 * @brief Function: int addTab(QWidget * page, const QString & label, const main_window_shared_types::tab_type_e & type, const void * data = nullptr)
 			 *
 			 * \param page: widget to fill in
 			 * \param label: label of the tab
@@ -160,10 +160,10 @@ namespace main_window_tab_widget {
 			 *
 			 * add tab to tab widget
 			 */
-			int addTab(QWidget * page, const QString & label, main_window_shared_types::tab_type_e & type, const void * data = nullptr);
+			int addTab(QWidget * page, const QString & label, const main_window_shared_types::tab_type_e & type, const void * data = nullptr);
 
 			/**
-			 * @brief Function: int addTab(QWidget * page, const QIcon & icon, const QString & label, main_window_shared_types::tab_type_e & type, const void * data = nullptr)
+			 * @brief Function: int addTab(QWidget * page, const QIcon & icon, const QString & label, const main_window_shared_types::tab_type_e & type, const void * data = nullptr)
 			 *
 			 * \param page: widget to fill in
 			 * \param icon: icon of the tab
@@ -175,10 +175,10 @@ namespace main_window_tab_widget {
 			 *
 			 * add tab to tab widget
 			 */
-			int addTab(QWidget * page, const QIcon & icon, const QString & label, main_window_shared_types::tab_type_e & type, const void * data = nullptr);
+			int addTab(QWidget * page, const QIcon & icon, const QString & label, const main_window_shared_types::tab_type_e & type, const void * data = nullptr);
 
 			/**
-			 * @brief Function: int insertTab(int index, QWidget * page, const QString & label, main_window_shared_types::tab_type_e & type, const void * data = nullptr)
+			 * @brief Function: int insertTab(const int & index, QWidget * page, const QString & label, const main_window_shared_types::tab_type_e & type, const void * data = nullptr)
 			 *
 			 * \param index: index to insert tab to
 			 * \param page: widget to fill in
@@ -190,10 +190,10 @@ namespace main_window_tab_widget {
 			 *
 			 * add tab to tab widget at index index
 			 */
-			int insertTab(int index, QWidget * page, const QString & label, main_window_shared_types::tab_type_e & type, const void * data = nullptr);
+			int insertTab(const int & index, QWidget * page, const QString & label, const main_window_shared_types::tab_type_e & type, const void * data = nullptr);
 
 			/**
-			 * @brief Function: int insertTab(int index, QWidget * page, const QIcon & icon, const QString & label, main_window_shared_types::tab_type_e & type, const void * data = nullptr)
+			 * @brief Function: int insertTab(const int & index, QWidget * page, const QIcon & icon, const QString & label, const main_window_shared_types::tab_type_e & type, const void * data = nullptr)
 			 *
 			 * \param index: index to insert tab to
 			 * \param page: widget to fill in
@@ -206,29 +206,29 @@ namespace main_window_tab_widget {
 			 *
 			 * add tab to tab widget at index index
 			 */
-			int insertTab(int index, QWidget * page, const QIcon & icon, const QString & label, main_window_shared_types::tab_type_e & type, const void * data = nullptr);
+			int insertTab(const int & index, QWidget * page, const QIcon & icon, const QString & label, const main_window_shared_types::tab_type_e & type, const void * data = nullptr);
 
 			/**
-			 * @brief Function: void removeTab(int index)
+			 * @brief Function: void removeTab(const int & index)
 			 *
 			 * \param index: index of the tab to remove
 			 *
 			 * remove a tab from tab widget
 			 */
-			void removeTab(int index);
+			void removeTab(const int & index);
 
 			/**
-			 * @brief Function: void moveTab(int indexFrom, int indexTo)
+			 * @brief Function: void moveTab(const int & indexFrom, const int & indexTo)
 			 *
 			 * \param indexFrom: index of the tab to move
 			 * \param indexTo: destination of the tab
 			 *
 			 * move a tab from index indexFrom to index indexTo
 			 */
-			void moveTab(int indexFrom, int indexTo);
+			void moveTab(const int & indexFrom, const int & indexTo);
 
 			/**
-			 * @brief Function: QWidget * widget(int index, bool checkError = true)
+			 * @brief Function: QWidget * widget(const int & index, bool checkError = true)
 			 *
 			 * \param index: index of the tab to return the widget of
 			 * \param checkError: error out if widget is null
@@ -237,10 +237,10 @@ namespace main_window_tab_widget {
 			 *
 			 * remove a tab from tab widget
 			 */
-			QWidget * widget(int index, bool checkError = true);
+			QWidget * widget(const int & index, bool checkError = true);
 
 			/**
-			 * @brief Function: main_window_shared_types::tab_type_e getTabType(int index)
+			 * @brief Function: main_window_shared_types::tab_type_e getTabType(const int & index)
 			 *
 			 * \param index: index of the tab to return the type of
 			 *
@@ -248,10 +248,10 @@ namespace main_window_tab_widget {
 			 *
 			 * return a tab type from tab widget
 			 */
-			main_window_shared_types::tab_type_e getTabType(int index);
+			main_window_shared_types::tab_type_e getTabType(const int & index);
 
 			/**
-			 * @brief Function: void changeTabType(int index, main_window_shared_types::tab_type_e newType, const void * data = nullptr)
+			 * @brief Function: void changeTabType(const int & index, const main_window_shared_types::tab_type_e newType, const void * data = nullptr)
 			 *
 			 * \param index: index of the tab to change the type of
 			 * \param newType: new type of tab at index index
@@ -259,7 +259,7 @@ namespace main_window_tab_widget {
 			 *
 			 * change the type of a tab
 			 */
-			void changeTabType(int index, main_window_shared_types::tab_type_e newType, const void * data = nullptr);
+			void changeTabType(const int & index, const main_window_shared_types::tab_type_e newType, const void * data = nullptr);
 
 		protected:
 
@@ -271,13 +271,13 @@ namespace main_window_tab_widget {
 			std::list<main_window_tab_widget::tab_data_s> tabData;
 
 			/**
-			 * @brief Function: void deleteListElement(int index)
+			 * @brief Function: void deleteListElement(const int & index)
 			 *
 			 * \param index: index of the list to remove
 			 *
 			 * remove an element of the list
 			 */
-			void deleteListElement(int index);
+			void deleteListElement(const int & index);
 
 			// Move and copy constructor
 			/**

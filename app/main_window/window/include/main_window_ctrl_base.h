@@ -102,14 +102,14 @@ namespace main_window_ctrl_base {
 			virtual void connectSignals() = 0;
 
 			/**
-			 * @brief Function: void printUserInput(const main_window_shared_types::text_action_e action, QString text = QString::null)
+			 * @brief Function: void printUserInput(const main_window_shared_types::text_action_e action, const QString text = QString::null)
 			 *
 			 * \param action: action to execute - valid values are: SET, APPEND and CLEAR
 			 * \param text: text to append to userText
 			 *
 			 * This function updates the user input label
 			 */
-			void printUserInput(const main_window_shared_types::text_action_e action, QString text = QString::null);
+			void printUserInput(const main_window_shared_types::text_action_e action, const QString text = QString::null);
 
 			/**
 			 * @brief Function: void createTabInfo()
@@ -130,14 +130,14 @@ namespace main_window_ctrl_base {
 			void setAllShortcutEnabledProperty(bool enabled);
 
 			/**
-			 * @brief Function: virtual void setStateAction(main_window_shared_types::state_e windowState, QKeyEvent * event)
+			 * @brief Function: virtual void setStateAction(const main_window_shared_types::state_e & windowState, QKeyEvent * event)
 			 *
 			 * \param windowState: state the window is into.
 			 * \param event: key event.
 			 *
 			 * This function is abstract and it executes a command on a based on user input and the window state
 			 */
-			virtual void setStateAction(main_window_shared_types::state_e windowState, QKeyEvent * event) = 0;
+			virtual void setStateAction(const main_window_shared_types::state_e & windowState, QKeyEvent * event) = 0;
 
 		private:
 			// Move and copy constructor

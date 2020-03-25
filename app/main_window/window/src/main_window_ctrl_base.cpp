@@ -27,7 +27,7 @@ main_window_ctrl_base::MainWindowCtrlBase::~MainWindowCtrlBase() {
 	QINFO_PRINT(global_types::qinfo_level_e::ZERO, mainWindowCtrlBaseOverall,  "Main window control base class destructor");
 }
 
-void main_window_ctrl_base::MainWindowCtrlBase::printUserInput(const main_window_shared_types::text_action_e action, QString text) {
+void main_window_ctrl_base::MainWindowCtrlBase::printUserInput(const main_window_shared_types::text_action_e action, const QString text) {
 
 	QString textPrint(QString::null);
 	if (text == QString::null) {

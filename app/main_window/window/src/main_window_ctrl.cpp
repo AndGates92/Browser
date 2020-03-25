@@ -75,7 +75,7 @@ void main_window_ctrl::MainWindowCtrl::connectSignals() {
 
 }
 
-void main_window_ctrl::MainWindowCtrl::executeCommand(QString command) {
+void main_window_ctrl::MainWindowCtrl::executeCommand(const QString & command) {
 
 	if (command.compare("toggle-menubar") == 0) {
 		this->toggleShowMenubar();
@@ -135,8 +135,8 @@ void main_window_ctrl::MainWindowCtrl::keyPressEvent(QKeyEvent * event) {
 
 	if (event->type() == QEvent::KeyPress) {
 
-		main_window_shared_types::state_e windowState = this->windowCore->getMainWindowState();
-		QString userTypedText = this->windowCore->getUserText();
+		const main_window_shared_types::state_e windowState = this->windowCore->getMainWindowState();
+		const QString userTypedText = this->windowCore->getUserText();
 
 		QINFO_PRINT(global_types::qinfo_level_e::ZERO, mainWindowCtrlUserInput,  "State " << windowState << " key " << keySeq.toString());
 
@@ -161,10 +161,10 @@ void main_window_ctrl::MainWindowCtrl::keyPressEvent(QKeyEvent * event) {
 
 }
 
-void main_window_ctrl::MainWindowCtrl::setStateAction(main_window_shared_types::state_e windowState, QKeyEvent * event) {
+void main_window_ctrl::MainWindowCtrl::setStateAction(const main_window_shared_types::state_e & windowState, QKeyEvent * event) {
 
 	int pressedKey = event->key();
-	QString userTypedText = this->windowCore->getUserText();
+	const QString userTypedText = this->windowCore->getUserText();
 
 	switch (windowState) {
 		case main_window_shared_types::state_e::COMMAND:

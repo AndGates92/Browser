@@ -106,11 +106,11 @@ namespace main_window_ctrl_tab {
 			~MainWindowCtrlTab();
 
 			/**
-			 * @brief Function: void processTabIndex(QString userInputStr)
+			 * @brief Function: void processTabIndex(const QString & userInputStr)
 			 *
 			 * This function converts the string indexStr to an integer and executes desired action on it
 			 */
-			void processTabIndex(QString userInputStr);
+			void processTabIndex(const QString & userInputStr);
 
 			/**
 			 * @brief Function: void keyPressEvent(QKeyEvent * event)
@@ -134,7 +134,7 @@ namespace main_window_ctrl_tab {
 			void keyReleaseEvent(QKeyEvent * event);
 
 			/**
-			 * @brief Function: QString createUrl(QString search)
+			 * @brief Function: QString createUrl(const QString & search)
 			 *
 			 * \param search: string to search
 			 * \return string with URL
@@ -143,16 +143,16 @@ namespace main_window_ctrl_tab {
 			 * If the user writes down a URL himself/herself, it will return it adding, if required, https
 			 * If the user is writing a strign to search, it will be searched in the chosen search engine
 			 */
-			QString createUrl(QString search);
+			QString createUrl(const QString & search);
 
 			/**
-			 * @brief Function: void executeCommand(QString command)
+			 * @brief Function: void executeCommand(const QString & command)
 			 *
 			 * \param command: command to execute.
 			 *
 			 * This function executes a command on a based on user input
 			 */
-			void executeCommand(QString command);
+			void executeCommand(const QString & command);
 
 		public slots:
 
@@ -210,25 +210,25 @@ namespace main_window_ctrl_tab {
 			void setUpCloseTab();
 
 			/**
-			 * @brief Function: void updateInfoSlot(int index)
+			 * @brief Function: void updateInfoSlot(const int & index)
 			 *
 			 * \param index: index of tab either closed or clicked
 			 *
 			 * This function is the slot to update the info label
 			 * Note: argument index is not used
 			 */
-			void updateInfoSlot(int index);
+			void updateInfoSlot(const int & index);
 
 			/**
-			 * @brief Function: void printStrInCurrentTab(const QString & tabTile, const QString & tabContent, const void * data)
+			 * @brief Function: void printStrInCurrentTab(const QString & tabTitle, const QString & tabContent, const void * data)
 			 *
-			 * \param tabTile: tab title
+			 * \param tabTitle: tab title
 			 * \param tabContent: text to write in the widget
 			 * \param data: extra data to be passed through
 			 *
 			 * This function writes the widget with the content of the file read (stored in input argument str)
 			 */
-			void printStrInCurrentTab(const QString & tabTile, const QString & tabContent, const void * data);
+			void printStrInCurrentTab(const QString & tabTitle, const QString & tabContent, const void * data);
 
 		private:
 
@@ -291,73 +291,73 @@ namespace main_window_ctrl_tab {
 			void connectSignals();
 
 			/**
-			 * @brief Function: void executeActionOnTab(int index = main_window_ctrl_tab::emptyUserInput)
+			 * @brief Function: void executeActionOnTab(const int & index = main_window_ctrl_tab::emptyUserInput)
 			 *
 			 * \param index: index of tab to execute action on
 			 *
 			 * This function executes action on a based on user input
 			 */
-			void executeActionOnTab(int index = main_window_ctrl_tab::emptyUserInput);
+			void executeActionOnTab(const int & index = main_window_ctrl_tab::emptyUserInput);
 
 			/**
-			 * @brief Function: void executeActionOnOffset(int offset)
+			 * @brief Function: void executeActionOnOffset(const int & offset)
 			 *
 			 * \param offset: offset of tab to execute action on
 			 *
 			 * This function executes action on a based on user input
 			 */
-			void executeActionOnOffset(int offset);
+			void executeActionOnOffset(const int & offset);
 
 			/**
-			 * @brief Function: void executeTabAction(int userInput = main_window_ctrl_tab::emptyUserInput)
+			 * @brief Function: void executeTabAction(const int & userInput = main_window_ctrl_tab::emptyUserInput)
 			 *
 			 * \param userInput: user input to execute action. If not specified it is default to main_window_ctrl_tab::emptyUserInput
 			 *
 			 * This function executes action on a based on user input
 			 */
-			void executeTabAction(int userInput = main_window_ctrl_tab::emptyUserInput);
+			void executeTabAction(const int & userInput = main_window_ctrl_tab::emptyUserInput);
 
 			/**
-			 * @brief Function: void convertToAbsTabIndex(int offset = main_window_ctrl_tab::emptyUserInput, global_types::sign_e sign = global_types::sign_e::NOSIGN)
+			 * @brief Function: void convertToAbsTabIndex(const int & offset, const global_types::sign_e & sign)
 			 *
 			 * \param offset: relatinve tab index
 			 * \param sign: direction of tab to apply action on: global_types::sign_e::MINUS for left move and global_types::sign_e::PLUS for right move
 			 *
 			 * This function moves to a different tab as specified by the user
 			 */
-			void convertToAbsTabIndex(int offset = main_window_ctrl_tab::emptyUserInput, global_types::sign_e sign = global_types::sign_e::NOSIGN);
+			void convertToAbsTabIndex(const int & offset, const global_types::sign_e & sign);
 
 			/**
-			 * @brief Function: void updateContent(int index)
+			 * @brief Function: void updateContent(const int & index)
 			 *
 			 * \param index: index of tab where the content has to be updated
 			 *
 			 * This function updates the content label
 			 */
-			void updateContent(int index);
+			void updateContent(const int & index);
 
 			/**
-			 * @brief Function: void addNewTabAndSearch(QString search)
+			 * @brief Function: void addNewTabAndSearch(const QString & search)
 			 *
 			 * \param search: string to search
 			 *
 			 * This function adds a new tab to the tab widget and searches the user string
 			 */
-			void addNewTabAndSearch(QString search);
+			void addNewTabAndSearch(const QString & search);
 
 			/**
-			 * @brief Function: void setStateAction(main_window_shared_types::state_e windowState, QKeyEvent * event)
+			 * @brief Function: void setStateAction(const main_window_shared_types::state_e & windowState, QKeyEvent * event)
 			 *
 			 * \param windowState: state the window is into.
 			 * \param event: key event.
 			 *
 			 * This function executes a command on a based on user input and the state the window is in
 			 */
-			void setStateAction(main_window_shared_types::state_e windowState, QKeyEvent * event);
+			void setStateAction(const main_window_shared_types::state_e & windowState, QKeyEvent * event);
 
 			// ================================ START ACTIONS ========================================//
 			/**
-			 * @brief Function: int addNewTab(QString search, main_window_shared_types::tab_type_e type, , const void * data = nullptr)
+			 * @brief Function: int addNewTab(const QString & search, const main_window_shared_types::tab_type_e & type, , const void * data = nullptr)
 			 *
 			 * \param search: string to search
 			 * \param type: type of tab to be added
@@ -367,81 +367,81 @@ namespace main_window_ctrl_tab {
 			 *
 			 * This function adds a new tab to the tab widget
 			 */
-			int addNewTab(QString search, main_window_shared_types::tab_type_e type, const void * data = nullptr);
+			int addNewTab(const QString & search, const main_window_shared_types::tab_type_e & type, const void * data = nullptr);
 
 			/**
-			 * @brief Function: void newSearchTab(int index, QString search)
+			 * @brief Function: void newSearchTab(const int & index, const QString & search)
 			 *
 			 * \param index: tab index to be searched
 			 * \param search: string to search
 			 *
 			 * This function search on the tab at index index
 			 */
-			void newSearchTab(int index, QString search);
+			void newSearchTab(const int & index, const QString & search);
 
 			/**
-			 * @brief Function: void searchCurrentTab(QString search)
+			 * @brief Function: void searchCurrentTab(const QString & search)
 			 *
 			 * \param search: string to search
 			 *
 			 * This function search on the current tab
 			 */
-			void searchCurrentTab(QString search);
+			void searchCurrentTab(const QString & search);
 
 			/**
-			 * @brief Function: void refreshUrl(int tabIndex)
+			 * @brief Function: void refreshUrl(const int & tabIndex)
 			 *
 			 * \param tabIndex: tab index to refresh
 			 *
 			 * This function refreshes a tab as specified by the user
 			 */
-			void refreshUrl(int tabIndex);
+			void refreshUrl(const int & tabIndex);
 
 			/**
-			 * @brief Function: void closeTab(int index)
+			 * @brief Function: void closeTab(const int & index)
 			 *
 			 * \param index: index of tab to close
 			 *
 			 * This function is a signal to close a tab
 			 */
-			void closeTab(int index);
+			void closeTab(const int & index);
 
 			/**
-			 * @brief Function: void moveTab(int tabIndex)
+			 * @brief Function: void moveTab(const int & tabIndex)
 			 *
 			 * \param tabIndex: index to move the tab to
 			 *
 			 * This function moves the current tab to a different tab as specified by the user
 			 */
-			void moveTab(int tabIndex);
+			void moveTab(const int & tabIndex);
 
 			/**
-			 * @brief Function: void moveCursor(int tabIndex)
+			 * @brief Function: void moveCursor(const int & tabIndex)
 			 *
 			 * \param tabIndex: index to move the cursor to
 			 *
 			 * This function moves the cursor to a different tab as specified by the user
 			 */
-			void moveCursor(int tabIndex);
+			void moveCursor(const int & tabIndex);
 			// ================================ END ACTIONS ========================================//
 
 			/**
-			 * @brief Function: void disconnectProgressBar(int tabIndex)
+			 * @brief Function: void disconnectProgressBar(const int & tabIndex)
 			 *
 			 * \param tabIndex: index of the tab to disconnect signals from
 			 *
 			 * This function disconnects progress bar signal from a tab
 			 */
-			void disconnectProgressBar(int tabIndex);
+			void disconnectProgressBar(const int & tabIndex);
 
 			/**
-			 * @brief Function: void connectProgressBar(int tabIndex)
+			 * @brief Function: void connectProgressBar(const int & tabIndex)
 			 *
 			 * \param tabIndex: index of the tab to connect signals from
 			 *
 			 * This function connects progress bar signal from a tab
 			 */
-			void connectProgressBar(int tabIndex);
+			void connectProgressBar(const int & tabIndex);
 
 			// Move and copy constructor
 			/**
