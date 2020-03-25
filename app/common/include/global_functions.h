@@ -86,8 +86,16 @@ void global_functions::moveListElements(std::list<type> & l, const int & from, c
 	std::advance(fromIter, from);
 
 	auto toAdjustedIter = l.begin();
-	const int offset = (from < to) ? 1 : 0;
-	const int toAdjusted = to + offset;
+	// If from < to, we want to move the tab after index to meaning that we want to add it after index to, i.e. before the tab after index to
+	// Assume tabs: a b c
+	// Scenarion 1 (from < to):
+	// Move a at the position of c -> copy a after c (i.e. before index of c + 1) leading to the following situation a b c aCopy and then delete a
+	// Result: b c aCopy
+	// Scenarion 2 (from > to):
+	// Move c at the position of a -> copy c after a (i.e. before index of a + 1) leading to the following scenario cCopy a b c and then delete c
+	// Result: cCopy a b
+	const int adjustment = (from < to) ? 1 : 0;
+	const int toAdjusted = to + adjustment;
 	QEXCEPTION_ACTION_COND((lSize < toAdjusted), throw,  "Trying to move element at position " << from << " to position " << to << " of a list that has " << lSize << " elements");
 	if (toAdjusted == lSize) {
 		toAdjustedIter = l.end();
