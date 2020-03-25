@@ -79,36 +79,37 @@ QString global_functions::qEnumToQString(const qenum value, const bool printEnum
 template<typename type>
 void global_functions::moveListElements(std::list<type> & l, const int & from, const int & to) {
 
-	const int lSize = l.size();
+	if (from != to) {
+		const int lSize = l.size();
 
-	auto fromIter = l.begin();
-	QEXCEPTION_ACTION_COND((lSize < from), throw,  "Trying to access element at position " << from << " of a list that has " << lSize << " elements");
-	std::advance(fromIter, from);
+		auto fromIter = l.begin();
+		QEXCEPTION_ACTION_COND((lSize < from), throw,  "Trying to access element at position " << from << " of a list that has " << lSize << " elements");
+		std::advance(fromIter, from);
 
-	auto toAdjustedIter = l.begin();
-	// If from < to, we want to move the tab after index to meaning that we want to add it after index to, i.e. before the tab after index to
-	// Assume tabs: a b c
-	// Scenarion 1 (from < to):
-	// Move a at the position of c -> copy a after c (i.e. before index of c + 1) leading to the following situation a b c aCopy and then delete a
-	// Result: b c aCopy
-	// Scenarion 2 (from > to):
-	// Move c at the position of a -> copy c after a (i.e. before index of a + 1) leading to the following scenario cCopy a b c and then delete c
-	// Result: cCopy a b
-	const int adjustment = (from < to) ? 1 : 0;
-	const int toAdjusted = to + adjustment;
-	QEXCEPTION_ACTION_COND((lSize < toAdjusted), throw,  "Trying to move element at position " << from << " to position " << to << " of a list that has " << lSize << " elements");
-	if (toAdjusted == lSize) {
-		toAdjustedIter = l.end();
-	} else {
-		std::advance(toAdjustedIter, toAdjusted);
+		auto toAdjustedIter = l.begin();
+		// If from < to, we want to move the tab after index to meaning that we want to add it after index to, i.e. before the tab after index to
+		// Assume tabs: a b c
+		// Scenarion 1 (from < to):
+		// Move a at the position of c -> copy a after c (i.e. before index of c + 1) leading to the following situation a b c aCopy and then delete a
+		// Result: b c aCopy
+		// Scenarion 2 (from > to):
+		// Move c at the position of a -> copy c after a (i.e. before index of a + 1) leading to the following scenario cCopy a b c and then delete c
+		// Result: cCopy a b
+		const int adjustment = (from < to) ? 1 : 0;
+		const int toAdjusted = to + adjustment;
+		QEXCEPTION_ACTION_COND((lSize < toAdjusted), throw,  "Trying to move element at position " << from << " to position " << to << " of a list that has " << lSize << " elements");
+		if (toAdjusted == lSize) {
+			toAdjustedIter = l.end();
+		} else {
+			std::advance(toAdjustedIter, toAdjusted);
+		}
+
+		// copy element at index from at index to
+		l.emplace(toAdjustedIter, *fromIter);
+
+		// Delete element at position from as it has already copied at position to
+		l.erase(fromIter);
 	}
-
-	// insert element at index from at index to using iterator range (iter, firstEl, lastEl)
-	// firstEl is always included whereas the element pointer by lastEl is not
-	l.emplace(toAdjustedIter, *fromIter);
-
-	// Delete element at position from as it has already copied at position to
-	l.erase(fromIter);
 
 }
 
