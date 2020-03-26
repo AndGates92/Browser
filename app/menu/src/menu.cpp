@@ -10,7 +10,7 @@
 // Required by qInfo
 #include <qt5/QtCore/QtDebug>
 
-#include "global_macros.h"
+#include "logging_macros.h"
 #include "global_types.h"
 
 #include "menu.h"

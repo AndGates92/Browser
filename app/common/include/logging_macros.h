@@ -1,17 +1,17 @@
-#ifndef GLOBAL_MACROS_H
-#define GLOBAL_MACROS_H
+#ifndef LOGGING_MACROS_H
+#define LOGGING_MACROS_H
 /**
  * @copyright
- * @file global_macros.h
+ * @file logging_macros.h
  * @author Andrea Gianarda
  * @date 17th of September 2019
- * @brief Global Macros file
+ * @brief Logging Macros file
 */
 
 #include "global_types.h"
 
-/** @defgroup GlobalMacrosGroup Global Macros Doxygen Group
- *  Global Macros
+/** @defgroup LoggingMacrosGroup Logging Macros Doxygen Group
+ *  Logging Macros
  *  @{
  */
 
@@ -103,6 +103,6 @@
 #define QFATAL_PRINT(MSG) \
 	qFatal(MSG);
 
-/** @} */ // End of GlobalMacrosGroup group
+/** @} */ // End of LoggingMacrosGroup group
 
-#endif // GLOBAL_MACROS_H
+#endif // LOGGING_MACROS_H

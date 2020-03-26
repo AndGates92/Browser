@@ -14,7 +14,7 @@
 
 #include <qt5/QtCore/QObject>
 
-#include "global_macros.h"
+#include "logging_macros.h"
 #include "global_types.h"
 #include "open_button_window.h"
 #include "menu.h"

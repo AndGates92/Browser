@@ -18,7 +18,7 @@
 #include <qt5/QtWidgets/QGridLayout>
 #include <qt5/QtWidgets/QFileDialog>
 
-#include "global_macros.h"
+#include "logging_macros.h"
 #include "global_types.h"
 #include "open_button_window.h"
 #include "exception_macros.h"

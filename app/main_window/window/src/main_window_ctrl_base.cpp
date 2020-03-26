@@ -14,7 +14,7 @@
 #include "main_window_shared_types.h"
 #include "key_sequence.h"
 #include "global_types.h"
-#include "global_macros.h"
+#include "logging_macros.h"
 
 Q_LOGGING_CATEGORY(mainWindowCtrlBaseOverall, "mainWindowCtrlBase.overall", MSG_TYPE_LEVEL)
 Q_LOGGING_CATEGORY(mainWindowCtrlBaseUserInput, "mainWindowCtrlBase.userInput", MSG_TYPE_LEVEL)

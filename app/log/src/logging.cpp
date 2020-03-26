@@ -15,7 +15,7 @@
 #include <qt5/QtCore/QLoggingCategory>
 
 #include "exception_macros.h"
-#include "global_macros.h"
+#include "logging_macros.h"
 #include "logging.h"
 
 /**

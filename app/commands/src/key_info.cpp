@@ -10,7 +10,7 @@
 #include <qt5/QtCore/QLoggingCategory>
 
 #include "global_types.h"
-#include "global_macros.h"
+#include "logging_macros.h"
 #include "key_info.h"
 
 // Categories

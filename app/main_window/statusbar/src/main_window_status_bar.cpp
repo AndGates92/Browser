@@ -11,7 +11,7 @@
 #include <qt5/QtWidgets/QHBoxLayout>
 
 #include "main_window_status_bar.h"
-#include "global_macros.h"
+#include "logging_macros.h"
 #include "global_types.h"
 
 // Categories

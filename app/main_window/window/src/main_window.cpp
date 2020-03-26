@@ -23,7 +23,7 @@
 #include "main_window_status_bar.h"
 #include "main_window_tab_widget.h"
 #include "command_menu.h"
-#include "global_macros.h"
+#include "logging_macros.h"
 #include "global_types.h"
 #include "main_window.h"
 

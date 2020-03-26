@@ -6,7 +6,7 @@
  * @brief Command menu model functions
  */
 
-#include "global_macros.h"
+#include "logging_macros.h"
 #include "command_menu_model.h"
 
 // Categories

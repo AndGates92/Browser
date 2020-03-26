@@ -17,7 +17,7 @@
 #include <qt5/QtWidgets/QTabWidget>
 #include <qt5/QtGui/QIcon>
 
-#include "global_macros.h"
+#include "logging_macros.h"
 #include "global_types.h"
 #include "tab_bar.h"
 

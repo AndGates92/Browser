@@ -9,7 +9,7 @@
 #include <qt5/QtGui/QPainter>
 #include <qt5/QtWidgets/QScrollBar>
 
-#include "global_macros.h"
+#include "logging_macros.h"
 #include "command_menu.h"
 
 // Categories

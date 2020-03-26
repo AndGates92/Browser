@@ -12,7 +12,7 @@
 
 #include <qt5/QtCore/QObject>
 
-#include "global_macros.h"
+#include "logging_macros.h"
 #include "global_types.h"
 #include "file_menu.h"
 

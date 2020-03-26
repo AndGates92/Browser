@@ -12,7 +12,7 @@
 
 #include "main_window_menu_bar.h"
 #include "global_types.h"
-#include "global_macros.h"
+#include "logging_macros.h"
 
 Q_LOGGING_CATEGORY(mainWindowMenuBarOverall, "menuBar.overall", MSG_TYPE_LEVEL)
 

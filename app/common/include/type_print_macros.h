@@ -2,7 +2,7 @@
 #define TYPE_PRINT_MACROS_H
 /**
  * @copyright
- * @file global_macros.h
+ * @file logging_macros.h
  * @author Andrea Gianarda
  * @date 17th of September 2019
  * @brief Type Print Macros file

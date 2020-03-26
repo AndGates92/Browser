@@ -15,7 +15,7 @@
 #include <qt5/QtCore/QVariant>
 #include <qt5/QtCore/QLoggingCategory>
 
-#include "global_macros.h"
+#include "logging_macros.h"
 #include "exception_macros.h"
 
 /** @defgroup GlobalFunctionsGroup Global Functions Doxygen Group

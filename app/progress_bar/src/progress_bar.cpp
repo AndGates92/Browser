@@ -11,7 +11,7 @@
 
 #include "progress_bar.h"
 #include "exception_macros.h"
-#include "global_macros.h"
+#include "logging_macros.h"
 #include "global_types.h"
 
 // Categories
@@ -61,11 +61,11 @@ void progress_bar::ProgressBar::endLoading(const bool & success) {
 	this->setVisible(false);
 }
 
-QSize progress_bar::ProgressBar::sizeHint() {
-	return this->minimumSizeHint();
+QSize progress_bar::ProgressBar::minimumSizeHint() {
+	return this->sizeHint();
 }
 
-QSize progress_bar::ProgressBar::minimumSizeHint() {
+QSize progress_bar::ProgressBar::sizeHint() {
 	const QWidget * parent = this->parentWidget();
 	int width;
 	if (parent == Q_NULLPTR) {

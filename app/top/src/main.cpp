@@ -11,7 +11,7 @@
 #include <qt5/QtCore/QtMessageHandler>
 #include <qt5/QtCore/QUnhandledException>
 
-#include "global_macros.h"
+#include "logging_macros.h"
 #include "browser_exception.h"
 #include "logging.h"
 #include "graphics.h"

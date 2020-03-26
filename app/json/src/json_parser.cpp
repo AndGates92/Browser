@@ -10,7 +10,7 @@
 #include <qt5/QtCore/QJsonArray>
 
 #include "json_parser.h"
-#include "global_macros.h"
+#include "logging_macros.h"
 #include "global_types.h"
 #include "exception_macros.h"
 
