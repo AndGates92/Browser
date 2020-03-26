@@ -122,7 +122,7 @@ namespace json_wrapper {
 			JsonWrapper & operator=(json_wrapper::JsonWrapper && rhs);
 
 			/**
-			 * @brief Function: ~JsonWrapper()
+			 * @brief Function: virtual ~JsonWrapper()
 			 *
 			 * JSON wrapper destructor
 			 */

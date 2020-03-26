@@ -78,7 +78,7 @@ namespace main_window_base {
 			MainWindowBase & operator=(main_window_base::MainWindowBase && rhs);
 
 			/**
-			 * @brief Function: ~MainWindowBase()
+			 * @brief Function: virtual ~MainWindowBase()
 			 *
 			 * Main window base class destructor
 			 */

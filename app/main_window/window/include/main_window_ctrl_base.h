@@ -46,7 +46,7 @@ namespace main_window_ctrl_base {
 			explicit MainWindowCtrlBase(QSharedPointer<main_window_core::MainWindowCore> core, QWidget * parent = Q_NULLPTR, QString jsonFileName = QString::null);
 
 			/**
-			 * @brief Function: ~MainWindowCtrlBase()
+			 * @brief Function: virtual ~MainWindowCtrlBase()
 			 *
 			 * Main window control base class destructor
 			 */

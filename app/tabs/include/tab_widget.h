@@ -67,7 +67,7 @@ namespace tab_widget {
 			explicit TabWidget(QWidget * parent = Q_NULLPTR);
 
 			/**
-			 * @brief Function: ~TabWidget()
+			 * @brief Function: virtual ~TabWidget()
 			 *
 			 * Tab widget destructor
 			 */

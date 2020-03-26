@@ -37,7 +37,7 @@ namespace menu_bar {
 			explicit MenuBar(QWidget * window = Q_NULLPTR);
 
 			/**
-			 * @brief Function: ~MenuBar()
+			 * @brief Function: virtual ~MenuBar()
 			 *
 			 * Destructor of menu bar
 			 */
