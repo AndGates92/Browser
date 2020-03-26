@@ -182,13 +182,13 @@ namespace main_window_status_bar {
 			void fillStatusBar();
 
 			/**
-			 * @brief Function: QSize minimumSizeHint() const
+			 * @brief Function: QSize minimumSizeHint() const override
 			 *
 			 * \return return minimum size of the widget
 			 *
 			 * Compute minimum size of the widget
 			 */
-			QSize minimumSizeHint() const;
+			QSize minimumSizeHint() const override;
 
 			// Move and copy constructor
 			/**

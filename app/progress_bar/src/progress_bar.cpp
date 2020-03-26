@@ -61,11 +61,11 @@ void progress_bar::ProgressBar::endLoading(const bool & success) {
 	this->setVisible(false);
 }
 
-QSize progress_bar::ProgressBar::minimumSizeHint() {
-	return this->sizeHint();
+QSize progress_bar::ProgressBar::sizeHint() {
+	return this->minimumSizeHint();
 }
 
-QSize progress_bar::ProgressBar::sizeHint() {
+QSize progress_bar::ProgressBar::minimumSizeHint() {
 	const QWidget * parent = this->parentWidget();
 	int width;
 	if (parent == Q_NULLPTR) {
