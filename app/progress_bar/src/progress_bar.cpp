@@ -42,7 +42,7 @@ void progress_bar::ProgressBar::startLoading() {
 	this->setValue(0);
 }
 
-void progress_bar::ProgressBar::setValue(int value) {
+void progress_bar::ProgressBar::setValue(const int & value) {
 	this->setVisible(true);
 	QProgressBar::setValue(value);
 
@@ -53,7 +53,7 @@ void progress_bar::ProgressBar::setValue(int value) {
 	}
 }
 
-void progress_bar::ProgressBar::endLoading(bool success) {
+void progress_bar::ProgressBar::endLoading(const bool & success) {
 
 	QEXCEPTION_ACTION_COND((!success), throw,  "Operation didn't complete succesfully");
 

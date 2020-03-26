@@ -70,7 +70,7 @@ namespace tab_bar {
 			 *
 			 * Set the tab bar width
 			 */
-			void setWidth(int newWidth);
+			void setWidth(const int & newWidth);
 
 		protected:
 			/**

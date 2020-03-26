@@ -90,7 +90,7 @@ namespace json_parser {
 			~JsonParser();
 
 			/**
-			 * @brief Function: QMap<QString, QString> findKeyValue(QString key)
+			 * @brief Function: QMap<QString, QString> findKeyValue(const QString & key) const
 			 *
 			 * \param key: key to look for in the JSON file
 			 *
@@ -98,14 +98,14 @@ namespace json_parser {
 			 *
 			 * Finds all values matching the key in the JSON file
 			 */
-			QMap<QString, QString> findKeyValue(QString key);
+			QMap<QString, QString> findKeyValue(const QString & key) const;
 
 		protected:
 
 		private:
 
 			/**
-			 * @brief Function: QString searchJson(const QJsonValue & content, QString key) const
+			 * @brief Function: QString searchJson(const QJsonValue & content, const QString & key) const
 			 *
 			 * \param content: content to search for the key
 			 * \param key: key to search for
@@ -114,7 +114,7 @@ namespace json_parser {
 			 *
 			 * This function iterates over a JSON value and looks for a key
 			 */
-			QString searchJson(const QJsonValue & content, QString key) const;
+			QString searchJson(const QJsonValue & content, const QString & key) const;
 
 			/**
 			 * @brief Function: QString searchJsonObject(const QJsonObject & object, QString key) const
@@ -126,7 +126,7 @@ namespace json_parser {
 			 *
 			 * This function searches a key in the current JSON object or keep looking for it
 			 */
-			QString searchJsonObject(const QJsonObject & content, QString key) const;
+			QString searchJsonObject(const QJsonObject & content, const QString & key) const;
 	};
 
 }

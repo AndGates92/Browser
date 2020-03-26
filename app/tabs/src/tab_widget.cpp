@@ -84,7 +84,7 @@ int tab_widget::TabWidget::addTab(QWidget * page, const QIcon & icon, const QStr
 	return tabIndex;
 }
 
-int tab_widget::TabWidget::insertTab(int index, QWidget * page, const QString & label) {
+int tab_widget::TabWidget::insertTab(const int & index, QWidget * page, const QString & label) {
 	QINFO_PRINT(global_types::qinfo_level_e::ZERO, tabWidgetTabs,  "Insert tab with label " << label << " at position " << index);
 
 	int tabIndex = QTabWidget::insertTab(index, page, label);
@@ -93,7 +93,7 @@ int tab_widget::TabWidget::insertTab(int index, QWidget * page, const QString & 
 	return tabIndex;
 }
 
-int tab_widget::TabWidget::insertTab(int index, QWidget * page, const QIcon & icon, const QString & label) {
+int tab_widget::TabWidget::insertTab(const int & index, QWidget * page, const QIcon & icon, const QString & label) {
 	QINFO_PRINT(global_types::qinfo_level_e::ZERO, tabWidgetTabs,  "Insert tab with label " << label << " at position " << index);
 
 	int tabIndex = QTabWidget::insertTab(index, page, icon, label);
@@ -102,7 +102,7 @@ int tab_widget::TabWidget::insertTab(int index, QWidget * page, const QIcon & ic
 	return tabIndex;
 }
 
-void tab_widget::TabWidget::removeTab(int index) {
+void tab_widget::TabWidget::removeTab(const int & index) {
 	QINFO_PRINT(global_types::qinfo_level_e::ZERO, tabWidgetTabs,  "Close tab " << index);
 	QTabWidget::removeTab(index);
 	this->setVisibleAttribute();
@@ -120,7 +120,7 @@ void tab_widget::TabWidget::setVisibleAttribute() {
 	this->setVisible(visibleFlag);
 }
 
-QWidget * tab_widget::TabWidget::widget(int index, bool checkError) {
+QWidget * tab_widget::TabWidget::widget(const int & index, const bool & checkError) {
 	QWidget * requestedWidget = QTabWidget::widget(index);
 
 	QEXCEPTION_ACTION_COND(((checkError == true) && (requestedWidget == nullptr)), throw,  "Unable to get tab page at index " << index);

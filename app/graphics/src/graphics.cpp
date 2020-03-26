@@ -21,7 +21,7 @@
 // Categories
 Q_LOGGING_CATEGORY(graphicsOverall, "graphics.overall", MSG_TYPE_LEVEL)
 
-void graphics::init_graphics(int argc, char** argv) {
+void graphics::init_graphics(int & argc, char** argv) {
 	QApplication app(argc, argv);
 
 	QINFO_PRINT(global_types::qinfo_level_e::ZERO, graphicsOverall,  "Create Application");

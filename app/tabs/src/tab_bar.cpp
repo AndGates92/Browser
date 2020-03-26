@@ -54,7 +54,7 @@ QSize tab_bar::TabBar::tabSizeHint(int index) const {
 	return tabSize;
 }
 
-void tab_bar::TabBar::setWidth(int newWidth) {
+void tab_bar::TabBar::setWidth(const int & newWidth) {
 	int tabHeight = tab_bar::height;
 	QINFO_PRINT(global_types::qinfo_level_e::ZERO, tabBarSize,  "Tab bar size width: " << newWidth << " height " << tabHeight);
 	this->resize(QSize(newWidth, tabHeight));

@@ -56,13 +56,13 @@ namespace menu {
 		public slots:
 
 			/**
-			 * @brief Function: void setEnabledProperty(bool enabled)
+			 * @brief Function: void setEnabledProperty(const bool & enabled)
 			 *
 			 * \param enabled: value of enabled property
 			 *
 			 * This function sets the enabled property of the menu
 			 */
-			void setEnabledProperty(bool enabled);
+			void setEnabledProperty(const bool & enabled);
 
 		protected:
 

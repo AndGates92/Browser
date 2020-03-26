@@ -99,14 +99,14 @@ namespace elided_label {
 			QPoint origin;
 
 			/**
-			 * @brief Function: void updateElidedText(int width)
+			 * @brief Function: void updateElidedText(const int & width)
 			 *
 			 * \param width: width of the elided text
 			 *
 			 * This function sets elided text variable
 			 * text label will be QString::null if elision is not enabled
 			 */
-			void updateElidedText(int width);
+			void updateElidedText(const int & width);
 
 			/**
 			 * @brief Function: void paintEvent(QPaintEvent * event)

@@ -38,7 +38,7 @@ void elided_label::ElidedLabel::setText(const QString & text) {
 
 }
 
-void elided_label::ElidedLabel::updateElidedText(const int width) {
+void elided_label::ElidedLabel::updateElidedText(const int & width) {
 	// If no elision or text is null, then set elision text to null
 	if ((this->elisionMode == Qt::ElideNone) || (this->text() == QString::null)) {
 		QINFO_PRINT(global_types::qinfo_level_e::ZERO, elidedLabelElision,  "Elided text is set to null");

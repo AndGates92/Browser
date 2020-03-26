@@ -27,7 +27,7 @@ namespace graphics {
 	 *
 	 * This function initialize graphics
 	 */
-	void init_graphics(int argc, char** argv);
+	void init_graphics(int & argc, char** argv);
 
 }
 /** @} */ // End of GraphicsGroup group

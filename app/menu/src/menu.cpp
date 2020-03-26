@@ -62,6 +62,6 @@ void menu::Menu::expand() {
 	}
 }
 
-void menu::Menu::setEnabledProperty(bool enabled) {
+void menu::Menu::setEnabledProperty(const bool & enabled) {
 	this->expandMenu->setEnabled(enabled);
 }

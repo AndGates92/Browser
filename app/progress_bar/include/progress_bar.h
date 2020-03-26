@@ -86,22 +86,22 @@ namespace progress_bar {
 			void startLoading();
 
 			/**
-			 * @brief Function: void setValue(int value)
+			 * @brief Function: void setValue(const int & value)
 			 *
 			 * \param value: value to set the bar to
 			 *
 			 * This function executes actions to set teh progress bar to the desired value
 			 */
-			void setValue(int value);
+			void setValue(const int & value);
 
 			/**
-			 * @brief Function: void endLoading(bool success)
+			 * @brief Function: void endLoading(const bool & success)
 			 *
 			 * \param success: loading success flag
 			 *
 			 * This function executes actions to perform at the end of a loading operation
 			 */
-			void endLoading(bool success);
+			void endLoading(const bool & success);
 
 		protected:
 

@@ -99,7 +99,7 @@ namespace tab_widget {
 			int addTab(QWidget * page, const QIcon & icon, const QString & label);
 
 			/**
-			 * @brief Function: int insertTab(int index, QWidget * page, const QString & label)
+			 * @brief Function: int insertTab(const int & index, QWidget * page, const QString & label)
 			 *
 			 * \param index: index to insert tab to
 			 * \param page: widget to fill in
@@ -109,10 +109,10 @@ namespace tab_widget {
 			 *
 			 * add tab to tab widget at index index
 			 */
-			int insertTab(int index, QWidget * page, const QString & label);
+			int insertTab(const int & index, QWidget * page, const QString & label);
 
 			/**
-			 * @brief Function: int insertTab(int index, QWidget * page, const QIcon & icon, const QString & label)
+			 * @brief Function: int insertTab(const int & index, QWidget * page, const QIcon & icon, const QString & label)
 			 *
 			 * \param index: index to insert tab to
 			 * \param page: widget to fill in
@@ -123,19 +123,19 @@ namespace tab_widget {
 			 *
 			 * add tab to tab widget at index index
 			 */
-			int insertTab(int index, QWidget * page, const QIcon & icon, const QString & label);
+			int insertTab(const int & index, QWidget * page, const QIcon & icon, const QString & label);
 
 			/**
-			 * @brief Function: void removeTab(int index)
+			 * @brief Function: void removeTab(const int & index)
 			 *
 			 * \param index: index of the tab to remove
 			 *
 			 * remove a tab from tab widget
 			 */
-			void removeTab(int index);
+			void removeTab(const int & index);
 
 			/**
-			 * @brief Function: QWidget * widget(int index, bool checkError = true)
+			 * @brief Function: QWidget * widget(const int & index, const bool & checkError = true)
 			 *
 			 * \param index: index of the tab to return the widget of
 			 * \param checkError: error out if widget is null
@@ -144,7 +144,7 @@ namespace tab_widget {
 			 *
 			 * returns a tab from tab widget
 			 */
-			QWidget * widget(int index, bool checkError = true);
+			QWidget * widget(const int & index, const bool & checkError = true);
 
 		protected:
 			/**
