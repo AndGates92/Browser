@@ -36,7 +36,7 @@ namespace file_menu {
 	 * @brief FileMenu class
 	 *
 	 */
-	class FileMenu : public menu::Menu {
+	class FileMenu final : public menu::Menu {
 
 		Q_OBJECT
 

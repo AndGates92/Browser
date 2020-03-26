@@ -90,7 +90,7 @@ namespace command_menu {
 	 * @brief CommandMenu class
 	 *
 	 */
-	class CommandMenu : public QAbstractItemView {
+	class CommandMenu final : public QAbstractItemView {
 
 		Q_OBJECT
 

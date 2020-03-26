@@ -30,7 +30,7 @@ namespace json_parser {
 	 * @brief JsonParser class
 	 *
 	 */
-	class JsonParser: public json_wrapper::JsonWrapper {
+	class JsonParser final : public json_wrapper::JsonWrapper {
 
 		public:
 

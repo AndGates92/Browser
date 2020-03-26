@@ -34,7 +34,7 @@ namespace browser_exception {
 	 * @brief BrowserException class
 	 *
 	 */
-	class BrowserException : public QException {
+	class BrowserException final : public QException {
 
 		public:
 

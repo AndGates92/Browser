@@ -53,7 +53,7 @@ namespace main_window_ctrl {
 	 * @brief MainWindowCtrl class
 	 *
 	 */
-	class MainWindowCtrl : public main_window_ctrl_base::MainWindowCtrlBase {
+	class MainWindowCtrl final : public main_window_ctrl_base::MainWindowCtrlBase {
 
 		Q_OBJECT
 

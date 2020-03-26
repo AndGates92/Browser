@@ -72,7 +72,7 @@ namespace main_window_tab_widget {
 	 * @brief MainWindowTabWidget class
 	 *
 	 */
-	class MainWindowTabWidget : public tab_widget::TabWidget {
+	class MainWindowTabWidget final : public tab_widget::TabWidget {
 
 		public:
 

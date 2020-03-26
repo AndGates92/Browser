@@ -44,7 +44,7 @@ namespace elided_label {
 	 * @brief Label class
 	 *
 	 */
-	class ElidedLabel : public QLabel {
+	class ElidedLabel final : public QLabel {
 
 		public:
 			/**

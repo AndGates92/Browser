@@ -29,7 +29,7 @@ namespace main_window_wrapper {
 	 * @brief MainWindowWrapper class
 	 *
 	 */
-	class MainWindowWrapper {
+	class MainWindowWrapper final {
 
 		public:
 			/**

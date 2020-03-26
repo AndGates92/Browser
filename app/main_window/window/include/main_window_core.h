@@ -31,7 +31,7 @@ namespace main_window_core {
 	 * @brief MainWindowCore class
 	 *
 	 */
-	class MainWindowCore {
+	class MainWindowCore final {
 
 		public:
 

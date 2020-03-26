@@ -63,7 +63,7 @@ namespace main_window {
 	 * @brief MainWindow class
 	 *
 	 */
-	class MainWindow : public QMainWindow, public main_window_base::MainWindowBase {
+	class MainWindow final : public QMainWindow, public main_window_base::MainWindowBase {
 
 		Q_OBJECT
 

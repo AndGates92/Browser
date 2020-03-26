@@ -71,7 +71,7 @@ namespace main_window_status_bar {
 	 * @brief MainWindowStatusBar class
 	 *
 	 */
-	class MainWindowStatusBar : public QWidget {
+	class MainWindowStatusBar final : public QWidget {
 
 		public:
 			/**

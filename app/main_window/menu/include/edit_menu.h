@@ -33,7 +33,7 @@ namespace edit_menu {
 	 * @brief EditMenu class
 	 *
 	 */
-	class EditMenu : public menu::Menu {
+	class EditMenu final : public menu::Menu {
 
 		Q_OBJECT
 

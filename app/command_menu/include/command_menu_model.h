@@ -27,7 +27,7 @@ namespace command_menu_model {
 	 * @brief CommandMenuModel class
 	 *
 	 */
-	class CommandMenuModel : public QAbstractItemModel {
+	class CommandMenuModel final : public QAbstractItemModel {
 
 		Q_OBJECT
 

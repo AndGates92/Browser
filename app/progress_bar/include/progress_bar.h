@@ -56,7 +56,7 @@ namespace progress_bar {
 	 * @brief ProgressBar class
 	 *
 	 */
-	class ProgressBar : public QProgressBar {
+	class ProgressBar final : public QProgressBar {
 
 		Q_OBJECT
 

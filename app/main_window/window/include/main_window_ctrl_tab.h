@@ -82,7 +82,7 @@ namespace main_window_ctrl_tab {
 	 * @brief MainWindowCtrlTab class
 	 *
 	 */
-	class MainWindowCtrlTab : public main_window_ctrl_base::MainWindowCtrlBase {
+	class MainWindowCtrlTab final : public main_window_ctrl_base::MainWindowCtrlBase {
 
 		Q_OBJECT
 

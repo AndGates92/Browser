@@ -38,7 +38,7 @@ namespace open_button_window {
 	 * @brief OpenButtonWindow class
 	 *
 	 */
-	class OpenButtonWindow : public QDialog {
+	class OpenButtonWindow final : public QDialog {
 
 		Q_OBJECT
 

@@ -28,7 +28,7 @@ namespace main_window_menu_bar {
 	 * @brief MainWindowMenuBar class
 	 *
 	 */
-	class MainWindowMenuBar : public menu_bar::MenuBar {
+	class MainWindowMenuBar final : public menu_bar::MenuBar {
 
 		public:
 			/**
