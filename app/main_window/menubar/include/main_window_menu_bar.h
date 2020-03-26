@@ -82,11 +82,11 @@ namespace main_window_menu_bar {
 			edit_menu::EditMenu * editMenu;
 
 			/**
-			 * @brief Function: void fillMenuBar()
+			 * @brief Function: void fillMenuBar() override
 			 *
 			 * This function fills the menu bar of the main window
 			 */
-			void fillMenuBar();
+			void fillMenuBar() override;
 
 			// Move and copy constructor
 			/**

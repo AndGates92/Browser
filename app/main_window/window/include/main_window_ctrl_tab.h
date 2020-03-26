@@ -113,7 +113,7 @@ namespace main_window_ctrl_tab {
 			void processTabIndex(const QString & userInputStr);
 
 			/**
-			 * @brief Function: void keyPressEvent(QKeyEvent * event)
+			 * @brief Function: void keyPressEvent(QKeyEvent * event) override
 			 *
 			 * \param event: event coming from keyboard
 			 *
@@ -121,17 +121,17 @@ namespace main_window_ctrl_tab {
 			 * Escape is not triggered in keyPressedEvent
 			 * Re-implement key pressed event
 			 */
-			void keyPressEvent(QKeyEvent * event);
+			void keyPressEvent(QKeyEvent * event) override;
 
 			/**
-			 * @brief Function: void keyReleaseEvent(QKeyEvent * event)
+			 * @brief Function: void keyReleaseEvent(QKeyEvent * event) override
 			 *
 			 * \param event: event coming from keyboard
 			 *
 			 * This function handles event coming from the keyboard
 			 * Re-implement key released event
 			 */
-			void keyReleaseEvent(QKeyEvent * event);
+			void keyReleaseEvent(QKeyEvent * event) override;
 
 			/**
 			 * @brief Function: QString createUrl(const QString & search)
@@ -277,18 +277,18 @@ namespace main_window_ctrl_tab {
 			// ================================ END SHORTCUTS ========================================//
 
 			/**
-			 * @brief Function: void createShortcuts()
+			 * @brief Function: void createShortcuts() override
 			 *
 			 * This function creates shortcuts for the items on the window
 			 */
-			void createShortcuts();
+			void createShortcuts() override;
 
 			/**
-			 * @brief Function: void connectSignals()
+			 * @brief Function: void connectSignals() override
 			 *
 			 * This function connects signals and slots within main window controller
 			 */
-			void connectSignals();
+			void connectSignals() override;
 
 			/**
 			 * @brief Function: void executeActionOnTab(const int & index = main_window_ctrl_tab::emptyUserInput)
