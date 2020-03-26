@@ -100,11 +100,11 @@ namespace key_sequence {
 			KeySequence & operator=(key_sequence::KeySequence && rhs);
 
 			/**
-			 * @brief Function: ~KeySequence()
+			 * @brief Function: virtual ~KeySequence()
 			 *
 			 * JSON parser destructor
 			 */
-			~KeySequence();
+			virtual ~KeySequence();
 
 			/**
 			 * @brief Function: QVector<QKeySequence> getSeqVec() const

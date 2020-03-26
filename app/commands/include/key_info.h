@@ -203,11 +203,11 @@ namespace key_info {
 			KeyInfo & operator=(key_info::KeyInfo && rhs);
 
 			/**
-			 * @brief Function: ~KeyInfo()
+			 * @brief Function: virtual ~KeyInfo()
 			 *
 			 * JSON parser destructor
 			 */
-			~KeyInfo();
+			virtual ~KeyInfo();
 
 			/**
 			 * @brief Function: QString toString(QKeySequence::SequenceFormat format = QKeySequence::NativeText) const
