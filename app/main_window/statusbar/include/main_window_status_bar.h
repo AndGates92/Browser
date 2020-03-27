@@ -13,6 +13,7 @@
 
 #include "elided_label.h"
 #include "progress_bar.h"
+#include "constructor_macros.h"
 
 /** @defgroup MainWindowStatusBarGroup Main Window StatusBar Doxygen Group
  *  Main Window statusbar functions and classes
@@ -192,41 +193,10 @@ namespace main_window_status_bar {
 
 			// Move and copy constructor
 			/**
-			 * @brief Function: MainWindowStatusBar(const main_window_status_bar::MainWindowStatusBar & rhs)
+			 * @brief Disable move and copy constructors and operator= overloading for class MainWindowStatusBar
 			 *
-			 * \param rhs: class to copy
-			 *
-			 * Command MainWindowStatusBar copy constructor
 			 */
-			explicit MainWindowStatusBar(const main_window_status_bar::MainWindowStatusBar & rhs) = delete;
-
-			/**
-			 * @brief Function: MainWindowStatusBar(main_window_status_bar::MainWindowStatusBar && rhs)
-			 *
-			 * \param rhs: class to move
-			 *
-			 * Command MainWindowStatusBar move constructor
-			 */
-			explicit MainWindowStatusBar(main_window_status_bar::MainWindowStatusBar && rhs) = delete;
-
-			// Move and copy assignment operators
-			/**
-			 * @brief Function: MainWindowStatusBar & operator=(const main_window_status_bar::MainWindowStatusBar & rhs)
-			 *
-			 * \param rhs: class to copy
-			 *
-			 * Command MainWindowStatusBar copy assignment operator
-			 */
-			MainWindowStatusBar & operator=(const main_window_status_bar::MainWindowStatusBar & rhs) = delete;
-
-			/**
-			 * @brief Function: MainWindowStatusBar & operator=(main_window_status_bar::MainWindowStatusBar && rhs)
-			 *
-			 * \param rhs: class to move
-			 *
-			 * Command MainWindowStatusBar move assignment operator
-			 */
-			MainWindowStatusBar & operator=(main_window_status_bar::MainWindowStatusBar && rhs) = delete;
+			DISABLE_COPY_MOVE(MainWindowStatusBar)
 
 	};
 

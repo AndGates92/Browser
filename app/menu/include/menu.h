@@ -15,12 +15,14 @@
 #include <qt5/QtGui/QKeySequence>
 #include <qt5/QtWidgets/QShortcut>
 
-Q_DECLARE_LOGGING_CATEGORY(menuOverall)
+#include "constructor_macros.h"
 
 /** @defgroup MenuGroup Menu Doxygen Group
  *  Menu functions and classes
  *  @{
  */
+
+Q_DECLARE_LOGGING_CATEGORY(menuOverall)
 
 namespace menu {
 
@@ -121,41 +123,10 @@ namespace menu {
 
 			// Move and copy constructor
 			/**
-			 * @brief Function: Menu(const menu::Menu & rhs)
+			 * @brief Disable move and copy constructors and operator= overloading for class Menu
 			 *
-			 * \param rhs: class to copy
-			 *
-			 * Command Menu copy constructor
 			 */
-			explicit Menu(const menu::Menu & rhs) = delete;
-
-			/**
-			 * @brief Function: Menu(menu::Menu && rhs)
-			 *
-			 * \param rhs: class to move
-			 *
-			 * Command Menu move constructor
-			 */
-			explicit Menu(menu::Menu && rhs) = delete;
-
-			// Move and copy assignment operators
-			/**
-			 * @brief Function: Menu & operator=(const menu::Menu & rhs)
-			 *
-			 * \param rhs: class to copy
-			 *
-			 * Command Menu copy assignment operator
-			 */
-			Menu & operator=(const menu::Menu & rhs) = delete;
-
-			/**
-			 * @brief Function: Menu & operator=(menu::Menu && rhs)
-			 *
-			 * \param rhs: class to move
-			 *
-			 * Command Menu move assignment operator
-			 */
-			Menu & operator=(menu::Menu && rhs) = delete;
+			DISABLE_COPY_MOVE(Menu)
 
 	};
 }

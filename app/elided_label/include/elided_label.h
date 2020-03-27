@@ -14,6 +14,8 @@
 #include <qt5/QtWidgets/QWidget>
 #include <qt5/QtWidgets/QLabel>
 
+#include "constructor_macros.h"
+
 /** @defgroup ElidedLabelGroup Elided Label Doxygen Group
  *  Elided label functions and classes
  *  @{
@@ -129,42 +131,10 @@ namespace elided_label {
 
 			// Move and copy constructor
 			/**
-			 * @brief Function: ElidedLabel(const elided_label::ElidedLabel & rhs)
+			 * @brief Disable move and copy constructors and operator= overloading for class ElidedLabel
 			 *
-			 * \param rhs: class to copy
-			 *
-			 * Command Menu copy constructor
 			 */
-			explicit ElidedLabel(const elided_label::ElidedLabel & rhs) = delete;
-
-			/**
-			 * @brief Function: ElidedLabel(elided_label::ElidedLabel && rhs)
-			 *
-			 * \param rhs: class to move
-			 *
-			 * Command Menu move constructor
-			 */
-			explicit ElidedLabel(elided_label::ElidedLabel && rhs) = delete;
-
-			// Move and copy assignment operators
-			/**
-			 * @brief Function: ElidedLabel & operator=(const elided_label::ElidedLabel & rhs)
-			 *
-			 * \param rhs: class to copy
-			 *
-			 * Command Menu copy assignment operator
-			 */
-			ElidedLabel & operator=(const elided_label::ElidedLabel & rhs) = delete;
-
-			/**
-			 * @brief Function: ElidedLabel & operator=(elided_label::ElidedLabel && rhs)
-			 *
-			 * \param rhs: class to move
-			 *
-			 * Command Menu move assignment operator
-			 */
-			ElidedLabel & operator=(elided_label::ElidedLabel && rhs) = delete;
-
+			DISABLE_COPY_MOVE(ElidedLabel)
 	};
 
 }

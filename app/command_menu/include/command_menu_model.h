@@ -14,6 +14,8 @@
 #include <qt5/QtCore/QModelIndex>
 #include <qt5/QtCore/QVariant>
 
+#include "constructor_macros.h"
+
 /** @defgroup CommandMenuModelGroup Command Menu Model Doxygen Group
  *  Command Menu Model functions and classes
  *  @{
@@ -114,42 +116,10 @@ namespace command_menu_model {
 
 			// Move and copy constructor
 			/**
-			 * @brief Function: CommandMenuModel(const command_menu_model::CommandMenuModel & rhs)
+			 * @brief Disable move and copy constructors and operator= overloading for class CommandMenuModel
 			 *
-			 * \param rhs: class to copy
-			 *
-			 * Command Menu Model copy constructor
 			 */
-			explicit CommandMenuModel(const command_menu_model::CommandMenuModel & rhs) = delete;
-
-			/**
-			 * @brief Function: CommandMenuModel(command_menu_model::CommandMenuModel && rhs)
-			 *
-			 * \param rhs: class to move
-			 *
-			 * Command Menu Model move constructor
-			 */
-			explicit CommandMenuModel(command_menu_model::CommandMenuModel && rhs) = delete;
-
-			// Move and copy assignment operators
-			/**
-			 * @brief Function: CommandMenuModel & operator=(const command_menu_model::CommandMenuModel & rhs)
-			 *
-			 * \param rhs: class to copy
-			 *
-			 * Command Menu Model copy assignment operator
-			 */
-			CommandMenuModel & operator=(const command_menu_model::CommandMenuModel & rhs) = delete;
-
-			/**
-			 * @brief Function: CommandMenuModel & operator=(command_menu_model::CommandMenuModel && rhs)
-			 *
-			 * \param rhs: class to move
-			 *
-			 * Command Menu Model move assignment operator
-			 */
-			CommandMenuModel & operator=(command_menu_model::CommandMenuModel && rhs) = delete;
-
+			DISABLE_COPY_MOVE(CommandMenuModel)
 
 	};
 }

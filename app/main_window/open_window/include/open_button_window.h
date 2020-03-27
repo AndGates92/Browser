@@ -13,6 +13,8 @@
 #include <qt5/QtWidgets/QLineEdit>
 #include <qt5/QtWidgets/QPushButton>
 
+#include "constructor_macros.h"
+
 /** @defgroup OpenButtonWindowGroup Open Button Window Doxygen Group
  *  Open Button Window functions and classes
  *  @{
@@ -146,41 +148,10 @@ namespace open_button_window {
 
 			// Move and copy constructor
 			/**
-			 * @brief Function: OpenButtonWindow(const open_button_window::OpenButtonWindow & rhs)
+			 * @brief Disable move and copy constructors and operator= overloading for class OpenButtonWindow
 			 *
-			 * \param rhs: class to copy
-			 *
-			 * Command OpenButtonWindow copy constructor
 			 */
-			explicit OpenButtonWindow(const open_button_window::OpenButtonWindow & rhs) = delete;
-
-			/**
-			 * @brief Function: OpenButtonWindow(open_button_window::OpenButtonWindow && rhs)
-			 *
-			 * \param rhs: class to move
-			 *
-			 * Command OpenButtonWindow move constructor
-			 */
-			explicit OpenButtonWindow(open_button_window::OpenButtonWindow && rhs) = delete;
-
-			// Move and copy assignment operators
-			/**
-			 * @brief Function: OpenButtonWindow & operator=(const open_button_window::OpenButtonWindow & rhs)
-			 *
-			 * \param rhs: class to copy
-			 *
-			 * Command OpenButtonWindow copy assignment operator
-			 */
-			OpenButtonWindow & operator=(const open_button_window::OpenButtonWindow & rhs) = delete;
-
-			/**
-			 * @brief Function: OpenButtonWindow & operator=(open_button_window::OpenButtonWindow && rhs)
-			 *
-			 * \param rhs: class to move
-			 *
-			 * Command OpenButtonWindow move assignment operator
-			 */
-			OpenButtonWindow & operator=(open_button_window::OpenButtonWindow && rhs) = delete;
+			DISABLE_COPY_MOVE(OpenButtonWindow)
 
 	};
 }

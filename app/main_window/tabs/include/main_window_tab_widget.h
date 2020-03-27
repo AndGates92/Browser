@@ -15,6 +15,7 @@
 
 #include "main_window_shared_types.h"
 #include "tab_widget.h"
+#include "constructor_macros.h"
 
 /** @defgroup MainWindowTabWidgetGroup Main Window Tab Widget Doxygen Group
  *  Main Window tab widget functions and classes
@@ -281,41 +282,10 @@ namespace main_window_tab_widget {
 
 			// Move and copy constructor
 			/**
-			 * @brief Function: MainWindowTabWidget(const main_window_tab_widget::MainWindowTabWidget & rhs)
+			 * @brief Disable move and copy constructors and operator= overloading for class MainWindowTabWidget
 			 *
-			 * \param rhs: class to copy
-			 *
-			 * Command MainWindowTabWidget copy constructor
 			 */
-			explicit MainWindowTabWidget(const main_window_tab_widget::MainWindowTabWidget & rhs) = delete;
-
-			/**
-			 * @brief Function: MainWindowTabWidget(main_window_tab_widget::MainWindowTabWidget && rhs)
-			 *
-			 * \param rhs: class to move
-			 *
-			 * Command MainWindowTabWidget move constructor
-			 */
-			explicit MainWindowTabWidget(main_window_tab_widget::MainWindowTabWidget && rhs) = delete;
-
-			// Move and copy assignment operators
-			/**
-			 * @brief Function: MainWindowTabWidget & operator=(const main_window_tab_widget::MainWindowTabWidget & rhs)
-			 *
-			 * \param rhs: class to copy
-			 *
-			 * Command MainWindowTabWidget copy assignment operator
-			 */
-			MainWindowTabWidget & operator=(const main_window_tab_widget::MainWindowTabWidget & rhs) = delete;
-
-			/**
-			 * @brief Function: MainWindowTabWidget & operator=(main_window_tab_widget::MainWindowTabWidget && rhs)
-			 *
-			 * \param rhs: class to move
-			 *
-			 * Command MainWindowTabWidget move assignment operator
-			 */
-			MainWindowTabWidget & operator=(main_window_tab_widget::MainWindowTabWidget && rhs) = delete;
+			DISABLE_COPY_MOVE(MainWindowTabWidget)
 
 	};
 

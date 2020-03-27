@@ -14,6 +14,7 @@
 #include "menu_bar.h"
 #include "file_menu.h"
 #include "edit_menu.h"
+#include "constructor_macros.h"
 
 /** @defgroup MainWindowMenuBarGroup Main Window Menu Bar Doxygen Group
  *  Main Window Menu bar functions and classes
@@ -90,41 +91,10 @@ namespace main_window_menu_bar {
 
 			// Move and copy constructor
 			/**
-			 * @brief Function: MainWindowMenuBar(const main_window_menu_bar::MainWindowMenuBar & rhs)
+			 * @brief Disable move and copy constructors and operator= overloading for class MainWindowMenuBar
 			 *
-			 * \param rhs: class to copy
-			 *
-			 * Command MainWindowMenuBar copy constructor
 			 */
-			explicit MainWindowMenuBar(const main_window_menu_bar::MainWindowMenuBar & rhs) = delete;
-
-			/**
-			 * @brief Function: MainWindowMenuBar(main_window_menu_bar::MainWindowMenuBar && rhs)
-			 *
-			 * \param rhs: class to move
-			 *
-			 * Command MainWindowMenuBar move constructor
-			 */
-			explicit MainWindowMenuBar(main_window_menu_bar::MainWindowMenuBar && rhs) = delete;
-
-			// Move and copy assignment operators
-			/**
-			 * @brief Function: MainWindowMenuBar & operator=(const main_window_menu_bar::MainWindowMenuBar & rhs)
-			 *
-			 * \param rhs: class to copy
-			 *
-			 * Command MainWindowMenuBar copy assignment operator
-			 */
-			MainWindowMenuBar & operator=(const main_window_menu_bar::MainWindowMenuBar & rhs) = delete;
-
-			/**
-			 * @brief Function: MainWindowMenuBar & operator=(main_window_menu_bar::MainWindowMenuBar && rhs)
-			 *
-			 * \param rhs: class to move
-			 *
-			 * Command MainWindowMenuBar move assignment operator
-			 */
-			MainWindowMenuBar & operator=(main_window_menu_bar::MainWindowMenuBar && rhs) = delete;
+			DISABLE_COPY_MOVE(MainWindowMenuBar)
 
 	};
 

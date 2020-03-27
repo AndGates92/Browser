@@ -18,6 +18,7 @@
 #include "global_types.h"
 #include "open_button_window.h"
 #include "menu.h"
+#include "constructor_macros.h"
 
 /** @defgroup EditMenuGroup Edit Menu Doxygen Group
  *  Edit Menu functions and classes
@@ -170,41 +171,10 @@ namespace edit_menu {
 
 			// Move and copy constructor
 			/**
-			 * @brief Function: EditMenu(const edit_menu::EditMenu & rhs)
+			 * @brief Disable move and copy constructors and operator= overloading for class EditMenu
 			 *
-			 * \param rhs: class to copy
-			 *
-			 * Command EditMenu copy constructor
 			 */
-			explicit EditMenu(const edit_menu::EditMenu & rhs) = delete;
-
-			/**
-			 * @brief Function: EditMenu(edit_menu::EditMenu && rhs)
-			 *
-			 * \param rhs: class to move
-			 *
-			 * Command EditMenu move constructor
-			 */
-			explicit EditMenu(edit_menu::EditMenu && rhs) = delete;
-
-			// Move and copy assignment operators
-			/**
-			 * @brief Function: EditMenu & operator=(const edit_menu::EditMenu & rhs)
-			 *
-			 * \param rhs: class to copy
-			 *
-			 * Command EditMenu copy assignment operator
-			 */
-			EditMenu & operator=(const edit_menu::EditMenu & rhs) = delete;
-
-			/**
-			 * @brief Function: EditMenu & operator=(edit_menu::EditMenu && rhs)
-			 *
-			 * \param rhs: class to move
-			 *
-			 * Command EditMenu move assignment operator
-			 */
-			EditMenu & operator=(edit_menu::EditMenu && rhs) = delete;
+			DISABLE_COPY_MOVE(EditMenu)
 
 	};
 }

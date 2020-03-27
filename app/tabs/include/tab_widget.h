@@ -20,6 +20,7 @@
 #include "logging_macros.h"
 #include "global_types.h"
 #include "tab_bar.h"
+#include "constructor_macros.h"
 
 /** @defgroup TabWidgetGroup Tab Widget Doxygen Group
  *  Tab Widget functions and classes
@@ -190,41 +191,10 @@ namespace tab_widget {
 
 			// Move and copy constructor
 			/**
-			 * @brief Function: TabWidget(const tab_widget::TabWidget & rhs)
+			 * @brief Disable move and copy constructors and operator= overloading for class TabWidget
 			 *
-			 * \param rhs: class to copy
-			 *
-			 * Command Menu copy constructor
 			 */
-			explicit TabWidget(const tab_widget::TabWidget & rhs) = delete;
-
-			/**
-			 * @brief Function: TabWidget(tab_widget::TabWidget && rhs)
-			 *
-			 * \param rhs: class to move
-			 *
-			 * Command Menu move constructor
-			 */
-			explicit TabWidget(tab_widget::TabWidget && rhs) = delete;
-
-			// Move and copy assignment operators
-			/**
-			 * @brief Function: TabWidget & operator=(const tab_widget::TabWidget & rhs)
-			 *
-			 * \param rhs: class to copy
-			 *
-			 * Command Menu copy assignment operator
-			 */
-			TabWidget & operator=(const tab_widget::TabWidget & rhs) = delete;
-
-			/**
-			 * @brief Function: TabWidget & operator=(tab_widget::TabWidget && rhs)
-			 *
-			 * \param rhs: class to move
-			 *
-			 * Command Menu move assignment operator
-			 */
-			TabWidget & operator=(tab_widget::TabWidget && rhs) = delete;
+			DISABLE_COPY_MOVE(TabWidget)
 
 		signals:
 

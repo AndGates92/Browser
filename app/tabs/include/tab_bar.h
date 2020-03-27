@@ -18,6 +18,7 @@
 
 #include "logging_macros.h"
 #include "global_types.h"
+#include "constructor_macros.h"
 
 /** @defgroup TabBarGroup Tab Bar Doxygen Group
  *  Tab Bar functions and classes
@@ -103,41 +104,10 @@ namespace tab_bar {
 
 			// Move and copy constructor
 			/**
-			 * @brief Function: TabBar(const tab_bar::TabBar & rhs)
+			 * @brief Disable move and copy constructors and operator= overloading for class TabBar
 			 *
-			 * \param rhs: class to copy
-			 *
-			 * Command Menu copy constructor
 			 */
-			explicit TabBar(const tab_bar::TabBar & rhs) = delete;
-
-			/**
-			 * @brief Function: TabBar(tab_bar::TabBar && rhs)
-			 *
-			 * \param rhs: class to move
-			 *
-			 * Command Menu move constructor
-			 */
-			explicit TabBar(tab_bar::TabBar && rhs) = delete;
-
-			// Move and copy assignment operators
-			/**
-			 * @brief Function: TabBar & operator=(const tab_bar::TabBar & rhs)
-			 *
-			 * \param rhs: class to copy
-			 *
-			 * Command Menu copy assignment operator
-			 */
-			TabBar & operator=(const tab_bar::TabBar & rhs) = delete;
-
-			/**
-			 * @brief Function: TabBar & operator=(tab_bar::TabBar && rhs)
-			 *
-			 * \param rhs: class to move
-			 *
-			 * Command Menu move assignment operator
-			 */
-			TabBar & operator=(tab_bar::TabBar && rhs) = delete;
+			DISABLE_COPY_MOVE(TabBar)
 
 	};
 }

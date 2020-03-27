@@ -19,6 +19,7 @@
 #include <qt5/QtGui/QMouseEvent>
 
 #include "command_menu_model.h"
+#include "constructor_macros.h"
 
 /** @defgroup CommandMenuGroup Command Menu Doxygen Group
  *  Command Menu functions and classes
@@ -321,41 +322,10 @@ namespace command_menu {
 
 			// Move and copy constructor
 			/**
-			 * @brief Function: CommandMenu(const command_menu::CommandMenu & rhs)
+			 * @brief Disable move and copy constructors and operator= overloading for class CommandMenu
 			 *
-			 * \param rhs: class to copy
-			 *
-			 * Command Menu copy constructor
 			 */
-			explicit CommandMenu(const command_menu::CommandMenu & rhs) = delete;
-
-			/**
-			 * @brief Function: CommandMenu(command_menu::CommandMenu && rhs)
-			 *
-			 * \param rhs: class to move
-			 *
-			 * Command Menu move constructor
-			 */
-			explicit CommandMenu(command_menu::CommandMenu && rhs) = delete;
-
-			// Move and copy assignment operators
-			/**
-			 * @brief Function: CommandMenu & operator=(const command_menu::CommandMenu & rhs)
-			 *
-			 * \param rhs: class to copy
-			 *
-			 * Command Menu copy assignment operator
-			 */
-			CommandMenu & operator=(const command_menu::CommandMenu & rhs) = delete;
-
-			/**
-			 * @brief Function: CommandMenu & operator=(command_menu::CommandMenu && rhs)
-			 *
-			 * \param rhs: class to move
-			 *
-			 * Command Menu move assignment operator
-			 */
-			CommandMenu & operator=(command_menu::CommandMenu && rhs) = delete;
+			DISABLE_COPY_MOVE(CommandMenu)
 
 	};
 

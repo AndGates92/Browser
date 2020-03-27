@@ -17,6 +17,7 @@
 
 #include "open_button_window.h"
 #include "menu.h"
+#include "constructor_macros.h"
 
 /** @defgroup FileMenuGroup File Menu Doxygen Group
  *  File Menu functions and classes
@@ -163,41 +164,10 @@ namespace file_menu {
 
 			// Move and copy constructor
 			/**
-			 * @brief Function: FileMenu(const file_menu::FileMenu & rhs)
+			 * @brief Disable move and copy constructors and operator= overloading for class FileMenu
 			 *
-			 * \param rhs: class to copy
-			 *
-			 * Command FileMenu copy constructor
 			 */
-			explicit FileMenu(const file_menu::FileMenu & rhs) = delete;
-
-			/**
-			 * @brief Function: FileMenu(file_menu::FileMenu && rhs)
-			 *
-			 * \param rhs: class to move
-			 *
-			 * Command FileMenu move constructor
-			 */
-			explicit FileMenu(file_menu::FileMenu && rhs) = delete;
-
-			// Move and copy assignment operators
-			/**
-			 * @brief Function: FileMenu & operator=(const file_menu::FileMenu & rhs)
-			 *
-			 * \param rhs: class to copy
-			 *
-			 * Command FileMenu copy assignment operator
-			 */
-			FileMenu & operator=(const file_menu::FileMenu & rhs) = delete;
-
-			/**
-			 * @brief Function: FileMenu & operator=(file_menu::FileMenu && rhs)
-			 *
-			 * \param rhs: class to move
-			 *
-			 * Command FileMenu move assignment operator
-			 */
-			FileMenu & operator=(file_menu::FileMenu && rhs) = delete;
+			DISABLE_COPY_MOVE(FileMenu)
 
 	};
 }

@@ -18,6 +18,7 @@
 
 #include "main_window_shared_types.h"
 #include "main_window_ctrl_base.h"
+#include "constructor_macros.h"
 
 /** @defgroup MainWindowCtrlTabGroup Main Window Control Tab Doxygen Group
  *  Main Window control functions and classes
@@ -445,41 +446,10 @@ namespace main_window_ctrl_tab {
 
 			// Move and copy constructor
 			/**
-			 * @brief Function: MainWindowCtrlTab(const main_window_ctrl_tab::MainWindowCtrlTab & rhs)
+			 * @brief Disable move and copy constructors and operator= overloading for class MainWindowCtrlTab
 			 *
-			 * \param rhs: class to copy
-			 *
-			 * Command MainWindowCtrlTab copy constructor
 			 */
-			explicit MainWindowCtrlTab(const main_window_ctrl_tab::MainWindowCtrlTab & rhs) = delete;
-
-			/**
-			 * @brief Function: MainWindowCtrlTab(main_window_ctrl_tab::MainWindowCtrlTab && rhs)
-			 *
-			 * \param rhs: class to move
-			 *
-			 * Command MainWindowCtrlTab move constructor
-			 */
-			explicit MainWindowCtrlTab(main_window_ctrl_tab::MainWindowCtrlTab && rhs) = delete;
-
-			// Move and copy assignment operators
-			/**
-			 * @brief Function: MainWindowCtrlTab & operator=(const main_window_ctrl_tab::MainWindowCtrlTab & rhs)
-			 *
-			 * \param rhs: class to copy
-			 *
-			 * Command MainWindowCtrlTab copy assignment operator
-			 */
-			MainWindowCtrlTab & operator=(const main_window_ctrl_tab::MainWindowCtrlTab & rhs) = delete;
-
-			/**
-			 * @brief Function: MainWindowCtrlTab & operator=(main_window_ctrl_tab::MainWindowCtrlTab && rhs)
-			 *
-			 * \param rhs: class to move
-			 *
-			 * Command MainWindowCtrlTab move assignment operator
-			 */
-			MainWindowCtrlTab & operator=(main_window_ctrl_tab::MainWindowCtrlTab && rhs) = delete;
+			DISABLE_COPY_MOVE(MainWindowCtrlTab)
 
 	};
 

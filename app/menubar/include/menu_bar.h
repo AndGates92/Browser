@@ -11,6 +11,8 @@
 #include <qt5/QtCore/QLoggingCategory>
 #include <qt5/QtWidgets/QMenuBar>
 
+#include "constructor_macros.h"
+
 /** @defgroup MenuBarGroup Menu Bar Doxygen Group
  *  Menu bar functions and classes
  *  @{
@@ -54,41 +56,11 @@ namespace menu_bar {
 		private:
 			// Move and copy constructor
 			/**
-			 * @brief Function: MenuBar(const menu_bar::MenuBar & rhs)
+			 * @brief Disable move and copy constructors and operator= overloading for class MenuBar
 			 *
-			 * \param rhs: class to copy
-			 *
-			 * Command Menu copy constructor
 			 */
-			explicit MenuBar(const menu_bar::MenuBar & rhs) = delete;
+			DISABLE_COPY_MOVE(MenuBar)
 
-			/**
-			 * @brief Function: MenuBar(menu_bar::MenuBar && rhs)
-			 *
-			 * \param rhs: class to move
-			 *
-			 * Command Menu move constructor
-			 */
-			explicit MenuBar(menu_bar::MenuBar && rhs) = delete;
-
-			// Move and copy assignment operators
-			/**
-			 * @brief Function: MenuBar & operator=(const menu_bar::MenuBar & rhs)
-			 *
-			 * \param rhs: class to copy
-			 *
-			 * Command Menu copy assignment operator
-			 */
-			MenuBar & operator=(const menu_bar::MenuBar & rhs) = delete;
-
-			/**
-			 * @brief Function: MenuBar & operator=(menu_bar::MenuBar && rhs)
-			 *
-			 * \param rhs: class to move
-			 *
-			 * Command Menu move assignment operator
-			 */
-	
 	};
 
 }

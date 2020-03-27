@@ -14,6 +14,7 @@
 
 #include "main_window_ctrl.h"
 #include "main_window_base.h"
+#include "constructor_macros.h"
 
 /** @defgroup MainWindowGroup Main Window Doxygen Group
  *  Main Window functions and classes
@@ -196,41 +197,10 @@ namespace main_window {
 
 			// Move and copy constructor
 			/**
-			 * @brief Function: MainWindow(const main_window::MainWindow & rhs)
+			 * @brief Disable move and copy constructors and operator= overloading for class MainWindow
 			 *
-			 * \param rhs: class to copy
-			 *
-			 * Command MainWindow copy constructor
 			 */
-			explicit MainWindow(const main_window::MainWindow & rhs) = delete;
-
-			/**
-			 * @brief Function: MainWindow(main_window::MainWindow && rhs)
-			 *
-			 * \param rhs: class to move
-			 *
-			 * Command MainWindow move constructor
-			 */
-			explicit MainWindow(main_window::MainWindow && rhs) = delete;
-
-			// Move and copy assignment operators
-			/**
-			 * @brief Function: MainWindow & operator=(const main_window::MainWindow & rhs)
-			 *
-			 * \param rhs: class to copy
-			 *
-			 * Command MainWindow copy assignment operator
-			 */
-			MainWindow & operator=(const main_window::MainWindow & rhs) = delete;
-
-			/**
-			 * @brief Function: MainWindow & operator=(main_window::MainWindow && rhs)
-			 *
-			 * \param rhs: class to move
-			 *
-			 * Command MainWindow move assignment operator
-			 */
-			MainWindow & operator=(main_window::MainWindow && rhs) = delete;
+			DISABLE_COPY_MOVE(MainWindow)
 
 	};
 
