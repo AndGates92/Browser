@@ -120,20 +120,21 @@
 	QSTRING_OVERLOAD_PLUS_OP(TYPE)
 
 /**
- * @brief OVERLOAD_OPERATORS_CUSTOM_TYPE(TYPE)
+ * @brief OVERLOAD_OPERATORS_CUSTOM_TYPE_FUNCTION_PROTOTYPE(TYPE, ALIAS)
  *
  * \param TYPE : type to have operator overloaded for
+ * \param ALIAS : alias for type TYPE
  *
  * Declares function prototypes to overload operator + and operator << for a type Type.
  */
-#define OVERLOAD_OPERATORS_CUSTOM_TYPE_FUNCTION_PROTOTYPE(CLASS, TYPE) \
-	Q_ENUM_NS(CLASS) \
-	QDebug & operator<< (QDebug & os, const TYPE & value); \
-	QTextStream & operator<< (QTextStream & str, const TYPE & value); \
-	QString & operator<< (QString & str, const TYPE & value); \
-	const QString operator+ (const QString & str, const TYPE & value); \
-	const std::string operator+ (const std::string & str, const TYPE & value); \
-	const std::string operator+ (const char * cStr, const TYPE & value);
+#define OVERLOAD_OPERATORS_CUSTOM_TYPE_FUNCTION_PROTOTYPE(TYPE, ALIAS) \
+	Q_ENUM_NS(TYPE) \
+	QDebug & operator<< (QDebug & os, const ALIAS & value); \
+	QTextStream & operator<< (QTextStream & str, const ALIAS & value); \
+	QString & operator<< (QString & str, const ALIAS & value); \
+	const QString operator+ (const QString & str, const ALIAS & value); \
+	const std::string operator+ (const std::string & str, const ALIAS & value); \
+	const std::string operator+ (const char * cStr, const ALIAS & value);
 
 /**
  * @brief PRINT_LIST(VERBOSITY, CATEGORY, TYPE, NAME, LIST)
