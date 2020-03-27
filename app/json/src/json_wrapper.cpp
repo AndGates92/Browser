@@ -23,24 +23,9 @@ Q_LOGGING_CATEGORY(jsonWrapperFileContent, "jsonWrapper.file_content", MSG_TYPE_
 
 
 namespace json_wrapper {
-	QDEBUG_OVERLOAD_PRINT_OP(json_wrapper::json_content_type_e)
 
-	QString & operator<< (QString & str, const json_wrapper::json_content_type_e & type) {
+	OVERLOAD_OPERATORS_CUSTOM_TYPE(json_wrapper::json_content_type_e)
 
-		switch (type) {
-			case json_wrapper::json_content_type_e::OBJECT:
-				str.append("OBJECT");
-				break;
-			case json_wrapper::json_content_type_e::ARRAY:
-				str.append("ARRAY");
-				break;
-			default:
-				str.append("Unknown type");
-				break;
-		}
-
-		return str;
-	}
 }
 
 json_wrapper::JsonWrapper::JsonWrapper(QString jsonFileName, QIODevice::OpenModeFlag jsonOpenFlags) : jsonContent(QJsonValue()), openFlags(jsonOpenFlags), jsonFile(new QFile(jsonFileName)) {

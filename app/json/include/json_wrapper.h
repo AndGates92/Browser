@@ -15,6 +15,8 @@
 #include <qt5/QtCore/QString>
 #include <qt5/QtCore/QFile>
 
+#include "type_print_macros.h"
+
 /** @defgroup JsonWrapperGroup JSON Wrapper Doxygen Group
  *  JSON Wrapper control functions and classes
  *  @{
@@ -25,6 +27,8 @@ Q_DECLARE_LOGGING_CATEGORY(jsonWrapperFile)
 Q_DECLARE_LOGGING_CATEGORY(jsonWrapperFileContent)
 
 namespace json_wrapper {
+
+	Q_NAMESPACE
 
 	/**
 	 * @brief JSON content type
@@ -37,24 +41,10 @@ namespace json_wrapper {
 	} json_content_type_e;
 
 	/**
-	 * @brief Function: QDebug & operator<< (QDebug & os, const json_wrapper::json_content_type_e & type)
+	 * @brief Overload operators to ease print of JSON content type
 	 *
-	 * \param os: output stream
-	 * \param type: type of the JSON content
-	 *
-	 * Overload << operator to print text type
 	 */
-	QDebug & operator<< (QDebug & os, const json_wrapper::json_content_type_e & type);
-
-	/**
-	 * @brief Function: QString & operator<< (QString & os, const json_wrapper::json_content_type_e & type)
-	 *
-	 * \param os: output stream
-	 * \param type: type of the JSON content
-	 *
-	 * Overload << operator to print text type
-	 */
-	QString & operator<< (QString & os, const json_wrapper::json_content_type_e & type);
+	OVERLOAD_OPERATORS_CUSTOM_TYPE_FUNCTION_PROTOTYPE(json_content_type_list, json_wrapper::json_content_type_e)
 
 	/**
 	 * @brief JSON content structure

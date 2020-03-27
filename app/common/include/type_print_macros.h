@@ -128,10 +128,10 @@
  */
 #define OVERLOAD_OPERATORS_CUSTOM_TYPE_FUNCTION_PROTOTYPE(CLASS, TYPE) \
 	Q_ENUM_NS(CLASS) \
-	QDebug & operator<< (QDebug & os, const TYPE & type); \
-	QTextStream & operator<< (QTextStream & str, const TYPE & type); \
-	QString & operator<< (QString & str, const TYPE & type); \
-	const QString operator+ (const QString & str, const TYPE & type); \
+	QDebug & operator<< (QDebug & os, const TYPE & value); \
+	QTextStream & operator<< (QTextStream & str, const TYPE & value); \
+	QString & operator<< (QString & str, const TYPE & value); \
+	const QString operator+ (const QString & str, const TYPE & value); \
 	const std::string operator+ (const std::string & str, const TYPE & value); \
 	const std::string operator+ (const char * cStr, const TYPE & value);
 
