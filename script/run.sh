@@ -21,6 +21,7 @@ EXEDIR=bin
 LOGDIR=log
 DEBUGLOG=debug.log
 COMPLOG=compile_browser.log
+COMPERR=compile_browser.err
 DOCLOG=doc.log
 EXELOG=${EXENAME}.log
 VALGRINDNOINPUTLOG=valgrind_noinput.log
@@ -123,6 +124,7 @@ fi
 
 if [ ${compile} -eq 1 ]; then
 	echotimestamp " --> Compile logfile name: ${COMPLOG}"
+	echotimestamp " --> Compile error file name: ${COMPERR}"
 fi
 
 if [ ${tests} -eq 1 ]; then
@@ -175,7 +177,7 @@ if [ ${compile} -eq 1 ]; then
 	echotimestamp " Compile sources"
 	echotimestamp " ========================================================================="
 	(set -x; \
-	 make all LOG_DIR=${LOGDIR} LOGFILENAME=${EXELOG} PROJ_NAME=${PROJNAME} EXE_NAME=${EXENAME} BIN_DIR=${EXEDIR} VERBOSITY=${VERBOSITY} CEXTRAFLAGS=${CEXTRAFLAGS} 2> ${LOGDIR}/${COMPLOG})
+	 make all LOG_DIR=${LOGDIR} LOGFILENAME=${EXELOG} PROJ_NAME=${PROJNAME} EXE_NAME=${EXENAME} BIN_DIR=${EXEDIR} VERBOSITY=${VERBOSITY} CEXTRAFLAGS=${CEXTRAFLAGS} 1> ${LOGDIR}/${COMPLOG} 2> ${LOGDIR}/${COMPERR})
 	# If make returns code 2, it means it encountered errors
 	retCode=$?
 	if [ ${retCode} -eq 2 ]; then
