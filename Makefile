@@ -271,4 +271,8 @@ doc :
 	done
 	$(DOXYGEN) $(DOX_CFG_FILE)
 
+# phony target to avoid conflicts with a possible file with the same name
 .PHONY: all,clean,depend,$(EXE),debug,doc,memleak
+
+# Prevent intermediate files from being deleted
+.SECONDARY: $(MOC_SRCS) $(MOC_OBJS) $(OBJS)
