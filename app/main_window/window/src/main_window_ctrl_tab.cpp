@@ -687,7 +687,7 @@ void main_window_ctrl_tab::MainWindowCtrlTab::printStrInCurrentTab(const QString
 	QINFO_PRINT(global_types::qinfo_level_e::ZERO, mainWindowCtrlTabTabs,  tabContent);
 
 	// Get tabs
-	tab_widget::TabWidget * tabWidget = this->windowCore->tabs;
+	main_window_tab_widget::MainWindowTabWidget * tabWidget = this->windowCore->tabs;
 
 	const main_window_shared_types::tab_type_e desiredTabType = main_window_shared_types::tab_type_e::LABEL;
 
