@@ -262,6 +262,16 @@ void main_window_ctrl_tab::MainWindowCtrlTab::refreshUrl(const int & tabIndex) {
 			QEXCEPTION_ACTION(throw, badCastE.what());
 		}
 	} else if (tabType == main_window_shared_types::tab_type_e::LABEL) {
+		// Retrive filename
+		//const void * tabData = this->windowCore->tabs->getTabData(tabIndex);
+		//const char * filename = static_cast<const char *>(data);
+		// TODO: open file
+		// TODO: read file
+		// QLabel * tabPage = dynamic_cast<QLabel *>(tabWidget->widget(tabIndex, true));
+
+		// tabPage->setText(tabContent);
+
+		// this->updateContent(tabIndex);
 
 	}
 }
