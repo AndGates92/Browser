@@ -20,9 +20,11 @@ EXEDIR=bin
 
 LOGDIR=log
 DEBUGLOG=debug.log
+DEBUGERR=debug.err
 COMPLOG=compile_browser.log
 COMPERR=compile_browser.err
 DOCLOG=doc.log
+DOCERR=doc.err
 EXELOG=${EXENAME}.log
 VALGRINDNOINPUTLOG=valgrind_noinput.log
 EXEVALGRINDLOG=${EXENAME}_valgrind.log
@@ -120,6 +122,7 @@ echotimestamp " --> Logfile directory: ${LOGDIRR}"
 
 if [ ${debug} -eq 1 ]; then
 	echotimestamp " --> Debug logfile name: ${DEBUGLOG}"
+	echotimestamp " --> Debug error file name: ${DEBUGERR}"
 fi
 
 if [ ${compile} -eq 1 ]; then
@@ -133,6 +136,7 @@ fi
 
 if [ ${doc} -eq 1 ]; then
 	echotimestamp " --> Documentation logfile name: ${DOCLOG}"
+	echotimestamp " --> Documentation error file name: ${DOCERR}"
 fi
 
 if [ ${memleak} -eq 1 ]; then
@@ -169,7 +173,7 @@ if [ ${debug} -eq 1 ]; then
 	echotimestamp " Makefile variables"
 	echotimestamp " ========================================================================="
 	(set -x; \
-	 make debug LOG_DIR=${LOGDIR} LOGFILENAME=${EXELOG} PROJ_NAME=${PROJNAME} EXE_NAME=${EXENAME} BIN_DIR=${EXEDIR} CEXTRAFLAGS=${CEXTRAFLAGS} > ${LOGDIR}/${DEBUGLOG})
+	 make debug LOG_DIR=${LOGDIR} LOGFILENAME=${EXELOG} PROJ_NAME=${PROJNAME} EXE_NAME=${EXENAME} BIN_DIR=${EXEDIR} CEXTRAFLAGS=${CEXTRAFLAGS} 1> ${LOGDIR}/${DEBUGLOG} 2> ${LOGDIR}/${DEBUGERR})
 fi
 
 if [ ${compile} -eq 1 ]; then
@@ -215,7 +219,7 @@ if [ ${doc} -eq 1 ]; then
 	echotimestamp " Compile documetation"
 	echotimestamp " ========================================================================="
 	(set -x; \
-	 make doc LOG_DIR=${LOGDIR} LOGFILENAME=${EXELOG} PROJ_NAME=${PROJNAME} EXE_NAME=${EXENAME} BIN_DIR=${EXEDIR} CEXTRAFLAGS=${CEXTRAFLAGS} > ${LOGDIR}/${DOCLOG})
+	 make doc LOG_DIR=${LOGDIR} LOGFILENAME=${EXELOG} PROJ_NAME=${PROJNAME} EXE_NAME=${EXENAME} BIN_DIR=${EXEDIR} CEXTRAFLAGS=${CEXTRAFLAGS} 1> ${LOGDIR}/${DOCLOG} 2> ${LOGDIR}/${DOCERR})
 fi
 
 if [ ${memleak} -eq 1 ]; then
