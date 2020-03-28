@@ -57,8 +57,8 @@ OBJ_EXT = o
 HEADER_EXT = h
 
 # Meta-Object compiler handler Qt C++ language extension
-MOC_SRC_EXT = moccpp
-MOC_OBJ_EXT = moco
+MOC_SRC_EXT = moc.cpp
+MOC_OBJ_EXT = moc.o
 
 # Compile-time flags
 # Upgrade all warnings to errors
@@ -179,12 +179,12 @@ $(OBJ_DIR)/%.$(OBJ_EXT) : %.$(SRC_EXT)
 	$(VERBOSE_ECHO)echo "[${TIMESTAMP}] Compiling $(<F) and creating object $@"
 	$(CC) $(CFLAGS) $(INCLUDES) -c $< $(DFLAGS) $(BEHFLAGS) $(CEXTRAFLAGS) -o $@ $(LIBS)
 
-$(MOC_SRC_DIR)/%.$(SRC_EXT) : %.$(HEADER_EXT)
+$(MOC_SRC_DIR)/%.$(MOC_SRC_EXT) : %.$(HEADER_EXT)
 	$(MKDIR) $(@D)
 	$(VERBOSE_ECHO)echo "[${TIMESTAMP}] Compiling $(<F) and creating moc source $@"
 	$(MOC) $(DFLAGS) $(BEHFLAGS) $(CEXTRAFLAGS) $(INCLUDE_HEADERS) $< -o $@
 
-$(MOC_OBJ_DIR)/%.$(MOC_OBJ_EXT) : $(MOC_SRC_DIR)/%.$(SRC_EXT)
+$(MOC_OBJ_DIR)/%.$(MOC_OBJ_EXT) : $(MOC_SRC_DIR)/%.$(MOC_SRC_EXT)
 	$(MKDIR) $(@D)
 	$(VERBOSE_ECHO)echo "[${TIMESTAMP}] Compiling $(<F) and creating moc object $@"
 	$(CC) $(CFLAGS) $(INCLUDES) -c $< $(DFLAGS) $(BEHFLAGS) $(CEXTRAFLAGS) -o $@ $(LIBS)
