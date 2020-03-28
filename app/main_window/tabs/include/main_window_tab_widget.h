@@ -252,6 +252,17 @@ namespace main_window_tab_widget {
 			main_window_shared_types::tab_type_e getTabType(const int & index);
 
 			/**
+			 * @brief Function: const void * getTabData(const int & index)
+			 *
+			 * \param index: index of the tab to return the data of
+			 *
+			 * \return data field of tab page at index index
+			 *
+			 * return a tab data from tab widget
+			 */
+			const void * getTabData(const int & index);
+
+			/**
 			 * @brief Function: void changeTabType(const int & index, const main_window_shared_types::tab_type_e newType, const void * data = nullptr)
 			 *
 			 * \param index: index of the tab to change the type of

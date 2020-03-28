@@ -209,6 +209,22 @@ main_window_shared_types::tab_type_e main_window_tab_widget::MainWindowTabWidget
 	return tabType;
 }
 
+const void * main_window_tab_widget::MainWindowTabWidget::getTabData(const int & index) {
+
+	const void * tabData = nullptr;
+
+	const int tabDataSize = this->tabData.size();
+	QEXCEPTION_ACTION_COND(((index < 0) || (index >= tabDataSize)), throw,  "Index must be larger or equal to 0 and smaller than the number of elements in the QList " << tabDataSize << ". Got " << index << ".");
+
+	if (this->tabData.empty() == false) {
+		std::list<main_window_tab_widget::tab_data_s>::iterator iter = this->tabData.begin();
+		std::advance(iter, index);
+		tabData = iter->data;
+	}
+
+	return tabData;
+}
+
 void main_window_tab_widget::MainWindowTabWidget::changeTabType(const int & index, const main_window_shared_types::tab_type_e newType, const void * data) {
 
 	const main_window_shared_types::tab_type_e currentType = this->getTabType(index);
