@@ -237,6 +237,7 @@ void main_window_ctrl_tab::MainWindowCtrlTab::updateContent(const int & index) {
 				QEXCEPTION_ACTION(throw, badCastE.what());
 			}
 		} else if (tabType == main_window_shared_types::tab_type_e::LABEL) {
+			// Return the tab title
 			contentStr = this->windowCore->tabs->tabText(index);
 		}
 		QINFO_PRINT(global_types::qinfo_level_e::ZERO, mainWindowCtrlTabUrl,  "Set contentPathText for tab at index " << index << " of type " << tabType << " to " << contentStr);
@@ -261,7 +262,7 @@ void main_window_ctrl_tab::MainWindowCtrlTab::refreshUrl(const int & tabIndex) {
 			QEXCEPTION_ACTION(throw, badCastE.what());
 		}
 	} else if (tabType == main_window_shared_types::tab_type_e::LABEL) {
-		// TODO
+
 	}
 }
 
@@ -714,9 +715,9 @@ void main_window_ctrl_tab::MainWindowCtrlTab::printStrInCurrentTab(const QString
 
 	QINFO_PRINT(global_types::qinfo_level_e::ZERO, mainWindowCtrlTabTabs, "Current tab index is " << currentTabIndex << " and the tab widget has " << tabCount << " tabs");
 
+	// Set tab title
 	tabWidget->setTabText(currentTabIndex, tabTitle);
 	QLabel * currentTabPageLabel = dynamic_cast<QLabel *>(tabWidget->widget(currentTabIndex, true));
-	Q_ASSERT_X((currentTabPageLabel != nullptr), "null center window", "Center window is null");
 
 	currentTabPageLabel->setText(tabContent);
 
