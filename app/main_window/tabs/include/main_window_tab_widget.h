@@ -4,7 +4,7 @@
  * @copyright
  * @file main_window_tab_widget.h
  * @author Andrea Gianarda
- * @date 07th of December 2020
+ * @date 07th of December 2019
  * @brief Main Window Tab Widget header file
 */
 
@@ -14,6 +14,7 @@
 #include <qt5/QtWidgets/QWidget>
 
 #include "main_window_shared_types.h"
+#include "main_window_tab_data.h"
 #include "tab_widget.h"
 #include "constructor_macros.h"
 
@@ -22,52 +23,10 @@
  *  @{
  */
 
-Q_DECLARE_LOGGING_CATEGORY(tabDataPrint)
-
 Q_DECLARE_LOGGING_CATEGORY(mainWindowTabWidgetOverall)
 Q_DECLARE_LOGGING_CATEGORY(mainWindowTabWidgetTabs)
 
 namespace main_window_tab_widget {
-
-	struct tab_data_s {
-		main_window_shared_types::tab_type_e type;
-		const void * data;
-
-		/**
-		 * @brief Function: tab_data_s(main_window_shared_types::tab_type_e tabType = main_window_shared_types::tab_type_e::UNKNOWN, const void * tabData = nullptr)
-		 *
-		 * \param tabType: type of the tab
-		 * \param data: extra data
-		 *
-		 * tab data structure constructor
-		 */
-		tab_data_s(main_window_shared_types::tab_type_e tabType = main_window_shared_types::tab_type_e::UNKNOWN, const void * tabData = nullptr);
-
-		/**
-		 * @brief Function: ~tab_data_s()
-		 *
-		 * tab data structure destructor
-		 */
-		~tab_data_s();
-
-		/**
-		 * @brief Function: std::string print() const
-		 *
-		 * \return tab data converted to std::string
-		 *
-		 * This functions prints tab data info to std::string
-		 */
-		std::string print() const;
-
-		/**
-		 * @brief Function: QString qprint() const
-		 *
-		 * \return tab data converted to QString
-		 *
-		 * This functions prints tab data info to QString
-		 */
-		const QString qprint() const;
-	};
 
 	/**
 	 * @brief MainWindowTabWidget class
@@ -280,7 +239,7 @@ namespace main_window_tab_widget {
 			 * @brief tab data
 			 *
 			 */
-			std::list<main_window_tab_widget::tab_data_s> tabData;
+			std::list<main_window_tab_data::MainWindowTabData> tabData;
 
 			/**
 			 * @brief Function: void deleteListElement(const int & index)

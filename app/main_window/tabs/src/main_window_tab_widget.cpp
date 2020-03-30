@@ -20,63 +20,10 @@
 #include "global_functions.h"
 
 // Categories
-Q_LOGGING_CATEGORY(tabDataPrint, "tabData.print", MSG_TYPE_LEVEL)
-
 Q_LOGGING_CATEGORY(mainWindowTabWidgetOverall, "mainWindowTabWidget.overall", MSG_TYPE_LEVEL)
 Q_LOGGING_CATEGORY(mainWindowTabWidgetTabs, "mainWindowTabWidget.tabs", MSG_TYPE_LEVEL)
 
-main_window_tab_widget::tab_data_s::tab_data_s(main_window_shared_types::tab_type_e tabType, const void * tabData): type(tabType), data(tabData) {
-	QINFO_PRINT(global_types::qinfo_level_e::ZERO, tabDataPrint,  "Tab Data structure constructor. Data " << this->qprint());
-
-}
-
-main_window_tab_widget::tab_data_s::~tab_data_s() {
-
-}
-
-const QString main_window_tab_widget::tab_data_s::qprint() const {
-	const std::string tabDataInfo = this->print();
-	const QString qStr (tabDataInfo.c_str());
-
-	return qStr;
-}
-
-std::string main_window_tab_widget::tab_data_s::print() const {
-	std::string structInfo;
-
-	const main_window_shared_types::tab_type_e thisType = this->type;
-
-	structInfo = structInfo + " type: " + type;
-
-	const void * thisData = this->data;
-
-	try {
-		if (thisData != nullptr) {
-			if (type == main_window_shared_types::tab_type_e::WEB_ENGINE) {
-				QEXCEPTION_ACTION(throw, "Unexpected non-null pointer for type " << type);
-			} else if (type == main_window_shared_types::tab_type_e::LABEL) {
-				const char * filename = static_cast<const char *>(data);
-
-				structInfo = structInfo + " filename: " + filename;
-			} else {
-				QEXCEPTION_ACTION(throw, "Unknown type " << type << ". Cannot get extra data.");
-			}
-		} else {
-			QINFO_PRINT(global_types::qinfo_level_e::ZERO, tabDataPrint,  "Data pointer is null therefore no available extra data for type " << thisType);
-		}
-	} catch (const std::bad_cast & badCastE) {
-		QEXCEPTION_ACTION(throw, badCastE.what());
-	}
-
-	return structInfo;
-}
-
-static const main_window_tab_widget::tab_data_s makeTabData(const main_window_shared_types::tab_type_e & type, const void * data) {
-	const main_window_tab_widget::tab_data_s newData({type, data});
-	return newData;
-}
-
-main_window_tab_widget::MainWindowTabWidget::MainWindowTabWidget(QWidget * parent): tab_widget::TabWidget(parent), tabData(std::list<main_window_tab_widget::tab_data_s>()) {
+main_window_tab_widget::MainWindowTabWidget::MainWindowTabWidget(QWidget * parent): tab_widget::TabWidget(parent), tabData(std::list<main_window_tab_data::MainWindowTabData>()) {
 	QINFO_PRINT(global_types::qinfo_level_e::ZERO, mainWindowTabWidgetOverall,  "Main Window Tab widget constructor");
 
 }
@@ -96,7 +43,7 @@ main_window_tab_widget::MainWindowTabWidget::~MainWindowTabWidget() {
 		QINFO_PRINT(global_types::qinfo_level_e::ZERO, mainWindowTabWidgetOverall,  "Removing tab type " << type);
 	}
 
-	for(std::list<main_window_tab_widget::tab_data_s>::const_iterator it = this->tabData.cbegin(); it != this->tabData.cend(); it++) {
+	for(std::list<main_window_tab_data::MainWindowTabData>::const_iterator it = this->tabData.cbegin(); it != this->tabData.cend(); it++) {
 		QWARNING_PRINT(mainWindowTabWidgetOverall,  "Tab type still not deleted - Content: " << it->qprint());
 	}
 
@@ -109,7 +56,7 @@ int main_window_tab_widget::MainWindowTabWidget::addTab(QWidget * page, const QS
 	QINFO_PRINT(global_types::qinfo_level_e::ZERO, mainWindowTabWidgetTabs,  "Open tab with label " << label);
 
 	try {
-		this->tabData.emplace_back(makeTabData(type, data));
+		this->tabData.emplace_back(main_window_tab_data::MainWindowTabData::makeTabData(type, data));
 	} catch (const std::bad_alloc & badAllocE) {
 		QEXCEPTION_ACTION(throw, badAllocE.what());
 	}
@@ -122,7 +69,7 @@ int main_window_tab_widget::MainWindowTabWidget::addTab(QWidget * page, const QI
 	QINFO_PRINT(global_types::qinfo_level_e::ZERO, mainWindowTabWidgetTabs,  "Open tab with label " << label);
 
 	try {
-		this->tabData.emplace_back(makeTabData(type, data));
+		this->tabData.emplace_back(main_window_tab_data::MainWindowTabData::makeTabData(type, data));
 	} catch (const std::bad_alloc & badAllocE) {
 		QEXCEPTION_ACTION(throw, badAllocE.what());
 	}
@@ -135,9 +82,9 @@ int main_window_tab_widget::MainWindowTabWidget::insertTab(const int & index, QW
 	QINFO_PRINT(global_types::qinfo_level_e::ZERO, mainWindowTabWidgetTabs,  "Insert tab with label " << label << " at position " << index);
 
 	try {
-		std::list<main_window_tab_widget::tab_data_s>::iterator iter = this->tabData.begin();
+		std::list<main_window_tab_data::MainWindowTabData>::iterator iter = this->tabData.begin();
 		std::advance(iter, index);
-		this->tabData.insert(iter, makeTabData(type, data));
+		this->tabData.insert(iter, main_window_tab_data::MainWindowTabData::makeTabData(type, data));
 	} catch (const std::bad_alloc & badAllocE) {
 		QEXCEPTION_ACTION(throw, badAllocE.what());
 	}
@@ -151,9 +98,9 @@ int main_window_tab_widget::MainWindowTabWidget::insertTab(const int & index, QW
 	QINFO_PRINT(global_types::qinfo_level_e::ZERO, mainWindowTabWidgetTabs,  "Insert tab with label " << label << " at position " << index);
 
 	try {
-		std::list<main_window_tab_widget::tab_data_s>::iterator iter = this->tabData.begin();
+		std::list<main_window_tab_data::MainWindowTabData>::iterator iter = this->tabData.begin();
 		std::advance(iter, index);
-		this->tabData.insert(iter, makeTabData(type, data));
+		this->tabData.insert(iter, main_window_tab_data::MainWindowTabData::makeTabData(type, data));
 	} catch (const std::bad_alloc & badAllocE) {
 		QEXCEPTION_ACTION(throw, badAllocE.what());
 	}
@@ -175,7 +122,7 @@ void main_window_tab_widget::MainWindowTabWidget::deleteListElement(const int & 
 	QEXCEPTION_ACTION_COND(((index < 0) || (index >= tabDataSize)), throw,  "Index must be larger or equal to 0 and smaller than the number of elements in the QList " << tabDataSize << ". Got " << index << ".");
 
 	if (this->tabData.empty() == false) {
-		std::list<main_window_tab_widget::tab_data_s>::iterator iter = this->tabData.begin();
+		std::list<main_window_tab_data::MainWindowTabData>::iterator iter = this->tabData.begin();
 		std::advance(iter, index);
 		this->tabData.erase(iter);
 	}
@@ -184,7 +131,7 @@ void main_window_tab_widget::MainWindowTabWidget::deleteListElement(const int & 
 void main_window_tab_widget::MainWindowTabWidget::moveTab(const int & indexFrom, const int & indexTo) {
 	QINFO_PRINT(global_types::qinfo_level_e::ZERO, mainWindowTabWidgetTabs, "Move tab from " << indexFrom << " to " << indexTo);
 	this->bar->moveTab(indexFrom, indexTo);
-	global_functions::moveListElements<main_window_tab_widget::tab_data_s>(this->tabData, indexFrom, indexTo);
+	global_functions::moveListElements<main_window_tab_data::MainWindowTabData>(this->tabData, indexFrom, indexTo);
 }
 
 QWidget * main_window_tab_widget::MainWindowTabWidget::widget(const int & index, bool checkError) {
@@ -201,7 +148,7 @@ main_window_shared_types::tab_type_e main_window_tab_widget::MainWindowTabWidget
 	QEXCEPTION_ACTION_COND(((index < 0) || (index >= tabDataSize)), throw,  "Index must be larger or equal to 0 and smaller than the number of elements in the QList " << tabDataSize << ". Got " << index << ".");
 
 	if (this->tabData.empty() == false) {
-		std::list<main_window_tab_widget::tab_data_s>::iterator iter = this->tabData.begin();
+		std::list<main_window_tab_data::MainWindowTabData>::iterator iter = this->tabData.begin();
 		std::advance(iter, index);
 		tabType = iter->type;
 	}
@@ -217,7 +164,7 @@ const void * main_window_tab_widget::MainWindowTabWidget::getTabData(const int &
 	QEXCEPTION_ACTION_COND(((index < 0) || (index >= tabDataSize)), throw,  "Index must be larger or equal to 0 and smaller than the number of elements in the QList " << tabDataSize << ". Got " << index << ".");
 
 	if (this->tabData.empty() == false) {
-		std::list<main_window_tab_widget::tab_data_s>::iterator iter = this->tabData.begin();
+		std::list<main_window_tab_data::MainWindowTabData>::iterator iter = this->tabData.begin();
 		std::advance(iter, index);
 		tabData = iter->data;
 	}
