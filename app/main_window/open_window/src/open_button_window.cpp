@@ -66,12 +66,12 @@ void open_button_window::OpenButtonWindow::open() {
 	if (!filename.isEmpty()) {
 		QINFO_PRINT(global_types::qinfo_level_e::ZERO, openButtonWindowOpen,  "Opening " << filename);
 
-		const QString fileContent(QString::fromStdString(global_functions::readFile(filename.toStdString())));
+		std::string filenameStr(filename.toStdString());
+
+		const QString fileContent(QString::fromStdString(global_functions::readFile(filenameStr)));
 
 		QString title("file:");
 		title.append(filename);
-
-		std::string filenameStr(filename.toStdString());
 
 		emit this->fileRead(title, fileContent, strdup(filenameStr.c_str()));
 
