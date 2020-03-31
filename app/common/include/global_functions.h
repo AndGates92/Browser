@@ -12,8 +12,6 @@
 #include <list>
 
 #include <qt5/QtCore/QMetaEnum>
-#include <qt5/QtCore/QVariant>
-#include <qt5/QtCore/QLoggingCategory>
 
 #include "logging_macros.h"
 #include "exception_macros.h"
@@ -48,6 +46,17 @@ namespace global_functions {
 	 */
 	template<typename type>
 	void moveListElements(std::list<type> & l, const int & from, const int & to);
+
+	/**
+	 * @brief Function: std::string readFile(const std::string & filename)
+	 *
+	 * \param filename: file to read
+	 *
+	 * \return: content of the file
+	 *
+	 * This function reads a file and returns its content
+	 */
+	std::string readFile(const std::string & filename);
 
 }
 /** @} */ // End of GlobalFunctionsGroup group

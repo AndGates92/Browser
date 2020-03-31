@@ -20,6 +20,7 @@
 
 #include "logging_macros.h"
 #include "global_types.h"
+#include "global_functions.h"
 #include "open_button_window.h"
 #include "exception_macros.h"
 
@@ -65,24 +66,7 @@ void open_button_window::OpenButtonWindow::open() {
 	if (!filename.isEmpty()) {
 		QINFO_PRINT(global_types::qinfo_level_e::ZERO, openButtonWindowOpen,  "Opening " << filename);
 
-		QFile userFile(filename);
-		bool fileOpenRet = userFile.open(QIODevice::ReadOnly | QIODevice::Text);
-
-		QEXCEPTION_ACTION_COND((!fileOpenRet), throw, "Unable to open file " << filename);
-
-		QString fileContent("");
-		while(!userFile.atEnd()) {
-			char fileLine[open_button_window::userFileSize];
-			qint64 bytesRead = userFile.readLine(fileLine, sizeof(fileLine));
-			if (bytesRead == -1) {
-				QINFO_PRINT(global_types::qinfo_level_e::ZERO, openButtonWindowOpen,  "Nothing was read from file " << filename);
-			} else if (bytesRead == 0) {
-				QINFO_PRINT(global_types::qinfo_level_e::ZERO, openButtonWindowOpen,  "Nothing was read from file " << filename << " however no error was returned");
-			} else {
-				QINFO_PRINT(global_types::qinfo_level_e::ZERO, openButtonWindowOpen,  "Line read: " << fileLine);
-			}
-			fileContent.append(fileLine);
-		}
+		const QString fileContent(QString::fromStdString(global_functions::readFile(filename.toStdString())));
 
 		QString title("file:");
 		title.append(filename);
@@ -92,7 +76,6 @@ void open_button_window::OpenButtonWindow::open() {
 		emit this->fileRead(title, fileContent, strdup(filenameStr.c_str()));
 
 		QINFO_PRINT(global_types::qinfo_level_e::ZERO, openButtonWindowOpen,  "Close " << filename);
-		userFile.close();
 	}
 
 	// Close window when Open is clicked
