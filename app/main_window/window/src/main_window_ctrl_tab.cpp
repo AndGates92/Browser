@@ -263,15 +263,17 @@ void main_window_ctrl_tab::MainWindowCtrlTab::refreshUrl(const int & tabIndex) {
 		}
 	} else if (tabType == main_window_shared_types::tab_type_e::LABEL) {
 		// Retrive filename
-		//const void * tabData = this->windowCore->tabs->getTabData(tabIndex);
-		//const char * filename = static_cast<const char *>(data);
-		// TODO: open file
-		// TODO: read file
-		// QLabel * tabPage = dynamic_cast<QLabel *>(tabWidget->widget(tabIndex, true));
+		const void * tabData = this->windowCore->tabs->getTabData(tabIndex);
+		const char * filename = static_cast<const char *>(tabData);
+		const QString tabContent(QString::fromStdString(global_functions::readFile(filename)));
+		try {
+			QLabel * tabPage = dynamic_cast<QLabel *>(this->windowCore->tabs->widget(tabIndex, true));
+			tabPage->setText(tabContent);
+		} catch (const std::bad_cast & badCastE) {
+			QEXCEPTION_ACTION(throw, badCastE.what());
+		}
 
-		// tabPage->setText(tabContent);
-
-		// this->updateContent(tabIndex);
+		this->updateContent(tabIndex);
 
 	}
 }

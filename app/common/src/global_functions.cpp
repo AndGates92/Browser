@@ -13,12 +13,14 @@
 
 #include "global_functions.h"
 
+Q_LOGGING_CATEGORY(readFileOverall, "readFile.overall", MSG_TYPE_LEVEL)
+
 std::string global_functions::readFile(const std::string & filename) {
 
 	std::ifstream ifile;
 
 	// Sets exception mask - i.e. for which state flags an exception is thrown
-	ifile.exceptions(std::ifstream::failbit | std::ifstream::badbit);
+	ifile.exceptions(std::ifstream::failbit | std::ifstream::badbit | std::ifstream::eofbit);
 
 	std::string content;
 
@@ -36,13 +38,17 @@ std::string global_functions::readFile(const std::string & filename) {
 			content.append(line);
 		}
 	} catch (const std::ifstream::failure & e) {
-		// Convert std::error_code print to std::string so that it can be printed
-		const std::error_code errorCode(e.code());
-		std::ostringstream errorCodeOut(std::ostringstream::ate);
-		// flush() method returns a non-const reference to std::ostream
-		errorCodeOut.flush() << errorCode;
-		const std::string errorCodeStr(errorCodeOut.str());
-		QEXCEPTION_ACTION(throw, "Caught exception std::ifstream::failure while opening or reading content from file " << filename.c_str() << ".\n Message: " << e.what() << ".\n Error code: " << errorCodeStr.c_str());
+		if (ifile.eof()) {
+			QINFO_PRINT(global_types::qinfo_level_e::ZERO, readFileOverall,  "Finished reading content from file " << filename.c_str());
+		} else {
+			// Convert std::error_code print to std::string so that it can be printed
+			const std::error_code errorCode(e.code());
+			std::ostringstream errorCodeOut(std::ostringstream::ate);
+			// flush() method returns a non-const reference to std::ostream
+			errorCodeOut.flush() << errorCode;
+			const std::string errorCodeStr(errorCodeOut.str());
+			QEXCEPTION_ACTION(throw, "Caught exception std::ifstream::failure while opening or reading content from file " << filename.c_str() << ".\nMessage: " << e.what() << ".\nError code: " << errorCodeStr.c_str());
+		}
 	}
 
 	return content;

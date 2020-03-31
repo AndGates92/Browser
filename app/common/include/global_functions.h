@@ -20,6 +20,9 @@
  *  Global Functions
  *  @{
  */
+
+Q_DECLARE_LOGGING_CATEGORY(readFileOverall)
+
 namespace global_functions {
 
 	/**
