@@ -80,7 +80,7 @@ main_window_tab_data::MainWindowTabData::~MainWindowTabData() {
 
 const QString main_window_tab_data::MainWindowTabData::qprint() const {
 	const std::string mainWindowTabDataInfo = this->print();
-	const QString qStr (mainWindowTabDataInfo.c_str());
+	const QString qStr (QString::fromStdString(mainWindowTabDataInfo));
 
 	return qStr;
 }
