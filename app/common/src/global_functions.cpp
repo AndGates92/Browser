@@ -38,6 +38,7 @@ std::string global_functions::readFile(const std::string & filename) {
 			content.append(line);
 		}
 	} catch (const std::ifstream::failure & e) {
+		ifile.close();
 		if (ifile.eof()) {
 			QINFO_PRINT(global_types::qinfo_level_e::ZERO, readFileOverall,  "Finished reading content from file " << filename.c_str());
 		} else {
