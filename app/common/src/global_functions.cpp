@@ -27,7 +27,12 @@ std::string global_functions::readFile(const std::string & filename) {
 	try {
 
 		ifile.open(filename, std::ifstream::in);
+		ifile.seekg(0, std::ios_base::end);
+		std::streampos fileLength = ifile.tellg();
 
+		ifile.seekg(0, std::ios_base::beg);
+
+		int charCount = 0;
 		const char delimChar = '\n';
 
 		while(!ifile.eof()) {
@@ -36,6 +41,9 @@ std::string global_functions::readFile(const std::string & filename) {
 			// Delimiter character is discarded by std::getline
 			line.push_back(delimChar);
 			content.append(line);
+			charCount += line.length();
+			const float percentageCount = (((float) charCount) * 100.0) / ((float) fileLength);
+			QINFO_PRINT(global_types::qinfo_level_e::ZERO, readFileOverall,  "Character counted " << charCount << " out of " << fileLength << " that is " << percentageCount << "%");
 		}
 	} catch (const std::ifstream::failure & e) {
 		ifile.close();
