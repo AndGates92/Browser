@@ -30,7 +30,11 @@ main_window_ctrl::MainWindowCtrl::MainWindowCtrl(QSharedPointer<main_window_core
 	// Connect signals and slots
 	this->connectSignals();
 
+	// TODO - delete after automatic testing has been put in place
+	// Testing of find capabilities into JSON file
+	// Key not found
 	QMap<QString, QString> testKey1 = this->commands.findKeyValue("dada");
+	// Key found
 	QMap<QString, QString> testKey = this->commands.findKeyValue("Help");
 
 	for(QMap<QString, QString>::const_iterator iter = testKey.cbegin(); iter != testKey.cend(); iter++) {
