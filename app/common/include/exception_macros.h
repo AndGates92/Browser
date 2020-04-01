@@ -39,7 +39,7 @@
  */
 #define QEXCEPTION_ACTION(ACTION, ...)\
 	QString str(QString::null); \
-	QTextStream(&str) << __VA_ARGS__; \
+	QTextStream(&str) << "[" << __DATE__ << " " << __TIME__ << "] Exception caught on file " << __FILE__ << " at line " << __LINE__ << ": " << __VA_ARGS__; \
 	ACTION browser_exception::BrowserException(str);
 
 /** @} */ // End of ExceptionMacrosGroup group

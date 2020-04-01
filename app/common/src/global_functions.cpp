@@ -56,7 +56,7 @@ std::string global_functions::readFile(const std::string & filename) {
 			// flush() method returns a non-const reference to std::ostream
 			errorCodeOut.flush() << errorCode;
 			const std::string errorCodeStr(errorCodeOut.str());
-			QEXCEPTION_ACTION(throw, "Caught exception std::ifstream::failure while opening or reading content from file " << filename.c_str() << ".\nMessage: " << e.what() << ".\nError code: " << errorCodeStr.c_str());
+			QEXCEPTION_ACTION(throw, "Unqble to open or read content from file " << filename.c_str() << ".\nMessage: " << e.what() << ".\nError code: " << errorCodeStr.c_str());
 		}
 	}
 

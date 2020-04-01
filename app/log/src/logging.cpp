@@ -49,6 +49,33 @@ void logging::handler(QtMsgType type, const QMessageLogContext & context, const 
 
 	QString info_str("");
 
+	info_str.append("[");
+	info_str.append(__DATE__);
+	info_str.append(" ");
+	info_str.append(__TIME__);
+	info_str.append("] ");
+
+	switch(type) {
+		case QtDebugMsg:
+			info_str.append("DEBUG ");
+			break;
+		case QtInfoMsg:
+			info_str.append("INFO ");
+			break;
+		case QtWarningMsg:
+			info_str.append("WARNING ");
+			break;
+		case QtCriticalMsg:
+			info_str.append("CRITICAL ");
+			break;
+		case QtFatalMsg:
+			info_str.append("FATAL ");
+			break;
+		default:
+			info_str.append("UNKNOWN TYPE ");
+			break;
+	}
+
 	// CategoryFunction
 	if (context.category != Q_NULLPTR) {
 		info_str.append("[");
@@ -73,23 +100,7 @@ void logging::handler(QtMsgType type, const QMessageLogContext & context, const 
 
 	QTextStream ologfile(&logfile);
 
-	switch(type) {
-		case QtDebugMsg:
-			ologfile << "Debug" << info_str << " " << message << endl;
-			break;
-		case QtInfoMsg:
-			ologfile << "Info" << info_str << " " << message <<  endl;
-			break;
-		case QtWarningMsg:
-			ologfile << "Warning" << info_str << " " << message << endl;
-			break;
-		case QtCriticalMsg:
-			ologfile << "Critical" << info_str << " " << message << endl;
-			break;
-		case QtFatalMsg:
-			ologfile << "Fatal" << info_str << " " << message << endl;
-			break;
-	}
+	ologfile << info_str << " " << message << endl;
 
 	logfile.close();
 
