@@ -94,11 +94,6 @@ void main_window_ctrl_tab::MainWindowCtrlTab::connectSignals() {
 	connect(this->moveRightKey, &QShortcut::activated, this, &main_window_ctrl_tab::MainWindowCtrlTab::setUpMoveRight);
 	connect(this->refreshUrlKey, &QShortcut::activated, this, &main_window_ctrl_tab::MainWindowCtrlTab::setUpRefreshTabUrl);
 
-//	connect(this->windowCore->tabs, &main_window_tab_widget::MainWindowTabWidget::currentChanged, this, &main_window_ctrl_tab::MainWindowCtrlTab::updateContent);
-	// Update info bar
-	connect(this->windowCore->tabs, &main_window_tab_widget::MainWindowTabWidget::currentChanged, this, &main_window_ctrl_tab::MainWindowCtrlTab::updateInfoSlot);
-	connect(this->windowCore->tabs, &main_window_tab_widget::MainWindowTabWidget::tabCloseRequested, this, &main_window_ctrl_tab::MainWindowCtrlTab::updateInfoSlot);
-
 	// open tab action (from fileMenu)
 	connect(this->windowCore->topMenuBar->getFileMenu()->openTabAction, &QAction::triggered, this, &main_window_ctrl_tab::MainWindowCtrlTab::setUpOpenNewTab);
 
@@ -726,16 +721,6 @@ QString main_window_ctrl_tab::MainWindowCtrlTab::createUrl(const QString & searc
 
 	return url;
 }
-
-#pragma GCC diagnostic push
-#pragma GCC diagnostic ignored "-Wunused-parameter"
-// Function connected to both currentChanged and tabCloseRequested signals
-// In the case of currentChanged signal, index is the current tab
-// In the case of tabCloseRequested signal, index is the closed tab
-void main_window_ctrl_tab::MainWindowCtrlTab::updateInfoSlot(const int & index) {
-	this->updateInfo();
-}
-#pragma GCC diagnostic pop
 
 void main_window_ctrl_tab::MainWindowCtrlTab::printStrInCurrentTab(const QString & tabTitle, const QString & tabContent, const void * data) {
 	QINFO_PRINT(global_types::qinfo_level_e::ZERO, mainWindowCtrlTabTabs,  "Set text in center window with title " << tabTitle);

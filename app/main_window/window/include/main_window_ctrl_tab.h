@@ -223,16 +223,6 @@ namespace main_window_ctrl_tab {
 			void setUpCloseTab();
 
 			/**
-			 * @brief Function: void updateInfoSlot(const int & index)
-			 *
-			 * \param index: index of tab either closed or clicked
-			 *
-			 * This function is the slot to update the info label
-			 * Note: argument index is not used
-			 */
-			void updateInfoSlot(const int & index);
-
-			/**
 			 * @brief Function: void printStrInCurrentTab(const QString & tabTitle, const QString & tabContent, const void * data)
 			 *
 			 * \param tabTitle: tab title

@@ -77,6 +77,12 @@ void main_window_ctrl::MainWindowCtrl::connectSignals() {
 	connect(this->closeKey, &QShortcut::activated, this, &main_window_ctrl::MainWindowCtrl::closeWindow);
 	connect(this->windowCore->topMenuBar->getFileMenu()->exitAction, &QAction::triggered, this, &main_window_ctrl::MainWindowCtrl::closeWindow);
 
+	// Updates to the window depending on changes in tabs
+//	connect(this->windowCore->tabs, &main_window_tab_widget::MainWindowTabWidget::currentChanged, this, &main_window_ctrl::MainWindowCtrl::updateContent);
+	// Update info bar
+	connect(this->windowCore->tabs, &main_window_tab_widget::MainWindowTabWidget::currentChanged, this, &main_window_ctrl::MainWindowCtrl::updateInfoSlot);
+	connect(this->windowCore->tabs, &main_window_tab_widget::MainWindowTabWidget::tabCloseRequested, this, &main_window_ctrl::MainWindowCtrl::updateInfoSlot);
+
 }
 
 void main_window_ctrl::MainWindowCtrl::executeCommand(const QString & command) {
@@ -185,7 +191,7 @@ void main_window_ctrl::MainWindowCtrl::setStateAction(const main_window_shared_t
 			this->printUserInput(main_window_shared_types::text_action_e::CLEAR);
 			break;
 		default:
-			QINFO_PRINT(global_types::qinfo_level_e::ZERO, mainWindowCtrlTabUserInput,  "Window in state " << windowState << " Key pressed is " << event->text() << "(ID " << pressedKey << ")");
+			QINFO_PRINT(global_types::qinfo_level_e::ZERO, mainWindowCtrlUserInput,  "Window in state " << windowState << " Key pressed is " << event->text() << "(ID " << pressedKey << ")");
 			break;
 	}
 }
@@ -200,3 +206,12 @@ void main_window_ctrl::MainWindowCtrl::closeWindow() {
 	emit this->closeWindowSignal();
 }
 
+#pragma GCC diagnostic push
+#pragma GCC diagnostic ignored "-Wunused-parameter"
+// Function connected to both currentChanged and tabCloseRequested signals
+// In the case of currentChanged signal, index is the current tab
+// In the case of tabCloseRequested signal, index is the closed tab
+void main_window_ctrl::MainWindowCtrl::updateInfoSlot(const int & index) {
+	this->updateInfo();
+}
+#pragma GCC diagnostic pop
