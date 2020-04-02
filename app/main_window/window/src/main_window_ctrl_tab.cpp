@@ -192,7 +192,7 @@ int main_window_ctrl_tab::MainWindowCtrlTab::addNewTab(const QString & search, c
 	return tabIndex;
 }
 
-void FindTabContent(const int & index, const QString & search, const bool & reverse, const bool & caseSensitive) {
+void main_window_ctrl_tab::MainWindowCtrlTab::FindTabContent(const int & index, const QString & search, const bool & reverse, const bool & caseSensitive) {
 
 	QWebEngineView * currentTabView = dynamic_cast<QWebEngineView *>(this->windowCore->tabs->widget(index));
 	QWebEnginePage * currentTabPage = currentTabView->page();
@@ -202,21 +202,21 @@ void FindTabContent(const int & index, const QString & search, const bool & reve
 	auto findCallback = [&](bool found) {
 		QINFO_PRINT(global_types::qinfo_level_e::ZERO, mainWindowCtrlTabTabs,  "DEBUG Callback find");
 		if (found) {
-			QMessageBox::information(currentTabPage,  QString(), QString("DADA"), QMessageBox::NoButton, QMessageBox::NoButton);
+			QMessageBox::information(currentTabView,  QString(), QString("DADA"), QMessageBox::NoButton, QMessageBox::NoButton);
 			QINFO_PRINT(global_types::qinfo_level_e::ZERO, mainWindowCtrlTabTabs,  "DEBUG Found");
 		} else {
-			QMessageBox::information(currentTabPage,  QString(), QString("NOT DADA"), QMessageBox::NoButton, QMessageBox::NoButton);
+			QMessageBox::information(currentTabView,  QString(), QString("NOT DADA"), QMessageBox::NoButton, QMessageBox::NoButton);
 			QINFO_PRINT(global_types::qinfo_level_e::ZERO, mainWindowCtrlTabTabs,  "DEBUG not Found");
 		}
 	};
 
 	// No flag set by default
 	// Available search flags are:
-	// - QWebEnginePage::FindBackwards
+	// - QWebEnginePage::FindBackward
 	// - QWebEnginePage::FindCaseSensitively
 	QWebEnginePage::FindFlags options = QWebEnginePage::FindFlag(0);
 	if (reverse == true) {
-		options |= QWebEnginePage::FindBackwards;
+		options |= QWebEnginePage::FindBackward;
 	}
 
 	if (caseSensitive == true) {
