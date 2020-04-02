@@ -13,6 +13,8 @@
 // Required by qInfo
 #include <qt5/QtCore/QtDebug>
 
+#include <qt5/QtWidgets/QMessageBox>
+
 #include "key_sequence.h"
 #include "main_window_ctrl_tab.h"
 #include "exception_macros.h"
@@ -193,6 +195,47 @@ int main_window_ctrl_tab::MainWindowCtrlTab::addNewTab(const QString & search, c
 	this->updateInfo();
 
 	return tabIndex;
+}
+
+void FindTabContent(const int & index, const QString & search, const bool & reverse, const bool & caseSensitive) {
+
+	QWebEngineView * currentTabView = dynamic_cast<QWebEngineView *>(this->windowCore->tabs->widget(index));
+	QWebEnginePage * currentTabPage = currentTabView->page();
+	QINFO_PRINT(global_types::qinfo_level_e::ZERO, mainWindowCtrlTabTabs,  "DEBUG Searching " << search);
+
+	// Declare here the callback to improve readability
+	auto findCallback = [&](bool found) {
+		QINFO_PRINT(global_types::qinfo_level_e::ZERO, mainWindowCtrlTabTabs,  "DEBUG Callback find");
+		if (found) {
+			QMessageBox::information(currentTabPage,  QString(), QString("DADA"), QMessageBox::NoButton, QMessageBox::NoButton);
+			QINFO_PRINT(global_types::qinfo_level_e::ZERO, mainWindowCtrlTabTabs,  "DEBUG Found");
+		} else {
+			QMessageBox::information(currentTabPage,  QString(), QString("NOT DADA"), QMessageBox::NoButton, QMessageBox::NoButton);
+			QINFO_PRINT(global_types::qinfo_level_e::ZERO, mainWindowCtrlTabTabs,  "DEBUG not Found");
+		}
+	};
+
+	// No flag set by default
+	// Available search flags are:
+	// - QWebEnginePage::FindBackwards
+	// - QWebEnginePage::FindCaseSensitively
+	QWebEnginePage::FindFlags options = QWebEnginePage::FindFlag(0);
+	if (reverse == true) {
+		options |= QWebEnginePage::FindBackwards;
+	}
+
+	if (caseSensitive == true) {
+		options |= QWebEnginePage::FindCaseSensitively;
+	}
+
+	currentTabPage->findText(search, options,
+		[&](bool found) {
+			findCallback(found);
+		}
+	);
+
+	QINFO_PRINT(global_types::qinfo_level_e::ZERO, mainWindowCtrlTabTabs,  "DEBUG Selection " << currentTabView->selectedText());
+
 }
 
 void main_window_ctrl_tab::MainWindowCtrlTab::newSearchTab(const int & index, const QString & search) {

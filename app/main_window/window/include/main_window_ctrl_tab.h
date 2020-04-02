@@ -169,6 +169,18 @@ namespace main_window_ctrl_tab {
 		private slots:
 
 			/**
+			 * @brief Function: void FindTabContent(const int & index, const QString & search, const bool & reverse, const bool & caseSensitive)
+			 *
+			 * \param index: index of the tab to search text from.
+			 * \param search: text to search.
+			 * \param reverse: true if searching in the reverse direction, false otherwise.
+			 * \param caseSensitive: true if case sensitive search, false otherwise.
+			 *
+			 * This function searches text in a webpage
+			 */
+			void FindTabContent(const int & index, const QString & search, const bool & reverse, const bool & caseSensitive);
+
+			/**
 			 * @brief Function: void setUpRefreshTabUrl()
 			 *
 			 * This function refresh the url in a tab
