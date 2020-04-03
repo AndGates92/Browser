@@ -41,7 +41,7 @@ void main_window_web_engine_search::MainWindowWebEngineSearch::FindTabContent(co
 		QINFO_PRINT(global_types::qinfo_level_e::ZERO, mainWindowWebEngineSearchFind,  "DEBUG Searching " << search);
 
 		// Declare here the callback to improve readability
-		auto findCallback = [&](bool found) {
+		auto wrapperCallback = [&](bool found) {
 			QINFO_PRINT(global_types::qinfo_level_e::ZERO, mainWindowWebEngineSearchFind,  "DEBUG Callback find");
 			if (found) {
 				QMessageBox::information(currentTabView,  QString(), QString("DADA"), QMessageBox::NoButton, QMessageBox::NoButton);
@@ -69,7 +69,7 @@ void main_window_web_engine_search::MainWindowWebEngineSearch::FindTabContent(co
 
 		currentTabPage->findText(search, options,
 			[&](bool found) {
-				findCallback(found);
+				wrapperCallback(found);
 			}
 		);
 
