@@ -52,7 +52,7 @@ main_window_tab_widget::MainWindowTabWidget::~MainWindowTabWidget() {
 	this->tabData.clear();
 }
 
-int main_window_tab_widget::MainWindowTabWidget::addTab(QWidget * page, const QString & label, const main_window_shared_types::tab_type_e & type, const void * data) {
+int main_window_tab_widget::MainWindowTabWidget::addTab(QWidget * page, const QString & label, const main_window_shared_types::tab_type_e & type, const void * data, const QIcon & icon) {
 	QINFO_PRINT(global_types::qinfo_level_e::ZERO, mainWindowTabWidgetTabs,  "Open tab with label " << label);
 
 	try {
@@ -60,25 +60,12 @@ int main_window_tab_widget::MainWindowTabWidget::addTab(QWidget * page, const QS
 	} catch (const std::bad_alloc & badAllocE) {
 		QEXCEPTION_ACTION(throw, badAllocE.what());
 	}
-	const int tabIndex = tab_widget::TabWidget::addTab(page, label);
+	const int tabIndex = tab_widget::TabWidget::addTab(page, label, icon);
 
 	return tabIndex;
 }
 
-int main_window_tab_widget::MainWindowTabWidget::addTab(QWidget * page, const QIcon & icon, const QString & label, const main_window_shared_types::tab_type_e & type, const void * data) {
-	QINFO_PRINT(global_types::qinfo_level_e::ZERO, mainWindowTabWidgetTabs,  "Open tab with label " << label);
-
-	try {
-		this->tabData.emplace_back(main_window_tab_data::MainWindowTabData::makeTabData(type, data));
-	} catch (const std::bad_alloc & badAllocE) {
-		QEXCEPTION_ACTION(throw, badAllocE.what());
-	}
-	const int tabIndex = tab_widget::TabWidget::addTab(page, icon, label);
-
-	return tabIndex;
-}
-
-int main_window_tab_widget::MainWindowTabWidget::insertTab(const int & index, QWidget * page, const QString & label, const main_window_shared_types::tab_type_e & type, const void * data) {
+int main_window_tab_widget::MainWindowTabWidget::insertTab(const int & index, QWidget * page, const QString & label, const main_window_shared_types::tab_type_e & type, const void * data, const QIcon & icon) {
 	QINFO_PRINT(global_types::qinfo_level_e::ZERO, mainWindowTabWidgetTabs,  "Insert tab with label " << label << " at position " << index);
 
 	try {
@@ -89,23 +76,7 @@ int main_window_tab_widget::MainWindowTabWidget::insertTab(const int & index, QW
 		QEXCEPTION_ACTION(throw, badAllocE.what());
 	}
 
-	const int tabIndex = tab_widget::TabWidget::insertTab(index, page, label);
-
-	return tabIndex;
-}
-
-int main_window_tab_widget::MainWindowTabWidget::insertTab(const int & index, QWidget * page, const QIcon & icon, const QString & label, const main_window_shared_types::tab_type_e & type, const void * data) {
-	QINFO_PRINT(global_types::qinfo_level_e::ZERO, mainWindowTabWidgetTabs,  "Insert tab with label " << label << " at position " << index);
-
-	try {
-		std::list<main_window_tab_data::MainWindowTabData>::iterator iter = this->tabData.begin();
-		std::advance(iter, index);
-		this->tabData.insert(iter, main_window_tab_data::MainWindowTabData::makeTabData(type, data));
-	} catch (const std::bad_alloc & badAllocE) {
-		QEXCEPTION_ACTION(throw, badAllocE.what());
-	}
-
-	const int tabIndex = tab_widget::TabWidget::insertTab(index, page, icon, label);
+	const int tabIndex = tab_widget::TabWidget::insertTab(index, page, label, icon);
 
 	return tabIndex;
 }
@@ -188,16 +159,16 @@ void main_window_tab_widget::MainWindowTabWidget::changeTabType(const int & inde
 	}
 }
 
-int main_window_tab_widget::MainWindowTabWidget::insertEmptyTab(const int & index, const QString & label, const main_window_shared_types::tab_type_e & type, const void * data) {
+int main_window_tab_widget::MainWindowTabWidget::insertEmptyTab(const int & index, const QString & label, const main_window_shared_types::tab_type_e & type, const void * data, const QIcon & icon) {
 
 	int tabIndex = -1;
 
 	if (type == main_window_shared_types::tab_type_e::WEB_ENGINE) {
 		main_window_tab::MainWindowTab * centerWindow = new main_window_tab::MainWindowTab(this->parentWidget());
-		tabIndex = this->insertTab(index, centerWindow, label, type, data);
+		tabIndex = this->insertTab(index, centerWindow, label, type, data, icon);
 	} else if (type == main_window_shared_types::tab_type_e::LABEL) {
 		QLabel * centerWindow = new QLabel(this->parentWidget());
-		tabIndex = this->insertTab(index, centerWindow, label, type, data);
+		tabIndex = this->insertTab(index, centerWindow, label, type, data, icon);
 	} else {
 		QEXCEPTION_ACTION(throw, "Unable to insert new empty tab as the provided tab type " << type << " is not recognized");
 	}
@@ -205,50 +176,16 @@ int main_window_tab_widget::MainWindowTabWidget::insertEmptyTab(const int & inde
 	return tabIndex;
 }
 
-int main_window_tab_widget::MainWindowTabWidget::insertEmptyTab(const int & index, const QIcon & icon, const QString & label, const main_window_shared_types::tab_type_e & type, const void * data) {
+int main_window_tab_widget::MainWindowTabWidget::addEmptyTab(const QString & label, const main_window_shared_types::tab_type_e & type, const void * data, const QIcon & icon) {
 
 	int tabIndex = -1;
 
 	if (type == main_window_shared_types::tab_type_e::WEB_ENGINE) {
 		main_window_tab::MainWindowTab * centerWindow = new main_window_tab::MainWindowTab(this->parentWidget());
-		tabIndex = this->insertTab(index, centerWindow, icon, label, type, data);
+		tabIndex = this->addTab(centerWindow, label, type, data, icon);
 	} else if (type == main_window_shared_types::tab_type_e::LABEL) {
 		QLabel * centerWindow = new QLabel(this->parentWidget());
-		tabIndex = this->insertTab(index, centerWindow, icon, label, type, data);
-	} else {
-		QEXCEPTION_ACTION(throw, "Unable to insert new empty tab as the provided tab type " << type << " is not recognized");
-	}
-
-	return tabIndex;
-}
-
-int main_window_tab_widget::MainWindowTabWidget::addEmptyTab(const QString & label, const main_window_shared_types::tab_type_e & type, const void * data) {
-
-	int tabIndex = -1;
-
-	if (type == main_window_shared_types::tab_type_e::WEB_ENGINE) {
-		main_window_tab::MainWindowTab * centerWindow = new main_window_tab::MainWindowTab(this->parentWidget());
-		tabIndex = this->addTab(centerWindow, label, type, data);
-	} else if (type == main_window_shared_types::tab_type_e::LABEL) {
-		QLabel * centerWindow = new QLabel(this->parentWidget());
-		tabIndex = this->addTab(centerWindow, label, type, data);
-	} else {
-		QEXCEPTION_ACTION(throw, "Unable to add new empty tab as the provided tab type " << type << " is not recognized");
-	}
-
-	return tabIndex;
-}
-
-int main_window_tab_widget::MainWindowTabWidget::addEmptyTab(const QIcon & icon, const QString & label, const main_window_shared_types::tab_type_e & type, const void * data) {
-
-	int tabIndex = -1;
-
-	if (type == main_window_shared_types::tab_type_e::WEB_ENGINE) {
-		main_window_tab::MainWindowTab * centerWindow = new main_window_tab::MainWindowTab(this->parentWidget());
-		tabIndex = this->addTab(centerWindow, icon, label, type, data);
-	} else if (type == main_window_shared_types::tab_type_e::LABEL) {
-		QLabel * centerWindow = new QLabel(this->parentWidget());
-		tabIndex = this->addTab(centerWindow, label, type, data);
+		tabIndex = this->addTab(centerWindow, label, type, data, icon);
 	} else {
 		QEXCEPTION_ACTION(throw, "Unable to add new empty tab as the provided tab type " << type << " is not recognized");
 	}

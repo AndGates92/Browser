@@ -75,56 +75,31 @@ namespace tab_widget {
 			virtual ~TabWidget();
 
 			/**
-			 * @brief Function: int addTab(QWidget * page, const QString & label)
+			 * @brief Function: int addTab(QWidget * page, const QString & label, const QIcon & icon = QIcon())
 			 *
 			 * \param page: widget to fill in
 			 * \param label: label of the tab
+			 * \param icon: icon of the tab
 			 *
 			 * \return tab index
 			 *
 			 * add tab to tab widget
 			 */
-			int addTab(QWidget * page, const QString & label);
+			int addTab(QWidget * page, const QString & label, const QIcon & icon = QIcon());
 
 			/**
-			 * @brief Function: int addTab(QWidget * page, const QIcon & icon, const QString & label)
-			 *
-			 * \param page: widget to fill in
-			 * \param icon: icon of the tab
-			 * \param label: label of the tab
-			 *
-			 * \return tab index
-			 *
-			 * add tab to tab widget
-			 */
-			int addTab(QWidget * page, const QIcon & icon, const QString & label);
-
-			/**
-			 * @brief Function: int insertTab(const int & index, QWidget * page, const QString & label)
+			 * @brief Function: int insertTab(const int & index, QWidget * page, const QString & label, const QIcon & icon = QIcon())
 			 *
 			 * \param index: index to insert tab to
 			 * \param page: widget to fill in
 			 * \param label: label of the tab
+			 * \param icon: icon of the tab
 			 *
 			 * \return tab index
 			 *
 			 * add tab to tab widget at index index
 			 */
-			int insertTab(const int & index, QWidget * page, const QString & label);
-
-			/**
-			 * @brief Function: int insertTab(const int & index, QWidget * page, const QIcon & icon, const QString & label)
-			 *
-			 * \param index: index to insert tab to
-			 * \param page: widget to fill in
-			 * \param icon: icon of the tab
-			 * \param label: label of the tab
-			 *
-			 * \return tab index
-			 *
-			 * add tab to tab widget at index index
-			 */
-			int insertTab(const int & index, QWidget * page, const QIcon & icon, const QString & label);
+			int insertTab(const int & index, QWidget * page, const QString & label, const QIcon & icon = QIcon());
 
 			/**
 			 * @brief Function: void removeTab(const int & index)

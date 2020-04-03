@@ -68,35 +68,33 @@ void tab_widget::TabWidget::keyPressEvent(QKeyEvent * event) {
 
 }
 
-int tab_widget::TabWidget::addTab(QWidget * page, const QString & label) {
+int tab_widget::TabWidget::addTab(QWidget * page, const QString & label, const QIcon & icon) {
 	QINFO_PRINT(global_types::qinfo_level_e::ZERO, tabWidgetTabs,  "Open tab with label " << label);
-	int tabIndex = QTabWidget::addTab(page, label);
+
+	int tabIndex = -1;
+
+	if (icon.isNull()) {
+		tabIndex = QTabWidget::addTab(page, icon, label);
+	} else {
+		tabIndex = QTabWidget::addTab(page, label);
+	}
+
 	this->setVisibleAttribute();
 
 	return tabIndex;
 }
 
-int tab_widget::TabWidget::addTab(QWidget * page, const QIcon & icon, const QString & label) {
-	QINFO_PRINT(global_types::qinfo_level_e::ZERO, tabWidgetTabs,  "Open tab with label " << label);
-	int tabIndex = QTabWidget::addTab(page, icon, label);
-	this->setVisibleAttribute();
-
-	return tabIndex;
-}
-
-int tab_widget::TabWidget::insertTab(const int & index, QWidget * page, const QString & label) {
+int tab_widget::TabWidget::insertTab(const int & index, QWidget * page, const QString & label, const QIcon & icon) {
 	QINFO_PRINT(global_types::qinfo_level_e::ZERO, tabWidgetTabs,  "Insert tab with label " << label << " at position " << index);
 
-	int tabIndex = QTabWidget::insertTab(index, page, label);
-	this->setVisibleAttribute();
+	int tabIndex = -1;
 
-	return tabIndex;
-}
+	if (icon.isNull()) {
+		tabIndex = QTabWidget::insertTab(index, page, icon, label);
+	} else {
+		tabIndex = QTabWidget::insertTab(index, page, label);
+	}
 
-int tab_widget::TabWidget::insertTab(const int & index, QWidget * page, const QIcon & icon, const QString & label) {
-	QINFO_PRINT(global_types::qinfo_level_e::ZERO, tabWidgetTabs,  "Insert tab with label " << label << " at position " << index);
-
-	int tabIndex = QTabWidget::insertTab(index, page, icon, label);
 	this->setVisibleAttribute();
 
 	return tabIndex;

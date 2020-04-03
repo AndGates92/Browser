@@ -11,7 +11,6 @@
 #include <qt5/QtGui/QKeyEvent>
 
 #include "logging_macros.h"
-#include "main_window_web_engine_page.h"
 #include "main_window_web_engine_view.h"
 
 // Categories
