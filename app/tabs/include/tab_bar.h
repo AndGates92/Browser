@@ -55,7 +55,7 @@ namespace tab_bar {
 
 		public:
 			/**
-			 * @brief Function: explicit TabBar(QWidget * parent = Q_NULLPTR)
+			 * @brief Function: explicit TabBar(QWidget * parent = Q_NULLPTR, int width = tab_bar::minWidth)
 			 *
 			 * \param parent: parent widget
 			 * \param width: width of the tab bar

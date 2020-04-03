@@ -14,10 +14,10 @@
 #include <qt5/QtWidgets/QAction>
 #include <qt5/QtWidgets/QMenuBar>
 #include <qt5/QtWidgets/QWidget>
-#include <qt5/QtWebEngineWidgets/QWebEngineView>
 
 #include "main_window_shared_types.h"
 #include "main_window_ctrl_base.h"
+#include "main_window_web_engine_view.h"
 #include "constructor_macros.h"
 
 /** @defgroup MainWindowCtrlTabGroup Main Window Control Tab Doxygen Group
