@@ -16,8 +16,10 @@
 // Categories
 Q_LOGGING_CATEGORY(mainWindowTabOverall, "mainWindowTab.overall", MSG_TYPE_LEVEL)
 
-main_window_tab::MainWindowTab::MainWindowTab(QWidget * parent): tab::Tab(parent), widgetView(new main_window_web_engine_view::MainWindowWebEngineView(this)) {
+main_window_tab::MainWindowTab::MainWindowTab(QWidget * parent): tab::Tab(parent) {
 	QINFO_PRINT(global_types::qinfo_level_e::ZERO, tabOverall,  "MainWindowTab constructor");
+
+	this->widgetView = new main_window_web_engine_view::MainWindowWebEngineView(this);
 
 }
 
