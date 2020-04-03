@@ -20,6 +20,7 @@
 #include "global_types.h"
 #include "constructor_macros.h"
 #include "main_window_web_engine_view.h"
+#include "main_window_web_engine_search.h"
 
 /** @defgroup TabGroup Tab Doxygen Group
  *  Tab functions and classes
@@ -58,6 +59,12 @@ namespace main_window_tab {
 			 *
 			 */
 			main_window_web_engine_view::MainWindowWebEngineView * widgetView;
+
+			/**
+			 * @brief seach class
+			 *
+			 */
+			main_window_web_engine_search::MainWindowWebEngineSearch * search;
 
 		protected:
 
