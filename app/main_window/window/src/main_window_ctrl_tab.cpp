@@ -717,14 +717,19 @@ void main_window_ctrl_tab::MainWindowCtrlTab::printStrInCurrentTab(const QString
 
 	QINFO_PRINT(global_types::qinfo_level_e::ZERO, mainWindowCtrlTabTabs, "Current tab index is " << currentTabIndex << " and the tab widget has " << tabCount << " tabs");
 
-	// Set tab title
-	tabWidget->setTabText(currentTabIndex, tabTitle);
-	QLabel * currentTabLabel = dynamic_cast<QLabel *>(tabWidget->widget(currentTabIndex, true));
+	try {
+		// Set tab title
+		tabWidget->setTabText(currentTabIndex, tabTitle);
+		QLabel * currentTabLabel = dynamic_cast<QLabel *>(tabWidget->widget(currentTabIndex, true));
 
-	currentTabLabel->setText(tabContent);
+		currentTabLabel->setText(tabContent);
 
-	this->updateContent(currentTabIndex);
+		this->updateContent(currentTabIndex);
 
-	// Disable events after updating tabs
-	tabWidget->setUpdatesEnabled(true);
+		// Disable events after updating tabs
+		tabWidget->setUpdatesEnabled(true);
+
+	} catch (const std::bad_cast & badCastE) {
+		QEXCEPTION_ACTION(throw, badCastE.what());
+	}
 }
