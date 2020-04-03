@@ -37,7 +37,7 @@ namespace web_engine_settings {
 			/**
 			 * @brief Function: explicit WebEngineSettings(QWebEngineSettings * settings = Q_NULLPTR)
 			 *
-			 * \param settings: settings of the settings
+			 * \param settings: settings to initialize the class width
 			 *
 			 * Web engine settings constructor
 			 */
@@ -91,6 +91,10 @@ namespace web_engine_settings {
 		protected:
 
 		private:
+			/**
+			 * @brief settings of the tab
+			 *
+			 */
 			QWebEngineSettings * settings;
 
 	};
