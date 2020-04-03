@@ -18,11 +18,10 @@
 Q_LOGGING_CATEGORY(webEngineProfileOverall, "webEngineProfile.overall", MSG_TYPE_LEVEL)
 
 web_engine_profile::WebEngineProfile * web_engine_profile::WebEngineProfile::defaultProfile() {
-	try {
 
+	try {
 		web_engine_profile::WebEngineProfile * profile = dynamic_cast<web_engine_profile::WebEngineProfile *>(QWebEngineProfile::defaultProfile());
 		return profile;
-
 	} catch (const std::bad_cast & badCastE) {
 		QEXCEPTION_ACTION(throw, badCastE.what());
 	}
