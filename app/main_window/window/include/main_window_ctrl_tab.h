@@ -17,7 +17,7 @@
 
 #include "main_window_shared_types.h"
 #include "main_window_ctrl_base.h"
-#include "main_window_web_engine_view.h"
+#include "main_window_tab.h"
 #include "constructor_macros.h"
 
 /** @defgroup MainWindowCtrlTabGroup Main Window Control Tab Doxygen Group

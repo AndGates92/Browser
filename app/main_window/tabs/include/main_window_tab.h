@@ -19,6 +19,7 @@
 #include "tab.h"
 #include "global_types.h"
 #include "constructor_macros.h"
+#include "main_window_web_engine_view.h"
 
 /** @defgroup TabGroup Tab Doxygen Group
  *  Tab functions and classes
@@ -51,6 +52,12 @@ namespace main_window_tab {
 			 * MainWindowTab destructor
 			 */
 			virtual ~MainWindowTab();
+
+			/**
+			 * @brief web engine view
+			 *
+			 */
+			main_window_web_engine_view::MainWindowWebEngineView * widgetView;
 
 		protected:
 

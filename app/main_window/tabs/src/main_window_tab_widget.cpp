@@ -14,7 +14,7 @@
 #include <qt5/QtCore/QtDebug>
 
 #include "main_window_tab_widget.h"
-#include "main_window_web_engine_view.h"
+#include "main_window_tab.h"
 #include "type_print_macros.h"
 #include "exception_macros.h"
 #include "global_functions.h"
@@ -193,7 +193,7 @@ int main_window_tab_widget::MainWindowTabWidget::insertEmptyTab(const int & inde
 	int tabIndex = -1;
 
 	if (type == main_window_shared_types::tab_type_e::WEB_ENGINE) {
-		main_window_web_engine_view::MainWindowWebEngineView * centerWindow = new main_window_web_engine_view::MainWindowWebEngineView(this->parentWidget());
+		main_window_tab::MainWindowTab * centerWindow = new main_window_tab::MainWindowTab(this->parentWidget());
 		tabIndex = this->insertTab(index, centerWindow, label, type, data);
 	} else if (type == main_window_shared_types::tab_type_e::LABEL) {
 		QLabel * centerWindow = new QLabel(this->parentWidget());
@@ -210,7 +210,7 @@ int main_window_tab_widget::MainWindowTabWidget::insertEmptyTab(const int & inde
 	int tabIndex = -1;
 
 	if (type == main_window_shared_types::tab_type_e::WEB_ENGINE) {
-		main_window_web_engine_view::MainWindowWebEngineView * centerWindow = new main_window_web_engine_view::MainWindowWebEngineView(this->parentWidget());
+		main_window_tab::MainWindowTab * centerWindow = new main_window_tab::MainWindowTab(this->parentWidget());
 		tabIndex = this->insertTab(index, centerWindow, icon, label, type, data);
 	} else if (type == main_window_shared_types::tab_type_e::LABEL) {
 		QLabel * centerWindow = new QLabel(this->parentWidget());
@@ -227,7 +227,7 @@ int main_window_tab_widget::MainWindowTabWidget::addEmptyTab(const QString & lab
 	int tabIndex = -1;
 
 	if (type == main_window_shared_types::tab_type_e::WEB_ENGINE) {
-		main_window_web_engine_view::MainWindowWebEngineView * centerWindow = new main_window_web_engine_view::MainWindowWebEngineView(this->parentWidget());
+		main_window_tab::MainWindowTab * centerWindow = new main_window_tab::MainWindowTab(this->parentWidget());
 		tabIndex = this->addTab(centerWindow, label, type, data);
 	} else if (type == main_window_shared_types::tab_type_e::LABEL) {
 		QLabel * centerWindow = new QLabel(this->parentWidget());
@@ -244,7 +244,7 @@ int main_window_tab_widget::MainWindowTabWidget::addEmptyTab(const QIcon & icon,
 	int tabIndex = -1;
 
 	if (type == main_window_shared_types::tab_type_e::WEB_ENGINE) {
-		main_window_web_engine_view::MainWindowWebEngineView * centerWindow = new main_window_web_engine_view::MainWindowWebEngineView(this->parentWidget());
+		main_window_tab::MainWindowTab * centerWindow = new main_window_tab::MainWindowTab(this->parentWidget());
 		tabIndex = this->addTab(centerWindow, icon, label, type, data);
 	} else if (type == main_window_shared_types::tab_type_e::LABEL) {
 		QLabel * centerWindow = new QLabel(this->parentWidget());

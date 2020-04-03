@@ -194,7 +194,8 @@ int main_window_ctrl_tab::MainWindowCtrlTab::addNewTab(const QString & search, c
 
 void main_window_ctrl_tab::MainWindowCtrlTab::FindTabContent(const int & index, const QString & search, const bool & reverse, const bool & caseSensitive) {
 
-	main_window_web_engine_view::MainWindowWebEngineView * currentTabView = dynamic_cast<main_window_web_engine_view::MainWindowWebEngineView *>(this->windowCore->tabs->widget(index));
+	main_window_tab::MainWindowTab * currentTab = dynamic_cast<main_window_tab::MainWindowTab *>(this->windowCore->tabs->widget(index));
+	main_window_web_engine_view::MainWindowWebEngineView * currentTabView = currentTab->widgetView;
 	QWebEnginePage * currentTabPage = currentTabView->page();
 	QINFO_PRINT(global_types::qinfo_level_e::ZERO, mainWindowCtrlTabTabs,  "DEBUG Searching " << search);
 
@@ -244,7 +245,8 @@ void main_window_ctrl_tab::MainWindowCtrlTab::newSearchTab(const int & index, co
 	this->windowCore->tabs->setTabText(index, tabTitle);
 
 	try {
-		main_window_web_engine_view::MainWindowWebEngineView * currentTabView = dynamic_cast<main_window_web_engine_view::MainWindowWebEngineView *>(this->windowCore->tabs->widget(index));
+		main_window_tab::MainWindowTab * currentTab = dynamic_cast<main_window_tab::MainWindowTab *>(this->windowCore->tabs->widget(index));
+		main_window_web_engine_view::MainWindowWebEngineView * currentTabView = currentTab->widgetView;
 		currentTabView->setUrl(QUrl(Url));
 	} catch (const std::bad_cast & badCastE) {
 		QEXCEPTION_ACTION(throw, badCastE.what());
@@ -268,7 +270,8 @@ void main_window_ctrl_tab::MainWindowCtrlTab::updateContent(const int & index) {
 		QString contentStr (QString::null);
 		if (tabType == main_window_shared_types::tab_type_e::WEB_ENGINE) {
 			try {
-				const main_window_web_engine_view::MainWindowWebEngineView * currentTabView = dynamic_cast<main_window_web_engine_view::MainWindowWebEngineView *>(this->windowCore->tabs->widget(index));
+				const main_window_tab::MainWindowTab * currentTab = dynamic_cast<main_window_tab::MainWindowTab *>(this->windowCore->tabs->widget(index));
+				const main_window_web_engine_view::MainWindowWebEngineView * currentTabView = currentTab->widgetView;
 				const QUrl websiteUrl = currentTabView->url();
 				contentStr = websiteUrl.toDisplayString(QUrl::FullyDecoded);
 			} catch (const std::bad_cast & badCastE) {
@@ -289,7 +292,8 @@ void main_window_ctrl_tab::MainWindowCtrlTab::refreshUrl(const int & tabIndex) {
 	const main_window_shared_types::tab_type_e tabType = this->windowCore->tabs->getTabType(tabIndex);
 	if (tabType == main_window_shared_types::tab_type_e::WEB_ENGINE) {
 		try {
-			main_window_web_engine_view::MainWindowWebEngineView * currentTabView = dynamic_cast<main_window_web_engine_view::MainWindowWebEngineView *>(this->windowCore->tabs->widget(tabIndex));
+			main_window_tab::MainWindowTab * currentTab = dynamic_cast<main_window_tab::MainWindowTab *>(this->windowCore->tabs->widget(tabIndex));
+			main_window_web_engine_view::MainWindowWebEngineView * currentTabView = currentTab->widgetView;
 			const QUrl currUrl = currentTabView->url();
 
 			const QString urlStr (currUrl.toDisplayString(QUrl::FullyDecoded));
@@ -338,7 +342,8 @@ void main_window_ctrl_tab::MainWindowCtrlTab::connectProgressBar(const int & tab
 	QINFO_PRINT(global_types::qinfo_level_e::ZERO, mainWindowCtrlTabTabs,  "Connect signals from " << tabType << " object of tab " << tabIndex << " to progress bar slots");
 	if (tabType == main_window_shared_types::tab_type_e::WEB_ENGINE) {
 		try {
-			const main_window_web_engine_view::MainWindowWebEngineView * currentTabView = dynamic_cast<main_window_web_engine_view::MainWindowWebEngineView *>(this->windowCore->tabs->widget(tabIndex));
+			const main_window_tab::MainWindowTab * currentTab = dynamic_cast<main_window_tab::MainWindowTab *>(this->windowCore->tabs->widget(tabIndex));
+			const main_window_web_engine_view::MainWindowWebEngineView * currentTabView = currentTab->widgetView;
 			const progress_bar::ProgressBar * loadBar = this->windowCore->bottomStatusBar->getLoadBar();
 
 			connect(currentTabView, &main_window_web_engine_view::MainWindowWebEngineView::loadStarted, loadBar, &progress_bar::ProgressBar::startLoading);
@@ -358,7 +363,8 @@ void main_window_ctrl_tab::MainWindowCtrlTab::disconnectProgressBar(const int & 
 	QINFO_PRINT(global_types::qinfo_level_e::ZERO, mainWindowCtrlTabTabs,  "Disconnect signals from " << tabType << " object of tab " << tabIndex << " to progress bar slots");
 	if (tabType == main_window_shared_types::tab_type_e::WEB_ENGINE) {
 		try {
-			const main_window_web_engine_view::MainWindowWebEngineView * currentTabView = dynamic_cast<main_window_web_engine_view::MainWindowWebEngineView *>(this->windowCore->tabs->widget(tabIndex));
+			const main_window_tab::MainWindowTab * currentTab = dynamic_cast<main_window_tab::MainWindowTab *>(this->windowCore->tabs->widget(tabIndex));
+			const main_window_web_engine_view::MainWindowWebEngineView * currentTabView = currentTab->widgetView;
 			progress_bar::ProgressBar * loadBar = this->windowCore->bottomStatusBar->getLoadBar();
 
 			disconnect(currentTabView, &main_window_web_engine_view::MainWindowWebEngineView::loadStarted, loadBar, &progress_bar::ProgressBar::startLoading);
