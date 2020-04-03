@@ -12,14 +12,23 @@
 
 #include "logging_macros.h"
 #include "web_engine_profile.h"
+#include "exception_macros.h"
 
 // Categories
 Q_LOGGING_CATEGORY(webEngineProfileOverall, "webEngineProfile.overall", MSG_TYPE_LEVEL)
 
 web_engine_profile::WebEngineProfile * web_engine_profile::WebEngineProfile::defaultProfile() {
-	web_engine_profile::WebEngineProfile * profile = dynamic_cast<web_engine_profile::WebEngineProfile *>(QWebEngineProfile::defaultProfile());
+	try {
 
-	return profile;
+		web_engine_profile::WebEngineProfile * profile = dynamic_cast<web_engine_profile::WebEngineProfile *>(QWebEngineProfile::defaultProfile());
+		return profile;
+
+	} catch (const std::bad_cast & badCastE) {
+		QEXCEPTION_ACTION(throw, badCastE.what());
+	}
+
+	return Q_NULLPTR;
+
 }
 
 web_engine_profile::WebEngineProfile::WebEngineProfile(const QString & storageName, QObject * parent): QWebEngineProfile(storageName, parent) {
