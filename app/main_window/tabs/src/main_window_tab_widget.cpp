@@ -90,7 +90,7 @@ void main_window_tab_widget::MainWindowTabWidget::removeTab(const int & index) {
 void main_window_tab_widget::MainWindowTabWidget::deleteListElement(const int & index) {
 
 	const int tabDataSize = this->tabData.size();
-	QEXCEPTION_ACTION_COND(((index < 0) || (index >= tabDataSize)), throw,  "Index must be larger or equal to 0 and smaller than the number of elements in the QList " << tabDataSize << ". Got " << index << ".");
+	QEXCEPTION_ACTION_COND(((index < 0) || (index >= tabDataSize)), throw,  "Unable to delete list element as index must be larger or equal to 0 and smaller than the number of elements in the QList " << tabDataSize << ". Got " << index << ".");
 
 	if (this->tabData.empty() == false) {
 		std::list<main_window_tab_data::MainWindowTabData>::iterator iter = this->tabData.begin();
@@ -116,7 +116,7 @@ main_window_shared_types::tab_type_e main_window_tab_widget::MainWindowTabWidget
 	main_window_shared_types::tab_type_e tabType = main_window_shared_types::tab_type_e::UNKNOWN;
 
 	const int tabDataSize = this->tabData.size();
-	QEXCEPTION_ACTION_COND(((index < 0) || (index >= tabDataSize)), throw,  "Index must be larger or equal to 0 and smaller than the number of elements in the QList " << tabDataSize << ". Got " << index << ".");
+	QEXCEPTION_ACTION_COND(((index < 0) || (index >= tabDataSize)), throw,  "Unable to retrieve tab type as index must be larger or equal to 0 and smaller than the number of elements in the QList " << tabDataSize << ". Got " << index << ".");
 
 	if (this->tabData.empty() == false) {
 		std::list<main_window_tab_data::MainWindowTabData>::iterator iter = this->tabData.begin();
@@ -132,7 +132,7 @@ const void * main_window_tab_widget::MainWindowTabWidget::getTabData(const int &
 	const void * tabData = nullptr;
 
 	const int tabDataSize = this->tabData.size();
-	QEXCEPTION_ACTION_COND(((index < 0) || (index >= tabDataSize)), throw,  "Index must be larger or equal to 0 and smaller than the number of elements in the QList " << tabDataSize << ". Got " << index << ".");
+	QEXCEPTION_ACTION_COND(((index < 0) || (index >= tabDataSize)), throw,  "Unable to retrive tab data as index must be larger or equal to 0 and smaller than the number of elements in the QList " << tabDataSize << ". Got " << index << ".");
 
 	if (this->tabData.empty() == false) {
 		std::list<main_window_tab_data::MainWindowTabData>::iterator iter = this->tabData.begin();
