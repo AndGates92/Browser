@@ -58,32 +58,20 @@ key_info::KeyInfo & key_info::KeyInfo::operator=(const key_info::KeyInfo & rhs) 
 	return *this;
 }
 
-key_info::KeyInfo::KeyInfo(key_info::KeyInfo && rhs) : key(std::move(rhs.key)), modifier(std::move(rhs.modifier)) {
+key_info::KeyInfo::KeyInfo(key_info::KeyInfo && rhs) : key(std::exchange(rhs.key, Qt::Key_unknown)), modifier(std::exchange(rhs.modifier, Qt::NoModifier)) {
 
 	QINFO_PRINT(global_types::qinfo_level_e::ZERO, keyInfoOverall,  "Move constructor key info");
 
-	rhs.key = Qt::Key_unknown;
-	rhs.modifier = Qt::NoModifier;
 }
 
 key_info::KeyInfo & key_info::KeyInfo::operator=(key_info::KeyInfo && rhs) {
 
 	QINFO_PRINT(global_types::qinfo_level_e::ZERO, keyInfoOverall,  "Move assignment operator for key info");
 
-	// If rhs points to the same address as this, then return this
-	if (&rhs == this) {
-		return *this;
+	if (&rhs != this) {
+		this->key = std::exchange(rhs.key, Qt::Key_unknown);
+		this->modifier = std::exchange(rhs.modifier, Qt::NoModifier);
 	}
-
-	if (this->key != rhs.key) {
-		this->key = std::move(rhs.key);
-	}
-	rhs.key = Qt::Key_unknown;
-
-	if (this->modifier != rhs.modifier) {
-		this->modifier = std::move(rhs.modifier);
-	}
-	rhs.modifier = Qt::NoModifier;
 
 	return *this;
 }

@@ -42,7 +42,7 @@ main_window_base::MainWindowBase & main_window_base::MainWindowBase::operator=(c
 	return *this;
 }
 
-main_window_base::MainWindowBase::MainWindowBase(main_window_base::MainWindowBase && rhs) : windowCore(std::move(rhs.windowCore)) {
+main_window_base::MainWindowBase::MainWindowBase(main_window_base::MainWindowBase && rhs) : windowCore(std::exchange(rhs.windowCore, QSharedPointer<main_window_core::MainWindowCore>())) {
 	QINFO_PRINT(global_types::qinfo_level_e::ZERO, mainWindowBaseOverall,  "Move constructor main window base");
 }
 
@@ -59,7 +59,7 @@ main_window_base::MainWindowBase & main_window_base::MainWindowBase::operator=(m
 		if (this->windowCore.isNull() == false) {
 			this->windowCore.reset();
 		}
-		this->windowCore = std::move(rhs.windowCore);
+		this->windowCore = std::exchange(rhs.windowCore, QSharedPointer<main_window_core::MainWindowCore>());
 	}
 
 	return *this;

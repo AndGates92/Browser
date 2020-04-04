@@ -45,7 +45,7 @@ json_parser::JsonParser & json_parser::JsonParser::operator=(const json_parser::
 	return *this;
 }
 
-json_parser::JsonParser::JsonParser(json_parser::JsonParser && rhs) : json_wrapper::JsonWrapper(std::move(rhs)) {
+json_parser::JsonParser::JsonParser(json_parser::JsonParser && rhs) : json_wrapper::JsonWrapper(rhs) {
 
 	QINFO_PRINT(global_types::qinfo_level_e::ZERO, jsonParserOverall,  "Move constructor json parser");
 }

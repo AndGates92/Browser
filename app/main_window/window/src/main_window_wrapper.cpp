@@ -41,29 +41,21 @@ main_window_wrapper::MainWindowWrapper & main_window_wrapper::MainWindowWrapper:
 	return *this;
 }
 
-main_window_wrapper::MainWindowWrapper::MainWindowWrapper(main_window_wrapper::MainWindowWrapper && rhs) : window(std::move(rhs.window)) {
+main_window_wrapper::MainWindowWrapper::MainWindowWrapper(main_window_wrapper::MainWindowWrapper && rhs) : window(std::exchange(rhs.window, Q_NULLPTR)) {
 	QINFO_PRINT(global_types::qinfo_level_e::ZERO, mainWindowWrapperOverall,  "Move constructor main window wrapper");
 
-	// Reset rhs
-	rhs.window = Q_NULLPTR;
 }
 
 main_window_wrapper::MainWindowWrapper & main_window_wrapper::MainWindowWrapper::operator=(main_window_wrapper::MainWindowWrapper && rhs) {
 
 	QINFO_PRINT(global_types::qinfo_level_e::ZERO, mainWindowWrapperOverall,  "Move assignment operator for main window wrapper");
 
-	// If rhs points to the same address as this, then return this
-	if (&rhs == this) {
-		return *this;
-	}
-
-	if (this->window != rhs.window) {
+	if (&rhs != this) {
 		if (this->window != Q_NULLPTR) {
 			delete this->window;
 		}
-		this->window = std::move(rhs.window);
+		this->window = std::exchange(rhs.window, Q_NULLPTR);
 	}
-	rhs.window = Q_NULLPTR;
 
 	return *this;
 }

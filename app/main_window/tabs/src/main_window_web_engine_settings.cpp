@@ -41,7 +41,7 @@ main_window_web_engine_settings::MainWindowWebEngineSettings & main_window_web_e
 	return *this;
 }
 
-main_window_web_engine_settings::MainWindowWebEngineSettings::MainWindowWebEngineSettings(main_window_web_engine_settings::MainWindowWebEngineSettings && rhs) :  web_engine_settings::WebEngineSettings(std::move(rhs)) {
+main_window_web_engine_settings::MainWindowWebEngineSettings::MainWindowWebEngineSettings(main_window_web_engine_settings::MainWindowWebEngineSettings && rhs) :  web_engine_settings::WebEngineSettings(rhs) {
 
 	QINFO_PRINT(global_types::qinfo_level_e::ZERO, mainWindowWebEngineSettingsOverall,  "Move constructor web engine settings");
 }

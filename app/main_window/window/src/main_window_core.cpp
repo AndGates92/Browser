@@ -89,83 +89,44 @@ main_window_core::MainWindowCore & main_window_core::MainWindowCore::operator=(c
 	return *this;
 }
 
-main_window_core::MainWindowCore::MainWindowCore(main_window_core::MainWindowCore && rhs) : mainWidget(std::move(rhs.mainWidget)), tabs(std::move(rhs.tabs)), topMenuBar(std::move(rhs.topMenuBar)), bottomStatusBar(std::move(rhs.bottomStatusBar)), cmdMenu(std::move(rhs.cmdMenu)), mainWindowState(std::move(rhs.mainWindowState)), offsetType(std::move(rhs.offsetType)), userText(std::move(rhs.userText)) {
+main_window_core::MainWindowCore::MainWindowCore(main_window_core::MainWindowCore && rhs) : mainWidget(std::exchange(rhs.mainWidget, Q_NULLPTR)), tabs(std::exchange(rhs.tabs, Q_NULLPTR)), topMenuBar(std::exchange(rhs.topMenuBar, Q_NULLPTR)), bottomStatusBar(std::exchange(rhs.bottomStatusBar, Q_NULLPTR)), cmdMenu(std::exchange(rhs.cmdMenu, Q_NULLPTR)), mainWindowState(std::exchange(rhs.mainWindowState, main_window_shared_types::state_e::IDLE)), offsetType(std::exchange(rhs.offsetType, main_window_shared_types::offset_type_e::IDLE)), userText(std::exchange(rhs.userText, QString::null)) {
 	QINFO_PRINT(global_types::qinfo_level_e::ZERO, mainWindowCoreOverall,  "Move constructor main window core");
-
-	// Reset rhs
-	rhs.mainWidget = Q_NULLPTR;
-	rhs.tabs = Q_NULLPTR;
-	rhs.topMenuBar = Q_NULLPTR;
-	rhs.bottomStatusBar = Q_NULLPTR;
-	rhs.cmdMenu = Q_NULLPTR;
-	rhs.mainWindowState = main_window_shared_types::state_e::IDLE;
-	rhs.offsetType = main_window_shared_types::offset_type_e::IDLE;
-	rhs.userText = QString::null;
 }
 
 main_window_core::MainWindowCore & main_window_core::MainWindowCore::operator=(main_window_core::MainWindowCore && rhs) {
 
 	QINFO_PRINT(global_types::qinfo_level_e::ZERO, mainWindowCoreOverall,  "Move assignment operator for main window core");
 
-	// If rhs points to the same address as this, then return this
-	if (&rhs == this) {
-		return *this;
-	}
-
-	if (this->mainWidget != rhs.mainWidget) {
+	if (&rhs != this) {
 		if (this->mainWidget != Q_NULLPTR) {
 			delete this->mainWidget;
 		}
-		this->mainWidget = std::move(rhs.mainWidget);
-	}
-	rhs.mainWidget = Q_NULLPTR;
+		this->mainWidget = std::exchange(rhs.mainWidget, Q_NULLPTR);
 
-	if (this->tabs != rhs.tabs) {
 		if (this->tabs != Q_NULLPTR) {
 			delete this->tabs;
 		}
-		this->tabs = std::move(rhs.tabs);
-	}
-	rhs.tabs = Q_NULLPTR;
+		this->tabs = std::exchange(rhs.tabs, Q_NULLPTR);
 
-	if (this->topMenuBar != rhs.topMenuBar) {
 		if (this->topMenuBar != Q_NULLPTR) {
 			delete this->topMenuBar;
 		}
-		this->topMenuBar = std::move(rhs.topMenuBar);
-	}
-	rhs.topMenuBar = Q_NULLPTR;
+		this->topMenuBar = std::exchange(rhs.topMenuBar, Q_NULLPTR);
 
-	if (this->bottomStatusBar != rhs.bottomStatusBar) {
 		if (this->bottomStatusBar != Q_NULLPTR) {
 			delete this->bottomStatusBar;
 		}
-		this->bottomStatusBar = std::move(rhs.bottomStatusBar);
-	}
-	rhs.bottomStatusBar = Q_NULLPTR;
+		this->bottomStatusBar = std::exchange(rhs.bottomStatusBar, Q_NULLPTR);
 
-	if (this->cmdMenu != rhs.cmdMenu) {
 		if (this->cmdMenu != Q_NULLPTR) {
 			delete this->cmdMenu;
 		}
-		this->cmdMenu = std::move(rhs.cmdMenu);
-	}
-	rhs.cmdMenu = Q_NULLPTR;
+		this->cmdMenu = std::exchange(rhs.cmdMenu, Q_NULLPTR);
 
-	if (this->mainWindowState != rhs.mainWindowState) {
-		this->mainWindowState = std::move(rhs.mainWindowState);
+		this->mainWindowState = std::exchange(rhs.mainWindowState, main_window_shared_types::state_e::IDLE);
+		this->offsetType = std::exchange(rhs.offsetType, main_window_shared_types::offset_type_e::IDLE);
+		this->userText = std::exchange(rhs.userText, QString::null);
 	}
-	rhs.mainWindowState = main_window_shared_types::state_e::IDLE;
-
-	if (this->offsetType != rhs.offsetType) {
-		this->offsetType = std::move(rhs.offsetType);
-	}
-	rhs.offsetType = main_window_shared_types::offset_type_e::IDLE;
-
-	if (this->userText != rhs.userText) {
-		this->userText = std::move(rhs.userText);
-	}
-	rhs.userText = QString::null;
 
 	return *this;
 }

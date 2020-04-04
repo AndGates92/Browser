@@ -72,12 +72,10 @@ key_sequence::KeySequence & key_sequence::KeySequence::operator=(const key_seque
 	return *this;
 }
 
-key_sequence::KeySequence::KeySequence(key_sequence::KeySequence && rhs) : keySeqVec(std::move(rhs.keySeqVec)) {
+key_sequence::KeySequence::KeySequence(key_sequence::KeySequence && rhs) : keySeqVec(std::exchange(rhs.keySeqVec, QVector<QKeySequence>())) {
 
 	QINFO_PRINT(global_types::qinfo_level_e::ZERO, keySequenceOverall,  "Move constructor key sequence");
 
-	rhs.keySeqVec.clear();
-	QVector<QKeySequence>().swap(rhs.keySeqVec);
 	QEXCEPTION_ACTION_COND((rhs.keySeqVec.capacity() == 0), throw,  "Released all memory used by vector but capacity is still non-zero - actual capacity " << rhs.keySeqVec.capacity());
 }
 
@@ -85,17 +83,10 @@ key_sequence::KeySequence & key_sequence::KeySequence::operator=(key_sequence::K
 
 	QINFO_PRINT(global_types::qinfo_level_e::ZERO, keySequenceOverall,  "Move assignment operator for key sequence");
 
-	// If rhs points to the same address as this, then return this
-	if (&rhs == this) {
-		return *this;
+	if (&rhs != this) {
+		this->keySeqVec = std::exchange(rhs.keySeqVec, QVector<QKeySequence>());
+		QEXCEPTION_ACTION_COND((rhs.keySeqVec.capacity() == 0), throw,  "Released all memory used by vector but capacity is still non-zero - actual capacity " << rhs.keySeqVec.capacity());
 	}
-
-	if (this->keySeqVec != rhs.keySeqVec) {
-		this->keySeqVec = std::move(rhs.keySeqVec);
-	}
-	rhs.keySeqVec.clear();
-	QVector<QKeySequence>().swap(rhs.keySeqVec);
-	QEXCEPTION_ACTION_COND((rhs.keySeqVec.capacity() == 0), throw,  "Released all memory used by vector but capacity is still non-zero - actual capacity " << rhs.keySeqVec.capacity());
 
 	return *this;
 }

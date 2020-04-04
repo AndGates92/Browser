@@ -74,47 +74,26 @@ json_wrapper::JsonWrapper & json_wrapper::JsonWrapper::operator=(const json_wrap
 	return *this;
 }
 
-json_wrapper::JsonWrapper::JsonWrapper(json_wrapper::JsonWrapper && rhs) : jsonContent(std::move(rhs.jsonContent)), type(std::move(rhs.type)), openFlags(std::move(rhs.openFlags)), jsonFile(std::move(rhs.jsonFile)) {
+json_wrapper::JsonWrapper::JsonWrapper(json_wrapper::JsonWrapper && rhs) : jsonContent(std::exchange(rhs.jsonContent, QJsonValue::Undefined)), type(std::exchange(rhs.type, json_wrapper::json_content_type_e::UNKNOWN)), openFlags(std::exchange(rhs.openFlags, QIODevice::NotOpen)), jsonFile(std::exchange(rhs.jsonFile, Q_NULLPTR)) {
 	QINFO_PRINT(global_types::qinfo_level_e::ZERO, jsonWrapperOverall,  "Move constructor json wrapper");
-
-	// Reset rhs
-	rhs.jsonContent = QJsonValue::Undefined;
-	rhs.type = json_wrapper::json_content_type_e::UNKNOWN;
-	rhs.openFlags = QIODevice::NotOpen;
-	rhs.jsonFile = Q_NULLPTR;
 }
 
 json_wrapper::JsonWrapper & json_wrapper::JsonWrapper::operator=(json_wrapper::JsonWrapper && rhs) {
 
 	QINFO_PRINT(global_types::qinfo_level_e::ZERO, jsonWrapperOverall,  "Move assignment operator for json wrapper");
 
-	// If rhs points to the same address as this, then return this
-	if (&rhs == this) {
-		return *this;
-	}
+	if (&rhs != this) {
+		this->jsonContent = std::exchange(rhs.jsonContent, QJsonValue::Undefined);
 
-	if (this->jsonContent != rhs.jsonContent) {
-		this->jsonContent = std::move(rhs.jsonContent);
-	}
-	rhs.jsonContent = QJsonValue::Undefined;
+		this->type = std::exchange(rhs.type, json_wrapper::json_content_type_e::UNKNOWN);
 
-	if (this->type != rhs.type) {
-		this->type = std::move(rhs.type);
-	}
-	rhs.type = json_wrapper::json_content_type_e::UNKNOWN;
+		this->openFlags = std::exchange(rhs.openFlags, QIODevice::NotOpen);
 
-	if (this->openFlags != rhs.openFlags) {
-		this->openFlags = std::move(rhs.openFlags);
-	}
-	rhs.openFlags = QIODevice::NotOpen;
-
-	if (this->jsonFile != rhs.jsonFile) {
 		if (this->jsonFile != Q_NULLPTR) {
 			delete this->jsonFile;
 		}
-		this->jsonFile = std::move(rhs.jsonFile);
+		this->jsonFile = std::exchange(rhs.jsonFile, Q_NULLPTR);
 	}
-	rhs.jsonFile = Q_NULLPTR;
 
 	return *this;
 }
