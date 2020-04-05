@@ -111,7 +111,7 @@ namespace tab_widget {
 			void removeTab(const int & index);
 
 			/**
-			 * @brief Function: QWidget * widget(const int & index, const bool & checkError = true)
+			 * @brief Function: QWidget * widget(const int & index, const bool & checkError = true) const
 			 *
 			 * \param index: index of the tab to return the widget of
 			 * \param checkError: error out if widget is null
@@ -120,7 +120,7 @@ namespace tab_widget {
 			 *
 			 * returns a tab from tab widget
 			 */
-			QWidget * widget(const int & index, const bool & checkError = true);
+			QWidget * widget(const int & index, const bool & checkError = true) const;
 
 		protected:
 			/**

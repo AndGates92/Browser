@@ -112,7 +112,7 @@ void tab_widget::TabWidget::setVisibleAttribute() {
 	this->setVisible(visibleFlag);
 }
 
-QWidget * tab_widget::TabWidget::widget(const int & index, const bool & checkError) {
+QWidget * tab_widget::TabWidget::widget(const int & index, const bool & checkError) const {
 	QWidget * requestedWidget = QTabWidget::widget(index);
 
 	QEXCEPTION_ACTION_COND(((checkError == true) && (requestedWidget == nullptr)), throw,  "Unable to get tab page at index " << index);

@@ -92,13 +92,13 @@ void main_window_tab_widget::MainWindowTabWidget::moveTab(const int & indexFrom,
 	global_functions::moveListElements<main_window_tab_data::MainWindowTabData>(this->tabData, indexFrom, indexTo);
 }
 
-QWidget * main_window_tab_widget::MainWindowTabWidget::widget(const int & index, bool checkError) {
+QWidget * main_window_tab_widget::MainWindowTabWidget::widget(const int & index, bool checkError) const {
 	QWidget * requestedWidget = tab_widget::TabWidget::widget(index, checkError);
 
 	return requestedWidget;
 }
 
-main_window_shared_types::tab_type_e main_window_tab_widget::MainWindowTabWidget::getTabType(const int & index) {
+main_window_shared_types::tab_type_e main_window_tab_widget::MainWindowTabWidget::getTabType(const int & index) const {
 
 	main_window_shared_types::tab_type_e tabType = main_window_shared_types::tab_type_e::UNKNOWN;
 
@@ -106,7 +106,7 @@ main_window_shared_types::tab_type_e main_window_tab_widget::MainWindowTabWidget
 	QEXCEPTION_ACTION_COND(((index < 0) || (index >= tabDataSize)), throw,  "Unable to retrieve tab type as index must be larger or equal to 0 and smaller than the number of elements in the QList " << tabDataSize << ". Got " << index << ".");
 
 	if (this->tabData.empty() == false) {
-		std::list<main_window_tab_data::MainWindowTabData>::iterator iter = this->tabData.begin();
+		std::list<main_window_tab_data::MainWindowTabData>::const_iterator iter = this->tabData.cbegin();
 		std::advance(iter, index);
 		tabType = iter->type;
 	}
@@ -114,7 +114,7 @@ main_window_shared_types::tab_type_e main_window_tab_widget::MainWindowTabWidget
 	return tabType;
 }
 
-const void * main_window_tab_widget::MainWindowTabWidget::getTabData(const int & index) {
+const void * main_window_tab_widget::MainWindowTabWidget::getTabData(const int & index) const {
 
 	const void * tabData = nullptr;
 
@@ -122,7 +122,7 @@ const void * main_window_tab_widget::MainWindowTabWidget::getTabData(const int &
 	QEXCEPTION_ACTION_COND(((index < 0) || (index >= tabDataSize)), throw,  "Unable to retrive tab data as index must be larger or equal to 0 and smaller than the number of elements in the QList " << tabDataSize << ". Got " << index << ".");
 
 	if (this->tabData.empty() == false) {
-		std::list<main_window_tab_data::MainWindowTabData>::iterator iter = this->tabData.begin();
+		std::list<main_window_tab_data::MainWindowTabData>::const_iterator iter = this->tabData.cbegin();
 		std::advance(iter, index);
 		tabData = iter->data;
 	}
