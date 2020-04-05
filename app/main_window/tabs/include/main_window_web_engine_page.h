@@ -36,14 +36,14 @@ namespace main_window_web_engine_page {
 
 		public:
 			/**
-			 * @brief Function: explicit MainWindowWebEnginePage(web_engine_profile::WebEngineProfile * profile = main_window_web_engine_profile::MainWindowWebEngineProfile::defaultProfile(), QWidget * parent = Q_NULLPTR)
+			 * @brief Function: explicit MainWindowWebEnginePage(web_engine_profile::WebEngineProfile * profile, QWidget * parent = Q_NULLPTR)
 			 *
 			 * \param profile: profile of the page
 			 * \param parent: parent widget
 			 *
 			 * Main window web engine page constructor
 			 */
-			explicit MainWindowWebEnginePage(web_engine_profile::WebEngineProfile * profile = main_window_web_engine_profile::MainWindowWebEngineProfile::defaultProfile(), QWidget * parent = Q_NULLPTR);
+			explicit MainWindowWebEnginePage(web_engine_profile::WebEngineProfile * profile, QWidget * parent = Q_NULLPTR);
 
 			/**
 			 * @brief Function: explicit MainWindowWebEnginePage(QWidget * parent = Q_NULLPTR)
