@@ -8,7 +8,6 @@
 
 // Qt libraries
 #include <qt5/QtCore/QtGlobal>
-#include <qt5/QtWidgets/QLabel>
 
 // Required by qInfo
 #include <qt5/QtCore/QtDebug>
@@ -147,13 +146,18 @@ int main_window_tab_widget::MainWindowTabWidget::insertEmptyTab(const int & inde
 
 	int tabIndex = -1;
 
+	const void * body = nullptr;
+
 	if (type == main_window_shared_types::tab_type_e::WEB_ENGINE) {
 		const QString * search = static_cast<const QString *>(content);
-		const QUrl body = this->createUrl(*search);
-		main_window_tab::MainWindowTab * centerWindow = new main_window_tab::MainWindowTab(type, &body, this->parentWidget());
+		QUrl url = this->createUrl(*search);
+//		main_window_tab::MainWindowTab * centerWindow = new main_window_tab::MainWindowTab(type, &url, this->parentWidget());
+		body = &url;
+		main_window_tab::MainWindowTab * centerWindow = new main_window_tab::MainWindowTab(type, body, this->parentWidget());
 		tabIndex = this->insertTab(index, centerWindow, label, type, data, icon);
 	} else if (type == main_window_shared_types::tab_type_e::LABEL) {
-		QLabel * centerWindow = new QLabel(this->parentWidget());
+		body = content;
+		main_window_tab::MainWindowTab * centerWindow = new main_window_tab::MainWindowTab(type, body, this->parentWidget());
 		tabIndex = this->insertTab(index, centerWindow, label, type, data, icon);
 	} else {
 		QEXCEPTION_ACTION(throw, "Unable to insert new empty tab at index " << index << " as the provided tab type " << type << " is not recognized");

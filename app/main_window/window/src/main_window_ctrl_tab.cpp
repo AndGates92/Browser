@@ -256,8 +256,8 @@ void main_window_ctrl_tab::MainWindowCtrlTab::refreshUrl(const int & tabIndex) {
 		const char * filename = static_cast<const char *>(tabData);
 		const QString tabContent(QString::fromStdString(global_functions::readFile(filename)));
 		try {
-			QLabel * tabPage = dynamic_cast<QLabel *>(this->windowCore->tabs->widget(tabIndex, true));
-			tabPage->setText(tabContent);
+			main_window_tab::MainWindowTab * currentTab = dynamic_cast<main_window_tab::MainWindowTab *>(this->windowCore->tabs->widget(tabIndex, true));
+			currentTab->widgetView->page()->setContent(tabContent.toUtf8());
 		} catch (const std::bad_cast & badCastE) {
 			QEXCEPTION_ACTION(throw, badCastE.what());
 		}
@@ -719,9 +719,8 @@ void main_window_ctrl_tab::MainWindowCtrlTab::printStrInCurrentTab(const QString
 	try {
 		// Set tab title
 		tabWidget->setTabText(currentTabIndex, tabTitle);
-		QLabel * currentTabLabel = dynamic_cast<QLabel *>(tabWidget->widget(currentTabIndex, true));
-
-		currentTabLabel->setText(tabContent);
+		main_window_tab::MainWindowTab * currentTab = dynamic_cast<main_window_tab::MainWindowTab *>(this->windowCore->tabs->widget(currentTabIndex, true));
+		currentTab->widgetView->page()->setContent(tabContent.toUtf8());
 
 		this->updateContent(currentTabIndex);
 
