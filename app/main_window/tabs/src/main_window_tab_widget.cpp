@@ -164,7 +164,8 @@ int main_window_tab_widget::MainWindowTabWidget::insertEmptyTab(const int & inde
 	int tabIndex = -1;
 
 	if (type == main_window_shared_types::tab_type_e::WEB_ENGINE) {
-		main_window_tab::MainWindowTab * centerWindow = new main_window_tab::MainWindowTab(this->parentWidget());
+		const QUrl url = this->createUrl(label);
+		main_window_tab::MainWindowTab * centerWindow = new main_window_tab::MainWindowTab(type, &url, this->parentWidget());
 		tabIndex = this->insertTab(index, centerWindow, label, type, data, icon);
 	} else if (type == main_window_shared_types::tab_type_e::LABEL) {
 		QLabel * centerWindow = new QLabel(this->parentWidget());
@@ -181,7 +182,8 @@ int main_window_tab_widget::MainWindowTabWidget::addEmptyTab(const QString & lab
 	int tabIndex = -1;
 
 	if (type == main_window_shared_types::tab_type_e::WEB_ENGINE) {
-		main_window_tab::MainWindowTab * centerWindow = new main_window_tab::MainWindowTab(this->parentWidget());
+		const QUrl url = this->createUrl(label);
+		main_window_tab::MainWindowTab * centerWindow = new main_window_tab::MainWindowTab(type, &url, this->parentWidget());
 		tabIndex = this->addTab(centerWindow, label, type, data, icon);
 	} else if (type == main_window_shared_types::tab_type_e::LABEL) {
 		QLabel * centerWindow = new QLabel(this->parentWidget());
@@ -191,4 +193,28 @@ int main_window_tab_widget::MainWindowTabWidget::addEmptyTab(const QString & lab
 	}
 
 	return tabIndex;
+}
+
+const QUrl main_window_tab_widget::MainWindowTabWidget::createUrl(const QString & search) const {
+	const bool containsSpace = search.contains(" ");
+	const bool containsWww = search.contains(main_window_tab_widget::www);
+	const int numberDots = search.count(".");
+
+	QString urlStr(QString::null);
+
+	// if contains at least 1 dot and no space, it could be a URL
+	if ((numberDots > 0) && (containsSpace == false)) {
+		urlStr = main_window_tab_widget::https;
+		if (containsWww == true) {
+			urlStr += search;
+		} else {
+			urlStr += main_window_tab_widget::www + search;
+		}
+	} else {
+		urlStr = main_window_tab_widget::defaultSearchEngine.arg(search);
+	}
+
+	const QUrl url(urlStr);
+
+	return url;
 }

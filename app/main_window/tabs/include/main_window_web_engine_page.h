@@ -15,6 +15,7 @@
 #include <qt5/QtCore/QLoggingCategory>
 
 #include "web_engine_page.h"
+#include "main_window_shared_types.h"
 #include "main_window_web_engine_profile.h"
 #include "global_types.h"
 #include "constructor_macros.h"
@@ -36,14 +37,14 @@ namespace main_window_web_engine_page {
 
 		public:
 			/**
-			 * @brief Function: explicit MainWindowWebEnginePage(web_engine_profile::WebEngineProfile * profile, QWidget * parent = Q_NULLPTR)
+			 * @brief Function: explicit MainWindowWebEnginePage(const main_window_shared_types::tab_type_e type, const void * tabContent, web_engine_profile::WebEngineProfile * profile, QWidget * parent = Q_NULLPTR)
 			 *
 			 * \param profile: profile of the page
 			 * \param parent: parent widget
 			 *
 			 * Main window web engine page constructor
 			 */
-			explicit MainWindowWebEnginePage(web_engine_profile::WebEngineProfile * profile, QWidget * parent = Q_NULLPTR);
+			explicit MainWindowWebEnginePage(const main_window_shared_types::tab_type_e type, const void * tabContent, web_engine_profile::WebEngineProfile * profile, QWidget * parent = Q_NULLPTR);
 
 			/**
 			 * @brief Function: explicit MainWindowWebEnginePage(QWidget * parent = Q_NULLPTR)

@@ -28,6 +28,29 @@ Q_DECLARE_LOGGING_CATEGORY(mainWindowTabWidgetTabs)
 
 namespace main_window_tab_widget {
 
+	namespace {
+
+		/**
+		 * @brief https string
+		 *
+		 */
+		const QString https("https://");
+
+		/**
+		 * @brief www string
+		 *
+		 */
+		const QString www("www.");
+
+		/**
+		 * @brief default serch engine is duckduckgo
+		 *
+		 */
+		const QString defaultSearchEngine(https + www + "duckduckgo.com/?q=%1");
+
+	}
+
+
 	/**
 	 * @brief MainWindowTabWidget class
 	 *
@@ -193,6 +216,18 @@ namespace main_window_tab_widget {
 			 * remove an element of the list
 			 */
 			void deleteListElement(const int & index);
+
+			/**
+			 * @brief Function: const QUrl createUrl(const QString & search) const
+			 *
+			 * \param search: string to search
+			 * \return URL as QUrl
+			 *
+			 * This function is creates the URL based on the input from the user
+			 * If the user writes down a URL himself/herself, it will return it adding, if required, https
+			 * If the user is writing a strign to search, it will be searched in the chosen search engine
+			 */
+			const QUrl createUrl(const QString & search) const;
 
 			// Move and copy constructor
 			/**

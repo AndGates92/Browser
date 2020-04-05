@@ -15,6 +15,7 @@
 #include <qt5/QtCore/QLoggingCategory>
 
 #include "web_engine_view.h"
+#include "main_window_shared_types.h"
 #include "global_types.h"
 #include "constructor_macros.h"
 
@@ -35,13 +36,15 @@ namespace main_window_web_engine_view {
 
 		public:
 			/**
-			 * @brief Function: explicit MainWindowWebEngineView(QWidget * parent = Q_NULLPTR)
+			 * @brief Function: explicit MainWindowWebEngineView(const main_window_shared_types::tab_type_e type, const void * tabContent, QWidget * parent = Q_NULLPTR)
 			 *
+			 * \param type: parent widget
+			 * \param tabContent: tab content
 			 * \param parent: parent widget
 			 *
 			 * Main window web engine view constructor
 			 */
-			explicit MainWindowWebEngineView(QWidget * parent = Q_NULLPTR);
+			explicit MainWindowWebEngineView(const main_window_shared_types::tab_type_e type, const void * tabContent, QWidget * parent = Q_NULLPTR);
 
 			/**
 			 * @brief Function: virtual ~MainWindowWebEngineView()
@@ -53,7 +56,6 @@ namespace main_window_web_engine_view {
 		protected:
 
 		private:
-
 			// Move and copy constructor
 			/**
 			 * @brief Disable move and copy constructors and operator= overloading for class MainWindowWebEngineView

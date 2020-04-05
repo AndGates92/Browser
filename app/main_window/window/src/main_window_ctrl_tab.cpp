@@ -152,8 +152,7 @@ void main_window_ctrl_tab::MainWindowCtrlTab::closeTab(const int & index) {
 }
 
 void main_window_ctrl_tab::MainWindowCtrlTab::addNewTabAndSearch(const QString & search) {
-	const int tabIndex = this->addNewTab(search, main_window_shared_types::tab_type_e::WEB_ENGINE, nullptr);
-	this->newSearchTab(tabIndex, search);
+	this->addNewTab(search, main_window_shared_types::tab_type_e::WEB_ENGINE, nullptr);
 }
 
 int main_window_ctrl_tab::MainWindowCtrlTab::addNewTab(const QString & search, const main_window_shared_types::tab_type_e & type, const void * data) {
