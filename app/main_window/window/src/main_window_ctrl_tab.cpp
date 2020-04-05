@@ -104,47 +104,40 @@ void main_window_ctrl_tab::MainWindowCtrlTab::connectSignals() {
 //************************************************************************************
 void main_window_ctrl_tab::MainWindowCtrlTab::setUpOpenNewTab() {
 	QINFO_PRINT(global_types::qinfo_level_e::ZERO, mainWindowCtrlTabSearch,  "Open new tab");
-	this->windowCore->setMainWindowState(main_window_shared_types::state_e::OPEN_TAB);
-	this->printUserInput(main_window_shared_types::text_action_e::CLEAR);
-	this->setAllShortcutEnabledProperty(false);
+	const main_window_shared_types::state_e requestedWindowState = main_window_shared_types::state_e::OPEN_TAB;
+	this->changeWindowState(requestedWindowState);
 }
 
 void main_window_ctrl_tab::MainWindowCtrlTab::setUpNewSearchTab() {
 	QINFO_PRINT(global_types::qinfo_level_e::ZERO, mainWindowCtrlTabSearch,  "Search in current tab");
-	this->windowCore->setMainWindowState(main_window_shared_types::state_e::SEARCH);
-	this->printUserInput(main_window_shared_types::text_action_e::CLEAR);
-	this->setAllShortcutEnabledProperty(false);
+	const main_window_shared_types::state_e requestedWindowState = main_window_shared_types::state_e::SEARCH;
+	this->changeWindowState(requestedWindowState);
 }
 
 
 void main_window_ctrl_tab::MainWindowCtrlTab::setUpRefreshTabUrl() {
-	this->windowCore->setMainWindowState(main_window_shared_types::state_e::REFRESH_TAB);
-	this->printUserInput(main_window_shared_types::text_action_e::CLEAR);
-	this->setAllShortcutEnabledProperty(false);
+	const main_window_shared_types::state_e requestedWindowState = main_window_shared_types::state_e::REFRESH_TAB;
+	this->changeWindowState(requestedWindowState);
 }
 
 void main_window_ctrl_tab::MainWindowCtrlTab::setUpMoveTab() {
-	this->windowCore->setMainWindowState(main_window_shared_types::state_e::TAB_MOVE);
-	this->printUserInput(main_window_shared_types::text_action_e::CLEAR);
-	this->setAllShortcutEnabledProperty(false);
+	const main_window_shared_types::state_e requestedWindowState = main_window_shared_types::state_e::TAB_MOVE;
+	this->changeWindowState(requestedWindowState);
 }
 
 void main_window_ctrl_tab::MainWindowCtrlTab::setUpMoveLeft() {
-	this->windowCore->setMainWindowState(main_window_shared_types::state_e::MOVE_LEFT);
-	this->printUserInput(main_window_shared_types::text_action_e::CLEAR);
-	this->setAllShortcutEnabledProperty(false);
+	const main_window_shared_types::state_e requestedWindowState = main_window_shared_types::state_e::MOVE_LEFT;
+	this->changeWindowState(requestedWindowState);
 }
 
 void main_window_ctrl_tab::MainWindowCtrlTab::setUpMoveRight() {
-	this->windowCore->setMainWindowState(main_window_shared_types::state_e::MOVE_RIGHT);
-	this->printUserInput(main_window_shared_types::text_action_e::CLEAR);
-	this->setAllShortcutEnabledProperty(false);
+	const main_window_shared_types::state_e requestedWindowState = main_window_shared_types::state_e::MOVE_RIGHT;
+	this->changeWindowState(requestedWindowState);
 }
 
 void main_window_ctrl_tab::MainWindowCtrlTab::setUpCloseTab() {
-	this->windowCore->setMainWindowState(main_window_shared_types::state_e::CLOSE_TAB);
-	this->printUserInput(main_window_shared_types::text_action_e::CLEAR);
-	this->setAllShortcutEnabledProperty(false);
+	const main_window_shared_types::state_e requestedWindowState = main_window_shared_types::state_e::CLOSE_TAB;
+	this->changeWindowState(requestedWindowState);
 }
 //************************************************************************************
 // End definition of set up slots
@@ -213,6 +206,8 @@ void main_window_ctrl_tab::MainWindowCtrlTab::newSearchTab(const int & index, co
 
 void main_window_ctrl_tab::MainWindowCtrlTab::searchCurrentTab(const QString & search) {
 	const int tabIndex = this->windowCore->getCurrentTabIndex();
+	const int tabCount = this->windowCore->getTabCount();
+	QEXCEPTION_ACTION_COND(((tabIndex < 0) || (tabCount <= 0)), throw, "Unable to perform search of " << search << " in tab " << tabIndex << ". Note that a negative tab index may be cause by the fact that there are no tabs opened in the browser - current count of opened tabs is " << this->windowCore->getTabCount());
 	QINFO_PRINT(global_types::qinfo_level_e::ZERO, mainWindowCtrlTabTabs,  "Search " << search << " in tab " << tabIndex);
 	this->newSearchTab(tabIndex, search);
 }
@@ -237,7 +232,7 @@ void main_window_ctrl_tab::MainWindowCtrlTab::updateContent(const int & index) {
 			// Return the tab title
 			contentStr = this->windowCore->tabs->tabText(index);
 		}
-		QINFO_PRINT(global_types::qinfo_level_e::ZERO, mainWindowCtrlTabUrl,  "Set contentPathText for tab at index " << index << " of type " << tabType << " to " << contentStr);
+		QINFO_PRINT(global_types::qinfo_level_e::ZERO, mainWindowCtrlTabUrl, "Set contentPathText for tab at index " << index << " of type " << tabType << " to " << contentStr);
 		this->windowCore->bottomStatusBar->getContentPathText()->setText(contentStr);
 	} else {
 		this->windowCore->bottomStatusBar->getContentPathText()->clear();
@@ -348,6 +343,7 @@ void main_window_ctrl_tab::MainWindowCtrlTab::executeActionOnOffset(const int & 
 	const main_window_shared_types::state_e windowState = this->windowCore->getMainWindowState();
 	const main_window_shared_types::offset_type_e offsetType = this->windowCore->getOffsetType();
 
+
 	if (windowState == main_window_shared_types::state_e::MOVE_RIGHT) {
 		sign = global_types::sign_e::PLUS;
 	} else if (windowState == main_window_shared_types::state_e::MOVE_LEFT) {
@@ -363,6 +359,7 @@ void main_window_ctrl_tab::MainWindowCtrlTab::executeActionOnOffset(const int & 
 	}
 
 	Q_ASSERT_X(((sign == global_types::sign_e::MINUS) || (sign == global_types::sign_e::PLUS)), "sign check to execute movement on offset", "sign input must be either global_types::sign_e::MINUS or global_types::sign_e::PLUS");
+	QINFO_PRINT(global_types::qinfo_level_e::ZERO, mainWindowCtrlTabTabs, "DEBUG offset " << offset << " state " << windowState << " offset type " << offsetType);
 	this->convertToAbsTabIndex(offset, sign);
 }
 
@@ -380,7 +377,11 @@ void main_window_ctrl_tab::MainWindowCtrlTab::executeActionOnTab(const int & ind
 
 	const main_window_shared_types::state_e windowState = this->windowCore->getMainWindowState();
 
-	if ((tabCount > tabIndex) && (tabIndex >= 0)) {
+	QINFO_PRINT(global_types::qinfo_level_e::ZERO, mainWindowCtrlTabTabs, "DEBUG Tab " << tabIndex << " doesn't exists. Valid range of tab is the integer number between 1 and " << tabCount);
+
+	// Check that tabIndex is larger than 0 and there is at least a tab opened
+	// By default, if not tabs are opened, the number of tabs is set to 0 and the current index is set to -1 therefore (tabCount > tabIndex) is true
+	if ((tabCount > tabIndex) && (tabIndex >= 0) && (tabCount > 0)) {
 		switch (windowState) {
 			case main_window_shared_types::state_e::CLOSE_TAB:
 				this->closeTab(tabIndex);
@@ -627,6 +628,7 @@ void main_window_ctrl_tab::MainWindowCtrlTab::convertToAbsTabIndex(const int & o
 	}
 
 	const int tabCount = this->windowCore->getTabCount();
+	QEXCEPTION_ACTION_COND((tabCount <= 0), throw,  "Current number of opened tabs is " << tabCount << ". It is not possible to execute actin related to state " << windowState);
 	const int signInt = static_cast<int>(sign);
 
 	int tabIndexDst = 0;
@@ -637,9 +639,10 @@ void main_window_ctrl_tab::MainWindowCtrlTab::convertToAbsTabIndex(const int & o
 	}
 	if (offset > tabCount) {
 		int maxTabRange = tabCount - 1;
-		QWARNING_PRINT(mainWindowCtrlTabTabs, "Offset " << offset << " is bigger than the number of tabs " << tabCount << " Bringing tab index withing the valid range of tab (between 0 and " << maxTabRange);
+		QWARNING_PRINT(mainWindowCtrlTabTabs, "Offset " << offset << " is bigger than the number of tabs " << tabCount << ". Bringing tab index withing the valid range of tab (between 0 and " << maxTabRange);
 	}
 	while (tabIndexDst < 0) {
+		QINFO_PRINT(global_types::qinfo_level_e::ZERO, mainWindowCtrlTabTabs, "DEBUG Tab " << tabIndexDst << " tab count " << tabCount << " current tab index " << this->windowCore->getCurrentTabIndex());
 		tabIndexDst +=  tabCount;
 	}
 
@@ -732,4 +735,62 @@ void main_window_ctrl_tab::MainWindowCtrlTab::printStrInCurrentTab(const QString
 	} catch (const std::bad_cast & badCastE) {
 		QEXCEPTION_ACTION(throw, badCastE.what());
 	}
+}
+
+bool main_window_ctrl_tab::MainWindowCtrlTab::changeWindowState(const main_window_shared_types::state_e & requestedWindowState) {
+	bool isValid = false;
+	const main_window_shared_types::state_e windowState = this->windowCore->getMainWindowState();
+
+	if (windowState == requestedWindowState) {
+		// No state change is always valid
+		isValid = true;
+	} else {
+		isValid = this->isValidWindowState(requestedWindowState);
+
+		if (isValid == true) {
+			this->windowCore->setMainWindowState(requestedWindowState);
+			// If requesting to go to the idle state, do not 
+			if (requestedWindowState == main_window_shared_types::state_e::IDLE) {
+				this->setAllShortcutEnabledProperty(true);
+			} else {
+				this->setAllShortcutEnabledProperty(false);
+			}
+			this->printUserInput(main_window_shared_types::text_action_e::CLEAR);
+		} else {
+			QWARNING_PRINT(mainWindowCtrlTabTabs, "Ignoring request to go from state " << windowState << " to state " << requestedWindowState);
+		}
+	}
+
+	return isValid;
+}
+
+bool main_window_ctrl_tab::MainWindowCtrlTab::isValidWindowState(const main_window_shared_types::state_e & requestedWindowState) {
+	bool isValid = false;
+	const main_window_shared_types::state_e windowState = this->windowCore->getMainWindowState();
+	const int tabCount = this->windowCore->getTabCount();
+
+	switch (requestedWindowState) {
+		case main_window_shared_types::state_e::IDLE:
+			// It is always possible to go to the idle state
+			isValid = true;
+			break;
+		case main_window_shared_types::state_e::OPEN_TAB:
+			// It is only possible to open a tab if in the idle state
+			isValid = (windowState == main_window_shared_types::state_e::IDLE);
+			break;
+		case main_window_shared_types::state_e::SEARCH:
+		case main_window_shared_types::state_e::REFRESH_TAB:
+		case main_window_shared_types::state_e::CLOSE_TAB:
+		case main_window_shared_types::state_e::MOVE_RIGHT:
+		case main_window_shared_types::state_e::MOVE_LEFT:
+		case main_window_shared_types::state_e::TAB_MOVE:
+			// It is only possible to perform an operation other than opening a tab and going to the idle state if the current state is idle and at least 1 tab is opened
+			isValid = ((tabCount > 0) && (windowState == main_window_shared_types::state_e::IDLE));
+			break;
+		default:
+			QEXCEPTION_ACTION(throw, "Unable to determine whether transaction from " << windowState << " to " << requestedWindowState << " is valid");
+			break;
+	}
+
+	return isValid;
 }

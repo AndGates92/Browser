@@ -104,6 +104,7 @@ void main_window_ctrl::MainWindowCtrl::keyReleaseEvent(QKeyEvent * event) {
 	const key_sequence::KeySequence keySeq(releasedKey | keyModifiers);
 
 	const main_window_shared_types::state_e windowState = this->windowCore->getMainWindowState();
+	main_window_shared_types::state_e requestedWindowState = this->windowCore->getMainWindowState();
 
 	QString userTypedText = this->windowCore->getUserText();
 
@@ -113,9 +114,8 @@ void main_window_ctrl::MainWindowCtrl::keyReleaseEvent(QKeyEvent * event) {
 
 		switch (releasedKey) {
 			case Qt::Key_Escape:
-				this->windowCore->setMainWindowState(main_window_shared_types::state_e::IDLE);
-				this->setAllShortcutEnabledProperty(true);
-				this->printUserInput(main_window_shared_types::text_action_e::CLEAR);
+				requestedWindowState = main_window_shared_types::state_e::IDLE;
+				this->changeWindowState(requestedWindowState);
 				break;
 			case Qt::Key_Backspace:
 				QINFO_PRINT(global_types::qinfo_level_e::ZERO, mainWindowCtrlUserInput,  "User typed text " << userTypedText);
@@ -164,9 +164,8 @@ void main_window_ctrl::MainWindowCtrl::keyPressEvent(QKeyEvent * event) {
 	this->tabctrl->keyPressEvent(event);
 
 	if ((pressedKey == Qt::Key_Return) || (pressedKey == Qt::Key_Enter)) {
-		this->windowCore->setMainWindowState(main_window_shared_types::state_e::IDLE);
-		this->setAllShortcutEnabledProperty(true);
-		this->printUserInput(main_window_shared_types::text_action_e::CLEAR);
+		const main_window_shared_types::state_e requestedWindowState = main_window_shared_types::state_e::IDLE;
+		this->changeWindowState(requestedWindowState);
 	}
 
 }
@@ -185,7 +184,8 @@ void main_window_ctrl::MainWindowCtrl::setStateAction(const main_window_shared_t
 			break;
 		case main_window_shared_types::state_e::IDLE:
 			if (pressedKey == Qt::Key_Colon) {
-				this->windowCore->setMainWindowState(main_window_shared_types::state_e::COMMAND);
+				const main_window_shared_types::state_e requestedWindowState = main_window_shared_types::state_e::COMMAND;
+				this->changeWindowState(requestedWindowState);
 				this->setAllShortcutEnabledProperty(false);
 			}
 			this->printUserInput(main_window_shared_types::text_action_e::CLEAR);
@@ -215,3 +215,51 @@ void main_window_ctrl::MainWindowCtrl::updateInfoSlot(const int & index) {
 	this->updateInfo();
 }
 #pragma GCC diagnostic pop
+
+bool main_window_ctrl::MainWindowCtrl::changeWindowState(const main_window_shared_types::state_e & requestedWindowState) {
+	bool isValid = false;
+	const main_window_shared_types::state_e windowState = this->windowCore->getMainWindowState();
+
+	if (windowState == requestedWindowState) {
+		// No state change is always valid
+		isValid = true;
+	} else {
+		isValid = this->isValidWindowState(requestedWindowState);
+
+		if (isValid == true) {
+			this->windowCore->setMainWindowState(requestedWindowState);
+			// If requesting to go to the idle state, do not 
+			if (requestedWindowState == main_window_shared_types::state_e::IDLE) {
+				this->setAllShortcutEnabledProperty(true);
+				this->printUserInput(main_window_shared_types::text_action_e::CLEAR);
+			} else {
+				this->setAllShortcutEnabledProperty(false);
+			}
+		} else {
+			QWARNING_PRINT(mainWindowCtrlUserInput, "Ignoring request to go from state " << windowState << " to state " << requestedWindowState);
+		}
+	}
+
+	return isValid;
+}
+
+bool main_window_ctrl::MainWindowCtrl::isValidWindowState(const main_window_shared_types::state_e & requestedWindowState) {
+	bool isValid = false;
+	const main_window_shared_types::state_e windowState = this->windowCore->getMainWindowState();
+
+	switch (requestedWindowState) {
+		case main_window_shared_types::state_e::IDLE:
+			// It is always possible to go to the idle state
+			isValid = true;
+			break;
+		case main_window_shared_types::state_e::COMMAND:
+			// It is only possible to start a new command if in the idle state
+			isValid = (windowState == main_window_shared_types::state_e::IDLE);
+			break;
+		default: 
+			QEXCEPTION_ACTION(throw, "Unable to determine whether transaction from " << windowState << " to " << requestedWindowState << " is valid");
+			break;
+	}
+
+	return isValid;
+}
