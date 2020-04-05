@@ -14,7 +14,6 @@
 
 #include <qt5/QtCore/QLoggingCategory>
 
-#include "main_window_web_engine_page.h"
 #include "web_engine_view.h"
 #include "global_types.h"
 #include "constructor_macros.h"
@@ -54,11 +53,6 @@ namespace main_window_web_engine_view {
 		protected:
 
 		private:
-			/**
-			 * @brief web engine view
-			 *
-			 */
-			main_window_web_engine_page::MainWindowWebEnginePage * page;
 
 			// Move and copy constructor
 			/**
