@@ -152,10 +152,6 @@ void main_window_tab_widget::MainWindowTabWidget::changeTabType(const int & inde
 		this->removeTab(index);
 		const int tabIndex = this->insertEmptyTab(index, QString::null, newType, data);
 		QEXCEPTION_ACTION_COND((tabIndex != index), throw, "Requested index (" << index << ") is different from tab index (" << tabIndex);
-
-		// Move to the newly recreated tab
-		this->setCurrentIndex(index);
-
 	}
 }
 
@@ -173,6 +169,9 @@ int main_window_tab_widget::MainWindowTabWidget::insertEmptyTab(const int & inde
 	} else {
 		QEXCEPTION_ACTION(throw, "Unable to insert new empty tab as the provided tab type " << type << " is not recognized");
 	}
+
+	// Move to the newly opened tab
+	this->setCurrentIndex(tabIndex);
 
 	return tabIndex;
 }
