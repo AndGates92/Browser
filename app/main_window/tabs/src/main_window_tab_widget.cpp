@@ -144,24 +144,21 @@ void main_window_tab_widget::MainWindowTabWidget::changeTabType(const int & inde
 
 int main_window_tab_widget::MainWindowTabWidget::insertEmptyTab(const int & index, const QString & label, const void * content, const main_window_shared_types::tab_type_e & type, const void * data, const QIcon & icon) {
 
-	int tabIndex = -1;
-
 	const void * body = nullptr;
+	QUrl url = QUrl();
 
 	if (type == main_window_shared_types::tab_type_e::WEB_ENGINE) {
 		const QString * search = static_cast<const QString *>(content);
-		QUrl url = this->createUrl(*search);
-//		main_window_tab::MainWindowTab * centerWindow = new main_window_tab::MainWindowTab(type, &url, this->parentWidget());
+		url = this->createUrl(*search);
 		body = &url;
-		main_window_tab::MainWindowTab * centerWindow = new main_window_tab::MainWindowTab(type, body, this->parentWidget());
-		tabIndex = this->insertTab(index, centerWindow, label, type, data, icon);
 	} else if (type == main_window_shared_types::tab_type_e::LABEL) {
 		body = content;
-		main_window_tab::MainWindowTab * centerWindow = new main_window_tab::MainWindowTab(type, body, this->parentWidget());
-		tabIndex = this->insertTab(index, centerWindow, label, type, data, icon);
 	} else {
 		QEXCEPTION_ACTION(throw, "Unable to insert new empty tab at index " << index << " as the provided tab type " << type << " is not recognized");
 	}
+
+	main_window_tab::MainWindowTab * centerWindow = new main_window_tab::MainWindowTab(type, body, this->parentWidget());
+	int tabIndex = this->insertTab(index, centerWindow, label, type, data, icon);
 
 	// Move to the newly opened tab
 	this->setCurrentIndex(tabIndex);
