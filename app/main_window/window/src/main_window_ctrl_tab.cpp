@@ -173,9 +173,6 @@ int main_window_ctrl_tab::MainWindowCtrlTab::addNewTab(const QString & search, c
 
 	QEXCEPTION_ACTION_COND((tabIndex < 0), throw, "It cannot be negative");
 
-	// Move to the newly opened tab
-	this->windowCore->tabs->setCurrentIndex(tabIndex);
-
 	// Update info label
 	this->updateInfo();
 

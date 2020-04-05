@@ -192,6 +192,9 @@ int main_window_tab_widget::MainWindowTabWidget::addEmptyTab(const QString & lab
 		QEXCEPTION_ACTION(throw, "Unable to add new empty tab as the provided tab type " << type << " is not recognized");
 	}
 
+	// Move to the newly opened tab
+	this->setCurrentIndex(tabIndex);
+
 	return tabIndex;
 }
 
