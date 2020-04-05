@@ -71,15 +71,9 @@ void tab_widget::TabWidget::keyPressEvent(QKeyEvent * event) {
 int tab_widget::TabWidget::addTab(QWidget * page, const QString & label, const QIcon & icon) {
 	QINFO_PRINT(global_types::qinfo_level_e::ZERO, tabWidgetTabs,  "Open tab with label " << label);
 
-	int tabIndex = -1;
+	const int index = this->count();
 
-	if (icon.isNull()) {
-		tabIndex = QTabWidget::addTab(page, icon, label);
-	} else {
-		tabIndex = QTabWidget::addTab(page, label);
-	}
-
-	this->setVisibleAttribute();
+	int tabIndex = this->insertTab(index, page, label, icon);
 
 	return tabIndex;
 }
