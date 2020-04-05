@@ -137,18 +137,20 @@ void main_window_tab_widget::MainWindowTabWidget::changeTabType(const int & inde
 
 	if (currentType != newType) {
 		this->removeTab(index);
-		const int tabIndex = this->insertEmptyTab(index, QString::null, newType, data);
+		const QString content(QString::null);
+		const int tabIndex = this->insertEmptyTab(index, QString::null, &content, newType, data);
 		QEXCEPTION_ACTION_COND((tabIndex != index), throw, "Requested index (" << index << ") is different from tab index (" << tabIndex);
 	}
 }
 
-int main_window_tab_widget::MainWindowTabWidget::insertEmptyTab(const int & index, const QString & label, const main_window_shared_types::tab_type_e & type, const void * data, const QIcon & icon) {
+int main_window_tab_widget::MainWindowTabWidget::insertEmptyTab(const int & index, const QString & label, const void * content, const main_window_shared_types::tab_type_e & type, const void * data, const QIcon & icon) {
 
 	int tabIndex = -1;
 
 	if (type == main_window_shared_types::tab_type_e::WEB_ENGINE) {
-		const QUrl url = this->createUrl(label);
-		main_window_tab::MainWindowTab * centerWindow = new main_window_tab::MainWindowTab(type, &url, this->parentWidget());
+		const QString * search = static_cast<const QString *>(content);
+		const QUrl body = this->createUrl(*search);
+		main_window_tab::MainWindowTab * centerWindow = new main_window_tab::MainWindowTab(type, &body, this->parentWidget());
 		tabIndex = this->insertTab(index, centerWindow, label, type, data, icon);
 	} else if (type == main_window_shared_types::tab_type_e::LABEL) {
 		QLabel * centerWindow = new QLabel(this->parentWidget());
@@ -163,10 +165,10 @@ int main_window_tab_widget::MainWindowTabWidget::insertEmptyTab(const int & inde
 	return tabIndex;
 }
 
-int main_window_tab_widget::MainWindowTabWidget::addEmptyTab(const QString & label, const main_window_shared_types::tab_type_e & type, const void * data, const QIcon & icon) {
+int main_window_tab_widget::MainWindowTabWidget::addEmptyTab(const QString & label, const void * content, const main_window_shared_types::tab_type_e & type, const void * data, const QIcon & icon) {
 
 	const int index = this->count();
-	int tabIndex = this->insertEmptyTab(index, label, type, data, icon);
+	int tabIndex = this->insertEmptyTab(index, label, content, type, data, icon);
 
 	return tabIndex;
 }
