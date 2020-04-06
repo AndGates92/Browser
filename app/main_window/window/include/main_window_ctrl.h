@@ -124,16 +124,6 @@ namespace main_window_ctrl {
 			 */
 			void toggleShowMenubar();
 
-			/**
-			 * @brief Function: void updateInfoSlot(const int & index)
-			 *
-			 * \param index: index of tab either closed or clicked
-			 *
-			 * This function is the slot to update the info label
-			 * Note: argument index is not used
-			 */
-			void updateInfoSlot(const int & index);
-
 		private:
 
 			/**

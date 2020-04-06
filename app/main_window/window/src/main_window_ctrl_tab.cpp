@@ -97,6 +97,13 @@ void main_window_ctrl_tab::MainWindowCtrlTab::connectSignals() {
 
 	// When the file has been read, then show it on the screen
 	connect(this->windowCore->topMenuBar->getFileMenu(), &file_menu::FileMenu::updateCenterWindowSignal, this, &main_window_ctrl_tab::MainWindowCtrlTab::printStrInCurrentTab);
+
+	// Updates to the window depending on changes in tabs
+//	connect(this->windowCore->tabs, &main_window_tab_widget::MainWindowTabWidget::currentChanged, this, &main_window_ctrl_tab::MainWindowCtrlTab::updateContent);
+	// Update info bar
+	connect(this->windowCore->tabs, &main_window_tab_widget::MainWindowTabWidget::currentChanged, this, &main_window_ctrl_tab::MainWindowCtrlTab::updateInfo);
+	connect(this->windowCore->tabs, &main_window_tab_widget::MainWindowTabWidget::tabCloseRequested, this, &main_window_ctrl_tab::MainWindowCtrlTab::updateInfo);
+
 }
 
 //************************************************************************************
@@ -172,9 +179,6 @@ int main_window_ctrl_tab::MainWindowCtrlTab::addNewTab(const QString & search, c
 	this->connectProgressBar(tabIndex);
 
 	QEXCEPTION_ACTION_COND((tabIndex < 0), throw, "It cannot be negative");
-
-	// Update info label
-	this->updateInfo();
 
 	return tabIndex;
 }
@@ -425,9 +429,8 @@ void main_window_ctrl_tab::MainWindowCtrlTab::executeTabAction(const int & userI
 			break;
 	}
 
-	this->updateInfo();
-
 	const int tabIndex = this->windowCore->getCurrentTabIndex();
+	this->updateInfo(tabIndex);
 	this->updateContent(tabIndex);
 }
 

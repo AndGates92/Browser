@@ -58,13 +58,13 @@ void main_window_ctrl_base::MainWindowCtrlBase::printUserInput(const main_window
 
 }
 
-void main_window_ctrl_base::MainWindowCtrlBase::updateInfo() {
-	const QString info(this->createTabInfo());
+void main_window_ctrl_base::MainWindowCtrlBase::updateInfo(const int & currIndex) {
+	const QString info(this->tabInfoStr(currIndex));
 
 	this->windowCore->bottomStatusBar->getInfoText()->setText(info);
 }
 
-QString main_window_ctrl_base::MainWindowCtrlBase::createTabInfo() {
+QString main_window_ctrl_base::MainWindowCtrlBase::tabInfoStr(const int & currIndex) const {
 
 	const int tabCount = this->windowCore->getTabCount();
 
@@ -73,7 +73,7 @@ QString main_window_ctrl_base::MainWindowCtrlBase::createTabInfo() {
 		tabInfo.append("No tabs");
 	} else {
 		tabInfo.append("tab ");
-		tabInfo.append(QString("%1").arg(this->windowCore->getCurrentTabIndex() + 1));
+		tabInfo.append(QString("%1").arg(currIndex + 1));
 		tabInfo.append(" out of ");
 		tabInfo.append(QString("%1").arg(tabCount));
 	}

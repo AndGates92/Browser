@@ -54,13 +54,6 @@ namespace main_window_ctrl_base {
 			virtual ~MainWindowCtrlBase();
 
 			/**
-			 * @brief Function: void updateInfo()
-			 *
-			 * This function is updates the info label
-			 */
-			void updateInfo();
-
-			/**
 			 * @brief Function: virtual void keyPressEvent(QKeyEvent * event)
 			 *
 			 * \param event: event coming from keyboard
@@ -80,6 +73,17 @@ namespace main_window_ctrl_base {
 			 * Re-implement key released event
 			 */
 			virtual void keyReleaseEvent(QKeyEvent * event) = 0;
+
+		public slots:
+
+			/**
+			 * @brief Function: void updateInfo(const int & currIndex)
+			 *
+			 * \param currIndex: current page index or -1 if no tabs
+			 *
+			 * This function is updates the info label
+			 */
+			void updateInfo(const int & currIndex);
 
 		protected:
 			/**
@@ -113,13 +117,15 @@ namespace main_window_ctrl_base {
 			void printUserInput(const main_window_shared_types::text_action_e action, const QString text = QString::null);
 
 			/**
-			 * @brief Function: void createTabInfo()
+			 * @brief Function: QString tabInfoStr(const int & currIndex) const
+			 *
+			 * \param currIndex: current page index or -1 if no tabs
 			 *
 			 * \return QString with the information
 			 *
 			 * This function creates the string with the tab information to be displayed at the bottom of the window
 			 */
-			QString createTabInfo();
+			QString tabInfoStr(const int & currIndex) const;
 
 			/**
 			 * @brief Function: void setAllShortcutEnabledProperty(const bool enabled)

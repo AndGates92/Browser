@@ -76,7 +76,8 @@ main_window::MainWindow::MainWindow(QWidget * parent, Qt::WindowFlags flags) : Q
 	this->resize(winSize);
 
 	// Update info label
-	this->ctrl->updateInfo();
+	const int tabIndex = this->windowCore->getCurrentTabIndex();
+	this->ctrl->updateInfo(tabIndex);
 }
 
 main_window::MainWindow::~MainWindow() {
