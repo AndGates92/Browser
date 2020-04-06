@@ -156,6 +156,17 @@ namespace main_window_tab_widget {
 			QWidget * widget(const int & index, bool checkError = true) const;
 
 			/**
+			 * @brief Function: const main_window_tab_data::MainWindowTabData * getTabData(const int & index) const
+			 *
+			 * \param index: index of the tab to return the type of
+			 *
+			 * \return tab data
+			 *
+			 * return a tab data from tab widget
+			 */
+			const main_window_tab_data::MainWindowTabData * getTabData(const int & index) const;
+
+			/**
 			 * @brief Function: main_window_shared_types::tab_type_e getTabType(const int & index) const
 			 *
 			 * \param index: index of the tab to return the type of
@@ -167,7 +178,7 @@ namespace main_window_tab_widget {
 			main_window_shared_types::tab_type_e getTabType(const int & index) const;
 
 			/**
-			 * @brief Function: const void * getTabData(const int & index) const
+			 * @brief Function: const void * getTabExtraData(const int & index) const
 			 *
 			 * \param index: index of the tab to return the data of
 			 *
@@ -175,7 +186,7 @@ namespace main_window_tab_widget {
 			 *
 			 * return a tab data from tab widget
 			 */
-			const void * getTabData(const int & index) const;
+			const void * getTabExtraData(const int & index) const;
 
 			/**
 			 * @brief Function: void changeTabType(const int & index, const main_window_shared_types::tab_type_e newType, const void * data = nullptr)

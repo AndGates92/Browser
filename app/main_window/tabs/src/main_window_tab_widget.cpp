@@ -12,6 +12,7 @@
 // Required by qInfo
 #include <qt5/QtCore/QtDebug>
 
+#include "main_window_web_engine_page.h"
 #include "main_window_tab_widget.h"
 #include "main_window_tab.h"
 #include "type_print_macros.h"
@@ -98,36 +99,31 @@ QWidget * main_window_tab_widget::MainWindowTabWidget::widget(const int & index,
 	return requestedWidget;
 }
 
-main_window_shared_types::tab_type_e main_window_tab_widget::MainWindowTabWidget::getTabType(const int & index) const {
+const main_window_tab_data::MainWindowTabData * main_window_tab_widget::MainWindowTabWidget::getTabData(const int & index) const {
 
-	main_window_shared_types::tab_type_e tabType = main_window_shared_types::tab_type_e::UNKNOWN;
+	const int tabCount = this->count();
 
-	const int tabDataSize = this->tabData.size();
-	QEXCEPTION_ACTION_COND(((index < 0) || (index >= tabDataSize)), throw,  "Unable to retrieve tab type as index must be larger or equal to 0 and smaller than the number of elements in the QList " << tabDataSize << ". Got " << index << ".");
+	QEXCEPTION_ACTION_COND(((index < 0) || (index >= tabCount)), throw,  "Unable to retrieve tab type as index must be larger or equal to 0 and smaller than the number of tabs " << tabCount << ". Got " << index << ".");
 
-	if (this->tabData.empty() == false) {
-		std::list<main_window_tab_data::MainWindowTabData>::const_iterator iter = this->tabData.cbegin();
-		std::advance(iter, index);
-		tabType = iter->type;
-	}
+	const main_window_tab_data::MainWindowTabData * tabData = nullptr;
 
-	return tabType;
-}
-
-const void * main_window_tab_widget::MainWindowTabWidget::getTabData(const int & index) const {
-
-	const void * tabData = nullptr;
-
-	const int tabDataSize = this->tabData.size();
-	QEXCEPTION_ACTION_COND(((index < 0) || (index >= tabDataSize)), throw,  "Unable to retrive tab data as index must be larger or equal to 0 and smaller than the number of elements in the QList " << tabDataSize << ". Got " << index << ".");
-
-	if (this->tabData.empty() == false) {
-		std::list<main_window_tab_data::MainWindowTabData>::const_iterator iter = this->tabData.cbegin();
-		std::advance(iter, index);
-		tabData = iter->data;
+	if (tabCount > 0) {
+		const main_window_tab::MainWindowTab * tab = dynamic_cast<main_window_tab::MainWindowTab *>(this->widget(index, true));
+		const main_window_web_engine_page::MainWindowWebEnginePage * page = dynamic_cast<main_window_web_engine_page::MainWindowWebEnginePage *>(tab->widgetView->page());
+		tabData = page->getTabData();
 	}
 
 	return tabData;
+}
+
+main_window_shared_types::tab_type_e main_window_tab_widget::MainWindowTabWidget::getTabType(const int & index) const {
+	const main_window_tab_data::MainWindowTabData * tabData = this->getTabData(index);
+	return tabData->getType();
+}
+
+const void * main_window_tab_widget::MainWindowTabWidget::getTabExtraData(const int & index) const {
+	const main_window_tab_data::MainWindowTabData * tabData = this->getTabData(index);
+	return tabData->getData();
 }
 
 void main_window_tab_widget::MainWindowTabWidget::changeTabType(const int & index, const main_window_shared_types::tab_type_e newType, const void * data) {

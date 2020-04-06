@@ -258,7 +258,7 @@ void main_window_ctrl_tab::MainWindowCtrlTab::refreshUrl(const int & tabIndex) {
 		}
 	} else if (tabType == main_window_shared_types::tab_type_e::LABEL) {
 		// Retrive filename
-		const void * tabData = this->windowCore->tabs->getTabData(tabIndex);
+		const void * tabData = this->windowCore->tabs->getTabExtraData(tabIndex);
 		const char * filename = static_cast<const char *>(tabData);
 		const QString tabContent(QString::fromStdString(global_functions::readFile(filename)));
 		try {
@@ -325,7 +325,7 @@ void main_window_ctrl_tab::MainWindowCtrlTab::disconnectProgressBar(const int & 
 			disconnect(currentTabView, &main_window_web_engine_view::MainWindowWebEngineView::loadFinished, loadBar, &progress_bar::ProgressBar::endLoading);
 
 			// Make load bar invisible as we are disconnecting slots
-				loadBar->setVisible(false);
+			loadBar->setVisible(false);
 
 		} catch (const std::bad_cast & badCastE) {
 			QEXCEPTION_ACTION(throw, badCastE.what());

@@ -46,3 +46,15 @@ main_window_web_engine_page::MainWindowWebEnginePage::~MainWindowWebEnginePage()
 	}
 
 }
+
+main_window_tab_data::MainWindowTabData * main_window_web_engine_page::MainWindowWebEnginePage::getTabData() const {
+	return this->tabData;
+}
+
+main_window_shared_types::tab_type_e main_window_web_engine_page::MainWindowWebEnginePage::getTabType() const {
+	return this->tabData->getType();
+}
+
+const void * main_window_web_engine_page::MainWindowWebEnginePage::getTabExtraData() const {
+	return this->tabData->getData();
+}

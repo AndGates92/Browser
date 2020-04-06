@@ -66,6 +66,32 @@ namespace main_window_web_engine_page {
 			 */
 			virtual ~MainWindowWebEnginePage();
 
+			/**
+			 * @brief Function: main_window_tab_data::MainWindowTabData * getTabData() const
+			 *
+			 * \return tab data
+			 *
+			 * This function returns custom tab data
+			 */
+			main_window_tab_data::MainWindowTabData * getTabData() const;
+
+			/**
+			 * @brief Function: main_window_shared_types::tab_type_e getTabType() const
+			 *
+			 * \return tab type
+			 *
+			 * This function returns tab type
+			 */
+			main_window_shared_types::tab_type_e getTabType() const;
+
+			/**
+			 * @brief Function: const void * main_window_web_engine_page::MainWindowWebEnginePage::getTabExtraData() const
+			 *
+			 * \return tab extra data
+			 *
+			 * This function returns tab extra data
+			 */
+			const void * getTabExtraData() const;
 		protected:
 
 		private:
