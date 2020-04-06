@@ -71,6 +71,7 @@ void main_window_tab_widget::MainWindowTabWidget::removeTab(const int & index) {
 	QINFO_PRINT(global_types::qinfo_level_e::ZERO, mainWindowTabWidgetTabs,  "Close tab " << index);
 	tab_widget::TabWidget::removeTab(index);
 	this->deleteListElement(index);
+	emit this->numberTabsChanged(this->currentIndex());
 }
 
 void main_window_tab_widget::MainWindowTabWidget::deleteListElement(const int & index) {

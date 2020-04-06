@@ -57,6 +57,8 @@ namespace main_window_tab_widget {
 	 */
 	class MainWindowTabWidget final : public tab_widget::TabWidget {
 
+		Q_OBJECT
+
 		public:
 
 			/**
@@ -223,6 +225,15 @@ namespace main_window_tab_widget {
 			 */
 			DISABLE_COPY_MOVE(MainWindowTabWidget)
 
+		signals:
+			/**
+			 * @brief Function: void numberTabsChanged(int index)
+			 *
+			 * \param index: index of the current tab
+			 *
+			 * This function is a signal to notify that the number of tabs has changed
+			 */
+			void numberTabsChanged(int index);
 	};
 
 }

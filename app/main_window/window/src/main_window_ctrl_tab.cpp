@@ -100,8 +100,9 @@ void main_window_ctrl_tab::MainWindowCtrlTab::connectSignals() {
 
 	// Updates to the window depending on changes in tabs
 //	connect(this->windowCore->tabs, &main_window_tab_widget::MainWindowTabWidget::currentChanged, this, &main_window_ctrl_tab::MainWindowCtrlTab::updateContent);
-	// Update info bar
 	connect(this->windowCore->tabs, &main_window_tab_widget::MainWindowTabWidget::currentChanged, this, &main_window_ctrl_tab::MainWindowCtrlTab::updateInfo);
+	connect(this->windowCore->tabs, &main_window_tab_widget::MainWindowTabWidget::numberTabsChanged, this, &main_window_ctrl_tab::MainWindowCtrlTab::updateInfo);
+	// Update info bar
 	connect(this->windowCore->tabs, &main_window_tab_widget::MainWindowTabWidget::tabCloseRequested, this, &main_window_ctrl_tab::MainWindowCtrlTab::updateInfo);
 
 }
@@ -430,7 +431,6 @@ void main_window_ctrl_tab::MainWindowCtrlTab::executeTabAction(const int & userI
 	}
 
 	const int tabIndex = this->windowCore->getCurrentTabIndex();
-	this->updateInfo(tabIndex);
 	this->updateContent(tabIndex);
 }
 

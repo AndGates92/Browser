@@ -30,6 +30,10 @@ main_window_ctrl::MainWindowCtrl::MainWindowCtrl(QSharedPointer<main_window_core
 	// Connect signals and slots
 	this->connectSignals();
 
+	// Update info label - as no tabs in the window, then updateInfo must be explicitely called
+	const int tabIndex = this->windowCore->getCurrentTabIndex();
+	this->updateInfo(tabIndex);
+
 	// TODO - delete after automatic testing has been put in place
 	// Testing of find capabilities into JSON file
 	// Key not found
