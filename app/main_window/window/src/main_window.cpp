@@ -75,7 +75,7 @@ main_window::MainWindow::MainWindow(QWidget * parent, Qt::WindowFlags flags) : Q
 	const QSize winSize(320,400);
 	this->resize(winSize);
 
-	// Update info label
+	// Update info label - as no tabs in the window, then updateInfo must be explicitely called
 	const int tabIndex = this->windowCore->getCurrentTabIndex();
 	this->ctrl->updateInfo(tabIndex);
 }
