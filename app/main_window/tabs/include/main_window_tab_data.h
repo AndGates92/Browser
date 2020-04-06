@@ -32,14 +32,14 @@ namespace main_window_tab_data {
 		public:
 
 			/**
-			 * @brief Function: static const main_window_tab_data::MainWindowTabData makeTabData(const main_window_shared_types::tab_type_e & type, const void * data)
+			 * @brief Function: static main_window_tab_data::MainWindowTabData * makeTabData(const main_window_shared_types::tab_type_e & type, const void * data)
 			 *
 			 * \param type: type of the tab
 			 * \param data: extra data
 			 *
 			 * this function constructs a new instance of class MainWindowTabData
 			 */
-			static const main_window_tab_data::MainWindowTabData makeTabData(const main_window_shared_types::tab_type_e & type, const void * data);
+			static main_window_tab_data::MainWindowTabData * makeTabData(const main_window_shared_types::tab_type_e & type, const void * data);
 
 			/**
 			 * @brief Function: MainWindowTabData(main_window_shared_types::tab_type_e tabType = main_window_shared_types::tab_type_e::UNKNOWN, const void * tabData = nullptr)

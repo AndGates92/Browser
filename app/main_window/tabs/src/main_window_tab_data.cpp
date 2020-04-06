@@ -19,9 +19,9 @@
 Q_LOGGING_CATEGORY(mainWindowTabDataOverall, "mainWindowTabData.overall", MSG_TYPE_LEVEL)
 Q_LOGGING_CATEGORY(mainWindowTabDataPrint, "mainWindowTabData.print", MSG_TYPE_LEVEL)
 
-const main_window_tab_data::MainWindowTabData main_window_tab_data::MainWindowTabData::makeTabData(const main_window_shared_types::tab_type_e & type, const void * data) {
-	const main_window_tab_data::MainWindowTabData newData(type, data);
-	QINFO_PRINT(global_types::qinfo_level_e::ZERO, mainWindowTabDataOverall,  "Creating tab data: " << newData.qprint());
+main_window_tab_data::MainWindowTabData * main_window_tab_data::MainWindowTabData::makeTabData(const main_window_shared_types::tab_type_e & type, const void * data) {
+	main_window_tab_data::MainWindowTabData * newData = new main_window_tab_data::MainWindowTabData(type, data);
+	QINFO_PRINT(global_types::qinfo_level_e::ZERO, mainWindowTabDataOverall,  "Creating tab data: " << newData->qprint());
 	return newData;
 }
 

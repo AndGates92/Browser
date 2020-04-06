@@ -57,7 +57,7 @@ int main_window_tab_widget::MainWindowTabWidget::insertTab(const int & index, QW
 	try {
 		std::list<main_window_tab_data::MainWindowTabData>::iterator iter = this->tabData.begin();
 		std::advance(iter, index);
-		this->tabData.insert(iter, main_window_tab_data::MainWindowTabData::makeTabData(type, data));
+		this->tabData.insert(iter, *(main_window_tab_data::MainWindowTabData::makeTabData(type, data)));
 	} catch (const std::bad_alloc & badAllocE) {
 		QEXCEPTION_ACTION(throw, badAllocE.what());
 	}
@@ -158,7 +158,7 @@ int main_window_tab_widget::MainWindowTabWidget::insertEmptyTab(const int & inde
 		QEXCEPTION_ACTION(throw, "Unable to insert new empty tab at index " << index << " as the provided tab type " << type << " is not recognized");
 	}
 
-	main_window_tab::MainWindowTab * centerWindow = new main_window_tab::MainWindowTab(type, body, this->parentWidget());
+	main_window_tab::MainWindowTab * centerWindow = new main_window_tab::MainWindowTab(type, data, body, this->parentWidget());
 	int tabIndex = this->insertTab(index, centerWindow, label, type, data, icon);
 
 	// Move to the newly opened tab

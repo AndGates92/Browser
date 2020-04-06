@@ -36,15 +36,16 @@ namespace main_window_web_engine_view {
 
 		public:
 			/**
-			 * @brief Function: explicit MainWindowWebEngineView(const main_window_shared_types::tab_type_e type, const void * tabContent, QWidget * parent = Q_NULLPTR)
+			 * @brief Function: explicit MainWindowWebEngineView(const main_window_shared_types::tab_type_e type, const void * data, const void * tabContent, QWidget * parent = Q_NULLPTR)
 			 *
-			 * \param type: parent widget
+			 * \param type: tab type
+			 * \param data: tab extra data
 			 * \param tabContent: tab content
 			 * \param parent: parent widget
 			 *
 			 * Main window web engine view constructor
 			 */
-			explicit MainWindowWebEngineView(const main_window_shared_types::tab_type_e type, const void * tabContent, QWidget * parent = Q_NULLPTR);
+			explicit MainWindowWebEngineView(const main_window_shared_types::tab_type_e type, const void * data, const void * tabContent, QWidget * parent = Q_NULLPTR);
 
 			/**
 			 * @brief Function: virtual ~MainWindowWebEngineView()
