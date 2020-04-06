@@ -203,21 +203,6 @@ namespace main_window_tab_widget {
 
 		private:
 			/**
-			 * @brief tab data
-			 *
-			 */
-			std::list<main_window_tab_data::MainWindowTabData> tabData;
-
-			/**
-			 * @brief Function: void deleteListElement(const int & index)
-			 *
-			 * \param index: index of the list to remove
-			 *
-			 * remove an element of the list
-			 */
-			void deleteListElement(const int & index);
-
-			/**
 			 * @brief Function: const QUrl createUrl(const QString & search) const
 			 *
 			 * \param search: string to search
