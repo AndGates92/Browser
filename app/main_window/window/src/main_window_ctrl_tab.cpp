@@ -216,9 +216,10 @@ void main_window_ctrl_tab::MainWindowCtrlTab::searchCurrentTab(const QString & s
 void main_window_ctrl_tab::MainWindowCtrlTab::updateContent(const int & index) {
 
 	const int tabCount = this->windowCore->getTabCount();
-	const main_window_shared_types::tab_type_e tabType = this->windowCore->tabs->getTabType(index);
 
 	if (tabCount > 0) {
+		const main_window_shared_types::tab_type_e tabType = this->windowCore->tabs->getTabType(index);
+
 		QString contentStr (QString::null);
 		if (tabType == main_window_shared_types::tab_type_e::WEB_ENGINE) {
 			try {
