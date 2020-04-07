@@ -70,9 +70,13 @@ const main_window_tab_data::MainWindowTabData * main_window_tab_widget::MainWind
 	const main_window_tab_data::MainWindowTabData * tabData = nullptr;
 
 	if (tabCount > 0) {
-		const main_window_tab::MainWindowTab * tab = dynamic_cast<main_window_tab::MainWindowTab *>(this->widget(index, true));
-		const main_window_web_engine_page::MainWindowWebEnginePage * page = dynamic_cast<main_window_web_engine_page::MainWindowWebEnginePage *>(tab->widgetView->page());
-		tabData = page->getTabData();
+		try {
+			const main_window_tab::MainWindowTab * tab = dynamic_cast<main_window_tab::MainWindowTab *>(this->widget(index, true));
+			const main_window_web_engine_page::MainWindowWebEnginePage * page = dynamic_cast<main_window_web_engine_page::MainWindowWebEnginePage *>(tab->widgetView->page());
+			tabData = page->getTabData();
+		} catch (const std::bad_cast & badCastE) {
+			QEXCEPTION_ACTION(throw, badCastE.what());
+		}
 	}
 
 	return tabData;
