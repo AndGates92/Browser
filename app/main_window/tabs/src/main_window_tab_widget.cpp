@@ -23,7 +23,7 @@
 Q_LOGGING_CATEGORY(mainWindowTabWidgetOverall, "mainWindowTabWidget.overall", MSG_TYPE_LEVEL)
 Q_LOGGING_CATEGORY(mainWindowTabWidgetTabs, "mainWindowTabWidget.tabs", MSG_TYPE_LEVEL)
 
-main_window_tab_widget::MainWindowTabWidget::MainWindowTabWidget(QWidget * parent): tab_widget::TabWidget(parent), tabData(std::list<main_window_tab_data::MainWindowTabData>()) {
+main_window_tab_widget::MainWindowTabWidget::MainWindowTabWidget(QWidget * parent): tab_widget::TabWidget(parent) {
 	QINFO_PRINT(global_types::qinfo_level_e::ZERO, mainWindowTabWidgetOverall,  "Main Window Tab widget constructor");
 
 }
@@ -42,55 +42,17 @@ main_window_tab_widget::MainWindowTabWidget::~MainWindowTabWidget() {
 		this->removeTab(idx);
 		QINFO_PRINT(global_types::qinfo_level_e::ZERO, mainWindowTabWidgetOverall,  "Removing tab type " << type);
 	}
-
-	for(std::list<main_window_tab_data::MainWindowTabData>::const_iterator it = this->tabData.cbegin(); it != this->tabData.cend(); it++) {
-		QWARNING_PRINT(mainWindowTabWidgetOverall,  "Tab type still not deleted - Content: " << it->qprint());
-	}
-
-	Q_ASSERT_X((this->tabData.empty() == true), "tab type list not empty", "List of tab types is not empty");
-
-	this->tabData.clear();
-}
-
-int main_window_tab_widget::MainWindowTabWidget::insertTab(const int & index, QWidget * page, const QString & label, const main_window_shared_types::tab_type_e & type, const void * data, const QIcon & icon) {
-	QINFO_PRINT(global_types::qinfo_level_e::ZERO, mainWindowTabWidgetTabs,  "Insert tab with label " << label << " at position " << index);
-
-	try {
-		std::list<main_window_tab_data::MainWindowTabData>::iterator iter = this->tabData.begin();
-		std::advance(iter, index);
-		this->tabData.insert(iter, *(main_window_tab_data::MainWindowTabData::makeTabData(type, data)));
-	} catch (const std::bad_alloc & badAllocE) {
-		QEXCEPTION_ACTION(throw, badAllocE.what());
-	}
-
-	const int tabIndex = tab_widget::TabWidget::insertTab(index, page, label, icon);
-
-	return tabIndex;
 }
 
 void main_window_tab_widget::MainWindowTabWidget::removeTab(const int & index) {
 	QINFO_PRINT(global_types::qinfo_level_e::ZERO, mainWindowTabWidgetTabs,  "Close tab " << index);
 	tab_widget::TabWidget::removeTab(index);
-	this->deleteListElement(index);
 	emit this->numberTabsChanged(this->currentIndex());
-}
-
-void main_window_tab_widget::MainWindowTabWidget::deleteListElement(const int & index) {
-
-	const int tabDataSize = this->tabData.size();
-	QEXCEPTION_ACTION_COND(((index < 0) || (index >= tabDataSize)), throw,  "Unable to delete list element as index must be larger or equal to 0 and smaller than the number of elements in the QList " << tabDataSize << ". Got " << index << ".");
-
-	if (this->tabData.empty() == false) {
-		std::list<main_window_tab_data::MainWindowTabData>::iterator iter = this->tabData.begin();
-		std::advance(iter, index);
-		this->tabData.erase(iter);
-	}
 }
 
 void main_window_tab_widget::MainWindowTabWidget::moveTab(const int & indexFrom, const int & indexTo) {
 	QINFO_PRINT(global_types::qinfo_level_e::ZERO, mainWindowTabWidgetTabs, "Move tab from " << indexFrom << " to " << indexTo);
 	this->bar->moveTab(indexFrom, indexTo);
-	global_functions::moveListElements<main_window_tab_data::MainWindowTabData>(this->tabData, indexFrom, indexTo);
 }
 
 QWidget * main_window_tab_widget::MainWindowTabWidget::widget(const int & index, bool checkError) const {
@@ -134,12 +96,12 @@ void main_window_tab_widget::MainWindowTabWidget::changeTabType(const int & inde
 	if (currentType != newType) {
 		this->removeTab(index);
 		const QString content(QString::null);
-		const int tabIndex = this->insertEmptyTab(index, QString::null, &content, newType, data);
+		const int tabIndex = this->insertTab(index, QString::null, &content, newType, data);
 		QEXCEPTION_ACTION_COND((tabIndex != index), throw, "Requested index (" << index << ") is different from tab index (" << tabIndex);
 	}
 }
 
-int main_window_tab_widget::MainWindowTabWidget::insertEmptyTab(const int & index, const QString & label, const void * content, const main_window_shared_types::tab_type_e & type, const void * data, const QIcon & icon) {
+int main_window_tab_widget::MainWindowTabWidget::insertTab(const int & index, const QString & label, const void * content, const main_window_shared_types::tab_type_e & type, const void * data, const QIcon & icon) {
 
 	const void * body = nullptr;
 	QUrl url = QUrl();
@@ -154,8 +116,11 @@ int main_window_tab_widget::MainWindowTabWidget::insertEmptyTab(const int & inde
 		QEXCEPTION_ACTION(throw, "Unable to insert new empty tab at index " << index << " as the provided tab type " << type << " is not recognized");
 	}
 
-	main_window_tab::MainWindowTab * centerWindow = new main_window_tab::MainWindowTab(type, data, body, this->parentWidget());
-	int tabIndex = this->insertTab(index, centerWindow, label, type, data, icon);
+	main_window_tab::MainWindowTab * tab = new main_window_tab::MainWindowTab(type, data, body, this->parentWidget());
+
+	QINFO_PRINT(global_types::qinfo_level_e::ZERO, mainWindowTabWidgetTabs,  "Insert tab with label " << label << " at position " << index);
+
+	const int tabIndex = tab_widget::TabWidget::insertTab(index, tab, label, icon);
 
 	// Move to the newly opened tab
 	this->setCurrentIndex(tabIndex);
@@ -166,7 +131,7 @@ int main_window_tab_widget::MainWindowTabWidget::insertEmptyTab(const int & inde
 int main_window_tab_widget::MainWindowTabWidget::addEmptyTab(const QString & label, const void * content, const main_window_shared_types::tab_type_e & type, const void * data, const QIcon & icon) {
 
 	const int index = this->count();
-	int tabIndex = this->insertEmptyTab(index, label, content, type, data, icon);
+	int tabIndex = this->insertTab(index, label, content, type, data, icon);
 
 	return tabIndex;
 }
