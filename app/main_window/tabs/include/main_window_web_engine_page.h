@@ -30,6 +30,28 @@ Q_DECLARE_LOGGING_CATEGORY(mainWindowWebEnginePageOverall)
 
 namespace main_window_web_engine_page {
 
+	namespace {
+
+		/**
+		 * @brief https string
+		 *
+		 */
+		const QString https("https://");
+
+		/**
+		 * @brief www string
+		 *
+		 */
+		const QString www("www.");
+
+		/**
+		 * @brief default serch engine is duckduckgo
+		 *
+		 */
+		const QString defaultSearchEngine(https + www + "duckduckgo.com/?q=%1");
+
+	}
+
 	/**
 	 * @brief MainWindowWebEnginePage class
 	 *
@@ -67,6 +89,18 @@ namespace main_window_web_engine_page {
 			virtual ~MainWindowWebEnginePage();
 
 			/**
+			 * @brief Function: void setBody(const main_window_shared_types::tab_type_e & type, const void * content)
+			 *
+			 * \param type: tab type
+			 * \param content: tab content
+			 *
+			 * Set body of the page based on the tab type
+			 * if the type is WEB_ENGINE, it converts argument content to a QUrl
+			 * if the type is LABEL, it converts argument content to a QString
+			 */
+			void setBody(const main_window_shared_types::tab_type_e & type, const void * content);
+
+			/**
 			 * @brief Function: main_window_tab_data::MainWindowTabData * getTabData() const
 			 *
 			 * \return tab data
@@ -100,6 +134,19 @@ namespace main_window_web_engine_page {
 			 *
 			 */
 			main_window_tab_data::MainWindowTabData * const tabData;
+
+			/**
+			 * @brief Function: const QUrl createUrl(const QString & search) const
+			 *
+			 * \param search: string to search
+			 *
+			 * \return URL as QUrl
+			 *
+			 * This function is creates the URL based on the input from the user
+			 * If the user writes down a URL himself/herself, it will return it adding, if required, https
+			 * If the user is writing a strign to search, it will be searched in the chosen search engine
+			 */
+			const QUrl createUrl(const QString & search) const;
 
 			// Move and copy constructor
 			/**

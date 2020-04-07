@@ -186,21 +186,8 @@ int main_window_ctrl_tab::MainWindowCtrlTab::addNewTab(const QString & search, c
 
 void main_window_ctrl_tab::MainWindowCtrlTab::newSearchTab(const int & index, const QString & search) {
 	QINFO_PRINT(global_types::qinfo_level_e::ZERO, mainWindowCtrlTabSearch,  "User input " << search << " in tab " << index);
-
-	const QString tabTitle = search;
-	const QString Url = this->createUrl(search);
-
-	const main_window_shared_types::tab_type_e desiredTabType = main_window_shared_types::tab_type_e::WEB_ENGINE;
-	this->windowCore->tabs->changeTabType(index, desiredTabType);
-	this->windowCore->tabs->setTabText(index, tabTitle);
-
-	try {
-		main_window_tab::MainWindowTab * currentTab = dynamic_cast<main_window_tab::MainWindowTab *>(this->windowCore->tabs->widget(index));
-		main_window_web_engine_view::MainWindowWebEngineView * currentTabView = currentTab->widgetView;
-		currentTabView->setUrl(QUrl(Url));
-	} catch (const std::bad_cast & badCastE) {
-		QEXCEPTION_ACTION(throw, badCastE.what());
-	}
+	const main_window_shared_types::tab_type_e desiredType = main_window_shared_types::tab_type_e::WEB_ENGINE;
+	this->windowCore->tabs->changeTabContent(index, search, &search, desiredType, nullptr);
 
 	this->updateContent(index);
 }
@@ -715,7 +702,7 @@ void main_window_ctrl_tab::MainWindowCtrlTab::printStrInCurrentTab(const QString
 		tabCount = this->windowCore->getTabCount();
 		QEXCEPTION_ACTION_COND((currentTabIndex >= tabCount), throw,  "Current tab index " << currentTabIndex << " must be larger than the number of tabs " << tabCount);
 	} else {
-		this->windowCore->tabs->changeTabType(currentTabIndex, desiredTabType, data);
+		this->windowCore->tabs->changeTabData(currentTabIndex, desiredTabType, data);
 	}
 
 	QINFO_PRINT(global_types::qinfo_level_e::ZERO, mainWindowCtrlTabTabs, "Current tab index is " << currentTabIndex << " and the tab widget has " << tabCount << " tabs");

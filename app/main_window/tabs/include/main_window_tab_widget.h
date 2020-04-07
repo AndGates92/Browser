@@ -28,29 +28,6 @@ Q_DECLARE_LOGGING_CATEGORY(mainWindowTabWidgetTabs)
 
 namespace main_window_tab_widget {
 
-	namespace {
-
-		/**
-		 * @brief https string
-		 *
-		 */
-		const QString https("https://");
-
-		/**
-		 * @brief www string
-		 *
-		 */
-		const QString www("www.");
-
-		/**
-		 * @brief default serch engine is duckduckgo
-		 *
-		 */
-		const QString defaultSearchEngine(https + www + "duckduckgo.com/?q=%1");
-
-	}
-
-
 	/**
 	 * @brief MainWindowTabWidget class
 	 *
@@ -173,31 +150,31 @@ namespace main_window_tab_widget {
 			const void * getTabExtraData(const int & index) const;
 
 			/**
-			 * @brief Function: void changeTabType(const int & index, const main_window_shared_types::tab_type_e newType, const void * data = nullptr)
+			 * @brief Function: void changeTabData(const int & index, const main_window_shared_types::tab_type_e newType, const void * data = nullptr)
 			 *
 			 * \param index: index of the tab to change the type of
 			 * \param newType: new type of tab at index index
 			 * \param data: extra data to be passed through
 			 *
-			 * change the type of a tab
+			 * this function chnages the type and the extra data of a tab
 			 */
-			void changeTabType(const int & index, const main_window_shared_types::tab_type_e newType, const void * data = nullptr);
+			void changeTabData(const int & index, const main_window_shared_types::tab_type_e newType, const void * data = nullptr);
 
+			/**
+			 * @brief Function: void changeTabContent(const int & index, const QString & label, const void * content, const main_window_shared_types::tab_type_e & type, const void * data)
+			 *
+			 * \param index: index to insert tab to
+			 * \param label: label of the tab
+			 * \param content: content of the tab
+			 * \param type: type of the tab
+			 * \param data: extra data to be passed through
+			 *
+			 * This function changes the content of a tab
+			 */
+			void changeTabContent(const int & index, const QString & label, const void * content, const main_window_shared_types::tab_type_e & type, const void * data);
 		protected:
 
 		private:
-			/**
-			 * @brief Function: const QUrl createUrl(const QString & search) const
-			 *
-			 * \param search: string to search
-			 * \return URL as QUrl
-			 *
-			 * This function is creates the URL based on the input from the user
-			 * If the user writes down a URL himself/herself, it will return it adding, if required, https
-			 * If the user is writing a strign to search, it will be searched in the chosen search engine
-			 */
-			const QUrl createUrl(const QString & search) const;
-
 			// Move and copy constructor
 			/**
 			 * @brief Disable move and copy constructors and operator= overloading for class MainWindowTabWidget
@@ -214,6 +191,7 @@ namespace main_window_tab_widget {
 			 * This function is a signal to notify that the number of tabs has changed
 			 */
 			void numberTabsChanged(int index);
+
 	};
 
 }
