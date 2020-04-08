@@ -71,11 +71,11 @@ namespace main_window_tab {
 			main_window_web_engine_search::MainWindowWebEngineSearch * search;
 
 			/**
-			 * @brief Function: void reload()
+			 * @brief Function: void reload() override
 			 *
 			 * This function reloads the content of the page
 			 */
-			void reload();
+			void reload() override;
 
 		protected:
 

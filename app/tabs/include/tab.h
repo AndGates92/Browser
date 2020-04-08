@@ -53,6 +53,13 @@ namespace tab {
 
 		protected:
 
+			/**
+			 * @brief Function: virtual void reload()
+			 *
+			 * This function reloads the content of the tab
+			 */
+			virtual void reload() = 0;
+
 		private:
 			// Move and copy constructor
 			/**
