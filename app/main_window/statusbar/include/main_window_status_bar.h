@@ -130,16 +130,6 @@ namespace main_window_status_bar {
 			 */
 			progress_bar::ProgressBar * getLoadBar() const;
 
-		public slots:
-			/**
-			 * @brief Function: void updateContentPath(const QString & content)
-			 *
-			 * \param content: string to print in the content path
-			 *
-			 * This function updates the content label
-			 */
-			void updateContentPath(const QString & content);
-
 		protected:
 
 		private:

@@ -98,15 +98,11 @@ void main_window_ctrl_tab::MainWindowCtrlTab::connectSignals() {
 	// When the file has been read, then show it on the screen
 	connect(this->windowCore->topMenuBar->getFileMenu(), &file_menu::FileMenu::updateCenterWindowSignal, this, &main_window_ctrl_tab::MainWindowCtrlTab::printStrInCurrentTab);
 
-	connect(this, &main_window_ctrl_tab::MainWindowCtrlTab::currentTabSrcChanged, this->windowCore->bottomStatusBar, &main_window_status_bar::MainWindowStatusBar::updateContentPath);
+	connect(this, &main_window_ctrl_tab::MainWindowCtrlTab::currentTabSrcChanged, this->windowCore->bottomStatusBar->getContentPathText(), &elided_label::ElidedLabel::setText);
 
 	// Updates to the window depending on changes in tabs
-	connect(this->windowCore->tabs, &main_window_tab_widget::MainWindowTabWidget::tabTitleChanged, this->windowCore->bottomStatusBar, &main_window_status_bar::MainWindowStatusBar::updateContentPath);
-	connect(this->windowCore->tabs, &main_window_tab_widget::MainWindowTabWidget::tabUrlChanged, this->windowCore->bottomStatusBar, &main_window_status_bar::MainWindowStatusBar::updateContentPath);
-
-//	connect(this, &main_window_ctrl_tab::MainWindowCtrlTab::currentTabSrcChanged, this->windowCore->bottomStatusBar->getContentPathText(), &QLabel::setText);
-//	connect(this->windowCore->tabs, &main_window_tab_widget::MainWindowTabWidget::tabTitleChanged, this->windowCore->bottomStatusBar->getContentPathText(), &QLabel::setText);
-//	connect(this->windowCore->tabs, &main_window_tab_widget::MainWindowTabWidget::tabUrlChanged, this->windowCore->bottomStatusBar->getContentPathText(), &QLabel::setText);
+	connect(this->windowCore->tabs, &main_window_tab_widget::MainWindowTabWidget::tabTitleChanged, this->windowCore->bottomStatusBar->getContentPathText(), &QLabel::setText);
+	connect(this->windowCore->tabs, &main_window_tab_widget::MainWindowTabWidget::tabUrlChanged, this->windowCore->bottomStatusBar->getContentPathText(), &QLabel::setText);
 
 	connect(this->windowCore->tabs, &main_window_tab_widget::MainWindowTabWidget::currentChanged, this, &main_window_ctrl_tab::MainWindowCtrlTab::updateStatusBar);
 	connect(this->windowCore->tabs, &main_window_tab_widget::MainWindowTabWidget::numberTabsChanged, this, &main_window_ctrl_tab::MainWindowCtrlTab::updateStatusBar);

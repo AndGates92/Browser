@@ -48,6 +48,8 @@ namespace elided_label {
 	 */
 	class ElidedLabel final : public QLabel {
 
+		Q_OBJECT
+
 		public:
 			/**
 			 * @brief Function: explicit ElidedLabel(QString textLabel = QString::null, QPoint labelOrigin = QPoint(elided_label::labelOriginX,elided_label::labelOriginY), QWidget * parent = Q_NULLPTR, Qt::WindowFlags flags = Qt::WindowFlags(), Qt::TextElideMode textElisionMode = Qt::ElideNone)
@@ -69,6 +71,7 @@ namespace elided_label {
 			 */
 			~ElidedLabel();
 
+		public slots:
 			/**
 			 * @brief Function: void setText(const QString & text)
 			 *
