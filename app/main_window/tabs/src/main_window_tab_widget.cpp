@@ -79,13 +79,17 @@ void main_window_tab_widget::MainWindowTabWidget::disconnectTab() {
 
 void main_window_tab_widget::MainWindowTabWidget::connectTab() {
 
-	try {
-		const main_window_tab::MainWindowTab * tab = dynamic_cast<main_window_tab::MainWindowTab *>(this->widget(this->currentIndex(), true));
-		const main_window_web_engine_page::MainWindowWebEnginePage * page = dynamic_cast<main_window_web_engine_page::MainWindowWebEnginePage *>(tab->widgetView->page());
-		connect(page, &main_window_web_engine_page::MainWindowWebEnginePage::urlChanged, this, &main_window_tab_widget::MainWindowTabWidget::processTabUrlChanged, Qt::UniqueConnection);
-		connect(page, &main_window_web_engine_page::MainWindowWebEnginePage::titleChanged, this, &main_window_tab_widget::MainWindowTabWidget::processTabTitleChanged, Qt::UniqueConnection);
-	} catch (const std::bad_cast & badCastE) {
-		QEXCEPTION_ACTION(throw, badCastE.what());
+	const int tabCount = this->count();
+
+	if (tabCount > 0) {
+		try {
+			const main_window_tab::MainWindowTab * tab = dynamic_cast<main_window_tab::MainWindowTab *>(this->widget(this->currentIndex(), true));
+			const main_window_web_engine_page::MainWindowWebEnginePage * page = dynamic_cast<main_window_web_engine_page::MainWindowWebEnginePage *>(tab->widgetView->page());
+			connect(page, &main_window_web_engine_page::MainWindowWebEnginePage::urlChanged, this, &main_window_tab_widget::MainWindowTabWidget::processTabUrlChanged, Qt::UniqueConnection);
+			connect(page, &main_window_web_engine_page::MainWindowWebEnginePage::titleChanged, this, &main_window_tab_widget::MainWindowTabWidget::processTabTitleChanged, Qt::UniqueConnection);
+		} catch (const std::bad_cast & badCastE) {
+			QEXCEPTION_ACTION(throw, badCastE.what());
+		}
 	}
 }
 
