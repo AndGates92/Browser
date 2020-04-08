@@ -104,9 +104,9 @@ void main_window_ctrl_tab::MainWindowCtrlTab::connectSignals() {
 	connect(this->windowCore->tabs, &main_window_tab_widget::MainWindowTabWidget::tabTitleChanged, this->windowCore->bottomStatusBar, &main_window_status_bar::MainWindowStatusBar::updateContentPath);
 	connect(this->windowCore->tabs, &main_window_tab_widget::MainWindowTabWidget::tabUrlChanged, this->windowCore->bottomStatusBar, &main_window_status_bar::MainWindowStatusBar::updateContentPath);
 
-//	connect(this, &main_window_ctrl_tab::MainWindowCtrlTab::currentTabSrcChanged, this->windowCore->bottomStatusBar>getContextPath(), &main_window_status_bar::MainWindowStatusBar::updateContentPath);
-//	connect(this->windowCore->tabs, &main_window_tab_widget::MainWindowTabWidget::tabTitleChanged, this->windowCore->bottomStatusBar->getContextPath(), &main_window_status_bar::MainWindowStatusBar::updateContentPath);
-//	connect(this->windowCore->tabs, &main_window_tab_widget::MainWindowTabWidget::tabUrlChanged, this->windowCore->bottomStatusBar->getContextPath(), &main_window_status_bar::MainWindowStatusBar::updateContentPath);
+//	connect(this, &main_window_ctrl_tab::MainWindowCtrlTab::currentTabSrcChanged, this->windowCore->bottomStatusBar->getContentPathText(), &QLabel::setText);
+//	connect(this->windowCore->tabs, &main_window_tab_widget::MainWindowTabWidget::tabTitleChanged, this->windowCore->bottomStatusBar->getContentPathText(), &QLabel::setText);
+//	connect(this->windowCore->tabs, &main_window_tab_widget::MainWindowTabWidget::tabUrlChanged, this->windowCore->bottomStatusBar->getContentPathText(), &QLabel::setText);
 
 	connect(this->windowCore->tabs, &main_window_tab_widget::MainWindowTabWidget::currentChanged, this, &main_window_ctrl_tab::MainWindowCtrlTab::updateStatusBar);
 	connect(this->windowCore->tabs, &main_window_tab_widget::MainWindowTabWidget::numberTabsChanged, this, &main_window_ctrl_tab::MainWindowCtrlTab::updateStatusBar);
@@ -209,23 +209,28 @@ void main_window_ctrl_tab::MainWindowCtrlTab::searchCurrentTab(const QString & s
 void main_window_ctrl_tab::MainWindowCtrlTab::extractContentPath(const int & index) {
 
 	QString path (QString::null);
-	const main_window_shared_types::tab_type_e tabType = this->windowCore->tabs->getTabType(index);
+	const int tabCount = this->windowCore->getTabCount();
 
-	if (tabType == main_window_shared_types::tab_type_e::WEB_ENGINE) {
-		try {
-			const main_window_tab::MainWindowTab * currentTab = dynamic_cast<main_window_tab::MainWindowTab *>(this->windowCore->tabs->widget(index));
-			const main_window_web_engine_view::MainWindowWebEngineView * currentTabView = currentTab->widgetView;
-			const QUrl websiteUrl = currentTabView->url();
-			path = websiteUrl.toDisplayString(QUrl::FullyDecoded);
-		} catch (const std::bad_cast & badCastE) {
-			QEXCEPTION_ACTION(throw, badCastE.what());
+	if (tabCount > 0) {
+		const main_window_shared_types::tab_type_e tabType = this->windowCore->tabs->getTabType(index);
+
+		if (tabType == main_window_shared_types::tab_type_e::WEB_ENGINE) {
+			try {
+				const main_window_tab::MainWindowTab * currentTab = dynamic_cast<main_window_tab::MainWindowTab *>(this->windowCore->tabs->widget(index));
+				const main_window_web_engine_view::MainWindowWebEngineView * currentTabView = currentTab->widgetView;
+				const QUrl websiteUrl = currentTabView->url();
+				path = websiteUrl.toDisplayString(QUrl::FullyDecoded);
+			} catch (const std::bad_cast & badCastE) {
+				QEXCEPTION_ACTION(throw, badCastE.what());
+			}
+		} else if (tabType == main_window_shared_types::tab_type_e::LABEL) {
+			// Return the tab title
+			path = this->windowCore->tabs->tabText(index);
 		}
-	} else if (tabType == main_window_shared_types::tab_type_e::LABEL) {
-		// Return the tab title
-		path = this->windowCore->tabs->tabText(index);
+
+		QINFO_PRINT(global_types::qinfo_level_e::ZERO, mainWindowCtrlTabUrl, "Set contentPathText for tab at index " << index << " of type " << tabType << " to " << path);
 	}
 
-	QINFO_PRINT(global_types::qinfo_level_e::ZERO, mainWindowCtrlTabUrl, "Set contentPathText for tab at index " << index << " of type " << tabType << " to " << path);
 	this->currentTabSrcChanged(path);
 }
 
