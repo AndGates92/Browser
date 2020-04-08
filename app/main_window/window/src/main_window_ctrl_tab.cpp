@@ -741,11 +741,14 @@ bool main_window_ctrl_tab::MainWindowCtrlTab::isValidWindowState(const main_wind
 		case main_window_shared_types::state_e::SEARCH:
 		case main_window_shared_types::state_e::REFRESH_TAB:
 		case main_window_shared_types::state_e::CLOSE_TAB:
+			// It is only possible to perform an operation on a signel tab if the current state is idle and at least 1 tab is opened
+			isValid = ((tabCount > 0) && (windowState == main_window_shared_types::state_e::IDLE));
+			break;
 		case main_window_shared_types::state_e::MOVE_RIGHT:
 		case main_window_shared_types::state_e::MOVE_LEFT:
 		case main_window_shared_types::state_e::TAB_MOVE:
-			// It is only possible to perform an operation other than opening a tab and going to the idle state if the current state is idle and at least 1 tab is opened
-			isValid = ((tabCount > 0) && (windowState == main_window_shared_types::state_e::IDLE));
+			// It is only possible to perform an operation that requires movement of cursors or tabs if the current state is idle and at least 2 tab is opened
+			isValid = ((tabCount > 1) && (windowState == main_window_shared_types::state_e::IDLE));
 			break;
 		default:
 			QEXCEPTION_ACTION(throw, "Unable to determine whether transaction from " << windowState << " to " << requestedWindowState << " is valid");
