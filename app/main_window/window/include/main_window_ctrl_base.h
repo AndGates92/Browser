@@ -74,17 +74,6 @@ namespace main_window_ctrl_base {
 			 */
 			virtual void keyReleaseEvent(QKeyEvent * event) = 0;
 
-		public slots:
-
-			/**
-			 * @brief Function: void updateInfo(const int & currIndex)
-			 *
-			 * \param currIndex: current page index or -1 if no tabs
-			 *
-			 * This function is updates the info label
-			 */
-			void updateInfo(const int & currIndex);
-
 		protected:
 			/**
 			 * @brief tab commands and information
@@ -105,6 +94,15 @@ namespace main_window_ctrl_base {
 			 * This function connects signals and slots within main window controller
 			 */
 			virtual void connectSignals() = 0;
+
+			/**
+			 * @brief Function: void updateInfo(const int & currIndex)
+			 *
+			 * \param currIndex: current page index or -1 if no tabs
+			 *
+			 * This function is updates the info label
+			 */
+			void updateInfo(const int & currIndex);
 
 			/**
 			 * @brief Function: void printUserInput(const main_window_shared_types::text_action_e action, const QString text = QString::null)

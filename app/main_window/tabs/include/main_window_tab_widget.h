@@ -172,15 +172,6 @@ namespace main_window_tab_widget {
 			 * This function changes the content of a tab
 			 */
 			void changeTabContent(const int & index, const QString & label, const void * content, const main_window_shared_types::tab_type_e & type, const void * data);
-		protected:
-
-		private:
-			// Move and copy constructor
-			/**
-			 * @brief Disable move and copy constructors and operator= overloading for class MainWindowTabWidget
-			 *
-			 */
-			DISABLE_COPY_MOVE(MainWindowTabWidget)
 
 		signals:
 			/**
@@ -191,6 +182,73 @@ namespace main_window_tab_widget {
 			 * This function is a signal to notify that the number of tabs has changed
 			 */
 			void numberTabsChanged(int index);
+
+			/**
+			 * @brief Function: void tabTitleChanged(const QString & title)
+			 *
+			 * \param title: title of the tab
+			 *
+			 * This function is a signal to notify that the title of a tab changed
+			 */
+			void tabTitleChanged(const QString & title);
+
+			/**
+			 * @brief Function: void tabUrlChanged(const QString & url)
+			 *
+			 * \param url: url of the tab
+			 *
+			 * This function is a signal to notify that the url of a tab has changed
+			 */
+			void tabUrlChanged(const QString & url);
+
+		protected:
+
+		private:
+
+			/**
+			 * @brief Function: void disconnectTab(const int & index)
+			 *
+			 * \param index: index of the tab to disconnect signals from
+			 *
+			 * This function disconnects signals from a tab
+			 */
+			void disconnectTab();
+
+			/**
+			 * @brief Function: void connectTab(const int & index)
+			 *
+			 * \param index: index of the tab to connect signals from
+			 *
+			 * This function connects signals from a tab
+			 */
+			void connectTab();
+
+
+			// Move and copy constructor
+			/**
+			 * @brief Disable move and copy constructors and operator= overloading for class MainWindowTabWidget
+			 *
+			 */
+			DISABLE_COPY_MOVE(MainWindowTabWidget)
+
+		private slots:
+			/**
+			 * @brief Function: void processTabTitleChanged(const QString & title)
+			 *
+			 * \param title: title of the tab
+			 *
+			 * This function is a slot that receives a notification that the title of a tab has changed
+			 */
+			void processTabTitleChanged(const QString & title);
+
+			/**
+			 * @brief Function: void processTabUrlChanged(const QUrl & url)
+			 *
+			 * \param url: url of the tab
+			 *
+			 * This function is a slot that receives a notification that the url of a tab has changed
+			 */
+			void processTabUrlChanged(const QUrl & url);
 
 	};
 

@@ -74,6 +74,8 @@ namespace main_window_status_bar {
 	 */
 	class MainWindowStatusBar final : public QWidget {
 
+		Q_OBJECT
+
 		public:
 			/**
 			 * @brief Function: explicit MainWindowStatusBar(QWidget * parent = Q_NULLPTR, Qt::WindowFlags flags = Qt::WindowFlags())
@@ -127,6 +129,16 @@ namespace main_window_status_bar {
 			 * This function returns the bar storing the value of the progress in loading a page
 			 */
 			progress_bar::ProgressBar * getLoadBar() const;
+
+		public slots:
+			/**
+			 * @brief Function: void updateContentPath(const QString & content)
+			 *
+			 * \param content: string to print in the content path
+			 *
+			 * This function updates the content label
+			 */
+			void updateContentPath(const QString & content);
 
 		protected:
 

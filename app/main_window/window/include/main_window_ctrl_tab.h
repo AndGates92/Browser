@@ -164,6 +164,16 @@ namespace main_window_ctrl_tab {
 			 */
 			void setUpOpenNewTab();
 
+		signals:
+			/**
+			 * @brief Function: void  currentTabSrcChanged(const QString & path)
+			 *
+			 * \param path: path of where the tab content originates from.
+			 *
+			 * This function is a signal to communicate changes in the tab source
+			 */
+			void currentTabSrcChanged(const QString & path);
+
 		protected:
 
 		private slots:
@@ -220,6 +230,15 @@ namespace main_window_ctrl_tab {
 			 * This function writes the widget with the content of the file read (stored in input argument str)
 			 */
 			void printStrInCurrentTab(const QString & tabTitle, const QString & tabContent, const void * data);
+
+			/**
+			 * @brief Function: void updateStatusBar(const int & tabIndex)
+			 *
+			 * \param tabIndex: index of the tab to connect signals from
+			 *
+			 * This function sends signals to update the status bar
+			 */
+			void updateStatusBar(const int & tabIndex);
 
 		private:
 
@@ -341,13 +360,13 @@ namespace main_window_ctrl_tab {
 			void convertToAbsTabIndex(const int & offset, const global_types::sign_e & sign);
 
 			/**
-			 * @brief Function: void updateContent(const int & index)
+			 * @brief Function: void extractContentPath(const int & index)
 			 *
 			 * \param index: index of tab where the content has to be updated
 			 *
 			 * This function updates the content label
 			 */
-			void updateContent(const int & index);
+			void extractContentPath(const int & index);
 
 			/**
 			 * @brief Function: void addNewTabAndSearch(const QString & search)

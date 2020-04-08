@@ -46,13 +46,47 @@ main_window_tab_widget::MainWindowTabWidget::~MainWindowTabWidget() {
 
 void main_window_tab_widget::MainWindowTabWidget::removeTab(const int & index) {
 	QINFO_PRINT(global_types::qinfo_level_e::ZERO, mainWindowTabWidgetTabs,  "Close tab " << index);
+	this->disconnectTab();
 	tab_widget::TabWidget::removeTab(index);
+	this->connectTab();
 	emit this->numberTabsChanged(this->currentIndex());
 }
 
 void main_window_tab_widget::MainWindowTabWidget::moveTab(const int & indexFrom, const int & indexTo) {
-	QINFO_PRINT(global_types::qinfo_level_e::ZERO, mainWindowTabWidgetTabs, "Move tab from " << indexFrom << " to " << indexTo);
-	this->bar->moveTab(indexFrom, indexTo);
+	if (indexFrom != indexTo) {
+		QINFO_PRINT(global_types::qinfo_level_e::ZERO, mainWindowTabWidgetTabs, "Move tab from " << indexFrom << " to " << indexTo);
+		this->disconnectTab();
+		this->bar->moveTab(indexFrom, indexTo);
+		this->connectTab();
+	}
+}
+
+void main_window_tab_widget::MainWindowTabWidget::disconnectTab() {
+
+	const int tabCount = this->count();
+
+	if (tabCount > 0) {
+		try {
+			const main_window_tab::MainWindowTab * tab = dynamic_cast<main_window_tab::MainWindowTab *>(this->widget(this->currentIndex(), true));
+			const main_window_web_engine_page::MainWindowWebEnginePage * page = dynamic_cast<main_window_web_engine_page::MainWindowWebEnginePage *>(tab->widgetView->page());
+			disconnect(page, &main_window_web_engine_page::MainWindowWebEnginePage::urlChanged, this, &main_window_tab_widget::MainWindowTabWidget::processTabUrlChanged);
+			disconnect(page, &main_window_web_engine_page::MainWindowWebEnginePage::titleChanged, this, &main_window_tab_widget::MainWindowTabWidget::processTabTitleChanged);
+		} catch (const std::bad_cast & badCastE) {
+			QEXCEPTION_ACTION(throw, badCastE.what());
+		}
+	}
+}
+
+void main_window_tab_widget::MainWindowTabWidget::connectTab() {
+
+	try {
+		const main_window_tab::MainWindowTab * tab = dynamic_cast<main_window_tab::MainWindowTab *>(this->widget(this->currentIndex(), true));
+		const main_window_web_engine_page::MainWindowWebEnginePage * page = dynamic_cast<main_window_web_engine_page::MainWindowWebEnginePage *>(tab->widgetView->page());
+		connect(page, &main_window_web_engine_page::MainWindowWebEnginePage::urlChanged, this, &main_window_tab_widget::MainWindowTabWidget::processTabUrlChanged, Qt::UniqueConnection);
+		connect(page, &main_window_web_engine_page::MainWindowWebEnginePage::titleChanged, this, &main_window_tab_widget::MainWindowTabWidget::processTabTitleChanged, Qt::UniqueConnection);
+	} catch (const std::bad_cast & badCastE) {
+		QEXCEPTION_ACTION(throw, badCastE.what());
+	}
 }
 
 QWidget * main_window_tab_widget::MainWindowTabWidget::widget(const int & index, bool checkError) const {
@@ -107,6 +141,8 @@ void main_window_tab_widget::MainWindowTabWidget::changeTabData(const int & inde
 
 int main_window_tab_widget::MainWindowTabWidget::insertTab(const int & index, const QString & label, const void * content, const main_window_shared_types::tab_type_e & type, const void * data, const QIcon & icon) {
 
+	this->disconnectTab();
+
 	main_window_tab::MainWindowTab * tab = new main_window_tab::MainWindowTab(type, data, content, this->parentWidget());
 
 	QINFO_PRINT(global_types::qinfo_level_e::ZERO, mainWindowTabWidgetTabs,  "Insert tab with label " << label << " at position " << index);
@@ -115,6 +151,8 @@ int main_window_tab_widget::MainWindowTabWidget::insertTab(const int & index, co
 
 	// Move to the newly opened tab
 	this->setCurrentIndex(tabIndex);
+
+	this->connectTab();
 
 	return tabIndex;
 }
@@ -126,7 +164,6 @@ int main_window_tab_widget::MainWindowTabWidget::addEmptyTab(const QString & lab
 
 	return tabIndex;
 }
-
 
 void main_window_tab_widget::MainWindowTabWidget::changeTabContent(const int & index, const QString & label, const void * content, const main_window_shared_types::tab_type_e & type, const void * data) {
 	// Change tab type and extra data
@@ -142,5 +179,26 @@ void main_window_tab_widget::MainWindowTabWidget::changeTabContent(const int & i
 		page->setBody(type, content);
 	} catch (const std::bad_cast & badCastE) {
 		QEXCEPTION_ACTION(throw, badCastE.what());
+	}
+}
+
+void main_window_tab_widget::MainWindowTabWidget::processTabUrlChanged(const QUrl & url) {
+	const int idx = this->currentIndex();
+	const main_window_shared_types::tab_type_e type = this->getTabType(idx);
+
+	// Propagate URL only if page is of type WEB_ENGINE - if no URL is set, this function is called with about::black
+	if (type == main_window_shared_types::tab_type_e::WEB_ENGINE) {
+		const QString urlStr = url.toDisplayString(QUrl::FullyDecoded);
+		emit tabUrlChanged(urlStr);
+	}
+}
+
+void main_window_tab_widget::MainWindowTabWidget::processTabTitleChanged(const QString & title) {
+	const int idx = this->currentIndex();
+	const main_window_shared_types::tab_type_e type = this->getTabType(idx);
+
+	// for pages whose type is LABEL, the title already contains the path, hence forwarding it
+	if (type == main_window_shared_types::tab_type_e::LABEL) {
+		emit tabTitleChanged(title);
 	}
 }

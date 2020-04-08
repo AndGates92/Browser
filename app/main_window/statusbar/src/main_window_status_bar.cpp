@@ -164,3 +164,14 @@ QSize main_window_status_bar::MainWindowStatusBar::minimumSizeHint() const {
 
 	return QSize(width,height);
 }
+
+void main_window_status_bar::MainWindowStatusBar::updateContentPath(const QString & content) {
+
+	if (content.isEmpty()) {
+		this->contentPathText->clear();
+	} else {
+		this->contentPathText->setText(content);
+	}
+}
+
+

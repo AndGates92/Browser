@@ -98,12 +98,20 @@ void main_window_ctrl_tab::MainWindowCtrlTab::connectSignals() {
 	// When the file has been read, then show it on the screen
 	connect(this->windowCore->topMenuBar->getFileMenu(), &file_menu::FileMenu::updateCenterWindowSignal, this, &main_window_ctrl_tab::MainWindowCtrlTab::printStrInCurrentTab);
 
+	connect(this, &main_window_ctrl_tab::MainWindowCtrlTab::currentTabSrcChanged, this->windowCore->bottomStatusBar, &main_window_status_bar::MainWindowStatusBar::updateContentPath);
+
 	// Updates to the window depending on changes in tabs
-//	connect(this->windowCore->tabs, &main_window_tab_widget::MainWindowTabWidget::currentChanged, this, &main_window_ctrl_tab::MainWindowCtrlTab::updateContent);
-	connect(this->windowCore->tabs, &main_window_tab_widget::MainWindowTabWidget::currentChanged, this, &main_window_ctrl_tab::MainWindowCtrlTab::updateInfo);
-	connect(this->windowCore->tabs, &main_window_tab_widget::MainWindowTabWidget::numberTabsChanged, this, &main_window_ctrl_tab::MainWindowCtrlTab::updateInfo);
+	connect(this->windowCore->tabs, &main_window_tab_widget::MainWindowTabWidget::tabTitleChanged, this->windowCore->bottomStatusBar, &main_window_status_bar::MainWindowStatusBar::updateContentPath);
+	connect(this->windowCore->tabs, &main_window_tab_widget::MainWindowTabWidget::tabUrlChanged, this->windowCore->bottomStatusBar, &main_window_status_bar::MainWindowStatusBar::updateContentPath);
+
+//	connect(this, &main_window_ctrl_tab::MainWindowCtrlTab::currentTabSrcChanged, this->windowCore->bottomStatusBar>getContextPath(), &main_window_status_bar::MainWindowStatusBar::updateContentPath);
+//	connect(this->windowCore->tabs, &main_window_tab_widget::MainWindowTabWidget::tabTitleChanged, this->windowCore->bottomStatusBar->getContextPath(), &main_window_status_bar::MainWindowStatusBar::updateContentPath);
+//	connect(this->windowCore->tabs, &main_window_tab_widget::MainWindowTabWidget::tabUrlChanged, this->windowCore->bottomStatusBar->getContextPath(), &main_window_status_bar::MainWindowStatusBar::updateContentPath);
+
+	connect(this->windowCore->tabs, &main_window_tab_widget::MainWindowTabWidget::currentChanged, this, &main_window_ctrl_tab::MainWindowCtrlTab::updateStatusBar);
+	connect(this->windowCore->tabs, &main_window_tab_widget::MainWindowTabWidget::numberTabsChanged, this, &main_window_ctrl_tab::MainWindowCtrlTab::updateStatusBar);
 	// Update info bar
-	connect(this->windowCore->tabs, &main_window_tab_widget::MainWindowTabWidget::tabCloseRequested, this, &main_window_ctrl_tab::MainWindowCtrlTab::updateInfo);
+	connect(this->windowCore->tabs, &main_window_tab_widget::MainWindowTabWidget::tabCloseRequested, this, &main_window_ctrl_tab::MainWindowCtrlTab::updateStatusBar);
 
 }
 
@@ -188,8 +196,6 @@ void main_window_ctrl_tab::MainWindowCtrlTab::newSearchTab(const int & index, co
 	QINFO_PRINT(global_types::qinfo_level_e::ZERO, mainWindowCtrlTabSearch,  "User input " << search << " in tab " << index);
 	const main_window_shared_types::tab_type_e desiredType = main_window_shared_types::tab_type_e::WEB_ENGINE;
 	this->windowCore->tabs->changeTabContent(index, search, &search, desiredType, nullptr);
-
-	this->updateContent(index);
 }
 
 void main_window_ctrl_tab::MainWindowCtrlTab::searchCurrentTab(const QString & search) {
@@ -200,32 +206,27 @@ void main_window_ctrl_tab::MainWindowCtrlTab::searchCurrentTab(const QString & s
 	this->newSearchTab(tabIndex, search);
 }
 
-void main_window_ctrl_tab::MainWindowCtrlTab::updateContent(const int & index) {
+void main_window_ctrl_tab::MainWindowCtrlTab::extractContentPath(const int & index) {
 
-	const int tabCount = this->windowCore->getTabCount();
+	QString path (QString::null);
+	const main_window_shared_types::tab_type_e tabType = this->windowCore->tabs->getTabType(index);
 
-	if (tabCount > 0) {
-		const main_window_shared_types::tab_type_e tabType = this->windowCore->tabs->getTabType(index);
-
-		QString contentStr (QString::null);
-		if (tabType == main_window_shared_types::tab_type_e::WEB_ENGINE) {
-			try {
-				const main_window_tab::MainWindowTab * currentTab = dynamic_cast<main_window_tab::MainWindowTab *>(this->windowCore->tabs->widget(index));
-				const main_window_web_engine_view::MainWindowWebEngineView * currentTabView = currentTab->widgetView;
-				const QUrl websiteUrl = currentTabView->url();
-				contentStr = websiteUrl.toDisplayString(QUrl::FullyDecoded);
-			} catch (const std::bad_cast & badCastE) {
-				QEXCEPTION_ACTION(throw, badCastE.what());
-			}
-		} else if (tabType == main_window_shared_types::tab_type_e::LABEL) {
-			// Return the tab title
-			contentStr = this->windowCore->tabs->tabText(index);
+	if (tabType == main_window_shared_types::tab_type_e::WEB_ENGINE) {
+		try {
+			const main_window_tab::MainWindowTab * currentTab = dynamic_cast<main_window_tab::MainWindowTab *>(this->windowCore->tabs->widget(index));
+			const main_window_web_engine_view::MainWindowWebEngineView * currentTabView = currentTab->widgetView;
+			const QUrl websiteUrl = currentTabView->url();
+			path = websiteUrl.toDisplayString(QUrl::FullyDecoded);
+		} catch (const std::bad_cast & badCastE) {
+			QEXCEPTION_ACTION(throw, badCastE.what());
 		}
-		QINFO_PRINT(global_types::qinfo_level_e::ZERO, mainWindowCtrlTabUrl, "Set contentPathText for tab at index " << index << " of type " << tabType << " to " << contentStr);
-		this->windowCore->bottomStatusBar->getContentPathText()->setText(contentStr);
-	} else {
-		this->windowCore->bottomStatusBar->getContentPathText()->clear();
+	} else if (tabType == main_window_shared_types::tab_type_e::LABEL) {
+		// Return the tab title
+		path = this->windowCore->tabs->tabText(index);
 	}
+
+	QINFO_PRINT(global_types::qinfo_level_e::ZERO, mainWindowCtrlTabUrl, "Set contentPathText for tab at index " << index << " of type " << tabType << " to " << path);
+	this->currentTabSrcChanged(path);
 }
 
 void main_window_ctrl_tab::MainWindowCtrlTab::refreshUrl(const int & tabIndex) {
@@ -254,8 +255,6 @@ void main_window_ctrl_tab::MainWindowCtrlTab::refreshUrl(const int & tabIndex) {
 		} catch (const std::bad_cast & badCastE) {
 			QEXCEPTION_ACTION(throw, badCastE.what());
 		}
-
-		this->updateContent(tabIndex);
 
 	}
 }
@@ -418,8 +417,6 @@ void main_window_ctrl_tab::MainWindowCtrlTab::executeTabAction(const int & userI
 			break;
 	}
 
-	const int tabIndex = this->windowCore->getCurrentTabIndex();
-	this->updateContent(tabIndex);
 }
 
 void main_window_ctrl_tab::MainWindowCtrlTab::processTabIndex(const QString & userInputStr) {
@@ -713,8 +710,6 @@ void main_window_ctrl_tab::MainWindowCtrlTab::printStrInCurrentTab(const QString
 		main_window_tab::MainWindowTab * currentTab = dynamic_cast<main_window_tab::MainWindowTab *>(this->windowCore->tabs->widget(currentTabIndex, true));
 		currentTab->widgetView->page()->setContent(tabContent.toUtf8());
 
-		this->updateContent(currentTabIndex);
-
 		// Disable events after updating tabs
 		tabWidget->setUpdatesEnabled(true);
 
@@ -779,4 +774,9 @@ bool main_window_ctrl_tab::MainWindowCtrlTab::isValidWindowState(const main_wind
 	}
 
 	return isValid;
+}
+
+void main_window_ctrl_tab::MainWindowCtrlTab::updateStatusBar(const int & tabIndex) {
+	this->updateInfo(tabIndex);
+	this->extractContentPath(tabIndex);
 }
