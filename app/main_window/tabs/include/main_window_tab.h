@@ -70,6 +70,13 @@ namespace main_window_tab {
 			 */
 			main_window_web_engine_search::MainWindowWebEngineSearch * search;
 
+			/**
+			 * @brief Function: void reload()
+			 *
+			 * This function reloads the content of the page
+			 */
+			void reload();
+
 		protected:
 
 		private:

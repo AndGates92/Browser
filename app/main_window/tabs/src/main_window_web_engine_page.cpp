@@ -11,6 +11,7 @@
 #include <qt5/QtGui/QKeyEvent>
 
 #include "logging_macros.h"
+#include "global_functions.h"
 #include "main_window_web_engine_page.h"
 
 // Categories
@@ -86,4 +87,31 @@ main_window_shared_types::tab_type_e main_window_web_engine_page::MainWindowWebE
 
 const void * main_window_web_engine_page::MainWindowWebEnginePage::getTabExtraData() const {
 	return this->tabData->getData();
+}
+
+void main_window_web_engine_page::MainWindowWebEnginePage::reload() {
+	const main_window_shared_types::tab_type_e type = this->getTabType();
+	if (type == main_window_shared_types::tab_type_e::WEB_ENGINE) {
+		try {
+			const QUrl currentUrl = this->url();
+
+			const QString urlStr (currentUrl.toDisplayString(QUrl::FullyDecoded));
+			QINFO_PRINT(global_types::qinfo_level_e::ZERO, mainWindowWebEnginePageOverall,  "Refresh URL " << urlStr);
+
+			this->load(currentUrl);
+		} catch (const std::bad_cast & badCastE) {
+			QEXCEPTION_ACTION(throw, badCastE.what());
+		}
+	} else if (type == main_window_shared_types::tab_type_e::LABEL) {
+		// Retrive filename
+		const void * tabData = this->getTabExtraData();
+		const char * filename = static_cast<const char *>(tabData);
+		const QString tabContent(QString::fromStdString(global_functions::readFile(filename)));
+		try {
+			this->setContent(tabContent.toUtf8());
+		} catch (const std::bad_cast & badCastE) {
+			QEXCEPTION_ACTION(throw, badCastE.what());
+		}
+
+	}
 }

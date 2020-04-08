@@ -167,11 +167,11 @@ namespace main_window_ctrl_tab {
 		private slots:
 
 			/**
-			 * @brief Function: void setUpRefreshTabUrl()
+			 * @brief Function: void setUpReloadTabUrl()
 			 *
-			 * This function refresh the url in a tab
+			 * This function reload the url in a tab
 			 */
-			void setUpRefreshTabUrl();
+			void setUpReloadTabUrl();
 
 			/**
 			 * @brief Function: void setUpMoveLeft()
@@ -262,10 +262,10 @@ namespace main_window_ctrl_tab {
 			QShortcut * moveRightKey;
 
 			/**
-			 * @brief shortcut to refresh the content of a bar
+			 * @brief shortcut to reload the content of a bar
 			 *
 			 */
-			QShortcut * refreshUrlKey;
+			QShortcut * reloadTabKey;
 
 			/**
 			 * @brief shortcut to move tab to the left
@@ -409,13 +409,13 @@ namespace main_window_ctrl_tab {
 			void searchCurrentTab(const QString & search);
 
 			/**
-			 * @brief Function: void refreshUrl(const int & tabIndex)
+			 * @brief Function: void reloadTab(const int & tabIndex)
 			 *
-			 * \param tabIndex: tab index to refresh
+			 * \param tabIndex: tab index to reload
 			 *
-			 * This function refreshes a tab as specified by the user
+			 * This function reloads a tab as specified by the user
 			 */
-			void refreshUrl(const int & tabIndex);
+			void reloadTab(const int & tabIndex);
 
 			/**
 			 * @brief Function: void closeTab(const int & index)

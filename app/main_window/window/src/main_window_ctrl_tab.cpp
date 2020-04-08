@@ -44,7 +44,7 @@ main_window_ctrl_tab::MainWindowCtrlTab::~MainWindowCtrlTab() {
 	delete this->moveTabToKey;
 	delete this->moveLeftKey;
 	delete this->moveRightKey;
-	delete this->refreshUrlKey;
+	delete this->reloadTabKey;
 
 }
 
@@ -78,8 +78,8 @@ void main_window_ctrl_tab::MainWindowCtrlTab::createShortcuts() {
 	this->moveRightKey->setKey(Qt::Key_L);
 
 	// r will refresh a webpage
-	this->refreshUrlKey = new QShortcut(parent);
-	this->refreshUrlKey->setKey(Qt::Key_R);
+	this->reloadTabKey = new QShortcut(parent);
+	this->reloadTabKey->setKey(Qt::Key_R);
 }
 
 void main_window_ctrl_tab::MainWindowCtrlTab::connectSignals() {
@@ -90,7 +90,7 @@ void main_window_ctrl_tab::MainWindowCtrlTab::connectSignals() {
 	connect(this->moveTabToKey, &QShortcut::activated, this, &main_window_ctrl_tab::MainWindowCtrlTab::setUpMoveTab);
 	connect(this->moveLeftKey, &QShortcut::activated, this, &main_window_ctrl_tab::MainWindowCtrlTab::setUpMoveLeft);
 	connect(this->moveRightKey, &QShortcut::activated, this, &main_window_ctrl_tab::MainWindowCtrlTab::setUpMoveRight);
-	connect(this->refreshUrlKey, &QShortcut::activated, this, &main_window_ctrl_tab::MainWindowCtrlTab::setUpRefreshTabUrl);
+	connect(this->reloadTabKey, &QShortcut::activated, this, &main_window_ctrl_tab::MainWindowCtrlTab::setUpReloadTabUrl);
 
 	// open tab action (from fileMenu)
 	connect(this->windowCore->topMenuBar->getFileMenu()->openTabAction, &QAction::triggered, this, &main_window_ctrl_tab::MainWindowCtrlTab::setUpOpenNewTab);
@@ -127,7 +127,7 @@ void main_window_ctrl_tab::MainWindowCtrlTab::setUpNewSearchTab() {
 }
 
 
-void main_window_ctrl_tab::MainWindowCtrlTab::setUpRefreshTabUrl() {
+void main_window_ctrl_tab::MainWindowCtrlTab::setUpReloadTabUrl() {
 	const main_window_shared_types::state_e requestedWindowState = main_window_shared_types::state_e::REFRESH_TAB;
 	this->changeWindowState(requestedWindowState);
 }
@@ -230,34 +230,8 @@ void main_window_ctrl_tab::MainWindowCtrlTab::extractContentPath(const int & ind
 	this->currentTabSrcChanged(path);
 }
 
-void main_window_ctrl_tab::MainWindowCtrlTab::refreshUrl(const int & tabIndex) {
-	const main_window_shared_types::tab_type_e tabType = this->windowCore->tabs->getTabType(tabIndex);
-	if (tabType == main_window_shared_types::tab_type_e::WEB_ENGINE) {
-		try {
-			main_window_tab::MainWindowTab * currentTab = dynamic_cast<main_window_tab::MainWindowTab *>(this->windowCore->tabs->widget(tabIndex));
-			main_window_web_engine_view::MainWindowWebEngineView * currentTabView = currentTab->widgetView;
-			const QUrl currUrl = currentTabView->url();
-
-			const QString urlStr (currUrl.toDisplayString(QUrl::FullyDecoded));
-			QINFO_PRINT(global_types::qinfo_level_e::ZERO, mainWindowCtrlTabUrl,  "Refresh URL " << urlStr);
-
-			currentTabView->load(QUrl(currUrl));
-		} catch (const std::bad_cast & badCastE) {
-			QEXCEPTION_ACTION(throw, badCastE.what());
-		}
-	} else if (tabType == main_window_shared_types::tab_type_e::LABEL) {
-		// Retrive filename
-		const void * tabData = this->windowCore->tabs->getTabExtraData(tabIndex);
-		const char * filename = static_cast<const char *>(tabData);
-		const QString tabContent(QString::fromStdString(global_functions::readFile(filename)));
-		try {
-			main_window_tab::MainWindowTab * currentTab = dynamic_cast<main_window_tab::MainWindowTab *>(this->windowCore->tabs->widget(tabIndex, true));
-			currentTab->widgetView->page()->setContent(tabContent.toUtf8());
-		} catch (const std::bad_cast & badCastE) {
-			QEXCEPTION_ACTION(throw, badCastE.what());
-		}
-
-	}
+void main_window_ctrl_tab::MainWindowCtrlTab::reloadTab(const int & tabIndex) {
+	this->windowCore->tabs->reloadTabContent(tabIndex);
 }
 
 void main_window_ctrl_tab::MainWindowCtrlTab::moveTab(const int & tabIndex) {
@@ -379,7 +353,7 @@ void main_window_ctrl_tab::MainWindowCtrlTab::executeActionOnTab(const int & ind
 				this->convertToAbsTabIndex(tabIndex, global_types::sign_e::NOSIGN);
 				break;
 			case main_window_shared_types::state_e::REFRESH_TAB:
-				this->refreshUrl(tabIndex);
+				this->reloadTab(tabIndex);
 				break;
 			default:
 				QEXCEPTION_ACTION(throw,  "Undefined action to execute when in state " << windowState);

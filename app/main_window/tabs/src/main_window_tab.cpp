@@ -30,3 +30,7 @@ main_window_tab::MainWindowTab::~MainWindowTab() {
 	delete widgetView;
 
 }
+
+void main_window_tab::MainWindowTab::reload() {
+	this->widgetView->page()->reload();
+}

@@ -126,6 +126,14 @@ namespace main_window_web_engine_page {
 			 * This function returns tab extra data
 			 */
 			const void * getTabExtraData() const;
+
+			/**
+			 * @brief Function: void reload()
+			 *
+			 * This function reloads the content of the page
+			 */
+			void reload();
+
 		protected:
 
 		private:

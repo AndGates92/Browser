@@ -206,3 +206,8 @@ void main_window_tab_widget::MainWindowTabWidget::processTabTitleChanged(const Q
 		emit tabTitleChanged(title);
 	}
 }
+
+void main_window_tab_widget::MainWindowTabWidget::reloadTabContent(const int & index) {
+	main_window_tab::MainWindowTab * tab = dynamic_cast<main_window_tab::MainWindowTab *>(this->widget(index, true));
+	tab->reload();
+}

@@ -173,6 +173,15 @@ namespace main_window_tab_widget {
 			 */
 			void changeTabContent(const int & index, const QString & label, const void * content, const main_window_shared_types::tab_type_e & type, const void * data);
 
+			/**
+			 * @brief Function: void reloadTabContent(const int & index)
+			 *
+			 * \param index: index of the tab to reload
+			 *
+			 * This function reloads the content of the page of tab at index index
+			 */
+			void reloadTabContent(const int & index);
+
 		signals:
 			/**
 			 * @brief Function: void numberTabsChanged(int index)

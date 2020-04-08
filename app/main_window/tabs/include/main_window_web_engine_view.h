@@ -15,6 +15,7 @@
 #include <qt5/QtCore/QLoggingCategory>
 
 #include "web_engine_view.h"
+#include "main_window_web_engine_page.h"
 #include "main_window_shared_types.h"
 #include "global_types.h"
 #include "constructor_macros.h"
@@ -54,6 +55,14 @@ namespace main_window_web_engine_view {
 			 */
 			virtual ~MainWindowWebEngineView();
 
+			/**
+			 * @brief Function: main_window_web_engine_page::MainWindowWebEnginePage * page()
+			 *
+			 * \return page of the view
+			 *
+			 * This function returns the page of this web engine view
+			 */
+			main_window_web_engine_page::MainWindowWebEnginePage * page();
 		protected:
 
 		private:

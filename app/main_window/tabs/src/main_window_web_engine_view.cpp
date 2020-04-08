@@ -11,7 +11,6 @@
 #include <qt5/QtGui/QKeyEvent>
 
 #include "logging_macros.h"
-#include "main_window_web_engine_page.h"
 #include "main_window_web_engine_view.h"
 
 // Categories
@@ -28,4 +27,8 @@ main_window_web_engine_view::MainWindowWebEngineView::MainWindowWebEngineView(co
 main_window_web_engine_view::MainWindowWebEngineView::~MainWindowWebEngineView() {
 	QINFO_PRINT(global_types::qinfo_level_e::ZERO, mainWindowWebEngineViewOverall,  "Web engine view destructor");
 
+}
+
+main_window_web_engine_page::MainWindowWebEnginePage * main_window_web_engine_view::MainWindowWebEngineView::page() {
+	return dynamic_cast<main_window_web_engine_page::MainWindowWebEnginePage *>(QWebEngineView::page());
 }
