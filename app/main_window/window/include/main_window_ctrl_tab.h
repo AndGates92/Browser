@@ -135,18 +135,6 @@ namespace main_window_ctrl_tab {
 			void keyReleaseEvent(QKeyEvent * event) override;
 
 			/**
-			 * @brief Function: QString createUrl(const QString & search)
-			 *
-			 * \param search: string to search
-			 * \return string with URL
-			 *
-			 * This function is creates the URL based on the input from the user
-			 * If the user writes down a URL himself/herself, it will return it adding, if required, https
-			 * If the user is writing a strign to search, it will be searched in the chosen search engine
-			 */
-			QString createUrl(const QString & search);
-
-			/**
 			 * @brief Function: void executeCommand(const QString & command)
 			 *
 			 * \param command: command to execute.

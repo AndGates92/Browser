@@ -650,28 +650,6 @@ void main_window_ctrl_tab::MainWindowCtrlTab::convertToAbsTabIndex(const int & o
 	}
 }
 
-QString main_window_ctrl_tab::MainWindowCtrlTab::createUrl(const QString & search) {
-	const bool containsSpace = search.contains(" ");
-	const bool containsWww = search.contains(main_window_ctrl_tab::www);
-	const int numberDots = search.count(".");
-
-	QString url(QString::null);
-
-	// if contains at least 1 dot and no space, it could be a URL
-	if ((numberDots > 0) && (containsSpace == false)) {
-		url = main_window_ctrl_tab::https;
-		if (containsWww == true) {
-			url += search;
-		} else {
-			url += main_window_ctrl_tab::www + search;
-		}
-	} else {
-		url = main_window_ctrl_tab::defaultSearchEngine.arg(search);
-	}
-
-	return url;
-}
-
 void main_window_ctrl_tab::MainWindowCtrlTab::printStrInCurrentTab(const QString & tabTitle, const QString & tabContent, const void * data) {
 	QINFO_PRINT(global_types::qinfo_level_e::ZERO, mainWindowCtrlTabTabs,  "Set text in center window with title " << tabTitle);
 	QINFO_PRINT(global_types::qinfo_level_e::ZERO, mainWindowCtrlTabTabs,  tabContent);
