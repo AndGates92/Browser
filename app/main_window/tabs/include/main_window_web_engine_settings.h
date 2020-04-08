@@ -30,7 +30,7 @@ namespace main_window_web_engine_settings {
 	 * @brief MainWindowWebEngineSettings class
 	 *
 	 */
-	class MainWindowWebEngineSettings : public web_engine_settings::WebEngineSettings {
+	class MainWindowWebEngineSettings final : public web_engine_settings::WebEngineSettings {
 
 		public:
 			/**

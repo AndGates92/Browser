@@ -33,7 +33,7 @@ namespace main_window_web_engine_view {
 	 * @brief MainWindowWebEngineView class
 	 *
 	 */
-	class MainWindowWebEngineView : public web_engine_view::WebEngineView {
+	class MainWindowWebEngineView final : public web_engine_view::WebEngineView {
 
 		public:
 			/**

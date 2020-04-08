@@ -33,7 +33,7 @@ namespace main_window_web_engine_search {
 	 * @brief MainWindowWebEngineSearch class
 	 *
 	 */
-	class MainWindowWebEngineSearch : public web_engine_search::WebEngineSearch {
+	class MainWindowWebEngineSearch final : public web_engine_search::WebEngineSearch {
 
 		public:
 			/**

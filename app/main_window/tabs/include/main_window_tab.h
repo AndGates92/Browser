@@ -36,7 +36,7 @@ namespace main_window_tab {
 	 * @brief MainWindowTab class
 	 *
 	 */
-	class MainWindowTab : public tab::Tab {
+	class MainWindowTab final : public tab::Tab {
 
 		public:
 			/**

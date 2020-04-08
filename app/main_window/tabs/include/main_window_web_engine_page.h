@@ -56,7 +56,7 @@ namespace main_window_web_engine_page {
 	 * @brief MainWindowWebEnginePage class
 	 *
 	 */
-	class MainWindowWebEnginePage : public web_engine_page::WebEnginePage {
+	class MainWindowWebEnginePage final : public web_engine_page::WebEnginePage {
 
 		public:
 			/**

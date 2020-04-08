@@ -31,7 +31,7 @@ namespace main_window_web_engine_profile {
 	 * @brief MainWindowWebEngineProfile class
 	 *
 	 */
-	class MainWindowWebEngineProfile : public web_engine_profile::WebEngineProfile {
+	class MainWindowWebEngineProfile final : public web_engine_profile::WebEngineProfile {
 
 		public:
 			/**
