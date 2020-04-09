@@ -122,14 +122,26 @@ void json_wrapper::JsonWrapper::readJson() {
 
 	// Convert JSON file content to UTF8 in order to create a JSON document
 	QByteArray contentUtf8(content.toUtf8());
-	QJsonParseError * jsonParseError = nullptr;
+	QJsonParseError jsonParseError;
 
-	QJsonDocument jsonDoc = QJsonDocument(QJsonDocument::fromJson(contentUtf8, jsonParseError));
+	QJsonDocument jsonDoc = QJsonDocument(QJsonDocument::fromJson(contentUtf8, &jsonParseError));
 
-	// Check if JSON parsing is successful
-	QEXCEPTION_ACTION_COND((jsonDoc.isNull() == 1), throw,  "Unable to convert UTF8 QString to JSON file because of error " << jsonParseError->errorString() << "(error type " << jsonParseError->error << ")");
+	if (jsonParseError.error != QJsonParseError::NoError) {
+		const int ErrorCharToPrint = 20;
+		int pos = 0;
+		// Trying to print a string that has the issue in the middle
+		// Choosing arbitrary 20 characters so that the user can have an hint to debug it
+		// If the character is in the first ErrorCharToPrint/2 character, starts at the beginning of the file
+		if (jsonParseError.offset < ErrorCharToPrint/2) {
+			pos = 0;
+		} else {
+			pos = jsonParseError.offset - ErrorCharToPrint/2;
+		}
 
-	delete jsonParseError;
+		const QString errorInFile(content.mid(pos, ErrorCharToPrint));
+		// Check if JSON parsing is successful
+		QEXCEPTION_ACTION_COND((jsonDoc.isNull() == true), throw,  "Unable to convert content of file " << this->jsonFile->fileName() << " as UTF8 QString to JSON document because of error " << jsonParseError.errorString() << " (error type " << jsonParseError.error << ") in the following file fragment " << errorInFile);
+	}
 
 	if (jsonDoc.isObject() == true) {
 		QJsonObject jsonObj(jsonDoc.object());
