@@ -29,6 +29,6 @@ web_engine_view::WebEngineView::~WebEngineView() {
 
 }
 
-web_engine_page::WebEnginePage * web_engine_view::WebEngineView::page() {
+web_engine_page::WebEnginePage * web_engine_view::WebEngineView::page() const {
 	return dynamic_cast<web_engine_page::WebEnginePage *>(QWebEngineView::page());
 }
