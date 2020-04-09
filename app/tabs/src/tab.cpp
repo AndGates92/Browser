@@ -26,6 +26,8 @@ tab::Tab::Tab(QWidget * parent): QWidget(parent) {
 tab::Tab::~Tab() {
 	QINFO_PRINT(global_types::qinfo_level_e::ZERO, tabOverall,  "Tab destructor");
 
+	delete this->loadManager;
+
 }
 
 void tab::Tab::setLoadManager(tab_load_manager::TabLoadManager * mgr) {
