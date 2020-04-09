@@ -38,7 +38,7 @@ main_window_tab_widget::MainWindowTabWidget::~MainWindowTabWidget() {
 	while(this->count() > 0) {
 		const main_window_shared_types::tab_type_e type = this->getTabType(idx);
 
-		Q_ASSERT_X(((type == main_window_shared_types::tab_type_e::LABEL) || (type == main_window_shared_types::tab_type_e::WEB_ENGINE)), "Invalid tab type", "Unable to delete provided tab as type is not recognized");
+		Q_ASSERT_X(((type == main_window_shared_types::tab_type_e::TEXT) || (type == main_window_shared_types::tab_type_e::WEB_CONTENT)), "Invalid tab type", "Unable to delete provided tab as type is not recognized");
 		this->removeTab(idx);
 		QINFO_PRINT(global_types::qinfo_level_e::ZERO, mainWindowTabWidgetOverall,  "Removing tab type " << type);
 	}
@@ -190,8 +190,8 @@ void main_window_tab_widget::MainWindowTabWidget::processTabUrlChanged(const QUr
 	const int idx = this->currentIndex();
 	const main_window_shared_types::tab_type_e type = this->getTabType(idx);
 
-	// Propagate URL only if page is of type WEB_ENGINE - if no URL is set, this function is called with about::black
-	if (type == main_window_shared_types::tab_type_e::WEB_ENGINE) {
+	// Propagate URL only if page is of type WEB_CONTENT - if no URL is set, this function is called with about::black
+	if (type == main_window_shared_types::tab_type_e::WEB_CONTENT) {
 		const QString urlStr = url.toDisplayString(QUrl::FullyDecoded);
 		emit tabUrlChanged(urlStr);
 	}
@@ -201,8 +201,8 @@ void main_window_tab_widget::MainWindowTabWidget::processTabTitleChanged(const Q
 	const int idx = this->currentIndex();
 	const main_window_shared_types::tab_type_e type = this->getTabType(idx);
 
-	// for pages whose type is LABEL, the title already contains the path, hence forwarding it
-	if (type == main_window_shared_types::tab_type_e::LABEL) {
+	// for pages whose type is TEXT, the title already contains the path, hence forwarding it
+	if (type == main_window_shared_types::tab_type_e::TEXT) {
 		emit tabTitleChanged(title);
 	}
 }

@@ -95,8 +95,8 @@ namespace main_window_web_engine_page {
 			 * \param content: tab content
 			 *
 			 * Set body of the page based on the tab type
-			 * if the type is WEB_ENGINE, it converts argument content to a QUrl
-			 * if the type is LABEL, it converts argument content to a QString
+			 * if the type is WEB_CONTENT, it converts argument content to a QUrl
+			 * if the type is TEXT, it converts argument content to a QString
 			 */
 			void setBody(const main_window_shared_types::tab_type_e & type, const void * content);
 

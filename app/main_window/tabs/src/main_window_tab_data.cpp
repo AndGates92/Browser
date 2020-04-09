@@ -96,9 +96,9 @@ std::string main_window_tab_data::MainWindowTabData::print() const {
 
 	try {
 		if (thisData != nullptr) {
-			if (type == main_window_shared_types::tab_type_e::WEB_ENGINE) {
+			if (type == main_window_shared_types::tab_type_e::WEB_CONTENT) {
 				QEXCEPTION_ACTION(throw, "Unexpected non-null pointer for type " << type);
-			} else if (type == main_window_shared_types::tab_type_e::LABEL) {
+			} else if (type == main_window_shared_types::tab_type_e::TEXT) {
 				const char * filename = static_cast<const char *>(data);
 
 				structInfo = structInfo + " filename: " + filename;

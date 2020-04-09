@@ -164,7 +164,7 @@ void main_window_ctrl_tab::MainWindowCtrlTab::closeTab(const int & index) {
 }
 
 void main_window_ctrl_tab::MainWindowCtrlTab::addNewTabAndSearch(const QString & search) {
-	this->addNewTab(search, main_window_shared_types::tab_type_e::WEB_ENGINE, nullptr);
+	this->addNewTab(search, main_window_shared_types::tab_type_e::WEB_CONTENT, nullptr);
 }
 
 int main_window_ctrl_tab::MainWindowCtrlTab::addNewTab(const QString & search, const main_window_shared_types::tab_type_e & type, const void * data) {
@@ -190,7 +190,7 @@ int main_window_ctrl_tab::MainWindowCtrlTab::addNewTab(const QString & search, c
 
 void main_window_ctrl_tab::MainWindowCtrlTab::newSearchTab(const int & index, const QString & search) {
 	QINFO_PRINT(global_types::qinfo_level_e::ZERO, mainWindowCtrlTabSearch,  "User input " << search << " in tab " << index);
-	const main_window_shared_types::tab_type_e desiredType = main_window_shared_types::tab_type_e::WEB_ENGINE;
+	const main_window_shared_types::tab_type_e desiredType = main_window_shared_types::tab_type_e::WEB_CONTENT;
 	this->windowCore->tabs->changeTabContent(index, search, &search, desiredType, nullptr);
 }
 
@@ -210,7 +210,7 @@ void main_window_ctrl_tab::MainWindowCtrlTab::extractContentPath(const int & ind
 	if (tabCount > 0) {
 		const main_window_shared_types::tab_type_e tabType = this->windowCore->tabs->getTabType(index);
 
-		if (tabType == main_window_shared_types::tab_type_e::WEB_ENGINE) {
+		if (tabType == main_window_shared_types::tab_type_e::WEB_CONTENT) {
 			try {
 				const main_window_tab::MainWindowTab * currentTab = dynamic_cast<main_window_tab::MainWindowTab *>(this->windowCore->tabs->widget(index));
 				const main_window_web_engine_view::MainWindowWebEngineView * currentTabView = currentTab->widgetView;
@@ -219,7 +219,7 @@ void main_window_ctrl_tab::MainWindowCtrlTab::extractContentPath(const int & ind
 			} catch (const std::bad_cast & badCastE) {
 				QEXCEPTION_ACTION(throw, badCastE.what());
 			}
-		} else if (tabType == main_window_shared_types::tab_type_e::LABEL) {
+		} else if (tabType == main_window_shared_types::tab_type_e::TEXT) {
 			// Return the tab title
 			path = this->windowCore->tabs->tabText(index);
 		}
@@ -254,7 +254,7 @@ void main_window_ctrl_tab::MainWindowCtrlTab::moveCursor(const int & tabIndex) {
 void main_window_ctrl_tab::MainWindowCtrlTab::connectProgressBar(const int & tabIndex) {
 	const main_window_shared_types::tab_type_e tabType = this->windowCore->tabs->getTabType(tabIndex);
 	QINFO_PRINT(global_types::qinfo_level_e::ZERO, mainWindowCtrlTabTabs,  "Connect signals from " << tabType << " object of tab " << tabIndex << " to progress bar slots");
-	if (tabType == main_window_shared_types::tab_type_e::WEB_ENGINE) {
+	if (tabType == main_window_shared_types::tab_type_e::WEB_CONTENT) {
 		try {
 			const main_window_tab::MainWindowTab * currentTab = dynamic_cast<main_window_tab::MainWindowTab *>(this->windowCore->tabs->widget(tabIndex));
 			const main_window_web_engine_view::MainWindowWebEngineView * currentTabView = currentTab->widgetView;
@@ -267,7 +267,7 @@ void main_window_ctrl_tab::MainWindowCtrlTab::connectProgressBar(const int & tab
 		} catch (const std::bad_cast & badCastE) {
 			QEXCEPTION_ACTION(throw, badCastE.what());
 		}
-	} else if (tabType == main_window_shared_types::tab_type_e::LABEL) {
+	} else if (tabType == main_window_shared_types::tab_type_e::TEXT) {
 		// TODO
 	}
 }
@@ -275,7 +275,7 @@ void main_window_ctrl_tab::MainWindowCtrlTab::connectProgressBar(const int & tab
 void main_window_ctrl_tab::MainWindowCtrlTab::disconnectProgressBar(const int & tabIndex) {
 	const main_window_shared_types::tab_type_e tabType = this->windowCore->tabs->getTabType(tabIndex);
 	QINFO_PRINT(global_types::qinfo_level_e::ZERO, mainWindowCtrlTabTabs,  "Disconnect signals from " << tabType << " object of tab " << tabIndex << " to progress bar slots");
-	if (tabType == main_window_shared_types::tab_type_e::WEB_ENGINE) {
+	if (tabType == main_window_shared_types::tab_type_e::WEB_CONTENT) {
 		try {
 			const main_window_tab::MainWindowTab * currentTab = dynamic_cast<main_window_tab::MainWindowTab *>(this->windowCore->tabs->widget(tabIndex));
 			const main_window_web_engine_view::MainWindowWebEngineView * currentTabView = currentTab->widgetView;
@@ -291,7 +291,7 @@ void main_window_ctrl_tab::MainWindowCtrlTab::disconnectProgressBar(const int & 
 		} catch (const std::bad_cast & badCastE) {
 			QEXCEPTION_ACTION(throw, badCastE.what());
 		}
-	} else if (tabType == main_window_shared_types::tab_type_e::LABEL) {
+	} else if (tabType == main_window_shared_types::tab_type_e::TEXT) {
 		// TODO
 	}
 }
@@ -631,7 +631,7 @@ void main_window_ctrl_tab::MainWindowCtrlTab::printStrInCurrentTab(const QString
 	// Get tabs
 	main_window_tab_widget::MainWindowTabWidget * tabWidget = this->windowCore->tabs;
 
-	const main_window_shared_types::tab_type_e desiredTabType = main_window_shared_types::tab_type_e::LABEL;
+	const main_window_shared_types::tab_type_e desiredTabType = main_window_shared_types::tab_type_e::TEXT;
 
 	// START -> data test
 	const char * filename = static_cast<const char *>(data);

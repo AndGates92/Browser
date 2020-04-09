@@ -26,11 +26,11 @@ main_window_web_engine_page::MainWindowWebEnginePage::MainWindowWebEnginePage(co
 
 void main_window_web_engine_page::MainWindowWebEnginePage::setBody(const main_window_shared_types::tab_type_e & type, const void * content) {
 
-	if (type == main_window_shared_types::tab_type_e::WEB_ENGINE) {
+	if (type == main_window_shared_types::tab_type_e::WEB_CONTENT) {
 		const QString * search = static_cast<const QString *>(content);
 		QUrl url(this->createUrl(*search));
 		this->setUrl(url);
-	} else if (type == main_window_shared_types::tab_type_e::LABEL) {
+	} else if (type == main_window_shared_types::tab_type_e::TEXT) {
 		const QString * contentPtr = static_cast<const QString *>(content);
 		const QByteArray content = contentPtr->toUtf8();
 		this->setContent(content);
@@ -91,9 +91,9 @@ const void * main_window_web_engine_page::MainWindowWebEnginePage::getTabExtraDa
 
 void main_window_web_engine_page::MainWindowWebEnginePage::reload() {
 	const main_window_shared_types::tab_type_e type = this->getTabType();
-	if (type == main_window_shared_types::tab_type_e::WEB_ENGINE) {
+	if (type == main_window_shared_types::tab_type_e::WEB_CONTENT) {
 		this->triggerAction(QWebEnginePage::Reload);
-	} else if (type == main_window_shared_types::tab_type_e::LABEL) {
+	} else if (type == main_window_shared_types::tab_type_e::TEXT) {
 		// Retrive filename
 		const void * tabData = this->getTabExtraData();
 		const char * filename = static_cast<const char *>(tabData);

@@ -80,8 +80,8 @@ namespace main_window_shared_types {
 	 *
 	 */
 	typedef enum class tab_type_list {
-		WEB_ENGINE,       /**< Tab type is a web engine */
-		LABEL,            /**< Tab type is QLabel */
+		WEB_CONTENT,       /**< Tab type is a web engine */
+		TEXT,            /**< Tab type is QLabel */
 		UNKNOWN           /**< Tab type is unknown */
 	} tab_type_e;
 
