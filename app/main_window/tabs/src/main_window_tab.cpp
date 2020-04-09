@@ -3,7 +3,7 @@
  * @file main_window_tab.cpp
  * @author Andrea Gianarda
  * @date 02rd April 2020
- * @brief Tab functions
+ * @brief Main Window Tab functions
  */
 
 // Qt libraries

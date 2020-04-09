@@ -5,7 +5,7 @@
  * @file main_window_tab.h
  * @author Andrea Gianarda
  * @date 03rd of April 2020
- * @brief Tab header file
+ * @brief Main Window Tab header file
 */
 
 // Qt libraries
@@ -23,8 +23,8 @@
 #include "main_window_web_engine_view.h"
 #include "main_window_web_engine_search.h"
 
-/** @defgroup TabGroup Tab Doxygen Group
- *  Tab functions and classes
+/** @defgroup TabGroup Main Window Tab Doxygen Group
+ *  Main Window Tab functions and classes
  *  @{
  */
 
@@ -47,14 +47,14 @@ namespace main_window_tab {
 			 * \param tabContent: tab content
 			 * \param parent: parent widget
 			 *
-			 * MainWindowTab constructor
+			 * Main Window Tab constructor
 			 */
 			explicit MainWindowTab(const main_window_shared_types::tab_type_e type, const void * data, const void * tabContent, QWidget * parent = Q_NULLPTR);
 
 			/**
 			 * @brief Function: virtual ~MainWindowTab()
 			 *
-			 * MainWindowTab destructor
+			 * Main Window Tab destructor
 			 */
 			virtual ~MainWindowTab();
 
