@@ -30,5 +30,5 @@ main_window_web_engine_view::MainWindowWebEngineView::~MainWindowWebEngineView()
 }
 
 main_window_web_engine_page::MainWindowWebEnginePage * main_window_web_engine_view::MainWindowWebEngineView::page() {
-	return dynamic_cast<main_window_web_engine_page::MainWindowWebEnginePage *>(QWebEngineView::page());
+	return dynamic_cast<main_window_web_engine_page::MainWindowWebEnginePage *>(web_engine_view::WebEngineView::page());
 }

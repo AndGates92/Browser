@@ -18,6 +18,7 @@
 
 #include "global_types.h"
 #include "constructor_macros.h"
+#include "web_engine_page.h"
 
 /** @defgroup WebEngineViewGroup Web Engine View Doxygen Group
  *  Web Engine View functions and classes
@@ -50,6 +51,15 @@ namespace web_engine_view {
 			 * Web engine view destructor
 			 */
 			virtual ~WebEngineView();
+
+			/**
+			 * @brief Function: web_engine_page::MainWindowWebEnginePage * page()
+			 *
+			 * \return page of the view
+			 *
+			 * This function returns the page of this web engine view
+			 */
+			web_engine_page::WebEnginePage * page();
 
 		protected:
 
