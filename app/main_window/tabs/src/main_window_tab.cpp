@@ -22,6 +22,9 @@ main_window_tab::MainWindowTab::MainWindowTab(const main_window_shared_types::ta
 	this->widgetView = new main_window_web_engine_view::MainWindowWebEngineView(type, data, tabContent, this);
 	this->search = new main_window_web_engine_search::MainWindowWebEngineSearch(this, this);
 
+	main_window_tab_load_manager::MainWindowTabLoadManager * lMgr = new main_window_tab_load_manager::MainWindowTabLoadManager(this);
+	this->setLoadManager(lMgr);
+
 }
 
 main_window_tab::MainWindowTab::~MainWindowTab() {
@@ -33,4 +36,8 @@ main_window_tab::MainWindowTab::~MainWindowTab() {
 
 void main_window_tab::MainWindowTab::reload() {
 	this->widgetView->page()->reload();
+}
+
+main_window_tab_load_manager::MainWindowTabLoadManager * main_window_tab::MainWindowTab::getLoadManager() const {
+	return dynamic_cast<main_window_tab_load_manager::MainWindowTabLoadManager *>(this->loadManager);
 }

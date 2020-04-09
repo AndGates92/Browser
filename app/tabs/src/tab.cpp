@@ -19,9 +19,28 @@ Q_LOGGING_CATEGORY(tabOverall, "tab.overall", MSG_TYPE_LEVEL)
 tab::Tab::Tab(QWidget * parent): QWidget(parent) {
 	QINFO_PRINT(global_types::qinfo_level_e::ZERO, tabOverall,  "Tab constructor");
 
+	tab_load_manager::TabLoadManager * lMgr = new tab_load_manager::TabLoadManager(this);
+	this->setLoadManager(lMgr);
 }
 
 tab::Tab::~Tab() {
 	QINFO_PRINT(global_types::qinfo_level_e::ZERO, tabOverall,  "Tab destructor");
 
+}
+
+void tab::Tab::setLoadManager(tab_load_manager::TabLoadManager * mgr) {
+	// Do nothing if old and new managers are the same pointer
+	if (this->loadManager != mgr) {
+		if (this->loadManager != Q_NULLPTR) {
+			delete this->loadManager;
+		}
+
+		this->loadManager = mgr;
+
+	}
+
+}
+
+tab_load_manager::TabLoadManager * tab::Tab::getLoadManager() const {
+	return this->loadManager;
 }

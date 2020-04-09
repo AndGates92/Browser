@@ -18,6 +18,7 @@
 
 #include "global_types.h"
 #include "constructor_macros.h"
+#include "tab_load_manager.h"
 
 /** @defgroup TabGroup Tab Doxygen Group
  *  Tab functions and classes
@@ -51,6 +52,24 @@ namespace tab {
 			 */
 			virtual ~Tab();
 
+			/**
+			 * @brief Function: void setLoadManager(tab_load_manager::TabLoadManager * mgr)
+			 *
+			 * \param mgr: load manager to use
+			 *
+			 * This function sets the load manager
+			 */
+			void setLoadManager(tab_load_manager::TabLoadManager * mgr);
+
+			/**
+			 * @brief Function: tab_load_manager::TabLoadManager * getLoadManager()
+			 *
+			 * \return load manager
+			 *
+			 * This function returns the load manager
+			 */
+			tab_load_manager::TabLoadManager * getLoadManager() const;
+
 		protected:
 
 			/**
@@ -59,6 +78,12 @@ namespace tab {
 			 * This function reloads the content of the tab
 			 */
 			virtual void reload() = 0;
+
+			/**
+			 * @brief load manager
+			 *
+			 */
+			tab_load_manager::TabLoadManager * loadManager;
 
 		private:
 			// Move and copy constructor

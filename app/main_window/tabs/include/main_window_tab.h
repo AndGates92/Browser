@@ -22,6 +22,7 @@
 #include "main_window_shared_types.h"
 #include "main_window_web_engine_view.h"
 #include "main_window_web_engine_search.h"
+#include "main_window_tab_load_manager.h"
 
 /** @defgroup TabGroup Main Window Tab Doxygen Group
  *  Main Window Tab functions and classes
@@ -76,6 +77,15 @@ namespace main_window_tab {
 			 * This function reloads the content of the page
 			 */
 			void reload() override;
+
+			/**
+			 * @brief Function: tab_load_manager::TabLoadManager * getLoadManager()
+			 *
+			 * \return load manager
+			 *
+			 * This function returns the load manager
+			 */
+			main_window_tab_load_manager::MainWindowTabLoadManager * getLoadManager() const;
 
 		protected:
 
