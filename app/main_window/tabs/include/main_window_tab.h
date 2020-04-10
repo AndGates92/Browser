@@ -60,18 +60,6 @@ namespace main_window_tab {
 			virtual ~MainWindowTab();
 
 			/**
-			 * @brief web engine view
-			 *
-			 */
-			main_window_web_engine_view::MainWindowWebEngineView * widgetView;
-
-			/**
-			 * @brief seach class
-			 *
-			 */
-			main_window_web_engine_search::MainWindowWebEngineSearch * search;
-
-			/**
 			 * @brief Function: void reload() override
 			 *
 			 * This function reloads the content of the page
@@ -79,13 +67,31 @@ namespace main_window_tab {
 			void reload() override;
 
 			/**
-			 * @brief Function: tab_load_manager::TabLoadManager * getLoadManager()
+			 * @brief Function: main_window_web_engine_view::MainWindowWebEngineView * getView() const
+			 *
+			 * \return tab view
+			 *
+			 * This function returns the load manager
+			 */
+			main_window_web_engine_view::MainWindowWebEngineView * getView() const;
+
+			/**
+			 * @brief Function: main_window_tab_load_manager::MainWindowTabLoadManager * getLoadManager() const
 			 *
 			 * \return load manager
 			 *
 			 * This function returns the load manager
 			 */
 			main_window_tab_load_manager::MainWindowTabLoadManager * getLoadManager() const;
+
+			/**
+			 * @brief Function: main_window_web_engine_search::MainWindowWebEngineSearch * getSearch() const
+			 *
+			 * \return tab search
+			 *
+			 * This function returns the load manager
+			 */
+			main_window_web_engine_search::MainWindowWebEngineSearch * getSearch() const;
 
 		protected:
 

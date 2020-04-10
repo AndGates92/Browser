@@ -36,7 +36,7 @@ void main_window_web_engine_search::MainWindowWebEngineSearch::FindTabContent(co
 
 	try {
 		main_window_tab::MainWindowTab * currentTab = dynamic_cast<main_window_tab::MainWindowTab *>(this->tab);
-		main_window_web_engine_view::MainWindowWebEngineView * currentTabView = currentTab->widgetView;
+		main_window_web_engine_view::MainWindowWebEngineView * currentTabView = currentTab->getView();
 		QWebEnginePage * currentTabPage = currentTabView->page();
 		QINFO_PRINT(global_types::qinfo_level_e::ZERO, mainWindowWebEngineSearchFind,  "DEBUG Searching " << search);
 

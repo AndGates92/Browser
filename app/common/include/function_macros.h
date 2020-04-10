@@ -33,7 +33,7 @@
 	}
 
 /**
- * @brief BASE_CLASS_PTR_GETTER(FNAME, ARGTYPE, VAR)
+ * @brief PTR_GETTER(FNAME, ARGTYPE, VAR)
  *
  * \param FNAME : function name
  * \param ARGTYPE : type of returned value
@@ -41,13 +41,13 @@
  *
  * Getter for a pointer in a class or struct
  */
-#define BASE_CLASS_PTR_GETTER(FNAME, ARGTYPE, VAR) \
+#define PTR_GETTER(FNAME, ARGTYPE, VAR) \
 	ARGTYPE * FNAME() const { \
 		return VAR; \
 	}
 
 /**
- * @brief BASE_CLASS_PTR_SETTER_GETTER(SFNAME, GFNAME, ARGTYPE, VAR)
+ * @brief PTR_SETTER_GETTER(SFNAME, GFNAME, ARGTYPE, VAR)
  *
  * \param SFNAME : setter function name
  * \param GFNAME : getter function name
@@ -56,20 +56,20 @@
  *
  * Create setters and getter for a pointer in a class or struct
  */
-#define BASE_CLASS_PTR_SETTER_GETTER(SFNAME, GFNAME, ARGTYPE, VAR) \
+#define PTR_SETTER_GETTER(SFNAME, GFNAME, ARGTYPE, VAR) \
 	PTR_SETTER(SFNAME, ARGTYPE, VAR) \
-	BASE_CLASS_PTR_GETTER(GFNAME, ARGTYPE, VAR)
+	PTR_GETTER(GFNAME, ARGTYPE, VAR)
 
 /**
- * @brief DERIVED_CLASS_PTR_GETTER(FNAME, ARGTYPE, VAR)
+ * @brief CASTED_PTR_GETTER(FNAME, ARGTYPE, VAR)
  *
  * \param FNAME : function name
  * \param ARGTYPE : type of returned value
- * \param VAR : class member to return
+ * \param VAR : class member to return or function returnign it
  *
  * Getter for a pointer in a derived class or struct that requires downcasting
  */
-#define DERIVED_CLASS_PTR_GETTER(FNAME, ARGTYPE, VAR) \
+#define CASTED_PTR_GETTER(FNAME, ARGTYPE, VAR) \
 ARGTYPE * FNAME() const { \
 	try { \
 		ARGTYPE * ptr = dynamic_cast<ARGTYPE *>(VAR); \
@@ -79,6 +79,21 @@ ARGTYPE * FNAME() const { \
 	} \
 	return nullptr; \
 }
+
+/**
+ * @brief CASTED_PTR_SETTER_GETTER(SFNAME, GFNAME, ARGTYPE, SVAR, GVAR)
+ *
+ * \param SFNAME : setter function name
+ * \param GFNAME : getter function name
+ * \param ARGTYPE : type of pointer to set and get
+ * \param SVAR : class member to set
+ * \param GVAR : class member to return or function returnign it
+ *
+ * Create setters and getter with downcasting for a pointer in a class or struct
+ */
+#define CASTED_PTR_SETTER_GETTER(SFNAME, GFNAME, ARGTYPE, SVAR, GVAR) \
+	PTR_SETTER(SFNAME, ARGTYPE, SVAR) \
+	CASTED_PTR_GETTER(GFNAME, ARGTYPE, GVAR)
 
 /** @} */ // End of FunctionMacrosGroup group
 

@@ -213,7 +213,7 @@ void main_window_ctrl_tab::MainWindowCtrlTab::extractContentPath(const int & ind
 		if (tabType == main_window_shared_types::tab_type_e::WEB_CONTENT) {
 			try {
 				const main_window_tab::MainWindowTab * currentTab = dynamic_cast<main_window_tab::MainWindowTab *>(this->windowCore->tabs->widget(index));
-				const main_window_web_engine_view::MainWindowWebEngineView * currentTabView = currentTab->widgetView;
+				const main_window_web_engine_view::MainWindowWebEngineView * currentTabView = currentTab->getView();
 				const QUrl websiteUrl = currentTabView->url();
 				path = websiteUrl.toDisplayString(QUrl::FullyDecoded);
 			} catch (const std::bad_cast & badCastE) {
@@ -257,7 +257,7 @@ void main_window_ctrl_tab::MainWindowCtrlTab::connectProgressBar(const int & tab
 	if (tabType == main_window_shared_types::tab_type_e::WEB_CONTENT) {
 		try {
 			const main_window_tab::MainWindowTab * currentTab = dynamic_cast<main_window_tab::MainWindowTab *>(this->windowCore->tabs->widget(tabIndex));
-			const main_window_web_engine_view::MainWindowWebEngineView * currentTabView = currentTab->widgetView;
+			const main_window_web_engine_view::MainWindowWebEngineView * currentTabView = currentTab->getView();
 			const progress_bar::ProgressBar * loadBar = this->windowCore->bottomStatusBar->getLoadBar();
 
 			connect(currentTabView, &main_window_web_engine_view::MainWindowWebEngineView::loadStarted, loadBar, &progress_bar::ProgressBar::startLoading);
@@ -278,7 +278,7 @@ void main_window_ctrl_tab::MainWindowCtrlTab::disconnectProgressBar(const int & 
 	if (tabType == main_window_shared_types::tab_type_e::WEB_CONTENT) {
 		try {
 			const main_window_tab::MainWindowTab * currentTab = dynamic_cast<main_window_tab::MainWindowTab *>(this->windowCore->tabs->widget(tabIndex));
-			const main_window_web_engine_view::MainWindowWebEngineView * currentTabView = currentTab->widgetView;
+			const main_window_web_engine_view::MainWindowWebEngineView * currentTabView = currentTab->getView();
 			progress_bar::ProgressBar * loadBar = this->windowCore->bottomStatusBar->getLoadBar();
 
 			disconnect(currentTabView, &main_window_web_engine_view::MainWindowWebEngineView::loadStarted, loadBar, &progress_bar::ProgressBar::startLoading);
@@ -661,7 +661,7 @@ void main_window_ctrl_tab::MainWindowCtrlTab::printStrInCurrentTab(const QString
 		// Set tab title
 		tabWidget->setTabText(currentTabIndex, tabTitle);
 		main_window_tab::MainWindowTab * currentTab = dynamic_cast<main_window_tab::MainWindowTab *>(this->windowCore->tabs->widget(currentTabIndex, true));
-		currentTab->widgetView->page()->setContent(tabContent.toUtf8());
+		currentTab->getView()->page()->setContent(tabContent.toUtf8());
 
 		// Disable events after updating tabs
 		tabWidget->setUpdatesEnabled(true);

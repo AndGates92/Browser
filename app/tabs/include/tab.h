@@ -18,7 +18,9 @@
 
 #include "global_types.h"
 #include "constructor_macros.h"
+#include "web_engine_view.h"
 #include "tab_load_manager.h"
+#include "web_engine_search.h"
 
 /** @defgroup TabGroup Tab Doxygen Group
  *  Tab functions and classes
@@ -53,13 +55,31 @@ namespace tab {
 			virtual ~Tab();
 
 			/**
-			 * @brief Function: void setLoadManager(tab_load_manager::TabLoadManager * mgr)
+			 * @brief Function: void setView(web_engine_view::WebEngineView * ptr)
 			 *
-			 * \param mgr: load manager to use
+			 * \param ptr: view to use
+			 *
+			 * This function sets the tab view
+			 */
+			void setView(web_engine_view::WebEngineView * ptr);
+
+			/**
+			 * @brief Function: web_engine_view::WebEngineView * getView()
+			 *
+			 * \return tab view
+			 *
+			 * This function returns the load manager
+			 */
+			web_engine_view::WebEngineView * getView() const;
+
+			/**
+			 * @brief Function: void setLoadManager(tab_load_manager::TabLoadManager * ptr)
+			 *
+			 * \param ptr: load manager to use
 			 *
 			 * This function sets the load manager
 			 */
-			void setLoadManager(tab_load_manager::TabLoadManager * mgr);
+			void setLoadManager(tab_load_manager::TabLoadManager * ptr);
 
 			/**
 			 * @brief Function: tab_load_manager::TabLoadManager * getLoadManager()
@@ -70,6 +90,24 @@ namespace tab {
 			 */
 			tab_load_manager::TabLoadManager * getLoadManager() const;
 
+			/**
+			 * @brief Function: void setSearch(web_engine_search::WebEngineSearch * ptr)
+			 *
+			 * \param ptr: search to use
+			 *
+			 * This function sets the tab search
+			 */
+			void setSearch(web_engine_search::WebEngineSearch * ptr);
+
+			/**
+			 * @brief Function: web_engine_search::WebEngineSearch * getSearch()
+			 *
+			 * \return tab search
+			 *
+			 * This function returns the load manager
+			 */
+			web_engine_search::WebEngineSearch * getSearch() const;
+
 		protected:
 
 			/**
@@ -79,13 +117,26 @@ namespace tab {
 			 */
 			virtual void reload() = 0;
 
+		private:
+
+			/**
+			 * @brief web engine view
+			 *
+			 */
+			web_engine_view::WebEngineView * view;
+
 			/**
 			 * @brief load manager
 			 *
 			 */
 			tab_load_manager::TabLoadManager * loadManager;
 
-		private:
+			/**
+			 * @brief seach class
+			 *
+			 */
+			web_engine_search::WebEngineSearch * search;
+
 			// Move and copy constructor
 			/**
 			 * @brief Disable move and copy constructors and operator= overloading for class Tab

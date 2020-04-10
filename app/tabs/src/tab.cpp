@@ -17,20 +17,37 @@
 // Categories
 Q_LOGGING_CATEGORY(tabOverall, "tab.overall", MSG_TYPE_LEVEL)
 
-tab::Tab::Tab(QWidget * parent): QWidget(parent) {
+tab::Tab::Tab(QWidget * parent): QWidget(parent), view(Q_NULLPTR), loadManager(Q_NULLPTR), search(Q_NULLPTR) {
 	QINFO_PRINT(global_types::qinfo_level_e::ZERO, tabOverall,  "Tab constructor");
 
-	tab_load_manager::TabLoadManager * lMgr = new tab_load_manager::TabLoadManager(this);
-	this->setLoadManager(lMgr);
+	web_engine_view::WebEngineView * tabView = new web_engine_view::WebEngineView(this);
+	this->setView(tabView);
+
+	tab_load_manager::TabLoadManager * tabLoadManager = new tab_load_manager::TabLoadManager(this);
+	this->setLoadManager(tabLoadManager);
+
+	web_engine_search::WebEngineSearch * tabSearch = new web_engine_search::WebEngineSearch(this, this);
+	this->setSearch(tabSearch);
 }
 
 tab::Tab::~Tab() {
 	QINFO_PRINT(global_types::qinfo_level_e::ZERO, tabOverall,  "Tab destructor");
 
+	if (this->view != Q_NULLPTR) {
+		delete this->view;
+	}
+
 	if (this->loadManager != Q_NULLPTR) {
 		delete this->loadManager;
 	}
 
+	if (this->search != Q_NULLPTR) {
+		delete this->search;
+	}
 }
 
-BASE_CLASS_PTR_SETTER_GETTER(tab::Tab::setLoadManager, tab::Tab::getLoadManager, tab_load_manager::TabLoadManager, this->loadManager)
+PTR_SETTER_GETTER(tab::Tab::setLoadManager, tab::Tab::getLoadManager, tab_load_manager::TabLoadManager, this->loadManager)
+
+PTR_SETTER_GETTER(tab::Tab::setView, tab::Tab::getView, web_engine_view::WebEngineView, this->view)
+
+PTR_SETTER_GETTER(tab::Tab::setSearch, tab::Tab::getSearch, web_engine_search::WebEngineSearch, this->search)
