@@ -32,7 +32,8 @@ web_engine_view::WebEngineView::~WebEngineView() {
 
 web_engine_page::WebEnginePage * web_engine_view::WebEngineView::page() const {
 	try {
-		return dynamic_cast<web_engine_page::WebEnginePage *>(QWebEngineView::page());
+		web_engine_page::WebEnginePage * p = dynamic_cast<web_engine_page::WebEnginePage *>(QWebEngineView::page());
+		return p;
 	} catch (const std::bad_cast & badCastE) {
 		QEXCEPTION_ACTION(throw, badCastE.what());
 	}

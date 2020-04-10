@@ -208,6 +208,10 @@ void main_window_tab_widget::MainWindowTabWidget::processTabTitleChanged(const Q
 }
 
 void main_window_tab_widget::MainWindowTabWidget::reloadTabContent(const int & index) {
-	main_window_tab::MainWindowTab * tab = dynamic_cast<main_window_tab::MainWindowTab *>(this->widget(index, true));
-	tab->reload();
+	try {
+		main_window_tab::MainWindowTab * tab = dynamic_cast<main_window_tab::MainWindowTab *>(this->widget(index, true));
+		tab->reload();
+	} catch (const std::bad_cast & badCastE) {
+		QEXCEPTION_ACTION(throw, badCastE.what());
+	}
 }

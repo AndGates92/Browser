@@ -32,7 +32,8 @@ main_window_web_engine_view::MainWindowWebEngineView::~MainWindowWebEngineView()
 
 main_window_web_engine_page::MainWindowWebEnginePage * main_window_web_engine_view::MainWindowWebEngineView::page() const {
 	try {
-		return dynamic_cast<main_window_web_engine_page::MainWindowWebEnginePage *>(web_engine_view::WebEngineView::page());
+		main_window_web_engine_page::MainWindowWebEnginePage * p = dynamic_cast<main_window_web_engine_page::MainWindowWebEnginePage *>(web_engine_view::WebEngineView::page());
+		return p;
 	} catch (const std::bad_cast & badCastE) {
 		QEXCEPTION_ACTION(throw, badCastE.what());
 	}

@@ -11,15 +11,21 @@
 #include <qt5/QtGui/QKeyEvent>
 
 #include "logging_macros.h"
+#include "exception_macros.h"
 #include "main_window_web_engine_profile.h"
 
 // Categories
 Q_LOGGING_CATEGORY(mainWindowWebEngineProfileOverall, "mainWindowWebEngineProfile.overall", MSG_TYPE_LEVEL)
 
 main_window_web_engine_profile::MainWindowWebEngineProfile * main_window_web_engine_profile::MainWindowWebEngineProfile::defaultProfile() {
-	main_window_web_engine_profile::MainWindowWebEngineProfile * profile = dynamic_cast<main_window_web_engine_profile::MainWindowWebEngineProfile *>(web_engine_profile::WebEngineProfile::defaultProfile());
+	try {
+		main_window_web_engine_profile::MainWindowWebEngineProfile * profile = dynamic_cast<main_window_web_engine_profile::MainWindowWebEngineProfile *>(web_engine_profile::WebEngineProfile::defaultProfile());
+		return profile;
+	} catch (const std::bad_cast & badCastE) {
+		QEXCEPTION_ACTION(throw, badCastE.what());
+	}
 
-	return profile;
+	return Q_NULLPTR;
 }
 
 main_window_web_engine_profile::MainWindowWebEngineProfile::MainWindowWebEngineProfile(const QString & storageName, QObject * parent): web_engine_profile::WebEngineProfile(storageName, parent) {

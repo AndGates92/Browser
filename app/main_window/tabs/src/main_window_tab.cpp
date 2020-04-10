@@ -39,5 +39,13 @@ void main_window_tab::MainWindowTab::reload() {
 }
 
 main_window_tab_load_manager::MainWindowTabLoadManager * main_window_tab::MainWindowTab::getLoadManager() const {
-	return dynamic_cast<main_window_tab_load_manager::MainWindowTabLoadManager *>(this->loadManager);
+	try {
+		main_window_tab_load_manager::MainWindowTabLoadManager * lMgr = dynamic_cast<main_window_tab_load_manager::MainWindowTabLoadManager *>(this->loadManager);
+		return lMgr;
+	} catch (const std::bad_cast & badCastE) {
+		QEXCEPTION_ACTION(throw, badCastE.what());
+	}
+
+	return Q_NULLPTR;
+
 }
