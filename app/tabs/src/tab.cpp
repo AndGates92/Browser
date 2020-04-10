@@ -10,6 +10,7 @@
 #include <qt5/QtCore/QLoggingCategory>
 #include <qt5/QtGui/QKeyEvent>
 
+#include "function_macros.h"
 #include "logging_macros.h"
 #include "tab.h"
 
@@ -26,23 +27,10 @@ tab::Tab::Tab(QWidget * parent): QWidget(parent) {
 tab::Tab::~Tab() {
 	QINFO_PRINT(global_types::qinfo_level_e::ZERO, tabOverall,  "Tab destructor");
 
-	delete this->loadManager;
-
-}
-
-void tab::Tab::setLoadManager(tab_load_manager::TabLoadManager * mgr) {
-	// Do nothing if old and new managers are the same pointer
-	if (this->loadManager != mgr) {
-		if (this->loadManager != Q_NULLPTR) {
-			delete this->loadManager;
-		}
-
-		this->loadManager = mgr;
-
+	if (this->loadManager != Q_NULLPTR) {
+		delete this->loadManager;
 	}
 
 }
 
-tab_load_manager::TabLoadManager * tab::Tab::getLoadManager() const {
-	return this->loadManager;
-}
+BASE_CLASS_PTR_SETTER_GETTER(tab::Tab::setLoadManager, tab::Tab::getLoadManager, tab_load_manager::TabLoadManager, this->loadManager)
