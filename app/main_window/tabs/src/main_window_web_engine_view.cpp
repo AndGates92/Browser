@@ -11,6 +11,7 @@
 #include <qt5/QtGui/QKeyEvent>
 
 #include "logging_macros.h"
+#include "exception_macros.h"
 #include "main_window_web_engine_view.h"
 
 // Categories
@@ -30,5 +31,11 @@ main_window_web_engine_view::MainWindowWebEngineView::~MainWindowWebEngineView()
 }
 
 main_window_web_engine_page::MainWindowWebEnginePage * main_window_web_engine_view::MainWindowWebEngineView::page() const {
-	return dynamic_cast<main_window_web_engine_page::MainWindowWebEnginePage *>(web_engine_view::WebEngineView::page());
+	try {
+		return dynamic_cast<main_window_web_engine_page::MainWindowWebEnginePage *>(web_engine_view::WebEngineView::page());
+	} catch (const std::bad_cast & badCastE) {
+		QEXCEPTION_ACTION(throw, badCastE.what());
+	}
+
+	return Q_NULLPTR;
 }
