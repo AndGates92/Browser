@@ -82,14 +82,14 @@ namespace main_window_ctrl_base {
 			json_parser::JsonParser commands;
 
 			/**
-			 * @brief Function: void createShortcuts()
+			 * @brief Function: virtual void createShortcuts()
 			 *
 			 * This function creates shortcuts for the items on the window
 			 */
 			virtual void createShortcuts() = 0;
 
 			/**
-			 * @brief Function: void connectSignals()
+			 * @brief Function: virtual void connectSignals()
 			 *
 			 * This function connects signals and slots within main window controller
 			 */
