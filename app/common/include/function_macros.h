@@ -14,6 +14,53 @@
  */
 
 /**
+ * @brief BASE_SETTER(FNAME, ARGTYPE, VAR)
+ *
+ * \param FNAME : function name
+ * \param ARGTYPE : type of input argument
+ * \param VAR : class member to set
+ *
+ * General setter for a member in a class or struct
+ */
+#define BASE_SETTER(FNAME, ARGTYPE, VAR) \
+	void FNAME(ARGTYPE value) { \
+		if (VAR != ptr) { \
+			if (VAR != nullptr) { \
+				delete VAR; \
+			} \
+			VAR = value; \
+		}  \
+	}
+
+/**
+ * @brief BASE_GETTER(FNAME, ARGTYPE, VAR)
+ *
+ * \param FNAME : function name
+ * \param ARGTYPE : type of returned value
+ * \param VAR : class member to return
+ *
+ * General getter for a member in a class or struct
+ */
+#define BASE_GETTER(FNAME, ARGTYPE, VAR) \
+	ARGTYPE FNAME() const { \
+		return VAR; \
+	}
+
+/**
+ * @brief PTR_SETTER_GETTER(SFNAME, GFNAME, ARGTYPE, VAR)
+ *
+ * \param SFNAME : setter function name
+ * \param GFNAME : getter function name
+ * \param ARGTYPE : type of variable to set and get
+ * \param VAR : class member to set and return
+ *
+ * Create setters and getter for a member in a class or struct
+ */
+#define BASE_SETTER_GETTER(SFNAME, GFNAME, ARGTYPE, VAR) \
+	BASE_SETTER(SFNAME, ARGTYPE, VAR) \
+	BASE_GETTER(GFNAME, ARGTYPE, VAR)
+
+/**
  * @brief PTR_SETTER(FNAME, ARGTYPE, VAR)
  *
  * \param FNAME : function name
@@ -23,14 +70,7 @@
  * Setter for a pointer in a class or struct
  */
 #define PTR_SETTER(FNAME, ARGTYPE, VAR) \
-	void FNAME(ARGTYPE * ptr) { \
-		if (VAR != ptr) { \
-			if (VAR != nullptr) { \
-				delete VAR; \
-			} \
-			VAR = ptr; \
-		}  \
-	}
+	BASE_SETTER(FNAME, ARGTYPE *, VAR)
 
 /**
  * @brief PTR_GETTER(FNAME, ARGTYPE, VAR)
@@ -42,9 +82,7 @@
  * Getter for a pointer in a class or struct
  */
 #define PTR_GETTER(FNAME, ARGTYPE, VAR) \
-	ARGTYPE * FNAME() const { \
-		return VAR; \
-	}
+	BASE_GETTER(FNAME, ARGTYPE *, VAR)
 
 /**
  * @brief PTR_SETTER_GETTER(SFNAME, GFNAME, ARGTYPE, VAR)
@@ -57,8 +95,7 @@
  * Create setters and getter for a pointer in a class or struct
  */
 #define PTR_SETTER_GETTER(SFNAME, GFNAME, ARGTYPE, VAR) \
-	PTR_SETTER(SFNAME, ARGTYPE, VAR) \
-	PTR_GETTER(GFNAME, ARGTYPE, VAR)
+	BASE_SETTER_GETTER(SFNAME, GFNAME, ARGTYPE *, VAR)
 
 /**
  * @brief CASTED_PTR_GETTER(FNAME, ARGTYPE, VAR)

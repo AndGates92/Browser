@@ -55,13 +55,13 @@ namespace tab {
 			virtual ~Tab();
 
 			/**
-			 * @brief Function: void setView(web_engine_view::WebEngineView * ptr)
+			 * @brief Function: void setView(web_engine_view::WebEngineView * value)
 			 *
-			 * \param ptr: view to use
+			 * \param value: view to use
 			 *
 			 * This function sets the tab view
 			 */
-			void setView(web_engine_view::WebEngineView * ptr);
+			void setView(web_engine_view::WebEngineView * value);
 
 			/**
 			 * @brief Function: web_engine_view::WebEngineView * getView()
@@ -73,13 +73,13 @@ namespace tab {
 			web_engine_view::WebEngineView * getView() const;
 
 			/**
-			 * @brief Function: void setLoadManager(tab_load_manager::TabLoadManager * ptr)
+			 * @brief Function: void setLoadManager(tab_load_manager::TabLoadManager * value)
 			 *
-			 * \param ptr: load manager to use
+			 * \param value: load manager to use
 			 *
 			 * This function sets the load manager
 			 */
-			void setLoadManager(tab_load_manager::TabLoadManager * ptr);
+			void setLoadManager(tab_load_manager::TabLoadManager * value);
 
 			/**
 			 * @brief Function: tab_load_manager::TabLoadManager * getLoadManager()
@@ -91,13 +91,13 @@ namespace tab {
 			tab_load_manager::TabLoadManager * getLoadManager() const;
 
 			/**
-			 * @brief Function: void setSearch(web_engine_search::WebEngineSearch * ptr)
+			 * @brief Function: void setSearch(web_engine_search::WebEngineSearch * value)
 			 *
-			 * \param ptr: search to use
+			 * \param value: search to use
 			 *
 			 * This function sets the tab search
 			 */
-			void setSearch(web_engine_search::WebEngineSearch * ptr);
+			void setSearch(web_engine_search::WebEngineSearch * value);
 
 			/**
 			 * @brief Function: web_engine_search::WebEngineSearch * getSearch()
