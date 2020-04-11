@@ -254,45 +254,28 @@ void main_window_ctrl_tab::MainWindowCtrlTab::moveCursor(const int & tabIndex) {
 void main_window_ctrl_tab::MainWindowCtrlTab::connectProgressBar(const int & tabIndex) {
 	const main_window_shared_types::tab_type_e tabType = this->windowCore->tabs->getTabType(tabIndex);
 	QINFO_PRINT(global_types::qinfo_level_e::ZERO, mainWindowCtrlTabTabs,  "Connect signals from " << tabType << " object of tab " << tabIndex << " to progress bar slots");
-	if (tabType == main_window_shared_types::tab_type_e::WEB_CONTENT) {
-		try {
-			const main_window_tab::MainWindowTab * currentTab = dynamic_cast<main_window_tab::MainWindowTab *>(this->windowCore->tabs->widget(tabIndex));
-			const main_window_web_engine_view::MainWindowWebEngineView * currentTabView = currentTab->getView();
-			const progress_bar::ProgressBar * loadBar = this->windowCore->bottomStatusBar->getLoadBar();
+	try {
+		const main_window_tab::MainWindowTab * tab = dynamic_cast<main_window_tab::MainWindowTab *>(this->windowCore->tabs->widget(tabIndex));
+		const main_window_tab_load_manager::MainWindowTabLoadManager * loadManager = tab->getLoadManager();
+		const progress_bar::ProgressBar * bar = this->windowCore->bottomStatusBar->getLoadBar();
 
-			connect(currentTabView, &main_window_web_engine_view::MainWindowWebEngineView::loadStarted, loadBar, &progress_bar::ProgressBar::startLoading);
-			connect(currentTabView, &main_window_web_engine_view::MainWindowWebEngineView::loadProgress, loadBar, &progress_bar::ProgressBar::setValue);
-			connect(currentTabView, &main_window_web_engine_view::MainWindowWebEngineView::loadFinished, loadBar, &progress_bar::ProgressBar::endLoading);
-
-		} catch (const std::bad_cast & badCastE) {
-			QEXCEPTION_ACTION(throw, badCastE.what());
-		}
-	} else if (tabType == main_window_shared_types::tab_type_e::TEXT) {
-		// TODO
+		connect(loadManager, &main_window_tab_load_manager::MainWindowTabLoadManager::progressChanged, bar, &progress_bar::ProgressBar::setValue);
+	} catch (const std::bad_cast & badCastE) {
+		QEXCEPTION_ACTION(throw, badCastE.what());
 	}
 }
 
 void main_window_ctrl_tab::MainWindowCtrlTab::disconnectProgressBar(const int & tabIndex) {
 	const main_window_shared_types::tab_type_e tabType = this->windowCore->tabs->getTabType(tabIndex);
-	QINFO_PRINT(global_types::qinfo_level_e::ZERO, mainWindowCtrlTabTabs,  "Disconnect signals from " << tabType << " object of tab " << tabIndex << " to progress bar slots");
-	if (tabType == main_window_shared_types::tab_type_e::WEB_CONTENT) {
-		try {
-			const main_window_tab::MainWindowTab * currentTab = dynamic_cast<main_window_tab::MainWindowTab *>(this->windowCore->tabs->widget(tabIndex));
-			const main_window_web_engine_view::MainWindowWebEngineView * currentTabView = currentTab->getView();
-			progress_bar::ProgressBar * loadBar = this->windowCore->bottomStatusBar->getLoadBar();
+	QINFO_PRINT(global_types::qinfo_level_e::ZERO, mainWindowCtrlTabTabs,  "Disconnect connect signals from " << tabType << " object of tab " << tabIndex << " to progress bar slots");
+	try {
+		const main_window_tab::MainWindowTab * tab = dynamic_cast<main_window_tab::MainWindowTab *>(this->windowCore->tabs->widget(tabIndex));
+		const main_window_tab_load_manager::MainWindowTabLoadManager * loadManager = tab->getLoadManager();
+		const progress_bar::ProgressBar * bar = this->windowCore->bottomStatusBar->getLoadBar();
 
-			disconnect(currentTabView, &main_window_web_engine_view::MainWindowWebEngineView::loadStarted, loadBar, &progress_bar::ProgressBar::startLoading);
-			disconnect(currentTabView, &main_window_web_engine_view::MainWindowWebEngineView::loadProgress, loadBar, &progress_bar::ProgressBar::setValue);
-			disconnect(currentTabView, &main_window_web_engine_view::MainWindowWebEngineView::loadFinished, loadBar, &progress_bar::ProgressBar::endLoading);
-
-			// Make load bar invisible as we are disconnecting slots
-			loadBar->setVisible(false);
-
-		} catch (const std::bad_cast & badCastE) {
-			QEXCEPTION_ACTION(throw, badCastE.what());
-		}
-	} else if (tabType == main_window_shared_types::tab_type_e::TEXT) {
-		// TODO
+		disconnect(loadManager, &main_window_tab_load_manager::MainWindowTabLoadManager::progressChanged, bar, &progress_bar::ProgressBar::setValue);
+	} catch (const std::bad_cast & badCastE) {
+		QEXCEPTION_ACTION(throw, badCastE.what());
 	}
 }
 
