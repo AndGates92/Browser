@@ -95,6 +95,13 @@ namespace main_window_tab {
 
 		protected:
 
+			/**
+			 * @brief Function: void connectSignals() override
+			 *
+			 * This function connects signals and slots within main window controller tabs
+			 */
+			void connectSignals() override;
+
 		private:
 			// Move and copy constructor
 			/**

@@ -24,7 +24,7 @@
  */
 #define BASE_SETTER(FNAME, ARGTYPE, VAR) \
 	void FNAME(ARGTYPE value) { \
-		if (VAR != ptr) { \
+		if (VAR != value) { \
 			if (VAR != nullptr) { \
 				delete VAR; \
 			} \

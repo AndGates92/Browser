@@ -17,6 +17,7 @@
 #include <qt5/QtWidgets/QWidget>
 
 #include "global_types.h"
+#include "tab_shared_types.h"
 #include "constructor_macros.h"
 
 /** @defgroup TabLoadManagerGroup Tab Load Manager Doxygen Group
@@ -25,6 +26,7 @@
  */
 
 Q_DECLARE_LOGGING_CATEGORY(tabLoadManagerOverall)
+Q_DECLARE_LOGGING_CATEGORY(tabLoadManagerStatus)
 
 namespace tab_load_manager {
 
@@ -62,30 +64,22 @@ namespace tab_load_manager {
 			 */
 			int getProgress() const;
 
-		signals:
 			/**
-			 * @brief Function: void progressChanged(int value)
+			 * @brief Function: tab_shared_types::load_status_e getStatus() const
 			 *
-			 * \param value: value of the progress
+			 * \return value of the status
 			 *
-			 * This function is a signal to notify that the value of progress changed
+			 * This function returns the value of the status
 			 */
-			void progressChanged(int value);
+			tab_shared_types::load_status_e getStatus() const;
 
-		protected:
+		public slots:
 			/**
-			 * @brief load value
-			 *
-			 */
-			int progress;
-
-		protected slots:
-			/**
-			 * @brief Function: void resetProgress()
+			 * @brief Function: void startLoading()
 			 *
 			 * This function sets progress to 0
 			 */
-			void resetProgress();
+			void startLoading();
 
 			/**
 			 * @brief Function: void setProgress(int value)
@@ -96,7 +90,56 @@ namespace tab_load_manager {
 			 */
 			void setProgress(int value);
 
+			/**
+			 * @brief Function: void endLoading(bool success)
+			 *
+			 * \param value: value of the progress
+			 *
+			 * This function sets progress to value provided as argument
+			 */
+			void endLoading(bool success);
+
+		signals:
+			/**
+			 * @brief Function: void progressChanged(int value)
+			 *
+			 * \param value: value of the progress
+			 *
+			 * This function is a signal to notify that the value of progress changed
+			 */
+			void progressChanged(int value);
+
+			/**
+			 * @brief Function: void statusChanged(tab_shared_types::load_status_e value)
+			 *
+			 * \param value: value of the status
+			 *
+			 * This function is a signal to notify that the status of loading changed
+			 */
+			void statusChanged(tab_shared_types::load_status_e value);
+
+		protected:
+			/**
+			 * @brief load status
+			 *
+			 */
+			tab_shared_types::load_status_e status;
+
+			/**
+			 * @brief load value
+			 *
+			 */
+			int progress;
+
 		private:
+			/**
+			 * @brief Function: void setStatus(tab_shared_types::load_status_e value);
+			 *
+			 * \param value: new status of the load manager
+			 *
+			 * This function sets the status to value provided as argument
+			 */
+			void setStatus(tab_shared_types::load_status_e value);
 
 			// Move and copy constructor
 			/**

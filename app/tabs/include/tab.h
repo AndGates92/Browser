@@ -111,6 +111,13 @@ namespace tab {
 		protected:
 
 			/**
+			 * @brief Function: virtual void connectSignals()
+			 *
+			 * This function connects signals and slots within tabs
+			 */
+			virtual void connectSignals() = 0;
+
+			/**
 			 * @brief Function: virtual void reload()
 			 *
 			 * This function reloads the content of the tab
