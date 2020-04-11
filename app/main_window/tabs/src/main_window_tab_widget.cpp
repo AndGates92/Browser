@@ -149,7 +149,7 @@ int main_window_tab_widget::MainWindowTabWidget::insertTab(const int & index, co
 
 	main_window_tab::MainWindowTab * tab = new main_window_tab::MainWindowTab(type, data, content, this->parentWidget());
 
-	QINFO_PRINT(global_types::qinfo_level_e::ZERO, mainWindowTabWidgetTabs,  "Insert tab with label " << label << " at position " << index);
+	QINFO_PRINT(global_types::qinfo_level_e::ZERO, mainWindowTabWidgetTabs,  "Insert tab of type " << type << " with title " << label << " at position " << index);
 
 	const int tabIndex = tab_widget::TabWidget::insertTab(index, tab, label, icon);
 
@@ -214,4 +214,51 @@ void main_window_tab_widget::MainWindowTabWidget::reloadTabContent(const int & i
 	} catch (const std::bad_cast & badCastE) {
 		QEXCEPTION_ACTION(throw, badCastE.what());
 	}
+}
+
+void main_window_tab_widget::MainWindowTabWidget::setContentInCurrentTab(const QString & tabTitle, const QString & tabContent, const void * data) {
+	QINFO_PRINT(global_types::qinfo_level_e::ZERO, mainWindowTabWidgetTabs,  "Set text in center window with title " << tabTitle);
+	QINFO_PRINT(global_types::qinfo_level_e::ZERO, mainWindowTabWidgetTabs,  tabContent);
+
+	const main_window_shared_types::tab_type_e desiredTabType = main_window_shared_types::tab_type_e::TEXT;
+
+	// START -> data test
+	const char * filename = static_cast<const char *>(data);
+	QINFO_PRINT(global_types::qinfo_level_e::ZERO, mainWindowTabWidgetTabs,  "data test filename: " << filename);
+	// END -> data test
+
+	// Disable events while updating tabs
+	this->setUpdatesEnabled(false);
+
+	int tabCount = this->count();
+
+	// Get current tab index
+	int index = this->currentIndex();
+
+	// If not tabs, then create one
+	if (tabCount == 0) {
+		index = this->addTab(tabTitle, &tabContent, desiredTabType, data);
+		tabCount = this->count();
+		QEXCEPTION_ACTION_COND((index >= tabCount), throw,  "Current tab index " << index << " must be larger than the number of tabs " << tabCount);
+	} else {
+		this->changeTabData(index, desiredTabType, data);
+		this->setTabText(index, tabTitle);
+
+		try {
+			// Set tab title
+			main_window_tab::MainWindowTab * tab = dynamic_cast<main_window_tab::MainWindowTab *>(this->widget(index, true));
+			tab->getView()->page()->setContent(tabContent.toUtf8());
+
+
+		} catch (const std::bad_cast & badCastE) {
+			QEXCEPTION_ACTION(throw, badCastE.what());
+		}
+	}
+
+	QINFO_PRINT(global_types::qinfo_level_e::ZERO, mainWindowTabWidgetTabs, "Current tab index is " << index << " and the tab widget has " << tabCount << " tabs");
+
+	// Enable events after updating tabs
+	this->setUpdatesEnabled(true);
+
+	// TODO: emit signal to disconnect previous tab from qprogress bar
 }

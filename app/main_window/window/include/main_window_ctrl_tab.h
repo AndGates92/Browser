@@ -209,17 +209,6 @@ namespace main_window_ctrl_tab {
 			void setUpCloseTab();
 
 			/**
-			 * @brief Function: void printStrInCurrentTab(const QString & tabTitle, const QString & tabContent, const void * data)
-			 *
-			 * \param tabTitle: tab title
-			 * \param tabContent: text to write in the widget
-			 * \param data: extra data to be passed through
-			 *
-			 * This function writes the widget with the content of the file read (stored in input argument str)
-			 */
-			void printStrInCurrentTab(const QString & tabTitle, const QString & tabContent, const void * data);
-
-			/**
 			 * @brief Function: void updateStatusBar(const int & tabIndex)
 			 *
 			 * \param tabIndex: index of the tab to connect signals from

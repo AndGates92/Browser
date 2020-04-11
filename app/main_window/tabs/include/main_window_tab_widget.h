@@ -182,6 +182,18 @@ namespace main_window_tab_widget {
 			 */
 			void reloadTabContent(const int & index);
 
+		public slots:
+			/**
+			 * @brief Function: void setContentInCurrentTab(const QString & tabTitle, const QString & tabContent, const void * data)
+			 *
+			 * \param tabTitle: tab title
+			 * \param tabContent: text to write in the widget
+			 * \param data: extra data to be passed through
+			 *
+			 * This function writes the widget with the content of the file read (stored in input argument str)
+			 */
+			void setContentInCurrentTab(const QString & tabTitle, const QString & tabContent, const void * data);
+
 		signals:
 			/**
 			 * @brief Function: void numberTabsChanged(int index)

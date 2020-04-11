@@ -96,7 +96,7 @@ void main_window_ctrl_tab::MainWindowCtrlTab::connectSignals() {
 	connect(this->windowCore->topMenuBar->getFileMenu()->openTabAction, &QAction::triggered, this, &main_window_ctrl_tab::MainWindowCtrlTab::setUpOpenNewTab);
 
 	// When the file has been read, then show it on the screen
-	connect(this->windowCore->topMenuBar->getFileMenu(), &file_menu::FileMenu::updateCenterWindowSignal, this, &main_window_ctrl_tab::MainWindowCtrlTab::printStrInCurrentTab);
+	connect(this->windowCore->topMenuBar->getFileMenu(), &file_menu::FileMenu::updateCenterWindowSignal, this->windowCore->tabs, &main_window_tab_widget::MainWindowTabWidget::setContentInCurrentTab);
 
 	connect(this, &main_window_ctrl_tab::MainWindowCtrlTab::currentTabSrcChanged, this->windowCore->bottomStatusBar->getContentPathText(), &elided_label::ElidedLabel::setText);
 
@@ -604,53 +604,6 @@ void main_window_ctrl_tab::MainWindowCtrlTab::convertToAbsTabIndex(const int & o
 		default:
 			QEXCEPTION_ACTION(throw,  "Undefined action when in state " << windowState);
 			break;
-	}
-}
-
-void main_window_ctrl_tab::MainWindowCtrlTab::printStrInCurrentTab(const QString & tabTitle, const QString & tabContent, const void * data) {
-	QINFO_PRINT(global_types::qinfo_level_e::ZERO, mainWindowCtrlTabTabs,  "Set text in center window with title " << tabTitle);
-	QINFO_PRINT(global_types::qinfo_level_e::ZERO, mainWindowCtrlTabTabs,  tabContent);
-
-	// Get tabs
-	main_window_tab_widget::MainWindowTabWidget * tabWidget = this->windowCore->tabs;
-
-	const main_window_shared_types::tab_type_e desiredTabType = main_window_shared_types::tab_type_e::TEXT;
-
-	// START -> data test
-	const char * filename = static_cast<const char *>(data);
-	QINFO_PRINT(global_types::qinfo_level_e::ZERO, mainWindowCtrlTabTabs,  "data test filename: " << filename);
-	// END -> data test
-
-	// Disable events while updating tabs
-	tabWidget->setUpdatesEnabled(false);
-
-	int tabCount = this->windowCore->getTabCount();
-
-	// Get current tab index
-	int currentTabIndex = tabWidget->currentIndex();
-
-	// If not tabs, then create one
-	if (tabCount == 0) {
-		currentTabIndex = this->addNewTab(tabTitle, desiredTabType, data);
-		tabCount = this->windowCore->getTabCount();
-		QEXCEPTION_ACTION_COND((currentTabIndex >= tabCount), throw,  "Current tab index " << currentTabIndex << " must be larger than the number of tabs " << tabCount);
-	} else {
-		this->windowCore->tabs->changeTabData(currentTabIndex, desiredTabType, data);
-	}
-
-	QINFO_PRINT(global_types::qinfo_level_e::ZERO, mainWindowCtrlTabTabs, "Current tab index is " << currentTabIndex << " and the tab widget has " << tabCount << " tabs");
-
-	try {
-		// Set tab title
-		tabWidget->setTabText(currentTabIndex, tabTitle);
-		main_window_tab::MainWindowTab * currentTab = dynamic_cast<main_window_tab::MainWindowTab *>(this->windowCore->tabs->widget(currentTabIndex, true));
-		currentTab->getView()->page()->setContent(tabContent.toUtf8());
-
-		// Disable events after updating tabs
-		tabWidget->setUpdatesEnabled(true);
-
-	} catch (const std::bad_cast & badCastE) {
-		QEXCEPTION_ACTION(throw, badCastE.what());
 	}
 }
 
