@@ -17,7 +17,7 @@
 // Categories
 Q_LOGGING_CATEGORY(mainWindowWebEnginePageOverall, "mainWindowWebEnginePage.overall", MSG_TYPE_LEVEL)
 
-main_window_web_engine_page::MainWindowWebEnginePage::MainWindowWebEnginePage(const main_window_shared_types::tab_type_e type, const void * data, const void * tabContent, web_engine_profile::WebEngineProfile * profile, QWidget * parent): web_engine_page::WebEnginePage(profile, parent), tabData(main_window_tab_data::MainWindowTabData::makeTabData(type, data)) {
+main_window_web_engine_page::MainWindowWebEnginePage::MainWindowWebEnginePage(const main_window_shared_types::tab_type_e type, const void * tabContent, web_engine_profile::WebEngineProfile * profile, const void * data, QWidget * parent): web_engine_page::WebEnginePage(profile, parent), tabData(main_window_tab_data::MainWindowTabData::makeTabData(type, data)) {
 	QINFO_PRINT(global_types::qinfo_level_e::ZERO, mainWindowWebEnginePageOverall,  "Web engine page constructor");
 
 	this->setBody(type, tabContent);

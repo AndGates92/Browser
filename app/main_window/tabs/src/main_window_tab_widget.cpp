@@ -147,7 +147,7 @@ int main_window_tab_widget::MainWindowTabWidget::insertTab(const int & index, co
 
 	this->disconnectTab();
 
-	main_window_tab::MainWindowTab * tab = new main_window_tab::MainWindowTab(type, data, content, this->parentWidget());
+	main_window_tab::MainWindowTab * tab = new main_window_tab::MainWindowTab(type, content, data, this->parentWidget());
 
 	QINFO_PRINT(global_types::qinfo_level_e::ZERO, mainWindowTabWidgetTabs,  "Insert tab of type " << type << " with title " << title << " at position " << index);
 
