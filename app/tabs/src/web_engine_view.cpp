@@ -12,6 +12,7 @@
 
 #include "logging_macros.h"
 #include "exception_macros.h"
+#include "function_macros.h"
 #include "web_engine_view.h"
 
 // Categories
@@ -30,13 +31,4 @@ web_engine_view::WebEngineView::~WebEngineView() {
 
 }
 
-web_engine_page::WebEnginePage * web_engine_view::WebEngineView::page() const {
-	try {
-		web_engine_page::WebEnginePage * p = dynamic_cast<web_engine_page::WebEnginePage *>(QWebEngineView::page());
-		return p;
-	} catch (const std::bad_cast & badCastE) {
-		QEXCEPTION_ACTION(throw, badCastE.what());
-	}
-
-	return Q_NULLPTR;
-}
+CASTED_PTR_GETTER(web_engine_view::WebEngineView::page, web_engine_page::WebEnginePage, QWebEngineView::page())
