@@ -161,7 +161,7 @@ int main_window_tab_widget::MainWindowTabWidget::insertTab(const int & index, co
 	return tabIndex;
 }
 
-int main_window_tab_widget::MainWindowTabWidget::addEmptyTab(const QString & label, const void * content, const main_window_shared_types::tab_type_e & type, const void * data, const QIcon & icon) {
+int main_window_tab_widget::MainWindowTabWidget::addTab(const QString & label, const void * content, const main_window_shared_types::tab_type_e & type, const void * data, const QIcon & icon) {
 
 	const int index = this->count();
 	int tabIndex = this->insertTab(index, label, content, type, data, icon);

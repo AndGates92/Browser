@@ -178,7 +178,7 @@ int main_window_ctrl_tab::MainWindowCtrlTab::addNewTab(const QString & search, c
 		this->disconnectProgressBar(currentTabIndex);
 	}
 
-	const int tabIndex = this->windowCore->tabs->addEmptyTab(search, &search, type, data);
+	const int tabIndex = this->windowCore->tabs->addTab(search, &search, type, data);
 
 	// Connect signals from tab the cursor is pointing to
 	this->connectProgressBar(tabIndex);
