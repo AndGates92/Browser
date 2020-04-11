@@ -143,15 +143,15 @@ void main_window_tab_widget::MainWindowTabWidget::changeTabData(const int & inde
 	}
 }
 
-int main_window_tab_widget::MainWindowTabWidget::insertTab(const int & index, const QString & label, const void * content, const main_window_shared_types::tab_type_e & type, const void * data, const QIcon & icon) {
+int main_window_tab_widget::MainWindowTabWidget::insertTab(const int & index, const QString & title, const void * content, const main_window_shared_types::tab_type_e & type, const void * data, const QIcon & icon) {
 
 	this->disconnectTab();
 
 	main_window_tab::MainWindowTab * tab = new main_window_tab::MainWindowTab(type, data, content, this->parentWidget());
 
-	QINFO_PRINT(global_types::qinfo_level_e::ZERO, mainWindowTabWidgetTabs,  "Insert tab of type " << type << " with title " << label << " at position " << index);
+	QINFO_PRINT(global_types::qinfo_level_e::ZERO, mainWindowTabWidgetTabs,  "Insert tab of type " << type << " with title " << title << " at position " << index);
 
-	const int tabIndex = tab_widget::TabWidget::insertTab(index, tab, label, icon);
+	const int tabIndex = tab_widget::TabWidget::insertTab(index, tab, title, icon);
 
 	// Move to the newly opened tab
 	this->setCurrentIndex(tabIndex);
@@ -161,20 +161,20 @@ int main_window_tab_widget::MainWindowTabWidget::insertTab(const int & index, co
 	return tabIndex;
 }
 
-int main_window_tab_widget::MainWindowTabWidget::addTab(const QString & label, const void * content, const main_window_shared_types::tab_type_e & type, const void * data, const QIcon & icon) {
+int main_window_tab_widget::MainWindowTabWidget::addTab(const QString & title, const void * content, const main_window_shared_types::tab_type_e & type, const void * data, const QIcon & icon) {
 
 	const int index = this->count();
-	int tabIndex = this->insertTab(index, label, content, type, data, icon);
+	int tabIndex = this->insertTab(index, title, content, type, data, icon);
 
 	return tabIndex;
 }
 
-void main_window_tab_widget::MainWindowTabWidget::changeTabContent(const int & index, const QString & label, const void * content, const main_window_shared_types::tab_type_e & type, const void * data) {
+void main_window_tab_widget::MainWindowTabWidget::changeTabContent(const int & index, const QString & title, const void * content, const main_window_shared_types::tab_type_e & type, const void * data) {
 	// Change tab type and extra data
 	this->changeTabData(index, type, data);
 
 	// Change tab title
-	this->setTabText(index, label);
+	this->setTabText(index, title);
 
 	try {
 		const main_window_tab::MainWindowTab * tab = dynamic_cast<main_window_tab::MainWindowTab *>(this->widget(index, true));
