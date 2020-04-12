@@ -148,25 +148,25 @@ namespace main_window_status_bar {
 			 * @brief user input
 			 *
 			 */
-			elided_label::ElidedLabel * userInputText;
+			elided_label::ElidedLabel * const userInputText;
 
 			/**
 			 * @brief content
 			 *
 			 */
-			elided_label::ElidedLabel * contentPathText;
+			elided_label::ElidedLabel * const contentPathText;
 
 			/**
 			 * @brief info
 			 *
 			 */
-			elided_label::ElidedLabel * infoText;
+			elided_label::ElidedLabel * const infoText;
 
 			/**
 			 * @brief load bar
 			 *
 			 */
-			progress_bar::ProgressBar * loadBar;
+			progress_bar::ProgressBar * const loadBar;
 
 			/**
 			 * @brief Function: elided_label::ElidedLabel * newWindowLabel()

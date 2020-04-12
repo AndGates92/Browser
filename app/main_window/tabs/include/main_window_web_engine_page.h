@@ -87,31 +87,31 @@ namespace main_window_web_engine_page {
 			void setSource(const QString & src);
 
 			/**
-			 * @brief Function: main_window_tab_data::MainWindowTabData * getTabData() const
+			 * @brief Function: const main_window_tab_data::MainWindowTabData * getData() const
 			 *
 			 * \return tab data
 			 *
 			 * This function returns custom tab data
 			 */
-			main_window_tab_data::MainWindowTabData * getTabData() const;
+			const main_window_tab_data::MainWindowTabData * getData() const;
 
 			/**
-			 * @brief Function: main_window_shared_types::tab_type_e getTabType() const
+			 * @brief Function: main_window_shared_types::tab_type_e getType() const
 			 *
 			 * \return tab type
 			 *
 			 * This function returns tab type
 			 */
-			main_window_shared_types::tab_type_e getTabType() const;
+			main_window_shared_types::tab_type_e getType() const;
 
 			/**
-			 * @brief Function: const void * getTabExtraData() const
+			 * @brief Function: const void * getExtraData() const
 			 *
 			 * \return tab extra data
 			 *
 			 * This function returns tab extra data
 			 */
-			const void * getTabExtraData() const;
+			const void * getExtraData() const;
 
 			/**
 			 * @brief Function: const QString getSource() const
@@ -121,7 +121,6 @@ namespace main_window_web_engine_page {
 			 * This function returns the source of the tab
 			 */
 			const QString getSource() const;
-
 
 			/**
 			 * @brief Function: void reload()

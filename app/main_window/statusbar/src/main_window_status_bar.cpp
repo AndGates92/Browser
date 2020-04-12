@@ -11,13 +11,14 @@
 #include <qt5/QtWidgets/QHBoxLayout>
 
 #include "main_window_status_bar.h"
+#include "function_macros.h"
 #include "logging_macros.h"
 #include "global_types.h"
 
 // Categories
 Q_LOGGING_CATEGORY(mainWindowStatusBarOverall, "mainWindowStatusBar.overall", MSG_TYPE_LEVEL)
 
-main_window_status_bar::MainWindowStatusBar::MainWindowStatusBar(QWidget * parent, Qt::WindowFlags flags) : QWidget(parent, flags) {
+main_window_status_bar::MainWindowStatusBar::MainWindowStatusBar(QWidget * parent, Qt::WindowFlags flags) : QWidget(parent, flags), userInputText(this->newWindowLabel()), contentPathText(this->newWindowLabel()), infoText(this->newWindowLabel()), loadBar(this->newProgressBar()) {
 
 	QINFO_PRINT(global_types::qinfo_level_e::ZERO, mainWindowStatusBarOverall,  "Main window status bar constructor");
 
@@ -30,20 +31,20 @@ main_window_status_bar::MainWindowStatusBar::MainWindowStatusBar(QWidget * paren
 	);
 
 	// user input
-	this->userInputText = this->newWindowLabel();
+	//this->userInputText = this->newWindowLabel();
 	this->userInputText->setAlignment(Qt::AlignLeft | Qt::AlignBottom);
 	this->userInputText->setFocus(Qt::OtherFocusReason);
 
 	// path to the content
-	this->contentPathText = this->newWindowLabel();
+	//this->contentPathText = this->newWindowLabel();
 	this->contentPathText->setAlignment(Qt::AlignRight | Qt::AlignBottom);
 
 	// info
-	this->infoText = this->newWindowLabel();
+	//this->infoText = this->newWindowLabel();
 	this->infoText->setAlignment(Qt::AlignRight | Qt::AlignBottom);
 
 	// info
-	this->loadBar = this->newProgressBar();
+	//this->loadBar = this->newProgressBar();
 
 	// Populate statusbar
 	this->fillStatusBar();
@@ -142,22 +143,10 @@ void main_window_status_bar::MainWindowStatusBar::fillStatusBar() {
 	this->setLayout(layout);
 }
 
-elided_label::ElidedLabel * main_window_status_bar::MainWindowStatusBar::getUserInputText() const {
-	return this->userInputText;
-}
-
-
-elided_label::ElidedLabel * main_window_status_bar::MainWindowStatusBar::getContentPathText() const {
-	return this->contentPathText;
-}
-
-elided_label::ElidedLabel * main_window_status_bar::MainWindowStatusBar::getInfoText() const {
-	return this->infoText;
-}
-
-progress_bar::ProgressBar * main_window_status_bar::MainWindowStatusBar::getLoadBar() const {
-	return this->loadBar;
-}
+PTR_GETTER(main_window_status_bar::MainWindowStatusBar::getUserInputText, elided_label::ElidedLabel, this->userInputText)
+PTR_GETTER(main_window_status_bar::MainWindowStatusBar::getContentPathText, elided_label::ElidedLabel, this->contentPathText)
+PTR_GETTER(main_window_status_bar::MainWindowStatusBar::getInfoText, elided_label::ElidedLabel, this->infoText)
+PTR_GETTER(main_window_status_bar::MainWindowStatusBar::getLoadBar, progress_bar::ProgressBar, this->loadBar)
 
 QSize main_window_status_bar::MainWindowStatusBar::minimumSizeHint() const {
 	int width = QWidget::minimumSizeHint().width();

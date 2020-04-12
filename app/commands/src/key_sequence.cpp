@@ -12,6 +12,7 @@
 #include "key_info.h"
 #include "key_sequence.h"
 #include "exception_macros.h"
+#include "function_macros.h"
 #include "global_types.h"
 #include "logging_macros.h"
 
@@ -128,9 +129,7 @@ QString key_sequence::KeySequence::toString(const QKeySequence::SequenceFormat f
 	return keyStr;
 }
 
-QVector<QKeySequence> key_sequence::KeySequence::getSeqVec() const {
-	return this->keySeqVec;
-}
+CONST_GETTER(key_sequence::KeySequence::getSeqVec, QVector<QKeySequence>, this->keySeqVec)
 
 QKeySequence::SequenceMatch key_sequence::KeySequence::matches(const key_sequence::KeySequence & otherSeq) const {
 	const unsigned int thisSize = this->count();

@@ -118,13 +118,13 @@ namespace main_window_tab_data {
 			const QString qprint() const;
 
 			/**
-			 * @brief Function: std::string getSource() const
+			 * @brief Function: const std::string getSource() const
 			 *
 			 * \return source field of a tab data object
 			 *
 			 * This functions returns the source field of a tab data object
 			 */
-			std::string getSource() const;
+			const std::string getSource() const;
 
 			/**
 			 * @brief Function: main_window_shared_types::tab_type_e getType() const
@@ -156,22 +156,22 @@ namespace main_window_tab_data {
 			bool setSource(const std::string newSource);
 
 			/**
-			 * @brief Function: void setType(const main_window_shared_types::tab_type_e newType)
+			 * @brief Function: void setType(const main_window_shared_types::tab_type_e value)
 			 *
-			 * \param newType: new type
+			 * \param value: new type
 			 *
 			 * This functions sets the type field of a tab page data object
 			 */
-			void setType(const main_window_shared_types::tab_type_e newType);
+			void setType(const main_window_shared_types::tab_type_e value);
 
 			/**
-			 * @brief Function: void setData(const void * newData)
+			 * @brief Function: void setData(const void * value)
 			 *
-			 * \param newData: new data
+			 * \param value: new data
 			 *
 			 * This functions sets the data field of a tab page data object
 			 */
-			void setData(const void * newData);
+			void setData(const void * value);
 
 		protected:
 

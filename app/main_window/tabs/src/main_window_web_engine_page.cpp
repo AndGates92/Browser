@@ -11,6 +11,7 @@
 #include <qt5/QtGui/QKeyEvent>
 
 #include "logging_macros.h"
+#include "function_macros.h"
 #include "global_functions.h"
 #include "main_window_web_engine_page.h"
 
@@ -35,7 +36,7 @@ void main_window_web_engine_page::MainWindowWebEnginePage::setSource(const QStri
 
 void main_window_web_engine_page::MainWindowWebEnginePage::setBody() {
 
-	main_window_shared_types::tab_type_e type = this->getTabType();
+	main_window_shared_types::tab_type_e type = this->getType();
 
 	switch (type) {
 		case main_window_shared_types::tab_type_e::WEB_CONTENT:
@@ -68,24 +69,13 @@ main_window_web_engine_page::MainWindowWebEnginePage::~MainWindowWebEnginePage()
 
 }
 
-main_window_tab_data::MainWindowTabData * main_window_web_engine_page::MainWindowWebEnginePage::getTabData() const {
-	return this->tabData;
-}
-
-main_window_shared_types::tab_type_e main_window_web_engine_page::MainWindowWebEnginePage::getTabType() const {
-	return this->tabData->getType();
-}
-
-const void * main_window_web_engine_page::MainWindowWebEnginePage::getTabExtraData() const {
-	return this->tabData->getData();
-}
-
-const QString main_window_web_engine_page::MainWindowWebEnginePage::getSource() const {
-	return QString::fromStdString(this->tabData->getSource());
-}
+BASE_GETTER(main_window_web_engine_page::MainWindowWebEnginePage::getType, main_window_shared_types::tab_type_e, this->tabData->type)
+CONST_GETTER(main_window_web_engine_page::MainWindowWebEnginePage::getSource, QString, QString::fromStdString(this->tabData->source))
+CONST_PTR_GETTER(main_window_web_engine_page::MainWindowWebEnginePage::getExtraData, void, this->tabData->data)
+CONST_PTR_GETTER(main_window_web_engine_page::MainWindowWebEnginePage::getData, main_window_tab_data::MainWindowTabData, this->tabData)
 
 void main_window_web_engine_page::MainWindowWebEnginePage::reload() {
-	const main_window_shared_types::tab_type_e type = this->getTabType();
+	const main_window_shared_types::tab_type_e type = this->getType();
 	switch (type) {
 		case main_window_shared_types::tab_type_e::WEB_CONTENT:
 			this->triggerAction(QWebEnginePage::Reload);
@@ -106,7 +96,7 @@ QByteArray main_window_web_engine_page::MainWindowWebEnginePage::getTextFileBody
 	const QString source = this->getSource();
 
 	if (source.isEmpty() == false) {
-		main_window_shared_types::tab_type_e type = this->getTabType();
+		main_window_shared_types::tab_type_e type = this->getType();
 		QEXCEPTION_ACTION_COND((type != main_window_shared_types::tab_type_e::TEXT), throw,  "Unable to get body of text file for tab of type " << type);
 		// Convert QString to std::string
 		std::string filename = source.toStdString();

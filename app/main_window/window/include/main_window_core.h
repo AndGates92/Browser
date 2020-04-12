@@ -110,13 +110,13 @@ namespace main_window_core {
 			main_window_shared_types::offset_type_e getOffsetType() const;
 
 			/**
-			 * Function: QString getUserText() const
+			 * Function: const QString getUserText() const
 			 *
 			 * \return the text typed by the user
 			 *
 			 * This function returns the text typed by the user
 			 */
-			QString getUserText() const;
+			const QString getUserText() const;
 
 			/**
 			 * @brief Function: int getTabCount() const

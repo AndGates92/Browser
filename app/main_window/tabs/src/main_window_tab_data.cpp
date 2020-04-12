@@ -13,6 +13,7 @@
 #include <qt5/QtCore/QtDebug>
 
 #include "main_window_tab_data.h"
+#include "function_macros.h"
 #include "exception_macros.h"
 
 // Categories
@@ -115,17 +116,10 @@ std::string main_window_tab_data::MainWindowTabData::print() const {
 	return structInfo;
 }
 
-std::string main_window_tab_data::MainWindowTabData::getSource() const {
-	return this->source;
-}
-
-main_window_shared_types::tab_type_e main_window_tab_data::MainWindowTabData::getType() const {
-	return this->type;
-}
-
-const void * main_window_tab_data::MainWindowTabData::getData() const {
-	return this->data;
-}
+BASE_SETTER_GETTER(main_window_tab_data::MainWindowTabData::setType, main_window_tab_data::MainWindowTabData::getType, main_window_shared_types::tab_type_e, this->type)
+CONST_GETTER(main_window_tab_data::MainWindowTabData::getSource, std::string, this->source)
+BASE_SETTER(main_window_tab_data::MainWindowTabData::setData, const void *, this->data)
+CONST_PTR_GETTER(main_window_tab_data::MainWindowTabData::getData, void, this->data)
 
 bool main_window_tab_data::MainWindowTabData::setSource(const std::string newSource) {
 	bool hasChanged = false;
@@ -136,12 +130,4 @@ bool main_window_tab_data::MainWindowTabData::setSource(const std::string newSou
 	}
 
 	return hasChanged;
-}
-
-void main_window_tab_data::MainWindowTabData::setType(const main_window_shared_types::tab_type_e newType) {
-	this->type = newType;
-}
-
-void main_window_tab_data::MainWindowTabData::setData(const void * newData) {
-	this->data = newData;
 }

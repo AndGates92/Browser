@@ -12,6 +12,7 @@
 
 #include "main_window_menu_bar.h"
 #include "global_types.h"
+#include "function_macros.h"
 #include "logging_macros.h"
 
 Q_LOGGING_CATEGORY(mainWindowMenuBarOverall, "menuBar.overall", MSG_TYPE_LEVEL)
@@ -36,12 +37,5 @@ void main_window_menu_bar::MainWindowMenuBar::fillMenuBar() {
 	this->editMenu = new edit_menu::EditMenu(this->parentWidget(), this, "Edit", Qt::Key_E);
 }
 
-file_menu::FileMenu * main_window_menu_bar::MainWindowMenuBar::getFileMenu() const {
-	return this->fileMenu;
-}
-
-
-edit_menu::EditMenu * main_window_menu_bar::MainWindowMenuBar::getEditMenu() const {
-	return this->editMenu;
-}
-
+PTR_GETTER(main_window_menu_bar::MainWindowMenuBar::getFileMenu, file_menu::FileMenu, this->fileMenu)
+PTR_GETTER(main_window_menu_bar::MainWindowMenuBar::getEditMenu, edit_menu::EditMenu, this->editMenu)

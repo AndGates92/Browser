@@ -13,6 +13,7 @@
 #include "main_window_core.h"
 #include "exception_macros.h"
 #include "global_functions.h"
+#include "function_macros.h"
 
 // Categories
 Q_LOGGING_CATEGORY(mainWindowCoreOverall, "mainWindowCore.overall", MSG_TYPE_LEVEL)
@@ -150,10 +151,6 @@ main_window_core::MainWindowCore::~MainWindowCore() {
 	delete this->mainWidget;
 }
 
-int main_window_core::MainWindowCore::getTabCount() const {
-	return this->tabs->count();
-}
-
 QString main_window_core::MainWindowCore::getActionName() const {
 	QString actionNameText(QString::null);
 
@@ -177,21 +174,15 @@ QString main_window_core::MainWindowCore::getActionName() const {
 	return actionNameText;
 }
 
-int main_window_core::MainWindowCore::getCurrentTabIndex() const {
-	return this->tabs->currentIndex();
-}
+BASE_GETTER(main_window_core::MainWindowCore::getTabCount, int, this->tabs->count())
 
-main_window_shared_types::state_e main_window_core::MainWindowCore::getMainWindowState() const {
-	return this->mainWindowState;
-}
+BASE_GETTER(main_window_core::MainWindowCore::getCurrentTabIndex, int, this->tabs->currentIndex())
 
-main_window_shared_types::offset_type_e main_window_core::MainWindowCore::getOffsetType() const {
-	return this->offsetType;
-}
+BASE_GETTER(main_window_core::MainWindowCore::getMainWindowState, main_window_shared_types::state_e, this->mainWindowState)
 
-QString main_window_core::MainWindowCore::getUserText() const {
-	return this->userText;
-}
+BASE_GETTER(main_window_core::MainWindowCore::getOffsetType, main_window_shared_types::offset_type_e, this->offsetType)
+
+CONST_GETTER(main_window_core::MainWindowCore::getUserText, QString, this->userText)
 
 void main_window_core::MainWindowCore::setMainWindowState(main_window_shared_types::state_e windowState) {
 	this->mainWindowState = windowState;
