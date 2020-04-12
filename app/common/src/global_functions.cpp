@@ -17,6 +17,7 @@ Q_LOGGING_CATEGORY(readFileOverall, "readFile.overall", MSG_TYPE_LEVEL)
 
 std::string global_functions::readFile(const std::string & filename) {
 
+	QEXCEPTION_ACTION_COND((filename.empty() == true), throw, "Provided an empty filename therefore it is not possible to open it and read its content");
 	std::ifstream ifile;
 
 	// Sets exception mask - i.e. for which state flags an exception is thrown
