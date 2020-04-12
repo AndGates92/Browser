@@ -17,10 +17,10 @@
 // Categories
 Q_LOGGING_CATEGORY(mainWindowTabOverall, "mainWindowTab.overall", MSG_TYPE_LEVEL)
 
-main_window_tab::MainWindowTab::MainWindowTab(const main_window_shared_types::tab_type_e type, const QString & src, const void * content, const void * data, QWidget * parent): tab::Tab(parent) {
+main_window_tab::MainWindowTab::MainWindowTab(const main_window_shared_types::tab_type_e type, const QString & src, const void * data, QWidget * parent): tab::Tab(parent) {
 	QINFO_PRINT(global_types::qinfo_level_e::ZERO, mainWindowTabOverall,  "MainWindowTab constructor");
 
-	main_window_web_engine_view::MainWindowWebEngineView * tabView = new main_window_web_engine_view::MainWindowWebEngineView(type, src, content, data, this);
+	main_window_web_engine_view::MainWindowWebEngineView * tabView = new main_window_web_engine_view::MainWindowWebEngineView(type, src,data, this);
 	this->setView(tabView);
 
 	main_window_tab_load_manager::MainWindowTabLoadManager * tabLoadManager = new main_window_tab_load_manager::MainWindowTabLoadManager(this);

@@ -138,30 +138,22 @@ void main_window_tab_widget::MainWindowTabWidget::changeTabData(const int & inde
 	if (currentType != newType) {
 		this->removeTab(index);
 		const QString content(QString::null);
-		const int tabIndex = this->insertTab(index, QString::null, &content, newType, data);
+		const int tabIndex = this->insertTab(index, newType, content, data);
 		QEXCEPTION_ACTION_COND((tabIndex != index), throw, "Requested index (" << index << ") is different from tab index (" << tabIndex);
 	}
 }
 
-int main_window_tab_widget::MainWindowTabWidget::insertTab(const int & index, const QString & title, const void * content, const main_window_shared_types::tab_type_e & type, const void * data, const QIcon & icon) {
+int main_window_tab_widget::MainWindowTabWidget::insertTab(const int & index, const main_window_shared_types::tab_type_e & type, const QString & userInput, const void * data, const QIcon & icon) {
 
 	this->disconnectTab();
 
-	const void * urlOrContent = nullptr;
-	// Need to declare url here because we pass a pointer to it to the tab, hence we need to declare global to the function
-	QUrl url = QUrl();
-	if (type == main_window_shared_types::tab_type_e::WEB_CONTENT) {
-		url = this->searchToUrl(title);
-		urlOrContent = &url;
-	} else if (type == main_window_shared_types::tab_type_e::TEXT) {
-		urlOrContent = content;
-	}
+	const QString source(this->createSource(type, userInput));
+	main_window_tab::MainWindowTab * tab = new main_window_tab::MainWindowTab(type, source, data, this->parentWidget());
 
-	main_window_tab::MainWindowTab * tab = new main_window_tab::MainWindowTab(type, title, urlOrContent, data, this->parentWidget());
+	QINFO_PRINT(global_types::qinfo_level_e::ZERO, mainWindowTabWidgetTabs,  "Insert tab of type " << type << " with source " << source << " at position " << index);
 
-	QINFO_PRINT(global_types::qinfo_level_e::ZERO, mainWindowTabWidgetTabs,  "Insert tab of type " << type << " with title " << title << " at position " << index);
-
-	const int tabIndex = tab_widget::TabWidget::insertTab(index, tab, title, icon);
+	const QString label(this->createLabel(type, userInput));
+	const int tabIndex = tab_widget::TabWidget::insertTab(index, tab, label, icon);
 
 	// Move to the newly opened tab
 	this->setCurrentIndex(tabIndex);
@@ -171,15 +163,57 @@ int main_window_tab_widget::MainWindowTabWidget::insertTab(const int & index, co
 	return tabIndex;
 }
 
-int main_window_tab_widget::MainWindowTabWidget::addTab(const QString & title, const void * content, const main_window_shared_types::tab_type_e & type, const void * data, const QIcon & icon) {
+QString main_window_tab_widget::MainWindowTabWidget::createSource(const main_window_shared_types::tab_type_e & type, const QString & userInput) {
+
+	QString source(QString::null);
+
+	switch (type) {
+		case main_window_shared_types::tab_type_e::WEB_CONTENT:
+			// User can provide either a URL or a sequence of keywords to search in the search engine
+			source = this->searchToUrl(userInput);
+			break;
+		case main_window_shared_types::tab_type_e::TEXT:
+			// User provides the path towards the files, hence the source fo the page content is the user input itself
+			source = userInput;
+			break;
+		default:
+			QEXCEPTION_ACTION(throw, "Unable to create source string for tab from user input " << userInput << " because tab type " << type << " is not recognised");
+			break;
+	}
+
+	return source;
+}
+
+QString main_window_tab_widget::MainWindowTabWidget::createLabel(const main_window_shared_types::tab_type_e & type, const QString & userInput) {
+
+	QString label(QString::null);
+
+	switch (type) {
+		case main_window_shared_types::tab_type_e::WEB_CONTENT:
+			// label is the string the user searched
+			label = userInput;
+			break;
+		case main_window_shared_types::tab_type_e::TEXT:
+			// User provides the path towards the files, hence the source fo the page content is the user input itself
+			label = QString("file: ") + userInput;
+			break;
+		default:
+			QEXCEPTION_ACTION(throw, "Unable to create label for tab from user input " << userInput << " because tab type " << type << " is not recognised");
+			break;
+	}
+
+	return label;
+}
+
+int main_window_tab_widget::MainWindowTabWidget::addTab(const main_window_shared_types::tab_type_e & type, const QString & userInput, const void * data, const QIcon & icon) {
 
 	const int index = this->count();
-	int tabIndex = this->insertTab(index, title, content, type, data, icon);
+	int tabIndex = this->insertTab(index, type, userInput, data, icon);
 
 	return tabIndex;
 }
 
-void main_window_tab_widget::MainWindowTabWidget::changeTabContent(const int & index, const QString & title, const void * content, const main_window_shared_types::tab_type_e & type, const void * data) {
+void main_window_tab_widget::MainWindowTabWidget::changeTabContent(const int & index, const QString & title, const main_window_shared_types::tab_type_e & type, const void * data) {
 	// Change tab type and extra data
 	this->changeTabData(index, type, data);
 
@@ -190,7 +224,8 @@ void main_window_tab_widget::MainWindowTabWidget::changeTabContent(const int & i
 		const main_window_tab::MainWindowTab * tab = dynamic_cast<main_window_tab::MainWindowTab *>(this->widget(index, true));
 		main_window_web_engine_page::MainWindowWebEnginePage * page = tab->getView()->page();
 		// Set tab body
-		page->setBody(type, content);
+		page->setSource(title);
+		page->setBody();
 	} catch (const std::bad_cast & badCastE) {
 		QEXCEPTION_ACTION(throw, badCastE.what());
 	}
@@ -238,7 +273,7 @@ void main_window_tab_widget::MainWindowTabWidget::setTabTitle(const int & index,
 	}
 }
 
-void main_window_tab_widget::MainWindowTabWidget::setContentInCurrentTab(const QString & tabTitle, const QString & tabContent, const void * data) {
+void main_window_tab_widget::MainWindowTabWidget::openFileInCurrentTab(const QString & tabTitle, const QString & tabContent, const void * data) {
 	QINFO_PRINT(global_types::qinfo_level_e::ZERO, mainWindowTabWidgetTabs,  "Set text in center window with title " << tabTitle);
 	QINFO_PRINT(global_types::qinfo_level_e::ZERO, mainWindowTabWidgetTabs,  tabContent);
 
@@ -259,7 +294,7 @@ void main_window_tab_widget::MainWindowTabWidget::setContentInCurrentTab(const Q
 
 	// If not tabs, then create one
 	if (tabCount == 0) {
-		index = this->addTab(tabTitle, &tabContent, desiredTabType, data);
+		index = this->addTab(desiredTabType, tabTitle, data);
 		tabCount = this->count();
 		QEXCEPTION_ACTION_COND((index >= tabCount), throw,  "Current tab index " << index << " must be larger than the number of tabs " << tabCount);
 	} else {
@@ -283,26 +318,24 @@ void main_window_tab_widget::MainWindowTabWidget::setContentInCurrentTab(const Q
 	// TODO: emit signal to disconnect previous tab from qprogress bar
 }
 
-const QUrl main_window_tab_widget::MainWindowTabWidget::searchToUrl(const QString & search) const {
+QString main_window_tab_widget::MainWindowTabWidget::searchToUrl(const QString & search) const {
 	const bool containsSpace = search.contains(" ");
 	const bool containsWww = search.contains(main_window_tab_widget::www);
 	const int numberDots = search.count(".");
 
-	QString urlStr(QString::null);
+	QString url(QString::null);
 
 	// if contains at least 1 dot and no space, it could be a URL
 	if ((numberDots > 0) && (containsSpace == false)) {
-		urlStr = main_window_tab_widget::https;
+		url = main_window_tab_widget::https;
 		if (containsWww == true) {
-			urlStr += search;
+			url += search;
 		} else {
-			urlStr += main_window_tab_widget::www + search;
+			url += main_window_tab_widget::www + search;
 		}
 	} else {
-		urlStr = main_window_tab_widget::defaultSearchEngine.arg(search);
+		url = main_window_tab_widget::defaultSearchEngine.arg(search);
 	}
-
-	const QUrl url(urlStr);
 
 	return url;
 }

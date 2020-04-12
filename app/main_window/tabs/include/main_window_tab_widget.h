@@ -77,26 +77,25 @@ namespace main_window_tab_widget {
 			~MainWindowTabWidget();
 
 			/**
-			 * @brief Function: int addTab(const QString & title, const void * content, const main_window_shared_types::tab_type_e & type, const void * data = nullptr, const QIcon & icon = QIcon())
+			 * @brief Function: int addTab(const main_window_shared_types::tab_type_e & type, const QString & userInput, const void * data = nullptr, const QIcon & icon = QIcon())
 			 *
-			 * \param title: title of the tab
-			 * \param content: content of the tab
+			 * \param userInput: input typed by the user
 			 * \param type: type of the tab
 			 * \param data: extra data to be passed through
 			 * \param icon: icon of the tab
 			 *
 			 * \return tab index
 			 *
-			 * add tab to tab widget
+			 * This function adds tab to tab widget at the end of the tab bar
+			 * It calls insertTab, therefore for more details on the argument meaning, please refer to insertTab function
 			 */
-			int addTab(const QString & title, const void * content, const main_window_shared_types::tab_type_e & type, const void * data = nullptr, const QIcon & icon = QIcon());
+			int addTab(const main_window_shared_types::tab_type_e & type, const QString & userInput, const void * data = nullptr, const QIcon & icon = QIcon());
 
 			/**
-			 * @brief Function: int insertTab(const int & index, const QString & title, const main_window_shared_types::tab_type_e & type, const void * data = nullptr, const QIcon & icon = QIcon())
+			 * @brief Function: int insertTab(const int & index, const main_window_shared_types::tab_type_e & type, const QString & userInput, const void * data = nullptr, const QIcon & icon = QIcon())
 			 *
 			 * \param index: index to insert tab to
-			 * \param title: title of the tab
-			 * \param content: content of the tab
+			 * \param userInput: input typed by the user
 			 * \param type: type of the tab
 			 * \param data: extra data to be passed through
 			 * \param icon: icon of the tab
@@ -104,8 +103,11 @@ namespace main_window_tab_widget {
 			 * \return tab index
 			 *
 			 * add tab to tab widget at index index
+			 * The userInput argument constains the following informations:
+			 * if the type is WEB_CONTENT, it is the search keywords
+			 * if the type is TEXT, it is the filepath of the file to print
 			 */
-			int insertTab(const int & index, const QString & title, const void * content, const main_window_shared_types::tab_type_e & type, const void * data = nullptr, const QIcon & icon = QIcon());
+			int insertTab(const int & index, const main_window_shared_types::tab_type_e & type, const QString & userInput, const void * data = nullptr, const QIcon & icon = QIcon());
 
 			/**
 			 * @brief Function: void removeTab(const int & index)
@@ -183,17 +185,16 @@ namespace main_window_tab_widget {
 			void changeTabData(const int & index, const main_window_shared_types::tab_type_e newType, const void * data = nullptr);
 
 			/**
-			 * @brief Function: void changeTabContent(const int & index, const QString & title, const void * content, const main_window_shared_types::tab_type_e & type, const void * data)
+			 * @brief Function: void changeTabContent(const int & index, const QString & title, const main_window_shared_types::tab_type_e & type, const void * data)
 			 *
 			 * \param index: index to insert tab to
 			 * \param title: title of the tab
-			 * \param content: content of the tab
 			 * \param type: type of the tab
 			 * \param data: extra data to be passed through
 			 *
 			 * This function changes the content of a tab
 			 */
-			void changeTabContent(const int & index, const QString & title, const void * content, const main_window_shared_types::tab_type_e & type, const void * data);
+			void changeTabContent(const int & index, const QString & title, const main_window_shared_types::tab_type_e & type, const void * data);
 
 			/**
 			 * @brief Function: void reloadTabContent(const int & index)
@@ -206,7 +207,7 @@ namespace main_window_tab_widget {
 
 		public slots:
 			/**
-			 * @brief Function: void setContentInCurrentTab(const QString & tabTitle, const QString & tabContent, const void * data)
+			 * @brief Function: void openFileInCurrentTab(const QString & tabTitle, const QString & tabContent, const void * data)
 			 *
 			 * \param tabTitle: tab title
 			 * \param tabContent: text to write in the widget
@@ -214,7 +215,7 @@ namespace main_window_tab_widget {
 			 *
 			 * This function writes the widget with the content of the file read (stored in input argument str)
 			 */
-			void setContentInCurrentTab(const QString & tabTitle, const QString & tabContent, const void * data);
+			void openFileInCurrentTab(const QString & tabTitle, const QString & tabContent, const void * data);
 
 		signals:
 			/**
@@ -267,17 +268,17 @@ namespace main_window_tab_widget {
 			void connectTab();
 
 			/**
-			 * @brief Function: const QUrl searchToUrl(const QString & search) const
+			 * @brief Function: QString searchToUrl(const QString & search) const
 			 *
 			 * \param search: string to search
 			 *
-			 * \return URL as QUrl
+			 * \return URL as QString
 			 *
 			 * This function is creates the URL based on the input from the user
 			 * If the user writes down a URL himself/herself, it will return it adding, if required, https
 			 * If the user is writing a string to search, it will be searched in the chosen search engine
 			 */
-			const QUrl searchToUrl(const QString & search) const;
+			QString searchToUrl(const QString & search) const;
 
 			/**
 			 * @brief Function: void setTabTitle(const int & index, const QString & source)
@@ -288,6 +289,32 @@ namespace main_window_tab_widget {
 			 * This function sets the title of a tab as well as the source of the page from the source of the content
 			 */
 			void setTabTitle(const int & index, const QString & source);
+
+			/**
+			 * @brief Function: QString createSource(const main_window_shared_types::tab_type_e & type, const QString & userInput)
+			 *
+			 * \param type: type of the tab
+			 * \param userInput: input typed by the user
+			 *
+			 * \return source of the tab as derived from the user input string
+			 *
+			 * This function creates a string with the source of the content on a tab based on the user input
+			 * if the type is WEB_CONTENT, it returns a string containign the URL (see searchToUrl method)
+			 * if the type is TEXT, it returns the filepath of the file to print (i.e. the userInput)
+			 */
+			QString createSource(const main_window_shared_types::tab_type_e & type, const QString & userInput);
+
+			/**
+			 * @brief Function: QString createLabel(const main_window_shared_types::tab_type_e & type, const QString & userInput)
+			 *
+			 * \param type: type of the tab
+			 * \param userInput: userInput of the content of the page
+			 *
+			 * \return tab label
+			 *
+			 * This function creates a label for a tab
+			 */
+			QString createLabel(const main_window_shared_types::tab_type_e & type, const QString & userInput);
 
 			// Move and copy constructor
 			/**

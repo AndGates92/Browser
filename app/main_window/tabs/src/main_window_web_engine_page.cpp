@@ -17,10 +17,10 @@
 // Categories
 Q_LOGGING_CATEGORY(mainWindowWebEnginePageOverall, "mainWindowWebEnginePage.overall", MSG_TYPE_LEVEL)
 
-main_window_web_engine_page::MainWindowWebEnginePage::MainWindowWebEnginePage(const main_window_shared_types::tab_type_e type, const QString & src, const void * content, web_engine_profile::WebEngineProfile * profile, const void * data, QWidget * parent): web_engine_page::WebEnginePage(profile, parent), source(src), tabData(main_window_tab_data::MainWindowTabData::makeTabData(type, data)) {
+main_window_web_engine_page::MainWindowWebEnginePage::MainWindowWebEnginePage(const main_window_shared_types::tab_type_e type, const QString & src, web_engine_profile::WebEngineProfile * profile, const void * data, QWidget * parent): web_engine_page::WebEnginePage(profile, parent), source(src), tabData(main_window_tab_data::MainWindowTabData::makeTabData(type, data)) {
 	QINFO_PRINT(global_types::qinfo_level_e::ZERO, mainWindowWebEnginePageOverall,  "Web engine page constructor");
 
-	this->setBody(type, content);
+	this->setBody();
 
 }
 
@@ -31,18 +31,24 @@ void main_window_web_engine_page::MainWindowWebEnginePage::setSource(const QStri
 	}
 }
 
-void main_window_web_engine_page::MainWindowWebEnginePage::setBody(const main_window_shared_types::tab_type_e & type, const void * content) {
+void main_window_web_engine_page::MainWindowWebEnginePage::setBody() {
 
-	if (type == main_window_shared_types::tab_type_e::WEB_CONTENT) {
-		const QUrl * urlPtr = static_cast<const QUrl *>(content);
-		QUrl url(*urlPtr);
-		this->setUrl(url);
-	} else if (type == main_window_shared_types::tab_type_e::TEXT) {
-		const QString * contentPtr = static_cast<const QString *>(content);
-		const QByteArray content = contentPtr->toUtf8();
-		this->setContent(content);
-	} else {
-		QEXCEPTION_ACTION(throw, "Unable to set body for this page as type " << type << " is not recognised");
+	main_window_shared_types::tab_type_e type = this->getTabType();
+
+	switch (type) {
+		case main_window_shared_types::tab_type_e::WEB_CONTENT:
+		{
+			const QUrl url(this->source, QUrl::TolerantMode);
+			QEXCEPTION_ACTION_COND((url.isValid() == false), throw,  "URL is not valid. The following error has been identified: " << url.errorString());
+			this->setUrl(url);
+			break;
+		}
+		case main_window_shared_types::tab_type_e::TEXT:
+			this->setContent(this->getTextFileBody());
+			break;
+		default:
+			QEXCEPTION_ACTION(throw, "Unable to set body for this page as type " << type << " is not recognised");
+			break;
 	}
 }
 
@@ -78,14 +84,29 @@ const QString main_window_web_engine_page::MainWindowWebEnginePage::getSource() 
 
 void main_window_web_engine_page::MainWindowWebEnginePage::reload() {
 	const main_window_shared_types::tab_type_e type = this->getTabType();
-	if (type == main_window_shared_types::tab_type_e::WEB_CONTENT) {
-		this->triggerAction(QWebEnginePage::Reload);
-	} else if (type == main_window_shared_types::tab_type_e::TEXT) {
-		// Retrive filename
-		const void * tabData = this->getTabExtraData();
-		const char * filename = static_cast<const char *>(tabData);
-		const QString content(QString::fromStdString(global_functions::readFile(filename)));
-		this->setContent(content.toUtf8());
-
+	switch (type) {
+		case main_window_shared_types::tab_type_e::WEB_CONTENT:
+			this->triggerAction(QWebEnginePage::Reload);
+			break;
+		case main_window_shared_types::tab_type_e::TEXT:
+			this->setContent(this->getTextFileBody());
+			break;
+		default:
+			QEXCEPTION_ACTION(throw, "Unable to reload page as type " << type << " is not recognised");
+			break;
 	}
+}
+
+const QByteArray main_window_web_engine_page::MainWindowWebEnginePage::getTextFileBody() const {
+
+	main_window_shared_types::tab_type_e type = this->getTabType();
+
+	QEXCEPTION_ACTION_COND((type != main_window_shared_types::tab_type_e::TEXT), throw,  "Unable to get body of text file for tab of type " << type);
+
+	// Convert QString to std::string
+	std::string filename = this->source.toStdString();
+	const QString fileContent(QString::fromStdString(global_functions::readFile(filename.c_str())));
+	const QByteArray pageContent = fileContent.toUtf8();
+
+	return pageContent;
 }

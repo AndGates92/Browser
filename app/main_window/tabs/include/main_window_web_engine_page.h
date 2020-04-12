@@ -40,18 +40,17 @@ namespace main_window_web_engine_page {
 
 		public:
 			/**
-			 * @brief Function: explicit MainWindowWebEnginePage(const main_window_shared_types::tab_type_e type, const QString & src, const void * content, web_engine_profile::WebEngineProfile * profile, const void * data, QWidget * parent = Q_NULLPTR)
+			 * @brief Function: explicit MainWindowWebEnginePage(const main_window_shared_types::tab_type_e type, const QString & src, web_engine_profile::WebEngineProfile * profile, const void * data, QWidget * parent = Q_NULLPTR)
 			 *
 			 * \param type: tab type
 			 * \param src: source of the page content
-			 * \param content: tab content
 			 * \param profile: profile of the page
 			 * \param data: tab extra data
 			 * \param parent: parent widget
 			 *
 			 * Main window web engine page constructor
 			 */
-			explicit MainWindowWebEnginePage(const main_window_shared_types::tab_type_e type, const QString & src, const void * content, web_engine_profile::WebEngineProfile * profile, const void * data, QWidget * parent = Q_NULLPTR);
+			explicit MainWindowWebEnginePage(const main_window_shared_types::tab_type_e type, const QString & src, web_engine_profile::WebEngineProfile * profile, const void * data, QWidget * parent = Q_NULLPTR);
 
 			/**
 			 * @brief Function: explicit MainWindowWebEnginePage(QWidget * parent = Q_NULLPTR)
@@ -70,16 +69,13 @@ namespace main_window_web_engine_page {
 			virtual ~MainWindowWebEnginePage();
 
 			/**
-			 * @brief Function: void setBody(const main_window_shared_types::tab_type_e & type, const void * content)
-			 *
-			 * \param type: tab type
-			 * \param content: tab content
+			 * @brief Function: void setBody()
 			 *
 			 * Set body of the page based on the tab type
-			 * if the type is WEB_CONTENT, it converts argument content to a QUrl
-			 * if the type is TEXT, it converts argument content to a QString
+			 * if the type is WEB_CONTENT, it converts the source of the content of page to an URL
+			 * if the type is TEXT, it prints the source of the content of page as plain text using UTF-8 character encoding
 			 */
-			void setBody(const main_window_shared_types::tab_type_e & type, const void * content);
+			void setBody();
 
 			/**
 			 * @brief Function: void setSource(const QString & src)
@@ -136,10 +132,9 @@ namespace main_window_web_engine_page {
 
 		signals:
 			/**
-			 * @brief Function: void setBody(const main_window_shared_types::tab_type_e & type, const void * content)
+			 * @brief Function: void srcChanged(const QString & src)
 			 *
-			 * \param type: tab type
-			 * \param content: tab content
+			 * \param src: source fo the content of the page
 			 *
 			 * This signal notifies that the src of a tab has changed
 			 */
@@ -159,6 +154,15 @@ namespace main_window_web_engine_page {
 			 *
 			 */
 			main_window_tab_data::MainWindowTabData * const tabData;
+
+			/**
+			 * @brief Function: const QByteArray getTextFileBody() const
+			 *
+			 * \return content of the file set as sounce of the tab
+			 *
+			 * This function reads a file set as sounce of the page and returns its content as a QByteArray
+			 */
+			const QByteArray getTextFileBody() const;
 
 			// Move and copy constructor
 			/**

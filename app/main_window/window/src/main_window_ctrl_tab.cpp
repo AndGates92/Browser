@@ -96,7 +96,7 @@ void main_window_ctrl_tab::MainWindowCtrlTab::connectSignals() {
 	connect(this->windowCore->topMenuBar->getFileMenu()->openTabAction, &QAction::triggered, this, &main_window_ctrl_tab::MainWindowCtrlTab::setUpOpenNewTab);
 
 	// When the file has been read, then show it on the screen
-	connect(this->windowCore->topMenuBar->getFileMenu(), &file_menu::FileMenu::updateCenterWindowSignal, this->windowCore->tabs, &main_window_tab_widget::MainWindowTabWidget::setContentInCurrentTab);
+	connect(this->windowCore->topMenuBar->getFileMenu(), &file_menu::FileMenu::updateCenterWindowSignal, this->windowCore->tabs, &main_window_tab_widget::MainWindowTabWidget::openFileInCurrentTab);
 
 	connect(this, &main_window_ctrl_tab::MainWindowCtrlTab::currentTabSrcChanged, this->windowCore->bottomStatusBar->getContentPathText(), &elided_label::ElidedLabel::setText);
 
@@ -178,7 +178,7 @@ int main_window_ctrl_tab::MainWindowCtrlTab::addNewTab(const QString & search, c
 		this->disconnectProgressBar(currentTabIndex);
 	}
 
-	const int tabIndex = this->windowCore->tabs->addTab(search, &search, type, data);
+	const int tabIndex = this->windowCore->tabs->addTab(type, search, data);
 
 	// Connect signals from tab the cursor is pointing to
 	this->connectProgressBar(tabIndex);
@@ -191,7 +191,7 @@ int main_window_ctrl_tab::MainWindowCtrlTab::addNewTab(const QString & search, c
 void main_window_ctrl_tab::MainWindowCtrlTab::newSearchTab(const int & index, const QString & search) {
 	QINFO_PRINT(global_types::qinfo_level_e::ZERO, mainWindowCtrlTabSearch,  "User input " << search << " in tab " << index);
 	const main_window_shared_types::tab_type_e desiredType = main_window_shared_types::tab_type_e::WEB_CONTENT;
-	this->windowCore->tabs->changeTabContent(index, search, &search, desiredType, nullptr);
+	this->windowCore->tabs->changeTabContent(index, search, desiredType, nullptr);
 }
 
 void main_window_ctrl_tab::MainWindowCtrlTab::searchCurrentTab(const QString & search) {
