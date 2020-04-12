@@ -69,6 +69,7 @@ void main_window_tab_widget::MainWindowTabWidget::disconnectTab() {
 		try {
 			const main_window_tab::MainWindowTab * tab = dynamic_cast<main_window_tab::MainWindowTab *>(this->widget(this->currentIndex(), true));
 			const main_window_web_engine_page::MainWindowWebEnginePage * page = tab->getView()->page();
+			disconnect(page, &main_window_web_engine_page::MainWindowWebEnginePage::sourceChanged, this, &main_window_tab_widget::MainWindowTabWidget::processTabSourceChanged);
 			disconnect(page, &main_window_web_engine_page::MainWindowWebEnginePage::urlChanged, this, &main_window_tab_widget::MainWindowTabWidget::processTabUrlChanged);
 			disconnect(page, &main_window_web_engine_page::MainWindowWebEnginePage::titleChanged, this, &main_window_tab_widget::MainWindowTabWidget::processTabTitleChanged);
 		} catch (const std::bad_cast & badCastE) {
@@ -85,6 +86,7 @@ void main_window_tab_widget::MainWindowTabWidget::connectTab() {
 		try {
 			const main_window_tab::MainWindowTab * tab = dynamic_cast<main_window_tab::MainWindowTab *>(this->widget(this->currentIndex(), true));
 			const main_window_web_engine_page::MainWindowWebEnginePage * page = tab->getView()->page();
+			connect(page, &main_window_web_engine_page::MainWindowWebEnginePage::sourceChanged, this, &main_window_tab_widget::MainWindowTabWidget::processTabSourceChanged, Qt::UniqueConnection);
 			connect(page, &main_window_web_engine_page::MainWindowWebEnginePage::urlChanged, this, &main_window_tab_widget::MainWindowTabWidget::processTabUrlChanged, Qt::UniqueConnection);
 			connect(page, &main_window_web_engine_page::MainWindowWebEnginePage::titleChanged, this, &main_window_tab_widget::MainWindowTabWidget::processTabTitleChanged, Qt::UniqueConnection);
 		} catch (const std::bad_cast & badCastE) {
@@ -123,6 +125,11 @@ const main_window_tab_data::MainWindowTabData * main_window_tab_widget::MainWind
 main_window_shared_types::tab_type_e main_window_tab_widget::MainWindowTabWidget::getTabType(const int & index) const {
 	const main_window_tab_data::MainWindowTabData * tabData = this->getTabData(index);
 	return tabData->getType();
+}
+
+const QString main_window_tab_widget::MainWindowTabWidget::getTabSource(const int & index) const {
+	const main_window_tab_data::MainWindowTabData * tabData = this->getTabData(index);
+	return QString::fromStdString(tabData->getSource());
 }
 
 const void * main_window_tab_widget::MainWindowTabWidget::getTabExtraData(const int & index) const {
@@ -245,13 +252,14 @@ void main_window_tab_widget::MainWindowTabWidget::processTabUrlChanged(const QUr
 }
 
 void main_window_tab_widget::MainWindowTabWidget::processTabTitleChanged(const QString & title) {
+	emit tabTitleChanged(title);
+}
+
+void main_window_tab_widget::MainWindowTabWidget::processTabSourceChanged(const QString & title) {
 	const int idx = this->currentIndex();
 	const main_window_shared_types::tab_type_e type = this->getTabType(idx);
 
-	// for pages whose type is TEXT, the title already contains the path, hence forwarding it
-	if (type == main_window_shared_types::tab_type_e::TEXT) {
-		emit tabTitleChanged(title);
-	}
+	emit tabSourceChanged(type, title);
 }
 
 void main_window_tab_widget::MainWindowTabWidget::reloadTabContent(const int & index) {

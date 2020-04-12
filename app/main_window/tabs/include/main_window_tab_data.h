@@ -32,24 +32,26 @@ namespace main_window_tab_data {
 		public:
 
 			/**
-			 * @brief Function: static main_window_tab_data::MainWindowTabData * makeTabData(const main_window_shared_types::tab_type_e & type, const void * data)
+			 * @brief Function: static main_window_tab_data::MainWindowTabData * makeTabData(const main_window_shared_types::tab_type_e & type, const std::string src, const void * data)
 			 *
 			 * \param type: type of the tab
+			 * \param src: source of the tab
 			 * \param data: extra data
 			 *
 			 * this function constructs a new instance of class MainWindowTabData
 			 */
-			static main_window_tab_data::MainWindowTabData * makeTabData(const main_window_shared_types::tab_type_e & type, const void * data);
+			static main_window_tab_data::MainWindowTabData * makeTabData(const main_window_shared_types::tab_type_e & type, const std::string src, const void * data);
 
 			/**
-			 * @brief Function: MainWindowTabData(main_window_shared_types::tab_type_e tabType = main_window_shared_types::tab_type_e::UNKNOWN, const void * tabData = nullptr)
+			 * @brief Function: MainWindowTabData(main_window_shared_types::tab_type_e tabType, std::string src, const void * tabData = nullptr)
 			 *
 			 * \param tabType: type of the tab
+			 * \param src: source of the content of the tab
 			 * \param data: extra data
 			 *
 			 * tab data constructor
 			 */
-			explicit MainWindowTabData(main_window_shared_types::tab_type_e tabType = main_window_shared_types::tab_type_e::UNKNOWN, const void * tabData = nullptr);
+			explicit MainWindowTabData(main_window_shared_types::tab_type_e tabType, std::string src, const void * tabData = nullptr);
 
 			// Move and copy constructor
 			/**
@@ -116,7 +118,16 @@ namespace main_window_tab_data {
 			const QString qprint() const;
 
 			/**
-			 * @brief Function: main_window_shared_types::tab_type_e main_window_tab_data::MainWindowTabData::getType() const
+			 * @brief Function: std::string getSource() const
+			 *
+			 * \return source field of a tab data object
+			 *
+			 * This functions returns the source field of a tab data object
+			 */
+			std::string getSource() const;
+
+			/**
+			 * @brief Function: main_window_shared_types::tab_type_e getType() const
 			 *
 			 * \return type field of a tab data object
 			 *
@@ -134,22 +145,34 @@ namespace main_window_tab_data {
 			const void * getData() const;
 
 			/**
-			 * @brief Function: void main_window_tab_data::MainWindowTabData::setType(const main_window_shared_types::tab_type_e newType)
+			 * @brief Function: bool setSource(const std::string newSource)
+			 *
+			 * \param newSource: new source of the page
+			 *
+			 * \return true is the value has changed and false if there have been an error or the value has not changed
+			 *
+			 * This functions sets the source of a tab page data object
+			 */
+			bool setSource(const std::string newSource);
+
+			/**
+			 * @brief Function: void setType(const main_window_shared_types::tab_type_e newType)
 			 *
 			 * \param newType: new type
 			 *
-			 * This functions sets the type field of a tab data object
+			 * This functions sets the type field of a tab page data object
 			 */
 			void setType(const main_window_shared_types::tab_type_e newType);
 
 			/**
-			 * @brief Function: void main_window_tab_data::MainWindowTabData::setData(const void * newData)
+			 * @brief Function: void setData(const void * newData)
 			 *
 			 * \param newData: new data
 			 *
-			 * This functions sets the data field of a tab data object
+			 * This functions sets the data field of a tab page data object
 			 */
 			void setData(const void * newData);
+
 		protected:
 
 		private:
@@ -158,6 +181,12 @@ namespace main_window_tab_data {
 			 *
 			 */
 			main_window_shared_types::tab_type_e type;
+
+			/**
+			 * @brief source of the content of the tab
+			 *
+			 */
+			std::string source;
 
 			/**
 			 * @brief data pointer

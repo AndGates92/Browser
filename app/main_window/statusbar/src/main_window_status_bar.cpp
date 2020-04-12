@@ -146,6 +146,7 @@ elided_label::ElidedLabel * main_window_status_bar::MainWindowStatusBar::getUser
 	return this->userInputText;
 }
 
+
 elided_label::ElidedLabel * main_window_status_bar::MainWindowStatusBar::getContentPathText() const {
 	return this->contentPathText;
 }

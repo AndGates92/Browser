@@ -163,6 +163,17 @@ namespace main_window_tab_widget {
 			main_window_shared_types::tab_type_e getTabType(const int & index) const;
 
 			/**
+			 * @brief Function: const QString getTabSource(const int & index) const
+			 *
+			 * \param index: index of the tab to return the type of
+			 *
+			 * \return source of the content of the tab page at index index
+			 *
+			 * return the source of the content of a tab from tab widget
+			 */
+			const QString getTabSource(const int & index) const;
+
+			/**
 			 * @brief Function: const void * getTabExtraData(const int & index) const
 			 *
 			 * \param index: index of the tab to return the data of
@@ -225,6 +236,16 @@ namespace main_window_tab_widget {
 			 * This function is a signal to notify that the number of tabs has changed
 			 */
 			void numberTabsChanged(int index);
+
+			/**
+			 * @brief Function: void tabSourceChanged(const main_window_shared_types::tab_type_e & type, const QString & source)
+			 *
+			 * \param type: type of the tab
+			 * \param source: source of the tab
+			 *
+			 * This function is a signal to notify that the source of a tab changed
+			 */
+			void tabSourceChanged(const main_window_shared_types::tab_type_e & type, const QString & source);
 
 			/**
 			 * @brief Function: void tabTitleChanged(const QString & title)
@@ -323,6 +344,15 @@ namespace main_window_tab_widget {
 			DISABLE_COPY_MOVE(MainWindowTabWidget)
 
 		private slots:
+			/**
+			 * @brief Function: void processTabSourceChanged(const QString & source)
+			 *
+			 * \param source: source of the tab
+			 *
+			 * This function is a slot that receives a notification that the source of a tab has changed
+			 */
+			void processTabSourceChanged(const QString & source);
+
 			/**
 			 * @brief Function: void processTabTitleChanged(const QString & title)
 			 *

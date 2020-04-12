@@ -19,13 +19,13 @@
 Q_LOGGING_CATEGORY(mainWindowTabDataOverall, "mainWindowTabData.overall", MSG_TYPE_LEVEL)
 Q_LOGGING_CATEGORY(mainWindowTabDataPrint, "mainWindowTabData.print", MSG_TYPE_LEVEL)
 
-main_window_tab_data::MainWindowTabData * main_window_tab_data::MainWindowTabData::makeTabData(const main_window_shared_types::tab_type_e & type, const void * data) {
-	main_window_tab_data::MainWindowTabData * newData = new main_window_tab_data::MainWindowTabData(type, data);
+main_window_tab_data::MainWindowTabData * main_window_tab_data::MainWindowTabData::makeTabData(const main_window_shared_types::tab_type_e & type, const std::string src, const void * data) {
+	main_window_tab_data::MainWindowTabData * newData = new main_window_tab_data::MainWindowTabData(type, src, data);
 	QINFO_PRINT(global_types::qinfo_level_e::ZERO, mainWindowTabDataOverall,  "Creating tab data: " << newData->qprint());
 	return newData;
 }
 
-main_window_tab_data::MainWindowTabData::MainWindowTabData(main_window_shared_types::tab_type_e tabType, const void * tabData): type(tabType), data(tabData) {
+main_window_tab_data::MainWindowTabData::MainWindowTabData(main_window_shared_types::tab_type_e tabType, std::string src, const void * tabData): type(tabType), source(src), data(tabData) {
 	QINFO_PRINT(global_types::qinfo_level_e::ZERO, mainWindowTabDataOverall,  "Tab Data structure constructor. Data " << this->qprint());
 
 }
@@ -115,12 +115,27 @@ std::string main_window_tab_data::MainWindowTabData::print() const {
 	return structInfo;
 }
 
+std::string main_window_tab_data::MainWindowTabData::getSource() const {
+	return this->source;
+}
+
 main_window_shared_types::tab_type_e main_window_tab_data::MainWindowTabData::getType() const {
 	return this->type;
 }
 
 const void * main_window_tab_data::MainWindowTabData::getData() const {
 	return this->data;
+}
+
+bool main_window_tab_data::MainWindowTabData::setSource(const std::string newSource) {
+	bool hasChanged = false;
+
+	if (this->source == newSource) {
+		this->source = newSource;
+		hasChanged = true;
+	}
+
+	return hasChanged;
 }
 
 void main_window_tab_data::MainWindowTabData::setType(const main_window_shared_types::tab_type_e newType) {

@@ -101,8 +101,7 @@ void main_window_ctrl_tab::MainWindowCtrlTab::connectSignals() {
 	connect(this, &main_window_ctrl_tab::MainWindowCtrlTab::currentTabSrcChanged, this->windowCore->bottomStatusBar->getContentPathText(), &elided_label::ElidedLabel::setText);
 
 	// Updates to the window depending on changes in tabs
-	connect(this->windowCore->tabs, &main_window_tab_widget::MainWindowTabWidget::tabTitleChanged, this->windowCore->bottomStatusBar->getContentPathText(), &elided_label::ElidedLabel::setText);
-	connect(this->windowCore->tabs, &main_window_tab_widget::MainWindowTabWidget::tabUrlChanged, this->windowCore->bottomStatusBar->getContentPathText(), &elided_label::ElidedLabel::setText);
+	connect(this->windowCore->tabs, &main_window_tab_widget::MainWindowTabWidget::tabSourceChanged, this, &main_window_ctrl_tab::MainWindowCtrlTab::createContentPathTextFromSource);
 
 	connect(this->windowCore->tabs, &main_window_tab_widget::MainWindowTabWidget::currentChanged, this, &main_window_ctrl_tab::MainWindowCtrlTab::updateStatusBar);
 	connect(this->windowCore->tabs, &main_window_tab_widget::MainWindowTabWidget::numberTabsChanged, this, &main_window_ctrl_tab::MainWindowCtrlTab::updateStatusBar);
@@ -209,25 +208,13 @@ void main_window_ctrl_tab::MainWindowCtrlTab::extractContentPath(const int & ind
 
 	if (tabCount > 0) {
 		const main_window_shared_types::tab_type_e tabType = this->windowCore->tabs->getTabType(index);
+		const QString tabSrc = this->windowCore->tabs->getTabSource(index);
 
-		if (tabType == main_window_shared_types::tab_type_e::WEB_CONTENT) {
-			try {
-				const main_window_tab::MainWindowTab * currentTab = dynamic_cast<main_window_tab::MainWindowTab *>(this->windowCore->tabs->widget(index));
-				const main_window_web_engine_view::MainWindowWebEngineView * currentTabView = currentTab->getView();
-				const QUrl websiteUrl = currentTabView->url();
-				path = websiteUrl.toDisplayString(QUrl::FullyDecoded);
-			} catch (const std::bad_cast & badCastE) {
-				QEXCEPTION_ACTION(throw, badCastE.what());
-			}
-		} else if (tabType == main_window_shared_types::tab_type_e::TEXT) {
-			// Return the tab title
-			path = this->windowCore->tabs->tabText(index);
-		}
+		QINFO_PRINT(global_types::qinfo_level_e::ZERO, mainWindowCtrlTabUrl, "Set contentPathText for tab at index " << index << " of type " << tabType << " and source " << tabSrc);
+		this->createContentPathTextFromSource(tabType, tabSrc);
 
-		QINFO_PRINT(global_types::qinfo_level_e::ZERO, mainWindowCtrlTabUrl, "Set contentPathText for tab at index " << index << " of type " << tabType << " to " << path);
 	}
 
-	this->currentTabSrcChanged(path);
 }
 
 void main_window_ctrl_tab::MainWindowCtrlTab::reloadTab(const int & tabIndex) {
@@ -671,4 +658,25 @@ bool main_window_ctrl_tab::MainWindowCtrlTab::isValidWindowState(const main_wind
 void main_window_ctrl_tab::MainWindowCtrlTab::updateStatusBar(const int & tabIndex) {
 	this->updateInfo(tabIndex);
 	this->extractContentPath(tabIndex);
+}
+
+void main_window_ctrl_tab::MainWindowCtrlTab::createContentPathTextFromSource(const main_window_shared_types::tab_type_e & type, const QString & source) {
+
+	QString text(QString::null);
+
+	switch (type) {
+		case main_window_shared_types::tab_type_e::WEB_CONTENT:
+			// If the type is WEB_CONTENT, then the URL will be shown in the widget displaying the content
+			text = source;
+			break;
+		case main_window_shared_types::tab_type_e::TEXT:
+			// Prepend file: to source
+			text = QString("file:") + source;
+			break;
+		default:
+			QEXCEPTION_ACTION(throw, "Unable to create string from " << source << " to print in the content path widget " << " because tab type " << type << " is not recognised");
+			break;
+	}
+
+	emit this->currentTabSrcChanged(text);
 }

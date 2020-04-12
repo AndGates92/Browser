@@ -144,12 +144,6 @@ namespace main_window_web_engine_page {
 
 		private:
 			/**
-			 * @brief source of the content of the tab
-			 *
-			 */
-			QString source;
-
-			/**
 			 * @brief custom tab data
 			 *
 			 */

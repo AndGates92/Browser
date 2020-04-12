@@ -217,6 +217,16 @@ namespace main_window_ctrl_tab {
 			 */
 			void updateStatusBar(const int & tabIndex);
 
+			/**
+			 * @brief Function: void createContentPathTextFromSource(const main_window_shared_types::tab_type_e & type, const QString & source)
+			 *
+			 * \param type: type of the tab
+			 * \param source: source of the tab
+			 *
+			 * This function creates the text to put in the context path from a string containing the source of the content in a tab
+			 */
+			void createContentPathTextFromSource(const main_window_shared_types::tab_type_e & type, const QString & source);
+
 		private:
 
 			// ================================ START SHORTCUTS ========================================//

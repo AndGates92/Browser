@@ -130,6 +130,15 @@ namespace main_window_status_bar {
 			 */
 			progress_bar::ProgressBar * getLoadBar() const;
 
+			/**
+			 * Function: void setContentPathText(const QString & base)
+			 *
+			 * \param base: base string to use to fill the content path
+			 *
+			 * This function sets the text in the content path from a string provided as input
+			 */
+			void setContentPathText(const QString & source);
+
 		protected:
 
 		private:
