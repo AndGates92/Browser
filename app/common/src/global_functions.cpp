@@ -46,7 +46,9 @@ std::string global_functions::readFile(const std::string & filename) {
 			QINFO_PRINT(global_types::qinfo_level_e::ZERO, readFileOverall,  "Character counted " << charCount << " out of " << fileLength << " that is " << percentageCount << "%");
 		}
 	} catch (const std::ifstream::failure & e) {
-		ifile.close();
+		if (ifile.is_open()) {
+			ifile.close();
+		}
 		if (ifile.eof()) {
 			QINFO_PRINT(global_types::qinfo_level_e::ZERO, readFileOverall,  "Finished reading content from file " << filename.c_str());
 		} else {
@@ -56,7 +58,7 @@ std::string global_functions::readFile(const std::string & filename) {
 			// flush() method returns a non-const reference to std::ostream
 			errorCodeOut.flush() << errorCode;
 			const std::string errorCodeStr(errorCodeOut.str());
-			QEXCEPTION_ACTION(throw, "Unqble to open or read content from file " << filename.c_str() << ".\nMessage: " << e.what() << ".\nError code: " << errorCodeStr.c_str());
+			QEXCEPTION_ACTION(throw, "Unable to open or read content from file " << filename.c_str() << ".\nMessage: " << e.what() << ".\nError code: " << errorCodeStr.c_str());
 		}
 	}
 

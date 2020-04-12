@@ -275,9 +275,8 @@ void main_window_tab_widget::MainWindowTabWidget::setTabTitle(const int & index,
 	}
 }
 
-void main_window_tab_widget::MainWindowTabWidget::openFileInCurrentTab(const QString & tabTitle, const QString & tabContent, const void * data) {
-	QINFO_PRINT(global_types::qinfo_level_e::ZERO, mainWindowTabWidgetTabs,  "Set text in center window with title " << tabTitle);
-	QINFO_PRINT(global_types::qinfo_level_e::ZERO, mainWindowTabWidgetTabs,  tabContent);
+void main_window_tab_widget::MainWindowTabWidget::openFileInCurrentTab(const QString & filepath, const void * data) {
+	QINFO_PRINT(global_types::qinfo_level_e::ZERO, mainWindowTabWidgetTabs,  "Print content of file " << filepath << " in tab");
 
 	const main_window_shared_types::tab_type_e desiredTabType = main_window_shared_types::tab_type_e::TEXT;
 
@@ -296,7 +295,7 @@ void main_window_tab_widget::MainWindowTabWidget::openFileInCurrentTab(const QSt
 
 	// If not tabs, then create one
 	if (tabCount == 0) {
-		index = this->addTab(desiredTabType, tabTitle, data);
+		index = this->addTab(desiredTabType, filepath, data);
 		tabCount = this->count();
 		QEXCEPTION_ACTION_COND((index >= tabCount), throw,  "Current tab index " << index << " must be larger than the number of tabs " << tabCount);
 	} else {
@@ -306,7 +305,8 @@ void main_window_tab_widget::MainWindowTabWidget::openFileInCurrentTab(const QSt
 			// Set tab title
 			main_window_tab::MainWindowTab * tab = dynamic_cast<main_window_tab::MainWindowTab *>(this->widget(index, true));
 			main_window_web_engine_page::MainWindowWebEnginePage * page = tab->getView()->page();
-			page->setContent(tabContent.toUtf8());
+			page->setSource(filepath);
+			page->setBody();
 		} catch (const std::bad_cast & badCastE) {
 			QEXCEPTION_ACTION(throw, badCastE.what());
 		}
