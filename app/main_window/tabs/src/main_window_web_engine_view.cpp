@@ -18,10 +18,10 @@
 // Categories
 Q_LOGGING_CATEGORY(mainWindowWebEngineViewOverall, "mainWindowWebEngineView.overall", MSG_TYPE_LEVEL)
 
-main_window_web_engine_view::MainWindowWebEngineView::MainWindowWebEngineView(const main_window_shared_types::tab_type_e type, const void * tabContent, const void * data, QWidget * parent): web_engine_view::WebEngineView(parent) {
+main_window_web_engine_view::MainWindowWebEngineView::MainWindowWebEngineView(const main_window_shared_types::tab_type_e type, const QString & src, const void * content, const void * data, QWidget * parent): web_engine_view::WebEngineView(parent) {
 	QINFO_PRINT(global_types::qinfo_level_e::ZERO, mainWindowWebEngineViewOverall,  "Web engine view constructor");
 
-	main_window_web_engine_page::MainWindowWebEnginePage * page = new main_window_web_engine_page::MainWindowWebEnginePage(type, tabContent, main_window_web_engine_profile::MainWindowWebEngineProfile::defaultProfile(), data, parent);
+	main_window_web_engine_page::MainWindowWebEnginePage * page = new main_window_web_engine_page::MainWindowWebEnginePage(type, src, content, main_window_web_engine_profile::MainWindowWebEngineProfile::defaultProfile(), data, parent);
 	this->setPage(page);
 
 }

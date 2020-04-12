@@ -147,7 +147,17 @@ int main_window_tab_widget::MainWindowTabWidget::insertTab(const int & index, co
 
 	this->disconnectTab();
 
-	main_window_tab::MainWindowTab * tab = new main_window_tab::MainWindowTab(type, content, data, this->parentWidget());
+	const void * urlOrContent = nullptr;
+	// Need to declare url here because we pass a pointer to it to the tab, hence we need to declare global to the function
+	QUrl url = QUrl();
+	if (type == main_window_shared_types::tab_type_e::WEB_CONTENT) {
+		url = this->searchToUrl(title);
+		urlOrContent = &url;
+	} else if (type == main_window_shared_types::tab_type_e::TEXT) {
+		urlOrContent = content;
+	}
+
+	main_window_tab::MainWindowTab * tab = new main_window_tab::MainWindowTab(type, title, urlOrContent, data, this->parentWidget());
 
 	QINFO_PRINT(global_types::qinfo_level_e::ZERO, mainWindowTabWidgetTabs,  "Insert tab of type " << type << " with title " << title << " at position " << index);
 
@@ -216,6 +226,18 @@ void main_window_tab_widget::MainWindowTabWidget::reloadTabContent(const int & i
 	}
 }
 
+void main_window_tab_widget::MainWindowTabWidget::setTabTitle(const int & index, const QString & source) {
+	this->setTabText(index, source);
+	try {
+		// Set tab title
+		main_window_tab::MainWindowTab * tab = dynamic_cast<main_window_tab::MainWindowTab *>(this->widget(index, true));
+		main_window_web_engine_page::MainWindowWebEnginePage * page = tab->getView()->page();
+		page->setSource(source);
+	} catch (const std::bad_cast & badCastE) {
+		QEXCEPTION_ACTION(throw, badCastE.what());
+	}
+}
+
 void main_window_tab_widget::MainWindowTabWidget::setContentInCurrentTab(const QString & tabTitle, const QString & tabContent, const void * data) {
 	QINFO_PRINT(global_types::qinfo_level_e::ZERO, mainWindowTabWidgetTabs,  "Set text in center window with title " << tabTitle);
 	QINFO_PRINT(global_types::qinfo_level_e::ZERO, mainWindowTabWidgetTabs,  tabContent);
@@ -242,14 +264,12 @@ void main_window_tab_widget::MainWindowTabWidget::setContentInCurrentTab(const Q
 		QEXCEPTION_ACTION_COND((index >= tabCount), throw,  "Current tab index " << index << " must be larger than the number of tabs " << tabCount);
 	} else {
 		this->changeTabData(index, desiredTabType, data);
-		this->setTabText(index, tabTitle);
 
 		try {
 			// Set tab title
 			main_window_tab::MainWindowTab * tab = dynamic_cast<main_window_tab::MainWindowTab *>(this->widget(index, true));
-			tab->getView()->page()->setContent(tabContent.toUtf8());
-
-
+			main_window_web_engine_page::MainWindowWebEnginePage * page = tab->getView()->page();
+			page->setContent(tabContent.toUtf8());
 		} catch (const std::bad_cast & badCastE) {
 			QEXCEPTION_ACTION(throw, badCastE.what());
 		}
@@ -261,4 +281,28 @@ void main_window_tab_widget::MainWindowTabWidget::setContentInCurrentTab(const Q
 	this->setUpdatesEnabled(true);
 
 	// TODO: emit signal to disconnect previous tab from qprogress bar
+}
+
+const QUrl main_window_tab_widget::MainWindowTabWidget::searchToUrl(const QString & search) const {
+	const bool containsSpace = search.contains(" ");
+	const bool containsWww = search.contains(main_window_tab_widget::www);
+	const int numberDots = search.count(".");
+
+	QString urlStr(QString::null);
+
+	// if contains at least 1 dot and no space, it could be a URL
+	if ((numberDots > 0) && (containsSpace == false)) {
+		urlStr = main_window_tab_widget::https;
+		if (containsWww == true) {
+			urlStr += search;
+		} else {
+			urlStr += main_window_tab_widget::www + search;
+		}
+	} else {
+		urlStr = main_window_tab_widget::defaultSearchEngine.arg(search);
+	}
+
+	const QUrl url(urlStr);
+
+	return url;
 }

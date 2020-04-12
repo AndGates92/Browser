@@ -28,6 +28,28 @@ Q_DECLARE_LOGGING_CATEGORY(mainWindowTabWidgetTabs)
 
 namespace main_window_tab_widget {
 
+	namespace {
+
+		/**
+		 * @brief https string
+		 *
+		 */
+		const QString https("https://");
+
+		/**
+		 * @brief www string
+		 *
+		 */
+		const QString www("www.");
+
+		/**
+		 * @brief default serch engine is duckduckgo
+		 *
+		 */
+		const QString defaultSearchEngine(https + www + "duckduckgo.com/?q=%1");
+
+	}
+
 	/**
 	 * @brief MainWindowTabWidget class
 	 *
@@ -55,7 +77,7 @@ namespace main_window_tab_widget {
 			~MainWindowTabWidget();
 
 			/**
-			 * @brief Function: int addTab(const QString & title, const main_window_shared_types::tab_type_e & type, const void * data = nullptr, const QIcon & icon = QIcon())
+			 * @brief Function: int addTab(const QString & title, const void * content, const main_window_shared_types::tab_type_e & type, const void * data = nullptr, const QIcon & icon = QIcon())
 			 *
 			 * \param title: title of the tab
 			 * \param content: content of the tab
@@ -244,6 +266,28 @@ namespace main_window_tab_widget {
 			 */
 			void connectTab();
 
+			/**
+			 * @brief Function: const QUrl searchToUrl(const QString & search) const
+			 *
+			 * \param search: string to search
+			 *
+			 * \return URL as QUrl
+			 *
+			 * This function is creates the URL based on the input from the user
+			 * If the user writes down a URL himself/herself, it will return it adding, if required, https
+			 * If the user is writing a string to search, it will be searched in the chosen search engine
+			 */
+			const QUrl searchToUrl(const QString & search) const;
+
+			/**
+			 * @brief Function: void setTabTitle(const int & index, const QString & source)
+			 *
+			 * \param index: index of the tab
+			 * \param source: source of the page content
+			 *
+			 * This function sets the title of a tab as well as the source of the page from the source of the content
+			 */
+			void setTabTitle(const int & index, const QString & source);
 
 			// Move and copy constructor
 			/**

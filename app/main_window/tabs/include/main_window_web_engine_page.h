@@ -30,47 +30,28 @@ Q_DECLARE_LOGGING_CATEGORY(mainWindowWebEnginePageOverall)
 
 namespace main_window_web_engine_page {
 
-	namespace {
-
-		/**
-		 * @brief https string
-		 *
-		 */
-		const QString https("https://");
-
-		/**
-		 * @brief www string
-		 *
-		 */
-		const QString www("www.");
-
-		/**
-		 * @brief default serch engine is duckduckgo
-		 *
-		 */
-		const QString defaultSearchEngine(https + www + "duckduckgo.com/?q=%1");
-
-	}
-
 	/**
 	 * @brief MainWindowWebEnginePage class
 	 *
 	 */
 	class MainWindowWebEnginePage final : public web_engine_page::WebEnginePage {
 
+		Q_OBJECT
+
 		public:
 			/**
-			 * @brief Function: explicit MainWindowWebEnginePage(const main_window_shared_types::tab_type_e type, const void * data, const void * tabContent, web_engine_profile::WebEngineProfile * profile, QWidget * parent = Q_NULLPTR)
+			 * @brief Function: explicit MainWindowWebEnginePage(const main_window_shared_types::tab_type_e type, const QString & src, const void * content, web_engine_profile::WebEngineProfile * profile, const void * data, QWidget * parent = Q_NULLPTR)
 			 *
 			 * \param type: tab type
-			 * \param tabContent: tab content
+			 * \param src: source of the page content
+			 * \param content: tab content
 			 * \param profile: profile of the page
 			 * \param data: tab extra data
 			 * \param parent: parent widget
 			 *
 			 * Main window web engine page constructor
 			 */
-			explicit MainWindowWebEnginePage(const main_window_shared_types::tab_type_e type, const void * tabContent, web_engine_profile::WebEngineProfile * profile, const void * data, QWidget * parent = Q_NULLPTR);
+			explicit MainWindowWebEnginePage(const main_window_shared_types::tab_type_e type, const QString & src, const void * content, web_engine_profile::WebEngineProfile * profile, const void * data, QWidget * parent = Q_NULLPTR);
 
 			/**
 			 * @brief Function: explicit MainWindowWebEnginePage(QWidget * parent = Q_NULLPTR)
@@ -101,6 +82,15 @@ namespace main_window_web_engine_page {
 			void setBody(const main_window_shared_types::tab_type_e & type, const void * content);
 
 			/**
+			 * @brief Function: void setSource(const QString & src)
+			 *
+			 * \param src: source of the page
+			 *
+			 * Set the source of the page
+			 */
+			void setSource(const QString & src);
+
+			/**
 			 * @brief Function: main_window_tab_data::MainWindowTabData * getTabData() const
 			 *
 			 * \return tab data
@@ -119,7 +109,7 @@ namespace main_window_web_engine_page {
 			main_window_shared_types::tab_type_e getTabType() const;
 
 			/**
-			 * @brief Function: const void * main_window_web_engine_page::MainWindowWebEnginePage::getTabExtraData() const
+			 * @brief Function: const void * getTabExtraData() const
 			 *
 			 * \return tab extra data
 			 *
@@ -128,33 +118,47 @@ namespace main_window_web_engine_page {
 			const void * getTabExtraData() const;
 
 			/**
+			 * @brief Function: const QString getSource() const
+			 *
+			 * \return source of the tab
+			 *
+			 * This function returns the source of the tab
+			 */
+			const QString getSource() const;
+
+
+			/**
 			 * @brief Function: void reload()
 			 *
 			 * This function reloads the content of the page
 			 */
 			void reload();
 
+		signals:
+			/**
+			 * @brief Function: void setBody(const main_window_shared_types::tab_type_e & type, const void * content)
+			 *
+			 * \param type: tab type
+			 * \param content: tab content
+			 *
+			 * This signal notifies that the src of a tab has changed
+			 */
+			void srcChanged(const QString & src);
+
 		protected:
 
 		private:
+			/**
+			 * @brief source of the content of the tab
+			 *
+			 */
+			QString source;
+
 			/**
 			 * @brief custom tab data
 			 *
 			 */
 			main_window_tab_data::MainWindowTabData * const tabData;
-
-			/**
-			 * @brief Function: const QUrl createUrl(const QString & search) const
-			 *
-			 * \param search: string to search
-			 *
-			 * \return URL as QUrl
-			 *
-			 * This function is creates the URL based on the input from the user
-			 * If the user writes down a URL himself/herself, it will return it adding, if required, https
-			 * If the user is writing a strign to search, it will be searched in the chosen search engine
-			 */
-			const QUrl createUrl(const QString & search) const;
 
 			// Move and copy constructor
 			/**
