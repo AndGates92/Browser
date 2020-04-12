@@ -150,13 +150,13 @@ namespace main_window_web_engine_page {
 			main_window_tab_data::MainWindowTabData * const tabData;
 
 			/**
-			 * @brief Function: const QByteArray getTextFileBody() const
+			 * @brief Function: QByteArray getTextFileBody() const
 			 *
 			 * \return content of the file set as sounce of the tab
 			 *
 			 * This function reads a file set as sounce of the page and returns its content as a QByteArray
 			 */
-			const QByteArray getTextFileBody() const;
+			QByteArray getTextFileBody() const;
 
 			// Move and copy constructor
 			/**

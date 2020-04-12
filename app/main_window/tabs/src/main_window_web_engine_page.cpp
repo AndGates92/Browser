@@ -99,16 +99,20 @@ void main_window_web_engine_page::MainWindowWebEnginePage::reload() {
 	}
 }
 
-const QByteArray main_window_web_engine_page::MainWindowWebEnginePage::getTextFileBody() const {
+QByteArray main_window_web_engine_page::MainWindowWebEnginePage::getTextFileBody() const {
 
-	main_window_shared_types::tab_type_e type = this->getTabType();
+	QByteArray pageContent(nullptr, -1);
 
-	QEXCEPTION_ACTION_COND((type != main_window_shared_types::tab_type_e::TEXT), throw,  "Unable to get body of text file for tab of type " << type);
+	const QString source = this->getSource();
 
-	// Convert QString to std::string
-	std::string filename = this->getSource().toStdString();
-	const QString fileContent(QString::fromStdString(global_functions::readFile(filename.c_str())));
-	const QByteArray pageContent = fileContent.toUtf8();
+	if (source.isEmpty() == false) {
+		main_window_shared_types::tab_type_e type = this->getTabType();
+		QEXCEPTION_ACTION_COND((type != main_window_shared_types::tab_type_e::TEXT), throw,  "Unable to get body of text file for tab of type " << type);
+		// Convert QString to std::string
+		std::string filename = source.toStdString();
+		const QString fileContent(QString::fromStdString(global_functions::readFile(filename.c_str())));
+		pageContent = fileContent.toUtf8();
+	}
 
 	return pageContent;
 }
