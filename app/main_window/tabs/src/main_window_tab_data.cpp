@@ -130,7 +130,7 @@ const void * main_window_tab_data::MainWindowTabData::getData() const {
 bool main_window_tab_data::MainWindowTabData::setSource(const std::string newSource) {
 	bool hasChanged = false;
 
-	if (this->source == newSource) {
+	if (this->source != newSource) {
 		this->source = newSource;
 		hasChanged = true;
 	}
