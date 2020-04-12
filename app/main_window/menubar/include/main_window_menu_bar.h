@@ -73,21 +73,14 @@ namespace main_window_menu_bar {
 			 * @brief File menu
 			 *
 			 */
-			file_menu::FileMenu * fileMenu;
+			file_menu::FileMenu * const fileMenu;
 
 			// Edit dropdown menu
 			/**
 			 * @brief Edit menu
 			 *
 			 */
-			edit_menu::EditMenu * editMenu;
-
-			/**
-			 * @brief Function: void fillMenuBar() override
-			 *
-			 * This function fills the menu bar of the main window
-			 */
-			void fillMenuBar() override;
+			edit_menu::EditMenu * const editMenu;
 
 			// Move and copy constructor
 			/**

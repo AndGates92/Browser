@@ -17,10 +17,10 @@
 
 Q_LOGGING_CATEGORY(mainWindowMenuBarOverall, "menuBar.overall", MSG_TYPE_LEVEL)
 
-main_window_menu_bar::MainWindowMenuBar::MainWindowMenuBar(QWidget * window) : menu_bar::MenuBar(window) {
+main_window_menu_bar::MainWindowMenuBar::MainWindowMenuBar(QWidget * window) : menu_bar::MenuBar(window), fileMenu(new file_menu::FileMenu(this->parentWidget(), this, "File", Qt::Key_F)), editMenu(new edit_menu::EditMenu(this->parentWidget(), this, "Edit", Qt::Key_E)) {
+
 	QINFO_PRINT(global_types::qinfo_level_e::ZERO, mainWindowMenuBarOverall,  "Main window menu bar constructor");
 
-	this->fillMenuBar();
 }
 
 main_window_menu_bar::MainWindowMenuBar::~MainWindowMenuBar() {
@@ -29,12 +29,6 @@ main_window_menu_bar::MainWindowMenuBar::~MainWindowMenuBar() {
 	// Delete menus
 	delete this->fileMenu;
 	delete this->editMenu;
-}
-
-void main_window_menu_bar::MainWindowMenuBar::fillMenuBar() {
-	QINFO_PRINT(global_types::qinfo_level_e::ZERO, mainWindowMenuBarOverall,  "Create menus");
-	this->fileMenu = new file_menu::FileMenu(this->parentWidget(), this, "File", Qt::Key_F);
-	this->editMenu = new edit_menu::EditMenu(this->parentWidget(), this, "Edit", Qt::Key_E);
 }
 
 PTR_GETTER(main_window_menu_bar::MainWindowMenuBar::getFileMenu, file_menu::FileMenu, this->fileMenu)
