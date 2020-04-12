@@ -132,13 +132,13 @@ namespace main_window_web_engine_page {
 
 		signals:
 			/**
-			 * @brief Function: void srcChanged(const QString & src)
+			 * @brief Function: void sourceChanged(const QString & src)
 			 *
 			 * \param src: source fo the content of the page
 			 *
 			 * This signal notifies that the src of a tab has changed
 			 */
-			void srcChanged(const QString & src);
+			void sourceChanged(const QString & src);
 
 		protected:
 

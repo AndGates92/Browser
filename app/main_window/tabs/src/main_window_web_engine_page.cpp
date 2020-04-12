@@ -27,7 +27,7 @@ main_window_web_engine_page::MainWindowWebEnginePage::MainWindowWebEnginePage(co
 void main_window_web_engine_page::MainWindowWebEnginePage::setSource(const QString & src) {
 	if (this->source != src) {
 		this->source = src;
-		emit srcChanged(this->source);
+		emit sourceChanged(this->source);
 	}
 }
 
