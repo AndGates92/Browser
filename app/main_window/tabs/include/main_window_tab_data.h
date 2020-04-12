@@ -20,14 +20,14 @@
 Q_DECLARE_LOGGING_CATEGORY(mainWindowTabDataOverall)
 Q_DECLARE_LOGGING_CATEGORY(mainWindowTabDataPrint)
 
-namespace main_window_tab_widget {
-	class MainWindowTabWidget;
+namespace main_window_web_engine_page {
+	class MainWindowWebEnginePage;
 }
 
 namespace main_window_tab_data {
 
 	class MainWindowTabData {
-		friend class main_window_tab_widget::MainWindowTabWidget;
+		friend class main_window_web_engine_page::MainWindowWebEnginePage;
 
 		public:
 
