@@ -191,7 +191,7 @@ int main_window_ctrl_tab::MainWindowCtrlTab::addNewTab(const QString & search, c
 void main_window_ctrl_tab::MainWindowCtrlTab::newSearchTab(const int & index, const QString & search) {
 	QINFO_PRINT(global_types::qinfo_level_e::ZERO, mainWindowCtrlTabSearch,  "User input " << search << " in tab " << index);
 	const main_window_shared_types::tab_type_e desiredType = main_window_shared_types::tab_type_e::WEB_CONTENT;
-	this->windowCore->tabs->changeTabContent(index, search, desiredType, nullptr);
+	this->windowCore->tabs->changeTabContent(index, desiredType, search, nullptr);
 }
 
 void main_window_ctrl_tab::MainWindowCtrlTab::searchCurrentTab(const QString & search) {

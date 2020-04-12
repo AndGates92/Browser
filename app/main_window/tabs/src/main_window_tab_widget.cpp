@@ -213,18 +213,20 @@ int main_window_tab_widget::MainWindowTabWidget::addTab(const main_window_shared
 	return tabIndex;
 }
 
-void main_window_tab_widget::MainWindowTabWidget::changeTabContent(const int & index, const QString & title, const main_window_shared_types::tab_type_e & type, const void * data) {
+void main_window_tab_widget::MainWindowTabWidget::changeTabContent(const int & index, const main_window_shared_types::tab_type_e & type, const QString & userInput, const void * data) {
 	// Change tab type and extra data
 	this->changeTabData(index, type, data);
 
-	// Change tab title
-	this->setTabText(index, title);
+	const QString label(this->createSource(type, userInput));
+	// Change tab label
+	this->setTabText(index, label);
 
 	try {
 		const main_window_tab::MainWindowTab * tab = dynamic_cast<main_window_tab::MainWindowTab *>(this->widget(index, true));
 		main_window_web_engine_page::MainWindowWebEnginePage * page = tab->getView()->page();
 		// Set tab body
-		page->setSource(title);
+		const QString source(this->createSource(type, userInput));
+		page->setSource(source);
 		page->setBody();
 	} catch (const std::bad_cast & badCastE) {
 		QEXCEPTION_ACTION(throw, badCastE.what());

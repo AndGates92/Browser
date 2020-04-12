@@ -185,16 +185,16 @@ namespace main_window_tab_widget {
 			void changeTabData(const int & index, const main_window_shared_types::tab_type_e newType, const void * data = nullptr);
 
 			/**
-			 * @brief Function: void changeTabContent(const int & index, const QString & title, const main_window_shared_types::tab_type_e & type, const void * data)
+			 * @brief Function: void changeTabContent(const int & index, const main_window_shared_types::tab_type_e & type, const QString & userInput, const void * data)
 			 *
 			 * \param index: index to insert tab to
-			 * \param title: title of the tab
+			 * \param userInput: input typed by the user
 			 * \param type: type of the tab
 			 * \param data: extra data to be passed through
 			 *
 			 * This function changes the content of a tab
 			 */
-			void changeTabContent(const int & index, const QString & title, const main_window_shared_types::tab_type_e & type, const void * data);
+			void changeTabContent(const int & index, const main_window_shared_types::tab_type_e & type, const QString & userInput, const void * data);
 
 			/**
 			 * @brief Function: void reloadTabContent(const int & index)
