@@ -224,7 +224,7 @@ void main_window_tab_widget::MainWindowTabWidget::changeTabContent(const int & i
 	// Change tab type and extra data
 	this->changeTabData(index, type, data);
 
-	const QString label(this->createSource(type, userInput));
+	const QString label(this->createLabel(type, userInput));
 	// Change tab label
 	this->setTabText(index, label);
 
@@ -307,17 +307,7 @@ void main_window_tab_widget::MainWindowTabWidget::openFileInCurrentTab(const QSt
 		tabCount = this->count();
 		QEXCEPTION_ACTION_COND((index >= tabCount), throw,  "Current tab index " << index << " must be larger than the number of tabs " << tabCount);
 	} else {
-		this->changeTabData(index, desiredTabType, data);
-
-		try {
-			// Set tab title
-			main_window_tab::MainWindowTab * tab = dynamic_cast<main_window_tab::MainWindowTab *>(this->widget(index, true));
-			main_window_web_engine_page::MainWindowWebEnginePage * page = tab->getView()->page();
-			page->setSource(filepath);
-			page->setBody();
-		} catch (const std::bad_cast & badCastE) {
-			QEXCEPTION_ACTION(throw, badCastE.what());
-		}
+		this->changeTabContent(index, desiredTabType, filepath, data);
 	}
 
 	QINFO_PRINT(global_types::qinfo_level_e::ZERO, mainWindowTabWidgetTabs, "Current tab index is " << index << " and the tab widget has " << tabCount << " tabs");
