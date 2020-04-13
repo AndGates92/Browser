@@ -22,7 +22,7 @@ Q_LOGGING_CATEGORY(mainWindowCtrlOverall, "mainWindowCtrl.overall", MSG_TYPE_LEV
 Q_LOGGING_CATEGORY(mainWindowCtrlUserInput, "mainWindowCtrl.userInput", MSG_TYPE_LEVEL)
 Q_LOGGING_CATEGORY(mainWindowCtrlSearch, "mainWindowCtrl.search", MSG_TYPE_LEVEL)
 
-main_window_ctrl::MainWindowCtrl::MainWindowCtrl(QSharedPointer<main_window_core::MainWindowCore> core, QWidget * parent) : main_window_ctrl_base::MainWindowCtrlBase(core, parent, main_window_ctrl::commandFileFullPath), tabctrl(new main_window_ctrl_tab::MainWindowCtrlTab(core, parent)) {
+main_window_ctrl::MainWindowCtrl::MainWindowCtrl(QSharedPointer<main_window_core::MainWindowCore> core, QWidget * parent) : main_window_ctrl_base::MainWindowCtrlBase(core, parent, main_window_ctrl::commandFileFullPath), tabctrl(new main_window_ctrl_tab::MainWindowCtrlTab(core, this)) {
 
 	// Shortcuts
 	this->createShortcuts();
@@ -50,11 +50,17 @@ main_window_ctrl::MainWindowCtrl::MainWindowCtrl(QSharedPointer<main_window_core
 main_window_ctrl::MainWindowCtrl::~MainWindowCtrl() {
 
 	// deleting shortcuts
-	delete this->toggleShowMenuBarKey;
-	delete this->closeKey;
+	if (this->toggleShowMenuBarKey != Q_NULLPTR) {
+		delete this->toggleShowMenuBarKey;
+	}
+	if (this->closeKey != Q_NULLPTR) {
+		delete this->closeKey;
+	}
 
 	// deleting tab control
-	delete this->tabctrl;
+	if (this->tabctrl != Q_NULLPTR) {
+		delete this->tabctrl;
+	}
 }
 
 void main_window_ctrl::MainWindowCtrl::createShortcuts() {
