@@ -83,8 +83,11 @@ QMap<QString, QString> json_parser::JsonParser::findKeyValue(const QString & key
 			const QJsonValue value(jsonObject.value(*keyIter));
 			QString valueStr(this->searchJson(value, key));
 
-			// Match key and value and add to QMap
-			foundMap.insert(*keyIter, valueStr);
+			// Add value only if it is not empty
+			if (valueStr.isEmpty() == false) {
+				// Match key and value and add to QMap
+				foundMap.insert(*keyIter, valueStr);
+			}
 		}
 	} else {
 		QEXCEPTION_ACTION(throw,  "JSON file content is of type " << this->jsonContent.type() << ". It was expected to be an object");
