@@ -163,7 +163,6 @@ void main_window_tab_widget::MainWindowTabWidget::changeTabData(const int & inde
 
 	if (currentData != newData) {
 		this->setTabData(index, newData);
-		emit tabSourceChanged(type, source);
 	}
 }
 
