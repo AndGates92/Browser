@@ -101,7 +101,9 @@ json_wrapper::JsonWrapper & json_wrapper::JsonWrapper::operator=(json_wrapper::J
 json_wrapper::JsonWrapper::~JsonWrapper() {
 	QINFO_PRINT(global_types::qinfo_level_e::ZERO, jsonWrapperOverall,  "Destructor of JsonWrapper class");
 
-	delete this->jsonFile;
+	if (this->jsonFile != Q_NULLPTR) {
+		delete this->jsonFile;
+	}
 
 }
 

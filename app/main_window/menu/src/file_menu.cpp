@@ -36,11 +36,21 @@ file_menu::FileMenu::~FileMenu() {
 
 	QINFO_PRINT(global_types::qinfo_level_e::ZERO, fileMenuOverall,  "file menu destructor");
 
-	delete this->openAction;
-	delete this->openTabAction;
-	delete this->saveAction;
-	delete this->printAction;
-	delete this->exitAction;
+	if (this->openAction != Q_NULLPTR) {
+		delete this->openAction;
+	}
+	if (this->openTabAction != Q_NULLPTR) {
+		delete this->openTabAction;
+	}
+	if (this->saveAction != Q_NULLPTR) {
+		delete this->saveAction;
+	}
+	if (this->printAction != Q_NULLPTR) {
+		delete this->printAction;
+	}
+	if (this->exitAction != Q_NULLPTR) {
+		delete this->exitAction;
+	}
 
 }
 

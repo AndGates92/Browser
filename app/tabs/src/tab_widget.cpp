@@ -38,7 +38,9 @@ tab_widget::TabWidget::TabWidget(QWidget * parent): QTabWidget(parent) {
 tab_widget::TabWidget::~TabWidget() {
 	QINFO_PRINT(global_types::qinfo_level_e::ZERO, tabWidgetOverall,  "Tab widget destructor");
 
-	delete this->bar;
+	if (this->bar != Q_NULLPTR) {
+		delete this->bar;
+	}
 }
 
 void tab_widget::TabWidget::setTabBar(tab_bar::TabBar * tabBar) {

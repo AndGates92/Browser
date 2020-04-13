@@ -53,10 +53,18 @@ main_window_status_bar::MainWindowStatusBar::MainWindowStatusBar(QWidget * paren
 main_window_status_bar::MainWindowStatusBar::~MainWindowStatusBar() {
 	QINFO_PRINT(global_types::qinfo_level_e::ZERO, mainWindowStatusBarOverall,  "Main window status bar destructor");
 
-	delete this->userInputText;
-	delete this->contentPathText;
-	delete this->infoText;
-	delete this->loadBar;
+	if (this->userInputText != Q_NULLPTR) {
+		delete this->userInputText;
+	}
+	if (this->contentPathText != Q_NULLPTR) {
+		delete this->contentPathText;
+	}
+	if (this->infoText != Q_NULLPTR) {
+		delete this->infoText;
+	}
+	if (this->loadBar != Q_NULLPTR) {
+		delete this->loadBar;
+	}
 }
 
 elided_label::ElidedLabel * main_window_status_bar::MainWindowStatusBar::newWindowLabel() {

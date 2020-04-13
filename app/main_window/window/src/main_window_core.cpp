@@ -138,19 +138,29 @@ main_window_core::MainWindowCore::~MainWindowCore() {
 	QINFO_PRINT(global_types::qinfo_level_e::ZERO, mainWindowCoreOverall,  "Main window core destructor");
 
 	// Menubar
-	delete this->topMenuBar;
+	if (this->topMenuBar != Q_NULLPTR) {
+		delete this->topMenuBar;
+	}
 
 	// Status bar
-	delete this->bottomStatusBar;
+	if (this->bottomStatusBar != Q_NULLPTR) {
+		delete this->bottomStatusBar;
+	}
 
 	// Command menu
-	delete this->cmdMenu;
+	if (this->cmdMenu != Q_NULLPTR) {
+		delete this->cmdMenu;
+	}
 
 	// tabs
-	delete this->tabs;
+	if (this->tabs != Q_NULLPTR) {
+		delete this->tabs;
+	}
 
 	// Main widget
-	delete this->mainWidget;
+	if (this->mainWidget != Q_NULLPTR) {
+		delete this->mainWidget;
+	}
 }
 
 QString main_window_core::MainWindowCore::getActionName() const {

@@ -52,10 +52,18 @@ open_button_window::OpenButtonWindow::OpenButtonWindow(QWidget * parent, Qt::Win
 
 open_button_window::OpenButtonWindow::~OpenButtonWindow() {
 	QINFO_PRINT(global_types::qinfo_level_e::ZERO, openButtonWindowOverall,  "Destructor of OpenButtonWindow class");
-	delete this->text;
-	delete this->openButton;
-	delete this->browseButton;
-	delete this->cancelButton;
+	if (this->text != Q_NULLPTR) {
+		delete this->text;
+	}
+	if (this->openButton != Q_NULLPTR) {
+		delete this->openButton;
+	}
+	if (this->browseButton != Q_NULLPTR) {
+		delete this->browseButton;
+	}
+	if (this->cancelButton != Q_NULLPTR) {
+		delete this->cancelButton;
+	}
 }
 
 void open_button_window::OpenButtonWindow::open() {

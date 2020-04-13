@@ -63,7 +63,9 @@ main_window_wrapper::MainWindowWrapper & main_window_wrapper::MainWindowWrapper:
 main_window_wrapper::MainWindowWrapper::~MainWindowWrapper() {
 	QINFO_PRINT(global_types::qinfo_level_e::ZERO, mainWindowWrapperOverall,  "Main window wrapper destructor");
 
-	delete this->window;
+	if (this->window != Q_NULLPTR) {
+		delete this->window;
+	}
 
 }
 

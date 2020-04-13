@@ -29,8 +29,12 @@ menu::Menu::~Menu() {
 
 	QINFO_PRINT(global_types::qinfo_level_e::ZERO, menuOverall,  "menu destructor");
 
-	delete this->winMenu;
-	delete this->expandMenu;
+	if (this->winMenu != Q_NULLPTR) {
+		delete this->winMenu;
+	}
+	if (this->expandMenu != Q_NULLPTR) {
+		delete this->expandMenu;
+	}
 
 	// Do not call delete on the following members:
 	// - this->menuName -> not create with new;

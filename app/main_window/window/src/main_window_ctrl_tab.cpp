@@ -38,13 +38,27 @@ main_window_ctrl_tab::MainWindowCtrlTab::MainWindowCtrlTab(QSharedPointer<main_w
 main_window_ctrl_tab::MainWindowCtrlTab::~MainWindowCtrlTab() {
 
 	// deleting shortcuts
-	delete this->openNewTabKey;
-	delete this->newSearchTabKey;
-	delete this->closeTabKey;
-	delete this->moveTabToKey;
-	delete this->moveLeftKey;
-	delete this->moveRightKey;
-	delete this->reloadTabKey;
+	if (this->openNewTabKey != Q_NULLPTR) {
+		delete this->openNewTabKey;
+	}
+	if (this->newSearchTabKey != Q_NULLPTR) {
+		delete this->newSearchTabKey;
+	}
+	if (this->closeTabKey != Q_NULLPTR) {
+		delete this->closeTabKey;
+	}
+	if (this->moveTabToKey != Q_NULLPTR) {
+		delete this->moveTabToKey;
+	}
+	if (this->moveLeftKey != Q_NULLPTR) {
+		delete this->moveLeftKey;
+	}
+	if (this->moveRightKey != Q_NULLPTR) {
+		delete this->moveRightKey;
+	}
+	if (this->reloadTabKey != Q_NULLPTR) {
+		delete this->reloadTabKey;
+	}
 
 }
 

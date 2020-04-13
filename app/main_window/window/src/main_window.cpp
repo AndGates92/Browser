@@ -79,7 +79,9 @@ main_window::MainWindow::MainWindow(QWidget * parent, Qt::WindowFlags flags) : Q
 main_window::MainWindow::~MainWindow() {
 	QINFO_PRINT(global_types::qinfo_level_e::ZERO, mainWindowOverall,  "Main window destructor");
 
-	delete this->ctrl;
+	if (this->ctrl != Q_NULLPTR) {
+		delete this->ctrl;
+	}
 }
 
 void main_window::MainWindow::customizeMainWidget() {

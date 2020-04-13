@@ -36,7 +36,9 @@ command_menu::CommandMenu::CommandMenu(QWidget * parent) : QAbstractItemView(par
 command_menu::CommandMenu::~CommandMenu() {
 	QINFO_PRINT(global_types::qinfo_level_e::ZERO, commandMenuOverall,  "Destoy command menu");
 
-	delete this->menuModel;
+	if (this->menuModel != Q_NULLPTR) {
+		delete this->menuModel;
+	}
 }
 
 void command_menu::CommandMenu::setProperties() {

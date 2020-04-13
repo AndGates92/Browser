@@ -33,13 +33,27 @@ edit_menu::EditMenu::~EditMenu() {
 
 	QINFO_PRINT(global_types::qinfo_level_e::ZERO, editMenuOverall,  "edit menu destructor");
 
-	delete this->undoAction;
-	delete this->redoAction;
-	delete this->cutAction;
-	delete this->copyAction;
-	delete this->pasteAction;
-	delete this->selectAllAction;
-	delete this->findAction;
+	if (this->undoAction != Q_NULLPTR) {
+		delete this->undoAction;
+	}
+	if (this->redoAction != Q_NULLPTR) {
+		delete this->redoAction;
+	}
+	if (this->cutAction != Q_NULLPTR) {
+		delete this->cutAction;
+	}
+	if (this->copyAction != Q_NULLPTR) {
+		delete this->copyAction;
+	}
+	if (this->pasteAction != Q_NULLPTR) {
+		delete this->pasteAction;
+	}
+	if (this->selectAllAction != Q_NULLPTR) {
+		delete this->selectAllAction;
+	}
+	if (this->findAction != Q_NULLPTR) {
+		delete this->findAction;
+	}
 }
 
 void edit_menu::EditMenu::createActions() {
