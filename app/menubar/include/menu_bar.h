@@ -46,12 +46,6 @@ namespace menu_bar {
 			virtual ~MenuBar();
 
 		protected:
-			/**
-			 * @brief Function: void fillMenuBar()
-			 *
-			 * This function fills the menu bar
-			 */
-			virtual void fillMenuBar() = 0;
 
 		private:
 			// Move and copy constructor
