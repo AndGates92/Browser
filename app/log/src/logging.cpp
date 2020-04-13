@@ -6,10 +6,14 @@
  * @brief Logging functions
  */
 
+
 #include <qt5/QtCore/QMessageLogContext>
 #include <qt5/QtCore/QTextStream>
 #include <qt5/QtCore/QString>
 #include <qt5/QtCore/QtGlobal>
+
+#include <qt5/QtCore/QDateTime>
+#include <qt5/QtCore/QTimeZone>
 
 // Get pointer to default category
 #include <qt5/QtCore/QLoggingCategory>
@@ -50,9 +54,11 @@ void logging::handler(QtMsgType type, const QMessageLogContext & context, const 
 	QString info_str("");
 
 	info_str.append("[");
-	info_str.append(__DATE__);
+	QDateTime datetime = QDateTime::currentDateTime();
+	datetime.setTimeSpec(Qt::TimeZone);
+	info_str.append(datetime.toString(Qt::SystemLocaleShortDate));
 	info_str.append(" ");
-	info_str.append(__TIME__);
+	info_str.append(datetime.timeZoneAbbreviation());
 	info_str.append("] ");
 
 	switch(type) {
