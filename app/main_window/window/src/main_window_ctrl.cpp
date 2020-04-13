@@ -38,6 +38,7 @@ main_window_ctrl::MainWindowCtrl::MainWindowCtrl(QSharedPointer<main_window_core
 	// Testing of find capabilities into JSON file
 	// Key not found
 	QMap<QString, QString> testKey1 = this->commands.findKeyValue("dada");
+	QEXCEPTION_ACTION_COND((testKey1.empty() == false), throw, "Looking for inexistent key dada -> map is not empty");
 	// Key found
 	QMap<QString, QString> testKey = this->commands.findKeyValue("Help");
 
