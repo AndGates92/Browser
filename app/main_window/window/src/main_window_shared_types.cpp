@@ -23,7 +23,7 @@ namespace main_window_shared_types {
 
 	OVERLOAD_OPERATORS_CUSTOM_TYPE(main_window_shared_types::text_action_e)
 
-	OVERLOAD_OPERATORS_CUSTOM_TYPE(main_window_shared_types::tab_type_e)
+	OVERLOAD_OPERATORS_CUSTOM_TYPE(main_window_shared_types::page_type_e)
 
 }
 

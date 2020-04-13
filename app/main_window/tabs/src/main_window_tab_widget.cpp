@@ -36,9 +36,9 @@ main_window_tab_widget::MainWindowTabWidget::~MainWindowTabWidget() {
 	// Delete all tabs until the count reaches 0
 	// Always delete the first tab as for every deletion, all subsequents are shifted back
 	while(this->count() > 0) {
-		const main_window_shared_types::tab_type_e type = this->getTabType(idx);
+		const main_window_shared_types::page_type_e type = this->getPageType(idx);
 
-		Q_ASSERT_X(((type == main_window_shared_types::tab_type_e::TEXT) || (type == main_window_shared_types::tab_type_e::WEB_CONTENT)), "Invalid tab type", "Unable to delete provided tab as type is not recognized");
+		Q_ASSERT_X(((type == main_window_shared_types::page_type_e::TEXT) || (type == main_window_shared_types::page_type_e::WEB_CONTENT)), "Invalid tab type", "Unable to delete provided tab as type is not recognized");
 		this->removeTab(idx);
 		QINFO_PRINT(global_types::qinfo_level_e::ZERO, mainWindowTabWidgetOverall,  "Removing tab type " << type);
 	}
@@ -101,7 +101,7 @@ QWidget * main_window_tab_widget::MainWindowTabWidget::widget(const int & index,
 	return requestedWidget;
 }
 
-void main_window_tab_widget::MainWindowTabWidget::setTabData(const int & index, const main_window_tab_data::MainWindowTabData * tabData) {
+void main_window_tab_widget::MainWindowTabWidget::setPageData(const int & index, const main_window_page_data::MainWindowPageData * pageData) {
 
 	const int tabCount = this->count();
 
@@ -111,62 +111,62 @@ void main_window_tab_widget::MainWindowTabWidget::setTabData(const int & index, 
 		try {
 			const main_window_tab::MainWindowTab * tab = dynamic_cast<main_window_tab::MainWindowTab *>(this->widget(index, true));
 			main_window_web_engine_page::MainWindowWebEnginePage * page = tab->getView()->page();
-			page->setData(tabData);
+			page->setData(pageData);
 		} catch (const std::bad_cast & badCastE) {
 			QEXCEPTION_ACTION(throw, badCastE.what());
 		}
 	}
 }
 
-const main_window_tab_data::MainWindowTabData * main_window_tab_widget::MainWindowTabWidget::getTabData(const int & index) const {
+const main_window_page_data::MainWindowPageData * main_window_tab_widget::MainWindowTabWidget::getPageData(const int & index) const {
 
 	const int tabCount = this->count();
 
 	QEXCEPTION_ACTION_COND(((index < 0) || (index >= tabCount)), throw,  "Unable to retrieve tab type as index must be larger or equal to 0 and smaller than the number of tabs " << tabCount << ". Got " << index << ".");
 
-	const main_window_tab_data::MainWindowTabData * tabData = nullptr;
+	const main_window_page_data::MainWindowPageData * pageData = nullptr;
 
 	if (tabCount > 0) {
 		try {
 			const main_window_tab::MainWindowTab * tab = dynamic_cast<main_window_tab::MainWindowTab *>(this->widget(index, true));
 			const main_window_web_engine_page::MainWindowWebEnginePage * page = tab->getView()->page();
-			tabData = page->getData();
+			pageData = page->getData();
 		} catch (const std::bad_cast & badCastE) {
 			QEXCEPTION_ACTION(throw, badCastE.what());
 		}
 	}
 
-	return tabData;
+	return pageData;
 }
 
-main_window_shared_types::tab_type_e main_window_tab_widget::MainWindowTabWidget::getTabType(const int & index) const {
-	const main_window_tab_data::MainWindowTabData * tabData = this->getTabData(index);
-	return tabData->getType();
+main_window_shared_types::page_type_e main_window_tab_widget::MainWindowTabWidget::getPageType(const int & index) const {
+	const main_window_page_data::MainWindowPageData * pageData = this->getPageData(index);
+	return pageData->getType();
 }
 
-const QString main_window_tab_widget::MainWindowTabWidget::getTabSource(const int & index) const {
-	const main_window_tab_data::MainWindowTabData * tabData = this->getTabData(index);
-	return QString::fromStdString(tabData->getSource());
+const QString main_window_tab_widget::MainWindowTabWidget::getPageSource(const int & index) const {
+	const main_window_page_data::MainWindowPageData * pageData = this->getPageData(index);
+	return QString::fromStdString(pageData->getSource());
 }
 
-const void * main_window_tab_widget::MainWindowTabWidget::getTabExtraData(const int & index) const {
-	const main_window_tab_data::MainWindowTabData * tabData = this->getTabData(index);
-	return tabData->getData();
+const void * main_window_tab_widget::MainWindowTabWidget::getPageExtraData(const int & index) const {
+	const main_window_page_data::MainWindowPageData * pageData = this->getPageData(index);
+	return pageData->getData();
 }
 
-void main_window_tab_widget::MainWindowTabWidget::changeTabData(const int & index, const main_window_shared_types::tab_type_e & type, const QString & source, const void * data) {
+void main_window_tab_widget::MainWindowTabWidget::changePageData(const int & index, const main_window_shared_types::page_type_e & type, const QString & source, const void * data) {
 
-	const main_window_tab_data::MainWindowTabData * currentData = this->getTabData(index);
-	main_window_tab_data::MainWindowTabData * newData = main_window_tab_data::MainWindowTabData::makeTabData(type, source.toStdString(), data);
+	const main_window_page_data::MainWindowPageData * currentData = this->getPageData(index);
+	main_window_page_data::MainWindowPageData * newData = main_window_page_data::MainWindowPageData::makePageData(type, source.toStdString(), data);
 	QINFO_PRINT(global_types::qinfo_level_e::ZERO, mainWindowTabWidgetTabs, "Current data of tab at index " << index << " is " << currentData->qprint());
 	QINFO_PRINT(global_types::qinfo_level_e::ZERO, mainWindowTabWidgetTabs, "New data of tab at index " << index << " is " << newData->qprint());
 
 	if (currentData != newData) {
-		this->setTabData(index, newData);
+		this->setPageData(index, newData);
 	}
 }
 
-int main_window_tab_widget::MainWindowTabWidget::insertTab(const int & index, const main_window_shared_types::tab_type_e & type, const QString & userInput, const void * data, const QIcon & icon) {
+int main_window_tab_widget::MainWindowTabWidget::insertTab(const int & index, const main_window_shared_types::page_type_e & type, const QString & userInput, const void * data, const QIcon & icon) {
 
 	this->disconnectTab();
 
@@ -186,16 +186,16 @@ int main_window_tab_widget::MainWindowTabWidget::insertTab(const int & index, co
 	return tabIndex;
 }
 
-QString main_window_tab_widget::MainWindowTabWidget::createSource(const main_window_shared_types::tab_type_e & type, const QString & userInput) {
+QString main_window_tab_widget::MainWindowTabWidget::createSource(const main_window_shared_types::page_type_e & type, const QString & userInput) {
 
 	QString source(QString::null);
 
 	switch (type) {
-		case main_window_shared_types::tab_type_e::WEB_CONTENT:
+		case main_window_shared_types::page_type_e::WEB_CONTENT:
 			// User can provide either a URL or a sequence of keywords to search in the search engine
 			source = this->searchToUrl(userInput);
 			break;
-		case main_window_shared_types::tab_type_e::TEXT:
+		case main_window_shared_types::page_type_e::TEXT:
 			// User provides the path towards the files, hence the source fo the page content is the user input itself
 			source = userInput;
 			break;
@@ -207,16 +207,16 @@ QString main_window_tab_widget::MainWindowTabWidget::createSource(const main_win
 	return source;
 }
 
-QString main_window_tab_widget::MainWindowTabWidget::createLabel(const main_window_shared_types::tab_type_e & type, const QString & userInput) {
+QString main_window_tab_widget::MainWindowTabWidget::createLabel(const main_window_shared_types::page_type_e & type, const QString & userInput) {
 
 	QString label(QString::null);
 
 	switch (type) {
-		case main_window_shared_types::tab_type_e::WEB_CONTENT:
+		case main_window_shared_types::page_type_e::WEB_CONTENT:
 			// label is the string the user searched
 			label = userInput;
 			break;
-		case main_window_shared_types::tab_type_e::TEXT:
+		case main_window_shared_types::page_type_e::TEXT:
 			// User provides the path towards the files, hence the source fo the page content is the user input itself
 			label = QString("file: ") + userInput;
 			break;
@@ -228,7 +228,7 @@ QString main_window_tab_widget::MainWindowTabWidget::createLabel(const main_wind
 	return label;
 }
 
-int main_window_tab_widget::MainWindowTabWidget::addTab(const main_window_shared_types::tab_type_e & type, const QString & userInput, const void * data, const QIcon & icon) {
+int main_window_tab_widget::MainWindowTabWidget::addTab(const main_window_shared_types::page_type_e & type, const QString & userInput, const void * data, const QIcon & icon) {
 
 	const int index = this->count();
 	int tabIndex = this->insertTab(index, type, userInput, data, icon);
@@ -236,10 +236,10 @@ int main_window_tab_widget::MainWindowTabWidget::addTab(const main_window_shared
 	return tabIndex;
 }
 
-void main_window_tab_widget::MainWindowTabWidget::changeTabContent(const int & index, const main_window_shared_types::tab_type_e & type, const QString & userInput, const void * data) {
+void main_window_tab_widget::MainWindowTabWidget::changeTabContent(const int & index, const main_window_shared_types::page_type_e & type, const QString & userInput, const void * data) {
 	// Change tab type and extra data
 	const QString source(this->createSource(type, userInput));
-	this->changeTabData(index, type, source, data);
+	this->changePageData(index, type, source, data);
 
 	const QString label(this->createLabel(type, userInput));
 	// Change tab label
@@ -257,10 +257,10 @@ void main_window_tab_widget::MainWindowTabWidget::changeTabContent(const int & i
 
 void main_window_tab_widget::MainWindowTabWidget::processTabUrlChanged(const QUrl & url) {
 	const int idx = this->currentIndex();
-	const main_window_shared_types::tab_type_e type = this->getTabType(idx);
+	const main_window_shared_types::page_type_e type = this->getPageType(idx);
 
 	// Propagate URL only if page is of type WEB_CONTENT - if no URL is set, this function is called with about::black
-	if (type == main_window_shared_types::tab_type_e::WEB_CONTENT) {
+	if (type == main_window_shared_types::page_type_e::WEB_CONTENT) {
 		const QString urlStr = url.toDisplayString(QUrl::FullyDecoded);
 		emit tabUrlChanged(urlStr);
 	}
@@ -272,7 +272,7 @@ void main_window_tab_widget::MainWindowTabWidget::processTabTitleChanged(const Q
 
 void main_window_tab_widget::MainWindowTabWidget::processTabSourceChanged(const QString & source) {
 	const int idx = this->currentIndex();
-	const main_window_shared_types::tab_type_e type = this->getTabType(idx);
+	const main_window_shared_types::page_type_e type = this->getPageType(idx);
 
 	emit tabSourceChanged(type, source);
 }
@@ -301,7 +301,7 @@ void main_window_tab_widget::MainWindowTabWidget::setTabTitle(const int & index,
 void main_window_tab_widget::MainWindowTabWidget::openFileInCurrentTab(const QString & filepath, const void * data) {
 	QINFO_PRINT(global_types::qinfo_level_e::ZERO, mainWindowTabWidgetTabs,  "Print content of file " << filepath << " in tab");
 
-	const main_window_shared_types::tab_type_e desiredTabType = main_window_shared_types::tab_type_e::TEXT;
+	const main_window_shared_types::page_type_e desiredTabType = main_window_shared_types::page_type_e::TEXT;
 
 	// START -> data test
 	const char * filename = static_cast<const char *>(data);

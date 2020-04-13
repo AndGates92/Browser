@@ -163,10 +163,10 @@ void main_window_ctrl_tab::MainWindowCtrlTab::closeTab(const int & index) {
 }
 
 void main_window_ctrl_tab::MainWindowCtrlTab::addNewTabAndSearch(const QString & search) {
-	this->addNewTab(search, main_window_shared_types::tab_type_e::WEB_CONTENT, nullptr);
+	this->addNewTab(search, main_window_shared_types::page_type_e::WEB_CONTENT, nullptr);
 }
 
-int main_window_ctrl_tab::MainWindowCtrlTab::addNewTab(const QString & search, const main_window_shared_types::tab_type_e & type, const void * data) {
+int main_window_ctrl_tab::MainWindowCtrlTab::addNewTab(const QString & search, const main_window_shared_types::page_type_e & type, const void * data) {
 
 	QINFO_PRINT(global_types::qinfo_level_e::ZERO, mainWindowCtrlTabTabs,  "Open tab with label " << search);
 
@@ -189,7 +189,7 @@ int main_window_ctrl_tab::MainWindowCtrlTab::addNewTab(const QString & search, c
 
 void main_window_ctrl_tab::MainWindowCtrlTab::newSearchTab(const int & index, const QString & search) {
 	QINFO_PRINT(global_types::qinfo_level_e::ZERO, mainWindowCtrlTabSearch,  "User input " << search << " in tab " << index);
-	const main_window_shared_types::tab_type_e desiredType = main_window_shared_types::tab_type_e::WEB_CONTENT;
+	const main_window_shared_types::page_type_e desiredType = main_window_shared_types::page_type_e::WEB_CONTENT;
 	this->windowCore->tabs->changeTabContent(index, desiredType, search, nullptr);
 }
 
@@ -207,8 +207,8 @@ void main_window_ctrl_tab::MainWindowCtrlTab::extractContentPath(const int & ind
 	const int tabCount = this->windowCore->getTabCount();
 
 	if (tabCount > 0) {
-		const main_window_shared_types::tab_type_e tabType = this->windowCore->tabs->getTabType(index);
-		const QString tabSrc = this->windowCore->tabs->getTabSource(index);
+		const main_window_shared_types::page_type_e tabType = this->windowCore->tabs->getPageType(index);
+		const QString tabSrc = this->windowCore->tabs->getPageSource(index);
 
 		QINFO_PRINT(global_types::qinfo_level_e::ZERO, mainWindowCtrlTabUrl, "Set contentPathText for tab at index " << index << " of type " << tabType << " and source " << tabSrc);
 		this->createContentPathTextFromSource(tabType, tabSrc);
@@ -239,7 +239,7 @@ void main_window_ctrl_tab::MainWindowCtrlTab::moveCursor(const int & tabIndex) {
 }
 
 void main_window_ctrl_tab::MainWindowCtrlTab::connectProgressBar(const int & tabIndex) {
-	const main_window_shared_types::tab_type_e tabType = this->windowCore->tabs->getTabType(tabIndex);
+	const main_window_shared_types::page_type_e tabType = this->windowCore->tabs->getPageType(tabIndex);
 	QINFO_PRINT(global_types::qinfo_level_e::ZERO, mainWindowCtrlTabTabs,  "Connect signals from " << tabType << " object of tab " << tabIndex << " to progress bar slots");
 	try {
 		const main_window_tab::MainWindowTab * tab = dynamic_cast<main_window_tab::MainWindowTab *>(this->windowCore->tabs->widget(tabIndex));
@@ -253,7 +253,7 @@ void main_window_ctrl_tab::MainWindowCtrlTab::connectProgressBar(const int & tab
 }
 
 void main_window_ctrl_tab::MainWindowCtrlTab::disconnectProgressBar(const int & tabIndex) {
-	const main_window_shared_types::tab_type_e tabType = this->windowCore->tabs->getTabType(tabIndex);
+	const main_window_shared_types::page_type_e tabType = this->windowCore->tabs->getPageType(tabIndex);
 	QINFO_PRINT(global_types::qinfo_level_e::ZERO, mainWindowCtrlTabTabs,  "Disconnect connect signals from " << tabType << " object of tab " << tabIndex << " to progress bar slots");
 	try {
 		const main_window_tab::MainWindowTab * tab = dynamic_cast<main_window_tab::MainWindowTab *>(this->windowCore->tabs->widget(tabIndex));
@@ -660,16 +660,16 @@ void main_window_ctrl_tab::MainWindowCtrlTab::updateStatusBar(const int & tabInd
 	this->extractContentPath(tabIndex);
 }
 
-void main_window_ctrl_tab::MainWindowCtrlTab::createContentPathTextFromSource(const main_window_shared_types::tab_type_e & type, const QString & source) {
+void main_window_ctrl_tab::MainWindowCtrlTab::createContentPathTextFromSource(const main_window_shared_types::page_type_e & type, const QString & source) {
 
 	QString text(QString::null);
 
 	switch (type) {
-		case main_window_shared_types::tab_type_e::WEB_CONTENT:
+		case main_window_shared_types::page_type_e::WEB_CONTENT:
 			// If the type is WEB_CONTENT, then the URL will be shown in the widget displaying the content
 			text = source;
 			break;
-		case main_window_shared_types::tab_type_e::TEXT:
+		case main_window_shared_types::page_type_e::TEXT:
 			// Prepend file: to source
 			text = QString("file:") + source;
 			break;

@@ -79,17 +79,17 @@ namespace main_window_shared_types {
 	 * @brief text action
 	 *
 	 */
-	typedef enum class tab_type_list {
+	typedef enum class page_type_list {
 		WEB_CONTENT,       /**< Tab type is a web engine */
 		TEXT,            /**< Tab type is QLabel */
 		UNKNOWN           /**< Tab type is unknown */
-	} tab_type_e;
+	} page_type_e;
 
 	/**
 	 * @brief Overload operators to ease print of the type of the tab
 	 *
 	 */
-	OVERLOAD_OPERATORS_CUSTOM_TYPE_FUNCTION_PROTOTYPE(tab_type_list, main_window_shared_types::tab_type_e)
+	OVERLOAD_OPERATORS_CUSTOM_TYPE_FUNCTION_PROTOTYPE(page_type_list, main_window_shared_types::page_type_e)
 
 }
 

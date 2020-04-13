@@ -18,7 +18,7 @@
 // Categories
 Q_LOGGING_CATEGORY(mainWindowWebEnginePageOverall, "mainWindowWebEnginePage.overall", MSG_TYPE_LEVEL)
 
-main_window_web_engine_page::MainWindowWebEnginePage::MainWindowWebEnginePage(const main_window_shared_types::tab_type_e type, const QString & src, web_engine_profile::WebEngineProfile * profile, const void * data, QWidget * parent): web_engine_page::WebEnginePage(profile, parent), tabData(main_window_tab_data::MainWindowTabData::makeTabData(type, src.toStdString(), data)) {
+main_window_web_engine_page::MainWindowWebEnginePage::MainWindowWebEnginePage(const main_window_shared_types::page_type_e type, const QString & src, web_engine_profile::WebEngineProfile * profile, const void * data, QWidget * parent): web_engine_page::WebEnginePage(profile, parent), pageData(main_window_page_data::MainWindowPageData::makePageData(type, src.toStdString(), data)) {
 	QINFO_PRINT(global_types::qinfo_level_e::ZERO, mainWindowWebEnginePageOverall,  "Web engine page constructor");
 
 	this->setBody();
@@ -27,7 +27,7 @@ main_window_web_engine_page::MainWindowWebEnginePage::MainWindowWebEnginePage(co
 }
 
 void main_window_web_engine_page::MainWindowWebEnginePage::setSource(const QString & src) {
-	bool changed = this->tabData->setSource(src.toStdString());
+	bool changed = this->pageData->setSource(src.toStdString());
 
 	if (changed == true) {
 		emit this->sourceChanged(src);
@@ -36,17 +36,17 @@ void main_window_web_engine_page::MainWindowWebEnginePage::setSource(const QStri
 
 void main_window_web_engine_page::MainWindowWebEnginePage::setBody() {
 
-	main_window_shared_types::tab_type_e type = this->getType();
+	main_window_shared_types::page_type_e type = this->getType();
 
 	switch (type) {
-		case main_window_shared_types::tab_type_e::WEB_CONTENT:
+		case main_window_shared_types::page_type_e::WEB_CONTENT:
 		{
 			const QUrl url(this->getSource(), QUrl::TolerantMode);
 			QEXCEPTION_ACTION_COND((url.isValid() == false), throw,  "URL is not valid. The following error has been identified: " << url.errorString());
 			this->setUrl(url);
 			break;
 		}
-		case main_window_shared_types::tab_type_e::TEXT:
+		case main_window_shared_types::page_type_e::TEXT:
 			this->setContent(this->getTextFileBody());
 			break;
 		default:
@@ -55,7 +55,7 @@ void main_window_web_engine_page::MainWindowWebEnginePage::setBody() {
 	}
 }
 
-main_window_web_engine_page::MainWindowWebEnginePage::MainWindowWebEnginePage(QWidget * parent): web_engine_page::WebEnginePage(parent), tabData(main_window_tab_data::MainWindowTabData::makeTabData(main_window_shared_types::tab_type_e::UNKNOWN, std::string(), nullptr)) {
+main_window_web_engine_page::MainWindowWebEnginePage::MainWindowWebEnginePage(QWidget * parent): web_engine_page::WebEnginePage(parent), pageData(main_window_page_data::MainWindowPageData::makePageData(main_window_shared_types::page_type_e::UNKNOWN, std::string(), nullptr)) {
 	QINFO_PRINT(global_types::qinfo_level_e::ZERO, mainWindowWebEnginePageOverall,  "Web engine page constructor");
 
 }
@@ -63,24 +63,24 @@ main_window_web_engine_page::MainWindowWebEnginePage::MainWindowWebEnginePage(QW
 main_window_web_engine_page::MainWindowWebEnginePage::~MainWindowWebEnginePage() {
 	QINFO_PRINT(global_types::qinfo_level_e::ZERO, mainWindowWebEnginePageOverall,  "Web engine page destructor");
 
-	if (tabData != nullptr) {
-		delete tabData;
+	if (pageData != nullptr) {
+		delete pageData;
 	}
 
 }
 
-BASE_GETTER(main_window_web_engine_page::MainWindowWebEnginePage::getType, main_window_shared_types::tab_type_e, this->tabData->type)
-CONST_GETTER(main_window_web_engine_page::MainWindowWebEnginePage::getSource, QString, QString::fromStdString(this->tabData->source))
-CONST_PTR_GETTER(main_window_web_engine_page::MainWindowWebEnginePage::getExtraData, void, this->tabData->data)
-CONST_PTR_GETTER(main_window_web_engine_page::MainWindowWebEnginePage::getData, main_window_tab_data::MainWindowTabData, this->tabData)
+BASE_GETTER(main_window_web_engine_page::MainWindowWebEnginePage::getType, main_window_shared_types::page_type_e, this->pageData->type)
+CONST_GETTER(main_window_web_engine_page::MainWindowWebEnginePage::getSource, QString, QString::fromStdString(this->pageData->source))
+CONST_PTR_GETTER(main_window_web_engine_page::MainWindowWebEnginePage::getExtraData, void, this->pageData->data)
+CONST_PTR_GETTER(main_window_web_engine_page::MainWindowWebEnginePage::getData, main_window_page_data::MainWindowPageData, this->pageData)
 
 void main_window_web_engine_page::MainWindowWebEnginePage::reload() {
-	const main_window_shared_types::tab_type_e type = this->getType();
+	const main_window_shared_types::page_type_e type = this->getType();
 	switch (type) {
-		case main_window_shared_types::tab_type_e::WEB_CONTENT:
+		case main_window_shared_types::page_type_e::WEB_CONTENT:
 			this->triggerAction(QWebEnginePage::Reload);
 			break;
-		case main_window_shared_types::tab_type_e::TEXT:
+		case main_window_shared_types::page_type_e::TEXT:
 			this->setContent(this->getTextFileBody());
 			break;
 		default:
@@ -96,8 +96,8 @@ QByteArray main_window_web_engine_page::MainWindowWebEnginePage::getTextFileBody
 	const QString source = this->getSource();
 
 	if (source.isEmpty() == false) {
-		main_window_shared_types::tab_type_e type = this->getType();
-		QEXCEPTION_ACTION_COND((type != main_window_shared_types::tab_type_e::TEXT), throw,  "Unable to get body of text file for tab of type " << type);
+		main_window_shared_types::page_type_e type = this->getType();
+		QEXCEPTION_ACTION_COND((type != main_window_shared_types::page_type_e::TEXT), throw,  "Unable to get body of text file for tab of type " << type);
 		// Convert QString to std::string
 		std::string filename = source.toStdString();
 		const QString fileContent(QString::fromStdString(global_functions::readFile(filename.c_str())));
@@ -107,7 +107,7 @@ QByteArray main_window_web_engine_page::MainWindowWebEnginePage::getTextFileBody
 	return pageContent;
 }
 
-void main_window_web_engine_page::MainWindowWebEnginePage::setData(const main_window_tab_data::MainWindowTabData * newData) {
-	*(this->tabData) = *newData;
-	emit this->sourceChanged(QString::fromStdString(this->tabData->source));
+void main_window_web_engine_page::MainWindowWebEnginePage::setData(const main_window_page_data::MainWindowPageData * newData) {
+	*(this->pageData) = *newData;
+	emit this->sourceChanged(QString::fromStdString(this->pageData->source));
 }

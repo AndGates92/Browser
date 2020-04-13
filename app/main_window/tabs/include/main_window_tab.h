@@ -41,7 +41,7 @@ namespace main_window_tab {
 
 		public:
 			/**
-			 * @brief Function: explicit MainWindowTab(const main_window_shared_types::tab_type_e type, const QString & src, const void * data, QWidget * parent = Q_NULLPTR)
+			 * @brief Function: explicit MainWindowTab(const main_window_shared_types::page_type_e type, const QString & src, const void * data, QWidget * parent = Q_NULLPTR)
 			 *
 			 * \param type: tab type
 			 * \param src: source of the tab
@@ -50,7 +50,7 @@ namespace main_window_tab {
 			 *
 			 * Main Window Tab constructor
 			 */
-			explicit MainWindowTab(const main_window_shared_types::tab_type_e type, const QString & src, const void * data, QWidget * parent = Q_NULLPTR);
+			explicit MainWindowTab(const main_window_shared_types::page_type_e type, const QString & src, const void * data, QWidget * parent = Q_NULLPTR);
 
 			/**
 			 * @brief Function: virtual ~MainWindowTab()

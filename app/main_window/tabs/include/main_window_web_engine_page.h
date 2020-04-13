@@ -15,7 +15,7 @@
 #include <qt5/QtCore/QLoggingCategory>
 
 #include "web_engine_page.h"
-#include "main_window_tab_data.h"
+#include "main_window_page_data.h"
 #include "main_window_shared_types.h"
 #include "main_window_web_engine_profile.h"
 #include "global_types.h"
@@ -40,17 +40,17 @@ namespace main_window_web_engine_page {
 
 		public:
 			/**
-			 * @brief Function: explicit MainWindowWebEnginePage(const main_window_shared_types::tab_type_e type, const QString & src, web_engine_profile::WebEngineProfile * profile, const void * data, QWidget * parent = Q_NULLPTR)
+			 * @brief Function: explicit MainWindowWebEnginePage(const main_window_shared_types::page_type_e type, const QString & src, web_engine_profile::WebEngineProfile * profile, const void * data, QWidget * parent = Q_NULLPTR)
 			 *
-			 * \param type: tab type
+			 * \param type: page type
 			 * \param src: source of the page content
 			 * \param profile: profile of the page
-			 * \param data: tab extra data
+			 * \param data: page extra data
 			 * \param parent: parent widget
 			 *
 			 * Main window web engine page constructor
 			 */
-			explicit MainWindowWebEnginePage(const main_window_shared_types::tab_type_e type, const QString & src, web_engine_profile::WebEngineProfile * profile, const void * data, QWidget * parent = Q_NULLPTR);
+			explicit MainWindowWebEnginePage(const main_window_shared_types::page_type_e type, const QString & src, web_engine_profile::WebEngineProfile * profile, const void * data, QWidget * parent = Q_NULLPTR);
 
 			/**
 			 * @brief Function: explicit MainWindowWebEnginePage(QWidget * parent = Q_NULLPTR)
@@ -71,20 +71,20 @@ namespace main_window_web_engine_page {
 			/**
 			 * @brief Function: void setBody()
 			 *
-			 * Set body of the page based on the tab type
+			 * Set body of the page based on the page type
 			 * if the type is WEB_CONTENT, it converts the source of the content of page to an URL
 			 * if the type is TEXT, it prints the source of the content of page as plain text using UTF-8 character encoding
 			 */
 			void setBody();
 
 			/**
-			 * @brief Function: void setData(const main_window_tab_data::MainWindowTabData * newData)
+			 * @brief Function: void setData(const main_window_page_data::MainWindowPageData * newData)
 			 *
 			 * \param newData: source of the page
 			 *
-			 * This function changes all member of the tab data associated with a web engine page object
+			 * This function changes all member of the page data associated with a web engine page object
 			 */
-			void setData(const main_window_tab_data::MainWindowTabData * newData);
+			void setData(const main_window_page_data::MainWindowPageData * newData);
 
 			/**
 			 * @brief Function: void setSource(const QString & src)
@@ -96,38 +96,38 @@ namespace main_window_web_engine_page {
 			void setSource(const QString & src);
 
 			/**
-			 * @brief Function: const main_window_tab_data::MainWindowTabData * getData() const
+			 * @brief Function: const main_window_page_data::MainWindowPageData * getData() const
 			 *
-			 * \return tab data
+			 * \return page data
 			 *
-			 * This function returns custom tab data
+			 * This function returns custom page data
 			 */
-			const main_window_tab_data::MainWindowTabData * getData() const;
+			const main_window_page_data::MainWindowPageData * getData() const;
 
 			/**
-			 * @brief Function: main_window_shared_types::tab_type_e getType() const
+			 * @brief Function: main_window_shared_types::page_type_e getType() const
 			 *
-			 * \return tab type
+			 * \return page type
 			 *
-			 * This function returns tab type
+			 * This function returns page type
 			 */
-			main_window_shared_types::tab_type_e getType() const;
+			main_window_shared_types::page_type_e getType() const;
 
 			/**
 			 * @brief Function: const void * getExtraData() const
 			 *
-			 * \return tab extra data
+			 * \return page extra data
 			 *
-			 * This function returns tab extra data
+			 * This function returns page extra data
 			 */
 			const void * getExtraData() const;
 
 			/**
 			 * @brief Function: const QString getSource() const
 			 *
-			 * \return source of the tab
+			 * \return source of the page
 			 *
-			 * This function returns the source of the tab
+			 * This function returns the source of the page
 			 */
 			const QString getSource() const;
 
@@ -144,7 +144,7 @@ namespace main_window_web_engine_page {
 			 *
 			 * \param src: source fo the content of the page
 			 *
-			 * This signal notifies that the src of a tab has changed
+			 * This signal notifies that the src of a page has changed
 			 */
 			void sourceChanged(const QString & src);
 
@@ -152,15 +152,15 @@ namespace main_window_web_engine_page {
 
 		private:
 			/**
-			 * @brief custom tab data
+			 * @brief custom page data
 			 *
 			 */
-			main_window_tab_data::MainWindowTabData * const tabData;
+			main_window_page_data::MainWindowPageData * const pageData;
 
 			/**
 			 * @brief Function: QByteArray getTextFileBody() const
 			 *
-			 * \return content of the file set as sounce of the tab
+			 * \return content of the file set as sounce of the page
 			 *
 			 * This function reads a file set as sounce of the page and returns its content as a QByteArray
 			 */

@@ -17,7 +17,7 @@
 // Categories
 Q_LOGGING_CATEGORY(mainWindowTabOverall, "mainWindowTab.overall", MSG_TYPE_LEVEL)
 
-main_window_tab::MainWindowTab::MainWindowTab(const main_window_shared_types::tab_type_e type, const QString & src, const void * data, QWidget * parent): tab::Tab(parent) {
+main_window_tab::MainWindowTab::MainWindowTab(const main_window_shared_types::page_type_e type, const QString & src, const void * data, QWidget * parent): tab::Tab(parent) {
 	QINFO_PRINT(global_types::qinfo_level_e::ZERO, mainWindowTabOverall,  "MainWindowTab constructor");
 
 	main_window_web_engine_view::MainWindowWebEngineView * tabView = new main_window_web_engine_view::MainWindowWebEngineView(type, src,data, this);
@@ -49,7 +49,7 @@ CASTED_PTR_GETTER(main_window_tab::MainWindowTab::getSearch, main_window_web_eng
 
 void main_window_tab::MainWindowTab::connectSignals() {
 	const main_window_web_engine_page::MainWindowWebEnginePage * page = this->getView()->page();
-	const main_window_shared_types::tab_type_e tabType = page->getType();
+	const main_window_shared_types::page_type_e tabType = page->getType();
 	const main_window_tab_load_manager::MainWindowTabLoadManager * loadManager = this->getLoadManager();
 	QINFO_PRINT(global_types::qinfo_level_e::ZERO, mainWindowTabOverall,  "Connect signals from page of type " << tabType << " to load manager");
 	connect(page, &main_window_web_engine_page::MainWindowWebEnginePage::loadStarted, loadManager, &main_window_tab_load_manager::MainWindowTabLoadManager::startLoading);

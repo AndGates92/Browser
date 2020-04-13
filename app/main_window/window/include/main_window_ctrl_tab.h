@@ -218,14 +218,14 @@ namespace main_window_ctrl_tab {
 			void updateStatusBar(const int & tabIndex);
 
 			/**
-			 * @brief Function: void createContentPathTextFromSource(const main_window_shared_types::tab_type_e & type, const QString & source)
+			 * @brief Function: void createContentPathTextFromSource(const main_window_shared_types::page_type_e & type, const QString & source)
 			 *
 			 * \param type: type of the tab
 			 * \param source: source of the tab
 			 *
 			 * This function creates the text to put in the context path from a string containing the source of the content in a tab
 			 */
-			void createContentPathTextFromSource(const main_window_shared_types::tab_type_e & type, const QString & source);
+			void createContentPathTextFromSource(const main_window_shared_types::page_type_e & type, const QString & source);
 
 		private:
 
@@ -376,7 +376,7 @@ namespace main_window_ctrl_tab {
 
 			// ================================ START ACTIONS ========================================//
 			/**
-			 * @brief Function: int addNewTab(const QString & search, const main_window_shared_types::tab_type_e & type, , const void * data = nullptr)
+			 * @brief Function: int addNewTab(const QString & search, const main_window_shared_types::page_type_e & type, , const void * data = nullptr)
 			 *
 			 * \param search: string to search
 			 * \param type: type of tab to be added
@@ -386,7 +386,7 @@ namespace main_window_ctrl_tab {
 			 *
 			 * This function adds a new tab to the tab widget
 			 */
-			int addNewTab(const QString & search, const main_window_shared_types::tab_type_e & type, const void * data = nullptr);
+			int addNewTab(const QString & search, const main_window_shared_types::page_type_e & type, const void * data = nullptr);
 
 			/**
 			 * @brief Function: void newSearchTab(const int & index, const QString & search)
