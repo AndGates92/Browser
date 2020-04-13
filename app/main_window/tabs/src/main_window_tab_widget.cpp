@@ -17,7 +17,6 @@
 #include "main_window_tab.h"
 #include "type_print_macros.h"
 #include "exception_macros.h"
-#include "global_functions.h"
 
 // Categories
 Q_LOGGING_CATEGORY(mainWindowTabWidgetOverall, "mainWindowTabWidget.overall", MSG_TYPE_LEVEL)
@@ -25,7 +24,6 @@ Q_LOGGING_CATEGORY(mainWindowTabWidgetTabs, "mainWindowTabWidget.tabs", MSG_TYPE
 
 main_window_tab_widget::MainWindowTabWidget::MainWindowTabWidget(QWidget * parent): tab_widget::TabWidget(parent) {
 	QINFO_PRINT(global_types::qinfo_level_e::ZERO, mainWindowTabWidgetOverall,  "Main Window Tab widget constructor");
-
 }
 
 main_window_tab_widget::MainWindowTabWidget::~MainWindowTabWidget() {
