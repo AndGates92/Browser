@@ -1,57 +1,57 @@
 {
 	"OpenNewTab" : {
-		"State" : "OPEN TAB",
-		"TextDisplayed" : "open tab",
+		"Name" : "open new tab",
+		"State" : "OPEN_TAB",
 		"Shortcut" : "o",
 		"LongCmd" : "open-tab",
 		"Help" : "This command opens a new tab"
 	},
 
 	"CloseTab" : {
-		"State" : "CLOSE TAB",
-		"TextDisplayed" : "close tab",
+		"Name" : "close tab",
+		"State" : "CLOSE_TAB",
 		"Shortcut" : "d",
 		"LongCmd" : "close-tab",
 		"Help" : "This command closes a tab"
 	},
 
 	"SearchTab" : {
-		"State" : "SEARCH TAB",
-		"TextDisplayed" : "search tab",
+		"Name" : "search tab",
+		"State" : "SEARCH_TAB",
 		"Shortcut" : "s",
 		"LongCmd" : "search-tab",
-		"Help" : "This command searches content in a tab in a new tab"
+		"Help" : "This command searches content in a tab"
 	},
 
 	"MoveTab" : {
-		"State" : "MOVE TAB",
-		"TextDisplayed" : "move tab",
+		"Name" : "move tab",
+		"State" : "MOVE_TAB",
 		"Shortcut" : "t",
-		"LongCmd" : "move tab",
+		"LongCmd" : "move-tab",
 		"Help" : "This command closes a tab"
 	},
 
 	"MoveCursorRight" : {
-		"State" : "MOVE RIGHT",
-		"TextDisplayed" : "move cursor right",
+		"Name" : "move cursor right",
+		"State" : "MOVE_RIGHT",
 		"Shortcut" : "h",
 		"LongCmd" : "move-cursor-right",
 		"Help" : "This command moves the current tab to the one on the right"
 	},
 
 	"MoveCursorLeft" : {
-		"State" : "MOVE LEFT",
-		"TextDisplayed" : "move cursor left",
+		"Name" : "move cursor left",
+		"State" : "MOVE_LEFT",
 		"Shortcut" : "l",
 		"LongCmd" : "move-cursor-left",
 		"Help" : "This command moves the current tab to the one on the left"
 	},
 
 	"RefreshTab" : {
-		"State" : "REFRESH TAB",
-		"TextDisplayed" : "refresh tab",
+		"Name" : "refresh tab",
+		"State" : "REFRESH_TAB",
 		"Shortcut" : "r",
-		"LongCmd" : "refresh tab",
+		"LongCmd" : "refresh-tab",
 		"Help" : "This command refreshes a tab"
 	}
 }
