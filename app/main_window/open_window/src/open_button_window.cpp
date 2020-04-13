@@ -65,9 +65,7 @@ void open_button_window::OpenButtonWindow::open() {
 	// Do not try to open and read file if the name is empty
 	if (!filename.isEmpty()) {
 		QINFO_PRINT(global_types::qinfo_level_e::ZERO, openButtonWindowOpen,  "Opening " << filename);
-
 		emit this->fileRead(filename, nullptr);
-
 		QINFO_PRINT(global_types::qinfo_level_e::ZERO, openButtonWindowOpen,  "Close " << filename);
 	}
 

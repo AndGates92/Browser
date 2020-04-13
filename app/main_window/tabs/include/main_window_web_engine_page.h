@@ -78,6 +78,15 @@ namespace main_window_web_engine_page {
 			void setBody();
 
 			/**
+			 * @brief Function: void setData(const main_window_tab_data::MainWindowTabData * newData)
+			 *
+			 * \param newData: source of the page
+			 *
+			 * This function changes all member of the tab data associated with a web engine page object
+			 */
+			void setData(const main_window_tab_data::MainWindowTabData * newData);
+
+			/**
 			 * @brief Function: void setSource(const QString & src)
 			 *
 			 * \param src: source of the page

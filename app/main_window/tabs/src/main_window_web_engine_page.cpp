@@ -106,3 +106,8 @@ QByteArray main_window_web_engine_page::MainWindowWebEnginePage::getTextFileBody
 
 	return pageContent;
 }
+
+void main_window_web_engine_page::MainWindowWebEnginePage::setData(const main_window_tab_data::MainWindowTabData * newData) {
+	*(this->tabData) = *newData;
+	emit this->sourceChanged(QString::fromStdString(this->tabData->source));
+}

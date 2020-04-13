@@ -101,6 +101,23 @@ QWidget * main_window_tab_widget::MainWindowTabWidget::widget(const int & index,
 	return requestedWidget;
 }
 
+void main_window_tab_widget::MainWindowTabWidget::setTabData(const int & index, const main_window_tab_data::MainWindowTabData * tabData) {
+
+	const int tabCount = this->count();
+
+	QEXCEPTION_ACTION_COND(((index < 0) || (index >= tabCount)), throw,  "Unable to retrieve tab type as index must be larger or equal to 0 and smaller than the number of tabs " << tabCount << ". Got " << index << ".");
+
+	if (tabCount > 0) {
+		try {
+			const main_window_tab::MainWindowTab * tab = dynamic_cast<main_window_tab::MainWindowTab *>(this->widget(index, true));
+			main_window_web_engine_page::MainWindowWebEnginePage * page = tab->getView()->page();
+			page->setData(tabData);
+		} catch (const std::bad_cast & badCastE) {
+			QEXCEPTION_ACTION(throw, badCastE.what());
+		}
+	}
+}
+
 const main_window_tab_data::MainWindowTabData * main_window_tab_widget::MainWindowTabWidget::getTabData(const int & index) const {
 
 	const int tabCount = this->count();
@@ -137,16 +154,16 @@ const void * main_window_tab_widget::MainWindowTabWidget::getTabExtraData(const 
 	return tabData->getData();
 }
 
-void main_window_tab_widget::MainWindowTabWidget::changeTabData(const int & index, const main_window_shared_types::tab_type_e newType, const void * data) {
+void main_window_tab_widget::MainWindowTabWidget::changeTabData(const int & index, const main_window_shared_types::tab_type_e & type, const QString & source, const void * data) {
 
-	const main_window_shared_types::tab_type_e currentType = this->getTabType(index);
-	QINFO_PRINT(global_types::qinfo_level_e::ZERO, mainWindowTabWidgetTabs, "Current tab index is " << index << " and it is of type " << currentType << ". Desired type is " << newType);
+	const main_window_tab_data::MainWindowTabData * currentData = this->getTabData(index);
+	main_window_tab_data::MainWindowTabData * newData = main_window_tab_data::MainWindowTabData::makeTabData(type, source.toStdString(), data);
+	QINFO_PRINT(global_types::qinfo_level_e::ZERO, mainWindowTabWidgetTabs, "Current data of tab at index " << index << " is " << currentData->qprint());
+	QINFO_PRINT(global_types::qinfo_level_e::ZERO, mainWindowTabWidgetTabs, "New data of tab at index " << index << " is " << newData->qprint());
 
-	if (currentType != newType) {
-		this->removeTab(index);
-		const QString content(QString::null);
-		const int tabIndex = this->insertTab(index, newType, content, data);
-		QEXCEPTION_ACTION_COND((tabIndex != index), throw, "Requested index (" << index << ") is different from tab index (" << tabIndex);
+	if (currentData != newData) {
+		this->setTabData(index, newData);
+		emit tabSourceChanged(type, source);
 	}
 }
 
@@ -222,7 +239,8 @@ int main_window_tab_widget::MainWindowTabWidget::addTab(const main_window_shared
 
 void main_window_tab_widget::MainWindowTabWidget::changeTabContent(const int & index, const main_window_shared_types::tab_type_e & type, const QString & userInput, const void * data) {
 	// Change tab type and extra data
-	this->changeTabData(index, type, data);
+	const QString source(this->createSource(type, userInput));
+	this->changeTabData(index, type, source, data);
 
 	const QString label(this->createLabel(type, userInput));
 	// Change tab label
@@ -232,8 +250,6 @@ void main_window_tab_widget::MainWindowTabWidget::changeTabContent(const int & i
 		const main_window_tab::MainWindowTab * tab = dynamic_cast<main_window_tab::MainWindowTab *>(this->widget(index, true));
 		main_window_web_engine_page::MainWindowWebEnginePage * page = tab->getView()->page();
 		// Set tab body
-		const QString source(this->createSource(type, userInput));
-		page->setSource(source);
 		page->setBody();
 	} catch (const std::bad_cast & badCastE) {
 		QEXCEPTION_ACTION(throw, badCastE.what());
@@ -255,11 +271,11 @@ void main_window_tab_widget::MainWindowTabWidget::processTabTitleChanged(const Q
 	emit tabTitleChanged(title);
 }
 
-void main_window_tab_widget::MainWindowTabWidget::processTabSourceChanged(const QString & title) {
+void main_window_tab_widget::MainWindowTabWidget::processTabSourceChanged(const QString & source) {
 	const int idx = this->currentIndex();
 	const main_window_shared_types::tab_type_e type = this->getTabType(idx);
 
-	emit tabSourceChanged(type, title);
+	emit tabSourceChanged(type, source);
 }
 
 void main_window_tab_widget::MainWindowTabWidget::reloadTabContent(const int & index) {

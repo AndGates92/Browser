@@ -93,6 +93,26 @@ namespace main_window_tab_data {
 			MainWindowTabData & operator=(main_window_tab_data::MainWindowTabData && rhs);
 
 			/**
+			 * @brief Function: friend bool operator==(const main_window_tab_data::MainWindowTabData & rhs)
+			 *
+			 * \param lhs: left side class to compare
+			 * \param rhs: right side class to compare
+			 *
+			 * tab data operator == overloading
+			 */
+			friend bool operator==(const main_window_tab_data::MainWindowTabData & lhs, const main_window_tab_data::MainWindowTabData & rhs);
+
+			/**
+			 * @brief Function: friend bool operator!=(const main_window_tab_data::MainWindowTabData & lhs, const main_window_tab_data::MainWindowTabData & rhs)
+			 *
+			 * \param lhs: left side class to compare
+			 * \param rhs: right side class to compare
+			 *
+			 * tab data operator != overloading
+			 */
+			friend bool operator!=(const main_window_tab_data::MainWindowTabData & lhs, const main_window_tab_data::MainWindowTabData & rhs);
+
+			/**
 			 * @brief Function: ~MainWindowTabData()
 			 *
 			 * tab data structure destructor

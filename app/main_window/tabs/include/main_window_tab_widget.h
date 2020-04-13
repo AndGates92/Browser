@@ -141,6 +141,16 @@ namespace main_window_tab_widget {
 			QWidget * widget(const int & index, bool checkError = true) const;
 
 			/**
+			 * @brief Function: void setTabData(const int & index, const main_window_tab_data::MainWindowTabData * tabData)
+			 *
+			 * \param index: index of the tab to return the type of
+			 * \param tabData: new tab data
+			 *
+			 * This function changes the tab data of the tab at index index
+			 */
+			void setTabData(const int & index, const main_window_tab_data::MainWindowTabData * tabData);
+
+			/**
 			 * @brief Function: const main_window_tab_data::MainWindowTabData * getTabData(const int & index) const
 			 *
 			 * \param index: index of the tab to return the type of
@@ -185,15 +195,16 @@ namespace main_window_tab_widget {
 			const void * getTabExtraData(const int & index) const;
 
 			/**
-			 * @brief Function: void changeTabData(const int & index, const main_window_shared_types::tab_type_e newType, const void * data = nullptr)
+			 * @brief Function: void changeTabData(const int & index, const main_window_shared_types::tab_type_e & type, const QString & source, const void * data = nullptr)
 			 *
 			 * \param index: index of the tab to change the type of
-			 * \param newType: new type of tab at index index
+			 * \param type: new type of tab at index index
+			 * \param source: new source of tab at index index
 			 * \param data: extra data to be passed through
 			 *
 			 * this function chnages the type and the extra data of a tab
 			 */
-			void changeTabData(const int & index, const main_window_shared_types::tab_type_e newType, const void * data = nullptr);
+			void changeTabData(const int & index, const main_window_shared_types::tab_type_e & type, const QString & source, const void * data = nullptr);
 
 			/**
 			 * @brief Function: void changeTabContent(const int & index, const main_window_shared_types::tab_type_e & type, const QString & userInput, const void * data)
