@@ -24,7 +24,7 @@ main_window_menu_bar::MainWindowMenuBar::MainWindowMenuBar(QWidget * window) : m
 }
 
 main_window_menu_bar::MainWindowMenuBar::~MainWindowMenuBar() {
-	QINFO_PRINT(global_types::qinfo_level_e::ZERO, mainWindowMenuBarOverall,  "Main window menu bar desstructor");
+	QINFO_PRINT(global_types::qinfo_level_e::ZERO, mainWindowMenuBarOverall,  "Main window menu bar destructor");
 
 	// Delete menus
 	delete this->fileMenu;
