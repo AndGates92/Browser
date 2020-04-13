@@ -8,9 +8,11 @@
  * @brief Global Functions header file
 */
 
+#include <algorithm>
 #include <string>
 #include <list>
 
+#include <qt5/QtCore/Qt>
 #include <qt5/QtCore/QMetaEnum>
 
 #include "logging_macros.h"
@@ -37,6 +39,18 @@ namespace global_functions {
 	 */
 	template<typename qenum>
 	QString qEnumToQString(const qenum value, const bool printEnumKeyOnly = false);
+
+	/**
+	 * @brief Function: qenum QStringToQEnum(const QString & str)
+	 *
+	 * \param str: string to search in the enum range
+	 *
+	 * \return the enum found or -1 if not found
+	 *
+	 * This function finds the enumerator corresponding to the string
+	 */
+	template<typename qenum>
+	qenum QStringToQEnum(const QString & str);
 
 	/**
 	 * @brief Function: void moveListElements(std::list<type> & l, cons int & from, const int & to)
@@ -86,6 +100,17 @@ QString global_functions::qEnumToQString(const qenum value, const bool printEnum
 	fullValueStr.append(valueStr.c_str());
 
 	return fullValueStr;
+}
+
+template<typename qenum>
+qenum global_functions::QStringToQEnum(const QString & str) {
+
+	QMetaEnum metaEnum(QMetaEnum::fromType<qenum>());
+	// Conversion QString -> std::string -> const char *
+	int val = metaEnum.keyToValue(str.toStdString().c_str());
+	qenum valEnum = static_cast<qenum>(val);
+
+	return valEnum;
 }
 
 template<typename type>
