@@ -67,6 +67,4 @@ main_window_base::MainWindowBase & main_window_base::MainWindowBase::operator=(m
 
 main_window_base::MainWindowBase::~MainWindowBase() {
 	QINFO_PRINT(global_types::qinfo_level_e::ZERO, mainWindowBaseOverall,  "Main window base class destructor");
-
-	this->windowCore.clear();
 }
