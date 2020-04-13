@@ -36,6 +36,7 @@ file_menu::FileMenu::~FileMenu() {
 
 	QINFO_PRINT(global_types::qinfo_level_e::ZERO, fileMenuOverall,  "file menu destructor");
 
+	delete this->openAction;
 	delete this->openTabAction;
 	delete this->saveAction;
 	delete this->printAction;
