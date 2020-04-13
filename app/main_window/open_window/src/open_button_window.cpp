@@ -20,7 +20,6 @@
 
 #include "logging_macros.h"
 #include "global_types.h"
-#include "global_functions.h"
 #include "open_button_window.h"
 #include "exception_macros.h"
 
