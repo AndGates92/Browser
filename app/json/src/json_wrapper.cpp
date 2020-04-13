@@ -33,7 +33,7 @@ json_wrapper::JsonWrapper::JsonWrapper(QString jsonFileName, QIODevice::OpenMode
 	QINFO_PRINT(global_types::qinfo_level_e::ZERO, jsonWrapperOverall,  "Creating JSON Wrapper of file " << jsonFileName);
 
 	// Ensure that the file is open for read or write or both
-	Q_ASSERT_X(((this->openFlags & QIODevice::ReadOnly) || (this->openFlags & QIODevice::WriteOnly)), "JsonWrapper constructor", "JSON file not requested to be opened for read or write");
+	QEXCEPTION_ACTION_COND(((this->openFlags & QIODevice::ReadOnly) == 0), throw, "JSON file doesn't have read flag set to 1 when it was opened therefore it cannot be written");
 
 }
 
@@ -147,12 +147,14 @@ void json_wrapper::JsonWrapper::readJson() {
 
 	if (jsonDoc.isObject() == true) {
 		QJsonObject jsonObj(jsonDoc.object());
-		Q_ASSERT_X((jsonObj.empty() == false), "JSON object is empty", "JSON file has an empty object");
+		QEXCEPTION_ACTION_COND((jsonObj.empty() == true), throw, "JSON file is an empty object");
 		this->jsonContent = QJsonValue(jsonObj);
+		this->type = json_wrapper::json_content_type_e::OBJECT;
 	} else if (jsonDoc.isArray() == true) {
 		QJsonArray jsonArray(jsonDoc.array());
-		Q_ASSERT_X((jsonArray.empty() == false), "JSON array is empty", "JSON file has an empty array");
+		QEXCEPTION_ACTION_COND((jsonArray.empty() == true), throw, "JSON file is an empty array");
 		this->jsonContent = QJsonValue(jsonArray);
+		this->type = json_wrapper::json_content_type_e::ARRAY;
 	} else if (jsonDoc.isEmpty() == true) {
 		QEXCEPTION_ACTION(throw,  "Cannot read empty JSON file");
 	} else if (jsonDoc.isNull() == true) {
@@ -310,7 +312,7 @@ void json_wrapper::JsonWrapper::insertToJsonObject(QJsonObject & jsonObj, const 
 
 void json_wrapper::JsonWrapper::writeJson() {
 
-	Q_ASSERT_X((this->openFlags & QIODevice::WriteOnly), "JSON file write", "JSON file is not requested to be opened for write therefore it cannot be written");
+	QEXCEPTION_ACTION_COND(((this->openFlags & QIODevice::WriteOnly) == 0), throw, "JSON file doesn't have write flag set to 1 when it was opened therefore it cannot be written");
 
 	QINFO_PRINT(global_types::qinfo_level_e::ZERO, jsonWrapperFile,  "Write JSON file " << this->jsonFile->fileName());
 
@@ -318,8 +320,10 @@ void json_wrapper::JsonWrapper::writeJson() {
 
 	if (this->jsonContent.isObject() == true) {
 		jsonDoc = QJsonDocument(this->jsonContent.toObject());
+		this->type = json_wrapper::json_content_type_e::OBJECT;
 	} else if (this->jsonContent.isArray() == true) {
 		jsonDoc = QJsonDocument(this->jsonContent.toArray());
+		this->type = json_wrapper::json_content_type_e::ARRAY;
 	} else {
 		QEXCEPTION_ACTION(throw,  "Invalid data type of JSON file content");
 	}
