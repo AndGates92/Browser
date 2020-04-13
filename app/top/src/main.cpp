@@ -34,6 +34,10 @@ int main (int argc, char* argv[]) {
 	try {
 		logging::set_default_category();
 		qInstallMessageHandler(logging::handler);
+
+		QINFO_PRINT(global_types::qinfo_level_e::ZERO, ,  "Starting browser");
+		QINFO_PRINT(global_types::qinfo_level_e::ZERO, ,  "Built on " << __DATE__ << " at " << __TIME__);
+
 		graphics::init_graphics(argc, argv);
 	} catch (browser_exception::BrowserException bexc) {
 		QString bexcMsg(bexc.print());
