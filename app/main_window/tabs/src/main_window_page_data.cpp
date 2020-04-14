@@ -3,7 +3,7 @@
  * @file main_window_page_data.cpp
  * @author Andrea Gianarda
  * @date 29th of March 2020
- * @brief Main Window Tab Data functions
+ * @brief Main Window Page Data functions
  */
 
 // Qt libraries
@@ -19,7 +19,6 @@
 // Categories
 Q_LOGGING_CATEGORY(mainWindowPageDataOverall, "mainWindowPageData.overall", MSG_TYPE_LEVEL)
 Q_LOGGING_CATEGORY(mainWindowPageDataPrint, "mainWindowPageData.print", MSG_TYPE_LEVEL)
-
 
 namespace main_window_page_data {
 	bool operator==(const main_window_page_data::MainWindowPageData & lhs, const main_window_page_data::MainWindowPageData & rhs) {
@@ -44,7 +43,7 @@ main_window_page_data::MainWindowPageData * main_window_page_data::MainWindowPag
 }
 
 main_window_page_data::MainWindowPageData::MainWindowPageData(main_window_shared_types::page_type_e pageType, std::string src, const void * pageData): type(pageType), source(src), data(pageData) {
-	QINFO_PRINT(global_types::qinfo_level_e::ZERO, mainWindowPageDataOverall,  "Tab Data structure constructor. Data " << this->qprint());
+	QINFO_PRINT(global_types::qinfo_level_e::ZERO, mainWindowPageDataOverall,  "Page Data structure constructor. Data " << this->qprint());
 
 }
 

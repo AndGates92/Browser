@@ -1,18 +1,18 @@
-#ifndef MAIN_WINDOW_TAB_DATA_H
-#define MAIN_WINDOW_TAB_DATA_H
+#ifndef MAIN_WINDOW_PAGE_DATA_H
+#define MAIN_WINDOW_PAGE_DATA_H
 /**
  * @copyright
  * @file main_window_page_data.h
  * @author Andrea Gianarda
  * @date 29th of March 2020
- * @brief Main Window Tab Data header file
+ * @brief Main Window Page Data header file
 */
 
 #include <qt5/QtCore/QLoggingCategory>
 
 #include "main_window_shared_types.h"
 
-/** @defgroup MainWindowPageDataGroup Main Window Tab Data Doxygen Group
+/** @defgroup MainWindowPageDataGroup Main Window Page Data Doxygen Group
  *  Main Window page data functions and classes
  *  @{
  */
@@ -218,4 +218,4 @@ namespace main_window_page_data {
 }
 /** @} */ // End of MainWindowPageDataGroup group
 
-#endif // MAIN_WINDOW_TAB_DATA_H
+#endif // MAIN_WINDOW_PAGE_DATA_H
