@@ -51,6 +51,13 @@ key_sequence::KeySequence::KeySequence(const QKeySequence & qKeySeq) {
 	}
 }
 
+key_sequence::KeySequence::KeySequence(const QKeySequence::StandardKey stdKey) {
+	const QKeySequence qKeySeq(stdKey);
+	// There is only 1 key in the key sequence, therefor eaccessing it at index 0
+	const int key = qKeySeq[0];
+	this->keySeqVec.append(key);
+}
+
 key_sequence::KeySequence::KeySequence(const key_sequence::KeySequence & rhs) : keySeqVec(rhs.keySeqVec) {
 
 	QINFO_PRINT(global_types::qinfo_level_e::ZERO, keySequenceOverall,  "Copy constructor key sequence");
@@ -127,6 +134,11 @@ QString key_sequence::KeySequence::toString(const QKeySequence::SequenceFormat f
 	const QString keyStr(keySeqList.join(separator));
 
 	return keyStr;
+}
+
+std::string key_sequence::KeySequence::toStdString(const QKeySequence::SequenceFormat format) const {
+	QString keyQStr(this->toString(format));
+	return keyQStr.toStdString();
 }
 
 CONST_GETTER(key_sequence::KeySequence::getSeqVec, QVector<QKeySequence>, this->keySeqVec)

@@ -61,6 +61,16 @@ namespace key_sequence {
 			 */
 			explicit KeySequence(const QKeySequence & qKeySeq);
 
+			/**
+			 * @brief Function: explicit KeySequence(const QKeySequence::StandardKey stdKey)
+			 *
+			 * \param stdKey: key to initialize the key sequence with
+			 *
+			 * Key Sequence constructor
+			 * The result of this function is OS dependent
+			 */
+			explicit KeySequence(const QKeySequence::StandardKey stdKey);
+
 			// Move and copy constructor
 			/**
 			 * @brief Function: KeySequence(const key_sequence::KeySequence & rhs)
@@ -68,8 +78,9 @@ namespace key_sequence {
 			 * \param rhs: class to copy
 			 *
 			 * JSON parser copy constructor
+			 * Not setting to explicit as it is required by getters to perform a copy-initialization
 			 */
-			explicit KeySequence(const key_sequence::KeySequence & rhs);
+			KeySequence(const key_sequence::KeySequence & rhs);
 
 			/**
 			 * @brief Function: KeySequence::KeySequence(key_sequence::KeySequence && rhs)
@@ -134,6 +145,17 @@ namespace key_sequence {
 			 * This function returns a string with all key sequences
 			 */
 			QString toString(const QKeySequence::SequenceFormat format = QKeySequence::NativeText) const;
+
+			/**
+			 * @brief Function: std::string toStdString(const QKeySequence::SequenceFormat format = QKeySequence::NativeText) const
+			 *
+			 * \param format: format of key string
+			 *
+			 * \return a std::string with all key sequences
+			 *
+			 * This function returns a string with all key sequences
+			 */
+			std::string toStdString(const QKeySequence::SequenceFormat format = QKeySequence::NativeText) const;
 
 			/**
 			 * @brief Function: QKeySequence::SequenceMatch matches(const KeySequence & otherSeq) const
