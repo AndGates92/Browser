@@ -12,8 +12,9 @@
 #include <qt5/QtWidgets/QWidget>
 
 #include "main_window_base.h"
-#include "json_parser.h"
 #include "constructor_macros.h"
+#include "main_window_json_data.h"
+#include "json_parser.h"
 
 /** @defgroup MainWindowCtrlBaseGroup Main Window Doxygen Group
  *  Main Window base control functions and classes
@@ -80,6 +81,12 @@ namespace main_window_ctrl_base {
 			 *
 			 */
 			json_parser::JsonParser commands;
+
+			/**
+			 * @brief tab commands and information
+			 *
+			 */
+			std::list<main_window_json_data::MainWindowJsonData> jsonData;
 
 			/**
 			 * @brief Function: virtual void createShortcuts()
