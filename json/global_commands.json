@@ -4,7 +4,7 @@
 		"State" : "TOGGLE_MENUBAR",
 		"Shortcut" : "m",
 		"LongCmd" : "toggle-menubar",
-		"Help" : "This command shows/hides the menubar"
+		"Help" : "This command toggle the visible attribute of the menubar"
 	},
 
 	"Quit" : {
