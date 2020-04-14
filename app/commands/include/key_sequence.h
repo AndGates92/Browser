@@ -77,7 +77,7 @@ namespace key_sequence {
 			 *
 			 * \param rhs: class to copy
 			 *
-			 * JSON parser copy constructor
+			 * Key Sequence copy constructor
 			 * Not setting to explicit as it is required by getters to perform a copy-initialization
 			 */
 			KeySequence(const key_sequence::KeySequence & rhs);
@@ -87,7 +87,7 @@ namespace key_sequence {
 			 *
 			 * \param rhs: class to move
 			 *
-			 * JSON parser move constructor
+			 * Key Sequence move constructor
 			 */
 			explicit KeySequence(key_sequence::KeySequence && rhs);
 
@@ -97,7 +97,7 @@ namespace key_sequence {
 			 *
 			 * \param rhs: class to copy
 			 *
-			 * JSON parser copy assignment operator
+			 * Key Sequence copy assignment operator
 			 */
 			KeySequence & operator=(const key_sequence::KeySequence & rhs);
 
@@ -106,14 +106,14 @@ namespace key_sequence {
 			 *
 			 * \param rhs: class to move
 			 *
-			 * JSON parser move assignment operator
+			 * Key Sequence move assignment operator
 			 */
 			KeySequence & operator=(key_sequence::KeySequence && rhs);
 
 			/**
 			 * @brief Function: virtual ~KeySequence()
 			 *
-			 * JSON parser destructor
+			 * Key Sequence destructor
 			 */
 			virtual ~KeySequence();
 
