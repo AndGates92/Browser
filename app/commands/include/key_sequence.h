@@ -22,6 +22,20 @@ Q_DECLARE_LOGGING_CATEGORY(keySequenceString)
 
 namespace key_sequence {
 
+	namespace {
+		/**
+		 * @brief Maximum number of element on the QKeySequence vector
+		 *
+		 */
+		constexpr unsigned int maxCount = 4;
+
+		/**
+		 * @brief Maximum number of key codes in every element of the vector
+		 *
+		 */
+		constexpr unsigned int maxKeyCodesInEl = 1;
+	}
+
 	/**
 	 * @brief KeySequence class
 	 *
@@ -277,6 +291,13 @@ namespace key_sequence {
 			 * This function returns the key stored in QKeySequence at index index or 0 if the sequence contains less that (index+1) elements
 			 */
 			int getIntKey(const unsigned int & index) const;
+
+			/**
+			 * @brief Function: void checkRules() const
+			 *
+			 * This function check the validy of the content in a key sequence
+			 */
+			void checkRules() const;
 
 	};
 

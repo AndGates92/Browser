@@ -31,6 +31,8 @@ key_sequence::KeySequence::KeySequence(const QString & keyStr, QKeySequence::Seq
 		QINFO_PRINT(global_types::qinfo_level_e::ZERO, keySequenceOverall,  "Adding " << (*cIter) << " to key sequence vector");
 		this->keySeqVec.append(keySeq);
 	}
+
+	this->checkRules();
 }
 
 key_sequence::KeySequence::KeySequence(int key0, int key1, int key2, int key3) {
@@ -39,6 +41,8 @@ key_sequence::KeySequence::KeySequence(int key0, int key1, int key2, int key3) {
 	this->addKey(key1);
 	this->addKey(key2);
 	this->addKey(key3);
+
+	this->checkRules();
 }
 
 key_sequence::KeySequence::KeySequence(const QKeySequence & qKeySeq) {
@@ -49,6 +53,8 @@ key_sequence::KeySequence::KeySequence(const QKeySequence & qKeySeq) {
 		QINFO_PRINT(global_types::qinfo_level_e::ZERO, keySequenceOverall,  "Key Sequence constructor. Keys are 0x" << QString("%1").arg(key, 0, 16));
 		this->keySeqVec.append(key);
 	}
+
+	this->checkRules();
 }
 
 key_sequence::KeySequence::KeySequence(const QKeySequence::StandardKey stdKey) {
@@ -56,6 +62,8 @@ key_sequence::KeySequence::KeySequence(const QKeySequence::StandardKey stdKey) {
 	// There is only 1 key in the key sequence, therefor eaccessing it at index 0
 	const int key = qKeySeq[0];
 	this->keySeqVec.append(key);
+
+	this->checkRules();
 }
 
 key_sequence::KeySequence::KeySequence(const key_sequence::KeySequence & rhs) : keySeqVec(rhs.keySeqVec) {
@@ -118,6 +126,8 @@ unsigned int key_sequence::KeySequence::count() const {
 
 int key_sequence::KeySequence::getIntKey(const unsigned int & index) const {
 
+	this->checkRules();
+
 	// Default key to 0
 	int key = 0;
 
@@ -129,6 +139,16 @@ int key_sequence::KeySequence::getIntKey(const unsigned int & index) const {
 	}
 
 	return key;
+}
+
+void key_sequence::KeySequence::checkRules() const {
+	unsigned int numEl = this->count();
+	QEXCEPTION_ACTION_COND((numEl > key_sequence::maxCount), throw,  "Vector has " << numEl << " elements which is larger than the allowed maximum number " << key_sequence::maxCount);
+
+	for (QVector<QKeySequence>::const_iterator cIter = this->keySeqVec.cbegin(); cIter != this->keySeqVec.cend(); cIter++) {
+		unsigned int numKeyCode = cIter->count();
+		QEXCEPTION_ACTION_COND((numKeyCode > key_sequence::maxKeyCodesInEl), throw,  "Element has " << numKeyCode << " key codes which is larger than the allowed maximum number " << key_sequence::maxKeyCodesInEl);
+	}
 }
 
 QKeySequence key_sequence::KeySequence::toQKeySequence() const {
