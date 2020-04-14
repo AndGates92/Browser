@@ -18,7 +18,7 @@
 // Categories
 Q_LOGGING_CATEGORY(menuOverall, "menu.overall", MSG_TYPE_LEVEL)
 
-menu::Menu::Menu(QWidget * window, QMenuBar * menuBar, const char* menuName, const QKeySequence & key) : QWidget(window), menuBar(menuBar), menuName(menuName), key(key) {
+menu::Menu::Menu(QWidget * window, QMenuBar * menuBar, const char* menuName, const key_sequence::KeySequence & key) : QWidget(window), menuBar(menuBar), menuName(menuName), key(key) {
 
 	QINFO_PRINT(global_types::qinfo_level_e::ZERO, menuOverall, "Create menu " << this->menuName << " shortcut key " << this->key.toString());
 	this->createMenu();
@@ -52,8 +52,8 @@ void menu::Menu::createShortcuts() {
 	this->expandMenu = new QShortcut(this->parentWidget());
 
 	// Do not bind key if it is not set
-	if (this->key != QKeySequence::UnknownKey) {
-		this->expandMenu->setKey(this->key);
+	if (this->key != key_sequence::KeySequence(QKeySequence::UnknownKey)) {
+		this->expandMenu->setKey(this->key.toQKeySequence());
 		connect(this->expandMenu, &QShortcut::activated, this, &menu::Menu::expand);
 	}
 }

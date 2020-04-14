@@ -12,7 +12,6 @@
 #include <qt5/QtWidgets/QAction>
 #include <qt5/QtWidgets/QWidget>
 #include <qt5/QtWidgets/QMenuBar>
-#include <qt5/QtGui/QKeySequence>
 
 #include "edit_menu.h"
 
@@ -20,7 +19,7 @@
 Q_LOGGING_CATEGORY(editMenuOverall, "editMenu.overall", MSG_TYPE_LEVEL)
 Q_LOGGING_CATEGORY(editMenuAction, "editMenu.action", MSG_TYPE_LEVEL)
 
-edit_menu::EditMenu::EditMenu(QWidget * window, QMenuBar * menuBar, const char* menuName, const QKeySequence & key) : menu::Menu(window,menuBar,menuName,key) {
+edit_menu::EditMenu::EditMenu(QWidget * window, QMenuBar * menuBar, const char* menuName, const key_sequence::KeySequence & key) : menu::Menu(window,menuBar,menuName,key) {
 
 	QINFO_PRINT(global_types::qinfo_level_e::ZERO, editMenuOverall,  "edit menu constructor");
 

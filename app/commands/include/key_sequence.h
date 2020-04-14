@@ -129,11 +129,20 @@ namespace key_sequence {
 			/**
 			 * @brief Function: unsigned int count() const
 			 *
-			 * \return the number of elements stored in the vercot of QKeySequence
+			 * \return the number of elements stored in the vector of QKeySequence
 			 *
 			 * This function returns the number of elements stores in the vector of QKeySequence
 			 */
 			unsigned int count() const;
+
+			/**
+			 * @brief Function: QKeySequence toQKeySequence() const
+			 *
+			 * \return a QKeySequence of the object
+			 *
+			 * This function returns a QKeySequence with all key sequences
+			 */
+			QKeySequence toQKeySequence() const;
 
 			/**
 			 * @brief Function: QString toString(const QKeySequence::SequenceFormat format = QKeySequence::NativeText) const
@@ -153,7 +162,7 @@ namespace key_sequence {
 			 *
 			 * \return a std::string with all key sequences
 			 *
-			 * This function returns a string with all key sequences
+			 * This function returns a std::string with all key sequences
 			 */
 			std::string toStdString(const QKeySequence::SequenceFormat format = QKeySequence::NativeText) const;
 
@@ -257,6 +266,17 @@ namespace key_sequence {
 			 * This function adds a key to the key sequence vector
 			 */
 			void addKey(int key, QKeySequence::SequenceFormat format = QKeySequence::NativeText);
+
+			/**
+			 * @brief Function: int getIntKey(const unsigned int & index) const
+			 *
+			 * \param index: index of the key
+			 *
+			 * \return the key stored at index index
+			 *
+			 * This function returns the key stored in QKeySequence at index index or 0 if the sequence contains less that (index+1) elements
+			 */
+			int getIntKey(const unsigned int & index) const;
 
 	};
 

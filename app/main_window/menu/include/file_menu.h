@@ -13,7 +13,6 @@
 #include <qt5/QtWidgets/QAction>
 #include <qt5/QtWidgets/QWidget>
 #include <qt5/QtWidgets/QMenuBar>
-#include <qt5/QtGui/QKeySequence>
 
 #include "open_button_window.h"
 #include "menu.h"
@@ -44,7 +43,7 @@ namespace file_menu {
 		public:
 
 			/**
-			 * @brief Function: explicit FileMenu(QWidget * window = Q_NULLPTR, QMenuBar * menuBar = Q_NULLPTR, const char* menuName = "Unknown", const QKeySequence & key = QKeySequence::UnknownKey)
+			 * @brief Function: explicit FileMenu(QWidget * window = Q_NULLPTR, QMenuBar * menuBar = Q_NULLPTR, const char* menuName = "Unknown", const key_sequence::KeySequence & key = key_sequence::KeySequence(QKeySequence::UnknownKey))
 			 *
 			 * \param window: pointer to the window the menu belongs to
 			 * \param menuBar: menubar the menu is part of
@@ -53,7 +52,7 @@ namespace file_menu {
 			 *
 			 * Constructor of file menu
 			 */
-			explicit FileMenu(QWidget * window = Q_NULLPTR, QMenuBar * menuBar = Q_NULLPTR, const char* menuName = "Unknown", const QKeySequence & key = QKeySequence::UnknownKey);
+			explicit FileMenu(QWidget * window = Q_NULLPTR, QMenuBar * menuBar = Q_NULLPTR, const char* menuName = "Unknown", const key_sequence::KeySequence & key = key_sequence::KeySequence(QKeySequence::UnknownKey));
 
 			/**
 			 * @brief open tab action

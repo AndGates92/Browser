@@ -17,7 +17,7 @@
 
 Q_LOGGING_CATEGORY(mainWindowMenuBarOverall, "menuBar.overall", MSG_TYPE_LEVEL)
 
-main_window_menu_bar::MainWindowMenuBar::MainWindowMenuBar(QWidget * window) : menu_bar::MenuBar(window), fileMenu(new file_menu::FileMenu(this, this, "File", Qt::Key_F)), editMenu(new edit_menu::EditMenu(this, this, "Edit", Qt::Key_E)) {
+main_window_menu_bar::MainWindowMenuBar::MainWindowMenuBar(QWidget * window) : menu_bar::MenuBar(window), fileMenu(new file_menu::FileMenu(this, this, "File", key_sequence::KeySequence(Qt::Key_F))), editMenu(new edit_menu::EditMenu(this, this, "Edit", key_sequence::KeySequence(Qt::Key_E))) {
 
 	QINFO_PRINT(global_types::qinfo_level_e::ZERO, mainWindowMenuBarOverall,  "Main window menu bar constructor");
 

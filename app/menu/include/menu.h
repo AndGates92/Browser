@@ -12,9 +12,9 @@
 #include <qt5/QtWidgets/QMenu>
 #include <qt5/QtWidgets/QWidget>
 #include <qt5/QtWidgets/QMenuBar>
-#include <qt5/QtGui/QKeySequence>
 #include <qt5/QtWidgets/QShortcut>
 
+#include "key_sequence.h"
 #include "constructor_macros.h"
 
 /** @defgroup MenuGroup Menu Doxygen Group
@@ -37,7 +37,7 @@ namespace menu {
 		public:
 
 			/**
-			 * @brief Function: explicit Menu(QWidget * window = Q_NULLPTR, QMenuBar * menuBar = Q_NULLPTR, const char* menuName = "Unknown", const QKeySequence & key = QKeySequence::UnknownKey)
+			 * @brief Function: explicit Menu(QWidget * window = Q_NULLPTR, QMenuBar * menuBar = Q_NULLPTR, const char* menuName = "Unknown", const key_sequence::KeySequence & key = key_sequence::KeySequence(QKeySequence::UnknownKey))
 			 *
 			 * \param window: pointer to the window the menu belongs to
 			 * \param menuBar: menubar the menu is part of
@@ -46,7 +46,7 @@ namespace menu {
 			 *
 			 * Constructor of base class menu
 			 */
-			explicit Menu(QWidget * window = Q_NULLPTR, QMenuBar * menuBar = Q_NULLPTR, const char* menuName = "Unknown", const QKeySequence & key = QKeySequence::UnknownKey);
+			explicit Menu(QWidget * window = Q_NULLPTR, QMenuBar * menuBar = Q_NULLPTR, const char* menuName = "Unknown", const key_sequence::KeySequence & key = key_sequence::KeySequence(QKeySequence::UnknownKey));
 
 			/**
 			 * @brief Function: virtual ~Menu()
@@ -96,7 +96,7 @@ namespace menu {
 			 * @brief shortcut key sequence
 			 *
 			 */
-			const QKeySequence key;
+			const key_sequence::KeySequence key;
 
 		private slots:
 			/**

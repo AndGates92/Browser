@@ -116,6 +116,34 @@ unsigned int key_sequence::KeySequence::count() const {
 	return this->keySeqVec.size();
 }
 
+int key_sequence::KeySequence::getIntKey(const unsigned int & index) const {
+
+	// Default key to 0
+	int key = 0;
+
+	if (index < this->count()) {
+		const QKeySequence qKeyVec(this->keySeqVec.at(index));
+
+		// Return index 0 as it is expected that the sequence has only 1 element
+		key = qKeyVec[0];
+	}
+
+	return key;
+}
+
+QKeySequence key_sequence::KeySequence::toQKeySequence() const {
+
+	int key0 = this->getIntKey(0);
+	int key1 = this->getIntKey(1);
+	int key2 = this->getIntKey(2);
+	int key3 = this->getIntKey(3);
+
+	QKeySequence qKeySeq(key0, key1, key2, key3);
+
+	return qKeySeq;
+
+}
+
 QString key_sequence::KeySequence::toString(const QKeySequence::SequenceFormat format) const {
 
 	QStringList keySeqList;
