@@ -8,9 +8,13 @@
  * @brief Main Window Json Data header file
 */
 
+#include <vector>
+#include <set>
+
 #include <qt5/QtCore/QLoggingCategory>
 
 #include "key_sequence.h"
+#include "global_classes.h"
 #include "main_window_shared_types.h"
 
 /** @defgroup MainWindowJsonDataGroup Main Window Json Data Doxygen Group
@@ -20,9 +24,36 @@
 
 Q_DECLARE_LOGGING_CATEGORY(mainWindowJsonDataOverall)
 
+namespace main_window_ctrl {
+	class MainWindowCtrl;
+}
+
+namespace main_window_ctrl_base {
+	class MainWindowCtrlBase;
+}
+
+namespace main_window_ctrl_tab {
+	class MainWindowCtrlTab;
+}
+
 namespace main_window_json_data {
 
+	namespace {
+		/**
+		 * @brief default action parameters which are the keys of the JSON file
+		 *
+		 */
+		const std::vector<std::string> defaultActionParameters{"Key", "Name", "State", "Shortcut", "LongCmd", "Help"};
+	}
+
+	/**
+	 * @brief MainWindowJsonData class
+	 *
+	 */
 	class MainWindowJsonData {
+		friend class main_window_ctrl::MainWindowCtrl;
+		friend class main_window_ctrl_base::MainWindowCtrlBase;
+		friend class main_window_ctrl_tab::MainWindowCtrlTab;
 
 		public:
 
@@ -41,7 +72,7 @@ namespace main_window_json_data {
 			static main_window_json_data::MainWindowJsonData * makeJsonData(const std::string & jsonKey, const std::string & nameKeyValue, const main_window_shared_types::state_e & stateKeyValue, const key_sequence::KeySequence & shortcutKeyValue, const std::string & longCmdKeyValue, const std::string & helpKeyValue);
 
 			/**
-			 * @brief Function: MainWindowJsonData(const std::string & jsonKey, const std::string & nameKeyValue, const main_window_shared_types::state_e & stateKeyValue, const key_sequence::KeySequence & shortcutKeyValue, const std::string & longCmdKeyValue, const std::string & helpKeyValue)
+			 * @brief Function: MainWindowJsonData(const std::string & jsonKey = std::string(), const std::string & nameKeyValue, const main_window_shared_types::state_e & stateKeyValue, const key_sequence::KeySequence & shortcutKeyValue, const std::string & longCmdKeyValue, const std::string & helpKeyValue)
 			 *
 			 * \param jsonKey: key in te json file
 			 * \param nameKeyValue: name of the action
@@ -52,7 +83,7 @@ namespace main_window_json_data {
 			 *
 			 * json data constructor
 			 */
-			explicit MainWindowJsonData(const std::string & jsonKey, const std::string & nameKeyValue, const main_window_shared_types::state_e & stateKeyValue, const key_sequence::KeySequence & shortcutKeyValue, const std::string & longCmdKeyValue, const std::string & helpKeyValue);
+			explicit MainWindowJsonData(const std::string & jsonKey = std::string(), const std::string & nameKeyValue = std::string(), const main_window_shared_types::state_e & stateKeyValue = main_window_shared_types::state_e::IDLE, const key_sequence::KeySequence & shortcutKeyValue = key_sequence::KeySequence(QString::null), const std::string & longCmdKeyValue = std::string(), const std::string & helpKeyValue = std::string());
 
 			// Move and copy constructor
 			/**
@@ -192,7 +223,25 @@ namespace main_window_json_data {
 			 */
 			const std::string getHelp() const;
 
+			/**
+			 * @brief Function: const std::set<std::string, global_classes::StringCompare> getActionParameters() const
+			 *
+			 * \return help of the action
+			 *
+			 * This functions returns the help of the action
+			 */
+			//const std::set<std::string, global_classes::StringCompare> getActionParameters() const;
+			const auto getActionParameters() const;
+
 		protected:
+			/**
+			 * @brief action parameters
+			 * Using set because:
+			 * - values will not be changed
+			 * - ensure fast find (order O(log(N)))
+			 *
+			 */
+			std::set<std::string, global_classes::StringCompare> actionParameters;
 
 		private:
 			/**
@@ -230,6 +279,25 @@ namespace main_window_json_data {
 			 *
 			 */
 			std::string help;
+
+			/**
+			 * @brief Function: void addActionParameters(const std::string & name)
+			 *
+			 * \param name: name of the name of the member as a string
+			 *
+			 * This functions returns the help of the action
+			 */
+			void addActionParameters(const std::string & name);
+
+			/**
+			 * @brief Function: virtual void setValueFromMemberString(const std::string & name, const void * value)
+			 *
+			 * \param name: name of the name of the member as a string
+			 * \param value: value to be assigned to the element
+			 *
+			 * This functions assign a value to a member of MainWindowJsonData by access it through its name
+			 */
+			virtual void setValueFromMemberString(const std::string & name, const void * value);
 
 	};
 

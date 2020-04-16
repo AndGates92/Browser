@@ -6,6 +6,8 @@
  * @brief Main Window Control base class functions
  */
 
+#include <utility>
+
 // Qt libraries
 #include <qt5/QtCore/QtGlobal>
 #include <qt5/QtWidgets/QShortcut>
@@ -22,6 +24,8 @@ Q_LOGGING_CATEGORY(mainWindowCtrlBaseUserInput, "mainWindowCtrlBase.userInput", 
 
 main_window_ctrl_base::MainWindowCtrlBase::MainWindowCtrlBase(QSharedPointer<main_window_core::MainWindowCore> core, QWidget * parent, QString jsonFileName) : QWidget(parent), main_window_base::MainWindowBase(core), commands(json_parser::JsonParser(jsonFileName, QIODevice::ReadOnly)) {
 	QINFO_PRINT(global_types::qinfo_level_e::ZERO, mainWindowCtrlBaseOverall,  "Main window control base classe constructor");
+
+	this->populateActionData();
 }
 
 main_window_ctrl_base::MainWindowCtrlBase::~MainWindowCtrlBase() {
@@ -94,3 +98,50 @@ void main_window_ctrl_base::MainWindowCtrlBase::setAllShortcutEnabledProperty(co
 	}
 }
 
+void main_window_ctrl_base::MainWindowCtrlBase::populateActionData() {
+
+	for (std::vector<std::string>::const_iterator paramIter = main_window_json_data::defaultActionParameters.cbegin(); paramIter != main_window_json_data::defaultActionParameters.cend(); paramIter++) {
+		const std::map<QString, QString> paramValues = this->commands.findKeyValue(QString::fromStdString(*paramIter)).toStdMap();
+		for(std::map<QString, QString>::const_iterator valIter = paramValues.cbegin(); valIter != paramValues.cend(); valIter++) {
+			std::string key(valIter->first.toStdString());
+			std::string value(valIter->second.toStdString());
+
+			// If key is not in actionData map, then it must be added
+			main_window_json_data::MainWindowJsonData * const newData(new main_window_json_data::MainWindowJsonData(key));
+			//std::pair<std::string, main_window_json_data::MainWindowJsonData *>dataPair(key, newData);
+			std::pair<std::string, main_window_json_data::MainWindowJsonData *> dataPair;
+
+			dataPair.first=key;
+			dataPair.second=newData;
+
+			// insert returns a pair where:
+			// - first points to the newly created iterator or the element with the same key
+			// - second is true if the insertion is successful, false otherwise
+			std::pair<std::map<std::string, main_window_json_data::MainWindowJsonData *>::iterator, bool> it = this->actionData.insert(dataPair);
+
+			const void * valuePtr = nullptr;
+			main_window_shared_types::state_e state = main_window_shared_types::state_e::IDLE;
+			key_sequence::KeySequence keySeq = key_sequence::KeySequence(QString::null);
+
+			if (paramIter->compare("State") == 0) {
+				state = global_functions::QStringToQEnum<main_window_shared_types::state_e>(QString::fromStdString(value));
+				valuePtr = &state;
+			} else if (paramIter->compare("Shortcut") == 0) {
+				std::string fullKeyName("Key_" + value);
+				const QKeySequence key( global_functions::QStringToQEnum<Qt::Key>(QString::fromStdString(fullKeyName)));
+				keySeq = key_sequence::KeySequence(key);
+				valuePtr = &keySeq;
+			} else {
+				valuePtr = &value;
+			}
+
+			std::map<std::string, main_window_json_data::MainWindowJsonData *>::iterator el = it.first;
+			main_window_json_data::MainWindowJsonData * & data = el->second;
+			data->setValueFromMemberString(*paramIter, valuePtr);
+		}
+	}
+
+	for (const auto & data : this->actionData)
+		QINFO_PRINT(global_types::qinfo_level_e::ZERO, mainWindowCtrlBaseUserInput,  "Data for key " << QString::fromStdString(data.first) << " is " << data.second->qprint());
+
+}

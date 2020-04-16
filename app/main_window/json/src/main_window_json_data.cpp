@@ -44,7 +44,10 @@ main_window_json_data::MainWindowJsonData * main_window_json_data::MainWindowJso
 	return newData;
 }
 
-main_window_json_data::MainWindowJsonData::MainWindowJsonData(const std::string & jsonKey, const std::string & nameKeyValue, const main_window_shared_types::state_e & stateKeyValue, const key_sequence::KeySequence & shortcutKeyValue, const std::string & longCmdKeyValue, const std::string & helpKeyValue): key(jsonKey), name(nameKeyValue), state(stateKeyValue), shortcut(shortcutKeyValue), longCmd(longCmdKeyValue), help(helpKeyValue) {
+	main_window_json_data::MainWindowJsonData::MainWindowJsonData(const std::string & jsonKey, const std::string & nameKeyValue, const main_window_shared_types::state_e & stateKeyValue, const key_sequence::KeySequence & shortcutKeyValue, const std::string & longCmdKeyValue, const std::string & helpKeyValue): key(jsonKey), name(nameKeyValue), state(stateKeyValue), shortcut(shortcutKeyValue), longCmd(longCmdKeyValue), help(helpKeyValue) {
+
+	this->actionParameters.insert(main_window_json_data::defaultActionParameters.cbegin(), main_window_json_data::defaultActionParameters.cend());
+
 	QINFO_PRINT(global_types::qinfo_level_e::ZERO, mainWindowJsonDataOverall,  "JSON Data structure constructor. Data " << this->qprint());
 
 }
@@ -139,3 +142,34 @@ BASE_GETTER(main_window_json_data::MainWindowJsonData::getState, main_window_sha
 CONST_GETTER(main_window_json_data::MainWindowJsonData::getShortcut, key_sequence::KeySequence, this->shortcut)
 CONST_GETTER(main_window_json_data::MainWindowJsonData::getLongCmd, std::string, this->longCmd)
 CONST_GETTER(main_window_json_data::MainWindowJsonData::getHelp, std::string, this->help)
+CONST_GETTER(main_window_json_data::MainWindowJsonData::getActionParameters, auto, this->actionParameters)
+
+void main_window_json_data::MainWindowJsonData::addActionParameters(const std::string & name) {
+	this->actionParameters.insert(name);
+}
+
+void main_window_json_data::MainWindowJsonData::setValueFromMemberString(const std::string & name, const void * value) {
+	QEXCEPTION_ACTION_COND((this->actionParameters.find(name) == this->actionParameters.end()), throw, "Parameter " << QString::fromStdString(name) << " has not been found among the action parameters. In order to add it, please call void main_window_json_data::MainWindowJsonData::addActionParameters(const std::string & name)");
+
+	if (name.compare("Key") == 0) {
+		const std::string * const strPtr(static_cast<const std::string *>(value));
+		this->key = *strPtr;
+	} else if (name.compare("Name") == 0) {
+		const std::string * const strPtr(static_cast<const std::string *>(value));
+		this->name = *strPtr;
+	} else if (name.compare("State") == 0) {
+		const main_window_shared_types::state_e * const statePtr(static_cast<const main_window_shared_types::state_e *>(value));
+		this->state = *statePtr;
+	} else if (name.compare("Shortcut") == 0) {
+		const key_sequence::KeySequence * const shortcutPtr(static_cast<const key_sequence::KeySequence *>(value));
+		this->shortcut = *shortcutPtr;
+	} else if (name.compare("LongCmd") == 0) {
+		const std::string * const strPtr(static_cast<const std::string *>(value));
+		this->longCmd = *strPtr;
+	} else if (name.compare("Help") == 0) {
+		const std::string * const strPtr(static_cast<const std::string *>(value));
+		this->help = *strPtr;
+	} else {
+		QEXCEPTION_ACTION(throw, "Cannot find class member associated with parameter " << QString::fromStdString(name) << ".");
+	}
+}
