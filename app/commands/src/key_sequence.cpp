@@ -21,7 +21,7 @@ Q_LOGGING_CATEGORY(keySequenceOverall, "keySequence.overall", MSG_TYPE_LEVEL)
 Q_LOGGING_CATEGORY(keySequenceString, "keySequence.string", MSG_TYPE_LEVEL)
 
 key_sequence::KeySequence::KeySequence(const QString & keyStr, QKeySequence::SequenceFormat format) {
-	QINFO_PRINT(global_types::qinfo_level_e::ZERO, keySequenceOverall,  "Key Sequence constructor");
+	QINFO_PRINT(global_types::qinfo_level_e::ZERO, keySequenceOverall,  "Key Sequence constructor: key " << keyStr);
 
 	// Split key sequence string into individual key sequences
 	QStringList keySeqList = keyStr.split(",", QString::SkipEmptyParts);
@@ -58,8 +58,9 @@ key_sequence::KeySequence::KeySequence(const QKeySequence & qKeySeq) {
 }
 
 key_sequence::KeySequence::KeySequence(const QKeySequence::StandardKey stdKey) {
+	QINFO_PRINT(global_types::qinfo_level_e::ZERO, keySequenceOverall,  "Key Sequence constructor: key " << stdKey);
 	const QKeySequence qKeySeq(stdKey);
-	// There is only 1 key in the key sequence, therefor eaccessing it at index 0
+	// There is only 1 key in the key sequence, therefore accessing it at index 0
 	const int key = qKeySeq[0];
 	this->keySeqVec.append(key);
 
@@ -92,7 +93,7 @@ key_sequence::KeySequence::KeySequence(key_sequence::KeySequence && rhs) : keySe
 
 	QINFO_PRINT(global_types::qinfo_level_e::ZERO, keySequenceOverall,  "Move constructor key sequence");
 
-	QEXCEPTION_ACTION_COND((rhs.keySeqVec.capacity() == 0), throw,  "Released all memory used by vector but capacity is still non-zero - actual capacity " << rhs.keySeqVec.capacity());
+	QEXCEPTION_ACTION_COND((rhs.keySeqVec.capacity() != 0), throw,  "Released all memory used by vector but capacity is still non-zero - actual capacity " << rhs.keySeqVec.capacity());
 }
 
 key_sequence::KeySequence & key_sequence::KeySequence::operator=(key_sequence::KeySequence && rhs) {
@@ -101,7 +102,7 @@ key_sequence::KeySequence & key_sequence::KeySequence::operator=(key_sequence::K
 
 	if (&rhs != this) {
 		this->keySeqVec = std::exchange(rhs.keySeqVec, QVector<QKeySequence>());
-		QEXCEPTION_ACTION_COND((rhs.keySeqVec.capacity() == 0), throw,  "Released all memory used by vector but capacity is still non-zero - actual capacity " << rhs.keySeqVec.capacity());
+		QEXCEPTION_ACTION_COND((rhs.keySeqVec.capacity() != 0), throw,  "Released all memory used by vector but capacity is still non-zero - actual capacity " << rhs.keySeqVec.capacity());
 	}
 
 	return *this;
