@@ -26,6 +26,10 @@ namespace main_window_web_engine_page {
 
 namespace main_window_page_data {
 
+	/**
+	 * @brief MainWindowPageData class
+	 *
+	 */
 	class MainWindowPageData {
 		friend class main_window_web_engine_page::MainWindowWebEnginePage;
 
