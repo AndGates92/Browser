@@ -65,6 +65,18 @@ namespace global_functions {
 	void moveListElements(std::list<type> & l, const int & from, const int & to);
 
 	/**
+	 * @brief Function: std::vector<std::string> splitStringByDelimiter(const std::string & str, const std::string & delim)
+	 *
+	 * \param str: string to be split
+	 * \param delim: delimiter
+	 *
+	 * \return: vector of sub-string containing the splits
+	 *
+	 * This function splits the string in multiple sub-strings
+	 */
+	std::vector<std::string> splitStringByDelimiter(const std::string & str, const std::string & delim);
+
+	/**
 	 * @brief Function: std::string readFile(const std::string & filename)
 	 *
 	 * \param filename: file to read
