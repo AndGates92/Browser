@@ -126,12 +126,13 @@ const QString main_window_json_data::MainWindowJsonData::qprint() const {
 std::string main_window_json_data::MainWindowJsonData::print() const {
 	std::string structInfo;
 
-	structInfo = structInfo + "key in the JSON file: " + this->key + "\n";
-	structInfo = structInfo + "name of the action: " + this->name + "\n";
-	structInfo = structInfo + "state the window has to be put into: " + this->state + "\n";
-	structInfo = structInfo + "shortcut for the action: " + this->shortcut.toStdString() + "\n";
-	structInfo = structInfo + "long command for the action: " + this->longCmd + "\n";
-	structInfo = structInfo + "help for the action: " + this->help + "\n";
+	structInfo = "\n";
+	structInfo = structInfo + "- key in the JSON file: " + this->key + "\n";
+	structInfo = structInfo + "- name of the action: " + this->name + "\n";
+	structInfo = structInfo + "- state the window has to be put into: " + this->state + "\n";
+	structInfo = structInfo + "- shortcut for the action: " + this->shortcut.toStdString() + "\n";
+	structInfo = structInfo + "- long command for the action: " + this->longCmd + "\n";
+	structInfo = structInfo + "- help for the action: " + this->help + "\n";
 
 	return structInfo;
 }
