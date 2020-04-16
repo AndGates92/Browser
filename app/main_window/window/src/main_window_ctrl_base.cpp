@@ -98,6 +98,34 @@ void main_window_ctrl_base::MainWindowCtrlBase::setAllShortcutEnabledProperty(co
 	}
 }
 
+std::string main_window_ctrl_base::MainWindowCtrlBase::processShortcut(const std::string & value) {
+	const std::string delim(",");
+	std::string keyName = std::string();
+	std::vector<std::string> subStrs = global_functions::splitStringByDelimiter(value, delim);
+	for (std::string iter : subStrs) {
+		bool isAlphaNumLowerCase = std::find_if(iter.cbegin(), iter.cend(),
+			[&] (char c) {
+				return ((std::isalnum(c) == false) || (std::islower(c) == false));
+			}
+		) == iter.cend();
+		if (isAlphaNumLowerCase == true) {
+			// Initialize upperKey with as many spaces as the number of characters in iter in order for std::transform to access already allocated space
+			std::string upperKey(iter.size(), ' ');
+			std::transform(iter.begin(), iter.end(), upperKey.begin(),
+				[] (unsigned char c) {
+					return std::toupper(c);
+				}
+			);
+			keyName.append("Key_");
+			keyName.append(upperKey);
+		} else {
+			QEXCEPTION_ACTION(throw,  "Value in JSON file " << QString::fromStdString(value) << " is not alphanumeric and lowercase ");
+		}
+	}
+
+	return keyName;
+}
+
 void main_window_ctrl_base::MainWindowCtrlBase::populateActionData() {
 
 	for (std::vector<std::string>::const_iterator paramIter = main_window_json_data::defaultActionParameters.cbegin(); paramIter != main_window_json_data::defaultActionParameters.cend(); paramIter++) {
@@ -127,9 +155,9 @@ void main_window_ctrl_base::MainWindowCtrlBase::populateActionData() {
 				state = global_functions::QStringToQEnum<main_window_shared_types::state_e>(QString::fromStdString(value));
 				valuePtr = &state;
 			} else if (paramIter->compare("Shortcut") == 0) {
-				std::string fullKeyName("Key_" + value);
-				const QKeySequence key( global_functions::QStringToQEnum<Qt::Key>(QString::fromStdString(fullKeyName)));
-				keySeq = key_sequence::KeySequence(key);
+				std::string keySeqStr(this->processShortcut(value));
+				const QKeySequence qKeySeq(global_functions::QStringToQEnum<Qt::Key>(QString::fromStdString(keySeqStr)));
+				keySeq = key_sequence::KeySequence(qKeySeq);
 				valuePtr = &keySeq;
 			} else {
 				valuePtr = &value;
