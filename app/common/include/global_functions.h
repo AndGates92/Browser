@@ -84,20 +84,26 @@ QString global_functions::qEnumToQString(const qenum value, const bool printEnum
 	QMetaEnum metaEnum(QMetaEnum::fromType<qenum>());
 	// Convert enumeration value to std::string
 	// Cast value to int to comply with function definition
-	std::string valueStr = metaEnum.valueToKey(int(value));
-
-	QEXCEPTION_ACTION_COND((valueStr.empty() == true), throw,  "Convertion of enuerator " << metaEnum.scope() << "::" << metaEnum.name() << " to string return a null std::string");
+	//std::string valueStr(metaEnum.valueToKey(int(value)));
+	const char * valueCStr = metaEnum.valueToKey(int(value));
 
 	QString fullValueStr(QString::null);
+	if (valueCStr == NULL)
+		fullValueStr.append("UNKNOWN_ENUM");
+	else {
+		std::string valueStr(valueCStr);
 
-	if (printEnumKeyOnly == false) {
-		fullValueStr.append(metaEnum.scope());
-		fullValueStr.append("::");
-		fullValueStr.append(metaEnum.name());
-		fullValueStr.append("::");
+		QEXCEPTION_ACTION_COND((valueStr.empty() == true), throw,  "Convertion of enumerator " << metaEnum.scope() << "::" << metaEnum.name() << " to string return a null std::string");
+
+		if (printEnumKeyOnly == false) {
+			fullValueStr.append(metaEnum.scope());
+			fullValueStr.append("::");
+			fullValueStr.append(metaEnum.name());
+			fullValueStr.append("::");
+		}
+
+		fullValueStr.append(valueStr.c_str());
 	}
-
-	fullValueStr.append(valueStr.c_str());
 
 	return fullValueStr;
 }
@@ -126,10 +132,10 @@ void global_functions::moveListElements(std::list<type> & l, const int & from, c
 		auto toAdjustedIter = l.begin();
 		// If from < to, we want to move the tab after index to meaning that we want to add it after index to, i.e. before the tab after index to
 		// Assume tabs: a b c
-		// Scenarion 1 (from < to):
+		// Scenario 1 (from < to):
 		// Move a at the position of c -> copy a after c (i.e. before index of c + 1) leading to the following situation a b c aCopy and then delete a
 		// Result: b c aCopy
-		// Scenarion 2 (from > to):
+		// Scenario 2 (from > to):
 		// Move c at the position of a -> copy c after a (i.e. before index of a + 1) leading to the following scenario cCopy a b c and then delete c
 		// Result: cCopy a b
 		const int adjustment = (from < to) ? 1 : 0;
