@@ -169,7 +169,7 @@ QString main_window_core::MainWindowCore::getActionName() const {
 	const QString actionName(global_functions::qEnumToQString<main_window_shared_types::state_list>(this->mainWindowState, true));
 	actionNameText.append(actionName);
 
-	if (this->mainWindowState == main_window_shared_types::state_e::TAB_MOVE) {
+	if (this->mainWindowState == main_window_shared_types::state_e::MOVE_TAB) {
 		if (this->offsetType == main_window_shared_types::offset_type_e::RIGHT) {
 			actionNameText.append(" right");
 		} else if (this->offsetType == main_window_shared_types::offset_type_e::LEFT) {

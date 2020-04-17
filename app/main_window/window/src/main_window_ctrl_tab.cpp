@@ -146,7 +146,7 @@ void main_window_ctrl_tab::MainWindowCtrlTab::setUpReloadTabUrl() {
 }
 
 void main_window_ctrl_tab::MainWindowCtrlTab::setUpMoveTab() {
-	const main_window_shared_types::state_e requestedWindowState = main_window_shared_types::state_e::TAB_MOVE;
+	const main_window_shared_types::state_e requestedWindowState = main_window_shared_types::state_e::MOVE_TAB;
 	this->changeWindowState(requestedWindowState);
 }
 
@@ -295,7 +295,7 @@ void main_window_ctrl_tab::MainWindowCtrlTab::executeActionOnOffset(const int & 
 		sign = global_types::sign_e::PLUS;
 	} else if (windowState == main_window_shared_types::state_e::MOVE_LEFT) {
 		sign = global_types::sign_e::MINUS;
-	} else if (windowState == main_window_shared_types::state_e::TAB_MOVE) {
+	} else if (windowState == main_window_shared_types::state_e::MOVE_TAB) {
 		if (offsetType == main_window_shared_types::offset_type_e::RIGHT) {
 			sign = global_types::sign_e::PLUS;
 		} else if (offsetType == main_window_shared_types::offset_type_e::LEFT) {
@@ -333,7 +333,7 @@ void main_window_ctrl_tab::MainWindowCtrlTab::executeActionOnTab(const int & ind
 			case main_window_shared_types::state_e::CLOSE_TAB:
 				this->closeTab(tabIndex);
 				break;
-			case main_window_shared_types::state_e::TAB_MOVE:
+			case main_window_shared_types::state_e::MOVE_TAB:
 				this->convertToAbsTabIndex(tabIndex, global_types::sign_e::NOSIGN);
 				break;
 			case main_window_shared_types::state_e::REFRESH_TAB:
@@ -362,7 +362,7 @@ void main_window_ctrl_tab::MainWindowCtrlTab::executeTabAction(const int & userI
 		case main_window_shared_types::state_e::MOVE_LEFT:
 			this->executeActionOnOffset(userInput);
 			break;
-		case main_window_shared_types::state_e::TAB_MOVE:
+		case main_window_shared_types::state_e::MOVE_TAB:
 			if ((offsetType == main_window_shared_types::offset_type_e::LEFT) || (offsetType == main_window_shared_types::offset_type_e::RIGHT)) {
 				this->executeActionOnOffset(userInput);
 			} else if (offsetType == main_window_shared_types::offset_type_e::ABSOLUTE) {
@@ -435,7 +435,7 @@ void main_window_ctrl_tab::MainWindowCtrlTab::keyReleaseEvent(QKeyEvent * event)
 			case Qt::Key_Backspace:
 				QINFO_PRINT(global_types::qinfo_level_e::ZERO, mainWindowCtrlTabUserInput,  "User typed text " << userTypedText);
 				// If in state TAB MOVE and the windowCore->userText is empty after deleting the last character, set the move value to IDLE
-				if ((userTypedText.isEmpty() == true) && (windowState == main_window_shared_types::state_e::TAB_MOVE)) {
+				if ((userTypedText.isEmpty() == true) && (windowState == main_window_shared_types::state_e::MOVE_TAB)) {
 					this->windowCore->setOffsetType(main_window_shared_types::offset_type_e::IDLE);
 					this->printUserInput(main_window_shared_types::text_action_e::CLEAR);
 				}
@@ -476,7 +476,7 @@ void main_window_ctrl_tab::MainWindowCtrlTab::keyPressEvent(QKeyEvent * event) {
 					case main_window_shared_types::state_e::CLOSE_TAB:
 					case main_window_shared_types::state_e::MOVE_RIGHT:
 					case main_window_shared_types::state_e::MOVE_LEFT:
-					case main_window_shared_types::state_e::TAB_MOVE:
+					case main_window_shared_types::state_e::MOVE_TAB:
 						this->processTabIndex(userTypedText);
 						break;
 					default:
@@ -516,7 +516,7 @@ void main_window_ctrl_tab::MainWindowCtrlTab::setStateAction(const main_window_s
 				QWARNING_PRINT(mainWindowCtrlTabUserInput, "Pressed key " << event->text() << ". Only numbers are accepted when executing actions like closing windows or moving in the tab bar");
 			}
 			break;
-		case main_window_shared_types::state_e::TAB_MOVE:
+		case main_window_shared_types::state_e::MOVE_TAB:
 			if (offsetType == main_window_shared_types::offset_type_e::IDLE) {
 				// If no sign is provided, the tab is considered as absolute value
 				// If + or - sign is provided, then the value is considered to be relative to the current tab
@@ -559,7 +559,7 @@ void main_window_ctrl_tab::MainWindowCtrlTab::convertToAbsTabIndex(const int & o
 		switch (windowState) {
 			case main_window_shared_types::state_e::MOVE_RIGHT:
 			case main_window_shared_types::state_e::MOVE_LEFT:
-			case main_window_shared_types::state_e::TAB_MOVE:
+			case main_window_shared_types::state_e::MOVE_TAB:
 				distance = 1;
 				break;
 			default:
@@ -599,7 +599,7 @@ void main_window_ctrl_tab::MainWindowCtrlTab::convertToAbsTabIndex(const int & o
 		case main_window_shared_types::state_e::MOVE_LEFT:
 			this->moveCursor(tabIndex);
 			break;
-		case main_window_shared_types::state_e::TAB_MOVE:
+		case main_window_shared_types::state_e::MOVE_TAB:
 			this->moveTab(tabIndex);
 			break;
 		default:
@@ -657,7 +657,7 @@ bool main_window_ctrl_tab::MainWindowCtrlTab::isValidWindowState(const main_wind
 			break;
 		case main_window_shared_types::state_e::MOVE_RIGHT:
 		case main_window_shared_types::state_e::MOVE_LEFT:
-		case main_window_shared_types::state_e::TAB_MOVE:
+		case main_window_shared_types::state_e::MOVE_TAB:
 			// It is only possible to perform an operation that requires movement of cursors or tabs if the current state is idle and at least 2 tab is opened
 			isValid = ((tabCount > 1) && (windowState == main_window_shared_types::state_e::IDLE));
 			break;

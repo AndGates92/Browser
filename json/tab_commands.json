@@ -17,7 +17,7 @@
 
 	"SearchTab" : {
 		"Name" : "search tab",
-		"State" : "SEARCH_TAB",
+		"State" : "SEARCH",
 		"Shortcut" : "s",
 		"LongCmd" : "search-tab",
 		"Help" : "This command searches content in a tab"
