@@ -261,6 +261,17 @@ namespace key_sequence {
 			 */
 			bool operator!= (const KeySequence & otherSeq) const;
 
+			/**
+			 * @brief Function: int operator[](const int & index) const
+			 *
+			 * \param index: index of the key
+			 *
+			 * \return value of the key
+			 *
+			 * Key Sequence overloading of operator []
+			 */
+			int operator[] (const int & index) const;
+
 		protected:
 
 		private:

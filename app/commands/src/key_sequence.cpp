@@ -263,3 +263,6 @@ bool key_sequence::KeySequence::operator!= (const key_sequence::KeySequence & ot
 	return !(*this == otherSeq);
 }
 
+int key_sequence::KeySequence::operator[] (const int & index) const {
+	return this->getIntKey(index);
+}
