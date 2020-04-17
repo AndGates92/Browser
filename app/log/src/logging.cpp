@@ -15,7 +15,7 @@
 // Get pointer to default category
 #include <qt5/QtCore/QLoggingCategory>
 
-#include "global_functions.h"
+#include "logging_functions.h"
 #include "exception_macros.h"
 #include "logging_macros.h"
 #include "logging.h"
@@ -52,7 +52,7 @@ void logging::handler(QtMsgType type, const QMessageLogContext & context, const 
 	QString info_str("");
 
 	info_str.append("[");
-	info_str.append(global_functions::getDateTime());
+	info_str.append(logging_functions::getDateTime());
 	info_str.append("] ");
 
 	switch(type) {
