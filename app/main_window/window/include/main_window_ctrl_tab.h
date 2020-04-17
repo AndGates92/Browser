@@ -288,26 +288,22 @@ namespace main_window_ctrl_tab {
 			void connectSignals() override;
 
 			/**
-			 * @brief Function: bool changeWindowState(const main_window_shared_types::state_e & windowState) override
+			 * @brief Function: virtual bool isValidWindowState(const main_window_shared_types::state_e & requestedWindowState) override
 			 *
-			 * \param windowState: state the window is requested to go into.
-			 *
-			 * \return boolean whether the change was made or not. true if the state was changes and false otherwise.
-			 *
-			 * This function changes the window state
-			 */
-			bool changeWindowState(const main_window_shared_types::state_e & windowState) override;
-
-			/**
-			 * @brief Function: bool isValidWindowState(const main_window_shared_types::state_e & windowState) override
-			 *
-			 * \param windowState: state the window is requested to go into.
+			 * \param requestedWindowState: state the window is requested to go into.
 			 *
 			 * \return boolean whether the state is valid or not. true if the state is valid and false otherwise.
 			 *
 			 * This function checks that the state is valid
 			 */
-			bool isValidWindowState(const main_window_shared_types::state_e & windowState) override;
+			virtual bool isValidWindowState(const main_window_shared_types::state_e & requestedWindowState) override;
+
+			/**
+			 * @brief Function: virtual void postprocessWindowStateChange() override
+			 *
+			 * This function defines actions to be taken immediately after the window has changed state
+			 */
+			virtual void postprocessWindowStateChange() override;
 
 			/**
 			 * @brief Function: void executeActionOnTab(const int & index = main_window_ctrl_tab::emptyUserInput)

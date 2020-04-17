@@ -115,15 +115,20 @@ namespace main_window_ctrl_base {
 			virtual void setStateAction(const main_window_shared_types::state_e & windowState, QKeyEvent * event) = 0;
 
 			/**
-			 * @brief Function: virtual bool changeWindowState(const main_window_shared_types::state_e & windowState)
+			 * @brief Function: virtual void postprocessWindowStateChange()
 			 *
-			 * \param windowState: state the window is requested to go into.
-			 *
-			 * \return boolean whether the change was made or not. true if the state was changes and false otherwise.
-			 *
-			 * This function is abstract and it changes the window state
+			 * This function is abstract and it defines action to be taken immediately after the window has changed state
 			 */
-			virtual bool changeWindowState(const main_window_shared_types::state_e & windowState) = 0;
+			virtual void postprocessWindowStateChange() = 0;
+
+			/**
+			 * @brief Function: virtual void changeWindowState(const main_window_shared_types::state_e & nextState) final
+			 *
+			 * \param nextState: state the window is requested to go into.
+			 *
+			 * This function changes the state of window
+			 */
+			virtual void changeWindowState(const main_window_shared_types::state_e & nextState) final;
 
 			/**
 			 * @brief Function: virtual bool isValidWindowState(const main_window_shared_types::state_e & windowState)

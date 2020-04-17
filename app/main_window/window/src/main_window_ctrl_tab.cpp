@@ -608,31 +608,15 @@ void main_window_ctrl_tab::MainWindowCtrlTab::convertToAbsTabIndex(const int & o
 	}
 }
 
-bool main_window_ctrl_tab::MainWindowCtrlTab::changeWindowState(const main_window_shared_types::state_e & requestedWindowState) {
-	bool isValid = false;
+void main_window_ctrl_tab::MainWindowCtrlTab::postprocessWindowStateChange() {
 	const main_window_shared_types::state_e windowState = this->windowCore->getMainWindowState();
-
-	if (windowState == requestedWindowState) {
-		// No state change is always valid
-		isValid = true;
+	// If requesting to go to the idle state, enable shortcuts
+	if (windowState == main_window_shared_types::state_e::IDLE) {
+		this->setAllShortcutEnabledProperty(true);
 	} else {
-		isValid = this->isValidWindowState(requestedWindowState);
-
-		if (isValid == true) {
-			this->windowCore->setMainWindowState(requestedWindowState);
-			// If requesting to go to the idle state, do not 
-			if (requestedWindowState == main_window_shared_types::state_e::IDLE) {
-				this->setAllShortcutEnabledProperty(true);
-			} else {
-				this->setAllShortcutEnabledProperty(false);
-			}
-			this->printUserInput(main_window_shared_types::text_action_e::CLEAR);
-		} else {
-			QWARNING_PRINT(mainWindowCtrlTabTabs, "Ignoring request to go from state " << windowState << " to state " << requestedWindowState);
-		}
+		this->setAllShortcutEnabledProperty(false);
 	}
-
-	return isValid;
+	this->printUserInput(main_window_shared_types::text_action_e::CLEAR);
 }
 
 bool main_window_ctrl_tab::MainWindowCtrlTab::isValidWindowState(const main_window_shared_types::state_e & requestedWindowState) {

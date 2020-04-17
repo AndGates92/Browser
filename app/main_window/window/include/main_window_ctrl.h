@@ -161,18 +161,14 @@ namespace main_window_ctrl {
 			void connectSignals() override;
 
 			/**
-			 * @brief Function: bool changeWindowState(const main_window_shared_types::state_e & windowState) override
+			 * @brief Function: virtual void postprocessWindowStateChange() override
 			 *
-			 * \param windowState: state the window is requested to go into.
-			 *
-			 * \return boolean whether the change was made or not. true if the state was changes and false otherwise.
-			 *
-			 * This function changes the window state
+			 * This function is abstract and it defines action to be taken immediately after the window has changed state
 			 */
-			bool changeWindowState(const main_window_shared_types::state_e & windowState) override;
+			virtual void postprocessWindowStateChange() override;
 
 			/**
-			 * @brief Function: bool isValidWindowState(const main_window_shared_types::state_e & windowState) override
+			 * @brief Function: virtual bool isValidWindowState(const main_window_shared_types::state_e & windowState) override
 			 *
 			 * \param windowState: state the window is requested to go into.
 			 *
@@ -180,7 +176,7 @@ namespace main_window_ctrl {
 			 *
 			 * This function checks that the state is valid
 			 */
-			bool isValidWindowState(const main_window_shared_types::state_e & windowState) override;
+			virtual bool isValidWindowState(const main_window_shared_types::state_e & windowState) override;
 
 			/**
 			 * @brief Function: void executeCommand(const QString & command)

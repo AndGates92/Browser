@@ -211,31 +211,15 @@ void main_window_ctrl::MainWindowCtrl::closeWindow() {
 	emit this->closeWindowSignal();
 }
 
-bool main_window_ctrl::MainWindowCtrl::changeWindowState(const main_window_shared_types::state_e & requestedWindowState) {
-	bool isValid = false;
+void main_window_ctrl::MainWindowCtrl::postprocessWindowStateChange() {
 	const main_window_shared_types::state_e windowState = this->windowCore->getMainWindowState();
-
-	if (windowState == requestedWindowState) {
-		// No state change is always valid
-		isValid = true;
+	// If requesting to go to the idle state, do not 
+	if (windowState == main_window_shared_types::state_e::IDLE) {
+		this->setAllShortcutEnabledProperty(true);
+		this->printUserInput(main_window_shared_types::text_action_e::CLEAR);
 	} else {
-		isValid = this->isValidWindowState(requestedWindowState);
-
-		if (isValid == true) {
-			this->windowCore->setMainWindowState(requestedWindowState);
-			// If requesting to go to the idle state, do not 
-			if (requestedWindowState == main_window_shared_types::state_e::IDLE) {
-				this->setAllShortcutEnabledProperty(true);
-				this->printUserInput(main_window_shared_types::text_action_e::CLEAR);
-			} else {
-				this->setAllShortcutEnabledProperty(false);
-			}
-		} else {
-			QWARNING_PRINT(mainWindowCtrlUserInput, "Ignoring request to go from state " << windowState << " to state " << requestedWindowState);
-		}
+		this->setAllShortcutEnabledProperty(false);
 	}
-
-	return isValid;
 }
 
 bool main_window_ctrl::MainWindowCtrl::isValidWindowState(const main_window_shared_types::state_e & requestedWindowState) {

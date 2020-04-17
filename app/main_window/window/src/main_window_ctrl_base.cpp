@@ -173,3 +173,19 @@ void main_window_ctrl_base::MainWindowCtrlBase::populateActionData() {
 		QINFO_PRINT(global_types::qinfo_level_e::ZERO, mainWindowCtrlBaseUserInput,  "Data for key " << QString::fromStdString(data.first) << " is " << data.second->qprint());
 
 }
+
+void main_window_ctrl_base::MainWindowCtrlBase::changeWindowState(const main_window_shared_types::state_e & nextState) {
+
+	const main_window_shared_types::state_e windowState = this->windowCore->getMainWindowState();
+
+	// Do not change state if the window is already in the one requested
+	if (windowState != nextState) {
+		bool isValid = this->isValidWindowState(nextState);
+		if (isValid == true) {
+			this->windowCore->setMainWindowState(nextState);
+			this->postprocessWindowStateChange();
+		}
+	} else {
+		QWARNING_PRINT(mainWindowCtrlBaseOverall, "Ignoring request to go from state " << windowState << " to state " << nextState);
+	}
+}
