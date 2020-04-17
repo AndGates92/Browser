@@ -53,6 +53,15 @@ namespace global_functions {
 	qenum QStringToQEnum(const QString & str);
 
 	/**
+	 * @brief Function: QString getDateTime()
+	 *
+	 * \return date and time as a QString
+	 *
+	 * This function returns the current date and time as a QString
+	 */
+	QString getDateTime();
+
+	/**
 	 * @brief Function: void moveListElements(std::list<type> & l, cons int & from, const int & to)
 	 *
 	 * \param l: list whose elements are to be moved

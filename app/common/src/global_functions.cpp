@@ -11,6 +11,9 @@
 #include <sstream>
 #include <string>
 
+#include <qt5/QtCore/QDateTime>
+#include <qt5/QtCore/QTimeZone>
+
 #include "global_functions.h"
 
 Q_LOGGING_CATEGORY(readFileOverall, "readFile.overall", MSG_TYPE_LEVEL)
@@ -79,4 +82,16 @@ std::vector<std::string> global_functions::splitStringByDelimiter(const std::str
 	} while (nextPosition != std::string::npos);
 
 	return subStrs;
+}
+
+QString global_functions::getDateTime() {
+	QString datetimeStr(QString::null);
+
+	QDateTime datetime = QDateTime::currentDateTime();
+	datetime.setTimeSpec(Qt::TimeZone);
+	datetimeStr.append(datetime.toString(Qt::SystemLocaleShortDate));
+	datetimeStr.append(" ");
+	datetimeStr.append(datetime.timeZoneAbbreviation());
+
+	return datetimeStr;
 }
