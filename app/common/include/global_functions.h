@@ -12,7 +12,6 @@
 #include <string>
 #include <list>
 
-#include <qt5/QtCore/Qt>
 #include <qt5/QtCore/QMetaEnum>
 
 #include "logging_macros.h"
@@ -51,15 +50,6 @@ namespace global_functions {
 	 */
 	template<typename qenum>
 	qenum QStringToQEnum(const QString & str);
-
-	/**
-	 * @brief Function: QString getDateTime()
-	 *
-	 * \return date and time as a QString
-	 *
-	 * This function returns the current date and time as a QString
-	 */
-	QString getDateTime();
 
 	/**
 	 * @brief Function: void moveListElements(std::list<type> & l, cons int & from, const int & to)

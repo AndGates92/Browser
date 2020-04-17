@@ -2,17 +2,13 @@
  * @copyright
  * @file global_functions.cpp
  * @author Andrea Gianarda
- * @date 31st of Mqrch 2020
+ * @date 31st of March 2020
  * @brief Global function definition
  */
 
-#include <iostream>
 #include <fstream>
 #include <sstream>
 #include <string>
-
-#include <qt5/QtCore/QDateTime>
-#include <qt5/QtCore/QTimeZone>
 
 #include "global_functions.h"
 
@@ -84,14 +80,3 @@ std::vector<std::string> global_functions::splitStringByDelimiter(const std::str
 	return subStrs;
 }
 
-QString global_functions::getDateTime() {
-	QString datetimeStr(QString::null);
-
-	QDateTime datetime = QDateTime::currentDateTime();
-	datetime.setTimeSpec(Qt::TimeZone);
-	datetimeStr.append(datetime.toString(Qt::SystemLocaleShortDate));
-	datetimeStr.append(" ");
-	datetimeStr.append(datetime.timeZoneAbbreviation());
-
-	return datetimeStr;
-}
