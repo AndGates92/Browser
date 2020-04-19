@@ -123,8 +123,14 @@ template<typename qenum>
 qenum global_functions::QStringToQEnum(const QString & str) {
 
 	QMetaEnum metaEnum(QMetaEnum::fromType<qenum>());
-	// Conversion QString -> std::string -> const char *
-	int val = metaEnum.keyToValue(str.toStdString().c_str());
+	int val = -1;
+	if (metaEnum.isFlag() == true) {
+		// Conversion QString -> std::string -> const char *
+		val = metaEnum.keysToValue(str.toStdString().c_str());
+	} else {
+		// Conversion QString -> std::string -> const char *
+		val = metaEnum.keyToValue(str.toStdString().c_str());
+	}
 	qenum valEnum = static_cast<qenum>(val);
 
 	return valEnum;
