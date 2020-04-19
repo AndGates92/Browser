@@ -135,7 +135,9 @@ void main_window_ctrl_base::MainWindowCtrlBase::populateActionData() {
 			std::string value(valIter->second.toStdString());
 
 			// If key is not in actionData map, then it must be added
-			main_window_json_data::MainWindowJsonData * const newData(new main_window_json_data::MainWindowJsonData(key));
+//			main_window_json_data::MainWindowJsonData * const newData(new main_window_json_data::MainWindowJsonData(key, this->parentWidget()));
+			// TODO BUG: setting parent to nullptr doesn't allow the shortcut to be triggered
+			main_window_json_data::MainWindowJsonData * const newData(new main_window_json_data::MainWindowJsonData(key, nullptr));
 			//std::pair<std::string, main_window_json_data::MainWindowJsonData *>dataPair(key, newData);
 			std::pair<std::string, main_window_json_data::MainWindowJsonData *> dataPair;
 
@@ -147,18 +149,18 @@ void main_window_ctrl_base::MainWindowCtrlBase::populateActionData() {
 			// - second is true if the insertion is successful, false otherwise
 			std::pair<std::map<std::string, main_window_json_data::MainWindowJsonData *>::iterator, bool> it = this->actionData.insert(dataPair);
 
-			const void * valuePtr = nullptr;
+			void * valuePtr = nullptr;
 			main_window_shared_types::state_e state = main_window_shared_types::state_e::IDLE;
-			key_sequence::KeySequence keySeq = key_sequence::KeySequence(QString::null);
+			key_sequence::KeySequence keySeq(QString::null);
+			Qt::Key shortcutKey = Qt::Key_unknown;
 
 			if (paramIter->compare("State") == 0) {
 				state = global_functions::QStringToQEnum<main_window_shared_types::state_e>(QString::fromStdString(value));
 				valuePtr = &state;
 			} else if (paramIter->compare("Shortcut") == 0) {
-				std::string keySeqStr(this->processShortcut(value));
-				const QKeySequence qKeySeq(global_functions::QStringToQEnum<Qt::Key>(QString::fromStdString(keySeqStr)));
-				keySeq = key_sequence::KeySequence(qKeySeq);
-				valuePtr = &keySeq;
+				std::string keyStr(this->processShortcut(value));
+				shortcutKey = global_functions::QStringToQEnum<Qt::Key>(QString::fromStdString(keyStr));
+				valuePtr = &shortcutKey;
 			} else {
 				valuePtr = &value;
 			}
@@ -184,6 +186,7 @@ void main_window_ctrl_base::MainWindowCtrlBase::changeWindowState(const main_win
 		if (isValid == true) {
 			this->windowCore->setMainWindowState(nextState);
 			this->postprocessWindowStateChange();
+			emit windowStateChanged(nextState);
 		}
 	} else {
 		QWARNING_PRINT(mainWindowCtrlBaseOverall, "Ignoring request to go from state " << windowState << " to state " << nextState);

@@ -38,19 +38,28 @@ namespace main_window_json_data {
 	}
 }
 
-main_window_json_data::MainWindowJsonData * main_window_json_data::MainWindowJsonData::makeJsonData(const std::string & jsonKey, const std::string & nameKeyValue, const main_window_shared_types::state_e & stateKeyValue, const key_sequence::KeySequence & shortcutKeyValue, const std::string & longCmdKeyValue, const std::string & helpKeyValue) {
+main_window_json_data::MainWindowJsonData * main_window_json_data::MainWindowJsonData::makeJsonData(const std::string & jsonKey, const std::string & nameKeyValue, const main_window_shared_types::state_e & stateKeyValue, QShortcut * shortcutKeyValue, const std::string & longCmdKeyValue, const std::string & helpKeyValue) {
 	main_window_json_data::MainWindowJsonData * newData = new main_window_json_data::MainWindowJsonData(jsonKey, nameKeyValue, stateKeyValue, shortcutKeyValue, longCmdKeyValue, helpKeyValue);
 	QINFO_PRINT(global_types::qinfo_level_e::ZERO, mainWindowJsonDataOverall,  "Creating JSON data: " << newData->qprint());
 	return newData;
 }
 
-	main_window_json_data::MainWindowJsonData::MainWindowJsonData(const std::string & jsonKey, const std::string & nameKeyValue, const main_window_shared_types::state_e & stateKeyValue, const key_sequence::KeySequence & shortcutKeyValue, const std::string & longCmdKeyValue, const std::string & helpKeyValue): key(jsonKey), name(nameKeyValue), state(stateKeyValue), shortcut(shortcutKeyValue), longCmd(longCmdKeyValue), help(helpKeyValue) {
+main_window_json_data::MainWindowJsonData::MainWindowJsonData(const std::string & jsonKey, const std::string & nameKeyValue, const main_window_shared_types::state_e & stateKeyValue, QShortcut * shortcutKeyValue, const std::string & longCmdKeyValue, const std::string & helpKeyValue): key(jsonKey), name(nameKeyValue), state(stateKeyValue), shortcut(shortcutKeyValue), longCmd(longCmdKeyValue), help(helpKeyValue) {
 
 	this->actionParameters.insert(main_window_json_data::defaultActionParameters.cbegin(), main_window_json_data::defaultActionParameters.cend());
 
 	QINFO_PRINT(global_types::qinfo_level_e::ZERO, mainWindowJsonDataOverall,  "JSON Data structure constructor. Data " << this->qprint());
 
 }
+
+main_window_json_data::MainWindowJsonData::MainWindowJsonData(const std::string & jsonKey, QWidget * parent): key(jsonKey), name(std::string()), state(main_window_shared_types::state_e::IDLE), shortcut(new QShortcut(parent)), longCmd(std::string()), help(std::string()) {
+
+	this->actionParameters.insert(main_window_json_data::defaultActionParameters.cbegin(), main_window_json_data::defaultActionParameters.cend());
+
+	QINFO_PRINT(global_types::qinfo_level_e::ZERO, mainWindowJsonDataOverall,  "JSON Data structure constructor. Data " << this->qprint());
+
+}
+
 
 main_window_json_data::MainWindowJsonData::MainWindowJsonData(const main_window_json_data::MainWindowJsonData & rhs): key(rhs.key), name(rhs.name), state(rhs.state), shortcut(rhs.shortcut), longCmd(rhs.longCmd), help(rhs.help) {
 
@@ -90,7 +99,7 @@ main_window_json_data::MainWindowJsonData & main_window_json_data::MainWindowJso
 	return *this;
 }
 
-main_window_json_data::MainWindowJsonData::MainWindowJsonData(main_window_json_data::MainWindowJsonData && rhs): key(std::exchange(rhs.key, std::string())), name(std::exchange(rhs.name, std::string())), state(std::exchange(rhs.state, main_window_shared_types::state_e::IDLE)), shortcut(std::exchange(rhs.shortcut, key_sequence::KeySequence(QKeySequence::UnknownKey))), longCmd(std::exchange(rhs.longCmd, std::string())), help(std::exchange(rhs.help, std::string())) {
+main_window_json_data::MainWindowJsonData::MainWindowJsonData(main_window_json_data::MainWindowJsonData && rhs): key(std::exchange(rhs.key, std::string())), name(std::exchange(rhs.name, std::string())), state(std::exchange(rhs.state, main_window_shared_types::state_e::IDLE)), shortcut(std::exchange(rhs.shortcut, Q_NULLPTR)), longCmd(std::exchange(rhs.longCmd, std::string())), help(std::exchange(rhs.help, std::string())) {
 
 	QINFO_PRINT(global_types::qinfo_level_e::ZERO, mainWindowJsonDataOverall,  "Move constructor main window JSON data");
 }
@@ -104,7 +113,7 @@ main_window_json_data::MainWindowJsonData & main_window_json_data::MainWindowJso
 		this->key = std::exchange(rhs.key, std::string());
 		this->name = std::exchange(rhs.name, std::string());
 		this->state = std::exchange(rhs.state, main_window_shared_types::state_e::IDLE);
-		this->shortcut = std::exchange(rhs.shortcut, key_sequence::KeySequence(QKeySequence::UnknownKey));
+		this->shortcut = std::exchange(rhs.shortcut, Q_NULLPTR);
 		this->longCmd = std::exchange(rhs.longCmd, std::string());
 		this->help = std::exchange(rhs.help, std::string());
 	}
@@ -130,7 +139,18 @@ std::string main_window_json_data::MainWindowJsonData::print() const {
 	structInfo = structInfo + "- key in the JSON file: " + this->key + "\n";
 	structInfo = structInfo + "- name of the action: " + this->name + "\n";
 	structInfo = structInfo + "- state the window has to be put into: " + this->state + "\n";
-	structInfo = structInfo + "- shortcut for the action: " + this->shortcut.toStdString() + "\n";
+	std::string keyShortcut;
+	if (this->shortcut == nullptr) {
+		keyShortcut.append("Unknwon");
+	} else {
+		QKeySequence keySeq(this->shortcut->key());
+		if (keySeq.isEmpty() == true) {
+			keyShortcut.append("Undefined");
+		} else {
+			keyShortcut.append(keySeq.toString().toStdString());
+		}
+	}
+	structInfo = structInfo + "- shortcut key for the action: " + keyShortcut + "\n";
 	structInfo = structInfo + "- long command for the action: " + this->longCmd + "\n";
 	structInfo = structInfo + "- help for the action: " + this->help + "\n";
 
@@ -140,7 +160,7 @@ std::string main_window_json_data::MainWindowJsonData::print() const {
 CONST_GETTER(main_window_json_data::MainWindowJsonData::getKey, std::string, this->key)
 CONST_GETTER(main_window_json_data::MainWindowJsonData::getName, std::string, this->name)
 BASE_GETTER(main_window_json_data::MainWindowJsonData::getState, main_window_shared_types::state_e, this->state)
-CONST_GETTER(main_window_json_data::MainWindowJsonData::getShortcut, key_sequence::KeySequence, this->shortcut)
+PTR_GETTER(main_window_json_data::MainWindowJsonData::getShortcut, QShortcut, this->shortcut)
 CONST_GETTER(main_window_json_data::MainWindowJsonData::getLongCmd, std::string, this->longCmd)
 CONST_GETTER(main_window_json_data::MainWindowJsonData::getHelp, std::string, this->help)
 CONST_GETTER(main_window_json_data::MainWindowJsonData::getActionParameters, auto, this->actionParameters)
@@ -162,8 +182,8 @@ void main_window_json_data::MainWindowJsonData::setValueFromMemberString(const s
 		const main_window_shared_types::state_e * const statePtr(static_cast<const main_window_shared_types::state_e *>(value));
 		this->state = *statePtr;
 	} else if (name.compare("Shortcut") == 0) {
-		const key_sequence::KeySequence * const shortcutPtr(static_cast<const key_sequence::KeySequence *>(value));
-		this->shortcut = *shortcutPtr;
+		const Qt::Key * const shortcutKeyPtr(static_cast<const Qt::Key *>(value));
+		this->shortcut->setKey(*shortcutKeyPtr);
 	} else if (name.compare("LongCmd") == 0) {
 		const std::string * const strPtr(static_cast<const std::string *>(value));
 		this->longCmd = *strPtr;

@@ -81,6 +81,17 @@ void main_window_ctrl::MainWindowCtrl::connectSignals() {
 
 	QINFO_PRINT(global_types::qinfo_level_e::ZERO, mainWindowCtrlOverall,  "Connect signals");
 
+	for(std::map<std::string, main_window_json_data::MainWindowJsonData *>::const_iterator data = this->actionData.cbegin(); data != this->actionData.cend(); data++) {
+		main_window_json_data::MainWindowJsonData * commandData(data->second);
+		QMetaObject::Connection conn = connect(commandData->getShortcut(), &QShortcut::activated,
+			[=] () {
+				QINFO_PRINT(global_types::qinfo_level_e::ZERO, mainWindowCtrlOverall,  "Changing state " << QString::fromStdString(commandData->getName()));
+				this->changeWindowState(commandData->getState());
+			}
+		);
+		QEXCEPTION_ACTION_COND((static_cast<bool>(conn) == false), throw, "Unable to connect shortcut for key " << static_cast<Qt::Key>(commandData->getShortcut()->key()[0]) << " to trigger a change of controller state to " << commandData->getState());
+	}
+
 	// show hide menubar
 	connect(this->toggleShowMenuBarKey, &QShortcut::activated, this, &main_window_ctrl::MainWindowCtrl::toggleShowMenubar);
 

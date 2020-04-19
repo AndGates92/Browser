@@ -75,6 +75,16 @@ namespace main_window_ctrl_base {
 			 */
 			virtual void keyReleaseEvent(QKeyEvent * event) = 0;
 
+		signals:
+			/**
+			 * @brief Function: void windowStateChanged(const main_window_shared_types::state_e & nextState)
+			 *
+			 * \param nextState: state the window is requested to go into.
+			 *
+			 * This function sets the state of window
+			 */
+			void windowStateChanged(const main_window_shared_types::state_e & nextState);
+
 		protected:
 			/**
 			 * @brief tab commands and information

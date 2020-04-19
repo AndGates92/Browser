@@ -12,6 +12,7 @@
 #include <set>
 
 #include <qt5/QtCore/QLoggingCategory>
+#include <qt5/QtWidgets/QShortcut>
 
 #include "key_sequence.h"
 #include "global_classes.h"
@@ -58,7 +59,7 @@ namespace main_window_json_data {
 		public:
 
 			/**
-			 * @brief Function: static main_window_json_data::MainWindowJsonData * makeJsonData(const std::string & jsonKey, const std::string & nameKeyValue, const main_window_shared_types::state_e & stateKeyValue, const key_sequence::KeySequence & shortcutKeyValue, const std::string & longCmdKeyValue, const std::string & helpKeyValue)
+			 * @brief Function: static main_window_json_data::MainWindowJsonData * makeJsonData(const std::string & jsonKey, const std::string & nameKeyValue, const main_window_shared_types::state_e & stateKeyValue, QShortcut * shortcutKeyValue, const std::string & longCmdKeyValue, const std::string & helpKeyValue)
 			 *
 			 * \param jsonKey: key in te json file
 			 * \param nameKeyValue: name of the action
@@ -69,10 +70,10 @@ namespace main_window_json_data {
 			 *
 			 * this function constructs a new instance of class MainWindowJsonData
 			 */
-			static main_window_json_data::MainWindowJsonData * makeJsonData(const std::string & jsonKey, const std::string & nameKeyValue, const main_window_shared_types::state_e & stateKeyValue, const key_sequence::KeySequence & shortcutKeyValue, const std::string & longCmdKeyValue, const std::string & helpKeyValue);
+			static main_window_json_data::MainWindowJsonData * makeJsonData(const std::string & jsonKey, const std::string & nameKeyValue, const main_window_shared_types::state_e & stateKeyValue, QShortcut * shortcutKeyValue, const std::string & longCmdKeyValue, const std::string & helpKeyValue);
 
 			/**
-			 * @brief Function: MainWindowJsonData(const std::string & jsonKey = std::string(), const std::string & nameKeyValue, const main_window_shared_types::state_e & stateKeyValue, const key_sequence::KeySequence & shortcutKeyValue, const std::string & longCmdKeyValue, const std::string & helpKeyValue)
+			 * @brief Function: MainWindowJsonData(const std::string & jsonKey = std::string(), const std::string & nameKeyValue, const main_window_shared_types::state_e & stateKeyValue, QShortcut * shortcutKeyValue, const std::string & longCmdKeyValue, const std::string & helpKeyValue)
 			 *
 			 * \param jsonKey: key in te json file
 			 * \param nameKeyValue: name of the action
@@ -83,7 +84,17 @@ namespace main_window_json_data {
 			 *
 			 * json data constructor
 			 */
-			explicit MainWindowJsonData(const std::string & jsonKey = std::string(), const std::string & nameKeyValue = std::string(), const main_window_shared_types::state_e & stateKeyValue = main_window_shared_types::state_e::IDLE, const key_sequence::KeySequence & shortcutKeyValue = key_sequence::KeySequence(QString::null), const std::string & longCmdKeyValue = std::string(), const std::string & helpKeyValue = std::string());
+			explicit MainWindowJsonData(const std::string & jsonKey = std::string(), const std::string & nameKeyValue = std::string(), const main_window_shared_types::state_e & stateKeyValue = main_window_shared_types::state_e::IDLE, QShortcut * shortcutKeyValue = Q_NULLPTR, const std::string & longCmdKeyValue = std::string(), const std::string & helpKeyValue = std::string());
+
+			/**
+			 * @brief Function: MainWindowJsonData(const std::string & jsonKey, QWidget * parent)
+			 *
+			 * \param jsonKey: key in te json file
+			 * \param parent: parent of widgets
+			 *
+			 * json data constructor
+			 */
+			MainWindowJsonData(const std::string & jsonKey, QWidget * parent);
 
 			// Move and copy constructor
 			/**
@@ -197,13 +208,13 @@ namespace main_window_json_data {
 			main_window_shared_types::state_e getState() const;
 
 			/**
-			 * @brief Function: const key_sequence::KeySequence getShortcut() const
+			 * @brief Function: const QShortcut * getShortcut() const
 			 *
 			 * \return shortcut for the action
 			 *
 			 * This functions returns the shortcut for the action
 			 */
-			const key_sequence::KeySequence getShortcut() const;
+			QShortcut * getShortcut() const;
 
 			/**
 			 * @brief Function: const std::string getLongCmd() const
@@ -266,7 +277,7 @@ namespace main_window_json_data {
 			 * @brief shortcut associated with the action
 			 *
 			 */
-			key_sequence::KeySequence shortcut;
+			QShortcut * shortcut;
 
 			/**
 			 * @brief long command the user has to type to trigger the action
