@@ -37,15 +37,16 @@ namespace main_window_ctrl_base {
 		public:
 
 			/**
-			 * @brief Function: explicit MainWindowCtrlBase(QSharedPointer<main_window_core::MainWindowCore> core, QWidget * parent = QString::null, QString jsonFileName = QString::null)
+			 * @brief Function: explicit MainWindowCtrlBase(QSharedPointer<main_window_core::MainWindowCore> core, QWidget * window, QWidget * parent = QString::null, QString jsonFileName = QString::null)
 			 *
 			 * \param core: main window core
-			 * \param parent: parent window
+			 * \param parent: parent windget
+			 * \param window: window controlled
 			 * \param jsonFileName: JSON filename
 			 *
 			 * Main window control base class constructor
 			 */
-			explicit MainWindowCtrlBase(QSharedPointer<main_window_core::MainWindowCore> core, QWidget * parent = Q_NULLPTR, QString jsonFileName = QString::null);
+			explicit MainWindowCtrlBase(QSharedPointer<main_window_core::MainWindowCore> core, QWidget * window, QWidget * parent = Q_NULLPTR, QString jsonFileName = QString::null);
 
 			/**
 			 * @brief Function: virtual ~MainWindowCtrlBase()
@@ -86,6 +87,13 @@ namespace main_window_ctrl_base {
 			void windowStateChanged(const main_window_shared_types::state_e & nextState);
 
 		protected:
+
+			/**
+			 * @brief window controlled
+			 *
+			 */
+			QWidget * window;
+
 			/**
 			 * @brief tab commands and information
 			 *

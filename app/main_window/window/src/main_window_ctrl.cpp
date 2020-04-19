@@ -22,7 +22,7 @@ Q_LOGGING_CATEGORY(mainWindowCtrlOverall, "mainWindowCtrl.overall", MSG_TYPE_LEV
 Q_LOGGING_CATEGORY(mainWindowCtrlUserInput, "mainWindowCtrl.userInput", MSG_TYPE_LEVEL)
 Q_LOGGING_CATEGORY(mainWindowCtrlSearch, "mainWindowCtrl.search", MSG_TYPE_LEVEL)
 
-main_window_ctrl::MainWindowCtrl::MainWindowCtrl(QSharedPointer<main_window_core::MainWindowCore> core, QWidget * parent) : main_window_ctrl_base::MainWindowCtrlBase(core, parent, main_window_ctrl::commandFileFullPath), tabctrl(new main_window_ctrl_tab::MainWindowCtrlTab(core, this)) {
+main_window_ctrl::MainWindowCtrl::MainWindowCtrl(QSharedPointer<main_window_core::MainWindowCore> core, QWidget * window, QWidget * parent) : main_window_ctrl_base::MainWindowCtrlBase(core, window, parent, main_window_ctrl::commandFileFullPath), tabctrl(new main_window_ctrl_tab::MainWindowCtrlTab(core, window, this)) {
 
 	// Shortcuts
 	this->createShortcuts();

@@ -189,7 +189,7 @@ void main_window::MainWindow::createCtrl() {
 	QINFO_PRINT(global_types::qinfo_level_e::ZERO, mainWindowOverall,  "Create controller");
 
 	// main window control class
-	this->ctrl = new main_window_ctrl::MainWindowCtrl(this->windowCore, this);
+	this->ctrl = new main_window_ctrl::MainWindowCtrl(this->windowCore, this, this);
 }
 
 void main_window::MainWindow::closeWindow() {

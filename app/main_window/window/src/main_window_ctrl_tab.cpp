@@ -25,7 +25,7 @@ Q_LOGGING_CATEGORY(mainWindowCtrlTabTabs, "mainWindowCtrlTab.tabs", MSG_TYPE_LEV
 Q_LOGGING_CATEGORY(mainWindowCtrlTabUrl, "mainWindowCtrlTab.url", MSG_TYPE_LEVEL)
 
 
-main_window_ctrl_tab::MainWindowCtrlTab::MainWindowCtrlTab(QSharedPointer<main_window_core::MainWindowCore> core, QWidget * parent) : main_window_ctrl_base::MainWindowCtrlBase(core, parent, main_window_ctrl_tab::commandFileFullPath) {
+main_window_ctrl_tab::MainWindowCtrlTab::MainWindowCtrlTab(QSharedPointer<main_window_core::MainWindowCore> core, QWidget * window, QWidget * parent) : main_window_ctrl_base::MainWindowCtrlBase(core, window, parent, main_window_ctrl_tab::commandFileFullPath) {
 
 	// Shortcuts
 	this->createShortcuts();
