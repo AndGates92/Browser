@@ -26,6 +26,13 @@ main_window_ctrl_base::MainWindowCtrlBase::MainWindowCtrlBase(QSharedPointer<mai
 	QINFO_PRINT(global_types::qinfo_level_e::ZERO, mainWindowCtrlBaseOverall,  "Main window control base classe constructor");
 
 	this->populateActionData();
+
+	// Shortcuts
+	this->createShortcuts();
+
+	// Connect signals and slots
+	this->connectSignals();
+
 }
 
 main_window_ctrl_base::MainWindowCtrlBase::~MainWindowCtrlBase() {
@@ -59,6 +66,37 @@ void main_window_ctrl_base::MainWindowCtrlBase::printUserInput(const main_window
 	}
 
 	this->windowCore->bottomStatusBar->getUserInputText()->setText(textLabel);
+
+}
+
+void main_window_ctrl_base::MainWindowCtrlBase::createShortcuts() {
+	QINFO_PRINT(global_types::qinfo_level_e::ZERO, mainWindowCtrlBaseOverall,  "Create shortcuts");
+
+//	this->createExtraShortcuts();
+}
+
+void main_window_ctrl_base::MainWindowCtrlBase::connectSignals() {
+
+	QINFO_PRINT(global_types::qinfo_level_e::ZERO, mainWindowCtrlBaseOverall,  "Connect signals");
+
+	QWidget * parent = this->parentWidget();
+
+	for(std::map<std::string, main_window_json_data::MainWindowJsonData *>::const_iterator data = this->actionData.cbegin(); data != this->actionData.cend(); data++) {
+		main_window_json_data::MainWindowJsonData * commandData(data->second);
+		QShortcut * shortcut = new QShortcut(parent);
+		shortcut->setKey(commandData->getShortcut());
+		shortcutVec.push_back(shortcut);
+		QMetaObject::Connection connection = connect(shortcut, &QShortcut::activated,
+			[=] () {
+				QINFO_PRINT(global_types::qinfo_level_e::ZERO, mainWindowCtrlBaseOverall,  "Command " << QString::fromStdString(commandData->getName()) << " - moving to state " << commandData->getState());
+				this->changeWindowState(commandData->getState());
+			}
+		);
+
+		QEXCEPTION_ACTION_COND((static_cast<bool>(connection) == false), throw, "Unable to connect shortcut for key " << (commandData->getShortcut()) << " to trigger a change of controller state to " << commandData->getState());
+	}
+
+//	this->connectExtraSignals();
 
 }
 
@@ -135,9 +173,8 @@ void main_window_ctrl_base::MainWindowCtrlBase::populateActionData() {
 			std::string value(valIter->second.toStdString());
 
 			// If key is not in actionData map, then it must be added
-//			main_window_json_data::MainWindowJsonData * const newData(new main_window_json_data::MainWindowJsonData(key, this->parentWidget()));
-			// TODO BUG: setting parent to nullptr doesn't allow the shortcut to be triggered
-			main_window_json_data::MainWindowJsonData * const newData(new main_window_json_data::MainWindowJsonData(key, nullptr));
+			main_window_json_data::MainWindowJsonData * const newData(new main_window_json_data::MainWindowJsonData(key));
+
 			//std::pair<std::string, main_window_json_data::MainWindowJsonData *>dataPair(key, newData);
 			std::pair<std::string, main_window_json_data::MainWindowJsonData *> dataPair;
 

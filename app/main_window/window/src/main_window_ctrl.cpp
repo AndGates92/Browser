@@ -25,78 +25,32 @@ Q_LOGGING_CATEGORY(mainWindowCtrlSearch, "mainWindowCtrl.search", MSG_TYPE_LEVEL
 main_window_ctrl::MainWindowCtrl::MainWindowCtrl(QSharedPointer<main_window_core::MainWindowCore> core, QWidget * window, QWidget * parent) : main_window_ctrl_base::MainWindowCtrlBase(core, window, parent, main_window_ctrl::commandFileFullPath), tabctrl(new main_window_ctrl_tab::MainWindowCtrlTab(core, window, this)) {
 
 	// Shortcuts
-	this->createShortcuts();
+	this->createExtraShortcuts();
 
 	// Connect signals and slots
-	this->connectSignals();
+	this->connectExtraSignals();
 
 	// Update info label - as no tabs in the window, then updateInfo must be explicitely called
 	const int tabIndex = this->windowCore->getCurrentTabIndex();
 	this->updateInfo(tabIndex);
-
-	// TODO - delete after automatic testing has been put in place
-	// Testing of find capabilities into JSON file
-	// Key not found
-	QMap<QString, QString> testKey1 = this->commands.findKeyValue("dada");
-	QEXCEPTION_ACTION_COND((testKey1.empty() == false), throw, "Looking for inexistent key dada -> map is not empty");
-	// Key found
-	QMap<QString, QString> testKey = this->commands.findKeyValue("Help");
-
-	for(QMap<QString, QString>::const_iterator iter = testKey.cbegin(); iter != testKey.cend(); iter++) {
-		QINFO_PRINT(global_types::qinfo_level_e::ZERO, mainWindowCtrlOverall,  "key " << iter.key() << " value " << iter.value());
-	}
 }
 
 main_window_ctrl::MainWindowCtrl::~MainWindowCtrl() {
-
-	// deleting shortcuts
-	if (this->toggleShowMenuBarKey != Q_NULLPTR) {
-		delete this->toggleShowMenuBarKey;
-	}
-	if (this->closeKey != Q_NULLPTR) {
-		delete this->closeKey;
-	}
-
 	// deleting tab control
 	if (this->tabctrl != Q_NULLPTR) {
 		delete this->tabctrl;
 	}
 }
 
-void main_window_ctrl::MainWindowCtrl::createShortcuts() {
+void main_window_ctrl::MainWindowCtrl::createExtraShortcuts() {
 	QINFO_PRINT(global_types::qinfo_level_e::ZERO, mainWindowCtrlOverall,  "Create shortcuts");
 
-	QWidget * parent = this->parentWidget();
-
-	// m will hide/show the menu bar
-	this->toggleShowMenuBarKey = new QShortcut(parent);
-	this->toggleShowMenuBarKey->setKey(Qt::Key_M);
-
-	// q will close the browser
-	this->closeKey = new QShortcut(parent);
-	this->closeKey->setKey(Qt::Key_Q);
 }
 
-void main_window_ctrl::MainWindowCtrl::connectSignals() {
+void main_window_ctrl::MainWindowCtrl::connectExtraSignals() {
 
 	QINFO_PRINT(global_types::qinfo_level_e::ZERO, mainWindowCtrlOverall,  "Connect signals");
 
-	for(std::map<std::string, main_window_json_data::MainWindowJsonData *>::const_iterator data = this->actionData.cbegin(); data != this->actionData.cend(); data++) {
-		main_window_json_data::MainWindowJsonData * commandData(data->second);
-		QMetaObject::Connection conn = connect(commandData->getShortcut(), &QShortcut::activated,
-			[=] () {
-				QINFO_PRINT(global_types::qinfo_level_e::ZERO, mainWindowCtrlOverall,  "Changing state " << QString::fromStdString(commandData->getName()));
-				this->changeWindowState(commandData->getState());
-			}
-		);
-		QEXCEPTION_ACTION_COND((static_cast<bool>(conn) == false), throw, "Unable to connect shortcut for key " << static_cast<Qt::Key>(commandData->getShortcut()->key()[0]) << " to trigger a change of controller state to " << commandData->getState());
-	}
-
-	// show hide menubar
-	connect(this->toggleShowMenuBarKey, &QShortcut::activated, this, &main_window_ctrl::MainWindowCtrl::toggleShowMenubar);
-
-	// Close window
-	connect(this->closeKey, &QShortcut::activated, this, &main_window_ctrl::MainWindowCtrl::closeWindow);
 	connect(this->windowCore->topMenuBar->getFileMenu()->exitAction, &QAction::triggered, this, &main_window_ctrl::MainWindowCtrl::closeWindow);
 
 }
@@ -225,11 +179,25 @@ void main_window_ctrl::MainWindowCtrl::closeWindow() {
 void main_window_ctrl::MainWindowCtrl::postprocessWindowStateChange() {
 	const main_window_shared_types::state_e windowState = this->windowCore->getMainWindowState();
 	// If requesting to go to the idle state, do not 
-	if (windowState == main_window_shared_types::state_e::IDLE) {
-		this->setAllShortcutEnabledProperty(true);
-		this->printUserInput(main_window_shared_types::text_action_e::CLEAR);
-	} else {
-		this->setAllShortcutEnabledProperty(false);
+
+	switch (windowState) {
+		case main_window_shared_types::state_e::IDLE:
+			this->setAllShortcutEnabledProperty(true);
+			this->printUserInput(main_window_shared_types::text_action_e::CLEAR);
+			break;
+		case main_window_shared_types::state_e::QUIT:
+			this->closeWindow();
+			break;
+		case main_window_shared_types::state_e::TOGGLE_MENUBAR:
+			this->toggleShowMenubar();
+			this->changeWindowState(main_window_shared_types::state_e::IDLE);
+			break;
+		case main_window_shared_types::state_e::COMMAND:
+			this->setAllShortcutEnabledProperty(false);
+			break;
+		default: 
+			QEXCEPTION_ACTION(throw, "Unable to postprocess transaction to " << windowState << " is valid as state " << windowState << " doesn't have a defined postprocess action");
+			break;
 	}
 }
 
@@ -237,12 +205,16 @@ bool main_window_ctrl::MainWindowCtrl::isValidWindowState(const main_window_shar
 	bool isValid = false;
 	const main_window_shared_types::state_e windowState = this->windowCore->getMainWindowState();
 
+	QINFO_PRINT(global_types::qinfo_level_e::ZERO, mainWindowCtrlOverall,  "DADA " << __func__ << " going to state " << requestedWindowState);
+
 	switch (requestedWindowState) {
 		case main_window_shared_types::state_e::IDLE:
 			// It is always possible to go to the idle state
 			isValid = true;
 			break;
+		case main_window_shared_types::state_e::QUIT:
 		case main_window_shared_types::state_e::COMMAND:
+		case main_window_shared_types::state_e::TOGGLE_MENUBAR:
 			// It is only possible to start a new command if in the idle state
 			isValid = (windowState == main_window_shared_types::state_e::IDLE);
 			break;

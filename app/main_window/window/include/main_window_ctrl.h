@@ -133,33 +133,19 @@ namespace main_window_ctrl {
 			 */
 			main_window_ctrl_tab::MainWindowCtrlTab * tabctrl;
 
-			// ================================ START SHORTCUTS ========================================//
 			/**
-			 * @brief shortcut to toggle visibility of the menu bar
-			 *
-			 */
-			QShortcut * toggleShowMenuBarKey;
-
-			/**
-			 * @brief shortcut to close the main window
-			 *
-			 */
-			QShortcut * closeKey;
-			// ================================ END SHORTCUTS ========================================//
-
-			/**
-			 * @brief Function: void createShortcuts() override
+			 * @brief Function: virtual void createExtraShortcuts() override
 			 *
 			 * This function creates shortcuts for the items on the window
 			 */
-			void createShortcuts() override;
+			virtual void createExtraShortcuts() override;
 
 			/**
-			 * @brief Function: void connectSignals() override
+			 * @brief Function: virtual void connectExtraSignals() override
 			 *
 			 * This function connects signals and slots within main window controller
 			 */
-			void connectSignals() override;
+			virtual void connectExtraSignals() override;
 
 			/**
 			 * @brief Function: virtual void postprocessWindowStateChange() override

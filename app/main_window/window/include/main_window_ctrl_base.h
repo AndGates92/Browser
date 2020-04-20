@@ -95,6 +95,12 @@ namespace main_window_ctrl_base {
 			QWidget * window;
 
 			/**
+			 * @brief vector of shortcuts for the controller
+			 *
+			 */
+			QVector<QShortcut *> shortcutVec;
+
+			/**
 			 * @brief tab commands and information
 			 *
 			 */
@@ -109,18 +115,18 @@ namespace main_window_ctrl_base {
 			std::map<std::string, main_window_json_data::MainWindowJsonData *> actionData;
 
 			/**
-			 * @brief Function: virtual void createShortcuts()
+			 * @brief Function: virtual void createExtraShortcuts()
 			 *
-			 * This function creates shortcuts for the items on the window
+			 * This function creates shortcuts for the items on the window a part from those listed in the JSON file
 			 */
-			virtual void createShortcuts() = 0;
+			virtual void createExtraShortcuts() = 0;
 
 			/**
-			 * @brief Function: virtual void connectSignals()
+			 * @brief Function: virtual void connectExtraSignals()
 			 *
-			 * This function connects signals and slots within main window controller
+			 * This function connects extra signals and slots within main window controller a part from those listed in the JSON file
 			 */
-			virtual void connectSignals() = 0;
+			virtual void connectExtraSignals() = 0;
 
 			/**
 			 * @brief Function: virtual void setStateAction(const main_window_shared_types::state_e & windowState, QKeyEvent * event)
@@ -216,6 +222,20 @@ namespace main_window_ctrl_base {
 			 * This function process the value read from the JSON file in order to easily construct a KeySequence object
 			 */
 			std::string processShortcut(const std::string & value);
+
+			/**
+			 * @brief Function: virtual void createShortcuts() final
+			 *
+			 * This function creates shortcuts for the items on the window
+			 */
+			virtual void createShortcuts() final;
+
+			/**
+			 * @brief Function: virtual void connectSignals() final
+			 *
+			 * This function connects signals and slots within main window controller
+			 */
+			virtual void connectSignals() final;
 
 		private:
 			// Move and copy constructor

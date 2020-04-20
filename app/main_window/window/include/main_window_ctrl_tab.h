@@ -229,64 +229,19 @@ namespace main_window_ctrl_tab {
 			void createContentPathTextFromSource(const main_window_shared_types::page_type_e & type, const QString & source);
 
 		private:
-
-			// ================================ START SHORTCUTS ========================================//
 			/**
-			 * @brief shortcut to open a new tab
-			 *
-			 */
-			QShortcut * openNewTabKey;
-
-			/**
-			 * @brief shortcut to search in the current tab
-			 *
-			 */
-			QShortcut * newSearchTabKey;
-
-			/**
-			 * @brief shortcut to close a tab
-			 *
-			 */
-			QShortcut * closeTabKey;
-
-			/**
-			 * @brief shortcut to move left in the tab bar
-			 *
-			 */
-			QShortcut * moveLeftKey;
-
-			/**
-			 * @brief shortcut to move right in the tab bar
-			 *
-			 */
-			QShortcut * moveRightKey;
-
-			/**
-			 * @brief shortcut to reload the content of a bar
-			 *
-			 */
-			QShortcut * reloadTabKey;
-
-			/**
-			 * @brief shortcut to move tab to the left
-			 *
-			 */
-			QShortcut * moveTabToKey;
-			// ================================ END SHORTCUTS ========================================//
-
-			/**
-			 * @brief Function: void createShortcuts() override
+			 * @brief Function: virtual void createExtraShortcuts() override
 			 *
 			 * This function creates shortcuts for the items on the window
 			 */
-			void createShortcuts() override;
+			virtual void createExtraShortcuts() override;
 
 			/**
-			 * @brief Function: void connectSignals() override
+			 * @brief Function: virtual void connectExtraSignals() override
 			 *
 			 * This function connects signals and slots within main window controller
 			 */
-			void connectSignals() override;
+			virtual void connectExtraSignals() override;
 
 			/**
 			 * @brief Function: virtual bool isValidWindowState(const main_window_shared_types::state_e & requestedWindowState) override

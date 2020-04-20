@@ -28,83 +28,24 @@ Q_LOGGING_CATEGORY(mainWindowCtrlTabUrl, "mainWindowCtrlTab.url", MSG_TYPE_LEVEL
 main_window_ctrl_tab::MainWindowCtrlTab::MainWindowCtrlTab(QSharedPointer<main_window_core::MainWindowCore> core, QWidget * window, QWidget * parent) : main_window_ctrl_base::MainWindowCtrlBase(core, window, parent, main_window_ctrl_tab::commandFileFullPath) {
 
 	// Shortcuts
-	this->createShortcuts();
+	this->createExtraShortcuts();
 
 	// Connect signals and slots
-	this->connectSignals();
+	this->connectExtraSignals();
 
 }
 
 main_window_ctrl_tab::MainWindowCtrlTab::~MainWindowCtrlTab() {
 
-	// deleting shortcuts
-	if (this->openNewTabKey != Q_NULLPTR) {
-		delete this->openNewTabKey;
-	}
-	if (this->newSearchTabKey != Q_NULLPTR) {
-		delete this->newSearchTabKey;
-	}
-	if (this->closeTabKey != Q_NULLPTR) {
-		delete this->closeTabKey;
-	}
-	if (this->moveTabToKey != Q_NULLPTR) {
-		delete this->moveTabToKey;
-	}
-	if (this->moveLeftKey != Q_NULLPTR) {
-		delete this->moveLeftKey;
-	}
-	if (this->moveRightKey != Q_NULLPTR) {
-		delete this->moveRightKey;
-	}
-	if (this->reloadTabKey != Q_NULLPTR) {
-		delete this->reloadTabKey;
-	}
-
 }
 
-void main_window_ctrl_tab::MainWindowCtrlTab::createShortcuts() {
+void main_window_ctrl_tab::MainWindowCtrlTab::createExtraShortcuts() {
 	QINFO_PRINT(global_types::qinfo_level_e::ZERO, mainWindowCtrlTabOverall,  "Create shortcuts");
 
-	QWidget * parent = this->parentWidget();
-
-	// o will open a new tab
-	this->openNewTabKey = new QShortcut(parent);
-	this->openNewTabKey->setKey(Qt::Key_O);
-
-	// s will search on the current tab
-	this->newSearchTabKey = new QShortcut(parent);
-	this->newSearchTabKey->setKey(Qt::Key_S);
-
-	// c will close a tab
-	this->closeTabKey = new QShortcut(parent);
-	this->closeTabKey->setKey(Qt::Key_C);
-
-	// t will move tab in the tab bar
-	this->moveTabToKey = new QShortcut(parent);
-	this->moveTabToKey->setKey(Qt::Key_T);
-
-	// h will move left in the tab bar
-	this->moveLeftKey = new QShortcut(parent);
-	this->moveLeftKey->setKey(Qt::Key_H);
-
-	// l will move right in the tab bar
-	this->moveRightKey = new QShortcut(parent);
-	this->moveRightKey->setKey(Qt::Key_L);
-
-	// r will refresh a webpage
-	this->reloadTabKey = new QShortcut(parent);
-	this->reloadTabKey->setKey(Qt::Key_R);
 }
 
-void main_window_ctrl_tab::MainWindowCtrlTab::connectSignals() {
+void main_window_ctrl_tab::MainWindowCtrlTab::connectExtraSignals() {
 	QINFO_PRINT(global_types::qinfo_level_e::ZERO, mainWindowCtrlTabOverall,  "Connect signals");
-	connect(this->openNewTabKey, &QShortcut::activated, this, &main_window_ctrl_tab::MainWindowCtrlTab::setUpOpenNewTab);
-	connect(this->newSearchTabKey, &QShortcut::activated, this, &main_window_ctrl_tab::MainWindowCtrlTab::setUpNewSearchTab);
-	connect(this->closeTabKey, &QShortcut::activated, this, &main_window_ctrl_tab::MainWindowCtrlTab::setUpCloseTab);
-	connect(this->moveTabToKey, &QShortcut::activated, this, &main_window_ctrl_tab::MainWindowCtrlTab::setUpMoveTab);
-	connect(this->moveLeftKey, &QShortcut::activated, this, &main_window_ctrl_tab::MainWindowCtrlTab::setUpMoveLeft);
-	connect(this->moveRightKey, &QShortcut::activated, this, &main_window_ctrl_tab::MainWindowCtrlTab::setUpMoveRight);
-	connect(this->reloadTabKey, &QShortcut::activated, this, &main_window_ctrl_tab::MainWindowCtrlTab::setUpReloadTabUrl);
 
 	// open tab action (from fileMenu)
 	connect(this->windowCore->topMenuBar->getFileMenu()->openTabAction, &QAction::triggered, this, &main_window_ctrl_tab::MainWindowCtrlTab::setUpOpenNewTab);
