@@ -37,6 +37,13 @@ main_window_ctrl_base::MainWindowCtrlBase::MainWindowCtrlBase(QSharedPointer<mai
 
 main_window_ctrl_base::MainWindowCtrlBase::~MainWindowCtrlBase() {
 	QINFO_PRINT(global_types::qinfo_level_e::ZERO, mainWindowCtrlBaseOverall,  "Main window control base class destructor");
+
+	for(std::map<std::string, main_window_json_data::MainWindowJsonData *>::const_iterator data = this->actionData.cbegin(); data != this->actionData.cend(); data++) {
+		main_window_json_data::MainWindowJsonData * commandData(data->second);
+
+		QINFO_PRINT(global_types::qinfo_level_e::ZERO, mainWindowCtrlBaseOverall,  "Delete command data " << *commandData);
+		delete commandData;
+	}
 }
 
 void main_window_ctrl_base::MainWindowCtrlBase::printUserInput(const main_window_shared_types::text_action_e action, const QString text) {
@@ -207,7 +214,7 @@ void main_window_ctrl_base::MainWindowCtrlBase::populateActionData() {
 	}
 
 	for (const auto & data : this->actionData)
-		QINFO_PRINT(global_types::qinfo_level_e::ZERO, mainWindowCtrlBaseUserInput,  "Data for key " << QString::fromStdString(data.first) << " is " << data.second->qprint());
+		QINFO_PRINT(global_types::qinfo_level_e::ZERO, mainWindowCtrlBaseUserInput,  "Data for key " << QString::fromStdString(data.first) << " is " << *(data.second));
 
 }
 
