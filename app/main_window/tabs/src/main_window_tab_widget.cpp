@@ -301,11 +301,6 @@ void main_window_tab_widget::MainWindowTabWidget::openFileInCurrentTab(const QSt
 
 	const main_window_shared_types::page_type_e desiredTabType = main_window_shared_types::page_type_e::TEXT;
 
-	// START -> data test
-	const char * filename = static_cast<const char *>(data);
-	QINFO_PRINT(global_types::qinfo_level_e::ZERO, mainWindowTabWidgetTabs,  "data test filename: " << filename);
-	// END -> data test
-
 	// Disable events while updating tabs
 	this->setUpdatesEnabled(false);
 

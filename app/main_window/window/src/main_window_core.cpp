@@ -23,8 +23,6 @@ main_window_core::MainWindowCore::MainWindowCore(QWidget * parentWindow) : mainW
 
 	QINFO_PRINT(global_types::qinfo_level_e::ZERO, mainWindowCoreOverall,  "Main window core constructor");
 
-	// TODO: delete when commandmenu is in place
-	global_functions::QStringToQEnum<Qt::Key>("Key_A");
 }
 
 main_window_core::MainWindowCore::MainWindowCore(const main_window_core::MainWindowCore & rhs) : mainWidget(rhs.mainWidget), tabs(rhs.tabs), topMenuBar(rhs.topMenuBar), bottomStatusBar(rhs.bottomStatusBar), cmdMenu(rhs.cmdMenu), mainWindowState(rhs.mainWindowState), offsetType(rhs.offsetType), userText(rhs.userText) {
