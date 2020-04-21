@@ -205,8 +205,6 @@ bool main_window_ctrl::MainWindowCtrl::isValidWindowState(const main_window_shar
 	bool isValid = false;
 	const main_window_shared_types::state_e windowState = this->windowCore->getMainWindowState();
 
-	QINFO_PRINT(global_types::qinfo_level_e::ZERO, mainWindowCtrlOverall,  "DADA " << __func__ << " going to state " << requestedWindowState);
-
 	switch (requestedWindowState) {
 		case main_window_shared_types::state_e::IDLE:
 			// It is always possible to go to the idle state
