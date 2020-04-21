@@ -82,6 +82,16 @@ main_window::MainWindow::~MainWindow() {
 	if (this->ctrl != Q_NULLPTR) {
 		delete this->ctrl;
 	}
+
+	const QList<QShortcut *> shortcuts = this->findChildren<QShortcut *>();
+
+	for (QShortcut * shortcut : shortcuts) {
+		if (shortcut != Q_NULLPTR) {
+			QINFO_PRINT(global_types::qinfo_level_e::ZERO, mainWindowCtrlOverall,  "Delete shortcut associated with key " << shortcut->key());
+			delete shortcut;
+		}
+	}
+
 }
 
 void main_window::MainWindow::customizeMainWidget() {

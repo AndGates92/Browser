@@ -44,6 +44,7 @@ main_window_ctrl_base::MainWindowCtrlBase::~MainWindowCtrlBase() {
 		QINFO_PRINT(global_types::qinfo_level_e::ZERO, mainWindowCtrlBaseOverall,  "Delete command data " << *commandData);
 		delete commandData;
 	}
+
 }
 
 void main_window_ctrl_base::MainWindowCtrlBase::printUserInput(const main_window_shared_types::text_action_e action, const QString text) {
@@ -88,9 +89,7 @@ void main_window_ctrl_base::MainWindowCtrlBase::connectSignals() {
 
 	for(std::map<std::string, main_window_json_data::MainWindowJsonData *>::const_iterator data = this->actionData.cbegin(); data != this->actionData.cend(); data++) {
 		main_window_json_data::MainWindowJsonData * commandData(data->second);
-		QShortcut * shortcut = new QShortcut(window);
-		shortcut->setKey(commandData->getShortcut());
-		shortcutVec.push_back(shortcut);
+		QShortcut * shortcut = new QShortcut(commandData->getShortcut(), window);
 		QMetaObject::Connection connection = connect(shortcut, &QShortcut::activated,
 			[=] () {
 				QINFO_PRINT(global_types::qinfo_level_e::ZERO, mainWindowCtrlBaseOverall,  "Command " << QString::fromStdString(commandData->getName()) << " - moving to state " << commandData->getState());
@@ -99,6 +98,7 @@ void main_window_ctrl_base::MainWindowCtrlBase::connectSignals() {
 		);
 
 		QEXCEPTION_ACTION_COND((static_cast<bool>(connection) == false), throw, "Unable to connect shortcut for key " << (commandData->getShortcut()) << " to trigger a change of controller state to " << commandData->getState());
+
 	}
 
 //	this->connectExtraSignals();

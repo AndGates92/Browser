@@ -32,14 +32,12 @@ menu::Menu::~Menu() {
 	if (this->winMenu != Q_NULLPTR) {
 		delete this->winMenu;
 	}
-	if (this->expandMenu != Q_NULLPTR) {
-		delete this->expandMenu;
-	}
 
 	// Do not call delete on the following members:
 	// - this->menuName -> not create with new;
 	// - this->menuBar -> pointer to the menu bar of the main window and it will be deleted while deleting the main window;
 	// - this->window -> pointer to the main window therefore it will be deleted after the menu;
+	// - this->expandMenu -> pointer to shortcut delete by the parent
 
 }
 

@@ -95,12 +95,6 @@ namespace main_window_ctrl_base {
 			QWidget * window;
 
 			/**
-			 * @brief vector of shortcuts for the controller
-			 *
-			 */
-			QVector<QShortcut *> shortcutVec;
-
-			/**
 			 * @brief tab commands and information
 			 *
 			 */
