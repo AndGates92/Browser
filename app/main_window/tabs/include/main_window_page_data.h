@@ -97,6 +97,13 @@ namespace main_window_page_data {
 			MainWindowPageData & operator=(main_window_page_data::MainWindowPageData && rhs);
 
 			/**
+			 * @brief Function: virtual ~MainWindowPageData()
+			 *
+			 * page data structure destructor
+			 */
+			virtual ~MainWindowPageData();
+
+			/**
 			 * @brief Function: friend bool operator==(const main_window_page_data::MainWindowPageData & rhs)
 			 *
 			 * \param lhs: left side class to compare
@@ -117,11 +124,34 @@ namespace main_window_page_data {
 			friend bool operator!=(const main_window_page_data::MainWindowPageData & lhs, const main_window_page_data::MainWindowPageData & rhs);
 
 			/**
-			 * @brief Function: ~MainWindowPageData()
+			 * @brief Function: friend QDebug & operator<<(QDebug & os, const main_window_page_data::MainWindowPageData & data)
 			 *
-			 * page data structure destructor
+			 * \param os: output stream to append the page data to
+			 * \param data: page data
+			 *
+			 * page data operator << overloading with QDebug
 			 */
-			~MainWindowPageData();
+			friend QDebug & operator<<(QDebug & os, const main_window_page_data::MainWindowPageData & data);
+
+			/**
+			 * @brief Function: friend QString & operator<<(QString & str, const main_window_page_data::MainWindowPageData & data)
+			 *
+			 * \param str: string to append the page data to
+			 * \param data: page data
+			 *
+			 * page data operator << overloading with QString
+			 */
+			friend QString & operator<<(QString & str, const main_window_page_data::MainWindowPageData & data);
+
+			/**
+			 * @brief Function: friend std::string & operator<<(std::string & str, const main_window_page_data::MainWindowPageData & data)
+			 *
+			 * \param str: string to append the page data to
+			 * \param data: page data
+			 *
+			 * page data operator << overloading with std::string
+			 */
+			friend std::string & operator<<(std::string & str, const main_window_page_data::MainWindowPageData & data);
 
 			/**
 			 * @brief Function: std::string print() const

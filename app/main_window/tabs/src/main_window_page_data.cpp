@@ -34,16 +34,34 @@ namespace main_window_page_data {
 		bool isSame = (lhs == rhs);
 		return !isSame;
 	}
+
+	QDebug & operator<<(QDebug & os, const main_window_page_data::MainWindowPageData & data) {
+		QString str(QString::null);
+		str << data;
+		os << str;
+		return os;
+	}
+
+	QString & operator<<(QString & str, const main_window_page_data::MainWindowPageData & data) {
+		str.append(data.qprint());
+		return str;
+	}
+
+	std::string & operator<<(std::string & str, const main_window_page_data::MainWindowPageData & data) {
+		str.append(data.print());
+		return str;
+	}
+
 }
 
 main_window_page_data::MainWindowPageData * main_window_page_data::MainWindowPageData::makePageData(const main_window_shared_types::page_type_e & type, const std::string src, const void * data) {
 	main_window_page_data::MainWindowPageData * newData = new main_window_page_data::MainWindowPageData(type, src, data);
-	QINFO_PRINT(global_types::qinfo_level_e::ZERO, mainWindowPageDataOverall,  "Creating page data: " << newData->qprint());
+	QINFO_PRINT(global_types::qinfo_level_e::ZERO, mainWindowPageDataOverall,  "Creating page data: " << *newData);
 	return newData;
 }
 
 main_window_page_data::MainWindowPageData::MainWindowPageData(main_window_shared_types::page_type_e pageType, std::string src, const void * pageData): type(pageType), source(src), data(pageData) {
-	QINFO_PRINT(global_types::qinfo_level_e::ZERO, mainWindowPageDataOverall,  "Page Data structure constructor. Data " << this->qprint());
+	QINFO_PRINT(global_types::qinfo_level_e::ZERO, mainWindowPageDataOverall,  "Page Data structure constructor. Data " << *this);
 
 }
 

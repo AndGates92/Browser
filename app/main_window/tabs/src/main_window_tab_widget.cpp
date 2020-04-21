@@ -156,8 +156,8 @@ void main_window_tab_widget::MainWindowTabWidget::changePageData(const int & ind
 
 	const main_window_page_data::MainWindowPageData * currentData = this->getPageData(index);
 	main_window_page_data::MainWindowPageData * newData = main_window_page_data::MainWindowPageData::makePageData(type, source.toStdString(), data);
-	QINFO_PRINT(global_types::qinfo_level_e::ZERO, mainWindowTabWidgetTabs, "Current data of tab at index " << index << " is " << currentData->qprint());
-	QINFO_PRINT(global_types::qinfo_level_e::ZERO, mainWindowTabWidgetTabs, "New data of tab at index " << index << " is " << newData->qprint());
+	QINFO_PRINT(global_types::qinfo_level_e::ZERO, mainWindowTabWidgetTabs, "Current data of tab at index " << index << " is " << *currentData);
+	QINFO_PRINT(global_types::qinfo_level_e::ZERO, mainWindowTabWidgetTabs, "New data of tab at index " << index << " is " << *newData);
 
 	if (currentData != newData) {
 		this->setPageData(index, newData);
