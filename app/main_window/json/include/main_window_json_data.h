@@ -105,6 +105,13 @@ namespace main_window_json_data {
 			 */
 			explicit MainWindowJsonData(main_window_json_data::MainWindowJsonData && rhs);
 
+			/**
+			 * @brief Function: virtual ~MainWindowJsonData()
+			 *
+			 * json data structure destructor
+			 */
+			virtual ~MainWindowJsonData();
+
 			// Move and copy assignment operators
 			/**
 			 * @brief Function: MainWindowJsonData & operator=(const main_window_json_data::MainWindowJsonData & rhs)
@@ -145,11 +152,34 @@ namespace main_window_json_data {
 			friend bool operator!=(const main_window_json_data::MainWindowJsonData & lhs, const main_window_json_data::MainWindowJsonData & rhs);
 
 			/**
-			 * @brief Function: ~MainWindowJsonData()
+			 * @brief Function: friend QDebug & operator<<(QDebug & os, const main_window_json_data::MainWindowJsonData & data)
 			 *
-			 * json data structure destructor
+			 * \param os: output stream to append the JSON data to
+			 * \param data: JSON data
+			 *
+			 * json data operator << overloading with QDebug
 			 */
-			~MainWindowJsonData();
+			friend QDebug & operator<<(QDebug & os, const main_window_json_data::MainWindowJsonData & data);
+
+			/**
+			 * @brief Function: friend QString & operator<<(QString & str, const main_window_json_data::MainWindowJsonData & data)
+			 *
+			 * \param str: string to append the JSON data to
+			 * \param data: JSON data
+			 *
+			 * json data operator << overloading with QString
+			 */
+			friend QString & operator<<(QString & str, const main_window_json_data::MainWindowJsonData & data);
+
+			/**
+			 * @brief Function: friend std::string & operator<<(std::string & str, const main_window_json_data::MainWindowJsonData & data)
+			 *
+			 * \param str: string to append the JSON data to 
+			 * \param data: JSON data
+			 *
+			 * json data operator << overloading with std::string
+			 */
+			friend std::string & operator<<(std::string & str, const main_window_json_data::MainWindowJsonData & data);
 
 			/**
 			 * @brief Function: std::string print() const

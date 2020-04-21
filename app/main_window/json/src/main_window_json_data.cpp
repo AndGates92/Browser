@@ -36,11 +36,28 @@ namespace main_window_json_data {
 		bool isSame = (lhs == rhs);
 		return !isSame;
 	}
+
+	QDebug & operator<<(QDebug & os, const main_window_json_data::MainWindowJsonData & data) {
+		QString str(QString::null);
+		str << data;
+		os << str;
+		return os;
+	}
+
+	QString & operator<<(QString & str, const main_window_json_data::MainWindowJsonData & data) {
+		str.append(data.qprint());
+		return str;
+	}
+
+	std::string & operator<<(std::string & str, const main_window_json_data::MainWindowJsonData & data) {
+		str.append(data.print());
+		return str;
+	}
 }
 
 main_window_json_data::MainWindowJsonData * main_window_json_data::MainWindowJsonData::makeJsonData(const std::string & jsonKey, const std::string & nameKeyValue, const main_window_shared_types::state_e & stateKeyValue, const Qt::Key & shortcutKeyValue, const std::string & longCmdKeyValue, const std::string & helpKeyValue) {
 	main_window_json_data::MainWindowJsonData * newData = new main_window_json_data::MainWindowJsonData(jsonKey, nameKeyValue, stateKeyValue, shortcutKeyValue, longCmdKeyValue, helpKeyValue);
-	QINFO_PRINT(global_types::qinfo_level_e::ZERO, mainWindowJsonDataOverall,  "Creating JSON data: " << newData->qprint());
+	QINFO_PRINT(global_types::qinfo_level_e::ZERO, mainWindowJsonDataOverall,  "Creating JSON data: " << *newData);
 	return newData;
 }
 
@@ -48,7 +65,7 @@ main_window_json_data::MainWindowJsonData::MainWindowJsonData(const std::string 
 
 	this->actionParameters.insert(main_window_json_data::defaultActionParameters.cbegin(), main_window_json_data::defaultActionParameters.cend());
 
-	QINFO_PRINT(global_types::qinfo_level_e::ZERO, mainWindowJsonDataOverall,  "JSON Data structure constructor. Data " << this->qprint());
+	QINFO_PRINT(global_types::qinfo_level_e::ZERO, mainWindowJsonDataOverall,  "JSON Data structure constructor. Data " << *this);
 
 }
 
@@ -174,3 +191,4 @@ void main_window_json_data::MainWindowJsonData::setValueFromMemberString(const s
 		QEXCEPTION_ACTION(throw, "Cannot find class member associated with parameter " << QString::fromStdString(name) << ".");
 	}
 }
+
