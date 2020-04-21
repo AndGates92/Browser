@@ -79,11 +79,9 @@ void main_window_ctrl_base::MainWindowCtrlBase::connectSignals() {
 
 	QINFO_PRINT(global_types::qinfo_level_e::ZERO, mainWindowCtrlBaseOverall,  "Connect signals");
 
-	QWidget * parent = this->parentWidget();
-
 	for(std::map<std::string, main_window_json_data::MainWindowJsonData *>::const_iterator data = this->actionData.cbegin(); data != this->actionData.cend(); data++) {
 		main_window_json_data::MainWindowJsonData * commandData(data->second);
-		QShortcut * shortcut = new QShortcut(parent);
+		QShortcut * shortcut = new QShortcut(window);
 		shortcut->setKey(commandData->getShortcut());
 		shortcutVec.push_back(shortcut);
 		QMetaObject::Connection connection = connect(shortcut, &QShortcut::activated,
@@ -124,7 +122,7 @@ QString main_window_ctrl_base::MainWindowCtrlBase::tabInfoStr(const int & currIn
 }
 
 void main_window_ctrl_base::MainWindowCtrlBase::setAllShortcutEnabledProperty(const bool enabled) {
-	const QList<QShortcut *> shortcuts = this->parentWidget()->findChildren<QShortcut *>();
+	const QList<QShortcut *> shortcuts = this->window->findChildren<QShortcut *>();
 
 	for (QShortcut * shortcut : shortcuts) {
 		key_sequence::KeySequence key(shortcut->key());
