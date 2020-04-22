@@ -72,7 +72,7 @@ namespace main_window_ctrl {
 			explicit MainWindowCtrl(QSharedPointer<main_window_core::MainWindowCore> core, QWidget * window, QWidget * parent = Q_NULLPTR);
 
 			/**
-			 * @brief Function: ~MainWindowCtrlTab()
+			 * @brief Function: ~MainWindowCtrl()
 			 *
 			 * Main window control constructor
 			 */
