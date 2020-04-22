@@ -44,49 +44,53 @@ main_window_tab_widget::MainWindowTabWidget::~MainWindowTabWidget() {
 
 void main_window_tab_widget::MainWindowTabWidget::removeTab(const int & index) {
 	QINFO_PRINT(global_types::qinfo_level_e::ZERO, mainWindowTabWidgetTabs,  "Close tab " << index);
-	this->disconnectTab();
+	this->disconnectTab(this->currentIndex());
 	tab_widget::TabWidget::removeTab(index);
-	this->connectTab();
-	emit this->numberTabsChanged(this->currentIndex());
+	const int currIndex = this->currentIndex();
+	this->connectTab(currIndex);
+	emit this->numberTabsChanged(currIndex);
 }
 
 void main_window_tab_widget::MainWindowTabWidget::moveTab(const int & indexFrom, const int & indexTo) {
 	if (indexFrom != indexTo) {
 		QINFO_PRINT(global_types::qinfo_level_e::ZERO, mainWindowTabWidgetTabs, "Move tab from " << indexFrom << " to " << indexTo);
-		this->disconnectTab();
+		this->disconnectTab(this->currentIndex());
 		this->bar->moveTab(indexFrom, indexTo);
-		this->connectTab();
+		this->connectTab(this->currentIndex());
 	}
 }
 
-void main_window_tab_widget::MainWindowTabWidget::disconnectTab() {
+void main_window_tab_widget::MainWindowTabWidget::disconnectTab(const int & index) {
 
 	const int tabCount = this->count();
 
 	if (tabCount > 0) {
 		try {
-			const main_window_tab::MainWindowTab * tab = dynamic_cast<main_window_tab::MainWindowTab *>(this->widget(this->currentIndex(), true));
+			const main_window_tab::MainWindowTab * tab = dynamic_cast<main_window_tab::MainWindowTab *>(this->widget(index, true));
 			const main_window_web_engine_page::MainWindowWebEnginePage * page = tab->getView()->page();
 			disconnect(page, &main_window_web_engine_page::MainWindowWebEnginePage::sourceChanged, this, &main_window_tab_widget::MainWindowTabWidget::processTabSourceChanged);
 			disconnect(page, &main_window_web_engine_page::MainWindowWebEnginePage::urlChanged, this, &main_window_tab_widget::MainWindowTabWidget::processTabUrlChanged);
 			disconnect(page, &main_window_web_engine_page::MainWindowWebEnginePage::titleChanged, this, &main_window_tab_widget::MainWindowTabWidget::processTabTitleChanged);
+
+			emit this->tabNearlyDisconnected(index);
 		} catch (const std::bad_cast & badCastE) {
 			QEXCEPTION_ACTION(throw, badCastE.what());
 		}
 	}
 }
 
-void main_window_tab_widget::MainWindowTabWidget::connectTab() {
+void main_window_tab_widget::MainWindowTabWidget::connectTab(const int & index) {
 
 	const int tabCount = this->count();
 
 	if (tabCount > 0) {
 		try {
-			const main_window_tab::MainWindowTab * tab = dynamic_cast<main_window_tab::MainWindowTab *>(this->widget(this->currentIndex(), true));
+			const main_window_tab::MainWindowTab * tab = dynamic_cast<main_window_tab::MainWindowTab *>(this->widget(index, true));
 			const main_window_web_engine_page::MainWindowWebEnginePage * page = tab->getView()->page();
 			connect(page, &main_window_web_engine_page::MainWindowWebEnginePage::sourceChanged, this, &main_window_tab_widget::MainWindowTabWidget::processTabSourceChanged, Qt::UniqueConnection);
 			connect(page, &main_window_web_engine_page::MainWindowWebEnginePage::urlChanged, this, &main_window_tab_widget::MainWindowTabWidget::processTabUrlChanged, Qt::UniqueConnection);
 			connect(page, &main_window_web_engine_page::MainWindowWebEnginePage::titleChanged, this, &main_window_tab_widget::MainWindowTabWidget::processTabTitleChanged, Qt::UniqueConnection);
+			emit this->tabNearlyConnected(index);
 		} catch (const std::bad_cast & badCastE) {
 			QEXCEPTION_ACTION(throw, badCastE.what());
 		}
@@ -166,7 +170,7 @@ void main_window_tab_widget::MainWindowTabWidget::changePageData(const int & ind
 
 int main_window_tab_widget::MainWindowTabWidget::insertTab(const int & index, const main_window_shared_types::page_type_e & type, const QString & userInput, const void * data, const QIcon & icon) {
 
-	this->disconnectTab();
+	this->disconnectTab(this->currentIndex());
 
 	const QString source(this->createSource(type, userInput));
 	main_window_tab::MainWindowTab * tab = new main_window_tab::MainWindowTab(type, source, data, this->parentWidget());
@@ -174,14 +178,14 @@ int main_window_tab_widget::MainWindowTabWidget::insertTab(const int & index, co
 	QINFO_PRINT(global_types::qinfo_level_e::ZERO, mainWindowTabWidgetTabs,  "Insert tab of type " << type << " with source " << source << " at position " << index);
 
 	const QString label(this->createLabel(type, userInput));
-	const int tabIndex = tab_widget::TabWidget::insertTab(index, tab, label, icon);
+	const int currIndex = tab_widget::TabWidget::insertTab(index, tab, label, icon);
 
 	// Move to the newly opened tab
-	this->setCurrentIndex(tabIndex);
+	this->setCurrentIndex(currIndex);
 
-	this->connectTab();
+	this->connectTab(currIndex);
 
-	return tabIndex;
+	return currIndex;
 }
 
 QString main_window_tab_widget::MainWindowTabWidget::createSource(const main_window_shared_types::page_type_e & type, const QString & userInput) {
@@ -323,7 +327,6 @@ void main_window_tab_widget::MainWindowTabWidget::openFileInCurrentTab(const QSt
 	// Enable events after updating tabs
 	this->setUpdatesEnabled(true);
 
-	// TODO: emit signal to disconnect previous tab from qprogress bar
 }
 
 QString main_window_tab_widget::MainWindowTabWidget::searchToUrl(const QString & search) const {

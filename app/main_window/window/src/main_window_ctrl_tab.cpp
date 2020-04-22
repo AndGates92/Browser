@@ -60,6 +60,11 @@ void main_window_ctrl_tab::MainWindowCtrlTab::connectExtraSignals() {
 
 	connect(this->windowCore->tabs, &main_window_tab_widget::MainWindowTabWidget::currentChanged, this, &main_window_ctrl_tab::MainWindowCtrlTab::updateStatusBar);
 	connect(this->windowCore->tabs, &main_window_tab_widget::MainWindowTabWidget::numberTabsChanged, this, &main_window_ctrl_tab::MainWindowCtrlTab::updateStatusBar);
+
+	// Progress bar connections
+	connect(this->windowCore->tabs, &main_window_tab_widget::MainWindowTabWidget::tabNearlyDisconnected, this, &main_window_ctrl_tab::MainWindowCtrlTab::disconnectProgressBar);
+	connect(this->windowCore->tabs, &main_window_tab_widget::MainWindowTabWidget::tabNearlyConnected, this, &main_window_ctrl_tab::MainWindowCtrlTab::connectProgressBar);
+
 	// Update info bar
 	connect(this->windowCore->tabs, &main_window_tab_widget::MainWindowTabWidget::tabCloseRequested, this, &main_window_ctrl_tab::MainWindowCtrlTab::updateStatusBar);
 
@@ -199,9 +204,11 @@ void main_window_ctrl_tab::MainWindowCtrlTab::connectProgressBar(const int & tab
 	try {
 		const main_window_tab::MainWindowTab * tab = dynamic_cast<main_window_tab::MainWindowTab *>(this->windowCore->tabs->widget(tabIndex));
 		const main_window_tab_load_manager::MainWindowTabLoadManager * loadManager = tab->getLoadManager();
-		const progress_bar::ProgressBar * bar = this->windowCore->bottomStatusBar->getLoadBar();
+		progress_bar::ProgressBar * bar = this->windowCore->bottomStatusBar->getLoadBar();
 
 		connect(loadManager, &main_window_tab_load_manager::MainWindowTabLoadManager::progressChanged, bar, &progress_bar::ProgressBar::setValue);
+
+		bar->setValue(loadManager->getProgress());
 	} catch (const std::bad_cast & badCastE) {
 		QEXCEPTION_ACTION(throw, badCastE.what());
 	}

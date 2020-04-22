@@ -239,6 +239,25 @@ namespace main_window_tab_widget {
 			void openFileInCurrentTab(const QString & filepath, const void * data);
 
 		signals:
+
+			/**
+			 * @brief Function: void tabNearlyDisconnected(const int & index)
+			 *
+			 * \param index: index of the current tab
+			 *
+			 * This function is a signal to notify that tab signals are no longer tied to window
+			 */
+			void tabNearlyDisconnected(const int & index);
+
+			/**
+			 * @brief Function: void tabNearlyConnected(const int &  index)
+			 *
+			 * \param index: index of the current tab
+			 *
+			 * This function is a signal to notify that tab signals are about to be associated to window
+			 */
+			void tabNearlyConnected(const int & index);
+
 			/**
 			 * @brief Function: void numberTabsChanged(int index)
 			 *
@@ -287,7 +306,7 @@ namespace main_window_tab_widget {
 			 *
 			 * This function disconnects signals from a tab
 			 */
-			void disconnectTab();
+			void disconnectTab(const int & index);
 
 			/**
 			 * @brief Function: void connectTab(const int & index)
@@ -296,7 +315,7 @@ namespace main_window_tab_widget {
 			 *
 			 * This function connects signals from a tab
 			 */
-			void connectTab();
+			void connectTab(const int & index);
 
 			/**
 			 * @brief Function: QString searchToUrl(const QString & search) const
