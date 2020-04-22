@@ -140,6 +140,15 @@ namespace main_window_ctrl_base {
 			virtual void postprocessWindowStateChange() = 0;
 
 			/**
+			 * @brief Function: virtual void changeWindowStateWrapper(const main_window_json_data::MainWindowJsonData * commandData) final
+			 *
+			 * \param commandData: data relative to a command.
+			 *
+			 * This function is a wrapper to change the state of window
+			 */
+			virtual void changeWindowStateWrapper(const main_window_json_data::MainWindowJsonData * commandData) final;
+
+			/**
 			 * @brief Function: virtual void changeWindowState(const main_window_shared_types::state_e & nextState) final
 			 *
 			 * \param nextState: state the window is requested to go into.

@@ -77,6 +77,11 @@ void main_window_ctrl_base::MainWindowCtrlBase::printUserInput(const main_window
 
 }
 
+void main_window_ctrl_base::MainWindowCtrlBase::changeWindowStateWrapper(const main_window_json_data::MainWindowJsonData * commandData) {
+	QINFO_PRINT(global_types::qinfo_level_e::ZERO, mainWindowCtrlBaseOverall,  "Command " << QString::fromStdString(commandData->getName()) << " (shortcut: " << commandData->getShortcut() << " long command: " << QString::fromStdString(commandData->getLongCmd()) << ") - moving to state " << commandData->getState());
+	this->changeWindowState(commandData->getState());
+}
+
 void main_window_ctrl_base::MainWindowCtrlBase::createShortcuts() {
 	QINFO_PRINT(global_types::qinfo_level_e::ZERO, mainWindowCtrlBaseOverall,  "Create shortcuts");
 
@@ -92,8 +97,7 @@ void main_window_ctrl_base::MainWindowCtrlBase::connectSignals() {
 		QShortcut * shortcut = new QShortcut(commandData->getShortcut(), window);
 		QMetaObject::Connection connection = connect(shortcut, &QShortcut::activated,
 			[=] () {
-				QINFO_PRINT(global_types::qinfo_level_e::ZERO, mainWindowCtrlBaseOverall,  "Command " << QString::fromStdString(commandData->getName()) << " - moving to state " << commandData->getState());
-				this->changeWindowState(commandData->getState());
+				this->changeWindowStateWrapper(commandData);
 			}
 		);
 
