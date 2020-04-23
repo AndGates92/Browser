@@ -162,14 +162,14 @@ namespace main_window_ctrl {
 			virtual bool isValidWindowState(const main_window_shared_types::state_e & windowState) override;
 
 			/**
-			 * @brief Function: virtual void setStateAction(const main_window_shared_types::state_e & windowState, QKeyEvent * event) override
+			 * @brief Function: virtual void prepareAction(const main_window_shared_types::state_e & windowState, QKeyEvent * event) override
 			 *
 			 * \param windowState: state the window is into.
 			 * \param event: key event.
 			 *
 			 * This function executes a command on a based on user input and the state the window is in
 			 */
-			virtual void setStateAction(const main_window_shared_types::state_e & windowState, QKeyEvent * event) override;
+			virtual void prepareAction(const main_window_shared_types::state_e & windowState, QKeyEvent * event) override;
 
 			/**
 			 * @brief Function: virtual void executeAction(const main_window_shared_types::state_e & windowState) override

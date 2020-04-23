@@ -367,7 +367,7 @@ void main_window_ctrl_tab::MainWindowCtrlTab::keyPressEvent(QKeyEvent * event) {
 				this->executeAction(windowState);
 				break;
 			default:
-				this->setStateAction(windowState, event);
+				this->prepareAction(windowState, event);
 				break;
 		}
 
@@ -401,7 +401,7 @@ void main_window_ctrl_tab::MainWindowCtrlTab::executeAction(const main_window_sh
 	}
 }
 
-void main_window_ctrl_tab::MainWindowCtrlTab::setStateAction(const main_window_shared_types::state_e & windowState, QKeyEvent * event) {
+void main_window_ctrl_tab::MainWindowCtrlTab::prepareAction(const main_window_shared_types::state_e & windowState, QKeyEvent * event) {
 
 	const int pressedKey = event->key();
 	const main_window_shared_types::offset_type_e offsetType = this->windowCore->getOffsetType();

@@ -131,14 +131,14 @@ namespace main_window_ctrl_base {
 			virtual void executeAction(const main_window_shared_types::state_e & windowState) = 0;
 
 			/**
-			 * @brief Function: virtual void setStateAction(const main_window_shared_types::state_e & windowState, QKeyEvent * event)
+			 * @brief Function: virtual void prepareAction(const main_window_shared_types::state_e & windowState, QKeyEvent * event)
 			 *
 			 * \param windowState: state the window is into.
 			 * \param event: key event.
 			 *
 			 * This function is abstract and it executes a command on a based on user input and the window state
 			 */
-			virtual void setStateAction(const main_window_shared_types::state_e & windowState, QKeyEvent * event) = 0;
+			virtual void prepareAction(const main_window_shared_types::state_e & windowState, QKeyEvent * event) = 0;
 
 			/**
 			 * @brief Function: virtual void postprocessWindowStateChange(const main_window_shared_types::state_e & previousState)
