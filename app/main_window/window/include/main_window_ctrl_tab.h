@@ -159,48 +159,6 @@ namespace main_window_ctrl_tab {
 		private slots:
 
 			/**
-			 * @brief Function: void setUpReloadTabUrl()
-			 *
-			 * This function reload the url in a tab
-			 */
-			void setUpReloadTabUrl();
-
-			/**
-			 * @brief Function: void setUpMoveLeft()
-			 *
-			 * This function moves left in the tabs. It will wrap around if the number of position leads to a negative tab index
-			 */
-			void setUpMoveLeft();
-
-			/**
-			 * @brief Function: void setUpMoveRight()
-			 *
-			 * This function moves right in the tabs. It will wrap around if the number of position leads to a tab index bigger than the max tab counter
-			 */
-			void setUpMoveRight();
-
-			/**
-			 * @brief Function: void setUpMoveTab()
-			 *
-			 * This function moves tab to. It will wrap around if the number of position leads to a negative tab index
-			 */
-			void setUpMoveTab();
-
-			/**
-			 * @brief Function: void setUpNewSearchTab()
-			 *
-			 * This function prepares to search the user input
-			 */
-			void setUpNewSearchTab();
-
-			/**
-			 * @brief Function: void setUpCloseTab()
-			 *
-			 * This function closes a tab
-			 */
-			void setUpCloseTab();
-
-			/**
 			 * @brief Function: void updateStatusBar(const int & tabIndex)
 			 *
 			 * \param tabIndex: index of the tab to connect signals from

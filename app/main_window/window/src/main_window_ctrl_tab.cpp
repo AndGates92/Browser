@@ -79,37 +79,6 @@ void main_window_ctrl_tab::MainWindowCtrlTab::setUpOpenNewTab() {
 	this->changeWindowState(requestedWindowState);
 }
 
-void main_window_ctrl_tab::MainWindowCtrlTab::setUpNewSearchTab() {
-	QINFO_PRINT(global_types::qinfo_level_e::ZERO, mainWindowCtrlTabSearch,  "Search in current tab");
-	const main_window_shared_types::state_e requestedWindowState = main_window_shared_types::state_e::SEARCH;
-	this->changeWindowState(requestedWindowState);
-}
-
-
-void main_window_ctrl_tab::MainWindowCtrlTab::setUpReloadTabUrl() {
-	const main_window_shared_types::state_e requestedWindowState = main_window_shared_types::state_e::REFRESH_TAB;
-	this->changeWindowState(requestedWindowState);
-}
-
-void main_window_ctrl_tab::MainWindowCtrlTab::setUpMoveTab() {
-	const main_window_shared_types::state_e requestedWindowState = main_window_shared_types::state_e::MOVE_TAB;
-	this->changeWindowState(requestedWindowState);
-}
-
-void main_window_ctrl_tab::MainWindowCtrlTab::setUpMoveLeft() {
-	const main_window_shared_types::state_e requestedWindowState = main_window_shared_types::state_e::MOVE_LEFT;
-	this->changeWindowState(requestedWindowState);
-}
-
-void main_window_ctrl_tab::MainWindowCtrlTab::setUpMoveRight() {
-	const main_window_shared_types::state_e requestedWindowState = main_window_shared_types::state_e::MOVE_RIGHT;
-	this->changeWindowState(requestedWindowState);
-}
-
-void main_window_ctrl_tab::MainWindowCtrlTab::setUpCloseTab() {
-	const main_window_shared_types::state_e requestedWindowState = main_window_shared_types::state_e::CLOSE_TAB;
-	this->changeWindowState(requestedWindowState);
-}
 //************************************************************************************
 // End definition of set up slots
 //************************************************************************************
