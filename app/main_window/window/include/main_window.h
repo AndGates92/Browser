@@ -119,6 +119,19 @@ namespace main_window {
 			main_window_ctrl::MainWindowCtrl * ctrl;
 
 			/**
+			 * @brief main window tab control
+			 *
+			 */
+			main_window_ctrl_tab::MainWindowCtrlTab * tabctrl;
+
+			/**
+			 * @brief Function: void resetWindowState()
+			 *
+			 * this function resets the window state to IDLE and clear user input
+			 */
+			void resetWindowState();
+
+			/**
 			 * @brief Function: void customizeMainWidget()
 			 *
 			 * This function customizes the main widget

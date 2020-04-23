@@ -22,7 +22,7 @@ Q_LOGGING_CATEGORY(mainWindowCtrlOverall, "mainWindowCtrl.overall", MSG_TYPE_LEV
 Q_LOGGING_CATEGORY(mainWindowCtrlUserInput, "mainWindowCtrl.userInput", MSG_TYPE_LEVEL)
 Q_LOGGING_CATEGORY(mainWindowCtrlSearch, "mainWindowCtrl.search", MSG_TYPE_LEVEL)
 
-main_window_ctrl::MainWindowCtrl::MainWindowCtrl(QSharedPointer<main_window_core::MainWindowCore> core, QWidget * window, QWidget * parent) : main_window_ctrl_base::MainWindowCtrlBase(core, window, parent, main_window_ctrl::commandFileFullPath), tabctrl(new main_window_ctrl_tab::MainWindowCtrlTab(core, window, this)) {
+main_window_ctrl::MainWindowCtrl::MainWindowCtrl(QSharedPointer<main_window_core::MainWindowCore> core, QWidget * window, QWidget * parent) : main_window_ctrl_base::MainWindowCtrlBase(core, window, parent, main_window_ctrl::commandFileFullPath) {
 
 	// Shortcuts
 	this->createExtraShortcuts();
@@ -36,10 +36,7 @@ main_window_ctrl::MainWindowCtrl::MainWindowCtrl(QSharedPointer<main_window_core
 }
 
 main_window_ctrl::MainWindowCtrl::~MainWindowCtrl() {
-	// deleting tab control
-	if (this->tabctrl != Q_NULLPTR) {
-		delete this->tabctrl;
-	}
+
 }
 
 void main_window_ctrl::MainWindowCtrl::createExtraShortcuts() {
@@ -55,17 +52,6 @@ void main_window_ctrl::MainWindowCtrl::connectExtraSignals() {
 
 }
 
-void main_window_ctrl::MainWindowCtrl::executeCommand(const QString & command) {
-
-	if (command.compare("toggle-menubar") == 0) {
-		this->toggleShowMenubar();
-	} else if (command.compare("quit") == 0) {
-		this->closeWindow();
-	} else {
-		this->tabctrl->executeCommand(command);
-	}
-}
-
 void main_window_ctrl::MainWindowCtrl::keyReleaseEvent(QKeyEvent * event) {
 
 	const int releasedKey = event->key();
@@ -74,8 +60,6 @@ void main_window_ctrl::MainWindowCtrl::keyReleaseEvent(QKeyEvent * event) {
 	const key_sequence::KeySequence keySeq(releasedKey | keyModifiers);
 
 	const main_window_shared_types::state_e windowState = this->windowCore->getMainWindowState();
-	main_window_shared_types::state_e requestedWindowState = this->windowCore->getMainWindowState();
-
 	QString userTypedText = this->windowCore->getUserText();
 
 	if (event->type() == QEvent::KeyRelease) {
@@ -83,10 +67,6 @@ void main_window_ctrl::MainWindowCtrl::keyReleaseEvent(QKeyEvent * event) {
 		QINFO_PRINT(global_types::qinfo_level_e::ZERO, mainWindowCtrlUserInput,  "State " << windowState << " key " << keySeq.toString());
 
 		switch (releasedKey) {
-			case Qt::Key_Escape:
-				requestedWindowState = main_window_shared_types::state_e::IDLE;
-				this->changeWindowState(requestedWindowState);
-				break;
 			case Qt::Key_Backspace:
 				QINFO_PRINT(global_types::qinfo_level_e::ZERO, mainWindowCtrlUserInput,  "User typed text " << userTypedText);
 				// Last position of the string
@@ -102,8 +82,6 @@ void main_window_ctrl::MainWindowCtrl::keyReleaseEvent(QKeyEvent * event) {
 				break;
 		}
 	}
-
-	this->tabctrl->keyReleaseEvent(event);
 }
 
 void main_window_ctrl::MainWindowCtrl::keyPressEvent(QKeyEvent * event) {
@@ -123,19 +101,23 @@ void main_window_ctrl::MainWindowCtrl::keyPressEvent(QKeyEvent * event) {
 		switch (pressedKey) {
 			case Qt::Key_Enter:
 			case Qt::Key_Return:
-				QINFO_PRINT(global_types::qinfo_level_e::ZERO, mainWindowCtrlUserInput,  "User typed text " << userTypedText);
+				switch (windowState) {
+					case main_window_shared_types::state_e::QUIT:
+						this->closeWindow();
+						break;
+					case main_window_shared_types::state_e::TOGGLE_MENUBAR:
+						this->toggleShowMenubar();
+						this->changeWindowState(main_window_shared_types::state_e::IDLE);
+						break;
+					default:
+						QINFO_PRINT(global_types::qinfo_level_e::ZERO, mainWindowCtrlUserInput,  "User typed text " << userTypedText);
+						break;
+				}
 				break;
 			default:
 				this->setStateAction(windowState, event);
 				break;
 		}
-	}
-
-	this->tabctrl->keyPressEvent(event);
-
-	if ((pressedKey == Qt::Key_Return) || (pressedKey == Qt::Key_Enter)) {
-		const main_window_shared_types::state_e requestedWindowState = main_window_shared_types::state_e::IDLE;
-		this->changeWindowState(requestedWindowState);
 	}
 
 }
@@ -148,7 +130,7 @@ void main_window_ctrl::MainWindowCtrl::setStateAction(const main_window_shared_t
 	switch (windowState) {
 		case main_window_shared_types::state_e::COMMAND:
 			this->printUserInput(main_window_shared_types::text_action_e::APPEND, event->text());
-			if (pressedKey >= Qt::Key_Space) {
+			if (pressedKey == Qt::Key_Space) {
 				this->executeCommand(userTypedText);
 			}
 			break;
@@ -176,7 +158,7 @@ void main_window_ctrl::MainWindowCtrl::closeWindow() {
 	emit this->closeWindowSignal();
 }
 
-void main_window_ctrl::MainWindowCtrl::postprocessWindowStateChange() {
+void main_window_ctrl::MainWindowCtrl::postprocessWindowStateChange(const main_window_shared_types::state_e & previousState) {
 	const main_window_shared_types::state_e windowState = this->windowCore->getMainWindowState();
 	// If requesting to go to the idle state, do not 
 
@@ -186,11 +168,15 @@ void main_window_ctrl::MainWindowCtrl::postprocessWindowStateChange() {
 			this->printUserInput(main_window_shared_types::text_action_e::CLEAR);
 			break;
 		case main_window_shared_types::state_e::QUIT:
-			this->closeWindow();
+			if (previousState != main_window_shared_types::state_e::COMMAND) {
+				this->closeWindow();
+			}
 			break;
 		case main_window_shared_types::state_e::TOGGLE_MENUBAR:
-			this->toggleShowMenubar();
-			this->changeWindowState(main_window_shared_types::state_e::IDLE);
+			if (previousState != main_window_shared_types::state_e::COMMAND) {
+				this->toggleShowMenubar();
+				this->changeWindowState(main_window_shared_types::state_e::IDLE);
+			}
 			break;
 		case main_window_shared_types::state_e::COMMAND:
 			this->setAllShortcutEnabledProperty(false);
@@ -215,6 +201,15 @@ bool main_window_ctrl::MainWindowCtrl::isValidWindowState(const main_window_shar
 		case main_window_shared_types::state_e::TOGGLE_MENUBAR:
 			// It is only possible to start a new command if in the idle state
 			isValid = (windowState == main_window_shared_types::state_e::IDLE);
+			break;
+		case main_window_shared_types::state_e::OPEN_TAB:
+		case main_window_shared_types::state_e::SEARCH:
+		case main_window_shared_types::state_e::REFRESH_TAB:
+		case main_window_shared_types::state_e::CLOSE_TAB:
+		case main_window_shared_types::state_e::MOVE_RIGHT:
+		case main_window_shared_types::state_e::MOVE_LEFT:
+		case main_window_shared_types::state_e::MOVE_TAB:
+			isValid = (windowState == main_window_shared_types::state_e::COMMAND);
 			break;
 		default: 
 			QEXCEPTION_ACTION(throw, "Unable to determine whether transaction from " << windowState << " to " << requestedWindowState << " is valid");

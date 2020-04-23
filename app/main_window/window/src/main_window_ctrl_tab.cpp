@@ -343,24 +343,6 @@ void main_window_ctrl_tab::MainWindowCtrlTab::processTabIndex(const QString & us
 	}
 }
 
-void main_window_ctrl_tab::MainWindowCtrlTab::executeCommand(const QString & command) {
-
-	if (command.compare("open-tab") == 0) {
-		this->setUpOpenNewTab();
-	} else if (command.compare("search-tab") == 0) {
-		this->setUpNewSearchTab();
-	} else if (command.compare("close-tab") == 0) {
-		this->setUpCloseTab();
-	} else if (command.compare("move-tab") == 0) {
-		this->setUpMoveTab();
-	} else if (command.compare("move-cursor-left") == 0) {
-		this->setUpMoveLeft();
-	} else if (command.compare("move-cursor-right") == 0) {
-		this->setUpMoveRight();
-	}
-
-}
-
 void main_window_ctrl_tab::MainWindowCtrlTab::keyReleaseEvent(QKeyEvent * event) {
 
 	const int releasedKey = event->key();
@@ -431,7 +413,6 @@ void main_window_ctrl_tab::MainWindowCtrlTab::keyPressEvent(QKeyEvent * event) {
 						// Do nothing by default
 						break;
 				}
-				this->windowCore->setOffsetType(main_window_shared_types::offset_type_e::IDLE);
 				break;
 			default:
 				this->setStateAction(windowState, event);
@@ -446,8 +427,14 @@ void main_window_ctrl_tab::MainWindowCtrlTab::setStateAction(const main_window_s
 
 	const int pressedKey = event->key();
 	const main_window_shared_types::offset_type_e offsetType = this->windowCore->getOffsetType();
+	const QString userTypedText = this->windowCore->getUserText();
 
 	switch (windowState) {
+		case main_window_shared_types::state_e::COMMAND:
+			if (pressedKey >= Qt::Key_Space) {
+				this->executeCommand(userTypedText);
+			}
+			break;
 		case main_window_shared_types::state_e::OPEN_TAB:
 		case main_window_shared_types::state_e::SEARCH:
 			if ((pressedKey >= Qt::Key_Space) && (pressedKey <= Qt::Key_ydiaeresis)) {
@@ -556,8 +543,9 @@ void main_window_ctrl_tab::MainWindowCtrlTab::convertToAbsTabIndex(const int & o
 	}
 }
 
-void main_window_ctrl_tab::MainWindowCtrlTab::postprocessWindowStateChange() {
+void main_window_ctrl_tab::MainWindowCtrlTab::postprocessWindowStateChange(const main_window_shared_types::state_e & previousState) {
 	const main_window_shared_types::state_e windowState = this->windowCore->getMainWindowState();
+	QINFO_PRINT(global_types::qinfo_level_e::ZERO, mainWindowCtrlTabTabs,  "Current state " << windowState << " previousState " << previousState);
 	// If requesting to go to the idle state, enable shortcuts
 	if (windowState == main_window_shared_types::state_e::IDLE) {
 		this->setAllShortcutEnabledProperty(true);
@@ -573,10 +561,6 @@ bool main_window_ctrl_tab::MainWindowCtrlTab::isValidWindowState(const main_wind
 	const int tabCount = this->windowCore->getTabCount();
 
 	switch (requestedWindowState) {
-		case main_window_shared_types::state_e::IDLE:
-			// It is always possible to go to the idle state
-			isValid = true;
-			break;
 		case main_window_shared_types::state_e::OPEN_TAB:
 			// It is only possible to open a tab if in the idle state
 			isValid = (windowState == main_window_shared_types::state_e::IDLE);
@@ -592,6 +576,10 @@ bool main_window_ctrl_tab::MainWindowCtrlTab::isValidWindowState(const main_wind
 		case main_window_shared_types::state_e::MOVE_TAB:
 			// It is only possible to perform an operation that requires movement of cursors or tabs if the current state is idle and at least 2 tab is opened
 			isValid = ((tabCount > 1) && (windowState == main_window_shared_types::state_e::IDLE));
+			break;
+		case main_window_shared_types::state_e::QUIT:
+		case main_window_shared_types::state_e::TOGGLE_MENUBAR:
+			isValid = (windowState == main_window_shared_types::state_e::COMMAND);
 			break;
 		default:
 			QEXCEPTION_ACTION(throw, "Unable to determine whether transaction from " << windowState << " to " << requestedWindowState << " is valid");

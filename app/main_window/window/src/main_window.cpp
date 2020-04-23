@@ -79,8 +79,14 @@ main_window::MainWindow::MainWindow(QWidget * parent, Qt::WindowFlags flags) : Q
 main_window::MainWindow::~MainWindow() {
 	QINFO_PRINT(global_types::qinfo_level_e::ZERO, mainWindowOverall,  "Main window destructor");
 
+	// deleting window control
 	if (this->ctrl != Q_NULLPTR) {
 		delete this->ctrl;
+	}
+
+	// deleting tab control
+	if (this->tabctrl != Q_NULLPTR) {
+		delete this->tabctrl;
 	}
 
 	const QList<QShortcut *> shortcuts = this->findChildren<QShortcut *>();
@@ -200,12 +206,34 @@ void main_window::MainWindow::createCtrl() {
 
 	// main window control class
 	this->ctrl = new main_window_ctrl::MainWindowCtrl(this->windowCore, this, this);
+	this->tabctrl = new main_window_ctrl_tab::MainWindowCtrlTab(this->windowCore, this, this);
 }
 
 void main_window::MainWindow::closeWindow() {
 	QINFO_PRINT(global_types::qinfo_level_e::ZERO, mainWindowOverall,  "Close main window");
 	const bool success = this->close();
 	Q_ASSERT_X(success, "main window close success check", "Main window close request was not handled properly");
+}
+
+void main_window::MainWindow::resetWindowState() {
+	const main_window_shared_types::state_e requestedWindowState = main_window_shared_types::state_e::IDLE;
+	this->windowCore->setMainWindowState(requestedWindowState);
+
+	this->windowCore->updateUserInput(main_window_shared_types::text_action_e::CLEAR, QString::null);
+	this->windowCore->bottomStatusBar->getUserInputText()->clear();
+	this->windowCore->getUserText();
+
+	// Enable all shortcuts
+	const QList<QShortcut *> shortcuts = this->findChildren<QShortcut *>();
+
+	for (QShortcut * shortcut : shortcuts) {
+		key_sequence::KeySequence key(shortcut->key());
+		// If shortcut key is not defined, then do not do anything
+		if (key.count() > 0) {
+			QINFO_PRINT(global_types::qinfo_level_e::ZERO, mainWindowOverall,  "Setting enabled for key " << key.toString() << " to true");
+			shortcut->setEnabled(true);
+		}
+	}
 }
 
 void main_window::MainWindow::keyPressEvent(QKeyEvent * event) {
@@ -215,6 +243,14 @@ void main_window::MainWindow::keyPressEvent(QKeyEvent * event) {
 	QMainWindow::keyPressEvent(event);
 
 	this->ctrl->keyPressEvent(event);
+	this->tabctrl->keyPressEvent(event);
+
+	const int pressedKey = event->key();
+
+	// If user presses escape, enter or return key, bring the state to IDLE and delete user input
+	if ((pressedKey == Qt::Key_Escape) || (pressedKey == Qt::Key_Return) || (pressedKey == Qt::Key_Enter)) {
+		this->resetWindowState();
+	}
 
 	this->windowCore->mainWidget->repaint();
 }
@@ -226,6 +262,7 @@ void main_window::MainWindow::keyReleaseEvent(QKeyEvent * event) {
 	QMainWindow::keyReleaseEvent(event);
 
 	this->ctrl->keyReleaseEvent(event);
+	this->tabctrl->keyReleaseEvent(event);
 
 	this->windowCore->mainWidget->repaint();
 }

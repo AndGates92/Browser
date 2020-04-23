@@ -128,12 +128,6 @@ namespace main_window_ctrl {
 		private:
 
 			/**
-			 * @brief main window tab control
-			 *
-			 */
-			main_window_ctrl_tab::MainWindowCtrlTab * tabctrl;
-
-			/**
 			 * @brief Function: virtual void createExtraShortcuts() override
 			 *
 			 * This function creates shortcuts for the items on the window
@@ -148,11 +142,13 @@ namespace main_window_ctrl {
 			virtual void connectExtraSignals() override;
 
 			/**
-			 * @brief Function: virtual void postprocessWindowStateChange() override
+			 * @brief Function: virtual void postprocessWindowStateChange(const main_window_shared_types::state_e & previousState) override
+			 *
+			 * \param previousState: state the window was into before the transition.
 			 *
 			 * This function is abstract and it defines action to be taken immediately after the window has changed state
 			 */
-			virtual void postprocessWindowStateChange() override;
+			virtual void postprocessWindowStateChange(const main_window_shared_types::state_e & previousState) override;
 
 			/**
 			 * @brief Function: virtual bool isValidWindowState(const main_window_shared_types::state_e & windowState) override
@@ -164,15 +160,6 @@ namespace main_window_ctrl {
 			 * This function checks that the state is valid
 			 */
 			virtual bool isValidWindowState(const main_window_shared_types::state_e & windowState) override;
-
-			/**
-			 * @brief Function: void executeCommand(const QString & command)
-			 *
-			 * \param command: command to execute.
-			 *
-			 * This function executes a command on a based on user input
-			 */
-			void executeCommand(const QString & command);
 
 			/**
 			 * @brief Function: void setStateAction(const main_window_shared_types::state_e & windowState, QKeyEvent * event)

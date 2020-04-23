@@ -82,6 +82,24 @@ void main_window_ctrl_base::MainWindowCtrlBase::changeWindowStateWrapper(const m
 	this->changeWindowState(commandData->getState());
 }
 
+void main_window_ctrl_base::MainWindowCtrlBase::executeCommand(const QString & userCommand) {
+	QINFO_PRINT(global_types::qinfo_level_e::ZERO, mainWindowCtrlBaseOverall,  "Looking for command matching user input: " << userCommand);
+
+	for(std::map<std::string, main_window_json_data::MainWindowJsonData *>::const_iterator data = this->actionData.cbegin(); data != this->actionData.cend(); data++) {
+		const main_window_json_data::MainWindowJsonData * commandData(data->second);
+		const QString refCommand = QString::fromStdString(commandData->getLongCmd());
+
+QINFO_PRINT(global_types::qinfo_level_e::ZERO, mainWindowCtrlBaseOverall,  "DADA Comparing command " << refCommand << " with user input " << userCommand << " comparison " << userCommand.compare(refCommand) << " ref " << userCommand.compare("quit") );
+QINFO_PRINT(global_types::qinfo_level_e::ZERO, mainWindowCtrlBaseOverall,  "DADA Comparing length command " << refCommand.length() << " with user input " << userCommand.length() << " comparison " << QString("quit").length() );
+
+		// If user command matches the command in the JSON file
+		if (userCommand.compare(refCommand) == 0) {
+			QINFO_PRINT(global_types::qinfo_level_e::ZERO, mainWindowCtrlBaseOverall,  "Found command " << refCommand << " matching user input: " << userCommand);
+			this->changeWindowStateWrapper(commandData);
+		}
+	}
+}
+
 void main_window_ctrl_base::MainWindowCtrlBase::createShortcuts() {
 	QINFO_PRINT(global_types::qinfo_level_e::ZERO, mainWindowCtrlBaseOverall,  "Create shortcuts");
 
@@ -225,13 +243,14 @@ void main_window_ctrl_base::MainWindowCtrlBase::populateActionData() {
 void main_window_ctrl_base::MainWindowCtrlBase::changeWindowState(const main_window_shared_types::state_e & nextState) {
 
 	const main_window_shared_types::state_e windowState = this->windowCore->getMainWindowState();
+	const bool globalCondition = (windowState == main_window_shared_types::state_e::COMMAND);
 
 	// Do not change state if the window is already in the one requested
 	if (windowState != nextState) {
-		bool isValid = this->isValidWindowState(nextState);
+		bool isValid = this->isValidWindowState(nextState) || globalCondition;
 		if (isValid == true) {
 			this->windowCore->setMainWindowState(nextState);
-			this->postprocessWindowStateChange();
+			this->postprocessWindowStateChange(windowState);
 			emit windowStateChanged(nextState);
 		}
 	} else {

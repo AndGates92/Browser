@@ -35,7 +35,6 @@ namespace main_window_ctrl_base {
 		Q_OBJECT
 
 		public:
-
 			/**
 			 * @brief Function: explicit MainWindowCtrlBase(QSharedPointer<main_window_core::MainWindowCore> core, QWidget * window, QWidget * parent = QString::null, QString jsonFileName = QString::null)
 			 *
@@ -133,11 +132,22 @@ namespace main_window_ctrl_base {
 			virtual void setStateAction(const main_window_shared_types::state_e & windowState, QKeyEvent * event) = 0;
 
 			/**
-			 * @brief Function: virtual void postprocessWindowStateChange()
+			 * @brief Function: virtual void postprocessWindowStateChange(const main_window_shared_types::state_e & previousState)
+			 *
+			 * \param previousState: state the window was into before the transition.
 			 *
 			 * This function is abstract and it defines action to be taken immediately after the window has changed state
 			 */
-			virtual void postprocessWindowStateChange() = 0;
+			virtual void postprocessWindowStateChange(const main_window_shared_types::state_e & previousState) = 0;
+
+			/**
+			 * @brief Function: virtual void executeCommand(const QString & userCommand) final
+			 *
+			 * \param userCommand: command to execute.
+			 *
+			 * This function executes a command on a based on user input
+			 */
+			virtual void executeCommand(const QString & userCommand) final;
 
 			/**
 			 * @brief Function: virtual void changeWindowStateWrapper(const main_window_json_data::MainWindowJsonData * commandData) final
