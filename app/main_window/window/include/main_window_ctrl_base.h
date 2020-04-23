@@ -55,15 +55,15 @@ namespace main_window_ctrl_base {
 			virtual ~MainWindowCtrlBase();
 
 			/**
-			 * @brief Function: virtual void keyPressEvent(QKeyEvent * event)
+			 * @brief Function: void keyPressEvent(QKeyEvent * event) override
 			 *
-			 * \param event: event coming from keyboard
+			 * \param event: event coming from keyboard 
 			 *
 			 * This function handles event coming from the keyboard
-			 * Escape is not triggered in keyPressedEvent
+			 * Escape is not triggered in keyPressedEvent 
 			 * Re-implement key pressed event
 			 */
-			virtual void keyPressEvent(QKeyEvent * event) = 0;
+			virtual void keyPressEvent(QKeyEvent * event) final;
 
 			/**
 			 * @brief Function: virtual void keyReleaseEvent(QKeyEvent * event)

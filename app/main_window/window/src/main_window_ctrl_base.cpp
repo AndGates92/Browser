@@ -262,3 +262,29 @@ void main_window_ctrl_base::MainWindowCtrlBase::changeWindowState(const main_win
 		QWARNING_PRINT(mainWindowCtrlBaseOverall, "Ignoring request to go from state " << windowState << " to state " << nextState);
 	}
 }
+
+void main_window_ctrl_base::MainWindowCtrlBase::keyPressEvent(QKeyEvent * event) {
+
+	const int pressedKey = event->key();
+	const Qt::KeyboardModifiers keyModifiers = event->modifiers();
+
+	const key_sequence::KeySequence keySeq(pressedKey | keyModifiers);
+
+	if (event->type() == QEvent::KeyPress) {
+
+		const main_window_shared_types::state_e windowState = this->windowCore->getMainWindowState();
+
+		QINFO_PRINT(global_types::qinfo_level_e::ZERO, mainWindowCtrlBaseUserInput,  "State " << windowState << " key " << keySeq.toString());
+
+		switch (pressedKey) {
+			case Qt::Key_Enter:
+			case Qt::Key_Return:
+				this->executeAction(windowState);
+				break;
+			default:
+				this->prepareAction(windowState, event);
+				break;
+		}
+	}
+
+}

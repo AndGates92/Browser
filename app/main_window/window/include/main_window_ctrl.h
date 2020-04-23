@@ -79,17 +79,6 @@ namespace main_window_ctrl {
 			~MainWindowCtrl();
 
 			/**
-			 * @brief Function: void keyPressEvent(QKeyEvent * event) override
-			 *
-			 * \param event: event coming from keyboard 
-			 *
-			 * This function handles event coming from the keyboard
-			 * Escape is not triggered in keyPressedEvent 
-			 * Re-implement key pressed event
-			 */
-			void keyPressEvent(QKeyEvent * event) override;
-
-			/**
 			 * @brief Function: void keyReleaseEvent(QKeyEvent * event) override
 			 *
 			 * \param event: event coming from keyboard

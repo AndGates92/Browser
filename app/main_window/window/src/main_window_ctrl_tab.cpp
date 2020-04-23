@@ -345,36 +345,6 @@ void main_window_ctrl_tab::MainWindowCtrlTab::keyReleaseEvent(QKeyEvent * event)
 	}
 }
 
-void main_window_ctrl_tab::MainWindowCtrlTab::keyPressEvent(QKeyEvent * event) {
-
-	const int pressedKey = event->key();
-	const Qt::KeyboardModifiers keyModifiers = event->modifiers();
-
-	const key_sequence::KeySequence keySeq(pressedKey | keyModifiers);
-
-	if (event->type() == QEvent::KeyPress) {
-
-		const main_window_shared_types::state_e windowState = this->windowCore->getMainWindowState();
-		const QString userTypedText = this->windowCore->getUserText();
-
-		// Retrieve main window controller state
-		QINFO_PRINT(global_types::qinfo_level_e::ZERO, mainWindowCtrlTabUserInput,  "State " << windowState << " key " << keySeq.toString());
-
-		switch (pressedKey) {
-			case Qt::Key_Enter:
-			case Qt::Key_Return:
-				QINFO_PRINT(global_types::qinfo_level_e::ZERO, mainWindowCtrlTabUserInput,  "User typed text " << userTypedText);
-				this->executeAction(windowState);
-				break;
-			default:
-				this->prepareAction(windowState, event);
-				break;
-		}
-
-	}
-
-}
-
 void main_window_ctrl_tab::MainWindowCtrlTab::executeAction(const main_window_shared_types::state_e & windowState) {
 	const QString userTypedText = this->windowCore->getUserText();
 
