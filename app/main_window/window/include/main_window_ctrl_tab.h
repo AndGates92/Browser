@@ -286,14 +286,23 @@ namespace main_window_ctrl_tab {
 			void addNewTabAndSearch(const QString & search);
 
 			/**
-			 * @brief Function: void setStateAction(const main_window_shared_types::state_e & windowState, QKeyEvent * event)
+			 * @brief Function: virtual void setStateAction(const main_window_shared_types::state_e & windowState, QKeyEvent * event) override
 			 *
 			 * \param windowState: state the window is into.
 			 * \param event: key event.
 			 *
 			 * This function executes a command on a based on user input and the state the window is in
 			 */
-			void setStateAction(const main_window_shared_types::state_e & windowState, QKeyEvent * event);
+			virtual void setStateAction(const main_window_shared_types::state_e & windowState, QKeyEvent * event) override;
+
+			/**
+			 * @brief Function: virtual void executeAction(const main_window_shared_types::state_e & windowState) override
+			 *
+			 * \param windowState: state the window is into.
+			 *
+			 * This function executes the actions required when the window is a given state
+			 */
+			virtual void executeAction(const main_window_shared_types::state_e & windowState) override;
 
 			// ================================ START ACTIONS ========================================//
 			/**

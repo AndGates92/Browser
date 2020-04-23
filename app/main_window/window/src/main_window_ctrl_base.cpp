@@ -77,27 +77,25 @@ void main_window_ctrl_base::MainWindowCtrlBase::printUserInput(const main_window
 
 }
 
-void main_window_ctrl_base::MainWindowCtrlBase::changeWindowStateWrapper(const main_window_json_data::MainWindowJsonData * commandData) {
+void main_window_ctrl_base::MainWindowCtrlBase::changeWindowStateWrapper(const main_window_json_data::MainWindowJsonData * commandData, const main_window_shared_types::state_postprocessing_e postprocess) {
 	QINFO_PRINT(global_types::qinfo_level_e::ZERO, mainWindowCtrlBaseOverall,  "Command " << QString::fromStdString(commandData->getName()) << " (shortcut: " << commandData->getShortcut() << " long command: " << QString::fromStdString(commandData->getLongCmd()) << ") - moving to state " << commandData->getState());
-	this->changeWindowState(commandData->getState());
+	this->changeWindowState(commandData->getState(), postprocess);
 }
 
-void main_window_ctrl_base::MainWindowCtrlBase::executeCommand(const QString & userCommand) {
+void main_window_ctrl_base::MainWindowCtrlBase::executeCommand(const QString & userCommand, const main_window_shared_types::state_postprocessing_e postprocess) {
 	QINFO_PRINT(global_types::qinfo_level_e::ZERO, mainWindowCtrlBaseOverall,  "Looking for command matching user input: " << userCommand);
 
 	for(std::map<std::string, main_window_json_data::MainWindowJsonData *>::const_iterator data = this->actionData.cbegin(); data != this->actionData.cend(); data++) {
 		const main_window_json_data::MainWindowJsonData * commandData(data->second);
 		const QString refCommand = QString::fromStdString(commandData->getLongCmd());
 
-QINFO_PRINT(global_types::qinfo_level_e::ZERO, mainWindowCtrlBaseOverall,  "DADA Comparing command " << refCommand << " with user input " << userCommand << " comparison " << userCommand.compare(refCommand) << " ref " << userCommand.compare("quit") );
-QINFO_PRINT(global_types::qinfo_level_e::ZERO, mainWindowCtrlBaseOverall,  "DADA Comparing length command " << refCommand.length() << " with user input " << userCommand.length() << " comparison " << QString("quit").length() );
-
 		// If user command matches the command in the JSON file
 		if (userCommand.compare(refCommand) == 0) {
 			QINFO_PRINT(global_types::qinfo_level_e::ZERO, mainWindowCtrlBaseOverall,  "Found command " << refCommand << " matching user input: " << userCommand);
-			this->changeWindowStateWrapper(commandData);
+			this->changeWindowStateWrapper(commandData, postprocess);
 		}
 	}
+
 }
 
 void main_window_ctrl_base::MainWindowCtrlBase::createShortcuts() {
@@ -115,7 +113,7 @@ void main_window_ctrl_base::MainWindowCtrlBase::connectSignals() {
 		QShortcut * shortcut = new QShortcut(commandData->getShortcut(), window);
 		QMetaObject::Connection connection = connect(shortcut, &QShortcut::activated,
 			[=] () {
-				this->changeWindowStateWrapper(commandData);
+				this->changeWindowStateWrapper(commandData, main_window_shared_types::state_postprocessing_e::POSTPROCESS);
 			}
 		);
 
@@ -240,7 +238,7 @@ void main_window_ctrl_base::MainWindowCtrlBase::populateActionData() {
 
 }
 
-void main_window_ctrl_base::MainWindowCtrlBase::changeWindowState(const main_window_shared_types::state_e & nextState) {
+void main_window_ctrl_base::MainWindowCtrlBase::changeWindowState(const main_window_shared_types::state_e & nextState, const main_window_shared_types::state_postprocessing_e postprocess) {
 
 	const main_window_shared_types::state_e windowState = this->windowCore->getMainWindowState();
 	const bool globalCondition = (windowState == main_window_shared_types::state_e::COMMAND);
@@ -250,7 +248,14 @@ void main_window_ctrl_base::MainWindowCtrlBase::changeWindowState(const main_win
 		bool isValid = this->isValidWindowState(nextState) || globalCondition;
 		if (isValid == true) {
 			this->windowCore->setMainWindowState(nextState);
-			this->postprocessWindowStateChange(windowState);
+
+			this->printUserInput(main_window_shared_types::text_action_e::CLEAR);
+
+			if (postprocess == main_window_shared_types::state_postprocessing_e::POSTPROCESS) {
+				this->postprocessWindowStateChange(windowState);
+			} else if (postprocess == main_window_shared_types::state_postprocessing_e::ACTION) {
+				this->executeAction(nextState);
+			}
 			emit windowStateChanged(nextState);
 		}
 	} else {

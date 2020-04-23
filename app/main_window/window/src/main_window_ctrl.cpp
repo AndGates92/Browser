@@ -94,25 +94,13 @@ void main_window_ctrl::MainWindowCtrl::keyPressEvent(QKeyEvent * event) {
 	if (event->type() == QEvent::KeyPress) {
 
 		const main_window_shared_types::state_e windowState = this->windowCore->getMainWindowState();
-		const QString userTypedText = this->windowCore->getUserText();
 
 		QINFO_PRINT(global_types::qinfo_level_e::ZERO, mainWindowCtrlUserInput,  "State " << windowState << " key " << keySeq.toString());
 
 		switch (pressedKey) {
 			case Qt::Key_Enter:
 			case Qt::Key_Return:
-				switch (windowState) {
-					case main_window_shared_types::state_e::QUIT:
-						this->closeWindow();
-						break;
-					case main_window_shared_types::state_e::TOGGLE_MENUBAR:
-						this->toggleShowMenubar();
-						this->changeWindowState(main_window_shared_types::state_e::IDLE);
-						break;
-					default:
-						QINFO_PRINT(global_types::qinfo_level_e::ZERO, mainWindowCtrlUserInput,  "User typed text " << userTypedText);
-						break;
-				}
+				this->executeAction(windowState);
 				break;
 			default:
 				this->setStateAction(windowState, event);
@@ -122,22 +110,42 @@ void main_window_ctrl::MainWindowCtrl::keyPressEvent(QKeyEvent * event) {
 
 }
 
+void main_window_ctrl::MainWindowCtrl::executeAction(const main_window_shared_types::state_e & windowState) {
+	const QString userTypedText = this->windowCore->getUserText();
+	switch (windowState) {
+		case main_window_shared_types::state_e::QUIT:
+			this->closeWindow();
+			break;
+		case main_window_shared_types::state_e::TOGGLE_MENUBAR:
+			this->toggleShowMenubar();
+			this->changeWindowState(main_window_shared_types::state_e::IDLE, main_window_shared_types::state_postprocessing_e::POSTPROCESS);
+			break;
+		case main_window_shared_types::state_e::COMMAND:
+			// Cannot use userTypesText because it has been updated by the printUserInput function
+			this->executeCommand(userTypedText, main_window_shared_types::state_postprocessing_e::ACTION);
+			break;
+		default:
+			QINFO_PRINT(global_types::qinfo_level_e::ZERO, mainWindowCtrlUserInput,  "User typed text " << userTypedText);
+			break;
+	}
+}
+
 void main_window_ctrl::MainWindowCtrl::setStateAction(const main_window_shared_types::state_e & windowState, QKeyEvent * event) {
 
 	const int pressedKey = event->key();
-	const QString userTypedText = this->windowCore->getUserText();
 
 	switch (windowState) {
 		case main_window_shared_types::state_e::COMMAND:
-			this->printUserInput(main_window_shared_types::text_action_e::APPEND, event->text());
 			if (pressedKey == Qt::Key_Space) {
-				this->executeCommand(userTypedText);
+				this->executeCommand(this->windowCore->getUserText(), main_window_shared_types::state_postprocessing_e::NONE);
+			} else {
+				this->printUserInput(main_window_shared_types::text_action_e::APPEND, event->text());
 			}
 			break;
 		case main_window_shared_types::state_e::IDLE:
 			if (pressedKey == Qt::Key_Colon) {
 				const main_window_shared_types::state_e requestedWindowState = main_window_shared_types::state_e::COMMAND;
-				this->changeWindowState(requestedWindowState);
+				this->changeWindowState(requestedWindowState, main_window_shared_types::state_postprocessing_e::POSTPROCESS);
 				this->setAllShortcutEnabledProperty(false);
 			}
 			this->printUserInput(main_window_shared_types::text_action_e::CLEAR);
@@ -160,7 +168,8 @@ void main_window_ctrl::MainWindowCtrl::closeWindow() {
 
 void main_window_ctrl::MainWindowCtrl::postprocessWindowStateChange(const main_window_shared_types::state_e & previousState) {
 	const main_window_shared_types::state_e windowState = this->windowCore->getMainWindowState();
-	// If requesting to go to the idle state, do not 
+
+QINFO_PRINT(global_types::qinfo_level_e::ZERO, mainWindowCtrlBaseOverall,  "Previous windowState " << previousState << " and current windowState " << windowState );
 
 	switch (windowState) {
 		case main_window_shared_types::state_e::IDLE:
@@ -168,15 +177,11 @@ void main_window_ctrl::MainWindowCtrl::postprocessWindowStateChange(const main_w
 			this->printUserInput(main_window_shared_types::text_action_e::CLEAR);
 			break;
 		case main_window_shared_types::state_e::QUIT:
-			if (previousState != main_window_shared_types::state_e::COMMAND) {
-				this->closeWindow();
-			}
+			this->closeWindow();
 			break;
 		case main_window_shared_types::state_e::TOGGLE_MENUBAR:
-			if (previousState != main_window_shared_types::state_e::COMMAND) {
-				this->toggleShowMenubar();
-				this->changeWindowState(main_window_shared_types::state_e::IDLE);
-			}
+			this->toggleShowMenubar();
+			this->changeWindowState(main_window_shared_types::state_e::IDLE, main_window_shared_types::state_postprocessing_e::POSTPROCESS);
 			break;
 		case main_window_shared_types::state_e::COMMAND:
 			this->setAllShortcutEnabledProperty(false);

@@ -122,6 +122,15 @@ namespace main_window_ctrl_base {
 			virtual void connectExtraSignals() = 0;
 
 			/**
+			 * @brief Function: virtual void executeAction(const main_window_shared_types::state_e & windowState)
+			 *
+			 * \param windowState: state the window is into.
+			 *
+			 * This function is abstract and it executes the actions required when the window is a given state
+			 */
+			virtual void executeAction(const main_window_shared_types::state_e & windowState) = 0;
+
+			/**
 			 * @brief Function: virtual void setStateAction(const main_window_shared_types::state_e & windowState, QKeyEvent * event)
 			 *
 			 * \param windowState: state the window is into.
@@ -141,31 +150,34 @@ namespace main_window_ctrl_base {
 			virtual void postprocessWindowStateChange(const main_window_shared_types::state_e & previousState) = 0;
 
 			/**
-			 * @brief Function: virtual void executeCommand(const QString & userCommand) final
+			 * @brief Function: virtual void executeCommand(const QString & userCommand, const main_window_shared_types::state_postprocessing_e postprocess) final
 			 *
 			 * \param userCommand: command to execute.
+			 * \param postprocess: flag to execute post process after chaning state.
 			 *
 			 * This function executes a command on a based on user input
 			 */
-			virtual void executeCommand(const QString & userCommand) final;
+			virtual void executeCommand(const QString & userCommand, const main_window_shared_types::state_postprocessing_e postprocess) final;
 
 			/**
-			 * @brief Function: virtual void changeWindowStateWrapper(const main_window_json_data::MainWindowJsonData * commandData) final
+			 * @brief Function: virtual void changeWindowStateWrapper(const main_window_json_data::MainWindowJsonData * commandData, const main_window_shared_types::state_postprocessing_e postprocess) final
 			 *
 			 * \param commandData: data relative to a command.
+			 * \param postprocess: flag to execute post process after chaning state.
 			 *
 			 * This function is a wrapper to change the state of window
 			 */
-			virtual void changeWindowStateWrapper(const main_window_json_data::MainWindowJsonData * commandData) final;
+			virtual void changeWindowStateWrapper(const main_window_json_data::MainWindowJsonData * commandData, const main_window_shared_types::state_postprocessing_e postprocess) final;
 
 			/**
-			 * @brief Function: virtual void changeWindowState(const main_window_shared_types::state_e & nextState) final
+			 * @brief Function: virtual void changeWindowState(const main_window_shared_types::state_e & nextState, const main_window_shared_types::state_postprocessing_e postprocess) final
 			 *
 			 * \param nextState: state the window is requested to go into.
+			 * \param postprocess: flag to execute post process after chaning state.
 			 *
 			 * This function changes the state of window
 			 */
-			virtual void changeWindowState(const main_window_shared_types::state_e & nextState) final;
+			virtual void changeWindowState(const main_window_shared_types::state_e & nextState, const main_window_shared_types::state_postprocessing_e postprocess) final;
 
 			/**
 			 * @brief Function: virtual bool isValidWindowState(const main_window_shared_types::state_e & windowState)

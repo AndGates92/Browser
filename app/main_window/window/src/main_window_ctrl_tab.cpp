@@ -76,7 +76,7 @@ void main_window_ctrl_tab::MainWindowCtrlTab::connectExtraSignals() {
 void main_window_ctrl_tab::MainWindowCtrlTab::setUpOpenNewTab() {
 	QINFO_PRINT(global_types::qinfo_level_e::ZERO, mainWindowCtrlTabSearch,  "Open new tab");
 	const main_window_shared_types::state_e requestedWindowState = main_window_shared_types::state_e::OPEN_TAB;
-	this->changeWindowState(requestedWindowState);
+	this->changeWindowState(requestedWindowState, main_window_shared_types::state_postprocessing_e::POSTPROCESS);
 }
 
 //************************************************************************************
@@ -364,24 +364,7 @@ void main_window_ctrl_tab::MainWindowCtrlTab::keyPressEvent(QKeyEvent * event) {
 			case Qt::Key_Enter:
 			case Qt::Key_Return:
 				QINFO_PRINT(global_types::qinfo_level_e::ZERO, mainWindowCtrlTabUserInput,  "User typed text " << userTypedText);
-				switch (windowState) {
-					case main_window_shared_types::state_e::OPEN_TAB:
-						this->addNewTabAndSearch(userTypedText);
-						break;
-					case main_window_shared_types::state_e::SEARCH:
-						this->searchCurrentTab(userTypedText);
-						break;
-					case main_window_shared_types::state_e::REFRESH_TAB:
-					case main_window_shared_types::state_e::CLOSE_TAB:
-					case main_window_shared_types::state_e::MOVE_RIGHT:
-					case main_window_shared_types::state_e::MOVE_LEFT:
-					case main_window_shared_types::state_e::MOVE_TAB:
-						this->processTabIndex(userTypedText);
-						break;
-					default:
-						// Do nothing by default
-						break;
-				}
+				this->executeAction(windowState);
 				break;
 			default:
 				this->setStateAction(windowState, event);
@@ -392,6 +375,32 @@ void main_window_ctrl_tab::MainWindowCtrlTab::keyPressEvent(QKeyEvent * event) {
 
 }
 
+void main_window_ctrl_tab::MainWindowCtrlTab::executeAction(const main_window_shared_types::state_e & windowState) {
+	const QString userTypedText = this->windowCore->getUserText();
+
+	switch (windowState) {
+		case main_window_shared_types::state_e::OPEN_TAB:
+			this->addNewTabAndSearch(userTypedText);
+			break;
+		case main_window_shared_types::state_e::SEARCH:
+			this->searchCurrentTab(userTypedText);
+			break;
+		case main_window_shared_types::state_e::REFRESH_TAB:
+		case main_window_shared_types::state_e::CLOSE_TAB:
+		case main_window_shared_types::state_e::MOVE_RIGHT:
+		case main_window_shared_types::state_e::MOVE_LEFT:
+		case main_window_shared_types::state_e::MOVE_TAB:
+			this->processTabIndex(userTypedText);
+			break;
+		case main_window_shared_types::state_e::COMMAND:
+			this->executeCommand(userTypedText, main_window_shared_types::state_postprocessing_e::ACTION);
+			break;
+		default:
+			// Do nothing by default
+			break;
+	}
+}
+
 void main_window_ctrl_tab::MainWindowCtrlTab::setStateAction(const main_window_shared_types::state_e & windowState, QKeyEvent * event) {
 
 	const int pressedKey = event->key();
@@ -400,8 +409,8 @@ void main_window_ctrl_tab::MainWindowCtrlTab::setStateAction(const main_window_s
 
 	switch (windowState) {
 		case main_window_shared_types::state_e::COMMAND:
-			if (pressedKey >= Qt::Key_Space) {
-				this->executeCommand(userTypedText);
+			if (pressedKey == Qt::Key_Space) {
+				this->executeCommand(userTypedText, main_window_shared_types::state_postprocessing_e::NONE);
 			}
 			break;
 		case main_window_shared_types::state_e::OPEN_TAB:
@@ -521,7 +530,6 @@ void main_window_ctrl_tab::MainWindowCtrlTab::postprocessWindowStateChange(const
 	} else {
 		this->setAllShortcutEnabledProperty(false);
 	}
-	this->printUserInput(main_window_shared_types::text_action_e::CLEAR);
 }
 
 bool main_window_ctrl_tab::MainWindowCtrlTab::isValidWindowState(const main_window_shared_types::state_e & requestedWindowState) {

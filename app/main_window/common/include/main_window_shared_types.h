@@ -21,6 +21,23 @@ namespace main_window_shared_types {
 	Q_NAMESPACE
 
 	/**
+	 * @brief postprocessing action after state change
+	 *
+	 */
+	typedef enum class state_postprocessing_list {
+		NONE,             /**< No post processing ot state transition */
+		POSTPROCESS,      /**< Run postprocessing */
+		ACTION            /**< Execute action */
+	} state_postprocessing_e;
+
+	/**
+	 * @brief Overload operators to ease print of the state of the main window controller
+	 *
+	 */
+	OVERLOAD_OPERATORS_CUSTOM_TYPE_FUNCTION_PROTOTYPE(state_postprocessing_list, main_window_shared_types::state_postprocessing_e)
+
+
+	/**
 	 * @brief states
 	 *
 	 */
