@@ -112,7 +112,7 @@ void main_window_ctrl::MainWindowCtrl::prepareAction(const main_window_shared_ty
 		case main_window_shared_types::state_e::COMMAND:
 			if (pressedKey == Qt::Key_Space) {
 				this->executeCommand(this->windowCore->getUserText(), main_window_shared_types::state_postprocessing_e::NONE);
-			} else {
+			} else if ((pressedKey >= Qt::Key_Space) && (pressedKey <= Qt::Key_ydiaeresis)) {
 				this->printUserInput(main_window_shared_types::text_action_e::APPEND, event->text());
 			}
 			break;
@@ -143,7 +143,7 @@ void main_window_ctrl::MainWindowCtrl::closeWindow() {
 void main_window_ctrl::MainWindowCtrl::postprocessWindowStateChange(const main_window_shared_types::state_e & previousState) {
 	const main_window_shared_types::state_e windowState = this->windowCore->getMainWindowState();
 
-QINFO_PRINT(global_types::qinfo_level_e::ZERO, mainWindowCtrlBaseOverall,  "Previous windowState " << previousState << " and current windowState " << windowState );
+	QINFO_PRINT(global_types::qinfo_level_e::ZERO, mainWindowCtrlOverall,  "Previous windowState " << previousState << " and current windowState " << windowState );
 
 	switch (windowState) {
 		case main_window_shared_types::state_e::IDLE:
