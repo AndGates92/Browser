@@ -537,7 +537,8 @@ bool main_window_ctrl_tab::MainWindowCtrlTab::isValidWindowState(const main_wind
 			isValid = ((tabCount > 1) && (windowState == main_window_shared_types::state_e::IDLE));
 			break;
 		case main_window_shared_types::state_e::COMMAND:
-			isValid = true;
+			// Set to false as transition to COMMAND state is handled in the base class by the global conditions
+			isValid = false;
 			break;
 		default:
 			QEXCEPTION_ACTION(throw, "Unable to determine whether transaction from " << windowState << " to " << requestedWindowState << " is valid");

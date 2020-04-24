@@ -191,15 +191,6 @@ bool main_window_ctrl::MainWindowCtrl::isValidWindowState(const main_window_shar
 			// It is only possible to start a new command if in the idle state
 			isValid = (windowState == main_window_shared_types::state_e::IDLE);
 			break;
-		case main_window_shared_types::state_e::OPEN_TAB:
-		case main_window_shared_types::state_e::SEARCH:
-		case main_window_shared_types::state_e::REFRESH_TAB:
-		case main_window_shared_types::state_e::CLOSE_TAB:
-		case main_window_shared_types::state_e::MOVE_RIGHT:
-		case main_window_shared_types::state_e::MOVE_LEFT:
-		case main_window_shared_types::state_e::MOVE_TAB:
-			isValid = (windowState == main_window_shared_types::state_e::COMMAND);
-			break;
 		default: 
 			QEXCEPTION_ACTION(throw, "Unable to determine whether transaction from " << windowState << " to " << requestedWindowState << " is valid");
 			break;
