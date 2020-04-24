@@ -24,7 +24,7 @@ namespace global_classes {
 	struct StringCompare {
 		// Struct sets the default access to public
 		/**
-		 * @brief Function: bool operator() (const std::string & rhs, const std::string & lhs)
+		 * @brief Function: bool operator() (const std::string & rhs, const std::string & lhs) const
 		 *
 		 * \param rhs: string to compare
 		 * \param lhs: string to compare
@@ -33,7 +33,7 @@ namespace global_classes {
 		 *
 		 * This function compares two std::string objects
 		 */
-		bool operator() (const std::string & rhs, const std::string & lhs);
+		bool operator() (const std::string & rhs, const std::string & lhs) const;
 	};
 
 }

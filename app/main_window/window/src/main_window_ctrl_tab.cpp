@@ -334,9 +334,21 @@ void main_window_ctrl_tab::MainWindowCtrlTab::keyReleaseEvent(QKeyEvent * event)
 			case Qt::Key_Backspace:
 				QINFO_PRINT(global_types::qinfo_level_e::ZERO, mainWindowCtrlTabUserInput,  "User typed text " << userTypedText);
 				// If in state TAB MOVE and the windowCore->userText is empty after deleting the last character, set the move value to IDLE
-				if ((userTypedText.isEmpty() == true) && (windowState == main_window_shared_types::state_e::MOVE_TAB)) {
-					this->windowCore->setOffsetType(main_window_shared_types::offset_type_e::IDLE);
-					this->printUserInput(main_window_shared_types::text_action_e::CLEAR);
+				if (userTypedText.isEmpty() == true) {
+					if (windowState == main_window_shared_types::state_e::MOVE_TAB) {
+						this->windowCore->setOffsetType(main_window_shared_types::offset_type_e::IDLE);
+						this->printUserInput(main_window_shared_types::text_action_e::CLEAR);
+					} else if (windowState != main_window_shared_types::state_e::COMMAND) {
+						// Saving long command for a given state to set it after changing state
+						const main_window_shared_types::state_e requestedWindowState = main_window_shared_types::state_e::COMMAND;
+						const main_window_json_data::MainWindowJsonData * data(this->findDataWithFieldValue("State", &windowState));
+						if (data != nullptr) {
+							QString longCmd(QString::fromStdString(data->getLongCmd()));
+							this->changeWindowState(requestedWindowState, main_window_shared_types::state_postprocessing_e::POSTPROCESS, static_cast<Qt::Key>(releasedKey));
+							// Setting the user input here because it is cleared when changing state
+							this->printUserInput(main_window_shared_types::text_action_e::SET, longCmd);
+						}
+					}
 				}
 				break;
 			default:
@@ -524,9 +536,8 @@ bool main_window_ctrl_tab::MainWindowCtrlTab::isValidWindowState(const main_wind
 			// It is only possible to perform an operation that requires movement of cursors or tabs if the current state is idle and at least 2 tab is opened
 			isValid = ((tabCount > 1) && (windowState == main_window_shared_types::state_e::IDLE));
 			break;
-		case main_window_shared_types::state_e::QUIT:
-		case main_window_shared_types::state_e::TOGGLE_MENUBAR:
-			isValid = (windowState == main_window_shared_types::state_e::COMMAND);
+		case main_window_shared_types::state_e::COMMAND:
+			isValid = true;
 			break;
 		default:
 			QEXCEPTION_ACTION(throw, "Unable to determine whether transaction from " << windowState << " to " << requestedWindowState << " is valid");

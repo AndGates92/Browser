@@ -229,7 +229,7 @@ void main_window_ctrl_base::MainWindowCtrlBase::populateActionData() {
 
 			std::map<std::string, main_window_json_data::MainWindowJsonData *>::iterator el = it.first;
 			main_window_json_data::MainWindowJsonData * & data = el->second;
-			data->setValueFromMemberString(*paramIter, valuePtr);
+			data->setValueFromMemberName(*paramIter, valuePtr);
 		}
 	}
 
@@ -238,10 +238,16 @@ void main_window_ctrl_base::MainWindowCtrlBase::populateActionData() {
 
 }
 
-void main_window_ctrl_base::MainWindowCtrlBase::changeWindowState(const main_window_shared_types::state_e & nextState, const main_window_shared_types::state_postprocessing_e postprocess) {
+void main_window_ctrl_base::MainWindowCtrlBase::changeWindowState(const main_window_shared_types::state_e & nextState, const main_window_shared_types::state_postprocessing_e postprocess, const Qt::Key key) {
 
 	const main_window_shared_types::state_e windowState = this->windowCore->getMainWindowState();
-	const bool globalCondition = (windowState == main_window_shared_types::state_e::COMMAND);
+	const QString userTypedText = this->windowCore->getUserText();
+
+	// Global conditions are:
+	// - it is possible to move to any state from the command state
+	// - it is possible to move from any state to COMMAND command state if the user types Backspace and the user types text is empty
+	const bool globalCondition = (windowState == main_window_shared_types::state_e::COMMAND) || ((windowState != main_window_shared_types::state_e::COMMAND) && (nextState == main_window_shared_types::state_e::COMMAND) && (userTypedText.isEmpty() == true) && (key == Qt::Key_Backspace));
+
 
 	// Do not change state if the window is already in the one requested
 	if (windowState != nextState) {
@@ -287,4 +293,18 @@ void main_window_ctrl_base::MainWindowCtrlBase::keyPressEvent(QKeyEvent * event)
 		}
 	}
 
+}
+
+const main_window_json_data::MainWindowJsonData * main_window_ctrl_base::MainWindowCtrlBase::findDataWithFieldValue(const std::string & name, const void * value) const {
+
+	for(std::map<std::string, main_window_json_data::MainWindowJsonData *>::const_iterator data = this->actionData.cbegin(); data != this->actionData.cend(); data++) {
+
+		const main_window_json_data::MainWindowJsonData * commandData(data->second);
+		bool found = commandData->isSameFieldValue(name, value);
+		if (found == true) {
+			return commandData;
+		}
+	}
+
+	return nullptr;
 }

@@ -320,14 +320,37 @@ namespace main_window_json_data {
 			void addActionParameters(const std::string & name);
 
 			/**
-			 * @brief Function: virtual void setValueFromMemberString(const std::string & name, const void * value)
+			 * @brief Function: virtual void setValueFromMemberName(const std::string & name, const void * value)
 			 *
 			 * \param name: name of the name of the member as a string
 			 * \param value: value to be assigned to the element
 			 *
-			 * This functions assign a value to a member of MainWindowJsonData by access it through its name
+			 * This functions assign a value to a member of MainWindowJsonData by accessing it through its name
 			 */
-			virtual void setValueFromMemberString(const std::string & name, const void * value);
+			virtual void setValueFromMemberName(const std::string & name, const void * value);
+
+			/**
+			 * @brief Function: virtual const void * getValueFromMemberName(const std::string & name) const
+			 *
+			 * \param name: name of the name of the member as a string
+			 *
+			 * \return value of the member
+			 *
+			 * This functions returns the value of a member of MainWindowJsonData by accessing it through its name
+			 */
+			virtual const void * getValueFromMemberName(const std::string & name) const;
+
+			/**
+			 * @brief Function: virtual bool isSameFieldValue(const std::string & name, const void * value) const
+			 *
+			 * \param name: name of the name of the member as a string
+			 * \param value: value of the member
+			 *
+			 * \return if field value matches value
+			 *
+			 * This functions compares the input value with the member of MainWindowJsonData by accessing it through its name
+			 */
+			virtual bool isSameFieldValue(const std::string & name, const void * value) const;
 
 	};
 

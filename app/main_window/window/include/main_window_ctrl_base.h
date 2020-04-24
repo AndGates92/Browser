@@ -170,14 +170,15 @@ namespace main_window_ctrl_base {
 			virtual void changeWindowStateWrapper(const main_window_json_data::MainWindowJsonData * commandData, const main_window_shared_types::state_postprocessing_e postprocess) final;
 
 			/**
-			 * @brief Function: virtual void changeWindowState(const main_window_shared_types::state_e & nextState, const main_window_shared_types::state_postprocessing_e postprocess) final
+			 * @brief Function: virtual void changeWindowState(const main_window_shared_types::state_e & nextState, const main_window_shared_types::state_postprocessing_e postprocess, const Qt::Key key = Qt::Key_unknown) final
 			 *
 			 * \param nextState: state the window is requested to go into.
 			 * \param postprocess: flag to execute post process after chaning state.
+			 * \param key: key pressed that supports the request for a state change.
 			 *
 			 * This function changes the state of window
 			 */
-			virtual void changeWindowState(const main_window_shared_types::state_e & nextState, const main_window_shared_types::state_postprocessing_e postprocess) final;
+			virtual void changeWindowState(const main_window_shared_types::state_e & nextState, const main_window_shared_types::state_postprocessing_e postprocess, const Qt::Key key = Qt::Key_unknown) final;
 
 			/**
 			 * @brief Function: virtual bool isValidWindowState(const main_window_shared_types::state_e & windowState)
@@ -261,6 +262,19 @@ namespace main_window_ctrl_base {
 			 * This function connects signals and slots within main window controller
 			 */
 			virtual void connectSignals() final;
+
+			/**
+			 * @brief Function: const main_window_json_data::MainWindowJsonData * findDataWithFieldValue(const std::string & name, const void * value) const
+			 *
+			 * \param name: name of the name of the member as a string
+			 * \param value: value of the member
+			 *
+			 * \return JSON data having a matching field value
+			 *
+			 * This functions searching a data having a matching field value
+			 * This functions returns the first match or nullptr if no match
+			 */
+			const main_window_json_data::MainWindowJsonData * findDataWithFieldValue(const std::string & name, const void * value) const;
 
 		private:
 			// Move and copy constructor

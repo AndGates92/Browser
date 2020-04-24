@@ -166,7 +166,7 @@ void main_window_json_data::MainWindowJsonData::addActionParameters(const std::s
 	this->actionParameters.insert(name);
 }
 
-void main_window_json_data::MainWindowJsonData::setValueFromMemberString(const std::string & name, const void * value) {
+void main_window_json_data::MainWindowJsonData::setValueFromMemberName(const std::string & name, const void * value) {
 	QEXCEPTION_ACTION_COND((this->actionParameters.find(name) == this->actionParameters.end()), throw, "Parameter " << QString::fromStdString(name) << " has not been found among the action parameters. In order to add it, please call void main_window_json_data::MainWindowJsonData::addActionParameters(const std::string & name)");
 
 	if (name.compare("Key") == 0) {
@@ -192,3 +192,56 @@ void main_window_json_data::MainWindowJsonData::setValueFromMemberString(const s
 	}
 }
 
+const void * main_window_json_data::MainWindowJsonData::getValueFromMemberName(const std::string & name) const {
+	QEXCEPTION_ACTION_COND((this->actionParameters.find(name) == this->actionParameters.cend()), throw, "Parameter " << QString::fromStdString(name) << " has not been found among the action parameters. In order to add it, please call void main_window_json_data::MainWindowJsonData::addActionParameters(const std::string & name)");
+
+	const void * value = nullptr;
+
+	if (name.compare("Key") == 0) {
+		value = &(this->key);
+	} else if (name.compare("Name") == 0) {
+		value = &(this->name);
+	} else if (name.compare("State") == 0) {
+		value = &(this->state);
+	} else if (name.compare("Shortcut") == 0) {
+		value = &(this->shortcut);
+	} else if (name.compare("LongCmd") == 0) {
+		value = &(this->longCmd);
+	} else if (name.compare("Help") == 0) {
+		value = &(this->help);
+	} else {
+		QEXCEPTION_ACTION(throw, "Cannot find class member associated with parameter " << QString::fromStdString(name) << ".");
+	}
+
+	return value;
+}
+
+bool main_window_json_data::MainWindowJsonData::isSameFieldValue(const std::string & name, const void * value) const {
+	QEXCEPTION_ACTION_COND((this->actionParameters.find(name) == this->actionParameters.cend()), throw, "Parameter " << QString::fromStdString(name) << " has not been found among the action parameters. In order to add it, please call void main_window_json_data::MainWindowJsonData::addActionParameters(const std::string & name)");
+
+	bool isSame = false;
+
+	if (name.compare("Key") == 0) {
+		const std::string * const strPtr(static_cast<const std::string *>(value));
+		isSame = (this->key.compare(*strPtr) == 0);
+	} else if (name.compare("Name") == 0) {
+		const std::string * const strPtr(static_cast<const std::string *>(value));
+		isSame = (this->name.compare(*strPtr) == 0);
+	} else if (name.compare("State") == 0) {
+		const main_window_shared_types::state_e * const statePtr(static_cast<const main_window_shared_types::state_e *>(value));
+		isSame = (this->state == *statePtr);
+	} else if (name.compare("Shortcut") == 0) {
+		const Qt::Key * const shortcutKeyPtr(static_cast<const Qt::Key *>(value));
+		isSame = (this->shortcut == *shortcutKeyPtr);
+	} else if (name.compare("LongCmd") == 0) {
+		const std::string * const strPtr(static_cast<const std::string *>(value));
+		isSame = (this->longCmd.compare(*strPtr) == 0);
+	} else if (name.compare("Help") == 0) {
+		const std::string * const strPtr(static_cast<const std::string *>(value));
+		isSame = (this->help.compare(*strPtr) == 0);
+	} else {
+		QEXCEPTION_ACTION(throw, "Cannot find class member associated with parameter " << QString::fromStdString(name) << ".");
+	}
+
+	return isSame;
+}
