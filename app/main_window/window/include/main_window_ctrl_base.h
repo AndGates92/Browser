@@ -276,6 +276,17 @@ namespace main_window_ctrl_base {
 			 */
 			const main_window_json_data::MainWindowJsonData * findDataWithFieldValue(const std::string & name, const void * value) const;
 
+			/**
+			 * @brief Function: void moveToCommandStateFromNonIdleState(const main_window_shared_types::state_e & windowState, const Qt::Key & key)
+			 *
+			 * \param nextState: state the window is requested to go into.
+			 * \param key: key typed by the user that supports this request.
+			 *
+			 * This function move to command state from another state
+			 */
+			void moveToCommandStateFromNonIdleState(const main_window_shared_types::state_e & windowState, const Qt::Key & key);
+
+
 		private:
 			// Move and copy constructor
 			/**

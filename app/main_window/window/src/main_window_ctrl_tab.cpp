@@ -335,19 +335,12 @@ void main_window_ctrl_tab::MainWindowCtrlTab::keyReleaseEvent(QKeyEvent * event)
 				QINFO_PRINT(global_types::qinfo_level_e::ZERO, mainWindowCtrlTabUserInput,  "User typed text " << userTypedText);
 				// If in state TAB MOVE and the windowCore->userText is empty after deleting the last character, set the move value to IDLE
 				if (userTypedText.isEmpty() == true) {
-					if (windowState == main_window_shared_types::state_e::MOVE_TAB) {
-						this->windowCore->setOffsetType(main_window_shared_types::offset_type_e::IDLE);
-						this->printUserInput(main_window_shared_types::text_action_e::CLEAR);
-					} else if (windowState != main_window_shared_types::state_e::COMMAND) {
-						// Saving long command for a given state to set it after changing state
-						const main_window_shared_types::state_e requestedWindowState = main_window_shared_types::state_e::COMMAND;
-						const main_window_json_data::MainWindowJsonData * data(this->findDataWithFieldValue("State", &windowState));
-						if (data != nullptr) {
-							QString longCmd(QString::fromStdString(data->getLongCmd()));
-							this->changeWindowState(requestedWindowState, main_window_shared_types::state_postprocessing_e::POSTPROCESS, static_cast<Qt::Key>(releasedKey));
-							// Setting the user input here because it is cleared when changing state
-							this->printUserInput(main_window_shared_types::text_action_e::SET, longCmd);
+					if (windowState != main_window_shared_types::state_e::COMMAND) {
+						if (windowState == main_window_shared_types::state_e::MOVE_TAB) {
+							this->windowCore->setOffsetType(main_window_shared_types::offset_type_e::IDLE);
+							this->printUserInput(main_window_shared_types::text_action_e::CLEAR);
 						}
+						this->moveToCommandStateFromNonIdleState(windowState, static_cast<Qt::Key>(releasedKey));
 					}
 				}
 				break;
