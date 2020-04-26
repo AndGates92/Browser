@@ -31,20 +31,19 @@ main_window_status_bar::MainWindowStatusBar::MainWindowStatusBar(QWidget * paren
 	);
 
 	// user input
-	//this->userInputText = this->newWindowLabel();
 	this->userInputText->setAlignment(Qt::AlignLeft | Qt::AlignBottom);
 	this->userInputText->setFocus(Qt::OtherFocusReason);
 
 	// path to the content
-	//this->contentPathText = this->newWindowLabel();
 	this->contentPathText->setAlignment(Qt::AlignRight | Qt::AlignBottom);
+	this->contentPathText->setSizePolicy(QSizePolicy::Fixed, QSizePolicy::Fixed);
 
 	// info
-	//this->infoText = this->newWindowLabel();
 	this->infoText->setAlignment(Qt::AlignRight | Qt::AlignBottom);
+	this->infoText->setSizePolicy(QSizePolicy::Fixed, QSizePolicy::Fixed);
 
-	// info
-	//this->loadBar = this->newProgressBar();
+	// loadBar
+	this->loadBar->setSizePolicy(QSizePolicy::Fixed, QSizePolicy::Fixed);
 
 	// Populate statusbar
 	this->fillStatusBar();
@@ -131,7 +130,7 @@ void main_window_status_bar::MainWindowStatusBar::fillStatusBar() {
 	// | <user text> |      <content>     |   <info>   | <progress bar> |
 	// ------------------------------------------------------------------
 
-	QHBoxLayout * layout = new QHBoxLayout();
+	QHBoxLayout * layout = new QHBoxLayout(this);
 
 	// user input text
 	layout->addWidget(this->userInputText);
