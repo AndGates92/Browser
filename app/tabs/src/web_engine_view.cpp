@@ -23,7 +23,6 @@ web_engine_view::WebEngineView::WebEngineView(QWidget * parent): QWebEngineView(
 
 	web_engine_page::WebEnginePage * page = new web_engine_page::WebEnginePage(web_engine_profile::WebEngineProfile::defaultProfile(), parent);
 	this->setPage(page);
-
 }
 
 web_engine_view::WebEngineView::~WebEngineView() {

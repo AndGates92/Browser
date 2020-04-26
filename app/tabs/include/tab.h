@@ -28,6 +28,11 @@
  */
 
 Q_DECLARE_LOGGING_CATEGORY(tabOverall)
+Q_DECLARE_LOGGING_CATEGORY(tabSize)
+
+namespace tab_widget {
+	class TabWidget;
+}
 
 namespace tab {
 
@@ -36,6 +41,7 @@ namespace tab {
 	 *
 	 */
 	class Tab : public QWidget {
+		friend class tab_widget::TabWidget;
 
 		public:
 			/**
@@ -123,6 +129,15 @@ namespace tab {
 			 * This function reloads the content of the tab
 			 */
 			virtual void reload() = 0;
+
+			/**
+			 * @brief Function: void resize(const QSize size)
+			 *
+			 * \param size: new size of the view
+			 *
+			 * Reimplement resize
+			 */
+			void resize(const QSize size);
 
 		private:
 

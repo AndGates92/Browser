@@ -102,7 +102,7 @@ main_window::MainWindow::~MainWindow() {
 
 void main_window::MainWindow::customizeMainWidget() {
 	this->windowCore->mainWidget->setAttribute(Qt::WA_DeleteOnClose);
-	// Disable widget resizing
+	// Disable widget resizing - it will get as much space as possible
 	this->windowCore->mainWidget->setSizePolicy(QSizePolicy::Ignored, QSizePolicy::Ignored);
 	this->windowCore->mainWidget->setFocusPolicy(Qt::StrongFocus);
 

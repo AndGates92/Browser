@@ -11,6 +11,7 @@
 #include <qt5/QtGui/QResizeEvent>
 #include <qt5/QtGui/QKeyEvent>
 
+#include "tab.h"
 #include "tab_widget.h"
 #include "exception_macros.h"
 
@@ -53,6 +54,14 @@ void tab_widget::TabWidget::resizeEvent(QResizeEvent * event) {
 	QINFO_PRINT(global_types::qinfo_level_e::ZERO, tabWidgetSize,  "Tab widget resize from " << previousSize << " to " << newSize);
 	int widgetWidth = this->size().width();
 	this->bar->setWidth(widgetWidth);
+
+	if (this->count() > 0) {
+		// Resize current tab
+		tab::Tab * currentTab = dynamic_cast<tab::Tab *>(this->widget(this->currentIndex(), true));
+		if (currentTab != Q_NULLPTR) {
+			currentTab->resize(newSize);
+		}
+	}
 
 	QTabWidget::resizeEvent(event);
 }

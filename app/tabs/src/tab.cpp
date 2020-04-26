@@ -16,6 +16,7 @@
 
 // Categories
 Q_LOGGING_CATEGORY(tabOverall, "tab.overall", MSG_TYPE_LEVEL)
+Q_LOGGING_CATEGORY(tabSize, "tab.size", MSG_TYPE_LEVEL)
 
 tab::Tab::Tab(QWidget * parent): QWidget(parent), view(Q_NULLPTR), loadManager(Q_NULLPTR), search(Q_NULLPTR) {
 	QINFO_PRINT(global_types::qinfo_level_e::ZERO, tabOverall,  "Tab constructor");
@@ -51,3 +52,12 @@ PTR_SETTER_GETTER(tab::Tab::setLoadManager, tab::Tab::getLoadManager, tab_load_m
 PTR_SETTER_GETTER(tab::Tab::setView, tab::Tab::getView, web_engine_view::WebEngineView, this->view)
 
 PTR_SETTER_GETTER(tab::Tab::setSearch, tab::Tab::getSearch, web_engine_search::WebEngineSearch, this->search)
+
+void tab::Tab::resize(const QSize size) {
+	// Resize view
+	if (this->view != Q_NULLPTR) {
+		QINFO_PRINT(global_types::qinfo_level_e::ZERO, tabSize,  "Resize view to" << size);
+		this->view->resize(size);
+	}
+	QWidget::resize(size);
+}
