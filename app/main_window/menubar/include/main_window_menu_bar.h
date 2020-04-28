@@ -33,13 +33,13 @@ namespace main_window_menu_bar {
 
 		public:
 			/**
-			 * @brief Function: explicit MenuBar(QWidget * window = Q_NULLPTR)
+			 * @brief Function: explicit MenuBar(QWidget * parent = Q_NULLPTR)
 			 *
-			 * \param window: pointer to the window the menu belongs to
+			 * \param parent: pointer to the parent the menu belongs to
 			 *
 			 * Constructor of menu bar
 			 */
-			explicit MainWindowMenuBar(QWidget * window = Q_NULLPTR);
+			explicit MainWindowMenuBar(QWidget * parent = Q_NULLPTR);
 
 			/**
 			 * @brief Function: ~MenuBar()

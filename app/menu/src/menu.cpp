@@ -18,7 +18,7 @@
 // Categories
 Q_LOGGING_CATEGORY(menuOverall, "menu.overall", MSG_TYPE_LEVEL)
 
-menu::Menu::Menu(QWidget * window, QMenuBar * menuBar, const char* menuName, const key_sequence::KeySequence & key) : QWidget(window), menuBar(menuBar), menuName(menuName), key(key) {
+menu::Menu::Menu(QWidget * parent, QMenuBar * menuBar, const char* menuName, const key_sequence::KeySequence & key) : QWidget(parent), menuBar(menuBar), menuName(menuName), key(key) {
 
 	QINFO_PRINT(global_types::qinfo_level_e::ZERO, menuOverall, "Create menu " << this->menuName << " shortcut key " << this->key.toString());
 	this->createMenu();
@@ -34,9 +34,8 @@ menu::Menu::~Menu() {
 	}
 
 	// Do not call delete on the following members:
-	// - this->menuName -> not create with new;
-	// - this->menuBar -> pointer to the menu bar of the main window and it will be deleted while deleting the main window;
-	// - this->window -> pointer to the main window therefore it will be deleted after the menu;
+	// - this->menuName -> not created with new;
+	// - this->menuBar -> pointer to the menu bar of the window and it will be deleted while deleting the window;
 	// - this->expandMenu -> pointer to shortcut delete by the parent
 
 }

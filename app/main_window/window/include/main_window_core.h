@@ -38,11 +38,11 @@ namespace main_window_core {
 			/**
 			 * @brief Function: explicit MainWindowCore()
 			 *
-			 * \param window: parent window widget
+			 * \param parent: parent widget
 			 *
 			 * Main window core constructor
 			 */
-			explicit MainWindowCore(QWidget * window);
+			explicit MainWindowCore(QWidget * parent);
 
 			// Move and copy constructor
 			/**

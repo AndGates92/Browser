@@ -37,16 +37,16 @@ namespace menu {
 		public:
 
 			/**
-			 * @brief Function: explicit Menu(QWidget * window = Q_NULLPTR, QMenuBar * menuBar = Q_NULLPTR, const char* menuName = "Unknown", const key_sequence::KeySequence & key = key_sequence::KeySequence(QKeySequence::UnknownKey))
+			 * @brief Function: explicit Menu(QWidget * parent = Q_NULLPTR, QMenuBar * menuBar = Q_NULLPTR, const char* menuName = "Unknown", const key_sequence::KeySequence & key = key_sequence::KeySequence(QKeySequence::UnknownKey))
 			 *
-			 * \param window: pointer to the window the menu belongs to
+			 * \param parent: pointer to the parent of the menu
 			 * \param menuBar: menubar the menu is part of
 			 * \param menuName: name of the menu
 			 * \param key: keyboard shortcut
 			 *
 			 * Constructor of base class menu
 			 */
-			explicit Menu(QWidget * window = Q_NULLPTR, QMenuBar * menuBar = Q_NULLPTR, const char* menuName = "Unknown", const key_sequence::KeySequence & key = key_sequence::KeySequence(QKeySequence::UnknownKey));
+			explicit Menu(QWidget * parent = Q_NULLPTR, QMenuBar * menuBar = Q_NULLPTR, const char* menuName = "Unknown", const key_sequence::KeySequence & key = key_sequence::KeySequence(QKeySequence::UnknownKey));
 
 			/**
 			 * @brief Function: virtual ~Menu()

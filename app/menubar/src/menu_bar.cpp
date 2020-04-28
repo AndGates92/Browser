@@ -16,7 +16,7 @@
 
 Q_LOGGING_CATEGORY(menuBarOverall, "menuBar.overall", MSG_TYPE_LEVEL)
 
-menu_bar::MenuBar::MenuBar(QWidget * window) : QMenuBar(window) {
+menu_bar::MenuBar::MenuBar(QWidget * parent) : QMenuBar(parent) {
 	QINFO_PRINT(global_types::qinfo_level_e::ZERO, menuBarOverall,  "Menu bar constructor");
 
 }

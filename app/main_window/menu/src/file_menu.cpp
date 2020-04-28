@@ -24,7 +24,7 @@ Q_LOGGING_CATEGORY(fileMenuSaveAction, "fileMenu.saveAction", MSG_TYPE_LEVEL)
 Q_LOGGING_CATEGORY(fileMenuPrintAction, "fileMenu.printAction", MSG_TYPE_LEVEL)
 Q_LOGGING_CATEGORY(fileMenuExitAction, "fileMenu.exitAction", MSG_TYPE_LEVEL)
 
-file_menu::FileMenu::FileMenu(QWidget * window, QMenuBar * menuBar, const char* menuName, const key_sequence::KeySequence & key) : menu::Menu(window,menuBar,menuName,key) {
+file_menu::FileMenu::FileMenu(QWidget * parent, QMenuBar * menuBar, const char* menuName, const key_sequence::KeySequence & key) : menu::Menu(parent,menuBar,menuName,key) {
 
 	QINFO_PRINT(global_types::qinfo_level_e::ZERO, fileMenuOverall,  "Creating file menu");
 	this->createActions();
