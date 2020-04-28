@@ -183,27 +183,6 @@ namespace main_window {
 			 */
 			void connectSignals();
 
-			/**
-			 * @brief Function: void keyPressEvent(QKeyEvent * event) override
-			 *
-			 * \param event: event coming from keyboard
-			 *
-			 * This function handles event coming from the keyboard
-			 * Escape is not triggered in keyPressEvent
-			 * Re-implement key pressed event
-			 */
-			void keyPressEvent(QKeyEvent * event) override;
-
-			/**
-			 * @brief Function: void keyReleaseEvent(QKeyEvent * event) override
-			 *
-			 * \param event: event coming from keyboard
-			 *
-			 * This function handles event coming from the keyboard
-			 * Re-implement key released event
-			 */
-			void keyReleaseEvent(QKeyEvent * event) override;
-
 			// Move and copy constructor
 			/**
 			 * @brief Disable move and copy constructors and operator= overloading for class MainWindow

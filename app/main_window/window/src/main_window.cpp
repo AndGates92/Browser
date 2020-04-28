@@ -201,7 +201,7 @@ void main_window::MainWindow::createCtrl() {
 
 	// main window control object
 	this->ctrl = new main_window_ctrl_wrapper::MainWindowCtrlWrapper(this->windowCore, this, this);
-//	this->setFocusProxy(this->ctrl);
+	this->setFocusProxy(this->ctrl);
 
 }
 
@@ -209,26 +209,4 @@ void main_window::MainWindow::closeWindow() {
 	QINFO_PRINT(global_types::qinfo_level_e::ZERO, mainWindowOverall,  "Close main window");
 	const bool success = this->close();
 	Q_ASSERT_X(success, "main window close success check", "Main window close request was not handled properly");
-}
-
-void main_window::MainWindow::keyPressEvent(QKeyEvent * event) {
-
-	QINFO_PRINT(global_types::qinfo_level_e::ZERO, mainWindowOverall,  "Key event details: event type: keyPress key: " << event->key() << " modifier: " << event->modifiers());
-
-	QMainWindow::keyPressEvent(event);
-
-	this->ctrl->keyPressEvent(event);
-
-	this->windowCore->mainWidget->repaint();
-}
-
-void main_window::MainWindow::keyReleaseEvent(QKeyEvent * event) {
-
-	QINFO_PRINT(global_types::qinfo_level_e::ZERO, mainWindowOverall,  "Key event details: event type: keyRelease key: " << event->key() << " modifier: " << event->modifiers());
-
-	QMainWindow::keyReleaseEvent(event);
-
-	this->ctrl->keyReleaseEvent(event);
-
-	this->windowCore->mainWidget->repaint();
 }

@@ -23,7 +23,6 @@ Q_LOGGING_CATEGORY(mainWindowCtrlWrapperOverall, "mainWindowCtrlWrapper.overall"
 main_window_ctrl_wrapper::MainWindowCtrlWrapper::MainWindowCtrlWrapper(QSharedPointer<main_window_core::MainWindowCore> core, QWidget * window, QWidget * parent) : QWidget(parent), main_window_base::MainWindowBase(core), window(window), winctrl(new main_window_ctrl::MainWindowCtrl(core, window, this)), tabctrl(new main_window_ctrl_tab::MainWindowCtrlTab(core, window, this)) {
 
 	this->setFocus(Qt::OtherFocusReason);
-//	this->setFocusPolicy(Qt::StrongFocus);
 }
 
 main_window_ctrl_wrapper::MainWindowCtrlWrapper::~MainWindowCtrlWrapper() {
@@ -54,6 +53,8 @@ void main_window_ctrl_wrapper::MainWindowCtrlWrapper::keyPressEvent(QKeyEvent * 
 	if ((pressedKey == Qt::Key_Escape) || (pressedKey == Qt::Key_Return) || (pressedKey == Qt::Key_Enter)) {
 		this->resetWindowState();
 	}
+
+	this->windowCore->mainWidget->repaint();
 }
 
 void main_window_ctrl_wrapper::MainWindowCtrlWrapper::keyReleaseEvent(QKeyEvent * event) {
@@ -63,6 +64,7 @@ void main_window_ctrl_wrapper::MainWindowCtrlWrapper::keyReleaseEvent(QKeyEvent 
 	this->winctrl->keyReleaseEvent(event);
 	this->tabctrl->keyReleaseEvent(event);
 
+	this->windowCore->mainWidget->repaint();
 }
 
 void main_window_ctrl_wrapper::MainWindowCtrlWrapper::resetWindowState() {
