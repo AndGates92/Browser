@@ -47,7 +47,7 @@ void menu::Menu::createMenu() {
 }
 
 void menu::Menu::createShortcuts() {
-	this->expandMenu = new QShortcut(this->parentWidget());
+	this->expandMenu = new QShortcut(this->window());
 
 	// Do not bind key if it is not set
 	if (this->key != key_sequence::KeySequence(QKeySequence::UnknownKey)) {
