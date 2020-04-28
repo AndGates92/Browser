@@ -110,7 +110,7 @@ void main_window_ctrl_base::MainWindowCtrlBase::connectSignals() {
 
 	for(std::map<std::string, main_window_json_data::MainWindowJsonData *>::const_iterator data = this->actionData.cbegin(); data != this->actionData.cend(); data++) {
 		main_window_json_data::MainWindowJsonData * commandData(data->second);
-		QShortcut * shortcut = new QShortcut(commandData->getShortcut(), window);
+		QShortcut * shortcut = new QShortcut(commandData->getShortcut(), this->window);
 		QMetaObject::Connection connection = connect(shortcut, &QShortcut::activated,
 			[=] () {
 				this->changeWindowStateWrapper(commandData, main_window_shared_types::state_postprocessing_e::POSTPROCESS);

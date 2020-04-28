@@ -12,7 +12,7 @@
 #include <qt5/QtWidgets/QMainWindow>
 #include <qt5/QtWidgets/QWidget>
 
-#include "main_window_ctrl.h"
+#include "main_window_ctrl_wrapper.h"
 #include "main_window_base.h"
 #include "constructor_macros.h"
 
@@ -87,6 +87,15 @@ namespace main_window {
 			 */
 			~MainWindow();
 
+			/**
+			 * @brief Function: main_window_ctrl_wrapper::MainWindowCtrlWrapper * getCtrl()
+			 *
+			 * \return wrapper to the window controller
+			 *
+			 * This function returns the wrapper to the window controller
+			 */
+			main_window_ctrl_wrapper::MainWindowCtrlWrapper * getCtrl();
+
 		protected:
 		#ifndef QT_NO_CONTEXTMENU
 			/**
@@ -116,20 +125,7 @@ namespace main_window {
 			 * @brief Main window control
 			 *
 			 */
-			main_window_ctrl::MainWindowCtrl * ctrl;
-
-			/**
-			 * @brief main window tab control
-			 *
-			 */
-			main_window_ctrl_tab::MainWindowCtrlTab * tabctrl;
-
-			/**
-			 * @brief Function: void resetWindowState()
-			 *
-			 * this function resets the window state to IDLE and clear user input
-			 */
-			void resetWindowState();
+			main_window_ctrl_wrapper::MainWindowCtrlWrapper * ctrl;
 
 			/**
 			 * @brief Function: void customizeMainWidget()
@@ -188,25 +184,25 @@ namespace main_window {
 			void connectSignals();
 
 			/**
-			 * @brief Function: void keyPressEvent(QKeyEvent * event)
+			 * @brief Function: void keyPressEvent(QKeyEvent * event) override
 			 *
-			 * \param event: event coming from keyboard 
+			 * \param event: event coming from keyboard
 			 *
 			 * This function handles event coming from the keyboard
-			 * Escape is not triggered in keyPressedEvent 
+			 * Escape is not triggered in keyPressEvent
 			 * Re-implement key pressed event
 			 */
-			void keyPressEvent(QKeyEvent * event);
+			void keyPressEvent(QKeyEvent * event) override;
 
 			/**
-			 * @brief Function: void keyReleaseEvent(QKeyEvent * event)
+			 * @brief Function: void keyReleaseEvent(QKeyEvent * event) override
 			 *
 			 * \param event: event coming from keyboard
 			 *
 			 * This function handles event coming from the keyboard
 			 * Re-implement key released event
 			 */
-			void keyReleaseEvent(QKeyEvent * event);
+			void keyReleaseEvent(QKeyEvent * event) override;
 
 			// Move and copy constructor
 			/**
