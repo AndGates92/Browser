@@ -61,15 +61,14 @@ namespace main_window_ctrl {
 		public:
 
 			/**
-			 * @brief Function: explicit MainWindowCtrl(QSharedPointer<main_window_core::MainWindowCore> core, QWidget * window, QWidget * parent = QString::null)
+			 * @brief Function: explicit MainWindowCtrl(QSharedPointer<main_window_core::MainWindowCore> core, QWidget * parent = QString::null)
 			 *
 			 * \param core: main window core
 			 * \param parent: parent windget
-			 * \param window: window controlled
 			 *
 			 * Main window control constructor
 			 */
-			explicit MainWindowCtrl(QSharedPointer<main_window_core::MainWindowCore> core, QWidget * window, QWidget * parent = Q_NULLPTR);
+			explicit MainWindowCtrl(QSharedPointer<main_window_core::MainWindowCore> core, QWidget * parent = Q_NULLPTR);
 
 			/**
 			 * @brief Function: ~MainWindowCtrl()

@@ -20,7 +20,7 @@
 // Categories
 Q_LOGGING_CATEGORY(mainWindowCtrlWrapperOverall, "mainWindowCtrlWrapper.overall", MSG_TYPE_LEVEL)
 
-main_window_ctrl_wrapper::MainWindowCtrlWrapper::MainWindowCtrlWrapper(QSharedPointer<main_window_core::MainWindowCore> core, QWidget * window, QWidget * parent) : QWidget(parent), main_window_base::MainWindowBase(core), window(window), winctrl(new main_window_ctrl::MainWindowCtrl(core, window, this)), tabctrl(new main_window_ctrl_tab::MainWindowCtrlTab(core, window, this)) {
+main_window_ctrl_wrapper::MainWindowCtrlWrapper::MainWindowCtrlWrapper(QSharedPointer<main_window_core::MainWindowCore> core, QWidget * parent) : QWidget(parent), main_window_base::MainWindowBase(core), winctrl(new main_window_ctrl::MainWindowCtrl(core, this)), tabctrl(new main_window_ctrl_tab::MainWindowCtrlTab(core, this)) {
 
 	this->setFocus(Qt::OtherFocusReason);
 }
@@ -76,7 +76,7 @@ void main_window_ctrl_wrapper::MainWindowCtrlWrapper::resetWindowState() {
 	this->windowCore->getUserText();
 
 	// Enable all shortcuts
-	const QList<QShortcut *> shortcuts = this->window->findChildren<QShortcut *>();
+	const QList<QShortcut *> shortcuts = this->window()->findChildren<QShortcut *>();
 
 	for (QShortcut * shortcut : shortcuts) {
 		key_sequence::KeySequence key(shortcut->key());

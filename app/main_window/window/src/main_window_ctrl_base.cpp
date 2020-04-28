@@ -22,7 +22,7 @@ Q_LOGGING_CATEGORY(mainWindowCtrlBaseOverall, "mainWindowCtrlBase.overall", MSG_
 Q_LOGGING_CATEGORY(mainWindowCtrlBaseCheck, "mainWindowCtrlBase.check", MSG_TYPE_LEVEL)
 Q_LOGGING_CATEGORY(mainWindowCtrlBaseUserInput, "mainWindowCtrlBase.userInput", MSG_TYPE_LEVEL)
 
-main_window_ctrl_base::MainWindowCtrlBase::MainWindowCtrlBase(QSharedPointer<main_window_core::MainWindowCore> core, QWidget * window, QWidget * parent, QString jsonFileName) : QWidget(parent), main_window_base::MainWindowBase(core), window(window), commands(json_parser::JsonParser(jsonFileName, QIODevice::ReadOnly)) {
+main_window_ctrl_base::MainWindowCtrlBase::MainWindowCtrlBase(QSharedPointer<main_window_core::MainWindowCore> core, QWidget * parent, QString jsonFileName) : QWidget(parent), main_window_base::MainWindowBase(core), commands(json_parser::JsonParser(jsonFileName, QIODevice::ReadOnly)) {
 	QINFO_PRINT(global_types::qinfo_level_e::ZERO, mainWindowCtrlBaseOverall,  "Main window control base classe constructor");
 
 	this->populateActionData();
@@ -110,7 +110,7 @@ void main_window_ctrl_base::MainWindowCtrlBase::connectSignals() {
 
 	for(std::map<std::string, main_window_json_data::MainWindowJsonData *>::const_iterator data = this->actionData.cbegin(); data != this->actionData.cend(); data++) {
 		main_window_json_data::MainWindowJsonData * commandData(data->second);
-		QShortcut * shortcut = new QShortcut(commandData->getShortcut(), this->window);
+		QShortcut * shortcut = new QShortcut(commandData->getShortcut(), this->window());
 		QMetaObject::Connection connection = connect(shortcut, &QShortcut::activated,
 			[=] () {
 				this->changeWindowStateWrapper(commandData, main_window_shared_types::state_postprocessing_e::POSTPROCESS);
@@ -149,7 +149,7 @@ QString main_window_ctrl_base::MainWindowCtrlBase::tabInfoStr(const int & currIn
 }
 
 void main_window_ctrl_base::MainWindowCtrlBase::setAllShortcutEnabledProperty(const bool enabled) {
-	const QList<QShortcut *> shortcuts = this->window->findChildren<QShortcut *>();
+	const QList<QShortcut *> shortcuts = this->window()->findChildren<QShortcut *>();
 
 	for (QShortcut * shortcut : shortcuts) {
 		key_sequence::KeySequence key(shortcut->key());

@@ -200,7 +200,7 @@ void main_window::MainWindow::createCtrl() {
 	QINFO_PRINT(global_types::qinfo_level_e::ZERO, mainWindowOverall,  "Create controller");
 
 	// main window control object
-	this->ctrl = new main_window_ctrl_wrapper::MainWindowCtrlWrapper(this->windowCore, this, this);
+	this->ctrl = new main_window_ctrl_wrapper::MainWindowCtrlWrapper(this->windowCore, this);
 	this->setFocusProxy(this->ctrl);
 
 }
