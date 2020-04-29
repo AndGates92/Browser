@@ -262,9 +262,9 @@ void main_window_tab_widget::MainWindowTabWidget::processTabUrlChanged(const QUr
 	const main_window_shared_types::page_type_e type = this->getPageType(idx);
 
 	// Propagate URL only if page is of type WEB_CONTENT - if no URL is set, this function is called with about::black
-	if (type == main_window_shared_types::page_type_e::WEB_CONTENT) {
+	if ((type == main_window_shared_types::page_type_e::WEB_CONTENT) && (url.isValid())) {
 		const QString urlStr = url.toDisplayString(QUrl::FullyDecoded);
-		emit tabUrlChanged(urlStr);
+		emit tabUrlChanged(type, urlStr);
 	}
 }
 

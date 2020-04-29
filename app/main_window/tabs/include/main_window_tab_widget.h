@@ -287,13 +287,14 @@ namespace main_window_tab_widget {
 			void tabTitleChanged(const QString & title);
 
 			/**
-			 * @brief Function: void tabUrlChanged(const QString & url)
+			 * @brief Function: void tabUrlChanged(const main_window_shared_types::page_type_e & type, const QString & url)
 			 *
+			 * \param type: type of the tab page
 			 * \param url: url of the tab
 			 *
 			 * This function is a signal to notify that the url of a tab has changed
 			 */
-			void tabUrlChanged(const QString & url);
+			void tabUrlChanged(const main_window_shared_types::page_type_e & type, const QString & url);
 
 		protected:
 

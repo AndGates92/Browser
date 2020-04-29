@@ -35,6 +35,8 @@ namespace main_window_web_engine_view {
 	 */
 	class MainWindowWebEngineView final : public web_engine_view::WebEngineView {
 
+		Q_OBJECT
+
 		public:
 			/**
 			 * @brief Function: explicit MainWindowWebEngineView(const main_window_shared_types::page_type_e type, const QString & src, const void * data, QWidget * parent = Q_NULLPTR)
@@ -63,9 +65,27 @@ namespace main_window_web_engine_view {
 			 * This function returns the page of this web engine view
 			 */
 			main_window_web_engine_page::MainWindowWebEnginePage * page() const;
+
 		protected:
 
+		private slots:
+			/**
+			 * @brief Function: void updatePageSource(const QUrl & url)
+			 *
+			 * \param url: url of the tab
+			 *
+			 * This function is a slot that receives a notification that the url has changed and it updates the page source
+			 */
+			void updatePageSource(const QUrl & url);
+
 		private:
+			/**
+			 * @brief Function: void connectSignals()
+			 *
+			 * This function connects signals and slots within the web engine view
+			 */
+			void connectSignals();
+
 			// Move and copy constructor
 			/**
 			 * @brief Disable move and copy constructors and operator= overloading for class MainWindowWebEngineView
