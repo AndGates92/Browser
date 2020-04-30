@@ -32,7 +32,6 @@ main_window_status_bar::MainWindowStatusBar::MainWindowStatusBar(QWidget * paren
 
 	// user input
 	this->userInputText->setAlignment(Qt::AlignLeft | Qt::AlignBottom);
-	this->userInputText->setFocus(Qt::OtherFocusReason);
 
 	// path to the content
 	this->contentPathText->setAlignment(Qt::AlignRight | Qt::AlignBottom);

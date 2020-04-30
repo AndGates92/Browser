@@ -279,6 +279,13 @@ namespace main_window_ctrl_base {
 			 */
 			void moveToCommandStateFromNonIdleState(const main_window_shared_types::state_e & windowState, const Qt::Key & key);
 
+			/**
+			 * @brief Function: void resetWindowState()
+			 *
+			 * this function resets the window state to IDLE and clear user input
+			 */
+			void resetWindowState();
+
 
 		private:
 			// Move and copy constructor

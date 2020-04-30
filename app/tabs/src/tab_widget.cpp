@@ -25,7 +25,6 @@ Q_LOGGING_CATEGORY(tabWidgetTabs, "tabWidget.tabs", MSG_TYPE_LEVEL)
 tab_widget::TabWidget::TabWidget(QWidget * parent): QTabWidget(parent) {
 	QINFO_PRINT(global_types::qinfo_level_e::ZERO, tabWidgetOverall,  "Tab widget constructor");
 	this->setMovable(true);
-	this->setFocusPolicy(Qt::StrongFocus);
 	this->setMinimumHeight(tab_widget::minHeight);
 	this->setMinimumWidth(tab_widget::minWidth);
 

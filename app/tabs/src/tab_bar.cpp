@@ -22,7 +22,6 @@ tab_bar::TabBar::TabBar(QWidget * parent, int width): QTabBar(parent) {
 
 	this->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Minimum);
 	this->setExpanding(true);
-	this->setFocusPolicy(Qt::StrongFocus);
 
 	this->setFixedHeight(tab_bar::height);
 	this->setMinimumWidth(tab_bar::minWidth);

@@ -293,6 +293,11 @@ void main_window_ctrl_base::MainWindowCtrlBase::keyPressEvent(QKeyEvent * event)
 		}
 	}
 
+	// If user presses escape, enter or return key, bring the state to IDLE and delete user input
+	if ((pressedKey == Qt::Key_Escape) || (pressedKey == Qt::Key_Return) || (pressedKey == Qt::Key_Enter)) {
+		this->resetWindowState();
+	}
+
 }
 
 const main_window_json_data::MainWindowJsonData * main_window_ctrl_base::MainWindowCtrlBase::findDataWithFieldValue(const std::string & name, const void * value) const {
@@ -319,5 +324,20 @@ void main_window_ctrl_base::MainWindowCtrlBase::moveToCommandStateFromNonIdleSta
 		// Setting the user input here because it is cleared when changing state
 		this->printUserInput(main_window_shared_types::text_action_e::SET, longCmd);
 	}
+}
+
+void main_window_ctrl_base::MainWindowCtrlBase::resetWindowState() {
+	const main_window_shared_types::state_e requestedWindowState = main_window_shared_types::state_e::IDLE;
+	this->windowCore->setMainWindowState(requestedWindowState);
+
+	this->windowCore->updateUserInput(main_window_shared_types::text_action_e::CLEAR, QString::null);
+	this->windowCore->bottomStatusBar->getUserInputText()->clear();
+	this->windowCore->getUserText();
+
+	// Enable all shortcuts
+	this->setAllShortcutEnabledProperty(true);
+
+	// Give the focus back to the parent widget
+	this->parentWidget()->setFocus();
 }
 

@@ -90,6 +90,7 @@ void file_menu::FileMenu::open() {
 	this->openWindow = new open_button_window::OpenButtonWindow(this->parentWidget(), Qt::Dialog);
 	connect(this->openWindow, &open_button_window::OpenButtonWindow::fileRead, this, &file_menu::FileMenu::updateCenterWindow);
 	this->openWindow->exec();
+	this->openWindow->setFocus();
 }
 
 void file_menu::FileMenu::save() {

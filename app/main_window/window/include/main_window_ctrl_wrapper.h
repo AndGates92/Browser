@@ -65,7 +65,7 @@ namespace main_window_ctrl_wrapper {
 			void keyReleaseEvent(QKeyEvent * event) override;
 
 			/**
-			 * @brief Function: void keyPressEvent(QKeyEvent * event)
+			 * @brief Function: void keyPressEvent(QKeyEvent * event) override
 			 *
 			 * \param event: event coming from keyboard
 			 *
@@ -73,7 +73,7 @@ namespace main_window_ctrl_wrapper {
 			 * Escape is not triggered in keyPressedEvent
 			 * Re-implement key pressed event
 			 */
-			void keyPressEvent(QKeyEvent * event);
+			void keyPressEvent(QKeyEvent * event) override;
 
 			/**
 			 * @brief Function: main_window_ctrl::MainWindowCtrl * getWinCtrl()
@@ -108,13 +108,6 @@ namespace main_window_ctrl_wrapper {
 			 *
 			 */
 			main_window_ctrl_tab::MainWindowCtrlTab * tabctrl;
-
-			/**
-			 * @brief Function: void resetWindowState()
-			 *
-			 * this function resets the window state to IDLE and clear user input
-			 */
-			void resetWindowState();
 
 			// Move and copy constructor
 			/**

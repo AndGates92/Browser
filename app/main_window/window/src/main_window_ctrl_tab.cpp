@@ -171,13 +171,17 @@ void main_window_ctrl_tab::MainWindowCtrlTab::connectProgressBar(const int & tab
 	const main_window_shared_types::page_type_e tabType = this->windowCore->tabs->getPageType(tabIndex);
 	QINFO_PRINT(global_types::qinfo_level_e::ZERO, mainWindowCtrlTabTabs,  "Connect signals from " << tabType << " object of tab " << tabIndex << " to progress bar slots");
 	try {
-		const main_window_tab::MainWindowTab * tab = dynamic_cast<main_window_tab::MainWindowTab *>(this->windowCore->tabs->widget(tabIndex));
+		main_window_tab::MainWindowTab * tab = dynamic_cast<main_window_tab::MainWindowTab *>(this->windowCore->tabs->widget(tabIndex));
 		const main_window_tab_load_manager::MainWindowTabLoadManager * loadManager = tab->getLoadManager();
 		progress_bar::ProgressBar * bar = this->windowCore->bottomStatusBar->getLoadBar();
 
 		connect(loadManager, &main_window_tab_load_manager::MainWindowTabLoadManager::progressChanged, bar, &progress_bar::ProgressBar::setValue);
 
 		bar->setValue(loadManager->getProgress());
+
+		// Move focus to the tab index
+		tab->setFocus();
+
 	} catch (const std::bad_cast & badCastE) {
 		QEXCEPTION_ACTION(throw, badCastE.what());
 	}
@@ -500,10 +504,23 @@ void main_window_ctrl_tab::MainWindowCtrlTab::postprocessWindowStateChange(const
 	const main_window_shared_types::state_e windowState = this->windowCore->getMainWindowState();
 	QINFO_PRINT(global_types::qinfo_level_e::ZERO, mainWindowCtrlTabTabs,  "Current state " << windowState << " previousState " << previousState);
 	// If requesting to go to the idle state, enable shortcuts
-	if (windowState == main_window_shared_types::state_e::IDLE) {
-		this->setAllShortcutEnabledProperty(true);
-	} else {
-		this->setAllShortcutEnabledProperty(false);
+	switch (windowState) {
+		case main_window_shared_types::state_e::IDLE:
+			this->setAllShortcutEnabledProperty(true);
+			break;
+		case main_window_shared_types::state_e::OPEN_TAB:
+		case main_window_shared_types::state_e::SEARCH:
+		case main_window_shared_types::state_e::REFRESH_TAB:
+		case main_window_shared_types::state_e::CLOSE_TAB:
+		case main_window_shared_types::state_e::MOVE_RIGHT:
+		case main_window_shared_types::state_e::MOVE_LEFT:
+		case main_window_shared_types::state_e::MOVE_TAB:
+			this->setAllShortcutEnabledProperty(false);
+			this->setFocus();
+			break;
+		default:
+			this->setAllShortcutEnabledProperty(false);
+			break;
 	}
 }
 

@@ -60,6 +60,7 @@ void menu::Menu::expand() {
 	if (this->menuBar->isVisible()) {
 		QINFO_PRINT(global_types::qinfo_level_e::ZERO, menuOverall, "Expand menu " << this->menuName << " because shortcut key " << this->key.toString() << " has been pressed");
 		this->winMenu->exec();
+		this->setFocus();
 	}
 }
 

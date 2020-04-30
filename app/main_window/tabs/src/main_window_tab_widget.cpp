@@ -85,11 +85,15 @@ void main_window_tab_widget::MainWindowTabWidget::connectTab(const int & index) 
 
 	if (tabCount > 0) {
 		try {
-			const main_window_tab::MainWindowTab * tab = dynamic_cast<main_window_tab::MainWindowTab *>(this->widget(index, true));
+			main_window_tab::MainWindowTab * tab = dynamic_cast<main_window_tab::MainWindowTab *>(this->widget(index, true));
 			const main_window_web_engine_page::MainWindowWebEnginePage * page = tab->getView()->page();
 			connect(page, &main_window_web_engine_page::MainWindowWebEnginePage::sourceChanged, this, &main_window_tab_widget::MainWindowTabWidget::processTabSourceChanged, Qt::UniqueConnection);
 			connect(page, &main_window_web_engine_page::MainWindowWebEnginePage::urlChanged, this, &main_window_tab_widget::MainWindowTabWidget::processTabUrlChanged, Qt::UniqueConnection);
 			connect(page, &main_window_web_engine_page::MainWindowWebEnginePage::titleChanged, this, &main_window_tab_widget::MainWindowTabWidget::processTabTitleChanged, Qt::UniqueConnection);
+
+			// Move focus to the newly connected tab
+			tab->setFocus();
+
 			emit this->tabNearlyConnected(index);
 		} catch (const std::bad_cast & badCastE) {
 			QEXCEPTION_ACTION(throw, badCastE.what());
@@ -248,10 +252,13 @@ void main_window_tab_widget::MainWindowTabWidget::changeTabContent(const int & i
 	this->setTabText(index, label);
 
 	try {
-		const main_window_tab::MainWindowTab * tab = dynamic_cast<main_window_tab::MainWindowTab *>(this->widget(index, true));
+		main_window_tab::MainWindowTab * tab = dynamic_cast<main_window_tab::MainWindowTab *>(this->widget(index, true));
 		main_window_web_engine_page::MainWindowWebEnginePage * page = tab->getView()->page();
 		// Set tab body
 		page->setBody();
+
+		// Set focus to the tab in case it was lost or changed
+		tab->setFocus();
 	} catch (const std::bad_cast & badCastE) {
 		QEXCEPTION_ACTION(throw, badCastE.what());
 	}

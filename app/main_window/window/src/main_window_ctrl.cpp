@@ -161,6 +161,7 @@ void main_window_ctrl::MainWindowCtrl::postprocessWindowStateChange(const main_w
 			break;
 		case main_window_shared_types::state_e::COMMAND:
 			this->setAllShortcutEnabledProperty(false);
+			this->setFocus();
 			break;
 		default: 
 			QEXCEPTION_ACTION(throw, "Unable to postprocess transaction to " << windowState << " is valid as state " << windowState << " doesn't have a defined postprocess action");

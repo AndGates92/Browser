@@ -37,8 +37,6 @@ open_button_window::OpenButtonWindow::OpenButtonWindow(QWidget * parent, Qt::Win
 	// Set modal because other windows should not be active
 	this->setModal(true);
 
-	this->setFocusPolicy(Qt::StrongFocus);
-
 	// Create widgets to put in the window
 	this->fillWindow();
 

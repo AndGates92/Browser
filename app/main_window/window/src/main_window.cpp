@@ -36,8 +36,6 @@ main_window::MainWindow::MainWindow(QWidget * parent, Qt::WindowFlags flags) : Q
 
 	QINFO_PRINT(global_types::qinfo_level_e::ZERO, mainWindowOverall,  "Main window constructor");
 
-	this->setFocusPolicy(Qt::StrongFocus);
-	this->setFocus(Qt::ActiveWindowFocusReason);
 	this->setEnabled(true);
 
 	// main widget
@@ -99,7 +97,6 @@ void main_window::MainWindow::customizeMainWidget() {
 	this->windowCore->mainWidget->setAttribute(Qt::WA_DeleteOnClose);
 	// Disable widget resizing - it will get as much space as possible
 	this->windowCore->mainWidget->setSizePolicy(QSizePolicy::Ignored, QSizePolicy::Ignored);
-	this->windowCore->mainWidget->setFocusPolicy(Qt::StrongFocus);
 
 	this->windowCore->mainWidget->setStyleSheet(
 		"QWidget {"
@@ -202,6 +199,7 @@ void main_window::MainWindow::createCtrl() {
 	// main window control object
 	this->ctrl = new main_window_ctrl_wrapper::MainWindowCtrlWrapper(this->windowCore, this);
 	this->setFocusProxy(this->ctrl);
+	this->ctrl->setFocus();
 
 }
 

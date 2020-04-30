@@ -69,4 +69,5 @@ void elided_label::ElidedLabel::paintEvent(QPaintEvent * event) {
 		QINFO_PRINT(global_types::qinfo_level_e::ZERO, elidedLabelPaint, "Dimensions width " << dimensions.width() << " height " << dimensions.height());
 		textPainter.drawText(this->origin.x(), this->origin.y(), dimensions.width(), dimensions.height(), this->alignment(), this->elisionText);
 	}
+
 }
