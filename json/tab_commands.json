@@ -23,6 +23,14 @@
 		"Help" : "This command searches content in a tab"
 	},
 
+	"Find" : {
+		"Name" : "find",
+		"State" : "FIND",
+		"Shortcut" : "/",
+		"LongCmd" : "find",
+		"Help" : "This command find the user-type string in the current tab"
+	},
+
 	"MoveTab" : {
 		"Name" : "move tab",
 		"State" : "MOVE_TAB",
