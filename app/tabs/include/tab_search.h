@@ -54,9 +54,19 @@ namespace tab_search {
 			 */
 			virtual ~TabSearch();
 
-			// clear
-			// find prev
-			// find next
+			/**
+			 * @brief Function: virtual void findPrev() final
+			 *
+			 * This function searches previous match in a webpage
+			 */
+			virtual void findPrev() final;
+
+			/**
+			 * @brief Function: virtual void findNext() final
+			 *
+			 * This function searches next match in a webpage
+			 */
+			virtual void findNext() final;
 
 			/**
 			 * @brief Function: virtual void findTabContent(const QString & searchText, const bool & reverse, const bool & caseSensitive) final

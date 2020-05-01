@@ -33,6 +33,8 @@ main_window_ctrl_tab::MainWindowCtrlTab::MainWindowCtrlTab(QSharedPointer<main_w
 	// Connect signals and slots
 	this->connectExtraSignals();
 
+	this->findDirection = main_window_shared_types::navigation_type_e::UNDEFINED;
+
 }
 
 main_window_ctrl_tab::MainWindowCtrlTab::~MainWindowCtrlTab() {
@@ -129,14 +131,21 @@ void main_window_ctrl_tab::MainWindowCtrlTab::searchCurrentTab(const QString & s
 
 	const main_window_shared_types::state_e windowState = this->windowCore->getMainWindowState();
 
-	if (windowState == main_window_shared_types::state_e::SEARCH) {
-		QINFO_PRINT(global_types::qinfo_level_e::ZERO, mainWindowCtrlTabTabs,  "Search " << search << " in tab " << tabIndex);
-		this->newSearchTab(tabIndex, search);
-	} else if (windowState == main_window_shared_types::state_e::FIND) {
-		QINFO_PRINT(global_types::qinfo_level_e::ZERO, mainWindowCtrlTabTabs,  "Find " << search << " in tab " << tabIndex);
-		this->windowCore->tabs->findInTab(tabIndex, search);
+	switch (windowState) {
+		case main_window_shared_types::state_e::SEARCH:
+			QINFO_PRINT(global_types::qinfo_level_e::ZERO, mainWindowCtrlTabTabs,  "Search " << search << " in tab " << tabIndex);
+			this->newSearchTab(tabIndex, search);
+			break;
+		case main_window_shared_types::state_e::FIND:
+		case main_window_shared_types::state_e::FIND_NEXT:
+		case main_window_shared_types::state_e::FIND_PREV:
+			QINFO_PRINT(global_types::qinfo_level_e::ZERO, mainWindowCtrlTabTabs,  "Find " << search << " in tab " << tabIndex << " direction " << this->findDirection);
+			this->windowCore->tabs->findInTab(tabIndex, search, this->findDirection);
+			break;
+		default:
+			QEXCEPTION_ACTION(throw,  "Undefined action to execute when in state " << windowState);
+			break;
 	}
-
 }
 
 void main_window_ctrl_tab::MainWindowCtrlTab::extractContentPath(const int & index) {
@@ -371,8 +380,21 @@ void main_window_ctrl_tab::MainWindowCtrlTab::executeAction(const main_window_sh
 			this->addNewTabAndSearch(userTypedText);
 			break;
 		case main_window_shared_types::state_e::SEARCH:
-		case main_window_shared_types::state_e::FIND:
 			this->searchCurrentTab(userTypedText);
+			break;
+		case main_window_shared_types::state_e::FIND:
+			this->findDirection = main_window_shared_types::navigation_type_e::UNDEFINED;
+			this->searchCurrentTab(userTypedText);
+			break;
+		case main_window_shared_types::state_e::FIND_NEXT:
+			this->findDirection = main_window_shared_types::navigation_type_e::NEXT;
+			this->searchCurrentTab(QString::null);
+			this->changeWindowState(main_window_shared_types::state_e::IDLE, main_window_shared_types::state_postprocessing_e::POSTPROCESS);
+			break;
+		case main_window_shared_types::state_e::FIND_PREV:
+			this->findDirection = main_window_shared_types::navigation_type_e::PREVIOUS;
+			this->searchCurrentTab(QString::null);
+			this->changeWindowState(main_window_shared_types::state_e::IDLE, main_window_shared_types::state_postprocessing_e::POSTPROCESS);
 			break;
 		case main_window_shared_types::state_e::REFRESH_TAB:
 		case main_window_shared_types::state_e::CLOSE_TAB:
@@ -518,6 +540,7 @@ void main_window_ctrl_tab::MainWindowCtrlTab::postprocessWindowStateChange(const
 	switch (windowState) {
 		case main_window_shared_types::state_e::IDLE:
 			this->setAllShortcutEnabledProperty(true);
+			this->printUserInput(main_window_shared_types::text_action_e::CLEAR);
 			break;
 		case main_window_shared_types::state_e::OPEN_TAB:
 		case main_window_shared_types::state_e::SEARCH:
@@ -529,6 +552,17 @@ void main_window_ctrl_tab::MainWindowCtrlTab::postprocessWindowStateChange(const
 		case main_window_shared_types::state_e::FIND:
 			this->setAllShortcutEnabledProperty(false);
 			this->setFocus();
+			break;
+		case main_window_shared_types::state_e::FIND_NEXT:
+			this->findDirection = main_window_shared_types::navigation_type_e::NEXT;
+	QINFO_PRINT(global_types::qinfo_level_e::ZERO, mainWindowCtrlTabTabs,  "DADA search current tab Current state " << this->findDirection);
+			this->searchCurrentTab(QString::null);
+			this->changeWindowState(main_window_shared_types::state_e::IDLE, main_window_shared_types::state_postprocessing_e::POSTPROCESS);
+			break;
+		case main_window_shared_types::state_e::FIND_PREV:
+			this->findDirection = main_window_shared_types::navigation_type_e::PREVIOUS;
+			this->searchCurrentTab(QString::null);
+			this->changeWindowState(main_window_shared_types::state_e::IDLE, main_window_shared_types::state_postprocessing_e::POSTPROCESS);
 			break;
 		default:
 			this->setAllShortcutEnabledProperty(false);
@@ -542,6 +576,10 @@ bool main_window_ctrl_tab::MainWindowCtrlTab::isValidWindowState(const main_wind
 	const int tabCount = this->windowCore->getTabCount();
 
 	switch (requestedWindowState) {
+		case main_window_shared_types::state_e::IDLE:
+			// It is always possible to go to the idle state
+			isValid = true;
+			break;
 		case main_window_shared_types::state_e::OPEN_TAB:
 			// It is only possible to open a tab if in the idle state
 			isValid = (windowState == main_window_shared_types::state_e::IDLE);
@@ -550,8 +588,11 @@ bool main_window_ctrl_tab::MainWindowCtrlTab::isValidWindowState(const main_wind
 		case main_window_shared_types::state_e::REFRESH_TAB:
 		case main_window_shared_types::state_e::CLOSE_TAB:
 		case main_window_shared_types::state_e::FIND:
+		case main_window_shared_types::state_e::FIND_NEXT:
+		case main_window_shared_types::state_e::FIND_PREV:
 			// It is only possible to perform an operation on a signel tab if the current state is idle and at least 1 tab is opened
 			isValid = ((tabCount > 0) && (windowState == main_window_shared_types::state_e::IDLE));
+	QINFO_PRINT(global_types::qinfo_level_e::ZERO, mainWindowTabWidgetTabs, "DADA Going to state " << requestedWindowState);
 			break;
 		case main_window_shared_types::state_e::MOVE_RIGHT:
 		case main_window_shared_types::state_e::MOVE_LEFT:

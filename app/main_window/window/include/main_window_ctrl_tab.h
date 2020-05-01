@@ -185,6 +185,12 @@ namespace main_window_ctrl_tab {
 
 		private:
 			/**
+			 * @brief find direction
+			 *
+			 */
+			main_window_shared_types::navigation_type_e findDirection;
+
+			/**
 			 * @brief Function: virtual void createExtraShortcuts() override
 			 *
 			 * This function creates shortcuts for the items on the window
@@ -360,6 +366,7 @@ namespace main_window_ctrl_tab {
 			 * This function moves the cursor to a different tab as specified by the user
 			 */
 			void moveCursor(const int & tabIndex);
+
 			// ================================ END ACTIONS ========================================//
 
 			// Move and copy constructor

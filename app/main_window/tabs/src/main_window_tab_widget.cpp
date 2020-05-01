@@ -192,12 +192,25 @@ int main_window_tab_widget::MainWindowTabWidget::insertTab(const int & index, co
 	return currIndex;
 }
 
-void main_window_tab_widget::MainWindowTabWidget::findInTab(const int & index, const QString & text) {
+void main_window_tab_widget::MainWindowTabWidget::findInTab(const int & index, const QString & text, const main_window_shared_types::navigation_type_e & direction) {
 	try {
 		const main_window_tab::MainWindowTab * tab = dynamic_cast<main_window_tab::MainWindowTab *>(this->widget(index, true));
 		// Find text in tab
 	QINFO_PRINT(global_types::qinfo_level_e::ZERO, mainWindowTabWidgetTabs, "DADA Looking for " << text << " in tab " << index);
-		tab->find(text, false, false);
+		switch (direction) {
+			case main_window_shared_types::navigation_type_e::UNDEFINED:
+				tab->find(text, false, false);
+				break;
+			case main_window_shared_types::navigation_type_e::NEXT:
+				tab->findNext();
+				break;
+			case main_window_shared_types::navigation_type_e::PREVIOUS:
+				tab->findPrev();
+				break;
+			default:
+				QEXCEPTION_ACTION(throw,  "Undefined direction of search " << direction);
+				break;
+		}
 	QINFO_PRINT(global_types::qinfo_level_e::ZERO, mainWindowTabWidgetTabs, "DADA DONE Looking for " << text << " in tab " << index);
 	} catch (const std::bad_cast & badCastE) {
 		QEXCEPTION_ACTION(throw, badCastE.what());

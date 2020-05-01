@@ -31,6 +31,22 @@
 		"Help" : "This command find the user-type string in the current tab. An empty input clears the search"
 	},
 
+	"FindNext" : {
+		"Name" : "find next",
+		"State" : "FIND_NEXT",
+		"Shortcut" : "n",
+		"LongCmd" : "find-next",
+		"Help" : "This command find next match of the user-type string in the current tab."
+	},
+
+	"FindPrev" : {
+		"Name" : "find prev",
+		"State" : "FIND_PREV",
+		"Shortcut" : "N",
+		"LongCmd" : "find-prev",
+		"Help" : "This command find previous match of the user-type string in the current tab."
+	},
+
 	"MoveTab" : {
 		"Name" : "move tab",
 		"State" : "MOVE_TAB",

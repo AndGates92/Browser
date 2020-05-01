@@ -191,6 +191,7 @@ std::string main_window_ctrl_base::MainWindowCtrlBase::processShortcut(const std
 			keyName.append("Key_");
 			keyName.append(upperKey);
 		} else if (isAlphaNumUpperCase == true) {
+			keyName.append("Key_Shift+");
 			keyName.append("Key_");
 			keyName.append(iter);
 		} else if (isSlash == true) {

@@ -66,3 +66,13 @@ void tab::Tab::find(const QString & search, const bool & reverse, const bool & c
 	QINFO_PRINT(global_types::qinfo_level_e::ZERO, tabOverall,  "DADA Searching " << search);
 	this->search->findTabContent(search, reverse, caseSensitive);
 }
+
+void tab::Tab::findNext() const {
+	QINFO_PRINT(global_types::qinfo_level_e::ZERO, tabOverall,  "DADA Searching " << search);
+	this->search->findNext();
+}
+
+void tab::Tab::findPrev() const {
+	QINFO_PRINT(global_types::qinfo_level_e::ZERO, tabOverall,  "DADA Searching " << search);
+	this->search->findPrev();
+}

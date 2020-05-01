@@ -52,8 +52,10 @@ namespace main_window_shared_types {
 		MOVE_LEFT,        /**< Move to tab to the left */
 		MOVE_RIGHT,       /**< Move to tab to the right */
 		MOVE_TAB,         /**< Move tab */
-		SEARCH,           /**< Search on same tab */
 		FIND,             /**< Find string in the tab */
+		FIND_NEXT,        /**< Find next match in the tab */
+		FIND_PREV,        /**< Find previous match in the tab */
+		SEARCH            /**< Search on same tab */
 	} state_e;
 
 	/**
@@ -110,6 +112,22 @@ namespace main_window_shared_types {
 	 *
 	 */
 	OVERLOAD_OPERATORS_CUSTOM_TYPE_FUNCTION_PROTOTYPE(page_type_list, main_window_shared_types::page_type_e)
+
+	/**
+	 * @brief move info
+	 *
+	 */
+	typedef enum class navigation_type_list {
+		UNDEFINED,        /**< Idle state - no user input */
+		PREVIOUS,         /**< Previous value */
+		NEXT              /**< Next value */
+	} navigation_type_e;
+
+	/**
+	 * @brief Overload operators to ease print of the type of the tab
+	 *
+	 */
+	OVERLOAD_OPERATORS_CUSTOM_TYPE_FUNCTION_PROTOTYPE(navigation_type_list, main_window_shared_types::navigation_type_e)
 
 }
 

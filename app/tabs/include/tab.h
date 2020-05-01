@@ -125,6 +125,20 @@ namespace tab {
 			 */
 			virtual void find(const QString & search, const bool & reverse, const bool & caseSensitive) const;
 
+			/**
+			 * @brief Function: virtual void findPrev() const
+			 *
+			 * This function searches previous match in a webpage
+			 */
+			virtual void findPrev() const;
+
+			/**
+			 * @brief Function: virtual void findNext() const
+			 *
+			 * This function searches next match in a webpage
+			 */
+			virtual void findNext() const;
+
 		protected:
 
 			/**

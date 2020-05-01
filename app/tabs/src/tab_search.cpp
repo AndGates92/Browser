@@ -79,3 +79,17 @@ void tab_search::TabSearch::search() {
 	}
 
 }
+
+void tab_search::TabSearch::findNext() {
+	// Set backward flag to 0 while keeping the other flags to the same value
+	this->flags &= ~QWebEnginePage::FindBackward;
+
+	this->search();
+}
+
+void tab_search::TabSearch::findPrev() {
+	// Set backward flag to 1 while keeping the other flags to the same value
+	this->flags |= QWebEnginePage::FindBackward;
+
+	this->search();
+}
