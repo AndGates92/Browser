@@ -125,9 +125,18 @@ void main_window_ctrl_tab::MainWindowCtrlTab::newSearchTab(const int & index, co
 void main_window_ctrl_tab::MainWindowCtrlTab::searchCurrentTab(const QString & search) {
 	const int tabIndex = this->windowCore->getCurrentTabIndex();
 	const int tabCount = this->windowCore->getTabCount();
-	QEXCEPTION_ACTION_COND(((tabIndex < 0) || (tabCount <= 0)), throw, "Unable to perform search of " << search << " in tab " << tabIndex << ". Note that a negative tab index may be cause by the fact that there are no tabs opened in the browser - current count of opened tabs is " << this->windowCore->getTabCount());
-	QINFO_PRINT(global_types::qinfo_level_e::ZERO, mainWindowCtrlTabTabs,  "Search " << search << " in tab " << tabIndex);
-	this->newSearchTab(tabIndex, search);
+	QEXCEPTION_ACTION_COND(((tabIndex < 0) || (tabCount <= 0)), throw, "Unable to perform search of " << search << " in tab " << tabIndex << ". Note that a negative tab index may be cause by the fact that there are no tabs opened in the browser - current count of opened tabs is " << tabCount);
+
+	const main_window_shared_types::state_e windowState = this->windowCore->getMainWindowState();
+
+	if (windowState == main_window_shared_types::state_e::SEARCH) {
+		QINFO_PRINT(global_types::qinfo_level_e::ZERO, mainWindowCtrlTabTabs,  "Search " << search << " in tab " << tabIndex);
+		this->newSearchTab(tabIndex, search);
+	} else if (windowState == main_window_shared_types::state_e::FIND) {
+		QINFO_PRINT(global_types::qinfo_level_e::ZERO, mainWindowCtrlTabTabs,  "Find " << search << " in tab " << tabIndex);
+		this->windowCore->tabs->findInTab(tabIndex, search);
+	}
+
 }
 
 void main_window_ctrl_tab::MainWindowCtrlTab::extractContentPath(const int & index) {
@@ -362,6 +371,7 @@ void main_window_ctrl_tab::MainWindowCtrlTab::executeAction(const main_window_sh
 			this->addNewTabAndSearch(userTypedText);
 			break;
 		case main_window_shared_types::state_e::SEARCH:
+		case main_window_shared_types::state_e::FIND:
 			this->searchCurrentTab(userTypedText);
 			break;
 		case main_window_shared_types::state_e::REFRESH_TAB:
@@ -394,6 +404,7 @@ void main_window_ctrl_tab::MainWindowCtrlTab::prepareAction(const main_window_sh
 			break;
 		case main_window_shared_types::state_e::OPEN_TAB:
 		case main_window_shared_types::state_e::SEARCH:
+		case main_window_shared_types::state_e::FIND:
 			if ((pressedKey >= Qt::Key_Space) && (pressedKey <= Qt::Key_ydiaeresis)) {
 				this->printUserInput(main_window_shared_types::text_action_e::APPEND, event->text());
 			}
@@ -515,6 +526,7 @@ void main_window_ctrl_tab::MainWindowCtrlTab::postprocessWindowStateChange(const
 		case main_window_shared_types::state_e::MOVE_RIGHT:
 		case main_window_shared_types::state_e::MOVE_LEFT:
 		case main_window_shared_types::state_e::MOVE_TAB:
+		case main_window_shared_types::state_e::FIND:
 			this->setAllShortcutEnabledProperty(false);
 			this->setFocus();
 			break;
@@ -537,6 +549,7 @@ bool main_window_ctrl_tab::MainWindowCtrlTab::isValidWindowState(const main_wind
 		case main_window_shared_types::state_e::SEARCH:
 		case main_window_shared_types::state_e::REFRESH_TAB:
 		case main_window_shared_types::state_e::CLOSE_TAB:
+		case main_window_shared_types::state_e::FIND:
 			// It is only possible to perform an operation on a signel tab if the current state is idle and at least 1 tab is opened
 			isValid = ((tabCount > 0) && (windowState == main_window_shared_types::state_e::IDLE));
 			break;

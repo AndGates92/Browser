@@ -227,6 +227,16 @@ namespace main_window_tab_widget {
 			 */
 			void reloadTabContent(const int & index);
 
+			/**
+			 * @brief Function: void setTabTitle(const int & index, const QString & text)
+			 *
+			 * \param index: index of the tab
+			 * \param text: text to find in the tab
+			 *
+			 * This function request a tab to find text provided by argument text
+			 */
+			void findInTab(const int & index, const QString & text);
+
 		public slots:
 			/**
 			 * @brief Function: void openFileInCurrentTab(const QString & filepath, const void * data)
@@ -234,7 +244,7 @@ namespace main_window_tab_widget {
 			 * \param filepath: path of the file
 			 * \param data: extra data to be passed through
 			 *
-			 * This function writes the widget with the content of the file read (stored in input argument str)
+			 * This function writes the widget with the content of the file read (stored in argument str)
 			 */
 			void openFileInCurrentTab(const QString & filepath, const void * data);
 

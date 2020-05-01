@@ -55,9 +55,31 @@ namespace tab_search {
 			virtual ~TabSearch();
 
 			// clear
-			// search
 			// find prev
 			// find next
+
+			/**
+			 * @brief Function: virtual void findTabContent(const QString & searchText, const bool & reverse, const bool & caseSensitive) final
+			 *
+			 * \param searchText: text to search.
+			 * \param reverse: true if searching in the reverse direction, false otherwise.
+			 * \param caseSensitive: true if case sensitive search, false otherwise.
+			 *
+			 * This function searches text in a webpage
+			 */
+			virtual void findTabContent(const QString & searchText, const bool & reverse, const bool & caseSensitive) final;
+
+			/**
+			 * @brief Function: virtual void findTabContent(const QString & searchText, const bool & reverse, const bool & caseSensitive, std::function<void(bool)> callback) final
+			 *
+			 * \param searchText: text to search.
+			 * \param reverse: true if searching in the reverse direction, false otherwise.
+			 * \param caseSensitive: true if case sensitive search, false otherwise.
+			 * \param cb: callback to call
+			 *
+			 * This function searches text in a webpage
+			 */
+			virtual void findTabContent(const QString & searchText, const bool & reverse, const bool & caseSensitive, std::function<void(bool)> cb) final;
 
 		protected:
 			/**
@@ -76,19 +98,13 @@ namespace tab_search {
 			 * @brief search flags
 			 *
 			 */
-			QWebEnginePage::FindFlag flags;
+			QWebEnginePage::FindFlags flags;
 
 			/**
-			 * @brief Function: virtual void findTabContent(const int & index, const QString & search, const bool & reverse, const bool & caseSensitive) final
+			 * @brief callback
 			 *
-			 * \param search: text to search.
-			 * \param reverse: true if searching in the reverse direction, false otherwise.
-			 * \param caseSensitive: true if case sensitive search, false otherwise.
-			 * \param callback: callback to call
-			 *
-			 * This function searches text in a webpage
 			 */
-			virtual void findTabContent(const QString & search, const bool & reverse, const bool & caseSensitive, void (* callback)(bool) = nullptr) final;
+			std::function<void(bool)> callback;
 
 		private:
 			// Move and copy constructor
@@ -97,6 +113,13 @@ namespace tab_search {
 			 *
 			 */
 			DISABLE_COPY_MOVE(TabSearch)
+
+			/**
+			 * @brief Function: virtual void search() final
+			 *
+			 * This function searches text in a webpage
+			 */
+			virtual void search() final;
 
 	};
 }

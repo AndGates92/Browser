@@ -61,3 +61,8 @@ void tab::Tab::resize(const QSize size) {
 	}
 	QWidget::resize(size);
 }
+
+void tab::Tab::find(const QString & search, const bool & reverse, const bool & caseSensitive) const {
+	QINFO_PRINT(global_types::qinfo_level_e::ZERO, tabOverall,  "DADA Searching " << search);
+	this->search->findTabContent(search, reverse, caseSensitive);
+}

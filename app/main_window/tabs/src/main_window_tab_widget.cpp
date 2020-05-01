@@ -192,6 +192,18 @@ int main_window_tab_widget::MainWindowTabWidget::insertTab(const int & index, co
 	return currIndex;
 }
 
+void main_window_tab_widget::MainWindowTabWidget::findInTab(const int & index, const QString & text) {
+	try {
+		const main_window_tab::MainWindowTab * tab = dynamic_cast<main_window_tab::MainWindowTab *>(this->widget(index, true));
+		// Find text in tab
+	QINFO_PRINT(global_types::qinfo_level_e::ZERO, mainWindowTabWidgetTabs, "DADA Looking for " << text << " in tab " << index);
+		tab->find(text, false, false);
+	QINFO_PRINT(global_types::qinfo_level_e::ZERO, mainWindowTabWidgetTabs, "DADA DONE Looking for " << text << " in tab " << index);
+	} catch (const std::bad_cast & badCastE) {
+		QEXCEPTION_ACTION(throw, badCastE.what());
+	}
+}
+
 QString main_window_tab_widget::MainWindowTabWidget::createSource(const main_window_shared_types::page_type_e & type, const QString & userInput) {
 
 	QString source(QString::null);

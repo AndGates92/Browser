@@ -28,7 +28,7 @@
 		"State" : "FIND",
 		"Shortcut" : "/",
 		"LongCmd" : "find",
-		"Help" : "This command find the user-type string in the current tab"
+		"Help" : "This command find the user-type string in the current tab. An empty input clears the search"
 	},
 
 	"MoveTab" : {

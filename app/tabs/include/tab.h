@@ -114,6 +114,17 @@ namespace tab {
 			 */
 			tab_search::TabSearch * getSearch() const;
 
+			/**
+			 * @brief Function: virtual void find(const int & index, const QString & search, const bool & reverse, const bool & caseSensitive) const
+			 *
+			 * \param search: text to search.
+			 * \param reverse: true if searching in the reverse direction, false otherwise.
+			 * \param caseSensitive: true if case sensitive search, false otherwise.
+			 *
+			 * This function searches text in a webpage
+			 */
+			virtual void find(const QString & search, const bool & reverse, const bool & caseSensitive) const;
+
 		protected:
 
 			/**
