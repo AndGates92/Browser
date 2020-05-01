@@ -57,18 +57,6 @@ namespace main_window_tab_search {
 
 		private:
 
-			/**
-			 * @brief Function: void FindTabContent(const int & index, const QString & search, const bool & reverse, const bool & caseSensitive)
-			 *
-			 * \param search: text to search.
-			 * \param reverse: true if searching in the reverse direction, false otherwise.
-			 * \param caseSensitive: true if case sensitive search, false otherwise.
-			 * \param callback: callback to call
-			 *
-			 * This function searches text in a webpage
-			 */
-			void FindTabContent(const QString & search, const bool & reverse, const bool & caseSensitive, void (* callback)(bool) = nullptr);
-
 			// Move and copy constructor
 			/**
 			 * @brief Disable move and copy constructors and operator= overloading for class MainWindowTabSearch

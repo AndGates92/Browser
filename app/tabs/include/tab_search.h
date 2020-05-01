@@ -26,6 +26,7 @@
  */
 
 Q_DECLARE_LOGGING_CATEGORY(tabSearchOverall)
+Q_DECLARE_LOGGING_CATEGORY(tabSearchFind)
 
 namespace tab_search {
 
@@ -76,6 +77,18 @@ namespace tab_search {
 			 *
 			 */
 			QWebEnginePage::FindFlag flags;
+
+			/**
+			 * @brief Function: virtual void findTabContent(const int & index, const QString & search, const bool & reverse, const bool & caseSensitive) final
+			 *
+			 * \param search: text to search.
+			 * \param reverse: true if searching in the reverse direction, false otherwise.
+			 * \param caseSensitive: true if case sensitive search, false otherwise.
+			 * \param callback: callback to call
+			 *
+			 * This function searches text in a webpage
+			 */
+			virtual void findTabContent(const QString & search, const bool & reverse, const bool & caseSensitive, void (* callback)(bool) = nullptr) final;
 
 		private:
 			// Move and copy constructor
