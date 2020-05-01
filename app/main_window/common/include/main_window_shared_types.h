@@ -52,7 +52,8 @@ namespace main_window_shared_types {
 		MOVE_LEFT,        /**< Move to tab to the left */
 		MOVE_RIGHT,       /**< Move to tab to the right */
 		MOVE_TAB,         /**< Move tab */
-		SEARCH            /**< Search on same tab */
+		SEARCH,           /**< Search on same tab */
+		FIND,             /**< Find string in the tab */
 	} state_e;
 
 	/**

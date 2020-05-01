@@ -161,16 +161,25 @@ void main_window_ctrl_base::MainWindowCtrlBase::setAllShortcutEnabledProperty(co
 	}
 }
 
+// TODO handle shortcuts with multiple keys
 std::string main_window_ctrl_base::MainWindowCtrlBase::processShortcut(const std::string & value) {
 	const std::string delim(",");
 	std::string keyName = std::string();
 	std::vector<std::string> subStrs = global_functions::splitStringByDelimiter(value, delim);
+	auto alphaNumLower = [&] (unsigned char c) {
+		return ((std::isalnum(c) != 0) && (std::islower(c) != 0));
+	};
+	auto alphaNumUpper = [&] (unsigned char c) {
+		return ((std::isalnum(c) != 0) && (std::isupper(c) != 0));
+	};
+	auto slashChar = [&] (unsigned char c) {
+		return ((std::isgraph(c) != 0) && (c == '/'));
+	};
+
 	for (std::string iter : subStrs) {
-		bool isAlphaNumLowerCase = std::find_if(iter.cbegin(), iter.cend(),
-			[&] (char c) {
-				return ((std::isalnum(c) == false) || (std::islower(c) == false));
-			}
-		) == iter.cend();
+		bool isAlphaNumLowerCase = (std::find_if(iter.cbegin(), iter.cend(), alphaNumLower) != iter.cend());
+		bool isAlphaNumUpperCase = (std::find_if(iter.cbegin(), iter.cend(), alphaNumUpper) != iter.cend());
+		bool isSlash = (std::find_if(iter.cbegin(), iter.cend(), slashChar) != iter.cend());
 		if (isAlphaNumLowerCase == true) {
 			// Initialize upperKey with as many spaces as the number of characters in iter in order for std::transform to access already allocated space
 			std::string upperKey(iter.size(), ' ');
@@ -181,6 +190,12 @@ std::string main_window_ctrl_base::MainWindowCtrlBase::processShortcut(const std
 			);
 			keyName.append("Key_");
 			keyName.append(upperKey);
+		} else if (isAlphaNumUpperCase == true) {
+			keyName.append("Key_");
+			keyName.append(iter);
+		} else if (isSlash == true) {
+			// If string contains only 1 backslash
+			keyName.append("Key_Slash");
 		} else {
 			QEXCEPTION_ACTION(throw,  "Value in JSON file " << QString::fromStdString(value) << " is not alphanumeric and lowercase ");
 		}
