@@ -1,9 +1,9 @@
 /**
  * @copyright
- * @file main_window_web_engine_search.cpp
+ * @file main_window_tab_search.cpp
  * @author Andrea Gianarda
  * @date 02rd April 2020
- * @brief Web engine search functions
+ * @brief Main window tab search functions
  */
 
 // Qt libraries
@@ -13,42 +13,42 @@
 #include <qt5/QtWidgets/QMessageBox>
 
 #include "logging_macros.h"
-#include "main_window_web_engine_search.h"
+#include "main_window_tab_search.h"
 #include "main_window_web_engine_view.h"
 #include "main_window_tab.h"
 #include "exception_macros.h"
 
 // Categories
-Q_LOGGING_CATEGORY(mainWindowWebEngineSearchOverall, "mainWindowWebEngineSearch.overall", MSG_TYPE_LEVEL)
-Q_LOGGING_CATEGORY(mainWindowWebEngineSearchFind, "mainWindowWebEngineSearch.find", MSG_TYPE_LEVEL)
+Q_LOGGING_CATEGORY(mainWindowTabSearchOverall, "mainWindowTabSearch.overall", MSG_TYPE_LEVEL)
+Q_LOGGING_CATEGORY(mainWindowTabSearchFind, "mainWindowTabSearch.find", MSG_TYPE_LEVEL)
 
-main_window_web_engine_search::MainWindowWebEngineSearch::MainWindowWebEngineSearch(QWidget * attachedTab, QObject * parent): web_engine_search::WebEngineSearch(attachedTab, parent) {
-	QINFO_PRINT(global_types::qinfo_level_e::ZERO, mainWindowWebEngineSearchOverall,  "Web engine search constructor");
-
-}
-
-main_window_web_engine_search::MainWindowWebEngineSearch::~MainWindowWebEngineSearch() {
-	QINFO_PRINT(global_types::qinfo_level_e::ZERO, mainWindowWebEngineSearchOverall,  "Web engine search destructor");
+main_window_tab_search::MainWindowTabSearch::MainWindowTabSearch(QWidget * attachedTab, QObject * parent): tab_search::TabSearch(attachedTab, parent) {
+	QINFO_PRINT(global_types::qinfo_level_e::ZERO, mainWindowTabSearchOverall,  "Tab search constructor");
 
 }
 
-void main_window_web_engine_search::MainWindowWebEngineSearch::FindTabContent(const QString & search, const bool & reverse, const bool & caseSensitive, void (* callback)(bool)) {
+main_window_tab_search::MainWindowTabSearch::~MainWindowTabSearch() {
+	QINFO_PRINT(global_types::qinfo_level_e::ZERO, mainWindowTabSearchOverall,  "Tab search destructor");
+
+}
+
+void main_window_tab_search::MainWindowTabSearch::FindTabContent(const QString & search, const bool & reverse, const bool & caseSensitive, void (* callback)(bool)) {
 
 	try {
 		main_window_tab::MainWindowTab * currentTab = dynamic_cast<main_window_tab::MainWindowTab *>(this->tab);
 		main_window_web_engine_view::MainWindowWebEngineView * currentTabView = currentTab->getView();
 		QWebEnginePage * currentTabPage = currentTabView->page();
-		QINFO_PRINT(global_types::qinfo_level_e::ZERO, mainWindowWebEngineSearchFind,  "DEBUG Searching " << search);
+		QINFO_PRINT(global_types::qinfo_level_e::ZERO, mainWindowTabSearchFind,  "DEBUG Searching " << search);
 
 		// Declare here the callback to improve readability
 		auto wrapperCallback = [&](bool found) {
-			QINFO_PRINT(global_types::qinfo_level_e::ZERO, mainWindowWebEngineSearchFind,  "DEBUG Callback find");
+			QINFO_PRINT(global_types::qinfo_level_e::ZERO, mainWindowTabSearchFind,  "DEBUG Callback find");
 			if (found) {
 				QMessageBox::information(currentTabView,  QString(), QString("DADA"), QMessageBox::NoButton, QMessageBox::NoButton);
-				QINFO_PRINT(global_types::qinfo_level_e::ZERO, mainWindowWebEngineSearchFind,  "DEBUG Found");
+				QINFO_PRINT(global_types::qinfo_level_e::ZERO, mainWindowTabSearchFind,  "DEBUG Found");
 			} else {
 				QMessageBox::information(currentTabView,  QString(), QString("NOT DADA"), QMessageBox::NoButton, QMessageBox::NoButton);
-				QINFO_PRINT(global_types::qinfo_level_e::ZERO, mainWindowWebEngineSearchFind,  "DEBUG not Found");
+				QINFO_PRINT(global_types::qinfo_level_e::ZERO, mainWindowTabSearchFind,  "DEBUG not Found");
 			}
 
 			callback(found);
@@ -73,11 +73,10 @@ void main_window_web_engine_search::MainWindowWebEngineSearch::FindTabContent(co
 			}
 		);
 
-		QINFO_PRINT(global_types::qinfo_level_e::ZERO, mainWindowWebEngineSearchFind,  "DEBUG Selection " << currentTabView->selectedText());
+		QINFO_PRINT(global_types::qinfo_level_e::ZERO, mainWindowTabSearchFind,  "DEBUG Selection " << currentTabView->selectedText());
 
 	} catch (const std::bad_cast & badCastE) {
 		QEXCEPTION_ACTION(throw, badCastE.what());
 	}
 
 }
-

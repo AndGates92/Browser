@@ -27,7 +27,7 @@ tab::Tab::Tab(QWidget * parent): QWidget(parent), view(Q_NULLPTR), loadManager(Q
 	tab_load_manager::TabLoadManager * tabLoadManager = new tab_load_manager::TabLoadManager(this);
 	this->setLoadManager(tabLoadManager);
 
-	web_engine_search::WebEngineSearch * tabSearch = new web_engine_search::WebEngineSearch(this, this);
+	tab_search::TabSearch * tabSearch = new tab_search::TabSearch(this, this);
 	this->setSearch(tabSearch);
 }
 
@@ -51,7 +51,7 @@ PTR_SETTER_GETTER(tab::Tab::setLoadManager, tab::Tab::getLoadManager, tab_load_m
 
 PTR_SETTER_GETTER(tab::Tab::setView, tab::Tab::getView, web_engine_view::WebEngineView, this->view)
 
-PTR_SETTER_GETTER(tab::Tab::setSearch, tab::Tab::getSearch, web_engine_search::WebEngineSearch, this->search)
+PTR_SETTER_GETTER(tab::Tab::setSearch, tab::Tab::getSearch, tab_search::TabSearch, this->search)
 
 void tab::Tab::resize(const QSize size) {
 	// Resize view

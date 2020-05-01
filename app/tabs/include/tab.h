@@ -20,7 +20,7 @@
 #include "constructor_macros.h"
 #include "web_engine_view.h"
 #include "tab_load_manager.h"
-#include "web_engine_search.h"
+#include "tab_search.h"
 
 /** @defgroup TabGroup Tab Doxygen Group
  *  Tab functions and classes
@@ -97,22 +97,22 @@ namespace tab {
 			tab_load_manager::TabLoadManager * getLoadManager() const;
 
 			/**
-			 * @brief Function: void setSearch(web_engine_search::WebEngineSearch * value)
+			 * @brief Function: void setSearch(tab_search::TabSearch * value)
 			 *
 			 * \param value: search to use
 			 *
 			 * This function sets the tab search
 			 */
-			void setSearch(web_engine_search::WebEngineSearch * value);
+			void setSearch(tab_search::TabSearch * value);
 
 			/**
-			 * @brief Function: web_engine_search::WebEngineSearch * getSearch()
+			 * @brief Function: tab_search::TabSearch * getSearch()
 			 *
 			 * \return tab search
 			 *
 			 * This function returns the load manager
 			 */
-			web_engine_search::WebEngineSearch * getSearch() const;
+			tab_search::TabSearch * getSearch() const;
 
 		protected:
 
@@ -157,7 +157,7 @@ namespace tab {
 			 * @brief seach class
 			 *
 			 */
-			web_engine_search::WebEngineSearch * search;
+			tab_search::TabSearch * search;
 
 			// Move and copy constructor
 			/**

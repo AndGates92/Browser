@@ -21,7 +21,7 @@
 #include "constructor_macros.h"
 #include "main_window_shared_types.h"
 #include "main_window_web_engine_view.h"
-#include "main_window_web_engine_search.h"
+#include "main_window_tab_search.h"
 #include "main_window_tab_load_manager.h"
 
 /** @defgroup TabGroup Main Window Tab Doxygen Group
@@ -85,13 +85,13 @@ namespace main_window_tab {
 			main_window_tab_load_manager::MainWindowTabLoadManager * getLoadManager() const;
 
 			/**
-			 * @brief Function: main_window_web_engine_search::MainWindowWebEngineSearch * getSearch() const
+			 * @brief Function: main_window_tab_search::MainWindowTabSearch * getSearch() const
 			 *
 			 * \return tab search
 			 *
 			 * This function returns the load manager
 			 */
-			main_window_web_engine_search::MainWindowWebEngineSearch * getSearch() const;
+			main_window_tab_search::MainWindowTabSearch * getSearch() const;
 
 		protected:
 

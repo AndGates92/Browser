@@ -26,7 +26,7 @@ main_window_tab::MainWindowTab::MainWindowTab(const main_window_shared_types::pa
 	main_window_tab_load_manager::MainWindowTabLoadManager * tabLoadManager = new main_window_tab_load_manager::MainWindowTabLoadManager(this);
 	this->setLoadManager(tabLoadManager);
 
-	main_window_web_engine_search::MainWindowWebEngineSearch * tabSearch = new main_window_web_engine_search::MainWindowWebEngineSearch(this, this);
+	main_window_tab_search::MainWindowTabSearch * tabSearch = new main_window_tab_search::MainWindowTabSearch(this, this);
 	this->setSearch(tabSearch);
 
 	this->connectSignals();
@@ -45,7 +45,7 @@ CASTED_PTR_GETTER(main_window_tab::MainWindowTab::getView, main_window_web_engin
 
 CASTED_PTR_GETTER(main_window_tab::MainWindowTab::getLoadManager, main_window_tab_load_manager::MainWindowTabLoadManager, tab::Tab::getLoadManager())
 
-CASTED_PTR_GETTER(main_window_tab::MainWindowTab::getSearch, main_window_web_engine_search::MainWindowWebEngineSearch, tab::Tab::getSearch())
+CASTED_PTR_GETTER(main_window_tab::MainWindowTab::getSearch, main_window_tab_search::MainWindowTabSearch, tab::Tab::getSearch())
 
 void main_window_tab::MainWindowTab::connectSignals() {
 	const main_window_web_engine_page::MainWindowWebEnginePage * page = this->getView()->page();

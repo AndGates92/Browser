@@ -2,10 +2,10 @@
 #define MAIN_WINDOW_WEB_ENGINE_SEARCH_H
 /**
  * @copyright
- * @file main_window_web_engine_search.h
+ * @file main_window_tab_search.h
  * @author Andrea Gianarda
  * @date 03rd of April 2020
- * @brief Main Window Web Engine Search header file
+ * @brief Main Window Tab Search header file
 */
 
 // Qt libraries
@@ -14,44 +14,44 @@
 
 #include <qt5/QtCore/QLoggingCategory>
 
-#include "web_engine_search.h"
+#include "tab_search.h"
 #include "main_window_web_engine_profile.h"
 #include "global_types.h"
 #include "constructor_macros.h"
 
-/** @defgroup MainWindowWebEngineSearchGroup Web Engine Search Doxygen Group
- *  Web Engine Search functions and classes
+/** @defgroup MainWindowTabSearchGroup Main Window Tab Search Doxygen Group
+ *  Main Window Tab Search functions and classes
  *  @{
  */
 
-Q_DECLARE_LOGGING_CATEGORY(mainWindowWebEngineSearchOverall)
-Q_DECLARE_LOGGING_CATEGORY(mainWindowWebEngineSearchFind)
+Q_DECLARE_LOGGING_CATEGORY(mainWindowTabSearchOverall)
+Q_DECLARE_LOGGING_CATEGORY(mainWindowTabSearchFind)
 
-namespace main_window_web_engine_search {
+namespace main_window_tab_search {
 
 	/**
-	 * @brief MainWindowWebEngineSearch class
+	 * @brief MainWindowTabSearch class
 	 *
 	 */
-	class MainWindowWebEngineSearch final : public web_engine_search::WebEngineSearch {
+	class MainWindowTabSearch final : public tab_search::TabSearch {
 
 		public:
 			/**
-			 * @brief Function: explicit MainWindowWebEngineSearch(QWidget * attachedTab, QObject * parent = Q_NULLPTR)
+			 * @brief Function: explicit MainWindowTabSearch(QWidget * attachedTab, QObject * parent = Q_NULLPTR)
 			 *
 			 * \param profile: profile of the search
 			 * \param parent: parent widget
 			 *
 			 * Main window web engine search constructor
 			 */
-			explicit MainWindowWebEngineSearch(QWidget * attachedTab, QObject * parent = Q_NULLPTR);
+			explicit MainWindowTabSearch(QWidget * attachedTab, QObject * parent = Q_NULLPTR);
 
 			/**
-			 * @brief Function: virtual ~MainWindowWebEngineSearch()
+			 * @brief Function: virtual ~MainWindowTabSearch()
 			 *
 			 * Main window web engine search destructor
 			 */
-			virtual ~MainWindowWebEngineSearch();
+			virtual ~MainWindowTabSearch();
 
 		protected:
 
@@ -71,13 +71,13 @@ namespace main_window_web_engine_search {
 
 			// Move and copy constructor
 			/**
-			 * @brief Disable move and copy constructors and operator= overloading for class MainWindowWebEngineSearch
+			 * @brief Disable move and copy constructors and operator= overloading for class MainWindowTabSearch
 			 *
 			 */
-			DISABLE_COPY_MOVE(MainWindowWebEngineSearch)
+			DISABLE_COPY_MOVE(MainWindowTabSearch)
 
 	};
 }
-/** @} */ // End of MainWindowWebEngineSearchGroup group
+/** @} */ // End of MainWindowTabSearchGroup group
 
 #endif // MAIN_WINDOW_WEB_ENGINE_SEARCH_H
