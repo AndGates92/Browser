@@ -232,7 +232,7 @@ namespace main_window_ctrl_base {
 			virtual void populateActionData();
 
 			/**
-			 * @brief Function: std::string processShortcut(const std::string & value)
+			 * @brief Function: std::string getShortcutKey(const std::string & value)
 			 *
 			 * \param value: value read from JSON file
 			 *
@@ -240,7 +240,18 @@ namespace main_window_ctrl_base {
 			 *
 			 * This function process the value read from the JSON file in order to easily construct a KeySequence object
 			 */
-			std::string processShortcut(const std::string & value);
+			std::string getShortcutKey(const std::string & value);
+
+			/**
+			 * @brief Function: std::string getShortcutModifier(const std::string & value)
+			 *
+			 * \param value: value read from JSON file
+			 *
+			 * \return a string ready to be use to construct a KeqSequence object
+			 *
+			 * This function process the value read from the JSON file in order to easily construct a KeySequence object
+			 */
+			std::string getShortcutModifier(const std::string & value);
 
 			/**
 			 * @brief Function: virtual void createShortcuts() final

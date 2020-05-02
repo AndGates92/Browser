@@ -58,7 +58,7 @@ namespace main_window_json_data {
 		public:
 
 			/**
-			 * @brief Function: static main_window_json_data::MainWindowJsonData * makeJsonData(const std::string & jsonKey, const std::string & nameKeyValue, const main_window_shared_types::state_e & stateKeyValue, const Qt::Key & shortcutKeyValue, const std::string & longCmdKeyValue, const std::string & helpKeyValue)
+			 * @brief Function: static main_window_json_data::MainWindowJsonData * makeJsonData(const std::string & jsonKey, const std::string & nameKeyValue, const main_window_shared_types::state_e & stateKeyValue, const int & shortcutKeyValue, const std::string & longCmdKeyValue, const std::string & helpKeyValue)
 			 *
 			 * \param jsonKey: key in te json file
 			 * \param nameKeyValue: name of the action
@@ -69,10 +69,10 @@ namespace main_window_json_data {
 			 *
 			 * this function constructs a new instance of class MainWindowJsonData
 			 */
-			static main_window_json_data::MainWindowJsonData * makeJsonData(const std::string & jsonKey, const std::string & nameKeyValue, const main_window_shared_types::state_e & stateKeyValue, const Qt::Key & shortcutKeyValue, const std::string & longCmdKeyValue, const std::string & helpKeyValue);
+			static main_window_json_data::MainWindowJsonData * makeJsonData(const std::string & jsonKey, const std::string & nameKeyValue, const main_window_shared_types::state_e & stateKeyValue, const int & shortcutKeyValue, const std::string & longCmdKeyValue, const std::string & helpKeyValue);
 
 			/**
-			 * @brief Function: MainWindowJsonData(const std::string & jsonKey = std::string(), const std::string & nameKeyValue = std::string(), const main_window_shared_types::state_e & stateKeyValue = main_window_shared_types::state_e::IDLE, const Qt::Key & shortcutKeyValue = Qt::Key_unknown, const std::string & longCmdKeyValue = std::string(), const std::string & helpKeyValue = std::string())
+			 * @brief Function: MainWindowJsonData(const std::string & jsonKey = std::string(), const std::string & nameKeyValue = std::string(), const main_window_shared_types::state_e & stateKeyValue = main_window_shared_types::state_e::IDLE, const int & shortcutKeyValue = (int)Qt::Key_unknown, const std::string & longCmdKeyValue = std::string(), const std::string & helpKeyValue = std::string())
 			 *
 			 * \param jsonKey: key in te json file
 			 * \param nameKeyValue: name of the action
@@ -83,7 +83,7 @@ namespace main_window_json_data {
 			 *
 			 * json data constructor
 			 */
-			explicit MainWindowJsonData(const std::string & jsonKey = std::string(), const std::string & nameKeyValue = std::string(), const main_window_shared_types::state_e & stateKeyValue = main_window_shared_types::state_e::IDLE, const Qt::Key & shortcutKeyValue = Qt::Key_unknown, const std::string & longCmdKeyValue = std::string(), const std::string & helpKeyValue = std::string());
+			explicit MainWindowJsonData(const std::string & jsonKey = std::string(), const std::string & nameKeyValue = std::string(), const main_window_shared_types::state_e & stateKeyValue = main_window_shared_types::state_e::IDLE, const int & shortcutKeyValue = (int)Qt::Key_unknown, const std::string & longCmdKeyValue = std::string(), const std::string & helpKeyValue = std::string());
 
 			// Move and copy constructor
 			/**
@@ -227,13 +227,13 @@ namespace main_window_json_data {
 			main_window_shared_types::state_e getState() const;
 
 			/**
-			 * @brief Function: Qt::Key getShortcut() const
+			 * @brief Function: int getShortcut() const
 			 *
 			 * \return shortcut for the action
 			 *
 			 * This functions returns the shortcut for the action
 			 */
-			Qt::Key getShortcut() const;
+			int getShortcut() const;
 
 			/**
 			 * @brief Function: const std::string getLongCmd() const
@@ -296,7 +296,7 @@ namespace main_window_json_data {
 			 * @brief shortcut associated with the action
 			 *
 			 */
-			Qt::Key shortcut;
+			int shortcut;
 
 			/**
 			 * @brief long command the user has to type to trigger the action

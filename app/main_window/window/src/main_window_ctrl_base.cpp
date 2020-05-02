@@ -162,25 +162,21 @@ void main_window_ctrl_base::MainWindowCtrlBase::setAllShortcutEnabledProperty(co
 }
 
 // TODO handle shortcuts with multiple keys
-std::string main_window_ctrl_base::MainWindowCtrlBase::processShortcut(const std::string & value) {
+std::string main_window_ctrl_base::MainWindowCtrlBase::getShortcutKey(const std::string & value) {
 	const std::string delim(",");
 	std::string keyName = std::string();
 	std::vector<std::string> subStrs = global_functions::splitStringByDelimiter(value, delim);
-	auto alphaNumLower = [&] (unsigned char c) {
-		return ((std::isalnum(c) != 0) && (std::islower(c) != 0));
-	};
-	auto alphaNumUpper = [&] (unsigned char c) {
-		return ((std::isalnum(c) != 0) && (std::isupper(c) != 0));
+	auto alphaNum = [&] (unsigned char c) {
+		return (std::isalnum(c) != 0);
 	};
 	auto slashChar = [&] (unsigned char c) {
 		return ((std::isgraph(c) != 0) && (c == '/'));
 	};
 
 	for (std::string iter : subStrs) {
-		bool isAlphaNumLowerCase = (std::find_if(iter.cbegin(), iter.cend(), alphaNumLower) != iter.cend());
-		bool isAlphaNumUpperCase = (std::find_if(iter.cbegin(), iter.cend(), alphaNumUpper) != iter.cend());
+		bool isAlphaNum = (std::find_if(iter.cbegin(), iter.cend(), alphaNum) != iter.cend());
 		bool isSlash = (std::find_if(iter.cbegin(), iter.cend(), slashChar) != iter.cend());
-		if (isAlphaNumLowerCase == true) {
+		if (isAlphaNum == true) {
 			// Initialize upperKey with as many spaces as the number of characters in iter in order for std::transform to access already allocated space
 			std::string upperKey(iter.size(), ' ');
 			std::transform(iter.begin(), iter.end(), upperKey.begin(),
@@ -190,10 +186,6 @@ std::string main_window_ctrl_base::MainWindowCtrlBase::processShortcut(const std
 			);
 			keyName.append("Key_");
 			keyName.append(upperKey);
-		} else if (isAlphaNumUpperCase == true) {
-			keyName.append("Key_Shift+");
-			keyName.append("Key_");
-			keyName.append(iter);
 		} else if (isSlash == true) {
 			// If string contains only 1 backslash
 			keyName.append("Key_Slash");
@@ -203,6 +195,25 @@ std::string main_window_ctrl_base::MainWindowCtrlBase::processShortcut(const std
 	}
 
 	return keyName;
+}
+
+std::string main_window_ctrl_base::MainWindowCtrlBase::getShortcutModifier(const std::string & value) {
+	const std::string delim(",");
+	std::string modifierName("Qt::");
+	std::vector<std::string> subStrs = global_functions::splitStringByDelimiter(value, delim);
+	auto alphaNumUpper = [&] (unsigned char c) {
+		return ((std::isalnum(c) != 0) && (std::isupper(c) != 0));
+	};
+	for (std::string iter : subStrs) {
+		bool isAlphaNumUpperCase = (std::find_if(iter.cbegin(), iter.cend(), alphaNumUpper) != iter.cend());
+		if (isAlphaNumUpperCase == true) {
+			modifierName.append("ShiftModifier");
+		} else {
+			modifierName.append("NoModifier");
+		}
+	}
+
+	return modifierName;
 }
 
 void main_window_ctrl_base::MainWindowCtrlBase::populateActionData() {
@@ -229,15 +240,19 @@ void main_window_ctrl_base::MainWindowCtrlBase::populateActionData() {
 
 			void * valuePtr = nullptr;
 			main_window_shared_types::state_e state = main_window_shared_types::state_e::IDLE;
-			key_sequence::KeySequence keySeq(QString::null);
-			Qt::Key shortcutKey = Qt::Key_unknown;
+			int shortcutKey = (int)Qt::Key_unknown;
 
 			if (paramIter->compare("State") == 0) {
 				state = global_functions::QStringToQEnum<main_window_shared_types::state_e>(QString::fromStdString(value));
 				valuePtr = &state;
 			} else if (paramIter->compare("Shortcut") == 0) {
-				std::string keyStr(this->processShortcut(value));
-				shortcutKey = global_functions::QStringToQEnum<Qt::Key>(QString::fromStdString(keyStr));
+				// Get key
+				std::string keyStr(this->getShortcutKey(value));
+				Qt::Key key = global_functions::QStringToQEnum<Qt::Key>(QString::fromStdString(keyStr));
+				// Get modifier
+				std::string modifierStr(this->getShortcutModifier(value));
+				Qt::KeyboardModifiers modifier = global_functions::QStringToQEnum<Qt::KeyboardModifiers>(QString::fromStdString(modifierStr));
+				shortcutKey = ((int)key) | ((int)modifier);
 				valuePtr = &shortcutKey;
 			} else {
 				valuePtr = &value;
