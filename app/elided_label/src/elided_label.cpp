@@ -11,6 +11,7 @@
 #include <qt5/QtGui/QPainter>
 
 #include "elided_label.h"
+#include "function_macros.h"
 #include "logging_macros.h"
 #include "global_types.h"
 
@@ -71,3 +72,7 @@ void elided_label::ElidedLabel::paintEvent(QPaintEvent * event) {
 	}
 
 }
+
+CONST_REF_SETTER(elided_label::ElidedLabel::setElisionMode, Qt::TextElideMode, this->elisionMode)
+BASE_GETTER(elided_label::ElidedLabel::getElisionMode, Qt::TextElideMode, this->elisionMode)
+CONST_REF_SETTER_GETTER(elided_label::ElidedLabel::setOrigin, elided_label::ElidedLabel::getOrigin, QPoint, this->origin)

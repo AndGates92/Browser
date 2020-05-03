@@ -148,12 +148,12 @@ std::string main_window_page_data::MainWindowPageData::print() const {
 	return structInfo;
 }
 
-BASE_SETTER_GETTER(main_window_page_data::MainWindowPageData::setType, main_window_page_data::MainWindowPageData::getType, main_window_shared_types::page_type_e, this->type)
-CONST_GETTER(main_window_page_data::MainWindowPageData::getSource, std::string, this->source)
+CONST_REF_SETTER(main_window_page_data::MainWindowPageData::setType, main_window_shared_types::page_type_e, this->type)
+BASE_GETTER(main_window_page_data::MainWindowPageData::getType, main_window_shared_types::page_type_e, this->type)
 BASE_SETTER(main_window_page_data::MainWindowPageData::setData, const void *, this->data)
 CONST_PTR_GETTER(main_window_page_data::MainWindowPageData::getData, void, this->data)
 
-bool main_window_page_data::MainWindowPageData::setSource(const std::string newSource) {
+bool main_window_page_data::MainWindowPageData::setSource(const std::string & newSource) {
 	bool hasChanged = false;
 
 	if (this->source != newSource) {
@@ -163,3 +163,5 @@ bool main_window_page_data::MainWindowPageData::setSource(const std::string newS
 
 	return hasChanged;
 }
+
+CONST_GETTER(main_window_page_data::MainWindowPageData::getSource, std::string, this->source)

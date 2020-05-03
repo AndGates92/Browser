@@ -71,6 +71,42 @@ namespace elided_label {
 			 */
 			~ElidedLabel();
 
+			/**
+			 * @brief Function: Qt::TextElideMode getElisionMode() const
+			 *
+			 * \return elision mode
+			 *
+			 * This functions returns the elision mode of a label
+			 */
+			Qt::TextElideMode getElisionMode() const;
+
+			/**
+			 * @brief Function: const QPoint getOrigin() const
+			 *
+			 * \param value: new origin
+			 *
+			 * This functions returns the origin of the label
+			 */
+			const QPoint getOrigin() const;
+
+			/**
+			 * @brief Function: void setElisionMode(const Qt::TextElideMode & value)
+			 *
+			 * \param value: new elision mode
+			 *
+			 * This functions sets the elision mode of a label
+			 */
+			void setElisionMode(const Qt::TextElideMode & value);
+
+			/**
+			 * @brief Function: void setOrigin(const QPoint & value)
+			 *
+			 * \param value: new origin
+			 *
+			 * This functions sets the origin of the label
+			 */
+			void setOrigin(const QPoint & value);
+
 		public slots:
 			/**
 			 * @brief Function: void setText(const QString & text)

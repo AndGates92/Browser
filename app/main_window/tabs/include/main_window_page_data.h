@@ -199,7 +199,7 @@ namespace main_window_page_data {
 			const void * getData() const;
 
 			/**
-			 * @brief Function: bool setSource(const std::string newSource)
+			 * @brief Function: bool setSource(const std::string & newSource)
 			 *
 			 * \param newSource: new source of the page
 			 *
@@ -207,16 +207,16 @@ namespace main_window_page_data {
 			 *
 			 * This functions sets the source of a page page data object
 			 */
-			bool setSource(const std::string newSource);
+			bool setSource(const std::string & newSource);
 
 			/**
-			 * @brief Function: void setType(const main_window_shared_types::page_type_e value)
+			 * @brief Function: void setType(const main_window_shared_types::page_type_e & value)
 			 *
 			 * \param value: new type
 			 *
 			 * This functions sets the type field of a page page data object
 			 */
-			void setType(const main_window_shared_types::page_type_e value);
+			void setType(const main_window_shared_types::page_type_e & value);
 
 			/**
 			 * @brief Function: void setData(const void * value)

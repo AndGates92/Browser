@@ -17,7 +17,7 @@
  * @brief BASE_SETTER(FNAME, ARGTYPE, VAR)
  *
  * \param FNAME : function name
- * \param ARGTYPE : type of input argument
+ * \param ARGTYPE : type of argument to set
  * \param VAR : class member to set
  *
  * General setter for a member in a class or struct
@@ -58,7 +58,19 @@
 	BASE_GETTER(GFNAME, ARGTYPE, VAR)
 
 /**
- * @brief CONST_BASE_GETTER(FNAME, ARGTYPE, VAR)
+ * @brief CONST_SETTER(FNAME, ARGTYPE, VAR)
+ *
+ * \param FNAME : function name
+ * \param ARGTYPE : type of argument to set
+ * \param VAR : class member to set
+ *
+ * Const setter for a member in a class or struct
+ */
+#define CONST_SETTER(FNAME, ARGTYPE, VAR) \
+	BASE_SETTER(FNAME, const ARGTYPE, VAR)
+
+/**
+ * @brief CONST_GETTER(FNAME, ARGTYPE, VAR)
  *
  * \param FNAME : function name
  * \param ARGTYPE : type of returned value
@@ -81,7 +93,39 @@
  * Getter returns a const value
  */
 #define CONST_SETTER_GETTER(SFNAME, GFNAME, ARGTYPE, VAR) \
-	BASE_SETTER(SFNAME, ARGTYPE, VAR) \
+	CONST_SETTER(SFNAME, ARGTYPE, VAR) \
+	CONST_GETTER(GFNAME, ARGTYPE, VAR)
+
+/**
+ * @brief CONST_REF_SETTER(FNAME, ARGTYPE, VAR)
+ *
+ * \param FNAME : function name
+ * \param ARGTYPE : type of argument to set
+ * \param VAR : class member to set
+ *
+ * Const ref setter for a member in a class or struct
+ */
+#define CONST_REF_SETTER(FNAME, ARGTYPE, VAR) \
+	void FNAME(const ARGTYPE & value) { \
+		if (VAR != value) { \
+			VAR = value; \
+		}  \
+	}
+
+/**
+ * @brief CONST_REF_SETTER_GETTER(SFNAME, GFNAME, ARGTYPE, VAR)
+ *
+ * \param SFNAME : setter function name
+ * \param GFNAME : getter function name
+ * \param ARGTYPE : type of variable to set and get
+ * \param VAR : class member to set and return
+ *
+ * Create setters and getter for a member in a class or struct
+ * Setter argument is a const ref
+ * Getter returns a const value
+ */
+#define CONST_REF_SETTER_GETTER(SFNAME, GFNAME, ARGTYPE, VAR) \
+	CONST_REF_SETTER(SFNAME, ARGTYPE, VAR) \
 	CONST_GETTER(GFNAME, ARGTYPE, VAR)
 
 /**
