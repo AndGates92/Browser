@@ -36,7 +36,7 @@ namespace main_window_ctrl_base {
 
 		public:
 			/**
-			 * @brief Function: explicit MainWindowCtrlBase(QSharedPointer<main_window_core::MainWindowCore> core, QWidget * parent = QString::null, QString jsonFileName = QString::null)
+			 * @brief Function: explicit MainWindowCtrlBase(QWidget * parent, QSharedPointer<main_window_core::MainWindowCore> core, QString jsonFileName = QString::null)
 			 *
 			 * \param core: main window core
 			 * \param parent: parent windget
@@ -44,7 +44,7 @@ namespace main_window_ctrl_base {
 			 *
 			 * Main window control base class constructor
 			 */
-			explicit MainWindowCtrlBase(QSharedPointer<main_window_core::MainWindowCore> core, QWidget * parent = Q_NULLPTR, QString jsonFileName = QString::null);
+			explicit MainWindowCtrlBase(QWidget * parent, QSharedPointer<main_window_core::MainWindowCore> core, QString jsonFileName = QString::null);
 
 			/**
 			 * @brief Function: virtual ~MainWindowCtrlBase()

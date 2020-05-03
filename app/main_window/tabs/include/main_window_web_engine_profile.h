@@ -44,23 +44,14 @@ namespace main_window_web_engine_profile {
 			static main_window_web_engine_profile::MainWindowWebEngineProfile * defaultProfile();
 
 			/**
-			 * @brief Function: explicit MainWindowWebEngineProfile(const QString & storageName, QObject * parent = Q_NULLPTR)
+			 * @brief Function: explicit MainWindowWebEngineProfile(const QString & storageName, QObject * parent)
 			 *
 			 * \param storageName: name of the profile
 			 * \param parent: parent object
 			 *
 			 * Main window web engine profile constructor
 			 */
-			explicit MainWindowWebEngineProfile(const QString & storageName, QObject * parent = Q_NULLPTR);
-
-			/**
-			 * @brief Function: explicit MainWindowWebEngineProfile(QObject * parent = Q_NULLPTR)
-			 *
-			 * \param parent: parent object
-			 *
-			 * Main window web engine profile constructor
-			 */
-			explicit MainWindowWebEngineProfile(QObject * parent = Q_NULLPTR);
+			explicit MainWindowWebEngineProfile(QObject * parent, const QString & storageName);
 
 			/**
 			 * @brief Function: virtual ~MainWindowWebEngineProfile()

@@ -37,13 +37,13 @@ namespace web_engine_view {
 
 		public:
 			/**
-			 * @brief Function: explicit WebEngineView(QWidget * parent = Q_NULLPTR)
+			 * @brief Function: explicit WebEngineView(QWidget * parent)
 			 *
 			 * \param parent: parent widget
 			 *
 			 * Web engine view constructor
 			 */
-			explicit WebEngineView(QWidget * parent = Q_NULLPTR);
+			explicit WebEngineView(QWidget * parent);
 
 			/**
 			 * @brief Function: virtual ~WebEngineView()

@@ -28,12 +28,7 @@ main_window_web_engine_profile::MainWindowWebEngineProfile * main_window_web_eng
 	return Q_NULLPTR;
 }
 
-main_window_web_engine_profile::MainWindowWebEngineProfile::MainWindowWebEngineProfile(const QString & storageName, QObject * parent): web_engine_profile::WebEngineProfile(storageName, parent) {
-	QINFO_PRINT(global_types::qinfo_level_e::ZERO, mainWindowWebEngineProfileOverall,  "Web engine profile constructor");
-
-}
-
-main_window_web_engine_profile::MainWindowWebEngineProfile::MainWindowWebEngineProfile(QObject * parent): web_engine_profile::WebEngineProfile(parent) {
+main_window_web_engine_profile::MainWindowWebEngineProfile::MainWindowWebEngineProfile(QObject * parent, const QString & storageName): web_engine_profile::WebEngineProfile(parent, storageName) {
 	QINFO_PRINT(global_types::qinfo_level_e::ZERO, mainWindowWebEngineProfileOverall,  "Web engine profile constructor");
 
 }

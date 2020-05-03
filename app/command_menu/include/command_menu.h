@@ -98,13 +98,13 @@ namespace command_menu {
 		public:
 
 			/**
-			 * @brief Function: explicit CommandMenu(QWidget * parent = Q_NULLPTR)
+			 * @brief Function: explicit CommandMenu(QWidget * parent)
 			 *
 			 * \param parent: parent window
 			 *
 			 * Command menu constructor
 			 */
-			explicit CommandMenu(QWidget * parent = Q_NULLPTR);
+			explicit CommandMenu(QWidget * parent);
 
 			/**
 			 * @brief Function: ~CommandMenu()

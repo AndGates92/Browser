@@ -40,7 +40,7 @@ namespace edit_menu {
 
 		public:
 			/**
-			 * @brief Function: explicit EditMenu(QWidget * parent = Q_NULLPTR, QMenuBar * menuBar = Q_NULLPTR, const char* menuName = "Unknown", const key_sequence::KeySequence & key = key_sequence::KeySequence(QKeySequence::UnknownKey))
+			 * @brief Function: explicit EditMenu(QWidget * parent, QMenuBar * menuBar, const char* menuName, const key_sequence::KeySequence & key)
 			 *
 			 * \param parent: pointer to the parent of the menu
 			 * \param menuBar: menubar the menu is part of
@@ -49,7 +49,7 @@ namespace edit_menu {
 			 *
 			 * Constructor of edit menu
 			 */
-			explicit EditMenu(QWidget * parent = Q_NULLPTR, QMenuBar * menuBar = Q_NULLPTR, const char* menuName = "Unknown", const key_sequence::KeySequence & key = key_sequence::KeySequence(QKeySequence::UnknownKey));
+			explicit EditMenu(QWidget * parent, QMenuBar * menuBar, const char* menuName, const key_sequence::KeySequence & key);
 
 			/**
 			 * @brief Function: ~EditMenu()

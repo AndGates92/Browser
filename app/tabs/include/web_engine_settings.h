@@ -35,13 +35,13 @@ namespace web_engine_settings {
 
 		public:
 			/**
-			 * @brief Function: explicit WebEngineSettings(QWebEngineSettings * settings = Q_NULLPTR)
+			 * @brief Function: explicit WebEngineSettings(QWebEngineSettings * settings)
 			 *
 			 * \param settings: settings to initialize the class width
 			 *
 			 * Web engine settings constructor
 			 */
-			explicit WebEngineSettings(QWebEngineSettings * newSettings = Q_NULLPTR);
+			explicit WebEngineSettings(QWebEngineSettings * newSettings);
 
 			// Move and copy constructor
 			/**

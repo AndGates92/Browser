@@ -21,7 +21,7 @@ Q_LOGGING_CATEGORY(webEngineViewOverall, "webEngineView.overall", MSG_TYPE_LEVEL
 web_engine_view::WebEngineView::WebEngineView(QWidget * parent): QWebEngineView(parent) {
 	QINFO_PRINT(global_types::qinfo_level_e::ZERO, webEngineViewOverall,  "Web engine view constructor");
 
-	web_engine_page::WebEnginePage * page = new web_engine_page::WebEnginePage(web_engine_profile::WebEngineProfile::defaultProfile(), parent);
+	web_engine_page::WebEnginePage * page = new web_engine_page::WebEnginePage(parent, web_engine_profile::WebEngineProfile::defaultProfile());
 	this->setPage(page);
 }
 

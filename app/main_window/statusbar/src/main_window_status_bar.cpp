@@ -66,7 +66,7 @@ main_window_status_bar::MainWindowStatusBar::~MainWindowStatusBar() {
 }
 
 elided_label::ElidedLabel * main_window_status_bar::MainWindowStatusBar::newWindowLabel() {
-	elided_label::ElidedLabel * newLabel = new elided_label::ElidedLabel(QString::null, main_window_status_bar::textOrigin, this, this->windowFlags(), Qt::ElideRight);
+	elided_label::ElidedLabel * newLabel = new elided_label::ElidedLabel(this, this->windowFlags(), QString::null, main_window_status_bar::textOrigin, Qt::ElideRight);
 	newLabel->setAttribute(Qt::WA_DeleteOnClose);
 	newLabel->setFrameStyle(QFrame::NoFrame | QFrame::Sunken);
 	newLabel->setFixedHeight(main_window_status_bar::textHeight);

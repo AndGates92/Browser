@@ -64,13 +64,13 @@ namespace progress_bar {
 
 		public:
 			/**
-			 * @brief Function: explicit ProgressBar(QWidget * parent = Q_NULLPTR)
+			 * @brief Function: explicit ProgressBar(QWidget * parent)
 			 *
 			 * \param parent: parent window
 			 *
 			 * Progress bar constructor
 			 */
-			explicit ProgressBar(QWidget * parent = Q_NULLPTR);
+			explicit ProgressBar(QWidget * parent);
 
 			/**
 			 * @brief Function: ~ProgressBar()

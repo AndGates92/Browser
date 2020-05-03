@@ -16,13 +16,8 @@
 // Categories
 Q_LOGGING_CATEGORY(webEnginePageOverall, "webEnginePage.overall", MSG_TYPE_LEVEL)
 
-web_engine_page::WebEnginePage::WebEnginePage(web_engine_profile::WebEngineProfile * profile, QWidget * parent): QWebEnginePage(profile, parent) {
+web_engine_page::WebEnginePage::WebEnginePage(QWidget * parent, web_engine_profile::WebEngineProfile * profile): QWebEnginePage(profile, parent) {
 	QINFO_PRINT(global_types::qinfo_level_e::ZERO, webEnginePageOverall,  "Web engine page constructor");
-}
-
-web_engine_page::WebEnginePage::WebEnginePage(QWidget * parent): QWebEnginePage(parent) {
-	QINFO_PRINT(global_types::qinfo_level_e::ZERO, webEnginePageOverall,  "Web engine page constructor");
-
 }
 
 web_engine_page::WebEnginePage::~WebEnginePage() {

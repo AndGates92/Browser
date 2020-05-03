@@ -46,14 +46,14 @@ namespace open_button_window {
 
 		public:
 			/**
-			 * @brief Function: explicit OpenButtonWindow(QWidget * parent = Q_NULLPTR, Qt::WindowFlags flags = Qt::WindowFlags())
+			 * @brief Function: explicit OpenButtonWindow(QWidget * parent, Qt::WindowFlags flags = Qt::WindowFlags())
 			 *
 			 * \param parent: parent window
 			 * \param flags: window flags
 			 *
 			 * Open button window constructor
 			 */
-			explicit OpenButtonWindow(QWidget * parent = Q_NULLPTR, Qt::WindowFlags flags = Qt::WindowFlags());
+			explicit OpenButtonWindow(QWidget * parent, Qt::WindowFlags flags = Qt::WindowFlags());
 
 			/**
 			 * @brief Function: ~OpenButtonWindow()

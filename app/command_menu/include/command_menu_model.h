@@ -36,13 +36,13 @@ namespace command_menu_model {
 		public:
 
 			/**
-			 * @brief Function: explicit CommandMenuModel(QObject * parent = Q_NULLPTR)
+			 * @brief Function: explicit CommandMenuModel(QObject * parent)
 			 *
 			 * \param parent: parent object
 			 *
 			 * Command menu model constructor
 			 */
-			explicit CommandMenuModel(QObject * parent = Q_NULLPTR);
+			explicit CommandMenuModel(QObject * parent);
 
 			/**
 			 * @brief Function: ~CommandMenuModel()

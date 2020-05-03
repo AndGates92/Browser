@@ -38,14 +38,14 @@ namespace tab_search {
 
 		public:
 			/**
-			 * @brief Function: explicit TabSearch(QWidget * attachedTab, QObject * parent = Q_NULLPTR)
+			 * @brief Function: explicit TabSearch(QObject * parent, QWidget * attachedTab)
 			 *
 			 * \param attachedTab: tab attached to the search instance
 			 * \param parent: parent object
 			 *
 			 * Tab search constructor
 			 */
-			explicit TabSearch(QWidget * attachedTab, QObject * parent = Q_NULLPTR);
+			explicit TabSearch(QObject * parent, QWidget * attachedTab);
 
 			/**
 			 * @brief Function: virtual ~TabSearch()
@@ -69,18 +69,7 @@ namespace tab_search {
 			virtual void findNext() final;
 
 			/**
-			 * @brief Function: virtual void findTabContent(const QString & searchText, const bool & reverse, const bool & caseSensitive) final
-			 *
-			 * \param searchText: text to search.
-			 * \param reverse: true if searching in the reverse direction, false otherwise.
-			 * \param caseSensitive: true if case sensitive search, false otherwise.
-			 *
-			 * This function searches text in a webpage
-			 */
-			virtual void findTabContent(const QString & searchText, const bool & reverse, const bool & caseSensitive) final;
-
-			/**
-			 * @brief Function: virtual void findTabContent(const QString & searchText, const bool & reverse, const bool & caseSensitive, std::function<void(bool)> callback) final
+			 * @brief Function: virtual void findTabContent(const QString & searchText, const bool & reverse, const bool & caseSensitive, std::function<void(bool)> cb = std::function<void(bool)>()) final
 			 *
 			 * \param searchText: text to search.
 			 * \param reverse: true if searching in the reverse direction, false otherwise.
@@ -89,7 +78,7 @@ namespace tab_search {
 			 *
 			 * This function searches text in a webpage
 			 */
-			virtual void findTabContent(const QString & searchText, const bool & reverse, const bool & caseSensitive, std::function<void(bool)> cb) final;
+			virtual void findTabContent(const QString & searchText, const bool & reverse, const bool & caseSensitive, std::function<void(bool)> cb = std::function<void(bool)>()) final;
 
 		protected:
 			/**

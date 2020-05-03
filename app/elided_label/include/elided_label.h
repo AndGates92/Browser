@@ -52,7 +52,7 @@ namespace elided_label {
 
 		public:
 			/**
-			 * @brief Function: explicit ElidedLabel(QString textLabel = QString::null, QPoint labelOrigin = QPoint(elided_label::labelOriginX,elided_label::labelOriginY), QWidget * parent = Q_NULLPTR, Qt::WindowFlags flags = Qt::WindowFlags(), Qt::TextElideMode textElisionMode = Qt::ElideNone)
+			 * @brief Function: explicit ElidedLabel(QWidget * parent, Qt::WindowFlags flags = Qt::WindowFlags(), QString textLabel = QString::null, QPoint labelOrigin = QPoint(elided_label::labelOriginX,elided_label::labelOriginY), Qt::TextElideMode textElisionMode = Qt::ElideNone)
 			 *
 			 * \param textLabel: text to write into QLabel
 			 * \param labelOrigin: origin of the rectangle the label is drawn into
@@ -62,7 +62,7 @@ namespace elided_label {
 			 *
 			 * Elided label constructor
 			 */
-			explicit ElidedLabel(QString textLabel = QString::null, QPoint labelOrigin = QPoint(elided_label::labelOriginX,elided_label::labelOriginY), QWidget * parent = Q_NULLPTR, Qt::WindowFlags flags = Qt::WindowFlags(), Qt::TextElideMode textElisionMode = Qt::ElideNone);
+			explicit ElidedLabel(QWidget * parent, Qt::WindowFlags flags = Qt::WindowFlags(), QString textLabel = QString::null, QPoint labelOrigin = QPoint(elided_label::labelOriginX,elided_label::labelOriginY), Qt::TextElideMode textElisionMode = Qt::ElideNone);
 
 			/**
 			 * @brief Function: ~ElidedLabel()

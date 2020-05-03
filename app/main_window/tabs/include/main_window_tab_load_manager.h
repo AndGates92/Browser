@@ -37,13 +37,13 @@ namespace main_window_tab_load_manager {
 
 		public:
 			/**
-			 * @brief Function: explicit MainWindowTabLoadManager(QWidget * parent = Q_NULLPTR)
+			 * @brief Function: explicit MainWindowTabLoadManager(QWidget * parent)
 			 *
 			 * \param parent: parent widget
 			 *
 			 * Main Window Tab Load Manager constructor
 			 */
-			explicit MainWindowTabLoadManager(QWidget * parent = Q_NULLPTR);
+			explicit MainWindowTabLoadManager(QWidget * parent);
 
 			/**
 			 * @brief Function: virtual ~MainWindowTabLoadManager()

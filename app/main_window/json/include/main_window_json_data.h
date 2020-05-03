@@ -72,7 +72,7 @@ namespace main_window_json_data {
 			static main_window_json_data::MainWindowJsonData * makeJsonData(const std::string & jsonKey, const std::string & nameKeyValue, const main_window_shared_types::state_e & stateKeyValue, const int & shortcutKeyValue, const std::string & longCmdKeyValue, const std::string & helpKeyValue);
 
 			/**
-			 * @brief Function: MainWindowJsonData(const std::string & jsonKey = std::string(), const std::string & nameKeyValue = std::string(), const main_window_shared_types::state_e & stateKeyValue = main_window_shared_types::state_e::IDLE, const int & shortcutKeyValue = (int)Qt::Key_unknown, const std::string & longCmdKeyValue = std::string(), const std::string & helpKeyValue = std::string())
+			 * @brief Function: MainWindowJsonData(const std::string & jsonKey, const std::string & nameKeyValue = std::string(), const main_window_shared_types::state_e & stateKeyValue = main_window_shared_types::state_e::IDLE, const int & shortcutKeyValue = (int)Qt::Key_unknown, const std::string & longCmdKeyValue = std::string(), const std::string & helpKeyValue = std::string())
 			 *
 			 * \param jsonKey: key in te json file
 			 * \param nameKeyValue: name of the action
@@ -83,7 +83,7 @@ namespace main_window_json_data {
 			 *
 			 * json data constructor
 			 */
-			explicit MainWindowJsonData(const std::string & jsonKey = std::string(), const std::string & nameKeyValue = std::string(), const main_window_shared_types::state_e & stateKeyValue = main_window_shared_types::state_e::IDLE, const int & shortcutKeyValue = (int)Qt::Key_unknown, const std::string & longCmdKeyValue = std::string(), const std::string & helpKeyValue = std::string());
+			explicit MainWindowJsonData(const std::string & jsonKey, const std::string & nameKeyValue = std::string(), const main_window_shared_types::state_e & stateKeyValue = main_window_shared_types::state_e::IDLE, const int & shortcutKeyValue = (int)Qt::Key_unknown, const std::string & longCmdKeyValue = std::string(), const std::string & helpKeyValue = std::string());
 
 			// Move and copy constructor
 			/**

@@ -38,14 +38,14 @@ namespace main_window_ctrl_wrapper {
 		public:
 
 			/**
-			 * @brief Function: explicit MainWindowCtrlWrapper(QSharedPointer<main_window_core::MainWindowCore> core, QWidget * parent = QString::null)
+			 * @brief Function: explicit MainWindowCtrlWrapper(QWidget * parent, QSharedPointer<main_window_core::MainWindowCore> core)
 			 *
 			 * \param core: main window core
 			 * \param parent: parent windget
 			 *
 			 * Main window control constructor
 			 */
-			explicit MainWindowCtrlWrapper(QSharedPointer<main_window_core::MainWindowCore> core, QWidget * parent = Q_NULLPTR);
+			explicit MainWindowCtrlWrapper(QWidget * parent, QSharedPointer<main_window_core::MainWindowCore> core);
 
 			/**
 			 * @brief Function: ~MainWindowCtrlWrapper()

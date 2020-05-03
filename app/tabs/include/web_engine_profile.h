@@ -45,23 +45,14 @@ namespace web_engine_profile {
 			static web_engine_profile::WebEngineProfile * defaultProfile();
 
 			/**
-			 * @brief Function: explicit WebEngineProfile(const QString & storageName, QObject * parent = Q_NULLPTR)
+			 * @brief Function: explicit WebEngineProfile(QObject * parent, const QString & storageName)
 			 *
 			 * \param storageName: name of the profile
 			 * \param parent: parent object
 			 *
 			 * Web engine profile constructor
 			 */
-			explicit WebEngineProfile(const QString & storageName, QObject * parent = Q_NULLPTR);
-
-			/**
-			 * @brief Function: explicit WebEngineProfile(QObject * parent = Q_NULLPTR)
-			 *
-			 * \param parent: parent object
-			 *
-			 * Web engine profile constructor
-			 */
-			explicit WebEngineProfile(QObject * parent = Q_NULLPTR);
+			explicit WebEngineProfile(QObject * parent, const QString & storageName);
 
 			/**
 			 * @brief Function: virtual ~WebEngineProfile()

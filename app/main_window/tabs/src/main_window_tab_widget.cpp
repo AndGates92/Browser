@@ -177,7 +177,7 @@ int main_window_tab_widget::MainWindowTabWidget::insertTab(const int & index, co
 	this->disconnectTab(this->currentIndex());
 
 	const QString source(this->createSource(type, userInput));
-	main_window_tab::MainWindowTab * tab = new main_window_tab::MainWindowTab(type, source, data, this->parentWidget());
+	main_window_tab::MainWindowTab * tab = new main_window_tab::MainWindowTab(this->parentWidget(), type, source, data);
 
 	QINFO_PRINT(global_types::qinfo_level_e::ZERO, mainWindowTabWidgetTabs,  "Insert tab of type " << type << " with source " << source << " at position " << index);
 

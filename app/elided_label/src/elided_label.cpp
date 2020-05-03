@@ -19,7 +19,7 @@ Q_LOGGING_CATEGORY(elidedLabelOverall, "elidedLabel.overall", MSG_TYPE_LEVEL)
 Q_LOGGING_CATEGORY(elidedLabelElision, "elidedLabel.elision", MSG_TYPE_LEVEL)
 Q_LOGGING_CATEGORY(elidedLabelPaint, "elidedLabel.paint", MSG_TYPE_LEVEL)
 
-elided_label::ElidedLabel::ElidedLabel(QString textLabel, QPoint labelOrigin, QWidget * parent, Qt::WindowFlags flags, Qt::TextElideMode textElisionMode) : QLabel(textLabel, parent, flags), elisionMode(textElisionMode), origin(labelOrigin) {
+elided_label::ElidedLabel::ElidedLabel(QWidget * parent, Qt::WindowFlags flags, QString textLabel, QPoint labelOrigin, Qt::TextElideMode textElisionMode) : QLabel(textLabel, parent, flags), elisionMode(textElisionMode), origin(labelOrigin) {
 
 	QINFO_PRINT(global_types::qinfo_level_e::ZERO, elidedLabelOverall,  "Elided label constructor for text " << this->text() << " origin " << this->origin << " elision mode " << this->elisionMode);
 

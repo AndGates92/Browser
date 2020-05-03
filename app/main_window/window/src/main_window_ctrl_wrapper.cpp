@@ -20,7 +20,7 @@
 // Categories
 Q_LOGGING_CATEGORY(mainWindowCtrlWrapperOverall, "mainWindowCtrlWrapper.overall", MSG_TYPE_LEVEL)
 
-main_window_ctrl_wrapper::MainWindowCtrlWrapper::MainWindowCtrlWrapper(QSharedPointer<main_window_core::MainWindowCore> core, QWidget * parent) : QWidget(parent), main_window_base::MainWindowBase(core), winctrl(new main_window_ctrl::MainWindowCtrl(core, this)), tabctrl(new main_window_ctrl_tab::MainWindowCtrlTab(core, this)) {
+main_window_ctrl_wrapper::MainWindowCtrlWrapper::MainWindowCtrlWrapper(QWidget * parent, QSharedPointer<main_window_core::MainWindowCore> core) : QWidget(parent), main_window_base::MainWindowBase(core), winctrl(new main_window_ctrl::MainWindowCtrl(this, core)), tabctrl(new main_window_ctrl_tab::MainWindowCtrlTab(this, core)) {
 
 }
 

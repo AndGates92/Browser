@@ -39,7 +39,7 @@ namespace main_window_web_engine_view {
 
 		public:
 			/**
-			 * @brief Function: explicit MainWindowWebEngineView(const main_window_shared_types::page_type_e type, const QString & src, const void * data, QWidget * parent = Q_NULLPTR)
+			 * @brief Function: explicit MainWindowWebEngineView(QWidget * parent, const main_window_shared_types::page_type_e type, const QString & src, const void * data)
 			 *
 			 * \param type: tab type
 			 * \param src: source of the tab
@@ -48,7 +48,7 @@ namespace main_window_web_engine_view {
 			 *
 			 * Main window web engine view constructor
 			 */
-			explicit MainWindowWebEngineView(const main_window_shared_types::page_type_e type, const QString & src, const void * data, QWidget * parent = Q_NULLPTR);
+			explicit MainWindowWebEngineView(QWidget * parent, const main_window_shared_types::page_type_e type, const QString & src, const void * data);
 
 			/**
 			 * @brief Function: virtual ~MainWindowWebEngineView()

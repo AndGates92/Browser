@@ -22,17 +22,13 @@
 Q_LOGGING_CATEGORY(tabSearchOverall, "tabSearch.overall", MSG_TYPE_LEVEL)
 Q_LOGGING_CATEGORY(tabSearchFind, "tabSearch.find", MSG_TYPE_LEVEL)
 
-tab_search::TabSearch::TabSearch(QWidget * attachedTab, QObject * parent): QObject(parent), tab(attachedTab), text(QString::null), flags(QWebEnginePage::FindFlag(0)) {
+tab_search::TabSearch::TabSearch(QObject * parent, QWidget * attachedTab): QObject(parent), tab(attachedTab), text(QString::null), flags(QWebEnginePage::FindFlag(0)) {
 	QINFO_PRINT(global_types::qinfo_level_e::ZERO, tabSearchOverall,  "Tab search constructor");
 }
 
 tab_search::TabSearch::~TabSearch() {
 	QINFO_PRINT(global_types::qinfo_level_e::ZERO, tabSearchOverall,  "Tab search destructor");
 
-}
-
-void tab_search::TabSearch::findTabContent(const QString & searchText, const bool & reverse, const bool & caseSensitive) {
-	this->findTabContent(searchText, reverse, caseSensitive, std::function<void(bool)>());
 }
 
 void tab_search::TabSearch::findTabContent(const QString & searchText, const bool & reverse, const bool & caseSensitive, std::function<void(bool)> cb) {

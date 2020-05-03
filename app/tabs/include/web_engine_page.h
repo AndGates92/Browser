@@ -37,23 +37,14 @@ namespace web_engine_page {
 
 		public:
 			/**
-			 * @brief Function: explicit WebEnginePage(WebEngineProfile * profile = web_engine_profile::WebEngineProfile::defaultProfile(), QWidget * parent = Q_NULLPTR)
+			 * @brief Function: explicit WebEnginePage(QWidget * parent, WebEngineProfile * profile = web_engine_profile::WebEngineProfile::defaultProfile())
 			 *
 			 * \param profile: profile of the page
 			 * \param parent: parent widget
 			 *
 			 * Web engine page constructor
 			 */
-			explicit WebEnginePage(web_engine_profile::WebEngineProfile * profile = web_engine_profile::WebEngineProfile::defaultProfile(), QWidget * parent = Q_NULLPTR);
-
-			/**
-			 * @brief Function: explicit WebEnginePage(QWidget * parent = Q_NULLPTR)
-			 *
-			 * \param parent: parent widget
-			 *
-			 * Web engine page constructor
-			 */
-			explicit WebEnginePage(QWidget * parent = Q_NULLPTR);
+			explicit WebEnginePage(QWidget * parent, web_engine_profile::WebEngineProfile * profile = web_engine_profile::WebEngineProfile::defaultProfile());
 
 			/**
 			 * @brief Function: virtual ~WebEnginePage()

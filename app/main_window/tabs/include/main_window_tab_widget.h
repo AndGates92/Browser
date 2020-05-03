@@ -61,13 +61,13 @@ namespace main_window_tab_widget {
 		public:
 
 			/**
-			 * @brief Function: explicit MainWindowTabWidget(QWidget * parent = Q_NULLPTR)
+			 * @brief Function: explicit MainWindowTabWidget(QWidget * parent)
 			 *
 			 * \param parent: parent window
 			 *
 			 * Main window tab widget constructor
 			 */
-			explicit MainWindowTabWidget(QWidget * parent = Q_NULLPTR);
+			explicit MainWindowTabWidget(QWidget * parent);
 
 			/**
 			 * @brief Function: ~TabWidget()

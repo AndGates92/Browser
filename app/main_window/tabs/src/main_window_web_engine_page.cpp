@@ -18,11 +18,13 @@
 // Categories
 Q_LOGGING_CATEGORY(mainWindowWebEnginePageOverall, "mainWindowWebEnginePage.overall", MSG_TYPE_LEVEL)
 
-main_window_web_engine_page::MainWindowWebEnginePage::MainWindowWebEnginePage(const main_window_shared_types::page_type_e type, const QString & src, web_engine_profile::WebEngineProfile * profile, const void * data, QWidget * parent): web_engine_page::WebEnginePage(profile, parent), pageData(main_window_page_data::MainWindowPageData::makePageData(type, src.toStdString(), data)) {
+main_window_web_engine_page::MainWindowWebEnginePage::MainWindowWebEnginePage(QWidget * parent, const main_window_shared_types::page_type_e type, const QString & src, main_window_web_engine_profile::MainWindowWebEngineProfile * profile, const void * data): web_engine_page::WebEnginePage(parent, profile), pageData(main_window_page_data::MainWindowPageData::makePageData(type, src.toStdString(), data)) {
 	QINFO_PRINT(global_types::qinfo_level_e::ZERO, mainWindowWebEnginePageOverall,  "Web engine page constructor");
 
 	this->setBody();
-	emit this->sourceChanged(src);
+	if (src != QString::null) {
+		emit this->sourceChanged(src);
+	}
 
 }
 
@@ -49,15 +51,12 @@ void main_window_web_engine_page::MainWindowWebEnginePage::setBody() {
 		case main_window_shared_types::page_type_e::TEXT:
 			this->setContent(this->getTextFileBody());
 			break;
+		case main_window_shared_types::page_type_e::UNKNOWN:
+			break;
 		default:
 			QEXCEPTION_ACTION(throw, "Unable to set body for this page as type " << type << " is not recognised");
 			break;
 	}
-}
-
-main_window_web_engine_page::MainWindowWebEnginePage::MainWindowWebEnginePage(QWidget * parent): web_engine_page::WebEnginePage(parent), pageData(main_window_page_data::MainWindowPageData::makePageData(main_window_shared_types::page_type_e::UNKNOWN, std::string(), nullptr)) {
-	QINFO_PRINT(global_types::qinfo_level_e::ZERO, mainWindowWebEnginePageOverall,  "Web engine page constructor");
-
 }
 
 main_window_web_engine_page::MainWindowWebEnginePage::~MainWindowWebEnginePage() {

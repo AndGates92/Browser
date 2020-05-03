@@ -43,7 +43,7 @@ namespace file_menu {
 		public:
 
 			/**
-			 * @brief Function: explicit FileMenu(QWidget * parent = Q_NULLPTR, QMenuBar * menuBar = Q_NULLPTR, const char* menuName = "Unknown", const key_sequence::KeySequence & key = key_sequence::KeySequence(QKeySequence::UnknownKey))
+			 * @brief Function: explicit FileMenu(QWidget * parent, QMenuBar * menuBar, const char* menuName, const key_sequence::KeySequence & key)
 			 *
 			 * \param parent: pointer to the parent of the menu
 			 * \param menuBar: menubar the menu is part of
@@ -52,7 +52,7 @@ namespace file_menu {
 			 *
 			 * Constructor of file menu
 			 */
-			explicit FileMenu(QWidget * parent = Q_NULLPTR, QMenuBar * menuBar = Q_NULLPTR, const char* menuName = "Unknown", const key_sequence::KeySequence & key = key_sequence::KeySequence(QKeySequence::UnknownKey));
+			explicit FileMenu(QWidget * parent, QMenuBar * menuBar, const char* menuName, const key_sequence::KeySequence & key);
 
 			/**
 			 * @brief open tab action

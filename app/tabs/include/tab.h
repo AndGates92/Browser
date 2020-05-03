@@ -45,13 +45,13 @@ namespace tab {
 
 		public:
 			/**
-			 * @brief Function: explicit Tab(QWidget * parent = Q_NULLPTR)
+			 * @brief Function: explicit Tab(QWidget * parent)
 			 *
 			 * \param parent: parent widget
 			 *
 			 * Tab constructor
 			 */
-			explicit Tab(QWidget * parent = Q_NULLPTR);
+			explicit Tab(QWidget * parent);
 
 			/**
 			 * @brief Function: virtual ~Tab()

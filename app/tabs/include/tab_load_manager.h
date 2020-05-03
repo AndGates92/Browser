@@ -40,13 +40,13 @@ namespace tab_load_manager {
 
 		public:
 			/**
-			 * @brief Function: explicit TabLoadManager(QWidget * parent = Q_NULLPTR)
+			 * @brief Function: explicit TabLoadManager(QWidget * parent)
 			 *
 			 * \param parent: parent widget
 			 *
 			 * Tab Load Manager constructor
 			 */
-			explicit TabLoadManager(QWidget * parent = Q_NULLPTR);
+			explicit TabLoadManager(QWidget * parent);
 
 			/**
 			 * @brief Function: virtual ~TabLoadManager()

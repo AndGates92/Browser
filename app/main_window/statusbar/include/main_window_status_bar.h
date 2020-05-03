@@ -78,14 +78,14 @@ namespace main_window_status_bar {
 
 		public:
 			/**
-			 * @brief Function: explicit MainWindowStatusBar(QWidget * parent = Q_NULLPTR, Qt::WindowFlags flags = Qt::WindowFlags())
+			 * @brief Function: explicit MainWindowStatusBar(QWidget * parent, Qt::WindowFlags flags = Qt::WindowFlags())
 			 *
 			 * \param parent: parent window
 			 * \param flags: window flags
 			 *
 			 * Main window statusbar constructor
 			 */
-			explicit MainWindowStatusBar(QWidget * parent = Q_NULLPTR, Qt::WindowFlags flags = Qt::WindowFlags());
+			explicit MainWindowStatusBar(QWidget * parent, Qt::WindowFlags flags = Qt::WindowFlags());
 
 			/**
 			 * @brief Function: ~MainWindowStatusBar()

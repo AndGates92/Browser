@@ -40,7 +40,7 @@ namespace main_window_web_engine_page {
 
 		public:
 			/**
-			 * @brief Function: explicit MainWindowWebEnginePage(const main_window_shared_types::page_type_e type, const QString & src, web_engine_profile::WebEngineProfile * profile, const void * data, QWidget * parent = Q_NULLPTR)
+			 * @brief Function: explicit MainWindowWebEnginePage(QWidget * parent, const main_window_shared_types::page_type_e type, const QString & src, web_engine_profile::WebEngineProfile * profile, const void * data = nullptr)
 			 *
 			 * \param type: page type
 			 * \param src: source of the page content
@@ -50,16 +50,7 @@ namespace main_window_web_engine_page {
 			 *
 			 * Main window web engine page constructor
 			 */
-			explicit MainWindowWebEnginePage(const main_window_shared_types::page_type_e type, const QString & src, web_engine_profile::WebEngineProfile * profile, const void * data, QWidget * parent = Q_NULLPTR);
-
-			/**
-			 * @brief Function: explicit MainWindowWebEnginePage(QWidget * parent = Q_NULLPTR)
-			 *
-			 * \param parent: parent widget
-			 *
-			 * Main window web engine page constructor
-			 */
-			explicit MainWindowWebEnginePage(QWidget * parent = Q_NULLPTR);
+			explicit MainWindowWebEnginePage(QWidget * parent, const main_window_shared_types::page_type_e type = main_window_shared_types::page_type_e::UNKNOWN, const QString & src = QString::null, main_window_web_engine_profile::MainWindowWebEngineProfile * profile = main_window_web_engine_profile::MainWindowWebEngineProfile::defaultProfile(), const void * data = nullptr);
 
 			/**
 			 * @brief Function: virtual ~MainWindowWebEnginePage()

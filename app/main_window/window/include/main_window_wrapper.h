@@ -33,14 +33,14 @@ namespace main_window_wrapper {
 
 		public:
 			/**
-			 * @brief Function: explicit MainWindowWrapper(QWidget * parent = Q_NULLPTR, Qt::WindowFlags flags = Qt::WindowFlags())
+			 * @brief Function: explicit MainWindowWrapper(QWidget * parent, Qt::WindowFlags flags = Qt::WindowFlags())
 			 *
 			 * \param parent: parent window
 			 * \param flags: window flags
 			 *
 			 * Main window wrapper constructor
 			 */
-			explicit MainWindowWrapper(QWidget * parent = Q_NULLPTR, Qt::WindowFlags flags = Qt::WindowFlags());
+			explicit MainWindowWrapper(QWidget * parent, Qt::WindowFlags flags = Qt::WindowFlags());
 
 			// Move and copy constructor
 			/**
