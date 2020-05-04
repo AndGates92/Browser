@@ -217,6 +217,33 @@ void main_window_tab_widget::MainWindowTabWidget::findInTab(const int & index, c
 	}
 }
 
+void main_window_tab_widget::MainWindowTabWidget::goToHistoryItem(const int & index, const main_window_shared_types::navigation_type_e & direction) {
+	try {
+		const main_window_tab::MainWindowTab * tab = dynamic_cast<main_window_tab::MainWindowTab *>(this->widget(index, true));
+		// Find text in tab
+	QINFO_PRINT(global_types::qinfo_level_e::ZERO, mainWindowTabWidgetTabs, "DADA changing history in direction " << direction << " in tab " << index);
+		switch (direction) {
+			case main_window_shared_types::navigation_type_e::UNDEFINED:
+			{
+				QEXCEPTION_ACTION(throw, "Unable to go to history item for direction " << direction);
+				break;
+			}
+			case main_window_shared_types::navigation_type_e::NEXT:
+				tab->historyNext();
+				break;
+			case main_window_shared_types::navigation_type_e::PREVIOUS:
+				tab->historyPrev();
+				break;
+			default:
+				QEXCEPTION_ACTION(throw,  "Undefined direction of history item " << direction);
+				break;
+		}
+	QINFO_PRINT(global_types::qinfo_level_e::ZERO, mainWindowTabWidgetTabs, "DADA DONE chaning history in direction " << direction << " in tab " << index);
+	} catch (const std::bad_cast & badCastE) {
+		QEXCEPTION_ACTION(throw, badCastE.what());
+	}
+}
+
 QString main_window_tab_widget::MainWindowTabWidget::createSource(const main_window_shared_types::page_type_e & type, const QString & userInput) {
 
 	QString source(QString::null);

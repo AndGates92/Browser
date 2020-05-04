@@ -29,6 +29,8 @@ tab::Tab::Tab(QWidget * parent): QWidget(parent), view(Q_NULLPTR), loadManager(Q
 
 	tab_search::TabSearch * tabSearch = new tab_search::TabSearch(this, this);
 	this->setSearch(tabSearch);
+
+	this->setHistory(this->getView()->history());
 }
 
 tab::Tab::~Tab() {
@@ -53,6 +55,10 @@ PTR_SETTER_GETTER(tab::Tab::setView, tab::Tab::getView, web_engine_view::WebEngi
 
 PTR_SETTER_GETTER(tab::Tab::setSearch, tab::Tab::getSearch, tab_search::TabSearch, this->search)
 
+PTR_SETTER_GETTER(tab::Tab::setHistory, tab::Tab::getHistory, QWebEngineHistory, this->history)
+//PTR_SETTER(tab::Tab::setHistory, tab_history::TabHistory, this->history)
+//CASTED_PTR_GETTER(tab::Tab::getHistory, tab_history::TabHistory, this->history)
+
 void tab::Tab::resize(const QSize size) {
 	// Resize view
 	if (this->view != Q_NULLPTR) {
@@ -62,17 +68,28 @@ void tab::Tab::resize(const QSize size) {
 	QWidget::resize(size);
 }
 
-void tab::Tab::find(const QString & search, const bool & reverse, const bool & caseSensitive) const {
-	QINFO_PRINT(global_types::qinfo_level_e::ZERO, tabOverall,  "DADA Searching " << search);
-	this->search->findTabContent(search, reverse, caseSensitive);
+void tab::Tab::find(const QString & searchText, const bool & reverse, const bool & caseSensitive) const {
+	this->search->findTabContent(searchText, reverse, caseSensitive);
 }
 
 void tab::Tab::findNext() const {
-	QINFO_PRINT(global_types::qinfo_level_e::ZERO, tabOverall,  "DADA Searching " << search);
 	this->search->findNext();
 }
 
 void tab::Tab::findPrev() const {
-	QINFO_PRINT(global_types::qinfo_level_e::ZERO, tabOverall,  "DADA Searching " << search);
 	this->search->findPrev();
+}
+
+void tab::Tab::historyNext() const {
+	QINFO_PRINT(global_types::qinfo_level_e::ZERO, tabOverall,  "DADA next history item");
+	if (this->history->canGoForward()) {
+		this->history->forward();
+	}
+}
+
+void tab::Tab::historyPrev() const {
+	QINFO_PRINT(global_types::qinfo_level_e::ZERO, tabOverall,  "DADA previous history item");
+	if (this->history->canGoBack()) {
+		this->history->back();
+	}
 }

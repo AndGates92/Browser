@@ -228,7 +228,7 @@ namespace main_window_tab_widget {
 			void reloadTabContent(const int & index);
 
 			/**
-			 * @brief Function: void setTabTitle(const int & index, const QString & text, const main_window_shared_types::navigation_type_e & direction)
+			 * @brief Function: void findInTab(const int & index, const QString & text, const main_window_shared_types::navigation_type_e & direction)
 			 *
 			 * \param index: index of the tab
 			 * \param text: text to find in the tab
@@ -237,6 +237,16 @@ namespace main_window_tab_widget {
 			 * This function request a tab to find text provided by argument text
 			 */
 			void findInTab(const int & index, const QString & text, const main_window_shared_types::navigation_type_e & direction);
+
+			/**
+			 * @brief Function: void goToHistoryItem(const int & index, const main_window_shared_types::navigation_type_e & direction)
+			 *
+			 * \param index: index of the tab
+			 * \param direction: direction of the search in the history
+			 *
+			 * This function request a tab to move in its history
+			 */
+			void goToHistoryItem(const int & index, const main_window_shared_types::navigation_type_e & direction);
 
 		public slots:
 			/**

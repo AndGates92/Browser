@@ -55,6 +55,10 @@ namespace main_window_shared_types {
 		FIND,             /**< Find string in the tab */
 		FIND_NEXT,        /**< Find next match in the tab */
 		FIND_PREV,        /**< Find previous match in the tab */
+		HISTORY_NEXT,     /**< Go to next history item if possible */
+		HISTORY_PREV,     /**< Go to previous history item if possible */
+		SCROLL_UP,        /**< Scroll up in the page */
+		SCROLL_DOWN,      /**< Scroll down in the page */
 		SEARCH            /**< Search on same tab */
 	} state_e;
 

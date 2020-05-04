@@ -22,6 +22,7 @@ main_window_tab::MainWindowTab::MainWindowTab(QWidget * parent, const main_windo
 
 	main_window_web_engine_view::MainWindowWebEngineView * tabView = new main_window_web_engine_view::MainWindowWebEngineView(this, type, src, data);
 	this->setView(tabView);
+	this->setHistory(this->getView()->history());
 
 	main_window_tab_load_manager::MainWindowTabLoadManager * tabLoadManager = new main_window_tab_load_manager::MainWindowTabLoadManager(this);
 	this->setLoadManager(tabLoadManager);
@@ -46,6 +47,8 @@ CASTED_PTR_GETTER(main_window_tab::MainWindowTab::getView, main_window_web_engin
 CASTED_PTR_GETTER(main_window_tab::MainWindowTab::getLoadManager, main_window_tab_load_manager::MainWindowTabLoadManager, tab::Tab::getLoadManager())
 
 CASTED_PTR_GETTER(main_window_tab::MainWindowTab::getSearch, main_window_tab_search::MainWindowTabSearch, tab::Tab::getSearch())
+
+PTR_GETTER(main_window_tab::MainWindowTab::getHistory, QWebEngineHistory, tab::Tab::getHistory())
 
 void main_window_tab::MainWindowTab::connectSignals() {
 	const main_window_web_engine_page::MainWindowWebEnginePage * page = this->getView()->page();

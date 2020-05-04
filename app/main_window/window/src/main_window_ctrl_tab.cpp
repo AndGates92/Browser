@@ -34,7 +34,6 @@ main_window_ctrl_tab::MainWindowCtrlTab::MainWindowCtrlTab(QWidget * parent, QSh
 	this->connectExtraSignals();
 
 	this->findDirection = main_window_shared_types::navigation_type_e::UNDEFINED;
-
 }
 
 main_window_ctrl_tab::MainWindowCtrlTab::~MainWindowCtrlTab() {
@@ -146,6 +145,11 @@ void main_window_ctrl_tab::MainWindowCtrlTab::searchCurrentTab(const QString & s
 			QEXCEPTION_ACTION(throw,  "Undefined action to execute when in state " << windowState);
 			break;
 	}
+}
+
+void main_window_ctrl_tab::MainWindowCtrlTab::goToPageInHistory(const main_window_shared_types::navigation_type_e direction) {
+	const int tabIndex = this->windowCore->getCurrentTabIndex();
+	this->windowCore->tabs->goToHistoryItem(tabIndex, direction);
 }
 
 void main_window_ctrl_tab::MainWindowCtrlTab::extractContentPath(const int & index) {
@@ -564,6 +568,20 @@ void main_window_ctrl_tab::MainWindowCtrlTab::postprocessWindowStateChange(const
 			this->searchCurrentTab(QString::null);
 			this->changeWindowState(main_window_shared_types::state_e::IDLE, main_window_shared_types::state_postprocessing_e::POSTPROCESS);
 			break;
+		case main_window_shared_types::state_e::SCROLL_UP:
+			this->changeWindowState(main_window_shared_types::state_e::IDLE, main_window_shared_types::state_postprocessing_e::POSTPROCESS);
+			break;
+		case main_window_shared_types::state_e::SCROLL_DOWN:
+			this->changeWindowState(main_window_shared_types::state_e::IDLE, main_window_shared_types::state_postprocessing_e::POSTPROCESS);
+			break;
+		case main_window_shared_types::state_e::HISTORY_PREV:
+			this->goToPageInHistory(main_window_shared_types::navigation_type_e::PREVIOUS);
+			this->changeWindowState(main_window_shared_types::state_e::IDLE, main_window_shared_types::state_postprocessing_e::POSTPROCESS);
+			break;
+		case main_window_shared_types::state_e::HISTORY_NEXT:
+			this->goToPageInHistory(main_window_shared_types::navigation_type_e::NEXT);
+			this->changeWindowState(main_window_shared_types::state_e::IDLE, main_window_shared_types::state_postprocessing_e::POSTPROCESS);
+			break;
 		default:
 			this->setAllShortcutEnabledProperty(false);
 			break;
@@ -590,6 +608,10 @@ bool main_window_ctrl_tab::MainWindowCtrlTab::isValidWindowState(const main_wind
 		case main_window_shared_types::state_e::FIND:
 		case main_window_shared_types::state_e::FIND_NEXT:
 		case main_window_shared_types::state_e::FIND_PREV:
+		case main_window_shared_types::state_e::SCROLL_UP:
+		case main_window_shared_types::state_e::SCROLL_DOWN:
+		case main_window_shared_types::state_e::HISTORY_PREV:
+		case main_window_shared_types::state_e::HISTORY_NEXT:
 			// It is only possible to perform an operation on a signel tab if the current state is idle and at least 1 tab is opened
 			isValid = ((tabCount > 0) && (windowState == main_window_shared_types::state_e::IDLE));
 	QINFO_PRINT(global_types::qinfo_level_e::ZERO, mainWindowTabWidgetTabs, "DADA Going to state " << requestedWindowState);

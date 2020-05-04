@@ -15,6 +15,7 @@
 #include <qt5/QtCore/QLoggingCategory>
 
 #include <qt5/QtWidgets/QWidget>
+#include <qt5/QtWebEngineWidgets/QWebEngineHistory>
 
 #include "global_types.h"
 #include "constructor_macros.h"
@@ -115,6 +116,24 @@ namespace tab {
 			tab_search::TabSearch * getSearch() const;
 
 			/**
+			 * @brief Function: void setHistory(QWebEngineHistory * value)
+			 *
+			 * \param value: history of the tab
+			 *
+			 * This function sets the history of the page
+			 */
+			void setHistory(QWebEngineHistory * value);
+
+			/**
+			 * @brief Function: QWebEngineHistory * getHistory() const
+			 *
+			 * \return history of the tab
+			 *
+			 * This function returns the history of the page
+			 */
+			QWebEngineHistory * getHistory() const;
+
+			/**
 			 * @brief Function: virtual void find(const int & index, const QString & search, const bool & reverse, const bool & caseSensitive) const
 			 *
 			 * \param search: text to search.
@@ -138,6 +157,21 @@ namespace tab {
 			 * This function searches next match in a webpage
 			 */
 			virtual void findNext() const;
+
+			/**
+			 * @brief Function: virtual void historyPrev() const
+			 *
+			 * This function goes to the previous item in the history of a webpage, if it exists
+			 */
+			virtual void historyPrev() const;
+
+			/**
+			 * @brief Function: virtual void historyNext() const
+			 *
+			 * This function goes to the next item in the history of a webpage, if it exists
+			 */
+			virtual void historyNext() const;
+
 
 		protected:
 
@@ -183,6 +217,13 @@ namespace tab {
 			 *
 			 */
 			tab_search::TabSearch * search;
+
+			/**
+			 * @brief history class
+			 *
+			 */
+			//tab_history::TabHistory * history;
+			QWebEngineHistory * history;
 
 			// Move and copy constructor
 			/**

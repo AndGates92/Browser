@@ -332,6 +332,15 @@ namespace main_window_ctrl_tab {
 			void searchCurrentTab(const QString & search);
 
 			/**
+			 * @brief Function: void goToPageInHistory(const main_window_shared_types::navigation_type_e direction)
+			 *
+			 * \param direction: direction in the history
+			 *
+			 * This function goes to a page in the history of the tab
+			 */
+			void goToPageInHistory(const main_window_shared_types::navigation_type_e direction);
+
+			/**
 			 * @brief Function: void reloadTab(const int & tabIndex)
 			 *
 			 * \param tabIndex: tab index to reload

@@ -39,8 +39,8 @@
 		"Help" : "This command find next match of the user-type string in the current tab."
 	},
 
-	"FindPrev" : {
-		"Name" : "find prev",
+	"FindPrevious" : {
+		"Name" : "find previous",
 		"State" : "FIND_PREV",
 		"Shortcut" : "N",
 		"LongCmd" : "find-prev",
@@ -69,6 +69,38 @@
 		"Shortcut" : "l",
 		"LongCmd" : "move-cursor-left",
 		"Help" : "This command moves the current tab to the one on the left"
+	},
+
+	"ScrollDown" : {
+		"Name" : "scroll down",
+		"State" : "SCROLL_DOWN",
+		"Shortcut" : "j",
+		"LongCmd" : "scroll-down",
+		"Help" : "This command scrolls down the page"
+	},
+
+	"ScrollUp" : {
+		"Name" : "scroll up",
+		"State" : "SCROLL_UP",
+		"Shortcut" : "k",
+		"LongCmd" : "scroll-up",
+		"Help" : "This command scrolls up"
+	},
+
+	"HistoryNext" : {
+		"Name" : "history next",
+		"State" : "HISTORY_NEXT",
+		"Shortcut" : "J",
+		"LongCmd" : "history-next",
+		"Help" : "This command loads the page to the next item in the history"
+	},
+
+	"HistoryPrevious" : {
+		"Name" : "history previous",
+		"State" : "HISTORY_PREV",
+		"Shortcut" : "K",
+		"LongCmd" : "history-prev",
+		"Help" : "This command loads the page to the previous item in the history"
 	},
 
 	"RefreshTab" : {

@@ -93,6 +93,15 @@ namespace main_window_tab {
 			 */
 			main_window_tab_search::MainWindowTabSearch * getSearch() const;
 
+			/**
+			 * @brief Function: QWebEngineHistory * getHistory() const
+			 *
+			 * \return history of the tab
+			 *
+			 * This function returns the history of the page
+			 */
+			QWebEngineHistory * getHistory() const;
+
 		protected:
 
 			/**
