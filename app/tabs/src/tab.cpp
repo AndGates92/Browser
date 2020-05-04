@@ -81,14 +81,12 @@ void tab::Tab::findPrev() const {
 }
 
 void tab::Tab::historyNext() const {
-	QINFO_PRINT(global_types::qinfo_level_e::ZERO, tabOverall,  "DADA next history item");
 	if (this->history->canGoForward()) {
 		this->history->forward();
 	}
 }
 
 void tab::Tab::historyPrev() const {
-	QINFO_PRINT(global_types::qinfo_level_e::ZERO, tabOverall,  "DADA previous history item");
 	if (this->history->canGoBack()) {
 		this->history->back();
 	}

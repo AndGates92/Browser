@@ -196,7 +196,6 @@ void main_window_tab_widget::MainWindowTabWidget::findInTab(const int & index, c
 	try {
 		const main_window_tab::MainWindowTab * tab = dynamic_cast<main_window_tab::MainWindowTab *>(this->widget(index, true));
 		// Find text in tab
-	QINFO_PRINT(global_types::qinfo_level_e::ZERO, mainWindowTabWidgetTabs, "DADA Looking for " << text << " in tab " << index);
 		switch (direction) {
 			case main_window_shared_types::navigation_type_e::UNDEFINED:
 				tab->find(text, false, false);
@@ -211,7 +210,6 @@ void main_window_tab_widget::MainWindowTabWidget::findInTab(const int & index, c
 				QEXCEPTION_ACTION(throw,  "Undefined direction of search " << direction);
 				break;
 		}
-	QINFO_PRINT(global_types::qinfo_level_e::ZERO, mainWindowTabWidgetTabs, "DADA DONE Looking for " << text << " in tab " << index);
 	} catch (const std::bad_cast & badCastE) {
 		QEXCEPTION_ACTION(throw, badCastE.what());
 	}
@@ -221,7 +219,6 @@ void main_window_tab_widget::MainWindowTabWidget::goToHistoryItem(const int & in
 	try {
 		const main_window_tab::MainWindowTab * tab = dynamic_cast<main_window_tab::MainWindowTab *>(this->widget(index, true));
 		// Find text in tab
-	QINFO_PRINT(global_types::qinfo_level_e::ZERO, mainWindowTabWidgetTabs, "DADA changing history in direction " << direction << " in tab " << index);
 		switch (direction) {
 			case main_window_shared_types::navigation_type_e::UNDEFINED:
 			{
@@ -238,7 +235,6 @@ void main_window_tab_widget::MainWindowTabWidget::goToHistoryItem(const int & in
 				QEXCEPTION_ACTION(throw,  "Undefined direction of history item " << direction);
 				break;
 		}
-	QINFO_PRINT(global_types::qinfo_level_e::ZERO, mainWindowTabWidgetTabs, "DADA DONE chaning history in direction " << direction << " in tab " << index);
 	} catch (const std::bad_cast & badCastE) {
 		QEXCEPTION_ACTION(throw, badCastE.what());
 	}

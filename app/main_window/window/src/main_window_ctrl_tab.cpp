@@ -559,7 +559,6 @@ void main_window_ctrl_tab::MainWindowCtrlTab::postprocessWindowStateChange(const
 			break;
 		case main_window_shared_types::state_e::FIND_NEXT:
 			this->findDirection = main_window_shared_types::navigation_type_e::NEXT;
-	QINFO_PRINT(global_types::qinfo_level_e::ZERO, mainWindowCtrlTabTabs,  "DADA search current tab Current state " << this->findDirection);
 			this->searchCurrentTab(QString::null);
 			this->changeWindowState(main_window_shared_types::state_e::IDLE, main_window_shared_types::state_postprocessing_e::POSTPROCESS);
 			break;
@@ -614,7 +613,6 @@ bool main_window_ctrl_tab::MainWindowCtrlTab::isValidWindowState(const main_wind
 		case main_window_shared_types::state_e::HISTORY_NEXT:
 			// It is only possible to perform an operation on a signel tab if the current state is idle and at least 1 tab is opened
 			isValid = ((tabCount > 0) && (windowState == main_window_shared_types::state_e::IDLE));
-	QINFO_PRINT(global_types::qinfo_level_e::ZERO, mainWindowTabWidgetTabs, "DADA Going to state " << requestedWindowState);
 			break;
 		case main_window_shared_types::state_e::MOVE_RIGHT:
 		case main_window_shared_types::state_e::MOVE_LEFT:
