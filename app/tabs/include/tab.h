@@ -20,6 +20,7 @@
 #include "global_types.h"
 #include "constructor_macros.h"
 #include "web_engine_view.h"
+#include "web_engine_settings.h"
 #include "tab_load_manager.h"
 #include "tab_search.h"
 
@@ -75,7 +76,7 @@ namespace tab {
 			 *
 			 * \return tab view
 			 *
-			 * This function returns the load manager
+			 * This function returns the tab view
 			 */
 			web_engine_view::WebEngineView * getView() const;
 
@@ -111,7 +112,7 @@ namespace tab {
 			 *
 			 * \return tab search
 			 *
-			 * This function returns the load manager
+			 * This function returns the tab search
 			 */
 			tab_search::TabSearch * getSearch() const;
 
@@ -132,6 +133,24 @@ namespace tab {
 			 * This function returns the history of the page
 			 */
 			QWebEngineHistory * getHistory() const;
+
+			/**
+			 * @brief Function: void setSettings(web_engine_settings::WebEngineSettings * value)
+			 *
+			 * \param value: settings of the web page
+			 *
+			 * This function stores the pointer to the web page settings into web setting class
+			 */
+			void setSettings(web_engine_settings::WebEngineSettings * value);
+
+			/**
+			 * @brief Function: web_engine_settings::WebEngineSettings * getSettings()
+			 *
+			 * \return tab settings
+			 *
+			 * This function returns the settings
+			 */
+			web_engine_settings::WebEngineSettings * getSettings() const;
 
 			/**
 			 * @brief Function: virtual void find(const int & index, const QString & search, const bool & reverse, const bool & caseSensitive) const
@@ -224,6 +243,12 @@ namespace tab {
 			 */
 			//tab_history::TabHistory * history;
 			QWebEngineHistory * history;
+
+			/**
+			 * @brief settings
+			 *
+			 */
+			web_engine_settings::WebEngineSettings * settings;
 
 			// Move and copy constructor
 			/**

@@ -21,6 +21,7 @@
 #include "constructor_macros.h"
 #include "main_window_shared_types.h"
 #include "main_window_web_engine_view.h"
+#include "main_window_web_engine_settings.h"
 #include "main_window_tab_search.h"
 #include "main_window_tab_load_manager.h"
 
@@ -71,7 +72,7 @@ namespace main_window_tab {
 			 *
 			 * \return tab view
 			 *
-			 * This function returns the load manager
+			 * This function returns the tab view
 			 */
 			main_window_web_engine_view::MainWindowWebEngineView * getView() const;
 
@@ -89,7 +90,7 @@ namespace main_window_tab {
 			 *
 			 * \return tab search
 			 *
-			 * This function returns the load manager
+			 * This function returns the tab search
 			 */
 			main_window_tab_search::MainWindowTabSearch * getSearch() const;
 
@@ -101,6 +102,15 @@ namespace main_window_tab {
 			 * This function returns the history of the page
 			 */
 			QWebEngineHistory * getHistory() const;
+
+			/**
+			 * @brief Function: main_window_web_engine_settings::MainWindowWebEngineSettings * getSettings() const
+			 *
+			 * \return tab settings
+			 *
+			 * This function returns the settings
+			 */
+			main_window_web_engine_settings::MainWindowWebEngineSettings * getSettings() const;
 
 		protected:
 

@@ -18,7 +18,7 @@
 Q_LOGGING_CATEGORY(tabOverall, "tab.overall", MSG_TYPE_LEVEL)
 Q_LOGGING_CATEGORY(tabSize, "tab.size", MSG_TYPE_LEVEL)
 
-tab::Tab::Tab(QWidget * parent): QWidget(parent), view(Q_NULLPTR), loadManager(Q_NULLPTR), search(Q_NULLPTR) {
+tab::Tab::Tab(QWidget * parent): QWidget(parent), view(Q_NULLPTR), loadManager(Q_NULLPTR), search(Q_NULLPTR), history(Q_NULLPTR), settings(Q_NULLPTR) {
 	QINFO_PRINT(global_types::qinfo_level_e::ZERO, tabOverall,  "Tab constructor");
 
 	web_engine_view::WebEngineView * tabView = new web_engine_view::WebEngineView(this);
@@ -31,6 +31,10 @@ tab::Tab::Tab(QWidget * parent): QWidget(parent), view(Q_NULLPTR), loadManager(Q
 	this->setSearch(tabSearch);
 
 	this->setHistory(this->getView()->history());
+
+	web_engine_settings::WebEngineSettings * tabSettings = new web_engine_settings::WebEngineSettings(this->getView()->settings());
+	this->setSettings(tabSettings);
+
 }
 
 tab::Tab::~Tab() {
@@ -58,6 +62,8 @@ PTR_SETTER_GETTER(tab::Tab::setSearch, tab::Tab::getSearch, tab_search::TabSearc
 PTR_SETTER_GETTER(tab::Tab::setHistory, tab::Tab::getHistory, QWebEngineHistory, this->history)
 //PTR_SETTER(tab::Tab::setHistory, tab_history::TabHistory, this->history)
 //CASTED_PTR_GETTER(tab::Tab::getHistory, tab_history::TabHistory, this->history)
+
+PTR_SETTER_GETTER(tab::Tab::setSettings, tab::Tab::getSettings, web_engine_settings::WebEngineSettings, this->settings)
 
 void tab::Tab::resize(const QSize size) {
 	// Resize view
