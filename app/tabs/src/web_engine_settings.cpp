@@ -20,7 +20,7 @@ web_engine_settings::WebEngineSettings::WebEngineSettings(QWebEngineSettings * n
 	QINFO_PRINT(global_types::qinfo_level_e::ZERO, webEngineSettingsOverall,  "Web engine settings constructor");
 
 	// Hide scrollbars
-//	this->settings->setAttribute(QWebEngineSettings::ShowScrollBars, false);
+	this->settings->setAttribute(QWebEngineSettings::ShowScrollBars, false);
 
 }
 
