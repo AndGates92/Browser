@@ -39,11 +39,11 @@ int main (int argc, char* argv[]) {
 		QINFO_PRINT(global_types::qinfo_level_e::ZERO, ,  "Built on " << __DATE__ << " at " << __TIME__);
 
 		graphics::init_graphics(argc, argv);
-	} catch (browser_exception::BrowserException bexc) {
+	} catch (const browser_exception::BrowserException & bexc) {
 		QString bexcMsg(bexc.print());
 		browser_exception::printException(bexcMsg);
 		return EXIT_FAILURE;
-	} catch (QUnhandledException unhandledexc) {
+	} catch (const QUnhandledException & unhandledexc) {
 		browser_exception::printException("Got unhandled exception");
 		return EXIT_FAILURE;
 	}
