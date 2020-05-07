@@ -4,7 +4,7 @@
  * @copyright
  * @file tab_load_manager.h
  * @author Andrea Gianarda
- * @date 09rd of April 2020
+ * @date 09th of April 2020
  * @brief Tab Load Manager header file
 */
 

@@ -2,7 +2,7 @@
  * @copyright
  * @file main_window_tab_load_manager.cpp
  * @author Andrea Gianarda
- * @date 09rd April 2020
+ * @date 09th April 2020
  * @brief Main Window Tab Load Manager functions
  */
 

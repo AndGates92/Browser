@@ -2,7 +2,7 @@
  * @copyright
  * @file tab_load_manager.cpp
  * @author Andrea Gianarda
- * @date 09rd April 2020
+ * @date 09th April 2020
  * @brief Tab Load Manager functions
  */
 
@@ -18,11 +18,8 @@
 Q_LOGGING_CATEGORY(tabLoadManagerOverall, "tabLoadManager.overall", MSG_TYPE_LEVEL)
 Q_LOGGING_CATEGORY(tabLoadManagerStatus, "tabLoadManager.status", MSG_TYPE_LEVEL)
 
-tab_load_manager::TabLoadManager::TabLoadManager(QWidget * parent): QWidget(parent) {
+tab_load_manager::TabLoadManager::TabLoadManager(QWidget * parent): QWidget(parent), status(tab_shared_types::load_status_e::IDLE), progress(0) {
 	QINFO_PRINT(global_types::qinfo_level_e::ZERO, tabLoadManagerOverall,  "TabLoadManager constructor");
-
-	this->progress = 0;
-	this->status = tab_shared_types::load_status_e::IDLE;
 
 }
 
