@@ -18,7 +18,7 @@
 // Categories
 Q_LOGGING_CATEGORY(mainWindowStatusBarOverall, "mainWindowStatusBar.overall", MSG_TYPE_LEVEL)
 
-main_window_status_bar::MainWindowStatusBar::MainWindowStatusBar(QWidget * parent, Qt::WindowFlags flags) : QWidget(parent, flags), userInputText(this->newWindowLabel()), contentPathText(this->newWindowLabel()), infoText(this->newWindowLabel()), loadBar(this->newProgressBar()) {
+main_window_status_bar::MainWindowStatusBar::MainWindowStatusBar(QWidget * parent, Qt::WindowFlags flags) : QWidget(parent, flags), userInputText(this->newWindowLabel()), contentPathText(this->newWindowLabel()), scroll(this->newWindowLabel()), infoText(this->newWindowLabel()), loadBar(this->newProgressBar()) {
 
 	QINFO_PRINT(global_types::qinfo_level_e::ZERO, mainWindowStatusBarOverall,  "Main window status bar constructor");
 
@@ -41,6 +41,9 @@ main_window_status_bar::MainWindowStatusBar::MainWindowStatusBar(QWidget * paren
 	this->infoText->setAlignment(Qt::AlignRight | Qt::AlignBottom);
 	this->infoText->setSizePolicy(QSizePolicy::Fixed, QSizePolicy::Fixed);
 
+	// scroll
+	this->scroll->setSizePolicy(QSizePolicy::Fixed, QSizePolicy::Fixed);
+
 	// loadBar
 	this->loadBar->setSizePolicy(QSizePolicy::Fixed, QSizePolicy::Fixed);
 
@@ -56,6 +59,9 @@ main_window_status_bar::MainWindowStatusBar::~MainWindowStatusBar() {
 	}
 	if (this->contentPathText != Q_NULLPTR) {
 		delete this->contentPathText;
+	}
+	if (this->scroll != Q_NULLPTR) {
+		delete this->scroll;
 	}
 	if (this->infoText != Q_NULLPTR) {
 		delete this->infoText;
@@ -137,6 +143,9 @@ void main_window_status_bar::MainWindowStatusBar::fillStatusBar() {
 	// path to the content
 	layout->addWidget(this->contentPathText);
 
+	// scroll
+	layout->addWidget(this->scroll);
+
 	// info
 	layout->addWidget(this->infoText);
 
@@ -151,6 +160,7 @@ void main_window_status_bar::MainWindowStatusBar::fillStatusBar() {
 
 PTR_GETTER(main_window_status_bar::MainWindowStatusBar::getUserInputText, elided_label::ElidedLabel, this->userInputText)
 PTR_GETTER(main_window_status_bar::MainWindowStatusBar::getContentPathText, elided_label::ElidedLabel, this->contentPathText)
+PTR_GETTER(main_window_status_bar::MainWindowStatusBar::getScroll, elided_label::ElidedLabel, this->scroll)
 PTR_GETTER(main_window_status_bar::MainWindowStatusBar::getInfoText, elided_label::ElidedLabel, this->infoText)
 PTR_GETTER(main_window_status_bar::MainWindowStatusBar::getLoadBar, progress_bar::ProgressBar, this->loadBar)
 

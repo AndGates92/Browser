@@ -35,6 +35,9 @@ tab::Tab::Tab(QWidget * parent): QWidget(parent), view(Q_NULLPTR), loadManager(Q
 	web_engine_settings::WebEngineSettings * tabSettings = new web_engine_settings::WebEngineSettings(this->getView()->settings());
 	this->setSettings(tabSettings);
 
+	tab_scroll_manager::TabScrollManager * tabScrollManager = new tab_scroll_manager::TabScrollManager(this);
+	this->setScrollManager(tabScrollManager);
+
 }
 
 tab::Tab::~Tab() {
@@ -46,6 +49,10 @@ tab::Tab::~Tab() {
 
 	if (this->loadManager != Q_NULLPTR) {
 		delete this->loadManager;
+	}
+
+	if (this->scrollManager != Q_NULLPTR) {
+		delete this->scrollManager;
 	}
 
 	if (this->search != Q_NULLPTR) {
@@ -62,6 +69,8 @@ PTR_SETTER_GETTER(tab::Tab::setSearch, tab::Tab::getSearch, tab_search::TabSearc
 PTR_SETTER_GETTER(tab::Tab::setHistory, tab::Tab::getHistory, QWebEngineHistory, this->history)
 //PTR_SETTER(tab::Tab::setHistory, tab_history::TabHistory, this->history)
 //CASTED_PTR_GETTER(tab::Tab::getHistory, tab_history::TabHistory, this->history)
+
+PTR_SETTER_GETTER(tab::Tab::setScrollManager, tab::Tab::getScrollManager, tab_scroll_manager::TabScrollManager, this->scrollManager)
 
 PTR_SETTER_GETTER(tab::Tab::setSettings, tab::Tab::getSettings, web_engine_settings::WebEngineSettings, this->settings)
 

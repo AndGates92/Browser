@@ -113,6 +113,15 @@ namespace main_window_status_bar {
 			elided_label::ElidedLabel * getContentPathText() const;
 
 			/**
+			 * Function: elided_label::ElidedLabel * getScroll() const
+			 *
+			 * \return the label containing the text storing information about the scroll position
+			 *
+			 * This function returns the label storing information about the scroll position
+			 */
+			elided_label::ElidedLabel * getScroll() const;
+
+			/**
 			 * Function: elided_label::ElidedLabel * getInfoText() const
 			 *
 			 * \return the label containing the text storing information about the webpage/browser
@@ -155,6 +164,12 @@ namespace main_window_status_bar {
 			 *
 			 */
 			elided_label::ElidedLabel * const contentPathText;
+
+			/**
+			 * @brief scroll position
+			 *
+			 */
+			elided_label::ElidedLabel * const scroll;
 
 			/**
 			 * @brief info

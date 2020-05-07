@@ -33,6 +33,9 @@ main_window_tab::MainWindowTab::MainWindowTab(QWidget * parent, const main_windo
 	main_window_tab_search::MainWindowTabSearch * tabSearch = new main_window_tab_search::MainWindowTabSearch(this, this);
 	this->setSearch(tabSearch);
 
+	main_window_tab_scroll_manager::MainWindowTabScrollManager * tabScrollManager = new main_window_tab_scroll_manager::MainWindowTabScrollManager(this);
+	this->setScrollManager(tabScrollManager);
+
 	this->connectSignals();
 }
 
@@ -55,12 +58,17 @@ PTR_GETTER(main_window_tab::MainWindowTab::getHistory, QWebEngineHistory, tab::T
 
 CASTED_PTR_GETTER(main_window_tab::MainWindowTab::getSettings, main_window_web_engine_settings::MainWindowWebEngineSettings, tab::Tab::getSettings())
 
+CASTED_PTR_GETTER(main_window_tab::MainWindowTab::getScrollManager, main_window_tab_scroll_manager::MainWindowTabScrollManager, tab::Tab::getScrollManager())
+
 void main_window_tab::MainWindowTab::connectSignals() {
 	const main_window_web_engine_page::MainWindowWebEnginePage * page = this->getView()->page();
 	const main_window_shared_types::page_type_e tabType = page->getType();
 	const main_window_tab_load_manager::MainWindowTabLoadManager * loadManager = this->getLoadManager();
+	const main_window_tab_scroll_manager::MainWindowTabScrollManager * scrollManager = this->getScrollManager();
 	QINFO_PRINT(global_types::qinfo_level_e::ZERO, mainWindowTabOverall,  "Connect signals from page of type " << tabType << " to load manager");
 	connect(page, &main_window_web_engine_page::MainWindowWebEnginePage::loadStarted, loadManager, &main_window_tab_load_manager::MainWindowTabLoadManager::startLoading);
 	connect(page, &main_window_web_engine_page::MainWindowWebEnginePage::loadProgress, loadManager, &main_window_tab_load_manager::MainWindowTabLoadManager::setProgress);
 	connect(page, &main_window_web_engine_page::MainWindowWebEnginePage::loadFinished, loadManager, &main_window_tab_load_manager::MainWindowTabLoadManager::endLoading);
+	connect(page, &main_window_web_engine_page::MainWindowWebEnginePage::contentsSizeChanged, scrollManager, &main_window_tab_scroll_manager::MainWindowTabScrollManager::updateContentsSize);
+	connect(page, &main_window_web_engine_page::MainWindowWebEnginePage::scrollPositionChanged, scrollManager, &main_window_tab_scroll_manager::MainWindowTabScrollManager::updateScrollPosition);
 }

@@ -24,6 +24,7 @@
 #include "main_window_web_engine_settings.h"
 #include "main_window_tab_search.h"
 #include "main_window_tab_load_manager.h"
+#include "main_window_tab_scroll_manager.h"
 
 /** @defgroup TabGroup Main Window Tab Doxygen Group
  *  Main Window Tab functions and classes
@@ -111,6 +112,15 @@ namespace main_window_tab {
 			 * This function returns the settings
 			 */
 			main_window_web_engine_settings::MainWindowWebEngineSettings * getSettings() const;
+
+			/**
+			 * @brief Function: main_window_tab_scroll_manager::MainWindowTabScrollManager * getScrollManager() const
+			 *
+			 * \return scroll manager
+			 *
+			 * This function returns the scroll manager
+			 */
+			main_window_tab_scroll_manager::MainWindowTabScrollManager * getScrollManager() const;
 
 		protected:
 

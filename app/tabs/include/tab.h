@@ -22,6 +22,7 @@
 #include "web_engine_view.h"
 #include "web_engine_settings.h"
 #include "tab_load_manager.h"
+#include "tab_scroll_manager.h"
 #include "tab_search.h"
 
 /** @defgroup TabGroup Tab Doxygen Group
@@ -153,6 +154,24 @@ namespace tab {
 			web_engine_settings::WebEngineSettings * getSettings() const;
 
 			/**
+			 * @brief Function: void setScrollManager(tab_scroll_manager::TabScrollManager * value)
+			 *
+			 * \param value: scroll manager to use
+			 *
+			 * This function sets the scroll manager
+			 */
+			void setScrollManager(tab_scroll_manager::TabScrollManager * value);
+
+			/**
+			 * @brief Function: tab_scroll_manager::TabScrollManager * getScrollManager()
+			 *
+			 * \return scroll manager
+			 *
+			 * This function returns the scroll manager
+			 */
+			tab_scroll_manager::TabScrollManager * getScrollManager() const;
+
+			/**
 			 * @brief Function: virtual void find(const int & index, const QString & search, const bool & reverse, const bool & caseSensitive) const
 			 *
 			 * \param search: text to search.
@@ -249,6 +268,12 @@ namespace tab {
 			 *
 			 */
 			web_engine_settings::WebEngineSettings * settings;
+
+			/**
+			 * @brief scroll manager
+			 *
+			 */
+			tab_scroll_manager::TabScrollManager * scrollManager;
 
 			// Move and copy constructor
 			/**
