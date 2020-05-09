@@ -29,6 +29,20 @@ Q_DECLARE_LOGGING_CATEGORY(tabScrollManagerOverall)
 
 namespace tab_scroll_manager {
 
+	namespace {
+		/**
+		 * @brief minimum value of scroll percentage
+		 *
+		 */
+		constexpr int minScrollPercentage = 0;
+
+		/**
+		 * @brief maximum value of scroll percentage
+		 *
+		 */
+		constexpr int maxScrollPercentage = 100;
+	}
+
 	/**
 	 * @brief TabScrollManager class
 	 *
@@ -95,7 +109,7 @@ namespace tab_scroll_manager {
 			/**
 			 * @brief Function: void updateContentsSize(const QSizeF & value)
 			 *
-			 * \param size of the content
+			 * \param value: size of the content
 			 *
 			 * This function sets the size of the content
 			 */
@@ -104,7 +118,7 @@ namespace tab_scroll_manager {
 			/**
 			 * @brief Function: void updateScrollPosition(const QPointF & value)
 			 *
-			 * \param position of the scrolling
+			 * \param value: position of the scrolling
 			 *
 			 * This function sets the position of the scrolling
 			 */
@@ -114,7 +128,7 @@ namespace tab_scroll_manager {
 			/**
 			 * @brief Function: void verticalScrollChanged(const int & vScroll)
 			 *
-			 * \param vertical scroll
+			 * \param vScroll: vertical scroll
 			 *
 			 * This function is a signal to notify that vertical scroll changed
 			 */
@@ -123,7 +137,7 @@ namespace tab_scroll_manager {
 			/**
 			 * @brief Function: void horizontalScrollChanged(const int & hScroll)
 			 *
-			 * \param horizontal scroll
+			 * \param hScroll: horizontal scroll
 			 *
 			 * This function is a signal to notify that horizontal scroll changed
 			 */
@@ -175,6 +189,16 @@ namespace tab_scroll_manager {
 			 *
 			 */
 			QTabBar * bar;
+
+			/**
+			 * @brief Function: void checkScrollValue(const int & scroll, const QString direction) const
+			 *
+			 * \param scroll: value of scrolling
+			 * \param direction: direction of scrolling
+			 *
+			 * This function checks that the value of scrolling is within the allowed range defined by tab_scroll_manager::minScrollPercentage and tab_scroll_manager::maxScrollPercentage
+			 */
+			void checkScrollValue(const int & scroll, const QString direction) const;
 
 			// Move and copy constructor
 			/**

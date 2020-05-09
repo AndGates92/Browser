@@ -13,6 +13,7 @@
 #include "logging_macros.h"
 #include "function_macros.h"
 #include "tab_scroll_manager.h"
+#include "exception_macros.h"
 
 // Categories
 Q_LOGGING_CATEGORY(tabScrollManagerOverall, "tabScrollManager.overall", MSG_TYPE_LEVEL)
@@ -53,7 +54,9 @@ void tab_scroll_manager::TabScrollManager::updateVerticalScrollPercentage() {
 	const qreal & vScroll = this->scrollPosition.ry();
 	const qreal vScrollPercentage = 100.0 * vScroll/scrollableHeight;
 	this->verticalScroll = qRound(vScrollPercentage);
-QINFO_PRINT(global_types::qinfo_level_e::ZERO, tabScrollManagerOverall,  "DADA heght " << height << " scrollableHeight " << scrollableHeight << " vScroll " << vScroll << " vScrollPercentage " << vScrollPercentage << " vertical scroll " << this->verticalScroll << " parent size " << this->parentWidget()->size());
+
+	this->checkScrollValue(this->verticalScroll, "vertical");
+
 	emit this->verticalScrollChanged(this->verticalScroll);
 }
 
@@ -68,7 +71,9 @@ void tab_scroll_manager::TabScrollManager::updateHorizontalScrollPercentage() {
 	const qreal & hScroll = this->scrollPosition.rx();
 	const qreal hScrollPercentage = 100.0 * hScroll/scrollableWidth;
 	this->horizontalScroll = qRound(hScrollPercentage);
-QINFO_PRINT(global_types::qinfo_level_e::ZERO, tabScrollManagerOverall,  "DADA width " << width << " hScroll " << hScroll << " hScrollPercentage " << hScrollPercentage << " horizontal scroll " << this->horizontalScroll << " parent size " << this->parentWidget()->size());
+
+	this->checkScrollValue(this->horizontalScroll, "horizontal");
+
 	emit this->horizontalScrollChanged(this->horizontalScroll);
 }
 
@@ -78,4 +83,8 @@ const int & tab_scroll_manager::TabScrollManager::getVerticalScrollPercentage() 
 
 const int & tab_scroll_manager::TabScrollManager::getHorizontalScrollPercentage() const {
 	return this->horizontalScroll;
+}
+
+void tab_scroll_manager::TabScrollManager::checkScrollValue(const int & scroll, const QString direction) const {
+	QEXCEPTION_ACTION_COND(((scroll < tab_scroll_manager::minScrollPercentage) || (scroll > tab_scroll_manager::maxScrollPercentage)), throw,  "Invalid value of " << direction << " scroll: " << scroll << ". Valid range is between " << tab_scroll_manager::minScrollPercentage << " and " << tab_scroll_manager::maxScrollPercentage);
 }
