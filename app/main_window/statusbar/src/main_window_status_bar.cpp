@@ -172,13 +172,16 @@ QSize main_window_status_bar::MainWindowStatusBar::minimumSizeHint() const {
 }
 
 void main_window_status_bar::MainWindowStatusBar::setVScroll(const int & vScroll) {
-
 	QString vScrollText(QString::null);
-	vScrollText.setNum(vScroll, 10);
-	vScrollText.append("%");
-
-	QINFO_PRINT(global_types::qinfo_level_e::ZERO, mainWindowStatusBarOverall,  "DADA vScroll " << vScroll << " string " << vScrollText);
+	// Keep 3 characters for all scroll positions
+	if (vScroll == 0) {
+		vScrollText.append("top");
+	} else if (vScroll == 100) {
+		vScrollText.append("bot");
+	} else {
+		vScrollText.append(QString("%1").arg(vScroll, 2, 10, QChar('0')));
+		vScrollText.append("%");
+	}
 
 	this->scroll->setText(vScrollText);
-
 }
