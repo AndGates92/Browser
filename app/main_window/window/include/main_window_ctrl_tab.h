@@ -156,22 +156,22 @@ namespace main_window_ctrl_tab {
 			void updateStatusBar(const int & tabIndex);
 
 			/**
-			 * @brief Function: void disconnectProgressBar(const int & tabIndex)
+			 * @brief Function: void disconnectTab(const int & tabIndex)
 			 *
 			 * \param tabIndex: index of the tab to disconnect signals from
 			 *
 			 * This function disconnects progress bar signal from a tab
 			 */
-			void disconnectProgressBar(const int & tabIndex);
+			void disconnectTab(const int & tabIndex);
 
 			/**
-			 * @brief Function: void connectProgressBar(const int & tabIndex)
+			 * @brief Function: void connectTab(const int & tabIndex)
 			 *
 			 * \param tabIndex: index of the tab to connect signals from
 			 *
 			 * This function connects progress bar signal from a tab
 			 */
-			void connectProgressBar(const int & tabIndex);
+			void connectTab(const int & tabIndex);
 
 			/**
 			 * @brief Function: void createContentPathTextFromSource(const main_window_shared_types::page_type_e & type, const QString & source)

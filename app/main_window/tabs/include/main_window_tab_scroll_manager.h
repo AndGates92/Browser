@@ -37,13 +37,14 @@ namespace main_window_tab_scroll_manager {
 
 		public:
 			/**
-			 * @brief Function: explicit MainWindowTabScrollManager(QWidget * parent)
+			 * @brief Function: explicit MainWindowTabScrollManager(QWidget * parent, QWidget * tabBar)
 			 *
 			 * \param parent: parent widget
+			 * \param tabBar: tab bar
 			 *
 			 * Main Window Tab Scroll Manager constructor
 			 */
-			explicit MainWindowTabScrollManager(QWidget * parent);
+			explicit MainWindowTabScrollManager(QWidget * parent, QWidget * tabBar);
 
 			/**
 			 * @brief Function: virtual ~MainWindowTabScrollManager()

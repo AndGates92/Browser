@@ -170,3 +170,15 @@ QSize main_window_status_bar::MainWindowStatusBar::minimumSizeHint() const {
 
 	return QSize(width,height);
 }
+
+void main_window_status_bar::MainWindowStatusBar::setVScroll(const int & vScroll) {
+
+	QString vScrollText(QString::null);
+	vScrollText.setNum(vScroll, 10);
+	vScrollText.append("%");
+
+	QINFO_PRINT(global_types::qinfo_level_e::ZERO, mainWindowStatusBarOverall,  "DADA vScroll " << vScroll << " string " << vScrollText);
+
+	this->scroll->setText(vScrollText);
+
+}

@@ -48,13 +48,14 @@ namespace tab {
 
 		public:
 			/**
-			 * @brief Function: explicit Tab(QWidget * parent)
+			 * @brief Function: explicit Tab(QWidget * parent, QWidget * tabBar)
 			 *
 			 * \param parent: parent widget
+			 * \param tabBar: tab bar
 			 *
 			 * Tab constructor
 			 */
-			explicit Tab(QWidget * parent);
+			explicit Tab(QWidget * parent, QWidget * tabBar);
 
 			/**
 			 * @brief Function: virtual ~Tab()

@@ -43,16 +43,17 @@ namespace main_window_tab {
 
 		public:
 			/**
-			 * @brief Function: explicit MainWindowTab(QWidget * parent, const main_window_shared_types::page_type_e type = main_window_shared_types::page_type_e::UNKNOWN, const QString & src = QString::null, const void * data = nullptr)
+			 * @brief Function: explicit MainWindowTab(QWidget * parent, QWidget * tabBar, const main_window_shared_types::page_type_e type = main_window_shared_types::page_type_e::UNKNOWN, const QString & src = QString::null, const void * data = nullptr)
 			 *
 			 * \param type: tab type
 			 * \param src: source of the tab
 			 * \param data: tab extra data
 			 * \param parent: parent widget
+			 * \param tabBar: tab bar
 			 *
 			 * Main Window Tab constructor
 			 */
-			explicit MainWindowTab(QWidget * parent, const main_window_shared_types::page_type_e type = main_window_shared_types::page_type_e::UNKNOWN, const QString & src = QString::null, const void * data = nullptr);
+			explicit MainWindowTab(QWidget * parent, QWidget * tabBar, const main_window_shared_types::page_type_e type = main_window_shared_types::page_type_e::UNKNOWN, const QString & src = QString::null, const void * data = nullptr);
 
 			/**
 			 * @brief Function: virtual ~MainWindowTab()

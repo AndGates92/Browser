@@ -17,7 +17,7 @@
 // Categories
 Q_LOGGING_CATEGORY(mainWindowTabOverall, "mainWindowTab.overall", MSG_TYPE_LEVEL)
 
-main_window_tab::MainWindowTab::MainWindowTab(QWidget * parent, const main_window_shared_types::page_type_e type, const QString & src, const void * data): tab::Tab(parent) {
+main_window_tab::MainWindowTab::MainWindowTab(QWidget * parent, QWidget * tabBar, const main_window_shared_types::page_type_e type, const QString & src, const void * data): tab::Tab(parent, tabBar) {
 	QINFO_PRINT(global_types::qinfo_level_e::ZERO, mainWindowTabOverall,  "MainWindowTab constructor");
 
 	main_window_web_engine_view::MainWindowWebEngineView * tabView = new main_window_web_engine_view::MainWindowWebEngineView(this, type, src, data);
@@ -33,7 +33,7 @@ main_window_tab::MainWindowTab::MainWindowTab(QWidget * parent, const main_windo
 	main_window_tab_search::MainWindowTabSearch * tabSearch = new main_window_tab_search::MainWindowTabSearch(this, this);
 	this->setSearch(tabSearch);
 
-	main_window_tab_scroll_manager::MainWindowTabScrollManager * tabScrollManager = new main_window_tab_scroll_manager::MainWindowTabScrollManager(this);
+	main_window_tab_scroll_manager::MainWindowTabScrollManager * tabScrollManager = new main_window_tab_scroll_manager::MainWindowTabScrollManager(this, tabBar);
 	this->setScrollManager(tabScrollManager);
 
 	this->connectSignals();

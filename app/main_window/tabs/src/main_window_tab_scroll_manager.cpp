@@ -16,7 +16,7 @@
 // Categories
 Q_LOGGING_CATEGORY(mainWindowTabScrollManagerOverall, "mainWindowTabScrollManager.overall", MSG_TYPE_LEVEL)
 
-main_window_tab_scroll_manager::MainWindowTabScrollManager::MainWindowTabScrollManager(QWidget * parent): tab_scroll_manager::TabScrollManager(parent) {
+main_window_tab_scroll_manager::MainWindowTabScrollManager::MainWindowTabScrollManager(QWidget * parent, QWidget * tabBar): tab_scroll_manager::TabScrollManager(parent, tabBar) {
 	QINFO_PRINT(global_types::qinfo_level_e::ZERO, mainWindowTabScrollManagerOverall,  "MainWindowTabScrollManager constructor");
 
 }

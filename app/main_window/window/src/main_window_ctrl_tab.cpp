@@ -63,8 +63,8 @@ void main_window_ctrl_tab::MainWindowCtrlTab::connectExtraSignals() {
 	connect(this->windowCore->tabs, &main_window_tab_widget::MainWindowTabWidget::numberTabsChanged, this, &main_window_ctrl_tab::MainWindowCtrlTab::updateStatusBar);
 
 	// Progress bar connections
-	connect(this->windowCore->tabs, &main_window_tab_widget::MainWindowTabWidget::tabNearlyDisconnected, this, &main_window_ctrl_tab::MainWindowCtrlTab::disconnectProgressBar);
-	connect(this->windowCore->tabs, &main_window_tab_widget::MainWindowTabWidget::tabNearlyConnected, this, &main_window_ctrl_tab::MainWindowCtrlTab::connectProgressBar);
+	connect(this->windowCore->tabs, &main_window_tab_widget::MainWindowTabWidget::tabNearlyDisconnected, this, &main_window_ctrl_tab::MainWindowCtrlTab::disconnectTab);
+	connect(this->windowCore->tabs, &main_window_tab_widget::MainWindowTabWidget::tabNearlyConnected, this, &main_window_ctrl_tab::MainWindowCtrlTab::connectTab);
 
 	// Update info bar
 	connect(this->windowCore->tabs, &main_window_tab_widget::MainWindowTabWidget::tabCloseRequested, this, &main_window_ctrl_tab::MainWindowCtrlTab::updateStatusBar);
@@ -104,13 +104,13 @@ int main_window_ctrl_tab::MainWindowCtrlTab::addNewTab(const QString & search, c
 	if (tabCount > 0) {
 		// Disconnect signals only if at least 1 tabs is already present
 		int currentTabIndex = this->windowCore->getCurrentTabIndex();
-		this->disconnectProgressBar(currentTabIndex);
+		this->disconnectTab(currentTabIndex);
 	}
 
 	const int tabIndex = this->windowCore->tabs->addTab(type, search, data);
 
 	// Connect signals from tab the cursor is pointing to
-	this->connectProgressBar(tabIndex);
+	this->connectTab(tabIndex);
 
 	QEXCEPTION_ACTION_COND((tabIndex < 0), throw, "It cannot be negative");
 
@@ -181,25 +181,30 @@ void main_window_ctrl_tab::MainWindowCtrlTab::moveTab(const int & tabIndex) {
 void main_window_ctrl_tab::MainWindowCtrlTab::moveCursor(const int & tabIndex) {
 	// Disconnect signals from tab the cursor was pointing to
 	const int currentTabIndex = this->windowCore->getCurrentTabIndex();
-	this->disconnectProgressBar(currentTabIndex);
+	this->disconnectTab(currentTabIndex);
 
 	QINFO_PRINT(global_types::qinfo_level_e::ZERO, mainWindowCtrlTabTabs,  "Move cursor to tab " << tabIndex);
 	this->windowCore->tabs->setCurrentIndex(tabIndex);
 	// Connect signals from tab the cursor is pointing to
-	this->connectProgressBar(tabIndex);
+	this->connectTab(tabIndex);
 }
 
-void main_window_ctrl_tab::MainWindowCtrlTab::connectProgressBar(const int & tabIndex) {
+void main_window_ctrl_tab::MainWindowCtrlTab::connectTab(const int & tabIndex) {
 	const main_window_shared_types::page_type_e tabType = this->windowCore->tabs->getPageType(tabIndex);
 	QINFO_PRINT(global_types::qinfo_level_e::ZERO, mainWindowCtrlTabTabs,  "Connect signals from " << tabType << " object of tab " << tabIndex << " to progress bar slots");
 	try {
 		main_window_tab::MainWindowTab * tab = dynamic_cast<main_window_tab::MainWindowTab *>(this->windowCore->tabs->widget(tabIndex));
+
+		const main_window_tab_scroll_manager::MainWindowTabScrollManager * scrollManager = tab->getScrollManager();
+		main_window_status_bar::MainWindowStatusBar * statusBar = this->windowCore->bottomStatusBar;
+		connect(scrollManager, &main_window_tab_scroll_manager::MainWindowTabScrollManager::verticalScrollChanged, statusBar, &main_window_status_bar::MainWindowStatusBar::setVScroll);
+		statusBar->setVScroll(scrollManager->getVerticalScrollPercentage());
+
+
 		const main_window_tab_load_manager::MainWindowTabLoadManager * loadManager = tab->getLoadManager();
-		progress_bar::ProgressBar * bar = this->windowCore->bottomStatusBar->getLoadBar();
-
-		connect(loadManager, &main_window_tab_load_manager::MainWindowTabLoadManager::progressChanged, bar, &progress_bar::ProgressBar::setValue);
-
-		bar->setValue(loadManager->getProgress());
+		progress_bar::ProgressBar * loadBar = statusBar->getLoadBar();
+		connect(loadManager, &main_window_tab_load_manager::MainWindowTabLoadManager::progressChanged, loadBar, &progress_bar::ProgressBar::setValue);
+		loadBar->setValue(loadManager->getProgress());
 
 		// Move focus to the tab index
 		tab->setFocus();
@@ -209,15 +214,20 @@ void main_window_ctrl_tab::MainWindowCtrlTab::connectProgressBar(const int & tab
 	}
 }
 
-void main_window_ctrl_tab::MainWindowCtrlTab::disconnectProgressBar(const int & tabIndex) {
+void main_window_ctrl_tab::MainWindowCtrlTab::disconnectTab(const int & tabIndex) {
 	const main_window_shared_types::page_type_e tabType = this->windowCore->tabs->getPageType(tabIndex);
 	QINFO_PRINT(global_types::qinfo_level_e::ZERO, mainWindowCtrlTabTabs,  "Disconnect connect signals from " << tabType << " object of tab " << tabIndex << " to progress bar slots");
 	try {
 		const main_window_tab::MainWindowTab * tab = dynamic_cast<main_window_tab::MainWindowTab *>(this->windowCore->tabs->widget(tabIndex));
-		const main_window_tab_load_manager::MainWindowTabLoadManager * loadManager = tab->getLoadManager();
-		const progress_bar::ProgressBar * bar = this->windowCore->bottomStatusBar->getLoadBar();
 
-		disconnect(loadManager, &main_window_tab_load_manager::MainWindowTabLoadManager::progressChanged, bar, &progress_bar::ProgressBar::setValue);
+		const main_window_tab_scroll_manager::MainWindowTabScrollManager * scrollManager = tab->getScrollManager();
+		main_window_status_bar::MainWindowStatusBar * statusBar = this->windowCore->bottomStatusBar;
+		disconnect(scrollManager, &main_window_tab_scroll_manager::MainWindowTabScrollManager::verticalScrollChanged, statusBar, &main_window_status_bar::MainWindowStatusBar::setVScroll);
+
+		const main_window_tab_load_manager::MainWindowTabLoadManager * loadManager = tab->getLoadManager();
+		progress_bar::ProgressBar * loadBar = statusBar->getLoadBar();
+		disconnect(loadManager, &main_window_tab_load_manager::MainWindowTabLoadManager::progressChanged, loadBar, &progress_bar::ProgressBar::setValue);
+
 	} catch (const std::bad_cast & badCastE) {
 		QEXCEPTION_ACTION(throw, badCastE.what());
 	}

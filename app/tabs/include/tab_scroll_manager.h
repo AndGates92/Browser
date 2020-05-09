@@ -13,6 +13,7 @@
 #include <qt5/QtCore/QtDebug>
 
 #include <qt5/QtCore/QLoggingCategory>
+#include <qt5/QtWidgets/QTabBar>
 
 #include <qt5/QtWidgets/QWidget>
 
@@ -38,13 +39,14 @@ namespace tab_scroll_manager {
 
 		public:
 			/**
-			 * @brief Function: explicit TabScrollManager(QWidget * parent)
+			 * @brief Function: explicit TabScrollManager(QWidget * parent, QWidget * tabBar)
 			 *
 			 * \param parent: parent widget
+			 * \param tabBar: tab bar
 			 *
 			 * Tab Scroll Manager constructor
 			 */
-			explicit TabScrollManager(QWidget * parent);
+			explicit TabScrollManager(QWidget * parent, QWidget * tabBar);
 
 			/**
 			 * @brief Function: virtual ~TabScrollManager()
@@ -71,6 +73,24 @@ namespace tab_scroll_manager {
 			 */
 			const QPointF & getScrollPosition() const;
 
+			/**
+			 * @brief Function: const int & getHorizontalScrollPercentage() const
+			 *
+			 * \return percentage of the position of the horizontal scrolling
+			 *
+			 * This function returns the percentage of the position of the horizontal scrolling
+			 */
+			const int & getHorizontalScrollPercentage() const;
+
+			/**
+			 * @brief Function: const int & getVerticalScrollPercentage() const
+			 *
+			 * \return percentage of the position of the vertical scrolling
+			 *
+			 * This function returns the percentage of the position of the vertical scrolling
+			 */
+			const int & getVerticalScrollPercentage() const;
+
 		public slots:
 			/**
 			 * @brief Function: void updateContentsSize(const QSizeF & value)
@@ -90,7 +110,54 @@ namespace tab_scroll_manager {
 			 */
 			void updateScrollPosition(const QPointF & value);
 
+		signals:
+			/**
+			 * @brief Function: void verticalScrollChanged(const int & vScroll)
+			 *
+			 * \param vertical scroll
+			 *
+			 * This function is a signal to notify that vertical scroll changed
+			 */
+			void verticalScrollChanged(const int & vScroll);
+
+			/**
+			 * @brief Function: void horizontalScrollChanged(const int & hScroll)
+			 *
+			 * \param horizontal scroll
+			 *
+			 * This function is a signal to notify that horizontal scroll changed
+			 */
+			void horizontalScrollChanged(const int & hScroll);
+
 		protected:
+
+			/**
+			 * @brief Function: void updateHorizontalScrollPercentage()
+			 *
+			 * This function computes the percentage of the position of the horizontal scrolling
+			 */
+			void updateHorizontalScrollPercentage();
+
+			/**
+			 * @brief Function: void updateVerticalScrollPercentage()
+			 *
+			 * This function computes the percentage of the position of the vertical scrolling
+			 */
+			void updateVerticalScrollPercentage();
+
+			/**
+			 * @brief percentage of horizontal scroll
+			 *
+			 */
+			int horizontalScroll;
+
+			/**
+			 * @brief percentage of vertical scroll
+			 *
+			 */
+			int verticalScroll;
+
+		private:
 			/**
 			 * @brief position of the scrolling
 			 *
@@ -103,7 +170,12 @@ namespace tab_scroll_manager {
 			 */
 			QSizeF contentsSize;
 
-		private:
+			/**
+			 * @brief tab bar the tab belong to
+			 *
+			 */
+			QTabBar * bar;
+
 			// Move and copy constructor
 			/**
 			 * @brief Disable move and copy constructors and operator= overscrolling for class TabScrollManager
