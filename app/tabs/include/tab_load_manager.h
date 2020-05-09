@@ -93,9 +93,9 @@ namespace tab_load_manager {
 			/**
 			 * @brief Function: void endLoading(bool success)
 			 *
-			 * \param value: value of the progress
+			 * \param success: boolean storing the information of weather the load was successful or not
 			 *
-			 * This function sets progress to value provided as argument
+			 * This function ends loading
 			 */
 			void endLoading(bool success);
 

@@ -132,6 +132,18 @@ namespace tab_scroll_manager {
 		protected:
 
 			/**
+			 * @brief percentage of horizontal scroll
+			 *
+			 */
+			int horizontalScroll;
+
+			/**
+			 * @brief percentage of vertical scroll
+			 *
+			 */
+			int verticalScroll;
+
+			/**
 			 * @brief Function: void updateHorizontalScrollPercentage()
 			 *
 			 * This function computes the percentage of the position of the horizontal scrolling
@@ -144,18 +156,6 @@ namespace tab_scroll_manager {
 			 * This function computes the percentage of the position of the vertical scrolling
 			 */
 			void updateVerticalScrollPercentage();
-
-			/**
-			 * @brief percentage of horizontal scroll
-			 *
-			 */
-			int horizontalScroll;
-
-			/**
-			 * @brief percentage of vertical scroll
-			 *
-			 */
-			int verticalScroll;
 
 		private:
 			/**
