@@ -211,6 +211,33 @@ namespace tab {
 			 */
 			virtual void historyNext() const;
 
+			/**
+			 * @brief Function: virtual void scrollUp() const
+			 *
+			 * This function request the scroll manager to scroll up
+			 */
+			virtual void scrollUp() const;
+
+			/**
+			 * @brief Function: virtual void scrollDown() const
+			 *
+			 * This function request the scroll manager to scroll down
+			 */
+			virtual void scrollDown() const;
+
+			/**
+			 * @brief Function: virtual void scrollLeft() const
+			 *
+			 * This function request the scroll manager to scroll left
+			 */
+			virtual void scrollLeft() const;
+
+			/**
+			 * @brief Function: virtual void scrollRight() const
+			 *
+			 * This function request the scroll manager to scroll right
+			 */
+			virtual void scrollRight() const;
 
 		protected:
 

@@ -61,7 +61,8 @@ CASTED_PTR_GETTER(main_window_tab::MainWindowTab::getSettings, main_window_web_e
 CASTED_PTR_GETTER(main_window_tab::MainWindowTab::getScrollManager, main_window_tab_scroll_manager::MainWindowTabScrollManager, tab::Tab::getScrollManager())
 
 void main_window_tab::MainWindowTab::connectSignals() {
-	const main_window_web_engine_page::MainWindowWebEnginePage * page = this->getView()->page();
+	const main_window_web_engine_view::MainWindowWebEngineView * view = this->getView();
+	const main_window_web_engine_page::MainWindowWebEnginePage * page = view->page();
 	const main_window_shared_types::page_type_e tabType = page->getType();
 	const main_window_tab_load_manager::MainWindowTabLoadManager * loadManager = this->getLoadManager();
 	const main_window_tab_scroll_manager::MainWindowTabScrollManager * scrollManager = this->getScrollManager();
@@ -71,4 +72,6 @@ void main_window_tab::MainWindowTab::connectSignals() {
 	connect(page, &main_window_web_engine_page::MainWindowWebEnginePage::loadFinished, loadManager, &main_window_tab_load_manager::MainWindowTabLoadManager::endLoading);
 	connect(page, &main_window_web_engine_page::MainWindowWebEnginePage::contentsSizeChanged, scrollManager, &main_window_tab_scroll_manager::MainWindowTabScrollManager::updateContentsSize);
 	connect(page, &main_window_web_engine_page::MainWindowWebEnginePage::scrollPositionChanged, scrollManager, &main_window_tab_scroll_manager::MainWindowTabScrollManager::updateScrollPosition);
+	//connect(scrollManager, &main_window_tab_scroll_manager::MainWindowTabScrollManager::scrollRequest, view, &main_window_web_engine_view::MainWindowWebEngineView::applyScrollRequest);
+	connect(scrollManager, &main_window_tab_scroll_manager::MainWindowTabScrollManager::scrollRequest, page, &main_window_web_engine_page::MainWindowWebEnginePage::applyScrollRequest);
 }

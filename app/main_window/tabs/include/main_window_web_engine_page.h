@@ -129,6 +129,17 @@ namespace main_window_web_engine_page {
 			 */
 			void reload();
 
+		public slots:
+			/**
+			 * @brief Function: void applyScrollRequest(const int x, const int y)
+			 *
+			 * \param x: scroll on the x axis
+			 * \param y: scroll on the y axis
+			 *
+			 * This function honors the scroll position change request
+			 */
+			void applyScrollRequest(const int x, const int y);
+
 		signals:
 			/**
 			 * @brief Function: void sourceChanged(const QString & src)

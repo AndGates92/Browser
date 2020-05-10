@@ -42,6 +42,7 @@ main_window_status_bar::MainWindowStatusBar::MainWindowStatusBar(QWidget * paren
 	this->infoText->setSizePolicy(QSizePolicy::Fixed, QSizePolicy::Fixed);
 
 	// scroll
+	this->scroll->setAlignment(Qt::AlignRight | Qt::AlignBottom);
 	this->scroll->setSizePolicy(QSizePolicy::Fixed, QSizePolicy::Fixed);
 
 	// loadBar
@@ -77,6 +78,8 @@ elided_label::ElidedLabel * main_window_status_bar::MainWindowStatusBar::newWind
 	newLabel->setFrameStyle(QFrame::NoFrame | QFrame::Sunken);
 	newLabel->setFixedHeight(main_window_status_bar::textHeight);
 	newLabel->setTextFormat(Qt::PlainText);
+	// Align at the bottom of the widget - this override the default of vertically centered
+	newLabel->setAlignment(Qt::AlignBottom);
 	// Set style sheet from the parent object because it can be customized based on the parent object properties
 	newLabel->setStyleSheet(
 		"QLabel {"

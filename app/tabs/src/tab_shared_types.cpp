@@ -18,5 +18,8 @@ namespace tab_shared_types {
 	// Overload << operator for offset_type_e
 	OVERLOAD_OPERATORS_CUSTOM_TYPE(tab_shared_types::load_status_e)
 
+	// Overload << operator for direction_e
+	OVERLOAD_OPERATORS_CUSTOM_TYPE(tab_shared_types::direction_e)
+
 }
 

@@ -37,6 +37,24 @@ namespace tab_shared_types {
 	 */
 	OVERLOAD_OPERATORS_CUSTOM_TYPE_FUNCTION_PROTOTYPE(load_status_list, tab_shared_types::load_status_e)
 
+	/**
+	 * @brief direction info
+	 *
+	 */
+	typedef enum class direction_list {
+		IDLE,             /**< Idle state - no user input */
+		UP,               /**< Upward movement */
+		DOWN,             /**< Downward movement */
+		LEFT,             /**< Left movement */
+		RIGHT             /**< Right movement */
+	} direction_e;
+
+	/**
+	 * @brief Overload operators to ease print of the direction of movement of a tab component
+	 *
+	 */
+	OVERLOAD_OPERATORS_CUSTOM_TYPE_FUNCTION_PROTOTYPE(direction_list, tab_shared_types::direction_e)
+
 }
 
 /** @} */ // End of TabSharedTypesGroup group

@@ -74,6 +74,8 @@ namespace main_window_shared_types {
 	 */
 	typedef enum class offset_type_list {
 		IDLE,             /**< Idle state - no user input */
+		UP,               /**< Upward movement */
+		DOWN,             /**< Downward movement */
 		LEFT,             /**< Left movement */
 		RIGHT,            /**< Right movement */
 		ABSOLUTE          /**< Absolute value - action on the tab index equal to value */

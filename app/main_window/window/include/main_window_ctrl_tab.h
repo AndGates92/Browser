@@ -332,6 +332,15 @@ namespace main_window_ctrl_tab {
 			void searchCurrentTab(const QString & search);
 
 			/**
+			 * @brief Function: void scrollTab(const main_window_shared_types::offset_type_e direction)
+			 *
+			 * \param direction: direction of scrolling
+			 *
+			 * This function scroll the tab in the direction provided as argument
+			 */
+			void scrollTab(const main_window_shared_types::offset_type_e direction);
+
+			/**
 			 * @brief Function: void goToPageInHistory(const main_window_shared_types::navigation_type_e direction)
 			 *
 			 * \param direction: direction in the history

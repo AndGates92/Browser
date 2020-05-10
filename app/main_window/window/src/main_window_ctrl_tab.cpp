@@ -147,6 +147,11 @@ void main_window_ctrl_tab::MainWindowCtrlTab::searchCurrentTab(const QString & s
 	}
 }
 
+void main_window_ctrl_tab::MainWindowCtrlTab::scrollTab(const main_window_shared_types::offset_type_e direction) {
+	const int tabIndex = this->windowCore->getCurrentTabIndex();
+	this->windowCore->tabs->scrollTab(tabIndex, direction);
+}
+
 void main_window_ctrl_tab::MainWindowCtrlTab::goToPageInHistory(const main_window_shared_types::navigation_type_e direction) {
 	const int tabIndex = this->windowCore->getCurrentTabIndex();
 	this->windowCore->tabs->goToHistoryItem(tabIndex, direction);
@@ -410,6 +415,14 @@ void main_window_ctrl_tab::MainWindowCtrlTab::executeAction(const main_window_sh
 			this->searchCurrentTab(QString::null);
 			this->changeWindowState(main_window_shared_types::state_e::IDLE, main_window_shared_types::state_postprocessing_e::POSTPROCESS);
 			break;
+		case main_window_shared_types::state_e::SCROLL_UP:
+			this->scrollTab(main_window_shared_types::offset_type_e::UP);
+			this->changeWindowState(main_window_shared_types::state_e::IDLE, main_window_shared_types::state_postprocessing_e::POSTPROCESS);
+			break;
+		case main_window_shared_types::state_e::SCROLL_DOWN:
+			this->scrollTab(main_window_shared_types::offset_type_e::DOWN);
+			this->changeWindowState(main_window_shared_types::state_e::IDLE, main_window_shared_types::state_postprocessing_e::POSTPROCESS);
+			break;
 		case main_window_shared_types::state_e::REFRESH_TAB:
 		case main_window_shared_types::state_e::CLOSE_TAB:
 		case main_window_shared_types::state_e::MOVE_RIGHT:
@@ -578,9 +591,11 @@ void main_window_ctrl_tab::MainWindowCtrlTab::postprocessWindowStateChange(const
 			this->changeWindowState(main_window_shared_types::state_e::IDLE, main_window_shared_types::state_postprocessing_e::POSTPROCESS);
 			break;
 		case main_window_shared_types::state_e::SCROLL_UP:
+			this->scrollTab(main_window_shared_types::offset_type_e::UP);
 			this->changeWindowState(main_window_shared_types::state_e::IDLE, main_window_shared_types::state_postprocessing_e::POSTPROCESS);
 			break;
 		case main_window_shared_types::state_e::SCROLL_DOWN:
+			this->scrollTab(main_window_shared_types::offset_type_e::DOWN);
 			this->changeWindowState(main_window_shared_types::state_e::IDLE, main_window_shared_types::state_postprocessing_e::POSTPROCESS);
 			break;
 		case main_window_shared_types::state_e::HISTORY_PREV:

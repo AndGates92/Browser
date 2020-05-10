@@ -88,3 +88,52 @@ const int & tab_scroll_manager::TabScrollManager::getHorizontalScrollPercentage(
 void tab_scroll_manager::TabScrollManager::checkScrollValue(const int & scroll, const QString direction) const {
 	QEXCEPTION_ACTION_COND(((scroll < tab_scroll_manager::minScrollPercentage) || (scroll > tab_scroll_manager::maxScrollPercentage)), throw,  "Invalid value of " << direction << " scroll: " << scroll << ". Valid range is between " << tab_scroll_manager::minScrollPercentage << " and " << tab_scroll_manager::maxScrollPercentage);
 }
+
+void tab_scroll_manager::TabScrollManager::scrollDown() {
+	this->tabScroll(tab_shared_types::direction_e::DOWN);
+}
+
+void tab_scroll_manager::TabScrollManager::scrollUp() {
+	this->tabScroll(tab_shared_types::direction_e::UP);
+}
+
+void tab_scroll_manager::TabScrollManager::scrollRight() {
+	this->tabScroll(tab_shared_types::direction_e::RIGHT);
+}
+
+void tab_scroll_manager::TabScrollManager::scrollLeft() {
+	this->tabScroll(tab_shared_types::direction_e::LEFT);
+}
+
+void tab_scroll_manager::TabScrollManager::tabScroll(const tab_shared_types::direction_e direction) {
+
+	int xAxisFactor = 0;
+	switch (direction) {
+		case tab_shared_types::direction_e::LEFT:
+			xAxisFactor = -1;
+			break;
+		case tab_shared_types::direction_e::RIGHT:
+			xAxisFactor = 1;
+			break;
+		default:
+			xAxisFactor = 0;
+			break;
+	}
+	const int xScroll = this->scrollPosition.rx() + (xAxisFactor * tab_scroll_manager::hScrollStep);
+
+	int yAxisFactor = 0;
+	switch (direction) {
+		case tab_shared_types::direction_e::UP:
+			yAxisFactor = -1;
+			break;
+		case tab_shared_types::direction_e::DOWN:
+			yAxisFactor = 1;
+			break;
+		default:
+			yAxisFactor = 0;
+			break;
+	}
+	const int yScroll = this->scrollPosition.ry() + (yAxisFactor * tab_scroll_manager::vScrollStep);
+
+	emit this->scrollRequest(xScroll, yScroll);
+}

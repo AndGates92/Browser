@@ -215,10 +215,37 @@ void main_window_tab_widget::MainWindowTabWidget::findInTab(const int & index, c
 	}
 }
 
+void main_window_tab_widget::MainWindowTabWidget::scrollTab(const int & index, const main_window_shared_types::offset_type_e direction) {
+	try {
+		const main_window_tab::MainWindowTab * tab = dynamic_cast<main_window_tab::MainWindowTab *>(this->widget(index, true));
+		// Scroll tab
+		switch (direction) {
+			case main_window_shared_types::offset_type_e::UP:
+				tab->scrollUp();
+				break;
+			case main_window_shared_types::offset_type_e::DOWN:
+				tab->scrollDown();
+				break;
+			case main_window_shared_types::offset_type_e::LEFT:
+				tab->scrollLeft();
+				break;
+			case main_window_shared_types::offset_type_e::RIGHT:
+				tab->scrollRight();
+				break;
+			default:
+				QEXCEPTION_ACTION(throw, "Unable to scroll in direction " << direction);
+				break;
+		}
+	} catch (const std::bad_cast & badCastE) {
+		QEXCEPTION_ACTION(throw, badCastE.what());
+	}
+}
+
+
 void main_window_tab_widget::MainWindowTabWidget::goToHistoryItem(const int & index, const main_window_shared_types::navigation_type_e & direction) {
 	try {
 		const main_window_tab::MainWindowTab * tab = dynamic_cast<main_window_tab::MainWindowTab *>(this->widget(index, true));
-		// Find text in tab
+		// Go through history in tab
 		switch (direction) {
 			case main_window_shared_types::navigation_type_e::UNDEFINED:
 			{

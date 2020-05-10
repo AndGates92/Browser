@@ -110,3 +110,8 @@ void main_window_web_engine_page::MainWindowWebEnginePage::setData(const main_wi
 	*(this->pageData) = *newData;
 	emit this->sourceChanged(QString::fromStdString(this->pageData->source));
 }
+
+void main_window_web_engine_page::MainWindowWebEnginePage::applyScrollRequest(const int x, const int y) {
+	// Quite annoying work-around as QT C++ API doesn't allow the user to set the scroll position of a web page direction
+	this->runJavaScript(QString("window.scrollTo(%1, %2)").arg(x).arg(y));
+}

@@ -18,6 +18,7 @@
 #include <qt5/QtWidgets/QWidget>
 
 #include "global_types.h"
+#include "tab_shared_types.h"
 #include "constructor_macros.h"
 
 /** @defgroup TabScrollManagerGroup Tab Scroll Manager Doxygen Group
@@ -41,6 +42,18 @@ namespace tab_scroll_manager {
 		 *
 		 */
 		constexpr int maxScrollPercentage = 100;
+
+		/**
+		 * @brief vertical scroll position increase when typing key shortcut
+		 *
+		 */
+		constexpr int vScrollStep = 100;
+
+		/**
+		 * @brief horitontal scroll position increase when typing key shortcut
+		 *
+		 */
+		constexpr int hScrollStep = 100;
 	}
 
 	/**
@@ -105,6 +118,34 @@ namespace tab_scroll_manager {
 			 */
 			const int & getVerticalScrollPercentage() const;
 
+			/**
+			 * @brief Function: void scrollUp()
+			 *
+			 * This function request the scroll manager to scroll up
+			 */
+			void scrollUp();
+
+			/**
+			 * @brief Function: void scrollDown()
+			 *
+			 * This function request the scroll manager to scroll down
+			 */
+			void scrollDown();
+
+			/**
+			 * @brief Function: void scrollLeft()
+			 *
+			 * This function request the scroll manager to scroll left
+			 */
+			void scrollLeft();
+
+			/**
+			 * @brief Function: void scrollRight()
+			 *
+			 * This function request the scroll manager to scroll right
+			 */
+			void scrollRight();
+
 		public slots:
 			/**
 			 * @brief Function: void updateContentsSize(const QSizeF & value)
@@ -142,6 +183,16 @@ namespace tab_scroll_manager {
 			 * This function is a signal to notify that horizontal scroll changed
 			 */
 			void horizontalScrollChanged(const int & hScroll);
+
+			/**
+			 * @brief Function: void scrollRequest(const int x, const int y)
+			 *
+			 * \param x: scroll on the x axis
+			 * \param y: scroll on the y axis
+			 *
+			 * This function is a signal to request scrolling
+			 */
+			void scrollRequest(const int x, const int y);
 
 		protected:
 
@@ -189,6 +240,15 @@ namespace tab_scroll_manager {
 			 *
 			 */
 			QTabBar * bar;
+
+			/**
+			 * @brief Function: void tabScroll(const tab_shared_types::direction_e direction)
+			 *
+			 * \param direction: direction of scrolling
+			 *
+			 * This function scroll the tab in the direction provided as argument
+			 */
+			void tabScroll(const tab_shared_types::direction_e direction);
 
 			/**
 			 * @brief Function: void checkScrollValue(const int & scroll, const QString direction) const

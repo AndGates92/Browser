@@ -239,6 +239,16 @@ namespace main_window_tab_widget {
 			void findInTab(const int & index, const QString & text, const main_window_shared_types::navigation_type_e & direction);
 
 			/**
+			 * @brief Function: void scrollTab(const int & index, const main_window_shared_types::offset_type_e direction)
+			 *
+			 * \param index: index of the tab
+			 * \param direction: direction of scrolling
+			 *
+			 * This function scroll the tab in the direction provided as argument
+			 */
+			void scrollTab(const int & index, const main_window_shared_types::offset_type_e direction);
+
+			/**
 			 * @brief Function: void goToHistoryItem(const int & index, const main_window_shared_types::navigation_type_e & direction)
 			 *
 			 * \param index: index of the tab

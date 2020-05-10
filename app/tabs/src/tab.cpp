@@ -106,3 +106,19 @@ void tab::Tab::historyPrev() const {
 		this->history->back();
 	}
 }
+
+void tab::Tab::scrollUp() const {
+	this->scrollManager->scrollUp();
+}
+
+void tab::Tab::scrollDown() const {
+	this->scrollManager->scrollDown();
+}
+
+void tab::Tab::scrollLeft() const {
+	this->scrollManager->scrollLeft();
+}
+
+void tab::Tab::scrollRight() const {
+	this->scrollManager->scrollRight();
+}
