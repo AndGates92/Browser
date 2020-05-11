@@ -12,19 +12,23 @@
 
 #include "logging_macros.h"
 #include "function_macros.h"
+#include "tab.h"
 #include "tab_scroll_manager.h"
 #include "exception_macros.h"
 
 // Categories
 Q_LOGGING_CATEGORY(tabScrollManagerOverall, "tabScrollManager.overall", MSG_TYPE_LEVEL)
 
-tab_scroll_manager::TabScrollManager::TabScrollManager(QWidget * parent, QWidget * tabBar): QWidget(parent), horizontalScroll(0), verticalScroll(0), scrollPosition(QPointF(0.0, 0.0)), contentsSize(QSizeF(0.0, 0.0)), bar(dynamic_cast<QTabBar *>(tabBar)) {
+tab_scroll_manager::TabScrollManager::TabScrollManager(QWidget * parent, QWidget * browserTab, QWidget * tabBar): QWidget(parent), horizontalScroll(0), verticalScroll(0), scrollPosition(QPointF(0.0, 0.0)), contentsSize(QSizeF(0.0, 0.0)), parentTab(Q_NULLPTR), bar(dynamic_cast<QTabBar *>(tabBar)) {
 	QINFO_PRINT(global_types::qinfo_level_e::ZERO, tabScrollManagerOverall,  "TabScrollManager constructor");
+	this->setTab(dynamic_cast<tab::Tab *>(browserTab));
 }
 
 tab_scroll_manager::TabScrollManager::~TabScrollManager() {
 	QINFO_PRINT(global_types::qinfo_level_e::ZERO, tabScrollManagerOverall,  "TabScrollManager destructor");
 }
+
+PTR_SETTER_GETTER(tab_scroll_manager::TabScrollManager::setTab, tab_scroll_manager::TabScrollManager::getTab, tab::Tab, this->parentTab)
 
 CONST_GETTER(tab_scroll_manager::TabScrollManager::getContentsSize, QSizeF &, this->contentsSize)
 
@@ -89,6 +93,7 @@ void tab_scroll_manager::TabScrollManager::checkScrollValue(const int & scroll, 
 	QEXCEPTION_ACTION_COND(((scroll < tab_scroll_manager::minScrollPercentage) || (scroll > tab_scroll_manager::maxScrollPercentage)), throw,  "Invalid value of " << direction << " scroll: " << scroll << ". Valid range is between " << tab_scroll_manager::minScrollPercentage << " and " << tab_scroll_manager::maxScrollPercentage);
 }
 
+// TODO: Add mutex
 void tab_scroll_manager::TabScrollManager::scrollDown() {
 	this->tabScroll(tab_shared_types::direction_e::DOWN);
 }
@@ -107,33 +112,58 @@ void tab_scroll_manager::TabScrollManager::scrollLeft() {
 
 void tab_scroll_manager::TabScrollManager::tabScroll(const tab_shared_types::direction_e direction) {
 
-	int xAxisFactor = 0;
-	switch (direction) {
-		case tab_shared_types::direction_e::LEFT:
-			xAxisFactor = -1;
-			break;
-		case tab_shared_types::direction_e::RIGHT:
-			xAxisFactor = 1;
-			break;
-		default:
-			xAxisFactor = 0;
-			break;
-	}
-	const int xScroll = this->scrollPosition.rx() + (xAxisFactor * tab_scroll_manager::hScrollStep);
+	if (this->canProcessRequests() == true) {
+		int xAxisFactor = 0;
+		switch (direction) {
+			case tab_shared_types::direction_e::LEFT:
+				xAxisFactor = -1;
+				break;
+			case tab_shared_types::direction_e::RIGHT:
+				xAxisFactor = 1;
+				break;
+			default:
+				xAxisFactor = 0;
+				break;
+		}
+		const int xScroll = this->scrollPosition.rx() + (xAxisFactor * tab_scroll_manager::hScrollStep);
 
-	int yAxisFactor = 0;
-	switch (direction) {
-		case tab_shared_types::direction_e::UP:
-			yAxisFactor = -1;
-			break;
-		case tab_shared_types::direction_e::DOWN:
-			yAxisFactor = 1;
-			break;
-		default:
-			yAxisFactor = 0;
-			break;
-	}
-	const int yScroll = this->scrollPosition.ry() + (yAxisFactor * tab_scroll_manager::vScrollStep);
+		int yAxisFactor = 0;
+		switch (direction) {
+			case tab_shared_types::direction_e::UP:
+				yAxisFactor = -1;
+				break;
+			case tab_shared_types::direction_e::DOWN:
+				yAxisFactor = 1;
+				break;
+			default:
+				yAxisFactor = 0;
+				break;
+		}
+		const int yScroll = this->scrollPosition.ry() + (yAxisFactor * tab_scroll_manager::vScrollStep);
 
-	emit this->scrollRequest(xScroll, yScroll);
+		emit this->scrollRequest(xScroll, yScroll);
+	} else {
+		this->scrollRequestQueue.push(direction);
+	}
 }
+
+void tab_scroll_manager::TabScrollManager::emptyRequestQueue() {
+	const tab::Tab * castedTab(dynamic_cast<tab::Tab *>(this->parentTab));
+	const tab_load_manager::TabLoadManager * loadManager(castedTab->getLoadManager());
+	const tab_shared_types::load_status_e & loadManagerStatus = loadManager->getStatus();
+
+	QEXCEPTION_ACTION_COND((this->canProcessRequests() == false), throw,  "Function " << __func__ << " cannot be called when load manager is in state " << loadManagerStatus << ". It can only be called if a page is not loading");
+	while(this->scrollRequestQueue.empty() == false) {
+		this->tabScroll(this->scrollRequestQueue.front());
+		this->scrollRequestQueue.pop();
+	}
+}
+
+bool tab_scroll_manager::TabScrollManager::canProcessRequests() const {
+	const tab::Tab * castedTab(dynamic_cast<tab::Tab *>(this->parentTab));
+	const tab_load_manager::TabLoadManager * loadManager(castedTab->getLoadManager());
+	const tab_shared_types::load_status_e & loadManagerStatus = loadManager->getStatus();
+
+	return ((loadManagerStatus == tab_shared_types::load_status_e::FINISHED) || (loadManagerStatus == tab_shared_types::load_status_e::ERROR));
+}
+

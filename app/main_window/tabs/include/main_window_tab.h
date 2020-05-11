@@ -41,6 +41,8 @@ namespace main_window_tab {
 	 */
 	class MainWindowTab final : public tab::Tab {
 
+		Q_OBJECT
+
 		public:
 			/**
 			 * @brief Function: explicit MainWindowTab(QWidget * parent, QWidget * tabBar, const main_window_shared_types::page_type_e type = main_window_shared_types::page_type_e::UNKNOWN, const QString & src = QString::null, const void * data = nullptr)
@@ -139,6 +141,15 @@ namespace main_window_tab {
 			 *
 			 */
 			DISABLE_COPY_MOVE(MainWindowTab)
+
+		private slots:
+			/**
+			 * @brief Function: void postprocessLoadFInished(const bool & success)
+			 *
+			 * This function postprocessing the end of a page load
+			 */
+			void postprocessLoadFInished(const bool & success);
+
 
 	};
 }

@@ -82,22 +82,22 @@ namespace tab_load_manager {
 			void startLoading();
 
 			/**
-			 * @brief Function: void setProgress(int value)
+			 * @brief Function: void setProgress(const int & value)
 			 *
 			 * \param value: value of the progress
 			 *
 			 * This function sets progress to value provided as argument
 			 */
-			void setProgress(int value);
+			void setProgress(const int & value);
 
 			/**
-			 * @brief Function: void endLoading(bool success)
+			 * @brief Function: void endLoading(const bool & success)
 			 *
 			 * \param success: boolean storing the information of weather the load was successful or not
 			 *
 			 * This function ends loading
 			 */
-			void endLoading(bool success);
+			void endLoading(const bool & success);
 
 		signals:
 			/**

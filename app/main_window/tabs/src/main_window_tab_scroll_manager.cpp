@@ -11,12 +11,13 @@
 #include <qt5/QtGui/QKeyEvent>
 
 #include "logging_macros.h"
+#include "main_window_tab.h"
 #include "main_window_tab_scroll_manager.h"
 
 // Categories
 Q_LOGGING_CATEGORY(mainWindowTabScrollManagerOverall, "mainWindowTabScrollManager.overall", MSG_TYPE_LEVEL)
 
-main_window_tab_scroll_manager::MainWindowTabScrollManager::MainWindowTabScrollManager(QWidget * parent, QWidget * tabBar): tab_scroll_manager::TabScrollManager(parent, tabBar) {
+main_window_tab_scroll_manager::MainWindowTabScrollManager::MainWindowTabScrollManager(QWidget * parent, QWidget * browserTab, QWidget * tabBar): tab_scroll_manager::TabScrollManager(parent, browserTab, tabBar) {
 	QINFO_PRINT(global_types::qinfo_level_e::ZERO, mainWindowTabScrollManagerOverall,  "MainWindowTabScrollManager constructor");
 
 }
@@ -24,4 +25,16 @@ main_window_tab_scroll_manager::MainWindowTabScrollManager::MainWindowTabScrollM
 main_window_tab_scroll_manager::MainWindowTabScrollManager::~MainWindowTabScrollManager() {
 	QINFO_PRINT(global_types::qinfo_level_e::ZERO, mainWindowTabScrollManagerOverall,  "MainWindowTabScrollManager destructor");
 
+}
+
+//CASTED_PTR_GETTER(main_window_tab_scroll_manager::MainWindowTabScrollManager::getTab, main_window_tab::MainWindowTab, tab_scroll_manager::TabScrollManager::getTab())
+
+main_window_tab::MainWindowTab * main_window_tab_scroll_manager::MainWindowTabScrollManager::getTab() const {
+	try {
+	main_window_tab::MainWindowTab * dada = dynamic_cast<main_window_tab::MainWindowTab *>(tab_scroll_manager::TabScrollManager::getTab());
+	return dada;
+	} catch (const std::bad_cast & badCastE) {
+		QEXCEPTION_ACTION(throw, badCastE.what()); 
+	} 
+	return nullptr; 
 }

@@ -33,7 +33,7 @@ main_window_tab::MainWindowTab::MainWindowTab(QWidget * parent, QWidget * tabBar
 	main_window_tab_search::MainWindowTabSearch * tabSearch = new main_window_tab_search::MainWindowTabSearch(this, this);
 	this->setSearch(tabSearch);
 
-	main_window_tab_scroll_manager::MainWindowTabScrollManager * tabScrollManager = new main_window_tab_scroll_manager::MainWindowTabScrollManager(this, tabBar);
+	main_window_tab_scroll_manager::MainWindowTabScrollManager * tabScrollManager = new main_window_tab_scroll_manager::MainWindowTabScrollManager(this, this, tabBar);
 	this->setScrollManager(tabScrollManager);
 
 	this->connectSignals();
@@ -65,13 +65,24 @@ void main_window_tab::MainWindowTab::connectSignals() {
 	const main_window_web_engine_page::MainWindowWebEnginePage * page = view->page();
 	const main_window_shared_types::page_type_e tabType = page->getType();
 	const main_window_tab_load_manager::MainWindowTabLoadManager * loadManager = this->getLoadManager();
-	const main_window_tab_scroll_manager::MainWindowTabScrollManager * scrollManager = this->getScrollManager();
 	QINFO_PRINT(global_types::qinfo_level_e::ZERO, mainWindowTabOverall,  "Connect signals from page of type " << tabType << " to load manager");
 	connect(page, &main_window_web_engine_page::MainWindowWebEnginePage::loadStarted, loadManager, &main_window_tab_load_manager::MainWindowTabLoadManager::startLoading);
 	connect(page, &main_window_web_engine_page::MainWindowWebEnginePage::loadProgress, loadManager, &main_window_tab_load_manager::MainWindowTabLoadManager::setProgress);
-	connect(page, &main_window_web_engine_page::MainWindowWebEnginePage::loadFinished, loadManager, &main_window_tab_load_manager::MainWindowTabLoadManager::endLoading);
+//	connect(page, &main_window_web_engine_page::MainWindowWebEnginePage::loadFinished, loadManager, &main_window_tab_load_manager::MainWindowTabLoadManager::endLoading);
+
+	connect(page, &main_window_web_engine_page::MainWindowWebEnginePage::loadFinished, this, &main_window_tab::MainWindowTab::postprocessLoadFInished);
+
+	const main_window_tab_scroll_manager::MainWindowTabScrollManager * scrollManager = this->getScrollManager();
 	connect(page, &main_window_web_engine_page::MainWindowWebEnginePage::contentsSizeChanged, scrollManager, &main_window_tab_scroll_manager::MainWindowTabScrollManager::updateContentsSize);
 	connect(page, &main_window_web_engine_page::MainWindowWebEnginePage::scrollPositionChanged, scrollManager, &main_window_tab_scroll_manager::MainWindowTabScrollManager::updateScrollPosition);
-	//connect(scrollManager, &main_window_tab_scroll_manager::MainWindowTabScrollManager::scrollRequest, view, &main_window_web_engine_view::MainWindowWebEngineView::applyScrollRequest);
 	connect(scrollManager, &main_window_tab_scroll_manager::MainWindowTabScrollManager::scrollRequest, page, &main_window_web_engine_page::MainWindowWebEnginePage::applyScrollRequest);
+}
+
+void main_window_tab::MainWindowTab::postprocessLoadFInished(const bool & success) {
+	main_window_tab_load_manager::MainWindowTabLoadManager * loadManager = this->getLoadManager();
+	loadManager->endLoading(success);
+
+
+	main_window_tab_scroll_manager::MainWindowTabScrollManager * scrollManager = this->getScrollManager();
+	scrollManager->emptyRequestQueue();
 }

@@ -32,7 +32,7 @@ void tab_load_manager::TabLoadManager::startLoading() {
 	this->setProgress(0);
 }
 
-void tab_load_manager::TabLoadManager::setProgress(int value) {
+void tab_load_manager::TabLoadManager::setProgress(const int & value) {
 	if (this->progress != value) {
 		this->progress = value;
 		emit progressChanged(this->progress);
@@ -40,7 +40,7 @@ void tab_load_manager::TabLoadManager::setProgress(int value) {
 	}
 }
 
-void tab_load_manager::TabLoadManager::endLoading(bool success) {
+void tab_load_manager::TabLoadManager::endLoading(const bool & success) {
 	if (success == true) {
 		this->setStatus(tab_shared_types::load_status_e::FINISHED);
 	} else {

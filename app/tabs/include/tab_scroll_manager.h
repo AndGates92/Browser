@@ -8,6 +8,8 @@
  * @brief Tab Scroll Manager header file
 */
 
+#include <queue>
+
 // Qt libraries
 // Required by qInfo
 #include <qt5/QtCore/QtDebug>
@@ -27,6 +29,10 @@
  */
 
 Q_DECLARE_LOGGING_CATEGORY(tabScrollManagerOverall)
+
+namespace tab {
+	class Tab;
+}
 
 namespace tab_scroll_manager {
 
@@ -66,14 +72,15 @@ namespace tab_scroll_manager {
 
 		public:
 			/**
-			 * @brief Function: explicit TabScrollManager(QWidget * parent, QWidget * tabBar)
+			 * @brief Function: explicit TabScrollManager(QWidget * parent, QWidget * browserTab, QWidget * tabBar)
 			 *
 			 * \param parent: parent widget
 			 * \param tabBar: tab bar
+			 * \param tab: tab
 			 *
 			 * Tab Scroll Manager constructor
 			 */
-			explicit TabScrollManager(QWidget * parent, QWidget * tabBar);
+			explicit TabScrollManager(QWidget * parent, QWidget * browserTab, QWidget * tabBar);
 
 			/**
 			 * @brief Function: virtual ~TabScrollManager()
@@ -145,6 +152,31 @@ namespace tab_scroll_manager {
 			 * This function request the scroll manager to scroll right
 			 */
 			void scrollRight();
+
+			/**
+			 * @brief Function: void setTab(tab::Tab * tab)
+			 *
+			 * \param tab: tab the scroll manager belongs to
+			 *
+			 * This function sets the tab the scroll manager belongs to
+			 */
+			void setTab(tab::Tab * value);
+
+			/**
+			 * @brief Function: tab::Tab * getTab() const
+			 *
+			 * \return tab the scroll manager belongs to
+			 *
+			 * This function returns the tab the scroll manager belongs to
+			 */
+			tab::Tab * getTab() const;
+
+			/**
+			 * @brief Function: void emptyRequestQueue()
+			 *
+			 * This function empties the queue of scroll requests
+			 */
+			void emptyRequestQueue();
 
 		public slots:
 			/**
@@ -236,10 +268,22 @@ namespace tab_scroll_manager {
 			QSizeF contentsSize;
 
 			/**
+			 * @brief tab the scroll manager belongs to
+			 *
+			 */
+			tab::Tab * parentTab;
+
+			/**
 			 * @brief tab bar the tab belong to
 			 *
 			 */
 			QTabBar * bar;
+
+			/**
+			 * @brief queue of outstanding scroll requests
+			 *
+			 */
+			std::queue<tab_shared_types::direction_e> scrollRequestQueue;
 
 			/**
 			 * @brief Function: void tabScroll(const tab_shared_types::direction_e direction)
@@ -259,6 +303,15 @@ namespace tab_scroll_manager {
 			 * This function checks that the value of scrolling is within the allowed range defined by tab_scroll_manager::minScrollPercentage and tab_scroll_manager::maxScrollPercentage
 			 */
 			void checkScrollValue(const int & scroll, const QString direction) const;
+
+			/**
+			 * @brief Function: void canProcessRequests() const
+			 *
+			 * \return whether scroll requests can be processed
+			 *
+			 * This function check if scroll requests can be processed
+			 */
+			bool canProcessRequests() const;
 
 			// Move and copy constructor
 			/**
