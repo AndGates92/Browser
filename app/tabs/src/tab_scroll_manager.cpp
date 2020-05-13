@@ -44,6 +44,8 @@ void tab_scroll_manager::TabScrollManager::updateScrollPosition(const QPointF & 
 	this->scrollPosition = value;
 	this->updateVerticalScrollPercentage();
 	this->updateHorizontalScrollPercentage();
+
+	this->popRequestQueue();
 }
 
 void tab_scroll_manager::TabScrollManager::updateVerticalScrollPercentage() {
@@ -147,13 +149,14 @@ void tab_scroll_manager::TabScrollManager::tabScroll(const tab_shared_types::dir
 	}
 }
 
-void tab_scroll_manager::TabScrollManager::emptyRequestQueue() {
+void tab_scroll_manager::TabScrollManager::popRequestQueue() {
 	const tab::Tab * castedTab(dynamic_cast<tab::Tab *>(this->parentTab));
 	const tab_load_manager::TabLoadManager * loadManager(castedTab->getLoadManager());
 	const tab_shared_types::load_status_e & loadManagerStatus = loadManager->getStatus();
 
 	QEXCEPTION_ACTION_COND((this->canProcessRequests() == false), throw,  "Function " << __func__ << " cannot be called when load manager is in state " << loadManagerStatus << ". It can only be called if a page is not loading");
-	while(this->scrollRequestQueue.empty() == false) {
+
+	if ((this->scrollRequestQueue.empty() == false) && (this->canProcessRequests() == true)) {
 		this->tabScroll(this->scrollRequestQueue.front());
 		this->scrollRequestQueue.pop();
 	}
@@ -166,4 +169,3 @@ bool tab_scroll_manager::TabScrollManager::canProcessRequests() const {
 
 	return ((loadManagerStatus == tab_shared_types::load_status_e::FINISHED) || (loadManagerStatus == tab_shared_types::load_status_e::ERROR));
 }
-

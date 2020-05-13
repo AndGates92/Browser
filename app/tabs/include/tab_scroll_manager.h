@@ -172,11 +172,11 @@ namespace tab_scroll_manager {
 			tab::Tab * getTab() const;
 
 			/**
-			 * @brief Function: void emptyRequestQueue()
+			 * @brief Function: void popRequestQueue()
 			 *
 			 * This function empties the queue of scroll requests
 			 */
-			void emptyRequestQueue();
+			void popRequestQueue();
 
 		public slots:
 			/**

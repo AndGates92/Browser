@@ -68,14 +68,14 @@ void main_window_tab::MainWindowTab::connectSignals() {
 	QINFO_PRINT(global_types::qinfo_level_e::ZERO, mainWindowTabOverall,  "Connect signals from page of type " << tabType << " to load manager");
 	connect(page, &main_window_web_engine_page::MainWindowWebEnginePage::loadStarted, loadManager, &main_window_tab_load_manager::MainWindowTabLoadManager::startLoading);
 	connect(page, &main_window_web_engine_page::MainWindowWebEnginePage::loadProgress, loadManager, &main_window_tab_load_manager::MainWindowTabLoadManager::setProgress);
-//	connect(page, &main_window_web_engine_page::MainWindowWebEnginePage::loadFinished, loadManager, &main_window_tab_load_manager::MainWindowTabLoadManager::endLoading);
-
-	connect(page, &main_window_web_engine_page::MainWindowWebEnginePage::loadFinished, this, &main_window_tab::MainWindowTab::postprocessLoadFInished);
 
 	const main_window_tab_scroll_manager::MainWindowTabScrollManager * scrollManager = this->getScrollManager();
 	connect(page, &main_window_web_engine_page::MainWindowWebEnginePage::contentsSizeChanged, scrollManager, &main_window_tab_scroll_manager::MainWindowTabScrollManager::updateContentsSize);
 	connect(page, &main_window_web_engine_page::MainWindowWebEnginePage::scrollPositionChanged, scrollManager, &main_window_tab_scroll_manager::MainWindowTabScrollManager::updateScrollPosition);
 	connect(scrollManager, &main_window_tab_scroll_manager::MainWindowTabScrollManager::scrollRequest, page, &main_window_web_engine_page::MainWindowWebEnginePage::applyScrollRequest);
+
+	connect(page, &main_window_web_engine_page::MainWindowWebEnginePage::loadFinished, this, &main_window_tab::MainWindowTab::postprocessLoadFInished);
+
 }
 
 void main_window_tab::MainWindowTab::postprocessLoadFInished(const bool & success) {
@@ -84,5 +84,5 @@ void main_window_tab::MainWindowTab::postprocessLoadFInished(const bool & succes
 
 
 	main_window_tab_scroll_manager::MainWindowTabScrollManager * scrollManager = this->getScrollManager();
-	scrollManager->emptyRequestQueue();
+	scrollManager->popRequestQueue();
 }
