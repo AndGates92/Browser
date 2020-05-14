@@ -8,8 +8,6 @@
  * @brief Tab Scroll Manager header file
 */
 
-#include <queue>
-
 // Qt libraries
 // Required by qInfo
 #include <qt5/QtCore/QtDebug>
@@ -20,6 +18,7 @@
 #include <qt5/QtWidgets/QWidget>
 
 #include "global_types.h"
+#include "tab_component_widget.h"
 #include "tab_shared_types.h"
 #include "constructor_macros.h"
 
@@ -66,7 +65,7 @@ namespace tab_scroll_manager {
 	 * @brief TabScrollManager class
 	 *
 	 */
-	class TabScrollManager : public QWidget {
+	class TabScrollManager : public tab_component_widget::TabComponentWidget<tab_shared_types::direction_e> {
 
 		Q_OBJECT
 
@@ -172,11 +171,11 @@ namespace tab_scroll_manager {
 			tab::Tab * getTab() const;
 
 			/**
-			 * @brief Function: void popRequestQueue()
+			 * @brief Function: virtual void popRequestQueue() override
 			 *
 			 * This function empties the queue of scroll requests
 			 */
-			void popRequestQueue();
+			virtual void popRequestQueue() override;
 
 		public slots:
 			/**
@@ -280,10 +279,13 @@ namespace tab_scroll_manager {
 			QTabBar * bar;
 
 			/**
-			 * @brief queue of outstanding scroll requests
+			 * @brief Function: virtual void pushRequestQueue(const tab_shared_types::direction_e & entry) override
 			 *
+			 * \param entry: direction of scrolling
+			 *
+			 * This function pushes a new entry to the queue
 			 */
-			std::queue<tab_shared_types::direction_e> scrollRequestQueue;
+			virtual void pushRequestQueue(const tab_shared_types::direction_e & entry) override;
 
 			/**
 			 * @brief Function: void tabScroll(const tab_shared_types::direction_e direction)

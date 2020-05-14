@@ -8,7 +8,6 @@
 
 // Qt libraries
 #include <qt5/QtCore/QLoggingCategory>
-#include <qt5/QtGui/QKeyEvent>
 
 #include "logging_macros.h"
 #include "function_macros.h"
@@ -19,7 +18,7 @@
 // Categories
 Q_LOGGING_CATEGORY(tabScrollManagerOverall, "tabScrollManager.overall", MSG_TYPE_LEVEL)
 
-tab_scroll_manager::TabScrollManager::TabScrollManager(QWidget * parent, QWidget * browserTab, QWidget * tabBar): QWidget(parent), horizontalScroll(0), verticalScroll(0), scrollPosition(QPointF(0.0, 0.0)), contentsSize(QSizeF(0.0, 0.0)), parentTab(Q_NULLPTR), bar(dynamic_cast<QTabBar *>(tabBar)) {
+tab_scroll_manager::TabScrollManager::TabScrollManager(QWidget * parent, QWidget * browserTab, QWidget * tabBar): tab_component_widget::TabComponentWidget<tab_shared_types::direction_e>(parent), horizontalScroll(0), verticalScroll(0), scrollPosition(QPointF(0.0, 0.0)), contentsSize(QSizeF(0.0, 0.0)), parentTab(Q_NULLPTR), bar(dynamic_cast<QTabBar *>(tabBar)) {
 	QINFO_PRINT(global_types::qinfo_level_e::ZERO, tabScrollManagerOverall,  "TabScrollManager constructor");
 	this->setTab(dynamic_cast<tab::Tab *>(browserTab));
 }
@@ -145,8 +144,12 @@ void tab_scroll_manager::TabScrollManager::tabScroll(const tab_shared_types::dir
 
 		emit this->scrollRequest(xScroll, yScroll);
 	} else {
-		this->scrollRequestQueue.push(direction);
+		this->pushRequestQueue(direction);
 	}
+}
+
+void tab_scroll_manager::TabScrollManager::pushRequestQueue(const tab_shared_types::direction_e & direction) {
+	this->requestQueue.push(direction);
 }
 
 void tab_scroll_manager::TabScrollManager::popRequestQueue() {
@@ -156,9 +159,9 @@ void tab_scroll_manager::TabScrollManager::popRequestQueue() {
 
 	QEXCEPTION_ACTION_COND((this->canProcessRequests() == false), throw,  "Function " << __func__ << " cannot be called when load manager is in state " << loadManagerStatus << ". It can only be called if a page is not loading");
 
-	if ((this->scrollRequestQueue.empty() == false) && (this->canProcessRequests() == true)) {
-		this->tabScroll(this->scrollRequestQueue.front());
-		this->scrollRequestQueue.pop();
+	if ((this->requestQueue.empty() == false) && (this->canProcessRequests() == true)) {
+		this->tabScroll(this->requestQueue.front());
+		this->requestQueue.pop();
 	}
 }
 
