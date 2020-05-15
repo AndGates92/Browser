@@ -151,24 +151,6 @@ namespace tab_scroll_manager {
 			void scrollRight();
 
 			/**
-			 * @brief Function: void setTab(tab::Tab * tab)
-			 *
-			 * \param tab: tab the scroll manager belongs to
-			 *
-			 * This function sets the tab the scroll manager belongs to
-			 */
-			void setTab(tab::Tab * value);
-
-			/**
-			 * @brief Function: tab::Tab * getTab() const
-			 *
-			 * \return tab the scroll manager belongs to
-			 *
-			 * This function returns the tab the scroll manager belongs to
-			 */
-			tab::Tab * getTab() const;
-
-			/**
 			 * @brief Function: virtual void popRequestQueue() override
 			 *
 			 * This function empties the queue of scroll requests
@@ -265,12 +247,6 @@ namespace tab_scroll_manager {
 			QSizeF contentsSize;
 
 			/**
-			 * @brief tab the scroll manager belongs to
-			 *
-			 */
-			tab::Tab * parentTab;
-
-			/**
 			 * @brief tab bar the tab belong to
 			 *
 			 */
@@ -305,13 +281,13 @@ namespace tab_scroll_manager {
 			void checkScrollValue(const int & scroll, const QString direction) const;
 
 			/**
-			 * @brief Function: void canProcessRequests() const
+			 * @brief Function: virtual void canProcessRequests() const override
 			 *
 			 * \return whether find requests can be processed
 			 *
 			 * This function check if find requests can be processed
 			 */
-			bool canProcessRequests() const;
+			virtual bool canProcessRequests() const override;
 
 			// Move and copy constructor
 			/**

@@ -11,6 +11,7 @@
 #include <qt5/QtGui/QKeyEvent>
 
 #include "logging_macros.h"
+#include "function_macros.h"
 #include "main_window_tab.h"
 #include "main_window_tab_scroll_manager.h"
 
@@ -27,14 +28,4 @@ main_window_tab_scroll_manager::MainWindowTabScrollManager::~MainWindowTabScroll
 
 }
 
-//CASTED_PTR_GETTER(main_window_tab_scroll_manager::MainWindowTabScrollManager::getTab, main_window_tab::MainWindowTab, tab_scroll_manager::TabScrollManager::getTab())
-
-main_window_tab::MainWindowTab * main_window_tab_scroll_manager::MainWindowTabScrollManager::getTab() const {
-	try {
-	main_window_tab::MainWindowTab * dada = dynamic_cast<main_window_tab::MainWindowTab *>(tab_scroll_manager::TabScrollManager::getTab());
-	return dada;
-	} catch (const std::bad_cast & badCastE) {
-		QEXCEPTION_ACTION(throw, badCastE.what()); 
-	} 
-	return nullptr; 
-}
+CASTED_PTR_GETTER(main_window_tab_scroll_manager::MainWindowTabScrollManager::getTab, main_window_tab::MainWindowTab, tab_scroll_manager::TabScrollManager::getTab())

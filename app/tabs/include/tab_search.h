@@ -90,12 +90,6 @@ namespace tab_search {
 
 		protected:
 			/**
-			 * @brief tab attached to the web search instance
-			 *
-			 */
-			QWidget * tab;
-
-			/**
 			 * @brief text to search
 			 *
 			 */
@@ -131,13 +125,13 @@ namespace tab_search {
 			virtual void pushRequestQueue(const QWebEnginePage::FindFlags & entry) override;
 
 			/**
-			 * @brief Function: void canProcessRequests() const
+			 * @brief Function: virtual void canProcessRequests() const override
 			 *
 			 * \return whether scroll requests can be processed
 			 *
 			 * This function check if scroll requests can be processed
 			 */
-			bool canProcessRequests() const;
+			virtual bool canProcessRequests() const override;
 
 			// Move and copy constructor
 			/**

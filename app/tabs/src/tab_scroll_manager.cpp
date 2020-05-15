@@ -18,7 +18,7 @@
 // Categories
 Q_LOGGING_CATEGORY(tabScrollManagerOverall, "tabScrollManager.overall", MSG_TYPE_LEVEL)
 
-tab_scroll_manager::TabScrollManager::TabScrollManager(QWidget * parent, QWidget * browserTab, QWidget * tabBar): tab_component_widget::TabComponentWidget<tab_shared_types::direction_e>(parent), horizontalScroll(0), verticalScroll(0), scrollPosition(QPointF(0.0, 0.0)), contentsSize(QSizeF(0.0, 0.0)), parentTab(Q_NULLPTR), bar(dynamic_cast<QTabBar *>(tabBar)) {
+tab_scroll_manager::TabScrollManager::TabScrollManager(QWidget * parent, QWidget * browserTab, QWidget * tabBar): tab_component_widget::TabComponentWidget<tab_shared_types::direction_e>(parent, browserTab), horizontalScroll(0), verticalScroll(0), scrollPosition(QPointF(0.0, 0.0)), contentsSize(QSizeF(0.0, 0.0)), bar(dynamic_cast<QTabBar *>(tabBar)) {
 	QINFO_PRINT(global_types::qinfo_level_e::ZERO, tabScrollManagerOverall,  "TabScrollManager constructor");
 	this->setTab(dynamic_cast<tab::Tab *>(browserTab));
 }
@@ -26,8 +26,6 @@ tab_scroll_manager::TabScrollManager::TabScrollManager(QWidget * parent, QWidget
 tab_scroll_manager::TabScrollManager::~TabScrollManager() {
 	QINFO_PRINT(global_types::qinfo_level_e::ZERO, tabScrollManagerOverall,  "TabScrollManager destructor");
 }
-
-PTR_SETTER_GETTER(tab_scroll_manager::TabScrollManager::setTab, tab_scroll_manager::TabScrollManager::getTab, tab::Tab, this->parentTab)
 
 CONST_GETTER(tab_scroll_manager::TabScrollManager::getContentsSize, QSizeF &, this->contentsSize)
 
@@ -153,7 +151,7 @@ void tab_scroll_manager::TabScrollManager::pushRequestQueue(const tab_shared_typ
 }
 
 void tab_scroll_manager::TabScrollManager::popRequestQueue() {
-	const tab::Tab * castedTab(dynamic_cast<tab::Tab *>(this->parentTab));
+	const tab::Tab * castedTab(this->getTab());
 	const tab_load_manager::TabLoadManager * loadManager(castedTab->getLoadManager());
 	const tab_shared_types::load_status_e & loadManagerStatus = loadManager->getStatus();
 
@@ -166,7 +164,7 @@ void tab_scroll_manager::TabScrollManager::popRequestQueue() {
 }
 
 bool tab_scroll_manager::TabScrollManager::canProcessRequests() const {
-	const tab::Tab * castedTab(dynamic_cast<tab::Tab *>(this->parentTab));
+	const tab::Tab * castedTab(this->getTab());
 	const tab_load_manager::TabLoadManager * loadManager(castedTab->getLoadManager());
 	const tab_shared_types::load_status_e & loadManagerStatus = loadManager->getStatus();
 

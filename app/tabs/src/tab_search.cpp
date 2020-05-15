@@ -22,7 +22,7 @@
 Q_LOGGING_CATEGORY(tabSearchOverall, "tabSearch.overall", MSG_TYPE_LEVEL)
 Q_LOGGING_CATEGORY(tabSearchFind, "tabSearch.find", MSG_TYPE_LEVEL)
 
-tab_search::TabSearch::TabSearch(QWidget * parent, QWidget * attachedTab): tab_component_widget::TabComponentWidget<QWebEnginePage::FindFlags>(parent), tab(attachedTab), text(QString::null), flags(QWebEnginePage::FindFlag(0)) {
+tab_search::TabSearch::TabSearch(QWidget * parent, QWidget * attachedTab): tab_component_widget::TabComponentWidget<QWebEnginePage::FindFlags>(parent, attachedTab), text(QString::null), flags(QWebEnginePage::FindFlag(0)) {
 	QINFO_PRINT(global_types::qinfo_level_e::ZERO, tabSearchOverall,  "Tab search constructor");
 }
 
@@ -59,7 +59,7 @@ void tab_search::TabSearch::search() {
 
 	if (this->canProcessRequests() == true) {
 		try {
-			tab::Tab * currentTab = dynamic_cast<tab::Tab *>(this->tab);
+			tab::Tab * currentTab = this->getTab();
 			web_engine_view::WebEngineView * currentTabView = currentTab->getView();
 			web_engine_page::WebEnginePage * currentTabPage = currentTabView->page();
 
@@ -96,7 +96,7 @@ void tab_search::TabSearch::findPrev() {
 }
 
 bool tab_search::TabSearch::canProcessRequests() const {
-	const tab::Tab * castedTab(dynamic_cast<tab::Tab *>(this->tab));
+	const tab::Tab * castedTab(this->getTab());
 	const tab_load_manager::TabLoadManager * loadManager(castedTab->getLoadManager());
 	const tab_shared_types::load_status_e & loadManagerStatus = loadManager->getStatus();
 
@@ -108,7 +108,7 @@ void tab_search::TabSearch::pushRequestQueue(const QWebEnginePage::FindFlags & d
 }
 
 void tab_search::TabSearch::popRequestQueue() {
-	const tab::Tab * castedTab(dynamic_cast<tab::Tab *>(this->tab));
+	const tab::Tab * castedTab(this->getTab());
 	const tab_load_manager::TabLoadManager * loadManager(castedTab->getLoadManager());
 	const tab_shared_types::load_status_e & loadManagerStatus = loadManager->getStatus();
 
