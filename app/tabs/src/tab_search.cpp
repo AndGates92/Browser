@@ -22,7 +22,7 @@
 Q_LOGGING_CATEGORY(tabSearchOverall, "tabSearch.overall", MSG_TYPE_LEVEL)
 Q_LOGGING_CATEGORY(tabSearchFind, "tabSearch.find", MSG_TYPE_LEVEL)
 
-tab_search::TabSearch::TabSearch(QObject * parent, QWidget * attachedTab): QObject(parent), tab(attachedTab), text(QString::null), flags(QWebEnginePage::FindFlag(0)) {
+tab_search::TabSearch::TabSearch(QWidget * parent, QWidget * attachedTab): tab_component_widget::TabComponentWidget<QWebEnginePage::FindFlags>(parent), tab(attachedTab), text(QString::null), flags(QWebEnginePage::FindFlag(0)) {
 	QINFO_PRINT(global_types::qinfo_level_e::ZERO, tabSearchOverall,  "Tab search constructor");
 }
 
@@ -57,23 +57,28 @@ void tab_search::TabSearch::findTabContent(const QString & searchText, const boo
 
 void tab_search::TabSearch::search() {
 
-	try {
-		tab::Tab * currentTab = dynamic_cast<tab::Tab *>(this->tab);
-		web_engine_view::WebEngineView * currentTabView = currentTab->getView();
-		web_engine_page::WebEnginePage * currentTabPage = currentTabView->page();
+	if (this->canProcessRequests() == true) {
+		try {
+			tab::Tab * currentTab = dynamic_cast<tab::Tab *>(this->tab);
+			web_engine_view::WebEngineView * currentTabView = currentTab->getView();
+			web_engine_page::WebEnginePage * currentTabPage = currentTabView->page();
 
-		currentTabPage->findText(this->text, this->flags,
-			[=](bool found) {
-				if (this->callback) {
-					this->callback(found);
+			currentTabPage->findText(this->text, this->flags,
+				[=](bool found) {
+					if (this->callback) {
+						this->callback(found);
+					}
 				}
-			}
-		);
+			);
+		} catch (const std::bad_cast & badCastE) {
+			QEXCEPTION_ACTION(throw, badCastE.what());
+		}
 
-	} catch (const std::bad_cast & badCastE) {
-		QEXCEPTION_ACTION(throw, badCastE.what());
+		this->popRequestQueue();
+
+	} else {
+		this->pushRequestQueue(this->flags);
 	}
-
 }
 
 void tab_search::TabSearch::findNext() {
@@ -88,4 +93,35 @@ void tab_search::TabSearch::findPrev() {
 	this->flags |= QWebEnginePage::FindBackward;
 
 	this->search();
+}
+
+bool tab_search::TabSearch::canProcessRequests() const {
+	const tab::Tab * castedTab(dynamic_cast<tab::Tab *>(this->tab));
+	const tab_load_manager::TabLoadManager * loadManager(castedTab->getLoadManager());
+	const tab_shared_types::load_status_e & loadManagerStatus = loadManager->getStatus();
+
+	return ((loadManagerStatus == tab_shared_types::load_status_e::FINISHED) || (loadManagerStatus == tab_shared_types::load_status_e::ERROR));
+}
+
+void tab_search::TabSearch::pushRequestQueue(const QWebEnginePage::FindFlags & direction) {
+	this->requestQueue.push(direction);
+}
+
+void tab_search::TabSearch::popRequestQueue() {
+	const tab::Tab * castedTab(dynamic_cast<tab::Tab *>(this->tab));
+	const tab_load_manager::TabLoadManager * loadManager(castedTab->getLoadManager());
+	const tab_shared_types::load_status_e & loadManagerStatus = loadManager->getStatus();
+
+	QEXCEPTION_ACTION_COND((this->canProcessRequests() == false), throw,  "Function " << __func__ << " cannot be called when load manager is in state " << loadManagerStatus << ". It can only be called if a page is not loading");
+
+	if ((this->requestQueue.empty() == false) && (this->canProcessRequests() == true)) {
+		QWebEnginePage::FindFlags searchFlag = this->requestQueue.front();
+
+		bool reverseSearch = (searchFlag & QWebEnginePage::FindBackward);
+		bool caseSensitive = (searchFlag & QWebEnginePage::FindCaseSensitively);
+
+		this->findTabContent(this->text, reverseSearch, caseSensitive, nullptr);
+
+		this->requestQueue.pop();
+	}
 }

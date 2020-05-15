@@ -20,7 +20,7 @@
 Q_LOGGING_CATEGORY(mainWindowTabSearchOverall, "mainWindowTabSearch.overall", MSG_TYPE_LEVEL)
 Q_LOGGING_CATEGORY(mainWindowTabSearchFind, "mainWindowTabSearch.find", MSG_TYPE_LEVEL)
 
-main_window_tab_search::MainWindowTabSearch::MainWindowTabSearch(QObject * parent, QWidget * attachedTab): tab_search::TabSearch(parent, attachedTab) {
+main_window_tab_search::MainWindowTabSearch::MainWindowTabSearch(QWidget * parent, QWidget * attachedTab): tab_search::TabSearch(parent, attachedTab) {
 	QINFO_PRINT(global_types::qinfo_level_e::ZERO, mainWindowTabSearchOverall,  "Tab search constructor");
 
 }

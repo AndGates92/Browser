@@ -93,6 +93,7 @@ template<typename type>
 tab_component_widget::TabComponentWidget<type>::TabComponentWidget(QWidget * parent): QWidget(parent) {
 	QINFO_PRINT(global_types::qinfo_level_e::ZERO, tabComponentWidgetOverall,  "TabComponentWidget constructor");
 
+	this->setVisible(false);
 }
 
 template<typename type>

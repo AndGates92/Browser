@@ -15,8 +15,6 @@
 #include <qt5/QtCore/QLoggingCategory>
 #include <qt5/QtWidgets/QTabBar>
 
-#include <qt5/QtWidgets/QWidget>
-
 #include "global_types.h"
 #include "tab_component_widget.h"
 #include "tab_shared_types.h"
@@ -309,9 +307,9 @@ namespace tab_scroll_manager {
 			/**
 			 * @brief Function: void canProcessRequests() const
 			 *
-			 * \return whether scroll requests can be processed
+			 * \return whether find requests can be processed
 			 *
-			 * This function check if scroll requests can be processed
+			 * This function check if find requests can be processed
 			 */
 			bool canProcessRequests() const;
 

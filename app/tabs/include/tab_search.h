@@ -18,6 +18,7 @@
 #include <qt5/QtWebEngineWidgets/QWebEnginePage>
 
 #include "global_types.h"
+#include "tab_component_widget.h"
 #include "constructor_macros.h"
 
 /** @defgroup TabSearchGroup Tab Search Doxygen Group
@@ -34,7 +35,7 @@ namespace tab_search {
 	 * @brief TabSearch class
 	 *
 	 */
-	class TabSearch : public QObject {
+	class TabSearch : public tab_component_widget::TabComponentWidget<QWebEnginePage::FindFlags> {
 
 		public:
 			/**
@@ -45,7 +46,7 @@ namespace tab_search {
 			 *
 			 * Tab search constructor
 			 */
-			explicit TabSearch(QObject * parent, QWidget * attachedTab);
+			explicit TabSearch(QWidget * parent, QWidget * attachedTab);
 
 			/**
 			 * @brief Function: virtual ~TabSearch()
@@ -80,6 +81,13 @@ namespace tab_search {
 			 */
 			virtual void findTabContent(const QString & searchText, const bool & reverse, const bool & caseSensitive, std::function<void(bool)> cb = std::function<void(bool)>()) final;
 
+			/**
+			 * @brief Function: virtual void popRequestQueue() override
+			 *
+			 * This function empties the queue of scroll requests
+			 */
+			virtual void popRequestQueue() override;
+
 		protected:
 			/**
 			 * @brief tab attached to the web search instance
@@ -106,19 +114,37 @@ namespace tab_search {
 			std::function<void(bool)> callback;
 
 		private:
-			// Move and copy constructor
-			/**
-			 * @brief Disable move and copy constructors and operator= overloading for class TabSearch
-			 *
-			 */
-			DISABLE_COPY_MOVE(TabSearch)
-
 			/**
 			 * @brief Function: virtual void search() final
 			 *
 			 * This function searches text in a webpage
 			 */
 			virtual void search() final;
+
+			/**
+			 * @brief Function: virtual void pushRequestQueue(const QWebEnginePage::FindFlags & entry) override
+			 *
+			 * \param entry: search flags
+			 *
+			 * This function pushes a new entry to the queue
+			 */
+			virtual void pushRequestQueue(const QWebEnginePage::FindFlags & entry) override;
+
+			/**
+			 * @brief Function: void canProcessRequests() const
+			 *
+			 * \return whether scroll requests can be processed
+			 *
+			 * This function check if scroll requests can be processed
+			 */
+			bool canProcessRequests() const;
+
+			// Move and copy constructor
+			/**
+			 * @brief Disable move and copy constructors and operator= overloading for class TabSearch
+			 *
+			 */
+			DISABLE_COPY_MOVE(TabSearch)
 
 	};
 }

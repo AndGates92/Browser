@@ -82,7 +82,9 @@ void main_window_tab::MainWindowTab::postprocessLoadFInished(const bool & succes
 	main_window_tab_load_manager::MainWindowTabLoadManager * loadManager = this->getLoadManager();
 	loadManager->endLoading(success);
 
-
 	main_window_tab_scroll_manager::MainWindowTabScrollManager * scrollManager = this->getScrollManager();
 	scrollManager->popRequestQueue();
+
+	main_window_tab_search::MainWindowTabSearch * tabSearch = this->getSearch();
+	tabSearch->popRequestQueue();
 }

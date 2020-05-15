@@ -37,14 +37,14 @@ namespace main_window_tab_search {
 
 		public:
 			/**
-			 * @brief Function: explicit MainWindowTabSearch(QObject * parent, QWidget * attachedTab)
+			 * @brief Function: explicit MainWindowTabSearch(QWidget * parent, QWidget * attachedTab)
 			 *
 			 * \param profile: profile of the search
 			 * \param parent: parent widget
 			 *
 			 * Main window web engine search constructor
 			 */
-			explicit MainWindowTabSearch(QObject * parent, QWidget * attachedTab);
+			explicit MainWindowTabSearch(QWidget * parent, QWidget * attachedTab);
 
 			/**
 			 * @brief Function: virtual ~MainWindowTabSearch()
