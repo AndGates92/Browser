@@ -30,7 +30,7 @@ namespace main_window_page_data {
 	 * @brief MainWindowPageData class
 	 *
 	 */
-	class MainWindowPageData {
+	class MainWindowPageData final {
 		friend class main_window_web_engine_page::MainWindowWebEnginePage;
 
 		public:
@@ -171,6 +171,27 @@ namespace main_window_page_data {
 			 */
 			const QString qprint() const;
 
+		protected:
+
+		private:
+			/**
+			 * @brief page type
+			 *
+			 */
+			main_window_shared_types::page_type_e type;
+
+			/**
+			 * @brief source of the content of the page
+			 *
+			 */
+			std::string source;
+
+			/**
+			 * @brief data pointer
+			 *
+			 */
+			const void * data;
+
 			/**
 			 * @brief Function: const std::string getSource() const
 			 *
@@ -227,26 +248,6 @@ namespace main_window_page_data {
 			 */
 			void setData(const void * value);
 
-		protected:
-
-		private:
-			/**
-			 * @brief page type
-			 *
-			 */
-			main_window_shared_types::page_type_e type;
-
-			/**
-			 * @brief source of the content of the page
-			 *
-			 */
-			std::string source;
-
-			/**
-			 * @brief data pointer
-			 *
-			 */
-			const void * data;
 	};
 
 }
