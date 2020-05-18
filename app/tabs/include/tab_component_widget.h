@@ -164,7 +164,7 @@ void tab_component_widget::TabComponentWidget<type>::setTab(QWidget * newTab) {
 }
 
 template<typename type>
-PTR_SETTER(tab_component_widget::TabComponentWidget<type>::getTab, tab::Tab, this->browserTab)
+PTR_SETTER(tab_component_widget::TabComponentWidget<type>::setTab, tab::Tab, this->browserTab)
 
 template<typename type>
 PTR_GETTER(tab_component_widget::TabComponentWidget<type>::getTab, tab::Tab, this->browserTab)

@@ -27,6 +27,10 @@
 Q_DECLARE_LOGGING_CATEGORY(mainWindowTabSearchOverall)
 Q_DECLARE_LOGGING_CATEGORY(mainWindowTabSearchFind)
 
+namespace main_window_tab {
+	class MainWindowTab;
+}
+
 namespace main_window_tab_search {
 
 	/**
@@ -34,6 +38,7 @@ namespace main_window_tab_search {
 	 *
 	 */
 	class MainWindowTabSearch final : public tab_search::TabSearch {
+		friend class main_window_tab::MainWindowTab;
 
 		public:
 			/**

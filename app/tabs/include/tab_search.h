@@ -29,6 +29,10 @@
 Q_DECLARE_LOGGING_CATEGORY(tabSearchOverall)
 Q_DECLARE_LOGGING_CATEGORY(tabSearchFind)
 
+namespace tab {
+	class Tab;
+}
+
 namespace tab_search {
 
 	/**
@@ -36,6 +40,7 @@ namespace tab_search {
 	 *
 	 */
 	class TabSearch : public tab_component_widget::TabComponentWidget<QWebEnginePage::FindFlags> {
+		friend class tab::Tab;
 
 		public:
 			/**
@@ -54,6 +59,25 @@ namespace tab_search {
 			 * Tab search destructor
 			 */
 			virtual ~TabSearch();
+
+		protected:
+			/**
+			 * @brief text to search
+			 *
+			 */
+			QString text;
+
+			/**
+			 * @brief search flags
+			 *
+			 */
+			QWebEnginePage::FindFlags flags;
+
+			/**
+			 * @brief callback
+			 *
+			 */
+			std::function<void(bool)> callback;
 
 			/**
 			 * @brief Function: virtual void findPrev() final
@@ -87,25 +111,6 @@ namespace tab_search {
 			 * This function empties the queue of scroll requests
 			 */
 			virtual void popRequestQueue() override;
-
-		protected:
-			/**
-			 * @brief text to search
-			 *
-			 */
-			QString text;
-
-			/**
-			 * @brief search flags
-			 *
-			 */
-			QWebEnginePage::FindFlags flags;
-
-			/**
-			 * @brief callback
-			 *
-			 */
-			std::function<void(bool)> callback;
 
 		private:
 			/**

@@ -37,7 +37,8 @@ namespace main_window_tab_scroll_manager {
 	 * @brief MainWindowTabScrollManager class
 	 *
 	 */
-	class MainWindowTabScrollManager : public tab_scroll_manager::TabScrollManager {
+	class MainWindowTabScrollManager final : public tab_scroll_manager::TabScrollManager {
+		friend class main_window_tab::MainWindowTab;
 
 		public:
 			/**

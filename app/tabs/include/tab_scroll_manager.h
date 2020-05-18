@@ -64,6 +64,7 @@ namespace tab_scroll_manager {
 	 *
 	 */
 	class TabScrollManager : public tab_component_widget::TabComponentWidget<tab_shared_types::direction_e> {
+		friend class tab::Tab;
 
 		Q_OBJECT
 
@@ -122,60 +123,6 @@ namespace tab_scroll_manager {
 			 */
 			const int & getVerticalScrollPercentage() const;
 
-			/**
-			 * @brief Function: void scrollUp()
-			 *
-			 * This function request the scroll manager to scroll up
-			 */
-			void scrollUp();
-
-			/**
-			 * @brief Function: void scrollDown()
-			 *
-			 * This function request the scroll manager to scroll down
-			 */
-			void scrollDown();
-
-			/**
-			 * @brief Function: void scrollLeft()
-			 *
-			 * This function request the scroll manager to scroll left
-			 */
-			void scrollLeft();
-
-			/**
-			 * @brief Function: void scrollRight()
-			 *
-			 * This function request the scroll manager to scroll right
-			 */
-			void scrollRight();
-
-			/**
-			 * @brief Function: virtual void popRequestQueue() override
-			 *
-			 * This function empties the queue of scroll requests
-			 */
-			virtual void popRequestQueue() override;
-
-		public slots:
-			/**
-			 * @brief Function: void updateContentsSize(const QSizeF & value)
-			 *
-			 * \param value: size of the content
-			 *
-			 * This function sets the size of the content
-			 */
-			void updateContentsSize(const QSizeF & value);
-
-			/**
-			 * @brief Function: void updateScrollPosition(const QPointF & value)
-			 *
-			 * \param value: position of the scrolling
-			 *
-			 * This function sets the position of the scrolling
-			 */
-			void updateScrollPosition(const QPointF & value);
-
 		signals:
 			/**
 			 * @brief Function: void verticalScrollChanged(const int & vScroll)
@@ -232,6 +179,61 @@ namespace tab_scroll_manager {
 			 * This function computes the percentage of the position of the vertical scrolling
 			 */
 			void updateVerticalScrollPercentage();
+
+			/**
+			 * @brief Function: void scrollUp()
+			 *
+			 * This function request the scroll manager to scroll up
+			 */
+			void scrollUp();
+
+			/**
+			 * @brief Function: void scrollDown()
+			 *
+			 * This function request the scroll manager to scroll down
+			 */
+			void scrollDown();
+
+			/**
+			 * @brief Function: void scrollLeft()
+			 *
+			 * This function request the scroll manager to scroll left
+			 */
+			void scrollLeft();
+
+			/**
+			 * @brief Function: void scrollRight()
+			 *
+			 * This function request the scroll manager to scroll right
+			 */
+			void scrollRight();
+
+			/**
+			 * @brief Function: virtual void popRequestQueue() override
+			 *
+			 * This function empties the queue of scroll requests
+			 */
+			virtual void popRequestQueue() override;
+
+		protected slots:
+			/**
+			 * @brief Function: void updateContentsSize(const QSizeF & value)
+			 *
+			 * \param value: size of the content
+			 *
+			 * This function sets the size of the content
+			 */
+			void updateContentsSize(const QSizeF & value);
+
+			/**
+			 * @brief Function: void updateScrollPosition(const QPointF & value)
+			 *
+			 * \param value: position of the scrolling
+			 *
+			 * This function sets the position of the scrolling
+			 */
+			void updateScrollPosition(const QPointF & value);
+
 
 		private:
 			/**

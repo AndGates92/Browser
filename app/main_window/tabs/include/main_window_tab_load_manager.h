@@ -27,6 +27,10 @@
 
 Q_DECLARE_LOGGING_CATEGORY(mainWindowTabLoadManagerOverall)
 
+namespace main_window_tab {
+	class MainWindowTab;
+}
+
 namespace main_window_tab_load_manager {
 
 	/**
@@ -34,6 +38,7 @@ namespace main_window_tab_load_manager {
 	 *
 	 */
 	class MainWindowTabLoadManager : public tab_load_manager::TabLoadManager {
+		friend class main_window_tab::MainWindowTab;
 
 		public:
 			/**

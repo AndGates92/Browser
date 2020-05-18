@@ -28,6 +28,10 @@
 Q_DECLARE_LOGGING_CATEGORY(tabLoadManagerOverall)
 Q_DECLARE_LOGGING_CATEGORY(tabLoadManagerStatus)
 
+namespace tab {
+	class Tab;
+}
+
 namespace tab_load_manager {
 
 	/**
@@ -35,6 +39,7 @@ namespace tab_load_manager {
 	 *
 	 */
 	class TabLoadManager : public QWidget {
+		friend class tab::Tab;
 
 		Q_OBJECT
 
@@ -73,32 +78,6 @@ namespace tab_load_manager {
 			 */
 			tab_shared_types::load_status_e getStatus() const;
 
-		public slots:
-			/**
-			 * @brief Function: void startLoading()
-			 *
-			 * This function sets progress to 0
-			 */
-			void startLoading();
-
-			/**
-			 * @brief Function: void setProgress(const int & value)
-			 *
-			 * \param value: value of the progress
-			 *
-			 * This function sets progress to value provided as argument
-			 */
-			void setProgress(const int & value);
-
-			/**
-			 * @brief Function: void endLoading(const bool & success)
-			 *
-			 * \param success: boolean storing the information of weather the load was successful or not
-			 *
-			 * This function ends loading
-			 */
-			void endLoading(const bool & success);
-
 		signals:
 			/**
 			 * @brief Function: void progressChanged(int value)
@@ -130,6 +109,31 @@ namespace tab_load_manager {
 			 *
 			 */
 			int progress;
+
+			/**
+			 * @brief Function: void startLoading()
+			 *
+			 * This function sets progress to 0
+			 */
+			void startLoading();
+
+			/**
+			 * @brief Function: void setProgress(const int & value)
+			 *
+			 * \param value: value of the progress
+			 *
+			 * This function sets progress to value provided as argument
+			 */
+			void setProgress(const int & value);
+
+			/**
+			 * @brief Function: void endLoading(const bool & success)
+			 *
+			 * \param success: boolean storing the information of weather the load was successful or not
+			 *
+			 * This function ends loading
+			 */
+			void endLoading(const bool & success);
 
 		private:
 			/**
