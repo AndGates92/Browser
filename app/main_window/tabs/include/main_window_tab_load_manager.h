@@ -37,7 +37,7 @@ namespace main_window_tab_load_manager {
 	 * @brief MainWindowTabLoadManager class
 	 *
 	 */
-	class MainWindowTabLoadManager : public tab_load_manager::TabLoadManager {
+	class MainWindowTabLoadManager final : public tab_load_manager::TabLoadManager {
 		friend class main_window_tab::MainWindowTab;
 
 		public:
