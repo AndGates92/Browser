@@ -18,7 +18,7 @@
 // Categories
 Q_LOGGING_CATEGORY(mainWindowStatusBarOverall, "mainWindowStatusBar.overall", MSG_TYPE_LEVEL)
 
-main_window_status_bar::MainWindowStatusBar::MainWindowStatusBar(QWidget * parent, Qt::WindowFlags flags) : QWidget(parent, flags), userInputText(this->newWindowLabel()), contentPathText(this->newWindowLabel()), scroll(this->newWindowLabel()), infoText(this->newWindowLabel()), loadBar(this->newProgressBar()) {
+main_window_status_bar::MainWindowStatusBar::MainWindowStatusBar(QWidget * parent, Qt::WindowFlags flags) : QWidget(parent, flags), userInput(this->newWindowLabel()), contentPath(this->newWindowLabel()), scroll(this->newWindowLabel()), info(this->newWindowLabel()), loadBar(this->newProgressBar()) {
 
 	QINFO_PRINT(global_types::qinfo_level_e::ZERO, mainWindowStatusBarOverall,  "Main window status bar constructor");
 
@@ -26,20 +26,20 @@ main_window_status_bar::MainWindowStatusBar::MainWindowStatusBar(QWidget * paren
 
 	this->setStyleSheet(
 		"QWidget {"
-			"background-color: black; "
+			"background-color: black;"
 		"}"
 	);
 
 	// user input
-	this->userInputText->setAlignment(Qt::AlignLeft | Qt::AlignBottom);
+	this->userInput->setAlignment(Qt::AlignLeft | Qt::AlignBottom);
 
 	// path to the content
-	this->contentPathText->setAlignment(Qt::AlignRight | Qt::AlignBottom);
-	this->contentPathText->setSizePolicy(QSizePolicy::Fixed, QSizePolicy::Fixed);
+	this->contentPath->setAlignment(Qt::AlignRight | Qt::AlignBottom);
+	this->contentPath->setSizePolicy(QSizePolicy::Fixed, QSizePolicy::Fixed);
 
 	// info
-	this->infoText->setAlignment(Qt::AlignRight | Qt::AlignBottom);
-	this->infoText->setSizePolicy(QSizePolicy::Fixed, QSizePolicy::Fixed);
+	this->info->setAlignment(Qt::AlignRight | Qt::AlignBottom);
+	this->info->setSizePolicy(QSizePolicy::Fixed, QSizePolicy::Fixed);
 
 	// scroll
 	this->scroll->setAlignment(Qt::AlignRight | Qt::AlignBottom);
@@ -55,17 +55,17 @@ main_window_status_bar::MainWindowStatusBar::MainWindowStatusBar(QWidget * paren
 main_window_status_bar::MainWindowStatusBar::~MainWindowStatusBar() {
 	QINFO_PRINT(global_types::qinfo_level_e::ZERO, mainWindowStatusBarOverall,  "Main window status bar destructor");
 
-	if (this->userInputText != Q_NULLPTR) {
-		delete this->userInputText;
+	if (this->userInput != Q_NULLPTR) {
+		delete this->userInput;
 	}
-	if (this->contentPathText != Q_NULLPTR) {
-		delete this->contentPathText;
+	if (this->contentPath != Q_NULLPTR) {
+		delete this->contentPath;
 	}
 	if (this->scroll != Q_NULLPTR) {
 		delete this->scroll;
 	}
-	if (this->infoText != Q_NULLPTR) {
-		delete this->infoText;
+	if (this->info != Q_NULLPTR) {
+		delete this->info;
 	}
 	if (this->loadBar != Q_NULLPTR) {
 		delete this->loadBar;
@@ -141,16 +141,16 @@ void main_window_status_bar::MainWindowStatusBar::fillStatusBar() {
 	QHBoxLayout * layout = new QHBoxLayout(this);
 
 	// user input text
-	layout->addWidget(this->userInputText);
+	layout->addWidget(this->userInput);
 
 	// path to the content
-	layout->addWidget(this->contentPathText);
+	layout->addWidget(this->contentPath);
 
 	// scroll
 	layout->addWidget(this->scroll);
 
 	// info
-	layout->addWidget(this->infoText);
+	layout->addWidget(this->info);
 
 	// load bar
 	layout->addWidget(this->loadBar);
@@ -161,10 +161,10 @@ void main_window_status_bar::MainWindowStatusBar::fillStatusBar() {
 	this->setLayout(layout);
 }
 
-PTR_GETTER(main_window_status_bar::MainWindowStatusBar::getUserInputText, elided_label::ElidedLabel, this->userInputText)
-PTR_GETTER(main_window_status_bar::MainWindowStatusBar::getContentPathText, elided_label::ElidedLabel, this->contentPathText)
+PTR_GETTER(main_window_status_bar::MainWindowStatusBar::getUserInput, elided_label::ElidedLabel, this->userInput)
+PTR_GETTER(main_window_status_bar::MainWindowStatusBar::getContentPath, elided_label::ElidedLabel, this->contentPath)
 PTR_GETTER(main_window_status_bar::MainWindowStatusBar::getScroll, elided_label::ElidedLabel, this->scroll)
-PTR_GETTER(main_window_status_bar::MainWindowStatusBar::getInfoText, elided_label::ElidedLabel, this->infoText)
+PTR_GETTER(main_window_status_bar::MainWindowStatusBar::getInfo, elided_label::ElidedLabel, this->info)
 PTR_GETTER(main_window_status_bar::MainWindowStatusBar::getLoadBar, progress_bar::ProgressBar, this->loadBar)
 
 QSize main_window_status_bar::MainWindowStatusBar::minimumSizeHint() const {

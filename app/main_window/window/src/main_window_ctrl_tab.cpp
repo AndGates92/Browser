@@ -54,7 +54,7 @@ void main_window_ctrl_tab::MainWindowCtrlTab::connectExtraSignals() {
 	// When the file has been read, then show it on the screen
 	connect(this->windowCore->topMenuBar->getFileMenu(), &file_menu::FileMenu::updateCenterWindowSignal, this->windowCore->tabs, &main_window_tab_widget::MainWindowTabWidget::openFileInCurrentTab);
 
-	connect(this, &main_window_ctrl_tab::MainWindowCtrlTab::currentTabSrcChanged, this->windowCore->bottomStatusBar->getContentPathText(), &elided_label::ElidedLabel::setText);
+	connect(this, &main_window_ctrl_tab::MainWindowCtrlTab::currentTabSrcChanged, this->windowCore->bottomStatusBar->getContentPath(), &elided_label::ElidedLabel::setText);
 
 	// Updates to the window depending on changes in tabs
 	connect(this->windowCore->tabs, &main_window_tab_widget::MainWindowTabWidget::tabSourceChanged, this, &main_window_ctrl_tab::MainWindowCtrlTab::createContentPathTextFromSource);

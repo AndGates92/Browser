@@ -95,22 +95,22 @@ namespace main_window_status_bar {
 			~MainWindowStatusBar();
 
 			/**
-			 * Function: elided_label::ElidedLabel * getUserInputText() const
+			 * Function: elided_label::ElidedLabel * getUserInput() const
 			 *
 			 * \return the label containing the text typed by the user
 			 *
 			 * This function returns the label storing the text typed by the user
 			 */
-			elided_label::ElidedLabel * getUserInputText() const;
+			elided_label::ElidedLabel * getUserInput() const;
 
 			/**
-			 * Function: elided_label::ElidedLabel * getContentPathText() const
+			 * Function: elided_label::ElidedLabel * getContentPath() const
 			 *
 			 * \return the label containing the path to the content (i.e. website URL or file path)
 			 *
 			 * This function returns the label storing the path to the content (i.e. website URL or file path)
 			 */
-			elided_label::ElidedLabel * getContentPathText() const;
+			elided_label::ElidedLabel * getContentPath() const;
 
 			/**
 			 * Function: elided_label::ElidedLabel * getScroll() const
@@ -122,13 +122,13 @@ namespace main_window_status_bar {
 			elided_label::ElidedLabel * getScroll() const;
 
 			/**
-			 * Function: elided_label::ElidedLabel * getInfoText() const
+			 * Function: elided_label::ElidedLabel * getInfo() const
 			 *
 			 * \return the label containing the text storing information about the webpage/browser
 			 *
 			 * This function returns the label storing information about the webpage/browser
 			 */
-			elided_label::ElidedLabel * getInfoText() const;
+			elided_label::ElidedLabel * getInfo() const;
 
 			/**
 			 * Function: progress_bar::ProgressBar * getLoadBar() const
@@ -157,13 +157,13 @@ namespace main_window_status_bar {
 			 * @brief user input
 			 *
 			 */
-			elided_label::ElidedLabel * const userInputText;
+			elided_label::ElidedLabel * const userInput;
 
 			/**
 			 * @brief content
 			 *
 			 */
-			elided_label::ElidedLabel * const contentPathText;
+			elided_label::ElidedLabel * const contentPath;
 
 			/**
 			 * @brief scroll position
@@ -175,7 +175,7 @@ namespace main_window_status_bar {
 			 * @brief info
 			 *
 			 */
-			elided_label::ElidedLabel * const infoText;
+			elided_label::ElidedLabel * const info;
 
 			/**
 			 * @brief load bar
