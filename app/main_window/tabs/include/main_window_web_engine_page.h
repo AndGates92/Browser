@@ -28,6 +28,10 @@
 
 Q_DECLARE_LOGGING_CATEGORY(mainWindowWebEnginePageOverall)
 
+namespace main_window_tab {
+	class MainWindowTab;
+}
+
 namespace main_window_web_engine_page {
 
 	/**
@@ -35,6 +39,7 @@ namespace main_window_web_engine_page {
 	 *
 	 */
 	class MainWindowWebEnginePage final : public web_engine_page::WebEnginePage {
+		friend class main_window_tab::MainWindowTab;
 
 		Q_OBJECT
 
@@ -58,6 +63,45 @@ namespace main_window_web_engine_page {
 			 * Main window web engine page destructor
 			 */
 			virtual ~MainWindowWebEnginePage();
+
+		signals:
+			/**
+			 * @brief Function: void sourceChanged(const QString & src)
+			 *
+			 * \param src: source fo the content of the page
+			 *
+			 * This signal notifies that the src of a page has changed
+			 */
+			void sourceChanged(const QString & src);
+
+		protected:
+
+		private slots:
+			/**
+			 * @brief Function: void applyScrollRequest(const int x, const int y)
+			 *
+			 * \param x: scroll on the x axis
+			 * \param y: scroll on the y axis
+			 *
+			 * This function honors the scroll position change request
+			 */
+			void applyScrollRequest(const int x, const int y);
+
+		private:
+			/**
+			 * @brief custom page data
+			 *
+			 */
+			main_window_page_data::MainWindowPageData * const pageData;
+
+			/**
+			 * @brief Function: QByteArray getTextFileBody() const
+			 *
+			 * \return content of the file set as sounce of the page
+			 *
+			 * This function reads a file set as sounce of the page and returns its content as a QByteArray
+			 */
+			QByteArray getTextFileBody() const;
 
 			/**
 			 * @brief Function: void setBody()
@@ -128,45 +172,6 @@ namespace main_window_web_engine_page {
 			 * This function reloads the content of the page
 			 */
 			void reload();
-
-		public slots:
-			/**
-			 * @brief Function: void applyScrollRequest(const int x, const int y)
-			 *
-			 * \param x: scroll on the x axis
-			 * \param y: scroll on the y axis
-			 *
-			 * This function honors the scroll position change request
-			 */
-			void applyScrollRequest(const int x, const int y);
-
-		signals:
-			/**
-			 * @brief Function: void sourceChanged(const QString & src)
-			 *
-			 * \param src: source fo the content of the page
-			 *
-			 * This signal notifies that the src of a page has changed
-			 */
-			void sourceChanged(const QString & src);
-
-		protected:
-
-		private:
-			/**
-			 * @brief custom page data
-			 *
-			 */
-			main_window_page_data::MainWindowPageData * const pageData;
-
-			/**
-			 * @brief Function: QByteArray getTextFileBody() const
-			 *
-			 * \return content of the file set as sounce of the page
-			 *
-			 * This function reads a file set as sounce of the page and returns its content as a QByteArray
-			 */
-			QByteArray getTextFileBody() const;
 
 			// Move and copy constructor
 			/**

@@ -27,6 +27,10 @@
 
 Q_DECLARE_LOGGING_CATEGORY(webEnginePageOverall)
 
+namespace tab {
+	class Tab;
+}
+
 namespace web_engine_page {
 
 	/**
@@ -34,6 +38,7 @@ namespace web_engine_page {
 	 *
 	 */
 	class WebEnginePage : public QWebEnginePage {
+		friend class tab::Tab;
 
 		public:
 			/**

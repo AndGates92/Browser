@@ -27,6 +27,10 @@
 
 Q_DECLARE_LOGGING_CATEGORY(mainWindowWebEngineViewOverall)
 
+namespace main_window_tab {
+	class MainWindowTab;
+}
+
 namespace main_window_web_engine_view {
 
 	/**
@@ -34,6 +38,7 @@ namespace main_window_web_engine_view {
 	 *
 	 */
 	class MainWindowWebEngineView final : public web_engine_view::WebEngineView {
+		friend class main_window_tab::MainWindowTab;
 
 		Q_OBJECT
 
