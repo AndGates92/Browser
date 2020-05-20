@@ -188,3 +188,19 @@ void main_window_status_bar::MainWindowStatusBar::setVScroll(const int & vScroll
 
 	this->scroll->setText(vScrollText);
 }
+
+void main_window_status_bar::MainWindowStatusBar::setProgressValue(const int & value) {
+	this->loadBar->setValue(value);
+}
+
+void main_window_status_bar::MainWindowStatusBar::setInfoText(const QString & text) {
+	this->info->setText(text);
+}
+
+void main_window_status_bar::MainWindowStatusBar::setUserInputText(const QString & text) {
+	this->userInput->setText(text);
+}
+
+void main_window_status_bar::MainWindowStatusBar::setContentPathText(const QString & text) {
+	this->contentPath->setText(text);
+}

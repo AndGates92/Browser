@@ -94,50 +94,15 @@ namespace main_window_status_bar {
 			 */
 			~MainWindowStatusBar();
 
+		public slots:
 			/**
-			 * Function: elided_label::ElidedLabel * getUserInput() const
+			 * Function: void setProgressValue(const int & value)
 			 *
-			 * \return the label containing the text typed by the user
+			 * \param value: value of the progress
 			 *
-			 * This function returns the label storing the text typed by the user
+			 * This function sets the text in the load bar from the integer value provided as argument
 			 */
-			elided_label::ElidedLabel * getUserInput() const;
-
-			/**
-			 * Function: elided_label::ElidedLabel * getContentPath() const
-			 *
-			 * \return the label containing the path to the content (i.e. website URL or file path)
-			 *
-			 * This function returns the label storing the path to the content (i.e. website URL or file path)
-			 */
-			elided_label::ElidedLabel * getContentPath() const;
-
-			/**
-			 * Function: elided_label::ElidedLabel * getScroll() const
-			 *
-			 * \return the label containing the text storing information about the scroll position
-			 *
-			 * This function returns the label storing information about the scroll position
-			 */
-			elided_label::ElidedLabel * getScroll() const;
-
-			/**
-			 * Function: elided_label::ElidedLabel * getInfo() const
-			 *
-			 * \return the label containing the text storing information about the webpage/browser
-			 *
-			 * This function returns the label storing information about the webpage/browser
-			 */
-			elided_label::ElidedLabel * getInfo() const;
-
-			/**
-			 * Function: progress_bar::ProgressBar * getLoadBar() const
-			 *
-			 * \return the bar storing the value of the progress in loading a page
-			 *
-			 * This function returns the bar storing the value of the progress in loading a page
-			 */
-			progress_bar::ProgressBar * getLoadBar() const;
+			void setProgressValue(const int & value);
 
 			/**
 			 * Function: void setVScroll(const int & vScroll)
@@ -147,6 +112,33 @@ namespace main_window_status_bar {
 			 * This function sets the text in the scroll label from the integer value provided as argument
 			 */
 			void setVScroll(const int & vScroll);
+
+			/**
+			 * Function: void setInfoText(const QString & text)
+			 *
+			 * \param text: text to set the label to
+			 *
+			 * This function sets the text in the info label
+			 */
+			void setInfoText(const QString & text);
+
+			/**
+			 * Function: void setUserInputText(const QString & text)
+			 *
+			 * \param text: text to set the label to
+			 *
+			 * This function sets the text in the user input label
+			 */
+			void setUserInputText(const QString & text);
+
+			/**
+			 * Function: void setContentPathText(const QString & text)
+			 *
+			 * \param text: text to set the label to
+			 *
+			 * This function sets the text in the content path label
+			 */
+			void setContentPathText(const QString & text);
 
 		protected:
 
@@ -216,6 +208,52 @@ namespace main_window_status_bar {
 			 * Compute minimum size of the widget
 			 */
 			QSize minimumSizeHint() const override;
+
+			/**
+			 * Function: elided_label::ElidedLabel * getUserInput() const
+			 *
+			 * \return the label containing the text typed by the user
+			 *
+			 * This function returns the label storing the text typed by the user
+			 */
+			elided_label::ElidedLabel * getUserInput() const;
+
+			/**
+			 * Function: elided_label::ElidedLabel * getScroll() const
+			 *
+			 * \return the label containing the text storing information about the scroll position
+			 *
+			 * This function returns the label storing information about the scroll position
+			 */
+			elided_label::ElidedLabel * getScroll() const;
+
+			/**
+			 * Function: elided_label::ElidedLabel * getInfo() const
+			 *
+			 * \return the label containing the text storing information about the webpage/browser
+			 *
+			 * This function returns the label storing information about the webpage/browser
+			 */
+			elided_label::ElidedLabel * getInfo() const;
+
+			/**
+			 * Function: elided_label::ElidedLabel * getContentPath() const
+			 *
+			 * \return the label containing the path to the content (i.e. website URL or file path)
+			 *
+			 * This function returns the label storing the path to the content (i.e. website URL or file path)
+			 */
+			elided_label::ElidedLabel * getContentPath() const;
+
+			/**
+			 * Function: progress_bar::ProgressBar * getLoadBar() const
+			 *
+			 * \return the bar storing the value of the progress in loading a page
+			 *
+			 * This function returns the bar storing the value of the progress in loading a page
+			 */
+			progress_bar::ProgressBar * getLoadBar() const;
+
 
 			// Move and copy constructor
 			/**

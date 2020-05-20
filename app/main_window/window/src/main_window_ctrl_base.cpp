@@ -73,7 +73,7 @@ void main_window_ctrl_base::MainWindowCtrlBase::printUserInput(const main_window
 		textLabel.append(":" + userAction + " " + this->windowCore->getUserText());
 	}
 
-	this->windowCore->bottomStatusBar->getUserInput()->setText(textLabel);
+	this->windowCore->bottomStatusBar->setUserInputText(textLabel);
 
 }
 
@@ -128,7 +128,7 @@ void main_window_ctrl_base::MainWindowCtrlBase::connectSignals() {
 void main_window_ctrl_base::MainWindowCtrlBase::updateInfo(const int & currIndex) {
 	const QString info(this->tabInfoStr(currIndex));
 
-	this->windowCore->bottomStatusBar->getInfo()->setText(info);
+	this->windowCore->bottomStatusBar->setInfoText(info);
 }
 
 QString main_window_ctrl_base::MainWindowCtrlBase::tabInfoStr(const int & currIndex) const {
@@ -362,7 +362,7 @@ void main_window_ctrl_base::MainWindowCtrlBase::resetWindowState() {
 	this->windowCore->setMainWindowState(requestedWindowState);
 
 	this->windowCore->updateUserInput(main_window_shared_types::text_action_e::CLEAR, QString::null);
-	this->windowCore->bottomStatusBar->getUserInput()->clear();
+	this->windowCore->bottomStatusBar->setUserInputText(QString::null);
 	this->windowCore->getUserText();
 
 	// Enable all shortcuts
