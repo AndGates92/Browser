@@ -201,14 +201,12 @@ void main_window_ctrl_tab::MainWindowCtrlTab::connectTab(const int & tabIndex) {
 	try {
 		main_window_tab::MainWindowTab * tab = dynamic_cast<main_window_tab::MainWindowTab *>(this->windowCore->tabs->widget(tabIndex));
 
-		const main_window_tab_scroll_manager::MainWindowTabScrollManager * scrollManager = tab->getScrollManager();
 		main_window_status_bar::MainWindowStatusBar * statusBar = this->windowCore->bottomStatusBar;
-		connect(scrollManager, &main_window_tab_scroll_manager::MainWindowTabScrollManager::verticalScrollChanged, statusBar, &main_window_status_bar::MainWindowStatusBar::setVScroll);
-		statusBar->setVScroll(scrollManager->getVerticalScrollPercentage());
+		connect(tab, &main_window_tab::MainWindowTab::verticalScrollChanged, statusBar, &main_window_status_bar::MainWindowStatusBar::setVScroll);
+		statusBar->setVScroll(tab->getVerticalScroll());
 
-		const main_window_tab_load_manager::MainWindowTabLoadManager * loadManager = tab->getLoadManager();
-		connect(loadManager, &main_window_tab_load_manager::MainWindowTabLoadManager::progressChanged, statusBar, &main_window_status_bar::MainWindowStatusBar::setProgressValue);
-		statusBar->setProgressValue(loadManager->getProgress());
+		connect(tab, &main_window_tab::MainWindowTab::loadProgressChanged, statusBar, &main_window_status_bar::MainWindowStatusBar::setProgressValue);
+		statusBar->setProgressValue(tab->getLoadProgress());
 
 		// Move focus to the tab index
 		tab->setFocus();
@@ -224,12 +222,9 @@ void main_window_ctrl_tab::MainWindowCtrlTab::disconnectTab(const int & tabIndex
 	try {
 		const main_window_tab::MainWindowTab * tab = dynamic_cast<main_window_tab::MainWindowTab *>(this->windowCore->tabs->widget(tabIndex));
 
-		const main_window_tab_scroll_manager::MainWindowTabScrollManager * scrollManager = tab->getScrollManager();
 		main_window_status_bar::MainWindowStatusBar * statusBar = this->windowCore->bottomStatusBar;
-		disconnect(scrollManager, &main_window_tab_scroll_manager::MainWindowTabScrollManager::verticalScrollChanged, statusBar, &main_window_status_bar::MainWindowStatusBar::setVScroll);
-
-		const main_window_tab_load_manager::MainWindowTabLoadManager * loadManager = tab->getLoadManager();
-		disconnect(loadManager, &main_window_tab_load_manager::MainWindowTabLoadManager::progressChanged, statusBar, &main_window_status_bar::MainWindowStatusBar::setProgressValue);
+		disconnect(tab, &main_window_tab::MainWindowTab::verticalScrollChanged, statusBar, &main_window_status_bar::MainWindowStatusBar::setVScroll);
+		disconnect(tab, &main_window_tab::MainWindowTab::loadProgressChanged, statusBar, &main_window_status_bar::MainWindowStatusBar::setProgressValue);
 
 	} catch (const std::bad_cast & badCastE) {
 		QEXCEPTION_ACTION(throw, badCastE.what());

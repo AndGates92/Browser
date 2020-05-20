@@ -64,12 +64,15 @@ namespace main_window_tab {
 			 */
 			virtual ~MainWindowTab();
 
+		protected:
+
+		private:
 			/**
-			 * @brief Function: void reload() override
+			 * @brief Function: void connectSignals() override
 			 *
-			 * This function reloads the content of the page
+			 * This function connects signals and slots within main window controller tabs
 			 */
-			void reload() override;
+			void connectSignals() override;
 
 			/**
 			 * @brief Function: main_window_web_engine_view::MainWindowWebEngineView * getView() const
@@ -125,16 +128,13 @@ namespace main_window_tab {
 			 */
 			main_window_tab_scroll_manager::MainWindowTabScrollManager * getScrollManager() const;
 
-		protected:
-
 			/**
-			 * @brief Function: void connectSignals() override
+			 * @brief Function: void reload() override
 			 *
-			 * This function connects signals and slots within main window controller tabs
+			 * This function reloads the content of the page
 			 */
-			void connectSignals() override;
+			void reload() override;
 
-		private:
 			// Move and copy constructor
 			/**
 			 * @brief Disable move and copy constructors and operator= overloading for class MainWindowTab

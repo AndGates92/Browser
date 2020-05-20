@@ -37,6 +37,10 @@ namespace tab_widget {
 	class TabWidget;
 }
 
+namespace main_window_tab {
+	class MainWindowTab;
+}
+
 namespace tab {
 
 	/**
@@ -45,6 +49,9 @@ namespace tab {
 	 */
 	class Tab : public QWidget {
 		friend class tab_widget::TabWidget;
+		friend class main_window_tab::MainWindowTab;
+
+		Q_OBJECT
 
 		public:
 			/**
@@ -65,6 +72,125 @@ namespace tab {
 			virtual ~Tab();
 
 			/**
+			 * @brief Function: int getLoadProgress() const
+			 *
+			 * \return load progress percentage
+			 *
+			 * This function returns the load progress percentage
+			 */
+			int getLoadProgress() const;
+
+			/**
+			 * @brief Function: int getVerticalScroll() const
+			 *
+			 * \return vertical scroll percentage
+			 *
+			 * This function returns the vertical scroll percentage
+			 */
+			int getVerticalScroll() const;
+
+			/**
+			 * @brief Function: int getHorizontalScroll() const
+			 *
+			 * \return horizontal scroll percentage
+			 *
+			 * This function returns the horizontal scroll percentage
+			 */
+			int getHorizontalScroll() const;
+
+		signals:
+			/**
+			 * @brief Function: void loadProgressChanged(const int & value) const
+			 *
+			 * \param value: value of the loading.
+			 *
+			 * This function is a signal to notify that the load progress value has changed
+			 */
+			void loadProgressChanged(const int & value) const;
+
+			/**
+			 * @brief Function: void verticalScrollChanged(const int & value) const
+			 *
+			 * \param value: value of the vertical scroll.
+			 *
+			 * This function is a signal to notify that the vertical scroll position changed
+			 */
+			void verticalScrollChanged(const int & value) const;
+
+			/**
+			 * @brief Function: void horizontalScrollChanged(const int & value) const
+			 *
+			 * \param value: value of the horizontal scroll.
+			 *
+			 * This function is a signal to notify that the horizontal scroll position changed
+			 */
+			void horizontalScrollChanged(const int & value) const;
+
+		protected:
+
+			/**
+			 * @brief Function: virtual void connectSignals()
+			 *
+			 * This function connects signals and slots within tabs
+			 */
+			virtual void connectSignals() = 0;
+
+			/**
+			 * @brief Function: virtual void reload()
+			 *
+			 * This function reloads the content of the tab
+			 */
+			virtual void reload() = 0;
+
+			/**
+			 * @brief Function: void resize(const QSize size)
+			 *
+			 * \param size: new size of the view
+			 *
+			 * Reimplement resize
+			 */
+			void resize(const QSize size);
+
+		private:
+
+			/**
+			 * @brief web engine view
+			 *
+			 */
+			web_engine_view::WebEngineView * view;
+
+			/**
+			 * @brief load manager
+			 *
+			 */
+			tab_load_manager::TabLoadManager * loadManager;
+
+			/**
+			 * @brief seach class
+			 *
+			 */
+			tab_search::TabSearch * search;
+
+			/**
+			 * @brief history class
+			 *
+			 */
+			//tab_history::TabHistory * history;
+			QWebEngineHistory * history;
+
+			/**
+			 * @brief settings
+			 *
+			 */
+			web_engine_settings::WebEngineSettings * settings;
+
+			/**
+			 * @brief scroll manager
+			 *
+			 */
+			tab_scroll_manager::TabScrollManager * scrollManager;
+
+			/**
 			 * @brief Function: void setView(web_engine_view::WebEngineView * value)
 			 *
 			 * \param value: view to use
@@ -74,7 +200,7 @@ namespace tab {
 			void setView(web_engine_view::WebEngineView * value);
 
 			/**
-			 * @brief Function: web_engine_view::WebEngineView * getView()
+			 * @brief Function: web_engine_view::WebEngineView * getView() const
 			 *
 			 * \return tab view
 			 *
@@ -92,7 +218,7 @@ namespace tab {
 			void setLoadManager(tab_load_manager::TabLoadManager * value);
 
 			/**
-			 * @brief Function: tab_load_manager::TabLoadManager * getLoadManager()
+			 * @brief Function: tab_load_manager::TabLoadManager * getLoadManager() const
 			 *
 			 * \return load manager
 			 *
@@ -110,7 +236,7 @@ namespace tab {
 			void setSearch(tab_search::TabSearch * value);
 
 			/**
-			 * @brief Function: tab_search::TabSearch * getSearch()
+			 * @brief Function: tab_search::TabSearch * getSearch() const
 			 *
 			 * \return tab search
 			 *
@@ -146,7 +272,7 @@ namespace tab {
 			void setSettings(web_engine_settings::WebEngineSettings * value);
 
 			/**
-			 * @brief Function: web_engine_settings::WebEngineSettings * getSettings()
+			 * @brief Function: web_engine_settings::WebEngineSettings * getSettings() const
 			 *
 			 * \return tab settings
 			 *
@@ -164,7 +290,7 @@ namespace tab {
 			void setScrollManager(tab_scroll_manager::TabScrollManager * value);
 
 			/**
-			 * @brief Function: tab_scroll_manager::TabScrollManager * getScrollManager()
+			 * @brief Function: tab_scroll_manager::TabScrollManager * getScrollManager() const
 			 *
 			 * \return scroll manager
 			 *
@@ -238,70 +364,6 @@ namespace tab {
 			 * This function request the scroll manager to scroll right
 			 */
 			virtual void scrollRight() const;
-
-		protected:
-
-			/**
-			 * @brief Function: virtual void connectSignals()
-			 *
-			 * This function connects signals and slots within tabs
-			 */
-			virtual void connectSignals() = 0;
-
-			/**
-			 * @brief Function: virtual void reload()
-			 *
-			 * This function reloads the content of the tab
-			 */
-			virtual void reload() = 0;
-
-			/**
-			 * @brief Function: void resize(const QSize size)
-			 *
-			 * \param size: new size of the view
-			 *
-			 * Reimplement resize
-			 */
-			void resize(const QSize size);
-
-		private:
-
-			/**
-			 * @brief web engine view
-			 *
-			 */
-			web_engine_view::WebEngineView * view;
-
-			/**
-			 * @brief load manager
-			 *
-			 */
-			tab_load_manager::TabLoadManager * loadManager;
-
-			/**
-			 * @brief seach class
-			 *
-			 */
-			tab_search::TabSearch * search;
-
-			/**
-			 * @brief history class
-			 *
-			 */
-			//tab_history::TabHistory * history;
-			QWebEngineHistory * history;
-
-			/**
-			 * @brief settings
-			 *
-			 */
-			web_engine_settings::WebEngineSettings * settings;
-
-			/**
-			 * @brief scroll manager
-			 *
-			 */
-			tab_scroll_manager::TabScrollManager * scrollManager;
 
 			// Move and copy constructor
 			/**

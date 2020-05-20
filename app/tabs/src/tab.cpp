@@ -38,6 +38,17 @@ tab::Tab::Tab(QWidget * parent, QWidget * tabBar): QWidget(parent), view(Q_NULLP
 	tab_scroll_manager::TabScrollManager * tabScrollManager = new tab_scroll_manager::TabScrollManager(this, this, tabBar);
 	this->setScrollManager(tabScrollManager);
 
+	connect(this->scrollManager, &tab_scroll_manager::TabScrollManager::verticalScrollChanged, [this] (const int & value) {
+			this->verticalScrollChanged(value);
+	});
+
+	connect(this->scrollManager, &tab_scroll_manager::TabScrollManager::horizontalScrollChanged, [this] (const int & value) {
+			this->horizontalScrollChanged(value);
+	});
+
+	connect(this->loadManager, &tab_load_manager::TabLoadManager::progressChanged, [this] (const int & value) {
+			this->loadProgressChanged(value);
+	});
 }
 
 tab::Tab::~Tab() {
@@ -121,4 +132,16 @@ void tab::Tab::scrollLeft() const {
 
 void tab::Tab::scrollRight() const {
 	this->scrollManager->scrollRight();
+}
+
+int tab::Tab::getLoadProgress() const {
+	return this->loadManager->getProgress();
+}
+
+int tab::Tab::getVerticalScroll() const {
+	return this->scrollManager->getVerticalScrollPercentage();
+}
+
+int tab::Tab::getHorizontalScroll() const {
+	return this->scrollManager->getHorizontalScrollPercentage();
 }
