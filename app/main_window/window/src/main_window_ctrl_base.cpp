@@ -125,6 +125,18 @@ void main_window_ctrl_base::MainWindowCtrlBase::connectSignals() {
 
 }
 
+void main_window_ctrl_base::MainWindowCtrlBase::updateScroll() {
+	const int tabCount = this->windowCore->getTabCount();
+
+	int vScroll = -1;
+
+	if (tabCount > 0) {
+		vScroll = 0;
+	}
+
+	this->windowCore->bottomStatusBar->setVScroll(vScroll);
+}
+
 void main_window_ctrl_base::MainWindowCtrlBase::updateInfo(const int & currIndex) {
 	const QString info(this->tabInfoStr(currIndex));
 

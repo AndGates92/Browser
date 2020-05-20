@@ -186,11 +186,20 @@ namespace main_window_ctrl_base {
 			virtual bool isValidWindowState(const main_window_shared_types::state_e & windowState) = 0;
 
 			/**
+			 * @brief Function: void updateScroll(const int & currIndex)
+			 *
+			 * \param currIndex: current page index or -1 if no tabs
+			 *
+			 * This function updates the scroll position
+			 */
+			void updateScroll();
+
+			/**
 			 * @brief Function: void updateInfo(const int & currIndex)
 			 *
 			 * \param currIndex: current page index or -1 if no tabs
 			 *
-			 * This function is updates the info label
+			 * This function updates the info label
 			 */
 			void updateInfo(const int & currIndex);
 

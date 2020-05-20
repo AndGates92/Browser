@@ -160,7 +160,6 @@ void main_window_ctrl_tab::MainWindowCtrlTab::goToPageInHistory(const main_windo
 
 void main_window_ctrl_tab::MainWindowCtrlTab::extractContentPath(const int & index) {
 
-	QString path (QString::null);
 	const int tabCount = this->windowCore->getTabCount();
 
 	if (tabCount > 0) {
@@ -170,6 +169,8 @@ void main_window_ctrl_tab::MainWindowCtrlTab::extractContentPath(const int & ind
 		QINFO_PRINT(global_types::qinfo_level_e::ZERO, mainWindowCtrlTabUrl, "Set contentPathText for tab at index " << index << " of type " << tabType << " and source " << tabSrc);
 		this->createContentPathTextFromSource(tabType, tabSrc);
 
+	} else {
+		emit this->currentTabSrcChanged(QString::null);
 	}
 
 }
@@ -652,6 +653,7 @@ bool main_window_ctrl_tab::MainWindowCtrlTab::isValidWindowState(const main_wind
 
 void main_window_ctrl_tab::MainWindowCtrlTab::updateStatusBar(const int & tabIndex) {
 	this->updateInfo(tabIndex);
+	this->updateScroll();
 	this->extractContentPath(tabIndex);
 }
 
