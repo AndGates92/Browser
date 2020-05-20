@@ -191,6 +191,25 @@ namespace tab {
 			tab_scroll_manager::TabScrollManager * scrollManager;
 
 			/**
+			 * @brief progress bar value setter connection
+			 *
+			 */
+			QMetaObject::Connection progressValueConnection;
+
+			/**
+			 * @brief vertical scroll value setter connection
+			 *
+			 */
+			QMetaObject::Connection vScrollValueConnection;
+
+			/**
+			 * @brief horizontal scroll value setter connection
+			 *
+			 */
+			QMetaObject::Connection hScrollValueConnection;
+
+			// Move and copy constructor
+			/**
 			 * @brief Function: void setView(web_engine_view::WebEngineView * value)
 			 *
 			 * \param value: view to use
@@ -365,7 +384,6 @@ namespace tab {
 			 */
 			virtual void scrollRight() const;
 
-			// Move and copy constructor
 			/**
 			 * @brief Disable move and copy constructors and operator= overloading for class Tab
 			 *

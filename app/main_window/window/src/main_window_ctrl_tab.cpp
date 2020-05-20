@@ -197,6 +197,7 @@ void main_window_ctrl_tab::MainWindowCtrlTab::moveCursor(const int & tabIndex) {
 }
 
 void main_window_ctrl_tab::MainWindowCtrlTab::connectTab(const int & tabIndex) {
+QINFO_PRINT(global_types::qinfo_level_e::ZERO, mainWindowCtrlTabOverall,  "DADA " << __func__ << " tab index " << tabIndex);
 	const main_window_shared_types::page_type_e tabType = this->windowCore->tabs->getPageType(tabIndex);
 	QINFO_PRINT(global_types::qinfo_level_e::ZERO, mainWindowCtrlTabTabs,  "Connect signals from " << tabType << " object of tab " << tabIndex << " to progress bar slots");
 	try {
@@ -218,6 +219,7 @@ void main_window_ctrl_tab::MainWindowCtrlTab::connectTab(const int & tabIndex) {
 }
 
 void main_window_ctrl_tab::MainWindowCtrlTab::disconnectTab(const int & tabIndex) {
+QINFO_PRINT(global_types::qinfo_level_e::ZERO, mainWindowCtrlTabOverall,  "DADA " << __func__ << " tab index " << tabIndex);
 	const main_window_shared_types::page_type_e tabType = this->windowCore->tabs->getPageType(tabIndex);
 	QINFO_PRINT(global_types::qinfo_level_e::ZERO, mainWindowCtrlTabTabs,  "Disconnect connect signals from " << tabType << " object of tab " << tabIndex << " to progress bar slots");
 	try {
@@ -652,6 +654,7 @@ bool main_window_ctrl_tab::MainWindowCtrlTab::isValidWindowState(const main_wind
 }
 
 void main_window_ctrl_tab::MainWindowCtrlTab::updateStatusBar(const int & tabIndex) {
+QINFO_PRINT(global_types::qinfo_level_e::ZERO, mainWindowCtrlTabOverall,  "DADA " << __func__ << " tab index " << tabIndex);
 	this->updateInfo(tabIndex);
 	this->updateScroll();
 	this->extractContentPath(tabIndex);

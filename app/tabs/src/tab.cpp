@@ -18,7 +18,7 @@
 Q_LOGGING_CATEGORY(tabOverall, "tab.overall", MSG_TYPE_LEVEL)
 Q_LOGGING_CATEGORY(tabSize, "tab.size", MSG_TYPE_LEVEL)
 
-tab::Tab::Tab(QWidget * parent, QWidget * tabBar): QWidget(parent), view(Q_NULLPTR), loadManager(Q_NULLPTR), search(Q_NULLPTR), history(Q_NULLPTR), settings(Q_NULLPTR) {
+tab::Tab::Tab(QWidget * parent, QWidget * tabBar): QWidget(parent), view(Q_NULLPTR), loadManager(Q_NULLPTR), search(Q_NULLPTR), history(Q_NULLPTR), settings(Q_NULLPTR), scrollManager(Q_NULLPTR) {
 	QINFO_PRINT(global_types::qinfo_level_e::ZERO, tabOverall,  "Tab constructor");
 
 	web_engine_view::WebEngineView * tabView = new web_engine_view::WebEngineView(this);
@@ -38,17 +38,6 @@ tab::Tab::Tab(QWidget * parent, QWidget * tabBar): QWidget(parent), view(Q_NULLP
 	tab_scroll_manager::TabScrollManager * tabScrollManager = new tab_scroll_manager::TabScrollManager(this, this, tabBar);
 	this->setScrollManager(tabScrollManager);
 
-	connect(this->scrollManager, &tab_scroll_manager::TabScrollManager::verticalScrollChanged, [this] (const int & value) {
-			this->verticalScrollChanged(value);
-	});
-
-	connect(this->scrollManager, &tab_scroll_manager::TabScrollManager::horizontalScrollChanged, [this] (const int & value) {
-			this->horizontalScrollChanged(value);
-	});
-
-	connect(this->loadManager, &tab_load_manager::TabLoadManager::progressChanged, [this] (const int & value) {
-			this->loadProgressChanged(value);
-	});
 }
 
 tab::Tab::~Tab() {
@@ -71,7 +60,25 @@ tab::Tab::~Tab() {
 	}
 }
 
-PTR_SETTER_GETTER(tab::Tab::setLoadManager, tab::Tab::getLoadManager, tab_load_manager::TabLoadManager, this->loadManager)
+void tab::Tab::setLoadManager(tab_load_manager::TabLoadManager * value) {
+	if (this->loadManager != value) {
+		if (this->loadManager != nullptr) {
+			delete this->loadManager;
+		}
+
+		if (this->progressValueConnection) {
+			disconnect(this->progressValueConnection);
+		}
+
+		this->loadManager = value;
+
+		this->progressValueConnection = connect(this->loadManager, &tab_load_manager::TabLoadManager::progressChanged, [this] (const int & value) {
+			this->loadProgressChanged(value);
+		});
+	}
+}
+
+PTR_GETTER(tab::Tab::getLoadManager, tab_load_manager::TabLoadManager, this->loadManager)
 
 PTR_SETTER_GETTER(tab::Tab::setView, tab::Tab::getView, web_engine_view::WebEngineView, this->view)
 
@@ -81,7 +88,33 @@ PTR_SETTER_GETTER(tab::Tab::setHistory, tab::Tab::getHistory, QWebEngineHistory,
 //PTR_SETTER(tab::Tab::setHistory, tab_history::TabHistory, this->history)
 //CASTED_PTR_GETTER(tab::Tab::getHistory, tab_history::TabHistory, this->history)
 
-PTR_SETTER_GETTER(tab::Tab::setScrollManager, tab::Tab::getScrollManager, tab_scroll_manager::TabScrollManager, this->scrollManager)
+void tab::Tab::setScrollManager(tab_scroll_manager::TabScrollManager * value) {
+	if (this->scrollManager != value) {
+		if (this->scrollManager != nullptr) {
+			delete this->scrollManager;
+		}
+
+		if (this->vScrollValueConnection) {
+			disconnect(this->vScrollValueConnection);
+		}
+
+		if (this->hScrollValueConnection) {
+			disconnect(this->hScrollValueConnection);
+		}
+
+		this->scrollManager = value;
+
+		this->vScrollValueConnection = connect(this->scrollManager, &tab_scroll_manager::TabScrollManager::verticalScrollChanged, [this] (const int & value) {
+			this->verticalScrollChanged(value);
+		});
+
+		this->hScrollValueConnection = connect(this->scrollManager, &tab_scroll_manager::TabScrollManager::horizontalScrollChanged, [this] (const int & value) {
+			this->horizontalScrollChanged(value);
+		});
+	}
+}
+
+PTR_GETTER(tab::Tab::getScrollManager, tab_scroll_manager::TabScrollManager, this->scrollManager)
 
 PTR_SETTER_GETTER(tab::Tab::setSettings, tab::Tab::getSettings, web_engine_settings::WebEngineSettings, this->settings)
 

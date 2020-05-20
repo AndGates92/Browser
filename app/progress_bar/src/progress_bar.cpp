@@ -46,6 +46,8 @@ void progress_bar::ProgressBar::setValue(const int & value) {
 	this->setVisible(true);
 	QProgressBar::setValue(value);
 
+QINFO_PRINT(global_types::qinfo_level_e::ZERO, ,  "DADA " << __func__ << " value " << value << " max " << this->maximum());
+
 	// When tabs are refreshed, loadFinished is not send therefore endLoadign slot is not called
 	// Forcing call endLoading
 	if (value == this->maximum()) {
