@@ -174,13 +174,17 @@ QSize main_window_status_bar::MainWindowStatusBar::minimumSizeHint() const {
 	return QSize(width,height);
 }
 
+bool main_window_status_bar::MainWindowStatusBar::isValidScrollValue(const int & value) const {
+	return  ((value >= main_window_status_bar::minScrollValue) && (value <= main_window_status_bar::maxScrollValue));
+}
+
 void main_window_status_bar::MainWindowStatusBar::setVScroll(const int & vScroll) {
 	QString vScrollText(QString::null);
 	// Keep 3 characters for all scroll positions
-	if (vScroll >= 0) {
-		if (vScroll == 0) {
+	if (this->isValidScrollValue(vScroll) == true) {
+		if (vScroll == main_window_status_bar::minScrollValue) {
 			vScrollText.append("top");
-		} else if (vScroll == 100) {
+		} else if (vScroll == main_window_status_bar::maxScrollValue) {
 			vScrollText.append("bot");
 		} else {
 			vScrollText.append(QString("%1").arg(vScroll, 2, 10, QChar('0')));

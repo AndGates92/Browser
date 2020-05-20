@@ -66,6 +66,19 @@ namespace main_window_status_bar {
 		 *
 		 */
 		constexpr int bottomMargin = 0;
+
+		/**
+		 * @brief minimum value of scrolling
+		 *
+		 */
+		constexpr int minScrollValue = 0;
+
+		/**
+		 * @brief maximum value of scrolling
+		 *
+		 */
+		constexpr int maxScrollValue = 100;
+
 	}
 
 	/**
@@ -254,6 +267,16 @@ namespace main_window_status_bar {
 			 */
 			progress_bar::ProgressBar * getLoadBar() const;
 
+			/**
+			 * Function: bool isValidScrollValue(const int & value) const
+			 *
+			 * \param value: value of scrolling
+			 *
+			 * \return a boolean to indicate whether the input value is valid
+			 *
+			 * This function returns whether the input value is valid
+			 */
+			bool isValidScrollValue(const int & value) const;
 
 			// Move and copy constructor
 			/**
