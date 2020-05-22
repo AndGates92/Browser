@@ -60,8 +60,7 @@ void tab_search::TabSearch::search() {
 	if (this->canProcessRequests() == true) {
 		try {
 			tab::Tab * currentTab = this->getTab();
-			web_engine_view::WebEngineView * currentTabView = currentTab->getView();
-			web_engine_page::WebEnginePage * currentTabPage = currentTabView->page();
+			web_engine_page::WebEnginePage * currentTabPage = currentTab->getPage();
 
 			currentTabPage->findText(this->text, this->flags,
 				[=](bool found) {
@@ -97,8 +96,7 @@ void tab_search::TabSearch::findPrev() {
 
 bool tab_search::TabSearch::canProcessRequests() const {
 	const tab::Tab * castedTab(this->getTab());
-	const tab_load_manager::TabLoadManager * loadManager(castedTab->getLoadManager());
-	const tab_shared_types::load_status_e & loadManagerStatus = loadManager->getStatus();
+	const tab_shared_types::load_status_e & loadManagerStatus = castedTab->getLoadStatus();
 
 	return ((loadManagerStatus == tab_shared_types::load_status_e::FINISHED) || (loadManagerStatus == tab_shared_types::load_status_e::ERROR));
 }
@@ -109,8 +107,7 @@ void tab_search::TabSearch::pushRequestQueue(const QWebEnginePage::FindFlags & d
 
 void tab_search::TabSearch::popRequestQueue() {
 	const tab::Tab * castedTab(this->getTab());
-	const tab_load_manager::TabLoadManager * loadManager(castedTab->getLoadManager());
-	const tab_shared_types::load_status_e & loadManagerStatus = loadManager->getStatus();
+	const tab_shared_types::load_status_e & loadManagerStatus = castedTab->getLoadStatus();
 
 	QEXCEPTION_ACTION_COND((this->canProcessRequests() == false), throw,  "Function " << __func__ << " cannot be called when load manager is in state " << loadManagerStatus << ". It can only be called if a page is not loading");
 

@@ -76,6 +76,19 @@ void main_window_tab::MainWindowTab::connectSignals() {
 
 	connect(page, &main_window_web_engine_page::MainWindowWebEnginePage::loadFinished, this, &main_window_tab::MainWindowTab::postprocessLoadFInished);
 
+
+	connect(page, &main_window_web_engine_page::MainWindowWebEnginePage::sourceChanged,  [this] (const QString & source) {
+		this->sourceChanged(source);
+	});
+
+	connect(page, &main_window_web_engine_page::MainWindowWebEnginePage::urlChanged, [this] (const QUrl & url) {
+		this->urlChanged(url);
+	});
+
+	connect(page, &main_window_web_engine_page::MainWindowWebEnginePage::titleChanged, [this] (const QString & title) {
+		this->titleChanged(title);
+	});
+
 }
 
 void main_window_tab::MainWindowTab::postprocessLoadFInished(const bool & success) {
@@ -87,4 +100,9 @@ void main_window_tab::MainWindowTab::postprocessLoadFInished(const bool & succes
 
 	main_window_tab_search::MainWindowTabSearch * tabSearch = this->getSearch();
 	tabSearch->popRequestQueue();
+}
+
+main_window_web_engine_page::MainWindowWebEnginePage * main_window_tab::MainWindowTab::getPage() const {
+	main_window_web_engine_view::MainWindowWebEngineView * view = this->getView();
+	return view->page();
 }

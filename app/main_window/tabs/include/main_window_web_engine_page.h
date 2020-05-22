@@ -32,6 +32,14 @@ namespace main_window_tab {
 	class MainWindowTab;
 }
 
+namespace main_window_web_engine_view {
+	class MainWindowWebEngineView;
+}
+
+namespace main_window_tab_widget {
+	class MainWindowTabWidget;
+}
+
 namespace main_window_web_engine_page {
 
 	/**
@@ -40,6 +48,8 @@ namespace main_window_web_engine_page {
 	 */
 	class MainWindowWebEnginePage final : public web_engine_page::WebEnginePage {
 		friend class main_window_tab::MainWindowTab;
+		friend class main_window_web_engine_view::MainWindowWebEngineView;
+		friend class main_window_tab_widget::MainWindowTabWidget;
 
 		Q_OBJECT
 
@@ -63,6 +73,42 @@ namespace main_window_web_engine_page {
 			 * Main window web engine page destructor
 			 */
 			virtual ~MainWindowWebEnginePage();
+
+			/**
+			 * @brief Function: const main_window_page_data::MainWindowPageData * getData() const
+			 *
+			 * \return page data
+			 *
+			 * This function returns custom page data
+			 */
+			const main_window_page_data::MainWindowPageData * getData() const;
+
+			/**
+			 * @brief Function: main_window_shared_types::page_type_e getType() const
+			 *
+			 * \return page type
+			 *
+			 * This function returns page type
+			 */
+			main_window_shared_types::page_type_e getType() const;
+
+			/**
+			 * @brief Function: const void * getExtraData() const
+			 *
+			 * \return page extra data
+			 *
+			 * This function returns page extra data
+			 */
+			const void * getExtraData() const;
+
+			/**
+			 * @brief Function: const QString getSource() const
+			 *
+			 * \return source of the page
+			 *
+			 * This function returns the source of the page
+			 */
+			const QString getSource() const;
 
 		signals:
 			/**
@@ -129,42 +175,6 @@ namespace main_window_web_engine_page {
 			 * Set the source of the page
 			 */
 			void setSource(const QString & src);
-
-			/**
-			 * @brief Function: const main_window_page_data::MainWindowPageData * getData() const
-			 *
-			 * \return page data
-			 *
-			 * This function returns custom page data
-			 */
-			const main_window_page_data::MainWindowPageData * getData() const;
-
-			/**
-			 * @brief Function: main_window_shared_types::page_type_e getType() const
-			 *
-			 * \return page type
-			 *
-			 * This function returns page type
-			 */
-			main_window_shared_types::page_type_e getType() const;
-
-			/**
-			 * @brief Function: const void * getExtraData() const
-			 *
-			 * \return page extra data
-			 *
-			 * This function returns page extra data
-			 */
-			const void * getExtraData() const;
-
-			/**
-			 * @brief Function: const QString getSource() const
-			 *
-			 * \return source of the page
-			 *
-			 * This function returns the source of the page
-			 */
-			const QString getSource() const;
 
 			/**
 			 * @brief Function: void reload()

@@ -41,6 +41,10 @@ namespace main_window_tab {
 	class MainWindowTab;
 }
 
+namespace main_window_tab_widget {
+	class MainWindowTabWidget;
+}
+
 namespace tab {
 
 	/**
@@ -49,6 +53,7 @@ namespace tab {
 	 */
 	class Tab : public QWidget {
 		friend class tab_widget::TabWidget;
+		friend class main_window_tab_widget::MainWindowTabWidget;
 		friend class main_window_tab::MainWindowTab;
 
 		Q_OBJECT
@@ -97,6 +102,24 @@ namespace tab {
 			 * This function returns the horizontal scroll percentage
 			 */
 			int getHorizontalScroll() const;
+
+			/**
+			 * @brief Function: tab_shared_types::load_status_e getLoadStatus() const
+			 *
+			 * \return load status
+			 *
+			 * This function returns the load status of the tab
+			 */
+			tab_shared_types::load_status_e getLoadStatus() const;
+
+			/**
+			 * @brief Function: web_engine_page::WebEnginePage * getPage() const
+			 *
+			 * \return tab web page object
+			 *
+			 * This function returns the page linked to the tab
+			 */
+			web_engine_page::WebEnginePage * getPage() const;
 
 		signals:
 			/**

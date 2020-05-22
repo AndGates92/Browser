@@ -31,6 +31,10 @@
  *  @{
  */
 
+namespace main_window_tab_widget {
+	class MainWindowTabWidget;
+}
+
 Q_DECLARE_LOGGING_CATEGORY(mainWindowTabOverall)
 
 namespace main_window_tab {
@@ -40,6 +44,7 @@ namespace main_window_tab {
 	 *
 	 */
 	class MainWindowTab final : public tab::Tab {
+		friend class main_window_tab_widget::MainWindowTabWidget;
 
 		Q_OBJECT
 
@@ -63,6 +68,43 @@ namespace main_window_tab {
 			 * Main Window Tab destructor
 			 */
 			virtual ~MainWindowTab();
+
+			/**
+			 * @brief Function: main_window_web_engine_page::MainWindowWebEnginePage * getPage() const
+			 *
+			 * \return tab web page object
+			 *
+			 * This function returns the page linked to the tab
+			 */
+			main_window_web_engine_page::MainWindowWebEnginePage * getPage() const;
+
+		signals:
+			/**
+			 * @brief Function: void sourceChanged(const QString & src)
+			 *
+			 * \param src: source of the content of the page
+			 *
+			 * This signal notifies that the title of a page has changed
+			 */
+			void sourceChanged(const QString & src);
+
+			/**
+			 * @brief Function: void titleChanged(const QString & title)
+			 *
+			 * \param title: title of the content of the page
+			 *
+			 * This signal notifies that the title of a page has changed
+			 */
+			void titleChanged(const QString & src);
+
+			/**
+			 * @brief Function: void urlChanged(const QUrl & url)
+			 *
+			 * \param url: url of the page
+			 *
+			 * This signal notifies that the url of a page has changed
+			 */
+			void urlChanged(const QUrl & url);
 
 		protected:
 
@@ -149,7 +191,6 @@ namespace main_window_tab {
 			 * This function postprocessing the end of a page load
 			 */
 			void postprocessLoadFInished(const bool & success);
-
 
 	};
 }

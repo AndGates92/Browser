@@ -67,10 +67,9 @@ void main_window_tab_widget::MainWindowTabWidget::disconnectTab(const int & inde
 	if (tabCount > 0) {
 		try {
 			const main_window_tab::MainWindowTab * tab = dynamic_cast<main_window_tab::MainWindowTab *>(this->widget(index, true));
-			const main_window_web_engine_page::MainWindowWebEnginePage * page = tab->getView()->page();
-			disconnect(page, &main_window_web_engine_page::MainWindowWebEnginePage::sourceChanged, this, &main_window_tab_widget::MainWindowTabWidget::processTabSourceChanged);
-			disconnect(page, &main_window_web_engine_page::MainWindowWebEnginePage::urlChanged, this, &main_window_tab_widget::MainWindowTabWidget::processTabUrlChanged);
-			disconnect(page, &main_window_web_engine_page::MainWindowWebEnginePage::titleChanged, this, &main_window_tab_widget::MainWindowTabWidget::processTabTitleChanged);
+			disconnect(tab, &main_window_tab::MainWindowTab::sourceChanged, this, &main_window_tab_widget::MainWindowTabWidget::processTabSourceChanged);
+			disconnect(tab, &main_window_tab::MainWindowTab::urlChanged, this, &main_window_tab_widget::MainWindowTabWidget::processTabUrlChanged);
+			disconnect(tab, &main_window_tab::MainWindowTab::titleChanged, this, &main_window_tab_widget::MainWindowTabWidget::processTabTitleChanged);
 
 			emit this->tabNearlyDisconnected(index);
 		} catch (const std::bad_cast & badCastE) {
@@ -86,10 +85,9 @@ void main_window_tab_widget::MainWindowTabWidget::connectTab(const int & index) 
 	if (tabCount > 0) {
 		try {
 			main_window_tab::MainWindowTab * tab = dynamic_cast<main_window_tab::MainWindowTab *>(this->widget(index, true));
-			const main_window_web_engine_page::MainWindowWebEnginePage * page = tab->getView()->page();
-			connect(page, &main_window_web_engine_page::MainWindowWebEnginePage::sourceChanged, this, &main_window_tab_widget::MainWindowTabWidget::processTabSourceChanged, Qt::UniqueConnection);
-			connect(page, &main_window_web_engine_page::MainWindowWebEnginePage::urlChanged, this, &main_window_tab_widget::MainWindowTabWidget::processTabUrlChanged, Qt::UniqueConnection);
-			connect(page, &main_window_web_engine_page::MainWindowWebEnginePage::titleChanged, this, &main_window_tab_widget::MainWindowTabWidget::processTabTitleChanged, Qt::UniqueConnection);
+			connect(tab, &main_window_tab::MainWindowTab::sourceChanged, this, &main_window_tab_widget::MainWindowTabWidget::processTabSourceChanged);
+			connect(tab, &main_window_tab::MainWindowTab::urlChanged, this, &main_window_tab_widget::MainWindowTabWidget::processTabUrlChanged);
+			connect(tab, &main_window_tab::MainWindowTab::titleChanged, this, &main_window_tab_widget::MainWindowTabWidget::processTabTitleChanged);
 
 			// Move focus to the newly connected tab
 			tab->setFocus();
@@ -116,7 +114,7 @@ void main_window_tab_widget::MainWindowTabWidget::setPageData(const int & index,
 	if (tabCount > 0) {
 		try {
 			const main_window_tab::MainWindowTab * tab = dynamic_cast<main_window_tab::MainWindowTab *>(this->widget(index, true));
-			main_window_web_engine_page::MainWindowWebEnginePage * page = tab->getView()->page();
+			main_window_web_engine_page::MainWindowWebEnginePage * page = tab->getPage();
 			page->setData(pageData);
 		} catch (const std::bad_cast & badCastE) {
 			QEXCEPTION_ACTION(throw, badCastE.what());
@@ -135,7 +133,7 @@ const main_window_page_data::MainWindowPageData * main_window_tab_widget::MainWi
 	if (tabCount > 0) {
 		try {
 			const main_window_tab::MainWindowTab * tab = dynamic_cast<main_window_tab::MainWindowTab *>(this->widget(index, true));
-			const main_window_web_engine_page::MainWindowWebEnginePage * page = tab->getView()->page();
+			const main_window_web_engine_page::MainWindowWebEnginePage * page = tab->getPage();
 			pageData = page->getData();
 		} catch (const std::bad_cast & badCastE) {
 			QEXCEPTION_ACTION(throw, badCastE.what());
@@ -146,18 +144,21 @@ const main_window_page_data::MainWindowPageData * main_window_tab_widget::MainWi
 }
 
 main_window_shared_types::page_type_e main_window_tab_widget::MainWindowTabWidget::getPageType(const int & index) const {
-	const main_window_page_data::MainWindowPageData * pageData = this->getPageData(index);
-	return pageData->getType();
+	const main_window_tab::MainWindowTab * tab = dynamic_cast<main_window_tab::MainWindowTab *>(this->widget(index, true));
+	const main_window_web_engine_page::MainWindowWebEnginePage * page = tab->getPage();
+	return page->getType();
 }
 
 const QString main_window_tab_widget::MainWindowTabWidget::getPageSource(const int & index) const {
-	const main_window_page_data::MainWindowPageData * pageData = this->getPageData(index);
-	return QString::fromStdString(pageData->getSource());
+	const main_window_tab::MainWindowTab * tab = dynamic_cast<main_window_tab::MainWindowTab *>(this->widget(index, true));
+	const main_window_web_engine_page::MainWindowWebEnginePage * page = tab->getPage();
+	return page->getSource();
 }
 
 const void * main_window_tab_widget::MainWindowTabWidget::getPageExtraData(const int & index) const {
-	const main_window_page_data::MainWindowPageData * pageData = this->getPageData(index);
-	return pageData->getData();
+	const main_window_tab::MainWindowTab * tab = dynamic_cast<main_window_tab::MainWindowTab *>(this->widget(index, true));
+	const main_window_web_engine_page::MainWindowWebEnginePage * page = tab->getPage();
+	return page->getData();
 }
 
 void main_window_tab_widget::MainWindowTabWidget::changePageData(const int & index, const main_window_shared_types::page_type_e & type, const QString & source, const void * data) {
@@ -328,7 +329,7 @@ void main_window_tab_widget::MainWindowTabWidget::changeTabContent(const int & i
 
 	try {
 		main_window_tab::MainWindowTab * tab = dynamic_cast<main_window_tab::MainWindowTab *>(this->widget(index, true));
-		main_window_web_engine_page::MainWindowWebEnginePage * page = tab->getView()->page();
+		main_window_web_engine_page::MainWindowWebEnginePage * page = tab->getPage();
 		// Set tab body
 		page->setBody();
 
@@ -375,7 +376,7 @@ void main_window_tab_widget::MainWindowTabWidget::setTabTitle(const int & index,
 	try {
 		// Set tab title
 		main_window_tab::MainWindowTab * tab = dynamic_cast<main_window_tab::MainWindowTab *>(this->widget(index, true));
-		main_window_web_engine_page::MainWindowWebEnginePage * page = tab->getView()->page();
+		main_window_web_engine_page::MainWindowWebEnginePage * page = tab->getPage();
 		page->setSource(source);
 	} catch (const std::bad_cast & badCastE) {
 		QEXCEPTION_ACTION(throw, badCastE.what());

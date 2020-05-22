@@ -178,3 +178,13 @@ int tab::Tab::getVerticalScroll() const {
 int tab::Tab::getHorizontalScroll() const {
 	return this->scrollManager->getHorizontalScrollPercentage();
 }
+
+tab_shared_types::load_status_e tab::Tab::getLoadStatus() const {
+	tab_load_manager::TabLoadManager * loadManager = this->getLoadManager();
+	return loadManager->getStatus();
+}
+
+web_engine_page::WebEnginePage * tab::Tab::getPage() const {
+	web_engine_view::WebEngineView * view = this->getView();
+	return view->page();
+}

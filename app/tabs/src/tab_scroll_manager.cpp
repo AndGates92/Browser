@@ -152,8 +152,7 @@ void tab_scroll_manager::TabScrollManager::pushRequestQueue(const tab_shared_typ
 
 void tab_scroll_manager::TabScrollManager::popRequestQueue() {
 	const tab::Tab * castedTab(this->getTab());
-	const tab_load_manager::TabLoadManager * loadManager(castedTab->getLoadManager());
-	const tab_shared_types::load_status_e & loadManagerStatus = loadManager->getStatus();
+	const tab_shared_types::load_status_e & loadManagerStatus = castedTab->getLoadStatus();
 
 	QEXCEPTION_ACTION_COND((this->canProcessRequests() == false), throw,  "Function " << __func__ << " cannot be called when load manager is in state " << loadManagerStatus << ". It can only be called if a page is not loading");
 
@@ -165,8 +164,7 @@ void tab_scroll_manager::TabScrollManager::popRequestQueue() {
 
 bool tab_scroll_manager::TabScrollManager::canProcessRequests() const {
 	const tab::Tab * castedTab(this->getTab());
-	const tab_load_manager::TabLoadManager * loadManager(castedTab->getLoadManager());
-	const tab_shared_types::load_status_e & loadManagerStatus = loadManager->getStatus();
+	const tab_shared_types::load_status_e & loadManagerStatus = castedTab->getLoadStatus();
 
 	return ((loadManagerStatus == tab_shared_types::load_status_e::FINISHED) || (loadManagerStatus == tab_shared_types::load_status_e::ERROR));
 }
