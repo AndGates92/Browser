@@ -22,6 +22,7 @@
 #include "main_window_shared_types.h"
 #include "main_window_web_engine_view.h"
 #include "main_window_web_engine_settings.h"
+#include "main_window_web_engine_history.h"
 #include "main_window_tab_search.h"
 #include "main_window_tab_load_manager.h"
 #include "main_window_tab_scroll_manager.h"
@@ -144,13 +145,13 @@ namespace main_window_tab {
 			main_window_tab_search::MainWindowTabSearch * getSearch() const;
 
 			/**
-			 * @brief Function: QWebEngineHistory * getHistory() const
+			 * @brief Function: main_window_web_engine_history::MainWindowWebEngineHistory * getHistory() const
 			 *
 			 * \return history of the tab
 			 *
 			 * This function returns the history of the page
 			 */
-			QWebEngineHistory * getHistory() const;
+			main_window_web_engine_history::MainWindowWebEngineHistory * getHistory() const;
 
 			/**
 			 * @brief Function: main_window_web_engine_settings::MainWindowWebEngineSettings * getSettings() const

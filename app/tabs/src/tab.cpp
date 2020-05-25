@@ -30,7 +30,8 @@ tab::Tab::Tab(QWidget * parent, QWidget * tabBar): QWidget(parent), view(Q_NULLP
 	tab_search::TabSearch * tabSearch = new tab_search::TabSearch(this, this);
 	this->setSearch(tabSearch);
 
-	this->setHistory(this->getView()->history());
+	web_engine_history::WebEngineHistory * tabHistory = new web_engine_history::WebEngineHistory(this->getView()->history());
+	this->setHistory(tabHistory);
 
 	web_engine_settings::WebEngineSettings * tabSettings = new web_engine_settings::WebEngineSettings(this->getView()->settings());
 	this->setSettings(tabSettings);
@@ -84,9 +85,7 @@ PTR_SETTER_GETTER(tab::Tab::setView, tab::Tab::getView, web_engine_view::WebEngi
 
 PTR_SETTER_GETTER(tab::Tab::setSearch, tab::Tab::getSearch, tab_search::TabSearch, this->search)
 
-PTR_SETTER_GETTER(tab::Tab::setHistory, tab::Tab::getHistory, QWebEngineHistory, this->history)
-//PTR_SETTER(tab::Tab::setHistory, tab_history::TabHistory, this->history)
-//CASTED_PTR_GETTER(tab::Tab::getHistory, tab_history::TabHistory, this->history)
+PTR_SETTER_GETTER(tab::Tab::setHistory, tab::Tab::getHistory, web_engine_history::WebEngineHistory, this->history)
 
 void tab::Tab::setScrollManager(tab_scroll_manager::TabScrollManager * value) {
 	if (this->scrollManager != value) {
@@ -140,15 +139,11 @@ void tab::Tab::findPrev() const {
 }
 
 void tab::Tab::historyNext() const {
-	if (this->history->canGoForward()) {
-		this->history->forward();
-	}
+	this->history->forward();
 }
 
 void tab::Tab::historyPrev() const {
-	if (this->history->canGoBack()) {
-		this->history->back();
-	}
+	this->history->back();
 }
 
 void tab::Tab::scrollUp() const {

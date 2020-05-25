@@ -22,7 +22,8 @@ main_window_tab::MainWindowTab::MainWindowTab(QWidget * parent, QWidget * tabBar
 
 	main_window_web_engine_view::MainWindowWebEngineView * tabView = new main_window_web_engine_view::MainWindowWebEngineView(this, type, src, data);
 	this->setView(tabView);
-	this->setHistory(this->getView()->history());
+	main_window_web_engine_history::MainWindowWebEngineHistory * tabHistory = new main_window_web_engine_history::MainWindowWebEngineHistory(this->getView()->history());
+	this->setHistory(tabHistory);
 
 	main_window_web_engine_settings::MainWindowWebEngineSettings * tabSettings = new main_window_web_engine_settings::MainWindowWebEngineSettings(this->getView()->settings());
 	this->setSettings(tabSettings);
@@ -54,7 +55,7 @@ CASTED_PTR_GETTER(main_window_tab::MainWindowTab::getLoadManager, main_window_ta
 
 CASTED_PTR_GETTER(main_window_tab::MainWindowTab::getSearch, main_window_tab_search::MainWindowTabSearch, tab::Tab::getSearch())
 
-PTR_GETTER(main_window_tab::MainWindowTab::getHistory, QWebEngineHistory, tab::Tab::getHistory())
+CASTED_PTR_GETTER(main_window_tab::MainWindowTab::getHistory, main_window_web_engine_history::MainWindowWebEngineHistory, tab::Tab::getHistory())
 
 CASTED_PTR_GETTER(main_window_tab::MainWindowTab::getSettings, main_window_web_engine_settings::MainWindowWebEngineSettings, tab::Tab::getSettings())
 

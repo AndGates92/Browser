@@ -15,12 +15,12 @@
 #include <qt5/QtCore/QLoggingCategory>
 
 #include <qt5/QtWidgets/QWidget>
-#include <qt5/QtWebEngineWidgets/QWebEngineHistory>
 
 #include "global_types.h"
 #include "constructor_macros.h"
 #include "web_engine_view.h"
 #include "web_engine_settings.h"
+#include "web_engine_history.h"
 #include "tab_load_manager.h"
 #include "tab_scroll_manager.h"
 #include "tab_search.h"
@@ -198,8 +198,7 @@ namespace tab {
 			 * @brief history class
 			 *
 			 */
-			//tab_history::TabHistory * history;
-			QWebEngineHistory * history;
+			web_engine_history::WebEngineHistory * history;
 
 			/**
 			 * @brief settings
@@ -287,22 +286,22 @@ namespace tab {
 			tab_search::TabSearch * getSearch() const;
 
 			/**
-			 * @brief Function: void setHistory(QWebEngineHistory * value)
+			 * @brief Function: void setHistory(web_engine_history::WebEngineHistory * value)
 			 *
 			 * \param value: history of the tab
 			 *
 			 * This function sets the history of the page
 			 */
-			void setHistory(QWebEngineHistory * value);
+			void setHistory(web_engine_history::WebEngineHistory * value);
 
 			/**
-			 * @brief Function: QWebEngineHistory * getHistory() const
+			 * @brief Function: web_engine_history::WebEngineHistory * getHistory() const
 			 *
 			 * \return history of the tab
 			 *
 			 * This function returns the history of the page
 			 */
-			QWebEngineHistory * getHistory() const;
+			web_engine_history::WebEngineHistory * getHistory() const;
 
 			/**
 			 * @brief Function: void setSettings(web_engine_settings::WebEngineSettings * value)
