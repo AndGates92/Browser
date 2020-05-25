@@ -118,58 +118,67 @@ namespace main_window_tab {
 			void connectSignals() override;
 
 			/**
-			 * @brief Function: main_window_web_engine_view::MainWindowWebEngineView * getView() const
+			 * @brief Function: virtual main_window_web_engine_view::MainWindowWebEngineView * getView() const override
 			 *
 			 * \return tab view
 			 *
 			 * This function returns the tab view
 			 */
-			main_window_web_engine_view::MainWindowWebEngineView * getView() const;
+			virtual main_window_web_engine_view::MainWindowWebEngineView * getView() const override;
 
 			/**
-			 * @brief Function: main_window_tab_load_manager::MainWindowTabLoadManager * getLoadManager() const
+			 * @brief Function: main_window_tab_load_manager::MainWindowTabLoadManager * getLoadManager() const override
 			 *
 			 * \return load manager
 			 *
 			 * This function returns the load manager
 			 */
-			main_window_tab_load_manager::MainWindowTabLoadManager * getLoadManager() const;
+			virtual main_window_tab_load_manager::MainWindowTabLoadManager * getLoadManager() const override;
 
 			/**
-			 * @brief Function: main_window_tab_search::MainWindowTabSearch * getSearch() const
+			 * @brief Function: virtual main_window_tab_search::MainWindowTabSearch * getSearch() const override
 			 *
 			 * \return tab search
 			 *
 			 * This function returns the tab search
 			 */
-			main_window_tab_search::MainWindowTabSearch * getSearch() const;
+			virtual main_window_tab_search::MainWindowTabSearch * getSearch() const override;
 
 			/**
-			 * @brief Function: main_window_web_engine_history::MainWindowWebEngineHistory * getHistory() const
+			 * @brief Function: virtual main_window_web_engine_history::MainWindowWebEngineHistory * getHistory() const override
 			 *
 			 * \return history of the tab
 			 *
 			 * This function returns the history of the page
 			 */
-			main_window_web_engine_history::MainWindowWebEngineHistory * getHistory() const;
+			virtual main_window_web_engine_history::MainWindowWebEngineHistory * getHistory() const override;
 
 			/**
-			 * @brief Function: main_window_web_engine_settings::MainWindowWebEngineSettings * getSettings() const
+			 * @brief Function: virtual main_window_web_engine_settings::MainWindowWebEngineSettings * getSettings() const override
 			 *
 			 * \return tab settings
 			 *
 			 * This function returns the settings
 			 */
-			main_window_web_engine_settings::MainWindowWebEngineSettings * getSettings() const;
+			virtual main_window_web_engine_settings::MainWindowWebEngineSettings * getSettings() const override;
 
 			/**
-			 * @brief Function: main_window_tab_scroll_manager::MainWindowTabScrollManager * getScrollManager() const
+			 * @brief Function: virtual main_window_tab_scroll_manager::MainWindowTabScrollManager * getScrollManager() const override
 			 *
 			 * \return scroll manager
 			 *
 			 * This function returns the scroll manager
 			 */
-			main_window_tab_scroll_manager::MainWindowTabScrollManager * getScrollManager() const;
+			virtual main_window_tab_scroll_manager::MainWindowTabScrollManager * getScrollManager() const override;
+
+			/**
+			 * @brief Function: void updateView(main_window_web_engine_view::MainWindowWebEngineView * value)
+			 *
+			 * \param value: view to use
+			 *
+			 * This function updates the current view as well as informations derived from it
+			 */
+			void updateView(main_window_web_engine_view::MainWindowWebEngineView * value);
 
 			/**
 			 * @brief Function: void reload() override

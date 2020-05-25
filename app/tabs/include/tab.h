@@ -232,115 +232,115 @@ namespace tab {
 
 			// Move and copy constructor
 			/**
-			 * @brief Function: void setView(web_engine_view::WebEngineView * value)
+			 * @brief Function: virtual void setView(web_engine_view::WebEngineView * value)
 			 *
 			 * \param value: view to use
 			 *
 			 * This function sets the tab view
 			 */
-			void setView(web_engine_view::WebEngineView * value);
+			virtual void setView(web_engine_view::WebEngineView * value);
 
 			/**
-			 * @brief Function: web_engine_view::WebEngineView * getView() const
+			 * @brief Function: virtual web_engine_view::WebEngineView * getView() const
 			 *
 			 * \return tab view
 			 *
 			 * This function returns the tab view
 			 */
-			web_engine_view::WebEngineView * getView() const;
+			virtual web_engine_view::WebEngineView * getView() const;
 
 			/**
-			 * @brief Function: void setLoadManager(tab_load_manager::TabLoadManager * value)
+			 * @brief Function: virtual void setLoadManager(tab_load_manager::TabLoadManager * value)
 			 *
 			 * \param value: load manager to use
 			 *
 			 * This function sets the load manager
 			 */
-			void setLoadManager(tab_load_manager::TabLoadManager * value);
+			virtual void setLoadManager(tab_load_manager::TabLoadManager * value);
 
 			/**
-			 * @brief Function: tab_load_manager::TabLoadManager * getLoadManager() const
+			 * @brief Function: virtual tab_load_manager::TabLoadManager * getLoadManager() const
 			 *
 			 * \return load manager
 			 *
 			 * This function returns the load manager
 			 */
-			tab_load_manager::TabLoadManager * getLoadManager() const;
+			virtual tab_load_manager::TabLoadManager * getLoadManager() const;
 
 			/**
-			 * @brief Function: void setSearch(tab_search::TabSearch * value)
+			 * @brief Function: virtual void setSearch(tab_search::TabSearch * value)
 			 *
 			 * \param value: search to use
 			 *
 			 * This function sets the tab search
 			 */
-			void setSearch(tab_search::TabSearch * value);
+			virtual void setSearch(tab_search::TabSearch * value);
 
 			/**
-			 * @brief Function: tab_search::TabSearch * getSearch() const
+			 * @brief Function: virtual tab_search::TabSearch * getSearch() const
 			 *
 			 * \return tab search
 			 *
 			 * This function returns the tab search
 			 */
-			tab_search::TabSearch * getSearch() const;
+			virtual tab_search::TabSearch * getSearch() const;
 
 			/**
-			 * @brief Function: void setHistory(web_engine_history::WebEngineHistory * value)
+			 * @brief Function: virtual void setHistory(web_engine_history::WebEngineHistory * value)
 			 *
 			 * \param value: history of the tab
 			 *
 			 * This function sets the history of the page
 			 */
-			void setHistory(web_engine_history::WebEngineHistory * value);
+			virtual void setHistory(web_engine_history::WebEngineHistory * value);
 
 			/**
-			 * @brief Function: web_engine_history::WebEngineHistory * getHistory() const
+			 * @brief Function: virtual web_engine_history::WebEngineHistory * getHistory() const
 			 *
 			 * \return history of the tab
 			 *
 			 * This function returns the history of the page
 			 */
-			web_engine_history::WebEngineHistory * getHistory() const;
+			virtual web_engine_history::WebEngineHistory * getHistory() const;
 
 			/**
-			 * @brief Function: void setSettings(web_engine_settings::WebEngineSettings * value)
+			 * @brief Function: virtual void setSettings(web_engine_settings::WebEngineSettings * value)
 			 *
 			 * \param value: settings of the web page
 			 *
 			 * This function stores the pointer to the web page settings into web setting class
 			 */
-			void setSettings(web_engine_settings::WebEngineSettings * value);
+			virtual void setSettings(web_engine_settings::WebEngineSettings * value);
 
 			/**
-			 * @brief Function: web_engine_settings::WebEngineSettings * getSettings() const
+			 * @brief Function: virtual web_engine_settings::WebEngineSettings * getSettings() const
 			 *
 			 * \return tab settings
 			 *
 			 * This function returns the settings
 			 */
-			web_engine_settings::WebEngineSettings * getSettings() const;
+			virtual web_engine_settings::WebEngineSettings * getSettings() const;
 
 			/**
-			 * @brief Function: void setScrollManager(tab_scroll_manager::TabScrollManager * value)
+			 * @brief Function: virtual void setScrollManager(tab_scroll_manager::TabScrollManager * value)
 			 *
 			 * \param value: scroll manager to use
 			 *
 			 * This function sets the scroll manager
 			 */
-			void setScrollManager(tab_scroll_manager::TabScrollManager * value);
+			virtual void setScrollManager(tab_scroll_manager::TabScrollManager * value);
 
 			/**
-			 * @brief Function: tab_scroll_manager::TabScrollManager * getScrollManager() const
+			 * @brief Function: virtual tab_scroll_manager::TabScrollManager * getScrollManager() const
 			 *
 			 * \return scroll manager
 			 *
 			 * This function returns the scroll manager
 			 */
-			tab_scroll_manager::TabScrollManager * getScrollManager() const;
+			virtual tab_scroll_manager::TabScrollManager * getScrollManager() const;
 
 			/**
-			 * @brief Function: virtual void find(const int & index, const QString & search, const bool & reverse, const bool & caseSensitive) const
+			 * @brief Function: virtual virtual void find(const int & index, const QString & search, const bool & reverse, const bool & caseSensitive) const
 			 *
 			 * \param search: text to search.
 			 * \param reverse: true if searching in the reverse direction, false otherwise.

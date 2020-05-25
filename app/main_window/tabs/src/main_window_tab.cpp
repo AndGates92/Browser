@@ -21,12 +21,7 @@ main_window_tab::MainWindowTab::MainWindowTab(QWidget * parent, QWidget * tabBar
 	QINFO_PRINT(global_types::qinfo_level_e::ZERO, mainWindowTabOverall,  "MainWindowTab constructor");
 
 	main_window_web_engine_view::MainWindowWebEngineView * tabView = new main_window_web_engine_view::MainWindowWebEngineView(this, type, src, data);
-	this->setView(tabView);
-	main_window_web_engine_history::MainWindowWebEngineHistory * tabHistory = new main_window_web_engine_history::MainWindowWebEngineHistory(this->getView()->history());
-	this->setHistory(tabHistory);
-
-	main_window_web_engine_settings::MainWindowWebEngineSettings * tabSettings = new main_window_web_engine_settings::MainWindowWebEngineSettings(this->getView()->settings());
-	this->setSettings(tabSettings);
+	this->updateView(tabView);
 
 	main_window_tab_load_manager::MainWindowTabLoadManager * tabLoadManager = new main_window_tab_load_manager::MainWindowTabLoadManager(this);
 	this->setLoadManager(tabLoadManager);
@@ -47,6 +42,18 @@ main_window_tab::MainWindowTab::~MainWindowTab() {
 
 void main_window_tab::MainWindowTab::reload() {
 	this->getView()->page()->reload();
+}
+
+void main_window_tab::MainWindowTab::updateView(main_window_web_engine_view::MainWindowWebEngineView * view) {
+	this->setView(view);
+
+	main_window_web_engine_history::MainWindowWebEngineHistory * tabHistory = new main_window_web_engine_history::MainWindowWebEngineHistory(this->getView()->history());
+	this->setHistory(tabHistory);
+
+	main_window_web_engine_settings::MainWindowWebEngineSettings * tabSettings = new main_window_web_engine_settings::MainWindowWebEngineSettings(this->getView()->settings());
+	this->setSettings(tabSettings);
+
+
 }
 
 CASTED_PTR_GETTER(main_window_tab::MainWindowTab::getView, main_window_web_engine_view::MainWindowWebEngineView, tab::Tab::getView())
