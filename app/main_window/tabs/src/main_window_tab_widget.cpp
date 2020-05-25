@@ -66,10 +66,15 @@ void main_window_tab_widget::MainWindowTabWidget::disconnectTab(const int & inde
 
 	if (tabCount > 0) {
 		try {
-			const main_window_tab::MainWindowTab * tab = dynamic_cast<main_window_tab::MainWindowTab *>(this->widget(index, true));
-			disconnect(tab, &main_window_tab::MainWindowTab::sourceChanged, this, &main_window_tab_widget::MainWindowTabWidget::processTabSourceChanged);
-			disconnect(tab, &main_window_tab::MainWindowTab::urlChanged, this, &main_window_tab_widget::MainWindowTabWidget::processTabUrlChanged);
-			disconnect(tab, &main_window_tab::MainWindowTab::titleChanged, this, &main_window_tab_widget::MainWindowTabWidget::processTabTitleChanged);
+			if (this->tabSourceConnection) {
+				disconnect(this->tabSourceConnection);
+			}
+			if (this->tabUrlConnection) {
+				disconnect(this->tabUrlConnection);
+			}
+			if (this->tabTitleConnection) {
+				disconnect(this->tabTitleConnection);
+			}
 
 			emit this->tabNearlyDisconnected(index);
 		} catch (const std::bad_cast & badCastE) {
@@ -85,9 +90,9 @@ void main_window_tab_widget::MainWindowTabWidget::connectTab(const int & index) 
 	if (tabCount > 0) {
 		try {
 			main_window_tab::MainWindowTab * tab = dynamic_cast<main_window_tab::MainWindowTab *>(this->widget(index, true));
-			connect(tab, &main_window_tab::MainWindowTab::sourceChanged, this, &main_window_tab_widget::MainWindowTabWidget::processTabSourceChanged);
-			connect(tab, &main_window_tab::MainWindowTab::urlChanged, this, &main_window_tab_widget::MainWindowTabWidget::processTabUrlChanged);
-			connect(tab, &main_window_tab::MainWindowTab::titleChanged, this, &main_window_tab_widget::MainWindowTabWidget::processTabTitleChanged);
+			this->tabSourceConnection = connect(tab, &main_window_tab::MainWindowTab::sourceChanged, this, &main_window_tab_widget::MainWindowTabWidget::processTabSourceChanged);
+			this->tabUrlConnection = connect(tab, &main_window_tab::MainWindowTab::urlChanged, this, &main_window_tab_widget::MainWindowTabWidget::processTabUrlChanged);
+			this->tabTitleConnection = connect(tab, &main_window_tab::MainWindowTab::titleChanged, this, &main_window_tab_widget::MainWindowTabWidget::processTabTitleChanged);
 
 			// Move focus to the newly connected tab
 			tab->setFocus();

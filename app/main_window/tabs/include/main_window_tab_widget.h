@@ -332,6 +332,24 @@ namespace main_window_tab_widget {
 		private:
 
 			/**
+			 * @brief source change connection
+			 *
+			 */
+			QMetaObject::Connection tabSourceConnection;
+
+			/**
+			 * @brief url change connection
+			 *
+			 */
+			QMetaObject::Connection tabUrlConnection;
+
+			/**
+			 * @brief title change connection
+			 *
+			 */
+			QMetaObject::Connection tabTitleConnection;
+
+			/**
 			 * @brief Function: void disconnectTab(const int & index)
 			 *
 			 * \param index: index of the tab to disconnect signals from
