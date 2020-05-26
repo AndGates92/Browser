@@ -21,5 +21,8 @@ namespace tab_shared_types {
 	// Overload << operator for direction_e
 	OVERLOAD_OPERATORS_CUSTOM_TYPE(tab_shared_types::direction_e)
 
+	// Overload << operator for direction_e
+	OVERLOAD_OPERATORS_CUSTOM_TYPE(tab_shared_types::stepping_e)
+
 }
 

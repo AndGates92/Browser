@@ -55,6 +55,24 @@ namespace tab_shared_types {
 	 */
 	OVERLOAD_OPERATORS_CUSTOM_TYPE_FUNCTION_PROTOTYPE(direction_list, tab_shared_types::direction_e)
 
+	/**
+	 * @brief direction info
+	 *
+	 */
+	typedef enum class stepping_list {
+		IDLE,             /**< Idle state - no user input */
+		NEXT,             /**< Next position */
+		PREVIOUS,         /**< Previous position */
+		ITEM              /**< User specified item */
+	} stepping_e;
+
+	/**
+	 * @brief Overload operators to ease print of the stepping in a list
+	 *
+	 */
+	OVERLOAD_OPERATORS_CUSTOM_TYPE_FUNCTION_PROTOTYPE(stepping_list, tab_shared_types::stepping_e)
+
+
 }
 
 /** @} */ // End of TabSharedTypesGroup group

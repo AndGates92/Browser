@@ -127,39 +127,39 @@ void tab::Tab::resize(const QSize size) {
 }
 
 void tab::Tab::find(const QString & searchText, const bool & reverse, const bool & caseSensitive) const {
-	this->search->findTabContent(searchText, reverse, caseSensitive);
+	this->search->find(tab_shared_types::stepping_e::ITEM, searchText, reverse, caseSensitive);
 }
 
 void tab::Tab::findNext() const {
-	this->search->findNext();
+	this->search->find(tab_shared_types::stepping_e::NEXT);
 }
 
 void tab::Tab::findPrev() const {
-	this->search->findPrev();
+	this->search->find(tab_shared_types::stepping_e::PREVIOUS);
 }
 
 void tab::Tab::historyNext() const {
-	this->history->forward();
+	this->history->goToItem(tab_shared_types::stepping_e::NEXT);
 }
 
 void tab::Tab::historyPrev() const {
-	this->history->back();
+	this->history->goToItem(tab_shared_types::stepping_e::PREVIOUS);
 }
 
 void tab::Tab::scrollUp() const {
-	this->scrollManager->scrollUp();
+	this->scrollManager->scroll(tab_shared_types::direction_e::UP);
 }
 
 void tab::Tab::scrollDown() const {
-	this->scrollManager->scrollDown();
+	this->scrollManager->scroll(tab_shared_types::direction_e::DOWN);
 }
 
 void tab::Tab::scrollLeft() const {
-	this->scrollManager->scrollLeft();
+	this->scrollManager->scroll(tab_shared_types::direction_e::LEFT);
 }
 
 void tab::Tab::scrollRight() const {
-	this->scrollManager->scrollRight();
+	this->scrollManager->scroll(tab_shared_types::direction_e::RIGHT);
 }
 
 int tab::Tab::getLoadProgress() const {

@@ -31,26 +31,38 @@ tab_search::TabSearch::~TabSearch() {
 
 }
 
-void tab_search::TabSearch::findTabContent(const QString & searchText, const bool & reverse, const bool & caseSensitive, std::function<void(bool)> cb) {
+void tab_search::TabSearch::find(const tab_shared_types::stepping_e step, const QString & searchText, const bool & reverse, const bool & caseSensitive, std::function<void(bool)> cb) {
 
-	this->text = searchText;
+	switch (step) {
+		case tab_shared_types::stepping_e::PREVIOUS:
+			// Set backward flag to 1 while keeping the other flags to the same value
+			this->flags |= QWebEnginePage::FindBackward;
+			break;
+		case tab_shared_types::stepping_e::NEXT:
+			// Set backward flag to 0 while keeping the other flags to the same value
+			this->flags &= ~QWebEnginePage::FindBackward;
+			break;
+		case tab_shared_types::stepping_e::ITEM:
+			this->text = searchText;
 
-	// No flag set by default
-	// Available search flags are:
-	// - QWebEnginePage::FindBackward
-	// - QWebEnginePage::FindCaseSensitively
-	QWebEnginePage::FindFlags options = QWebEnginePage::FindFlag(0);
-	if (reverse == true) {
-		options |= QWebEnginePage::FindBackward;
+			// No flag set by default
+			// Available search flags are:
+			// - QWebEnginePage::FindBackward
+			// - QWebEnginePage::FindCaseSensitively
+			this->flags = QWebEnginePage::FindFlag(0);
+			if (reverse == true) {
+				this->flags |= QWebEnginePage::FindBackward;
+			}
+			if (caseSensitive == true) {
+				this->flags |= QWebEnginePage::FindCaseSensitively;
+			}
+
+			this->callback = cb;
+			break;
+		default:
+			QINFO_PRINT(global_types::qinfo_level_e::ZERO, tabSearchOverall,  "Unable to set up a search when stepping is set to " << step);
+			break;
 	}
-
-	if (caseSensitive == true) {
-		options |= QWebEnginePage::FindCaseSensitively;
-	}
-
-	this->flags = options;
-
-	this->callback = cb;
 
 	this->search();
 }
@@ -117,7 +129,7 @@ void tab_search::TabSearch::popRequestQueue() {
 		bool reverseSearch = (searchFlag & QWebEnginePage::FindBackward);
 		bool caseSensitive = (searchFlag & QWebEnginePage::FindCaseSensitively);
 
-		this->findTabContent(this->text, reverseSearch, caseSensitive, nullptr);
+		this->find(tab_shared_types::stepping_e::ITEM, this->text, reverseSearch, caseSensitive, nullptr);
 
 		this->requestQueue.pop();
 	}

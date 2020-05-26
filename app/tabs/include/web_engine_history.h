@@ -17,6 +17,7 @@
 #include <qt5/QtWebEngineWidgets/QWebEngineHistory>
 
 #include "global_types.h"
+#include "tab_shared_types.h"
 
 /** @defgroup WebEngineHistoryGroup Web Engine History Doxygen Group
  *  Web Engine History functions and classes
@@ -103,18 +104,28 @@ namespace web_engine_history {
 			QWebEngineHistory * history;
 
 			/**
-			 * @brief Function: void back() const
+			 * @brief Function: virtual void back() const
 			 *
 			 * THis function tries to go back in the history of the tab
 			 */
-			void back() const;
+			virtual void back() const;
 
 			/**
-			 * @brief Function: void forward() const
+			 * @brief Function: virtual void forward() const
 			 *
 			 * THis function tries to go forward in the history of the tab
 			 */
-			void forward() const;
+			virtual void forward() const;
+
+			/**
+			 * @brief Function: void goToItem(const tab_shared_types::stepping_e step) const
+			 *
+			 * \param step: movement across items of the list
+			 *
+			 * THis function requests to move to items across the list
+			 */
+			void goToItem(const tab_shared_types::stepping_e step) const;
+
 
 	};
 }

@@ -76,3 +76,17 @@ void web_engine_history::WebEngineHistory::forward() const {
 		this->history->forward();
 	}
 }
+
+void web_engine_history::WebEngineHistory::goToItem(const tab_shared_types::stepping_e step) const {
+	switch (step) {
+		case tab_shared_types::stepping_e::PREVIOUS:
+			this->back();
+			break;
+		case tab_shared_types::stepping_e::NEXT:
+			this->forward();
+			break;
+		default:
+			QINFO_PRINT(global_types::qinfo_level_e::ZERO, webEngineHistoryOverall,  "Unable to step across items of the history list with direcion set to " << step);
+			break;
+	}
+}

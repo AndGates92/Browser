@@ -94,8 +94,9 @@ namespace tab_search {
 			virtual void findNext() final;
 
 			/**
-			 * @brief Function: virtual void findTabContent(const QString & searchText, const bool & reverse, const bool & caseSensitive, std::function<void(bool)> cb = std::function<void(bool)>()) final
+			 * @brief Function: virtual void find(const tab_shared_types::stepping_e step, const QString & searchText = QString::null, const bool & reverse = false, const bool & caseSensitive = false, std::function<void(bool)> cb = std::function<void(bool)>()) final
 			 *
+			 * \param step: direction of search.
 			 * \param searchText: text to search.
 			 * \param reverse: true if searching in the reverse direction, false otherwise.
 			 * \param caseSensitive: true if case sensitive search, false otherwise.
@@ -103,7 +104,7 @@ namespace tab_search {
 			 *
 			 * This function searches text in a webpage
 			 */
-			virtual void findTabContent(const QString & searchText, const bool & reverse, const bool & caseSensitive, std::function<void(bool)> cb = std::function<void(bool)>()) final;
+			virtual void find(const tab_shared_types::stepping_e step, const QString & searchText = QString::null, const bool & reverse = false, const bool & caseSensitive = false, std::function<void(bool)> cb = std::function<void(bool)>()) final;
 
 			/**
 			 * @brief Function: virtual void popRequestQueue() override

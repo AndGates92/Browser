@@ -181,34 +181,6 @@ namespace tab_scroll_manager {
 			void updateVerticalScrollPercentage();
 
 			/**
-			 * @brief Function: void scrollUp()
-			 *
-			 * This function request the scroll manager to scroll up
-			 */
-			void scrollUp();
-
-			/**
-			 * @brief Function: void scrollDown()
-			 *
-			 * This function request the scroll manager to scroll down
-			 */
-			void scrollDown();
-
-			/**
-			 * @brief Function: void scrollLeft()
-			 *
-			 * This function request the scroll manager to scroll left
-			 */
-			void scrollLeft();
-
-			/**
-			 * @brief Function: void scrollRight()
-			 *
-			 * This function request the scroll manager to scroll right
-			 */
-			void scrollRight();
-
-			/**
 			 * @brief Function: virtual void popRequestQueue() override
 			 *
 			 * This function empties the queue of scroll requests
@@ -264,13 +236,13 @@ namespace tab_scroll_manager {
 			virtual void pushRequestQueue(const tab_shared_types::direction_e & entry) override;
 
 			/**
-			 * @brief Function: void tabScroll(const tab_shared_types::direction_e direction)
+			 * @brief Function: void scroll(const tab_shared_types::direction_e direction)
 			 *
 			 * \param direction: direction of scrolling
 			 *
 			 * This function scroll the tab in the direction provided as argument
 			 */
-			void tabScroll(const tab_shared_types::direction_e direction);
+			void scroll(const tab_shared_types::direction_e direction);
 
 			/**
 			 * @brief Function: void checkScrollValue(const int & scroll, const QString direction) const

@@ -92,24 +92,7 @@ void tab_scroll_manager::TabScrollManager::checkScrollValue(const int & scroll, 
 	QEXCEPTION_ACTION_COND(((scroll < tab_scroll_manager::minScrollPercentage) || (scroll > tab_scroll_manager::maxScrollPercentage)), throw,  "Invalid value of " << direction << " scroll: " << scroll << ". Valid range is between " << tab_scroll_manager::minScrollPercentage << " and " << tab_scroll_manager::maxScrollPercentage);
 }
 
-// TODO: Add mutex
-void tab_scroll_manager::TabScrollManager::scrollDown() {
-	this->tabScroll(tab_shared_types::direction_e::DOWN);
-}
-
-void tab_scroll_manager::TabScrollManager::scrollUp() {
-	this->tabScroll(tab_shared_types::direction_e::UP);
-}
-
-void tab_scroll_manager::TabScrollManager::scrollRight() {
-	this->tabScroll(tab_shared_types::direction_e::RIGHT);
-}
-
-void tab_scroll_manager::TabScrollManager::scrollLeft() {
-	this->tabScroll(tab_shared_types::direction_e::LEFT);
-}
-
-void tab_scroll_manager::TabScrollManager::tabScroll(const tab_shared_types::direction_e direction) {
+void tab_scroll_manager::TabScrollManager::scroll(const tab_shared_types::direction_e direction) {
 
 	if (this->canProcessRequests() == true) {
 		int xAxisFactor = 0;
@@ -157,7 +140,7 @@ void tab_scroll_manager::TabScrollManager::popRequestQueue() {
 	QEXCEPTION_ACTION_COND((this->canProcessRequests() == false), throw,  "Function " << __func__ << " cannot be called when load manager is in state " << loadManagerStatus << ". It can only be called if a page is not loading");
 
 	if ((this->requestQueue.empty() == false) && (this->canProcessRequests() == true)) {
-		this->tabScroll(this->requestQueue.front());
+		this->scroll(this->requestQueue.front());
 		this->requestQueue.pop();
 	}
 }
