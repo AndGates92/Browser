@@ -11,8 +11,9 @@
 // Qt libraries
 // Required by qInfo
 #include <qt5/QtCore/QtDebug>
-
 #include <qt5/QtCore/QLoggingCategory>
+
+#include <qt5/QtWidgets/QAction>
 
 #include "web_engine_view.h"
 #include "main_window_web_engine_page.h"
@@ -72,6 +73,15 @@ namespace main_window_web_engine_view {
 			main_window_web_engine_page::MainWindowWebEnginePage * page() const;
 
 		protected:
+			/**
+			 * @brief Function: virtual void contextMenuEvent(QContextMenuEvent * event) override
+			 *
+			 * \param event: context menu event
+			 *
+			 * This function is a function that handles the context menu event. It editsslot that receives a notification that the url has changed and it updates the page source
+			 * It edits the content of the menu
+			 */
+			virtual void contextMenuEvent(QContextMenuEvent * event) override;
 
 		private slots:
 			/**
@@ -90,6 +100,22 @@ namespace main_window_web_engine_view {
 			 * This function connects signals and slots within the web engine view
 			 */
 			void connectSignals();
+
+			/**
+			 * @brief Function: bool isSameAction(const QAction * lhs, const QAction * rhs) const
+			 *
+			 * \param lhs: left hand side of the comparison
+			 * \param rhs: right hand side of the comparison
+			 *
+			 * \return a boolean is the 2 QAction are identical or not
+			 *
+			 * This function implements the comparison between two QActions
+			 * In order to be identical, QAction must have the following members identical:
+			 *  - shortcut list size
+			 *  - shortcuts
+			 *  - text without mnemonics
+			 */
+			bool isSameAction(const QAction * lhs, const QAction * rhs) const;
 
 			// Move and copy constructor
 			/**

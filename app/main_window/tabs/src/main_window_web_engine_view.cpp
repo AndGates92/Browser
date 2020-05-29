@@ -9,6 +9,8 @@
 // Qt libraries
 #include <qt5/QtCore/QLoggingCategory>
 #include <qt5/QtGui/QKeyEvent>
+#include <qt5/QtWidgets/QMenu>
+#include <qt5/QtWebEngineWidgets/QWebEngineHistory>
 
 #include "logging_macros.h"
 #include "function_macros.h"
@@ -49,4 +51,77 @@ void main_window_web_engine_view::MainWindowWebEngineView::updatePageSource(cons
 		const QString urlStr = url.toDisplayString(QUrl::FullyDecoded);
 		enginePage->setSource(urlStr);
 	}
+}
+
+bool main_window_web_engine_view::MainWindowWebEngineView::isSameAction(const QAction * lhs, const QAction * rhs) const {
+	const QList<QKeySequence> keyList1(lhs->shortcuts());
+	const QList<QKeySequence> keyList2(rhs->shortcuts());
+
+	if (keyList1.size() != keyList2.size()) {
+		return false;
+	}
+
+	for(QList<QKeySequence>::const_iterator keyIt1 = keyList1.cbegin(), keyIt2 = keyList2.cbegin(); (keyIt1 != keyList1.cend() && keyIt2 != keyList2.cend()); keyIt1++, keyIt2++) {
+		if ((*keyIt1) != (*keyIt2)) {
+			return false;
+		}
+	}
+
+	// Discard mnemonic that could cause comparison to mismatch
+	QString lhsText(lhs->text().replace(QString("&"), QString("")));
+	QString rhsText(rhs->text().replace(QString("&"), QString("")));
+
+	if (QString::compare(lhsText, rhsText, Qt::CaseSensitive) != 0) {
+			return false;
+	}
+
+	return true;
+
+}
+
+void main_window_web_engine_view::MainWindowWebEngineView::contextMenuEvent(QContextMenuEvent * event) {
+	QMenu * contextMenu(this->page()->createStandardContextMenu());
+
+	contextMenu->setStyleSheet(
+		"QMenu {"
+			// Backgorund color to be inherited from the parent one
+			"background: inherit; "
+			// Text color
+			// Set to white as status bar backgorund color is black
+			"color: white; "
+			"text-align: center; "
+			"border-right: 1px solid inherit; "
+			"border-left: 1px solid inherit; "
+			// Inherit font
+			"font: inherit; "
+		"}"
+		"QMenu::item {"
+			// Backgorund color to be transparent to be the same as the menu color
+			"background: transparent; "
+		"}"
+		"QMenu::item::selected {"
+			// Set a gray background color when hovering items with the mouse
+			"background: grey; "
+		"}"
+		"QMenu::item::disabled {"
+			// Gray out disabled items
+			"color: gray; "
+		"}"
+	);
+
+	const QList<QAction *> actions(contextMenu->actions());
+
+	for(QList<QAction *>::const_iterator actionIt = actions.cbegin(); actionIt != actions.cend(); actionIt++) {
+		QAction * action(*actionIt);
+		// Eliminates mnemonic shortcuts
+		action->setText(action->text().replace(QString("&"), QString("")));
+		QFont actionFont(action->font());
+		if (this->isSameAction(action, this->page()->action(QWebEnginePage::Forward)) == true) {
+			action->setEnabled(this->history()->canGoForward());
+		}
+		action->setFont(actionFont);
+	}
+
+	contextMenu->popup(event->globalPos());
+
 }
