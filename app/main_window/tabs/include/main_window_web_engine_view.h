@@ -117,6 +117,8 @@ namespace main_window_web_engine_view {
 			 */
 			bool isSameAction(const QAction * lhs, const QAction * rhs) const;
 
+QAction * addActionListToMenu(QMenu * menu, QAction * pos, const QList<QAction *> & actionList);
+
 			// Move and copy constructor
 			/**
 			 * @brief Disable move and copy constructors and operator= overloading for class MainWindowWebEngineView

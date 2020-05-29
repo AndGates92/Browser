@@ -118,10 +118,83 @@ void main_window_web_engine_view::MainWindowWebEngineView::contextMenuEvent(QCon
 		QFont actionFont(action->font());
 		if (this->isSameAction(action, this->page()->action(QWebEnginePage::Forward)) == true) {
 			action->setEnabled(this->history()->canGoForward());
+		} else if (this->isSameAction(action, this->page()->action(QWebEnginePage::Back)) == true) {
+			action->setEnabled(this->history()->canGoBack());
 		}
+
 		action->setFont(actionFont);
+	}
+
+	if (this->hasSelection() == true) {
+		std::list<QWebEnginePage::WebAction> actionsToAdd;
+		actionsToAdd.push_back(QWebEnginePage::Cut);
+		actionsToAdd.push_back(QWebEnginePage::Copy);
+		actionsToAdd.push_back(QWebEnginePage::Paste);
+
+		QAction * separator(contextMenu->addSeparator());
+
+		QList<QAction *>::const_iterator actionIt = actions.cbegin();
+		QAction * action(*actionIt);
+
+		QList<QAction *> actionList;
+
+		for (std::list<QWebEnginePage::WebAction>::const_iterator newActionIt = actionsToAdd.cbegin(); newActionIt != actionsToAdd.cend(); ++newActionIt) {
+			if (newActionIt == actionsToAdd.cbegin()) {
+				actionList.clear();
+			}
+
+			QWebEnginePage::WebAction webAction(*newActionIt);
+			if (webAction == QWebEnginePage::NoWebAction) {
+				// Add separator to the list. If we it this line, it means that we have more elements coming next
+				actionList.append(separator);
+				action = this->addActionListToMenu(contextMenu, action, actionList);
+
+				// Clear list
+				actionList.clear();
+
+			} else {
+				actionList.append(this->page()->action(webAction));
+			}
+		}
+
+		if (actions.empty() == false) {
+			// Add separator to the list. If we it this line, it means that we have more elements coming next
+			actionList.append(separator);
+		}
+		this->addActionListToMenu(contextMenu, action, actionList);
 	}
 
 	contextMenu->popup(event->globalPos());
 
+}
+
+QAction * main_window_web_engine_view::MainWindowWebEngineView::addActionListToMenu(QMenu * menu, QAction * pos, const QList<QAction *> & actionList) {
+
+	QAction * action(pos);
+	const QList<QAction *> actions(menu->actions());
+
+	// Only add actions if list is not empty
+	if (actionList.empty() == false) {
+
+		menu->insertActions(action, actionList);
+
+		// get iterator of next item after the last added
+		// 1. Get iterator over last added element
+		QList<QAction *>::const_iterator posIt = actionList.cend();
+
+		// 2. Find last added element in the action list
+		const QList<QAction *> actionTmp(menu->actions());
+		posIt = std::find(actionTmp.cbegin(), actionTmp.cend(), *posIt);
+
+		// 3. Increment iterator by 1 to compute the element next set of action must be appended before
+		posIt++;
+		if (posIt == actionTmp.cend()) {
+			// Reached end of list of actions
+			action = Q_NULLPTR;
+		} else {
+			action = *posIt;
+		}
+	}
+
+	return action;
 }
