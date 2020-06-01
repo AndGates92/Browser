@@ -94,12 +94,13 @@ void main_window_ctrl_tab::MainWindowCtrlTab::closeTab(const int & index) {
 }
 
 void main_window_ctrl_tab::MainWindowCtrlTab::addNewTabAndSearch(const QString & search) {
-	this->addNewTab(search, main_window_shared_types::page_type_e::WEB_CONTENT, nullptr);
+	const int index = this->addNewTab(main_window_shared_types::page_type_e::UNKNOWN, nullptr);
+	this->newSearchTab(index, search);
 }
 
-int main_window_ctrl_tab::MainWindowCtrlTab::addNewTab(const QString & search, const main_window_shared_types::page_type_e & type, const void * data) {
+int main_window_ctrl_tab::MainWindowCtrlTab::addNewTab(const main_window_shared_types::page_type_e & type, const void * data) {
 
-	QINFO_PRINT(global_types::qinfo_level_e::ZERO, mainWindowCtrlTabTabs,  "Open tab with label " << search);
+	QINFO_PRINT(global_types::qinfo_level_e::ZERO, mainWindowCtrlTabTabs,  "Open tab of type " << type);
 
 	const int tabCount = this->windowCore->getTabCount();
 	if (tabCount > 0) {
@@ -108,7 +109,7 @@ int main_window_ctrl_tab::MainWindowCtrlTab::addNewTab(const QString & search, c
 		this->disconnectTab(currentTabIndex);
 	}
 
-	const int tabIndex = this->windowCore->tabs->addTab(type, search, data);
+	const int tabIndex = this->windowCore->tabs->addTab(type, data);
 
 	// Connect signals from tab the cursor is pointing to
 	this->connectTab(tabIndex);
@@ -120,8 +121,13 @@ int main_window_ctrl_tab::MainWindowCtrlTab::addNewTab(const QString & search, c
 
 void main_window_ctrl_tab::MainWindowCtrlTab::newSearchTab(const int & index, const QString & search) {
 	QINFO_PRINT(global_types::qinfo_level_e::ZERO, mainWindowCtrlTabSearch,  "User input " << search << " in tab " << index);
-	const main_window_shared_types::page_type_e desiredType = main_window_shared_types::page_type_e::WEB_CONTENT;
-	this->windowCore->tabs->changeTabContent(index, desiredType, search, nullptr);
+	main_window_shared_types::page_type_e type = this->windowCore->tabs->getPageType(index);
+
+	// TODO: improve detection of search type: file vs url vs text
+	if (type == main_window_shared_types::page_type_e::UNKNOWN) {
+		type = main_window_shared_types::page_type_e::WEB_CONTENT;
+	}
+	this->windowCore->tabs->changeTabContent(index, type, search, nullptr);
 }
 
 void main_window_ctrl_tab::MainWindowCtrlTab::searchCurrentTab(const QString & search) {
@@ -669,6 +675,9 @@ void main_window_ctrl_tab::MainWindowCtrlTab::createContentPathTextFromSource(co
 		case main_window_shared_types::page_type_e::TEXT:
 			// Prepend file: to source
 			text = QString("file:") + source;
+			break;
+		case main_window_shared_types::page_type_e::UNKNOWN:
+			text = QString("Unknown tab type");
 			break;
 		default:
 			QEXCEPTION_ACTION(throw, "Unable to create string from " << source << " to print in the content path widget " << " because tab type " << type << " is not recognised");

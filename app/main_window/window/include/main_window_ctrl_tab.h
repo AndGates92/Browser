@@ -300,9 +300,8 @@ namespace main_window_ctrl_tab {
 
 			// ================================ START ACTIONS ========================================//
 			/**
-			 * @brief Function: int addNewTab(const QString & search, const main_window_shared_types::page_type_e & type, , const void * data = nullptr)
+			 * @brief Function: int addNewTab(const main_window_shared_types::page_type_e & type, , const void * data = nullptr)
 			 *
-			 * \param search: string to search
 			 * \param type: type of tab to be added
 			 * \param data: extra data to be passed through
 			 *
@@ -310,7 +309,7 @@ namespace main_window_ctrl_tab {
 			 *
 			 * This function adds a new tab to the tab widget
 			 */
-			int addNewTab(const QString & search, const main_window_shared_types::page_type_e & type, const void * data = nullptr);
+			int addNewTab(const main_window_shared_types::page_type_e & type, const void * data = nullptr);
 
 			/**
 			 * @brief Function: void newSearchTab(const int & index, const QString & search)

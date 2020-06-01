@@ -77,9 +77,8 @@ namespace main_window_tab_widget {
 			~MainWindowTabWidget();
 
 			/**
-			 * @brief Function: int addTab(const main_window_shared_types::page_type_e & type, const QString & userInput, const void * data = nullptr, const QIcon & icon = QIcon())
+			 * @brief Function: int addTab(const main_window_shared_types::page_type_e & type, const void * data = nullptr, const QIcon & icon = QIcon())
 			 *
-			 * \param userInput: input typed by the user
 			 * \param type: type of the tab page
 			 * \param data: extra data to be passed through
 			 * \param icon: icon of the page
@@ -89,13 +88,12 @@ namespace main_window_tab_widget {
 			 * This function adds tab to tab widget at the end of the tab bar
 			 * It calls insertTab, therefore for more details on the argument meaning, please refer to insertTab function
 			 */
-			int addTab(const main_window_shared_types::page_type_e & type, const QString & userInput, const void * data = nullptr, const QIcon & icon = QIcon());
+			int addTab(const main_window_shared_types::page_type_e & type, const void * data = nullptr, const QIcon & icon = QIcon());
 
 			/**
-			 * @brief Function: int insertTab(const int & index, const main_window_shared_types::page_type_e & type, const QString & userInput, const void * data = nullptr, const QIcon & icon = QIcon())
+			 * @brief Function: int insertTab(const int & index, const main_window_shared_types::page_type_e & type, const void * data = nullptr, const QIcon & icon = QIcon())
 			 *
 			 * \param index: index to insert tab to
-			 * \param userInput: input typed by the user
 			 * \param type: type of the tab page
 			 * \param data: extra data to be passed through
 			 * \param icon: icon of the page
@@ -107,7 +105,7 @@ namespace main_window_tab_widget {
 			 * if the type is WEB_CONTENT, it is the search keywords
 			 * if the type is TEXT, it is the filepath of the file to print
 			 */
-			int insertTab(const int & index, const main_window_shared_types::page_type_e & type, const QString & userInput, const void * data = nullptr, const QIcon & icon = QIcon());
+			int insertTab(const int & index, const main_window_shared_types::page_type_e & type, const void * data = nullptr, const QIcon & icon = QIcon());
 
 			/**
 			 * @brief Function: void removeTab(const int & index)

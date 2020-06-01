@@ -178,16 +178,16 @@ void main_window_tab_widget::MainWindowTabWidget::changePageData(const int & ind
 	}
 }
 
-int main_window_tab_widget::MainWindowTabWidget::insertTab(const int & index, const main_window_shared_types::page_type_e & type, const QString & userInput, const void * data, const QIcon & icon) {
+int main_window_tab_widget::MainWindowTabWidget::insertTab(const int & index, const main_window_shared_types::page_type_e & type, const void * data, const QIcon & icon) {
 
 	this->disconnectTab(this->currentIndex());
 
-	const QString source(this->createSource(type, userInput));
+	const QString source(QString::null);
 	main_window_tab::MainWindowTab * tab = new main_window_tab::MainWindowTab(this, this->tabBar(), type, source, data);
 
 	QINFO_PRINT(global_types::qinfo_level_e::ZERO, mainWindowTabWidgetTabs,  "Insert tab of type " << type << " with source " << source << " at position " << index);
 
-	const QString label(this->createLabel(type, userInput));
+	const QString label(QString::null);
 	const int currIndex = tab_widget::TabWidget::insertTab(index, tab, label, icon);
 
 	// Move to the newly opened tab
@@ -315,10 +315,10 @@ QString main_window_tab_widget::MainWindowTabWidget::createLabel(const main_wind
 	return label;
 }
 
-int main_window_tab_widget::MainWindowTabWidget::addTab(const main_window_shared_types::page_type_e & type, const QString & userInput, const void * data, const QIcon & icon) {
+int main_window_tab_widget::MainWindowTabWidget::addTab(const main_window_shared_types::page_type_e & type, const void * data, const QIcon & icon) {
 
 	const int index = this->count();
-	int tabIndex = this->insertTab(index, type, userInput, data, icon);
+	int tabIndex = this->insertTab(index, type, data, icon);
 
 	return tabIndex;
 }
@@ -403,12 +403,12 @@ void main_window_tab_widget::MainWindowTabWidget::openFileInCurrentTab(const QSt
 
 	// If not tabs, then create one
 	if (tabCount == 0) {
-		index = this->addTab(desiredTabType, filepath, data);
+		index = this->addTab(desiredTabType, data);
 		tabCount = this->count();
 		QEXCEPTION_ACTION_COND((index >= tabCount), throw,  "Current tab index " << index << " must be larger than the number of tabs " << tabCount);
-	} else {
-		this->changeTabContent(index, desiredTabType, filepath, data);
 	}
+
+	this->changeTabContent(index, desiredTabType, filepath, data);
 
 	QINFO_PRINT(global_types::qinfo_level_e::ZERO, mainWindowTabWidgetTabs, "Current tab index is " << index << " and the tab widget has " << tabCount << " tabs");
 
