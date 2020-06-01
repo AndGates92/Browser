@@ -183,17 +183,19 @@ int main_window_tab_widget::MainWindowTabWidget::insertTab(const int & index, co
 	this->disconnectTab(this->currentIndex());
 
 	const QString source(QString::null);
-	main_window_tab::MainWindowTab * tab = new main_window_tab::MainWindowTab(this, this->tabBar(), type, source, data);
+	const QString search(QString::null);
+	main_window_tab::MainWindowTab * tab = new main_window_tab::MainWindowTab(this, this->tabBar(), search, type, source, data);
 
 	QINFO_PRINT(global_types::qinfo_level_e::ZERO, mainWindowTabWidgetTabs,  "Insert tab of type " << type << " with source " << source << " at position " << index);
 
 	const QString label(QString::null);
 	const int currIndex = tab_widget::TabWidget::insertTab(index, tab, label, icon);
 
+	this->connectTab(currIndex);
+
 	// Move to the newly opened tab
 	this->setCurrentIndex(currIndex);
 
-	this->connectTab(currIndex);
 
 	return currIndex;
 }
@@ -334,6 +336,10 @@ void main_window_tab_widget::MainWindowTabWidget::changeTabContent(const int & i
 
 	try {
 		main_window_tab::MainWindowTab * tab = dynamic_cast<main_window_tab::MainWindowTab *>(this->widget(index, true));
+
+		// Update text searched by the user
+		tab->setSearchText(userInput);
+
 		main_window_web_engine_page::MainWindowWebEnginePage * page = tab->getPage();
 		// Set tab body
 		page->setBody();

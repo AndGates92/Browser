@@ -51,7 +51,7 @@ namespace main_window_tab {
 
 		public:
 			/**
-			 * @brief Function: explicit MainWindowTab(QWidget * parent, QWidget * tabBar, const main_window_shared_types::page_type_e type = main_window_shared_types::page_type_e::UNKNOWN, const QString & src = QString::null, const void * data = nullptr)
+			 * @brief Function: explicit MainWindowTab(QWidget * parent, QWidget * tabBar, const QString & search, const main_window_shared_types::page_type_e type = main_window_shared_types::page_type_e::UNKNOWN, const QString & src = QString::null, const void * data = nullptr)
 			 *
 			 * \param type: tab type
 			 * \param src: source of the tab
@@ -61,7 +61,7 @@ namespace main_window_tab {
 			 *
 			 * Main Window Tab constructor
 			 */
-			explicit MainWindowTab(QWidget * parent, QWidget * tabBar, const main_window_shared_types::page_type_e type = main_window_shared_types::page_type_e::UNKNOWN, const QString & src = QString::null, const void * data = nullptr);
+			explicit MainWindowTab(QWidget * parent, QWidget * tabBar, const QString & search, const main_window_shared_types::page_type_e type = main_window_shared_types::page_type_e::UNKNOWN, const QString & src = QString::null, const void * data = nullptr);
 
 			/**
 			 * @brief Function: virtual ~MainWindowTab()
@@ -78,6 +78,15 @@ namespace main_window_tab {
 			 * This function returns the page linked to the tab
 			 */
 			main_window_web_engine_page::MainWindowWebEnginePage * getPage() const;
+
+			/**
+			 * @brief Function: void setSearchText(QString value)
+			 *
+			 * \param value: text searched by the user for this tab
+			 *
+			 * This function sets the text searched by the user for this tab
+			 */
+			void setSearchText(QString value);
 
 		signals:
 			/**
@@ -110,6 +119,12 @@ namespace main_window_tab {
 		protected:
 
 		private:
+			/**
+			 * @brief text searched for this tab
+			 *
+			 */
+			QString searchText;
+
 			/**
 			 * @brief Function: void connectSignals() override
 			 *
@@ -170,6 +185,15 @@ namespace main_window_tab {
 			 * This function returns the scroll manager
 			 */
 			virtual main_window_tab_scroll_manager::MainWindowTabScrollManager * getScrollManager() const override;
+
+			/**
+			 * @brief Function: const QString getSearchText() const
+			 *
+			 * \return text searched by the user for this tab
+			 *
+			 * This function returns the text searched by the user for this tab
+			 */
+			const QString getSearchText() const;
 
 			/**
 			 * @brief Function: void updateView(main_window_web_engine_view::MainWindowWebEngineView * value)

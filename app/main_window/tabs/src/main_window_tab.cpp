@@ -17,7 +17,7 @@
 // Categories
 Q_LOGGING_CATEGORY(mainWindowTabOverall, "mainWindowTab.overall", MSG_TYPE_LEVEL)
 
-main_window_tab::MainWindowTab::MainWindowTab(QWidget * parent, QWidget * tabBar, const main_window_shared_types::page_type_e type, const QString & src, const void * data): tab::Tab(parent, tabBar) {
+main_window_tab::MainWindowTab::MainWindowTab(QWidget * parent, QWidget * tabBar, const QString & search, const main_window_shared_types::page_type_e type, const QString & src, const void * data): tab::Tab(parent, tabBar), searchText(search) {
 	QINFO_PRINT(global_types::qinfo_level_e::ZERO, mainWindowTabOverall,  "MainWindowTab constructor");
 
 	main_window_web_engine_view::MainWindowWebEngineView * tabView = new main_window_web_engine_view::MainWindowWebEngineView(this, type, src, data);
@@ -56,6 +56,8 @@ void main_window_tab::MainWindowTab::updateView(main_window_web_engine_view::Mai
 
 }
 
+CONST_SETTER_GETTER(main_window_tab::MainWindowTab::setSearchText, main_window_tab::MainWindowTab::getSearchText, QString, this->searchText)
+
 CASTED_PTR_GETTER(main_window_tab::MainWindowTab::getView, main_window_web_engine_view::MainWindowWebEngineView, tab::Tab::getView())
 
 CASTED_PTR_GETTER(main_window_tab::MainWindowTab::getLoadManager, main_window_tab_load_manager::MainWindowTabLoadManager, tab::Tab::getLoadManager())
@@ -86,15 +88,15 @@ void main_window_tab::MainWindowTab::connectSignals() {
 
 
 	connect(page, &main_window_web_engine_page::MainWindowWebEnginePage::sourceChanged,  [this] (const QString & source) {
-		this->sourceChanged(source);
+		emit this->sourceChanged(source);
 	});
 
 	connect(page, &main_window_web_engine_page::MainWindowWebEnginePage::urlChanged, [this] (const QUrl & url) {
-		this->urlChanged(url);
+		emit this->urlChanged(url);
 	});
 
 	connect(page, &main_window_web_engine_page::MainWindowWebEnginePage::titleChanged, [this] (const QString & title) {
-		this->titleChanged(title);
+		emit this->titleChanged(title);
 	});
 
 }
