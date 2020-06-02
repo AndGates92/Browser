@@ -80,13 +80,13 @@ namespace main_window_tab {
 			main_window_web_engine_page::MainWindowWebEnginePage * getPage() const;
 
 			/**
-			 * @brief Function: void setSearchText(QString value)
+			 * @brief Function: const QString getSearchText() const
 			 *
-			 * \param value: text searched by the user for this tab
+			 * \return text searched by the user for this tab
 			 *
-			 * This function sets the text searched by the user for this tab
+			 * This function returns the text searched by the user for this tab
 			 */
-			void setSearchText(QString value);
+			const QString getSearchText() const;
 
 		signals:
 			/**
@@ -131,6 +131,15 @@ namespace main_window_tab {
 			 * This function connects signals and slots within main window controller tabs
 			 */
 			void connectSignals() override;
+
+			/**
+			 * @brief Function: void setSearchText(QString value)
+			 *
+			 * \param value: text searched by the user for this tab
+			 *
+			 * This function sets the text searched by the user for this tab
+			 */
+			void setSearchText(QString value);
 
 			/**
 			 * @brief Function: virtual main_window_web_engine_view::MainWindowWebEngineView * getView() const override
@@ -185,15 +194,6 @@ namespace main_window_tab {
 			 * This function returns the scroll manager
 			 */
 			virtual main_window_tab_scroll_manager::MainWindowTabScrollManager * getScrollManager() const override;
-
-			/**
-			 * @brief Function: const QString getSearchText() const
-			 *
-			 * \return text searched by the user for this tab
-			 *
-			 * This function returns the text searched by the user for this tab
-			 */
-			const QString getSearchText() const;
 
 			/**
 			 * @brief Function: void updateView(main_window_web_engine_view::MainWindowWebEngineView * value)

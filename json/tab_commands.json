@@ -17,10 +17,18 @@
 
 	"SearchTab" : {
 		"Name" : "search tab",
-		"State" : "SEARCH",
+		"State" : "NEW_SEARCH",
 		"Shortcut" : "s",
 		"LongCmd" : "search-tab",
 		"Help" : "This command searches content in a tab"
+	},
+
+	"SearchTab" : {
+		"Name" : "edit search tab",
+		"State" : "EDIT_SEARCH",
+		"Shortcut" : "S",
+		"LongCmd" : "edit-search-tab",
+		"Help" : "This command allows the user make a new search starting from the previous one"
 	},
 
 	"Find" : {

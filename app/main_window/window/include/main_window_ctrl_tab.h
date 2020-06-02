@@ -312,14 +312,14 @@ namespace main_window_ctrl_tab {
 			int addNewTab(const main_window_shared_types::page_type_e & type, const void * data = nullptr);
 
 			/**
-			 * @brief Function: void newSearchTab(const int & index, const QString & search)
+			 * @brief Function: void searchTab(const int & index, const QString & search)
 			 *
 			 * \param index: tab index to be searched
 			 * \param search: string to search
 			 *
 			 * This function search on the tab at index index
 			 */
-			void newSearchTab(const int & index, const QString & search);
+			void searchTab(const int & index, const QString & search);
 
 			/**
 			 * @brief Function: void searchCurrentTab(const QString & search)

@@ -59,7 +59,8 @@ namespace main_window_shared_types {
 		HISTORY_PREV,     /**< Go to previous history item if possible */
 		SCROLL_UP,        /**< Scroll up in the page */
 		SCROLL_DOWN,      /**< Scroll down in the page */
-		SEARCH            /**< Search on same tab */
+		NEW_SEARCH,       /**< New search on same tab */
+		EDIT_SEARCH       /**< Edit search on same tab */
 	} state_e;
 
 	/**

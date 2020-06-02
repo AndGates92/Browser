@@ -95,7 +95,7 @@ void main_window_ctrl_tab::MainWindowCtrlTab::closeTab(const int & index) {
 
 void main_window_ctrl_tab::MainWindowCtrlTab::addNewTabAndSearch(const QString & search) {
 	const int index = this->addNewTab(main_window_shared_types::page_type_e::UNKNOWN, nullptr);
-	this->newSearchTab(index, search);
+	this->searchTab(index, search);
 }
 
 int main_window_ctrl_tab::MainWindowCtrlTab::addNewTab(const main_window_shared_types::page_type_e & type, const void * data) {
@@ -119,7 +119,7 @@ int main_window_ctrl_tab::MainWindowCtrlTab::addNewTab(const main_window_shared_
 	return tabIndex;
 }
 
-void main_window_ctrl_tab::MainWindowCtrlTab::newSearchTab(const int & index, const QString & search) {
+void main_window_ctrl_tab::MainWindowCtrlTab::searchTab(const int & index, const QString & search) {
 	QINFO_PRINT(global_types::qinfo_level_e::ZERO, mainWindowCtrlTabSearch,  "User input " << search << " in tab " << index);
 	main_window_shared_types::page_type_e type = this->windowCore->tabs->getPageType(index);
 
@@ -138,9 +138,10 @@ void main_window_ctrl_tab::MainWindowCtrlTab::searchCurrentTab(const QString & s
 	const main_window_shared_types::state_e windowState = this->windowCore->getMainWindowState();
 
 	switch (windowState) {
-		case main_window_shared_types::state_e::SEARCH:
+		case main_window_shared_types::state_e::NEW_SEARCH:
+		case main_window_shared_types::state_e::EDIT_SEARCH:
 			QINFO_PRINT(global_types::qinfo_level_e::ZERO, mainWindowCtrlTabTabs,  "Search " << search << " in tab " << tabIndex);
-			this->newSearchTab(tabIndex, search);
+			this->searchTab(tabIndex, search);
 			break;
 		case main_window_shared_types::state_e::FIND:
 		case main_window_shared_types::state_e::FIND_NEXT:
@@ -398,7 +399,8 @@ void main_window_ctrl_tab::MainWindowCtrlTab::executeAction(const main_window_sh
 		case main_window_shared_types::state_e::OPEN_TAB:
 			this->addNewTabAndSearch(userTypedText);
 			break;
-		case main_window_shared_types::state_e::SEARCH:
+		case main_window_shared_types::state_e::NEW_SEARCH:
+		case main_window_shared_types::state_e::EDIT_SEARCH:
 			this->searchCurrentTab(userTypedText);
 			break;
 		case main_window_shared_types::state_e::FIND:
@@ -452,7 +454,8 @@ void main_window_ctrl_tab::MainWindowCtrlTab::prepareAction(const main_window_sh
 			}
 			break;
 		case main_window_shared_types::state_e::OPEN_TAB:
-		case main_window_shared_types::state_e::SEARCH:
+		case main_window_shared_types::state_e::NEW_SEARCH:
+		case main_window_shared_types::state_e::EDIT_SEARCH:
 		case main_window_shared_types::state_e::FIND:
 			if ((pressedKey >= Qt::Key_Space) && (pressedKey <= Qt::Key_ydiaeresis)) {
 				this->printUserInput(main_window_shared_types::text_action_e::APPEND, event->text());
@@ -563,6 +566,16 @@ void main_window_ctrl_tab::MainWindowCtrlTab::convertToAbsTabIndex(const int & o
 void main_window_ctrl_tab::MainWindowCtrlTab::postprocessWindowStateChange(const main_window_shared_types::state_e & previousState) {
 	const main_window_shared_types::state_e windowState = this->windowCore->getMainWindowState();
 	QINFO_PRINT(global_types::qinfo_level_e::ZERO, mainWindowCtrlTabTabs,  "Current state " << windowState << " previousState " << previousState);
+
+	const int tabCount = this->windowCore->getTabCount();
+	const main_window_tab::MainWindowTab * tab = Q_NULLPTR;
+	QString searchText(QString::null);
+	if (tabCount > 0) {
+		const int tabIndex = this->windowCore->getCurrentTabIndex();
+		tab = dynamic_cast<main_window_tab::MainWindowTab *>(this->windowCore->tabs->widget(tabIndex));
+		searchText = tab->getSearchText();
+	}
+
 	// If requesting to go to the idle state, enable shortcuts
 	switch (windowState) {
 		case main_window_shared_types::state_e::IDLE:
@@ -570,13 +583,19 @@ void main_window_ctrl_tab::MainWindowCtrlTab::postprocessWindowStateChange(const
 			this->printUserInput(main_window_shared_types::text_action_e::CLEAR);
 			break;
 		case main_window_shared_types::state_e::OPEN_TAB:
-		case main_window_shared_types::state_e::SEARCH:
+		case main_window_shared_types::state_e::NEW_SEARCH:
 		case main_window_shared_types::state_e::REFRESH_TAB:
 		case main_window_shared_types::state_e::CLOSE_TAB:
 		case main_window_shared_types::state_e::MOVE_RIGHT:
 		case main_window_shared_types::state_e::MOVE_LEFT:
 		case main_window_shared_types::state_e::MOVE_TAB:
 		case main_window_shared_types::state_e::FIND:
+			this->setAllShortcutEnabledProperty(false);
+			this->setFocus();
+			break;
+		case main_window_shared_types::state_e::EDIT_SEARCH:
+			QEXCEPTION_ACTION_COND((tab == Q_NULLPTR), throw,  "Postprocessing state " << windowState << ": Unable to edit string used for previous search as pointer to tab is " << tab);
+			this->printUserInput(main_window_shared_types::text_action_e::SET, searchText);
 			this->setAllShortcutEnabledProperty(false);
 			this->setFocus();
 			break;
@@ -626,7 +645,8 @@ bool main_window_ctrl_tab::MainWindowCtrlTab::isValidWindowState(const main_wind
 			// It is only possible to open a tab if in the idle state
 			isValid = (windowState == main_window_shared_types::state_e::IDLE);
 			break;
-		case main_window_shared_types::state_e::SEARCH:
+		case main_window_shared_types::state_e::NEW_SEARCH:
+		case main_window_shared_types::state_e::EDIT_SEARCH:
 		case main_window_shared_types::state_e::REFRESH_TAB:
 		case main_window_shared_types::state_e::CLOSE_TAB:
 		case main_window_shared_types::state_e::FIND:
@@ -686,3 +706,5 @@ void main_window_ctrl_tab::MainWindowCtrlTab::createContentPathTextFromSource(co
 
 	emit this->currentTabSrcChanged(text);
 }
+
+
