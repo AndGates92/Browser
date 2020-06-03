@@ -15,6 +15,7 @@
 
 #include "key_sequence.h"
 #include "main_window_ctrl_tab.h"
+#include "main_window_shared_functions.h"
 #include "exception_macros.h"
 
 // Categories
@@ -125,7 +126,13 @@ void main_window_ctrl_tab::MainWindowCtrlTab::searchTab(const int & index, const
 
 	// TODO: improve detection of search type: file vs url vs text
 	if (type == main_window_shared_types::page_type_e::UNKNOWN) {
-		type = main_window_shared_types::page_type_e::WEB_CONTENT;
+		if (main_window_shared_functions::isFile(search) == true) {
+			type = main_window_shared_types::page_type_e::TEXT;
+		} else if ((main_window_shared_functions::isUrl(search) == true) || (main_window_shared_functions::isText(search) == true)) {
+			type = main_window_shared_types::page_type_e::WEB_CONTENT;
+		} else {
+			QEXCEPTION_ACTION(throw, "Unable to associate a  page type to search " << search);
+		}
 	}
 	this->windowCore->tabs->changeTabContent(index, type, search, nullptr);
 }

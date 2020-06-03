@@ -43,7 +43,7 @@ void main_window_web_engine_page::MainWindowWebEnginePage::setBody() {
 	switch (type) {
 		case main_window_shared_types::page_type_e::WEB_CONTENT:
 		{
-			const QUrl url(this->getSource(), QUrl::TolerantMode);
+			const QUrl url(this->getSource(), QUrl::StrictMode);
 			QEXCEPTION_ACTION_COND((url.isValid() == false), throw,  "URL is not valid. The following error has been identified: " << url.errorString());
 			this->setUrl(url);
 			break;

@@ -16,6 +16,7 @@
 #include "main_window_shared_types.h"
 #include "main_window_page_data.h"
 #include "tab_widget.h"
+#include "global_constants.h"
 #include "constructor_macros.h"
 
 /** @defgroup MainWindowTabWidgetGroup Main Window Tab Widget Doxygen Group
@@ -31,22 +32,10 @@ namespace main_window_tab_widget {
 	namespace {
 
 		/**
-		 * @brief https string
-		 *
-		 */
-		const QString https("https://");
-
-		/**
-		 * @brief www string
-		 *
-		 */
-		const QString www("www.");
-
-		/**
 		 * @brief default serch engine is duckduckgo
 		 *
 		 */
-		const QString defaultSearchEngine(https + www + "duckduckgo.com/?q=%1");
+		const QString defaultSearchEngine(global_constants::https + global_constants::www + "duckduckgo.com/?q=%1");
 
 	}
 

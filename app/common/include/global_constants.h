@@ -8,6 +8,8 @@
  * @brief Global Constants file
 */
 
+#include <qt5/QtCore/QString>
+
 /** @defgroup GlobalConstantsGroup Global Constants Doxygen Group
  *  Global Constants
  *  @{
@@ -19,6 +21,18 @@ namespace global_constants {
 	 *
 	 */
 	constexpr int qmodifierMask = (int)Qt::NoModifier | (int)Qt::ShiftModifier | (int)Qt::ControlModifier | (int)Qt::AltModifier | (int)Qt::MetaModifier | (int)Qt::KeypadModifier | (int)Qt::GroupSwitchModifier;
+
+	/**
+	 * @brief https string
+	 *
+	 */
+	const QString https("https://");
+
+	/**
+	 * @brief www string
+	 *
+	 */
+	const QString www("www.");
 
 }
 

@@ -15,6 +15,7 @@
 #include "main_window_web_engine_page.h"
 #include "main_window_tab_widget.h"
 #include "main_window_tab.h"
+#include "main_window_shared_functions.h"
 #include "type_print_macros.h"
 #include "exception_macros.h"
 
@@ -424,23 +425,28 @@ void main_window_tab_widget::MainWindowTabWidget::openFileInCurrentTab(const QSt
 }
 
 QString main_window_tab_widget::MainWindowTabWidget::searchToUrl(const QString & search) const {
-	const bool containsSpace = search.contains(" ");
-	const bool containsWww = search.contains(main_window_tab_widget::www);
-	const int numberDots = search.count(".");
-
 	QString url(QString::null);
 
-	// if contains at least 1 dot and no space, it could be a URL
-	if ((numberDots > 0) && (containsSpace == false)) {
-		url = main_window_tab_widget::https;
-		if (containsWww == true) {
-			url += search;
-		} else {
-			url += main_window_tab_widget::www + search;
+	if (main_window_shared_functions::isUrl(search) == true) {
+
+		const bool containsHttps = search.contains(global_constants::https);
+		if (containsHttps == false) {
+			url += global_constants::https;
 		}
-	} else {
+
+		const bool containsWww = search.contains(global_constants::www);
+		if (containsWww == false) {
+			url += global_constants::www;
+		}
+
+		url += search;
+	} else if (main_window_shared_functions::isText(search) == true) {
 		url = main_window_tab_widget::defaultSearchEngine.arg(search);
+	} else {
+		QEXCEPTION_ACTION(throw, "Unable to associate a  page type to search " << search);
 	}
+
+	QINFO_PRINT(global_types::qinfo_level_e::ZERO, mainWindowTabWidgetTabs, "Converting search " << search << " to the following URL " << url);
 
 	return url;
 }
