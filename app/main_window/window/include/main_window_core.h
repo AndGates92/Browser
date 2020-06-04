@@ -16,6 +16,7 @@
 #include "main_window_tab_widget.h"
 #include "main_window_status_bar.h"
 #include "main_window_shared_types.h"
+#include "main_window_prompt_menu.h"
 
 /** @defgroup MainWindowCoreGroup Main Window Core Doxygen Group
  *  Main Window core functions and classes
@@ -192,6 +193,12 @@ namespace main_window_core {
 			 *
 			 */
 			main_window_menu_bar::MainWindowMenuBar * topMenuBar;
+
+			/**
+			 * @brief Prompt widget of the main window
+			 *
+			 */
+			main_window_prompt_menu::MainWindowPromptMenu * promptMenu;
 
 			/**
 			 * @brief Bottom menu bar of browser

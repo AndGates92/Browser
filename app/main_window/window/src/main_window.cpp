@@ -122,8 +122,16 @@ void main_window::MainWindow::fillMainWindow() {
 	// Status bar
 	this->customizeBottomStatusBar();
 
-	// command menu
-	this->windowCore->cmdMenu->setVisible(false);
+	if (this->windowCore->cmdMenu != Q_NULLPTR) {
+		// command menu
+		this->windowCore->cmdMenu->setVisible(false);
+	}
+
+	if (this->windowCore->promptMenu != Q_NULLPTR) {
+		// prompt widget
+		this->windowCore->promptMenu->setVisible(false);
+	}
+
 }
 
 void main_window::MainWindow::customizeTabs() {
@@ -165,6 +173,7 @@ void main_window::MainWindow::mainWindowLayout() {
 	// -------------------------------------------------
 	// |                     <tabs>                    |
 	// |                    <content>                  |
+	// |                    <prompt>                   |
 	// |                   <statusbar>                 |
 	// -------------------------------------------------
 
@@ -175,6 +184,11 @@ void main_window::MainWindow::mainWindowLayout() {
 
 	// command menu
 	layout->addWidget(this->windowCore->cmdMenu);
+
+//	if (this->windowCore->promptMenu != Q_NULLPTR) {
+	// prompt widget
+	layout->addWidget(this->windowCore->promptMenu);
+//	}
 
 	// status bar
 	layout->addWidget(this->windowCore->bottomStatusBar);
