@@ -28,8 +28,6 @@ namespace main_window_prompt_menu {
 	 */
 	class MainWindowPromptMenu : public QWidget {
 
-		Q_OBJECT
-
 		public:
 			/**
 			 * @brief Function: explicit MainWindowPromptMenu(QWidget * parent, Qt::WindowFlags flags = Qt::WindowFlags())

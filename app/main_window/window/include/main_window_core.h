@@ -175,6 +175,15 @@ namespace main_window_core {
 			 */
 			void updateUserInput(const main_window_shared_types::text_action_e action, QString text = QString::null);
 
+			/**
+			 * @brief Function: void setPrompt(main_window_prompt_menu::MainWindowPromptMenu * prompt)
+			 *
+			 * \param prompt: prompt menu to set
+			 *
+			 * This function sets the prompt menu
+			 */
+			void setPrompt(main_window_prompt_menu::MainWindowPromptMenu * prompt);
+
 			// main widget
 			/**
 			 * @brief main widget

@@ -185,10 +185,8 @@ void main_window::MainWindow::mainWindowLayout() {
 	// command menu
 	layout->addWidget(this->windowCore->cmdMenu);
 
-//	if (this->windowCore->promptMenu != Q_NULLPTR) {
 	// prompt widget
 	layout->addWidget(this->windowCore->promptMenu);
-//	}
 
 	// status bar
 	layout->addWidget(this->windowCore->bottomStatusBar);

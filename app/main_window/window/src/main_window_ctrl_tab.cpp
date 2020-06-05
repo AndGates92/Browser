@@ -13,6 +13,7 @@
 // Required by qInfo
 #include <qt5/QtCore/QtDebug>
 
+#include "open_prompt.h"
 #include "key_sequence.h"
 #include "main_window_ctrl_tab.h"
 #include "main_window_shared_functions.h"
@@ -124,7 +125,6 @@ void main_window_ctrl_tab::MainWindowCtrlTab::searchTab(const int & index, const
 	QINFO_PRINT(global_types::qinfo_level_e::ZERO, mainWindowCtrlTabSearch,  "User input " << search << " in tab " << index);
 	main_window_shared_types::page_type_e type = this->windowCore->tabs->getPageType(index);
 
-	// TODO: improve detection of search type: file vs url vs text
 	if (type == main_window_shared_types::page_type_e::UNKNOWN) {
 		if (main_window_shared_functions::isFile(search) == true) {
 			type = main_window_shared_types::page_type_e::TEXT;
@@ -466,6 +466,7 @@ void main_window_ctrl_tab::MainWindowCtrlTab::prepareAction(const main_window_sh
 		case main_window_shared_types::state_e::FIND:
 			if ((pressedKey >= Qt::Key_Space) && (pressedKey <= Qt::Key_ydiaeresis)) {
 				this->printUserInput(main_window_shared_types::text_action_e::APPEND, event->text());
+				this->createOpenPrompt();
 			}
 			break;
 		case main_window_shared_types::state_e::CLOSE_TAB:
@@ -714,4 +715,7 @@ void main_window_ctrl_tab::MainWindowCtrlTab::createContentPathTextFromSource(co
 	emit this->currentTabSrcChanged(text);
 }
 
-
+void main_window_ctrl_tab::MainWindowCtrlTab::createOpenPrompt() {
+	open_prompt::OpenPrompt * prompt = new open_prompt::OpenPrompt(this->window());
+	this->windowCore->setPrompt(prompt);
+}

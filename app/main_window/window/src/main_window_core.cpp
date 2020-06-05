@@ -235,3 +235,12 @@ void main_window_core::MainWindowCore::updateUserInput(const main_window_shared_
 			break;
 	}
 }
+
+void main_window_core::MainWindowCore::setPrompt(main_window_prompt_menu::MainWindowPromptMenu * prompt) {
+	if (this->promptMenu != Q_NULLPTR) {
+		delete this->promptMenu;
+	}
+	this->promptMenu = prompt;
+
+	this->promptMenu->setVisible((prompt != Q_NULLPTR));
+}

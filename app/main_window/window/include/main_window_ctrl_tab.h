@@ -384,6 +384,13 @@ namespace main_window_ctrl_tab {
 			 */
 			void moveCursor(const int & tabIndex);
 
+			/**
+			 * @brief Function: void createOpenPrompt()
+			 *
+			 * This function creates and sets the open prompt
+			 */
+			void createOpenPrompt();
+
 			// ================================ END ACTIONS ========================================//
 
 			// Move and copy constructor
