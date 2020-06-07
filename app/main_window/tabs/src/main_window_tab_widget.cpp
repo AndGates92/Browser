@@ -23,6 +23,20 @@
 Q_LOGGING_CATEGORY(mainWindowTabWidgetOverall, "mainWindowTabWidget.overall", MSG_TYPE_LEVEL)
 Q_LOGGING_CATEGORY(mainWindowTabWidgetTabs, "mainWindowTabWidget.tabs", MSG_TYPE_LEVEL)
 
+namespace main_window_tab_widget {
+
+	namespace {
+
+		/**
+		 * @brief default serch engine is duckduckgo
+		 *
+		 */
+		static const QString defaultSearchEngine(global_constants::https + global_constants::www + "duckduckgo.com/?q=%1");
+
+	}
+
+}
+
 main_window_tab_widget::MainWindowTabWidget::MainWindowTabWidget(QWidget * parent): tab_widget::TabWidget(parent) {
 	QINFO_PRINT(global_types::qinfo_level_e::ZERO, mainWindowTabWidgetOverall,  "Main Window Tab widget constructor");
 }

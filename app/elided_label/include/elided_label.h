@@ -27,18 +27,19 @@ Q_DECLARE_LOGGING_CATEGORY(elidedLabelPaint)
 
 namespace elided_label {
 
+	// TODO: Try to move to the cpp file
 	namespace {
 		/**
 		 * @brief Default x coordinate of QLabel retangle origincommand menu title
 		 *
 		 */
-		constexpr int labelOriginX = 0;
+		static constexpr int labelOriginX = 0;
 
 		/**
 		 * @brief Default y coordinate of QLabel retangle origincommand menu title
 		 *
 		 */
-		constexpr int labelOriginY = 0;
+		static constexpr int labelOriginY = 0;
 
 	}
 

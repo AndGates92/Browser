@@ -36,57 +36,6 @@ Q_DECLARE_LOGGING_CATEGORY(commandMenuSelection)
 
 namespace command_menu {
 
-	namespace {
-		/**
-		 * @brief command menu title
-		 *
-		 */
-		const QString commandMenuTitle("Commands");
-
-		/**
-		 * @brief Disable auto scroll - user will have to press a key to scroll down
-		 *
-		 */
-		constexpr bool autoScrollProp = false;
-
-		/**
-		 * @brief Disable drag and drop mode
-		 *
-		 */
-		constexpr QAbstractItemView::DragDropMode dragDropMode = QAbstractItemView::NoDragDrop;
-
-		/**
-		 * @brief Disable edit trigger
-		 *
-		 */
-		constexpr QAbstractItemView::EditTrigger editTrigger = QAbstractItemView::NoEditTriggers;
-
-		/**
-		 * @brief Disable drag and drop mode
-		 *
-		 */
-		constexpr QAbstractItemView::SelectionBehavior selection = QAbstractItemView::SelectItems;
-
-		/**
-		 * @brief Maximum number of items to be displayed
-		 *
-		 */
-		constexpr int maxVisibleItems = 10;
-
-		/**
-		 * @brief Extra width with respect to the minium required width
-		 *
-		 */
-		constexpr int extraRowWidth = 10;
-
-		/**
-		 * @brief Extra height with respect to the minium required height
-		 *
-		 */
-		constexpr int extraRowHeight = 10;
-
-	}
-
 	/**
 	 * @brief CommandMenu class
 	 *

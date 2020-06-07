@@ -17,6 +17,43 @@
 // Categories
 Q_LOGGING_CATEGORY(progressBarOverall, "progressBar.overall", MSG_TYPE_LEVEL)
 
+namespace progress_bar {
+
+	namespace {
+		/**
+		 * @brief default progres bar alignment
+		 *
+		 */
+		static constexpr Qt::Alignment progressAlignment = (Qt::AlignHCenter | Qt::AlignVCenter);
+
+		/**
+		 * @brief default direction of the text
+		 *
+		 */
+		static constexpr QProgressBar::Direction progressTextDirection = QProgressBar::TopToBottom;
+
+		/**
+		 * @brief default visible text flag
+		 *
+		 */
+		static constexpr bool progressTextVisible = true;
+
+		/**
+		 * @brief default format of the text
+		 *
+		 */
+		static const QString barTextFormat("%p%");
+
+		/**
+		 * @brief default inverted progress flag
+		 *
+		 */
+		static constexpr bool invertedProgress = false;
+	}
+
+}
+
+
 progress_bar::ProgressBar::ProgressBar(QWidget * parent) : QProgressBar(parent) {
 	QINFO_PRINT(global_types::qinfo_level_e::ZERO, progressBarOverall,  "Progress bar constructor");
 

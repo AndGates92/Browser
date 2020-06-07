@@ -24,63 +24,6 @@ Q_DECLARE_LOGGING_CATEGORY(mainWindowStatusBarOverall)
 
 namespace main_window_status_bar {
 
-	namespace {
-		/**
-		 * @brief default origin of text in status bar widget
-		 *
-		 */
-		const QPoint textOrigin(0,0);
-
-		/**
-		 * @brief bottom information text height
-		 *
-		 */
-		constexpr int textHeight = 20;
-
-		/**
-		 * @brief horizontal spacing between widgets
-		 *
-		 */
-		constexpr int horizontalWidgetSpacing = 0;
-
-		/**
-		 * @brief left margin between widget and window
-		 *
-		 */
-		constexpr int leftMargin = 0;
-
-		/**
-		 * @brief right margin between widget and window
-		 *
-		 */
-		constexpr int rightMargin = 0;
-
-		/**
-		 * @brief top margin between widget and window
-		 *
-		 */
-		constexpr int topMargin = 0;
-
-		/**
-		 * @brief bottom margin between widget and window
-		 *
-		 */
-		constexpr int bottomMargin = 0;
-
-		/**
-		 * @brief minimum value of scrolling
-		 *
-		 */
-		constexpr int minScrollValue = 0;
-
-		/**
-		 * @brief maximum value of scrolling
-		 *
-		 */
-		constexpr int maxScrollValue = 100;
-
-	}
-
 	/**
 	 * @brief MainWindowStatusBar class
 	 *

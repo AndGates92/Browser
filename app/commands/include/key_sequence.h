@@ -22,20 +22,6 @@ Q_DECLARE_LOGGING_CATEGORY(keySequenceString)
 
 namespace key_sequence {
 
-	namespace {
-		/**
-		 * @brief Maximum number of element on the QKeySequence vector
-		 *
-		 */
-		constexpr unsigned int maxCount = 4;
-
-		/**
-		 * @brief Maximum number of key codes in every element of the vector
-		 *
-		 */
-		constexpr unsigned int maxKeyCodesInEl = 1;
-	}
-
 	/**
 	 * @brief KeySequence class
 	 *

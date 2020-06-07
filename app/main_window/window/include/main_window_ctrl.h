@@ -30,26 +30,6 @@ Q_DECLARE_LOGGING_CATEGORY(mainWindowCtrlSearch)
 
 namespace main_window_ctrl {
 
-	namespace {
-		/**
-		 * @brief Path towards JSON file storing informations about commands and shortcuts
-		 *
-		 */
-		const QString commandFilePath("json/");
-
-		/**
-		 * @brief Filename storing informations about commands and shortcuts
-		 *
-		 */
-		const QString commandFileName("global_commands.json");
-
-		/**
-		 * @brief Full path towards JSON file storing informations about commands and shortcuts
-		 *
-		 */
-		const QString commandFileFullPath(commandFilePath + commandFileName);
-	}
-
 	/**
 	 * @brief MainWindowCtrl class
 	 *

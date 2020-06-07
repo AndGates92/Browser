@@ -30,6 +30,18 @@ Q_LOGGING_CATEGORY(openButtonWindowLayout, "openButtonWindow.layout", MSG_TYPE_L
 Q_LOGGING_CATEGORY(openButtonWindowOpen, "openButtonWindow.open_button", MSG_TYPE_LEVEL)
 Q_LOGGING_CATEGORY(openButtonWindowCancel, "openButtonWindow.cancel_button", MSG_TYPE_LEVEL)
 
+namespace open_button_window {
+
+	namespace {
+		/**
+		 * @brief maximum number of location in the array storing a line of the user selected file
+		 *
+		 */
+		static const int userFileSize = 1024;
+	}
+
+}
+
 open_button_window::OpenButtonWindow::OpenButtonWindow(QWidget * parent, Qt::WindowFlags flags) : QDialog(parent, flags) {
 
 	QINFO_PRINT(global_types::qinfo_level_e::ZERO, openButtonWindowOverall,  "Creating open button window");

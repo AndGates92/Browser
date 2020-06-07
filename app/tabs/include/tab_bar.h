@@ -33,16 +33,10 @@ namespace tab_bar {
 
 	namespace {
 		/**
-		 * @brief height
-		 *
-		 */
-		constexpr int height = 15;// px
-
-		/**
 		 * @brief minimum width
 		 *
 		 */
-		constexpr int minWidth = 50;// px
+		static constexpr int minWidth = 50;// px
 	}
 
 	/**

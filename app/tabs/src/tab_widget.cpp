@@ -22,6 +22,24 @@ Q_LOGGING_CATEGORY(tabWidgetSearch, "tabWidget.search", MSG_TYPE_LEVEL)
 Q_LOGGING_CATEGORY(tabWidgetVisibility, "tabWidget.visibility", MSG_TYPE_LEVEL)
 Q_LOGGING_CATEGORY(tabWidgetTabs, "tabWidget.tabs", MSG_TYPE_LEVEL)
 
+namespace tab_widget {
+
+	namespace {
+		/**
+		 * @brief minimum height
+		 *
+		 */
+		static constexpr int minHeight = 200;// px
+
+		/**
+		 * @brief minimum width
+		 *
+		 */
+		static constexpr int minWidth = 100;// px
+	}
+
+}
+
 tab_widget::TabWidget::TabWidget(QWidget * parent): QTabWidget(parent) {
 	QINFO_PRINT(global_types::qinfo_level_e::ZERO, tabWidgetOverall,  "Tab widget constructor");
 	this->setMovable(true);

@@ -47,6 +47,18 @@
 		} \
 	}
 
+namespace logging {
+
+	namespace {
+		/**
+		 * @brief Global variable logfile
+		 *
+		 */
+		QFile logfile(QT_STRINGIFY(LOGFILE));
+	}
+
+}
+
 void logging::handler(QtMsgType type, const QMessageLogContext & context, const QString & message) {
 
 	QString info_str("");

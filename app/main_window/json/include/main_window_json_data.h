@@ -38,13 +38,11 @@ namespace main_window_ctrl_tab {
 
 namespace main_window_json_data {
 
-	namespace {
-		/**
-		 * @brief default action parameters which are the keys of the JSON file
-		 *
-		 */
-		const std::vector<std::string> defaultActionParameters{"Key", "Name", "State", "Shortcut", "LongCmd", "Help"};
-	}
+	/**
+	 * @brief default action parameters which are the keys of the JSON file
+	 *
+	 */
+	static const std::vector<std::string> defaultActionParameters{"Key", "Name", "State", "Shortcut", "LongCmd", "Help"};
 
 	/**
 	 * @brief MainWindowJsonData class

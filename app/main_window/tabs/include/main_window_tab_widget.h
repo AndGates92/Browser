@@ -29,16 +29,6 @@ Q_DECLARE_LOGGING_CATEGORY(mainWindowTabWidgetTabs)
 
 namespace main_window_tab_widget {
 
-	namespace {
-
-		/**
-		 * @brief default serch engine is duckduckgo
-		 *
-		 */
-		const QString defaultSearchEngine(global_constants::https + global_constants::www + "duckduckgo.com/?q=%1");
-
-	}
-
 	/**
 	 * @brief MainWindowTabWidget class
 	 *

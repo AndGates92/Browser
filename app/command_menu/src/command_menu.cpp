@@ -21,6 +21,61 @@ Q_LOGGING_CATEGORY(commandMenuCursor, "commandMenu.cursor", MSG_TYPE_LEVEL)
 Q_LOGGING_CATEGORY(commandMenuScrollBar, "commandMenu.scrollBar", MSG_TYPE_LEVEL)
 Q_LOGGING_CATEGORY(commandMenuSelection, "commandMenu.selection", MSG_TYPE_LEVEL)
 
+namespace command_menu {
+
+	namespace {
+		/**
+		 * @brief command menu title
+		 *
+		 */
+		static const QString commandMenuTitle("Commands");
+
+		/**
+		 * @brief Disable auto scroll - user will have to press a key to scroll down
+		 *
+		 */
+		static constexpr bool autoScrollProp = false;
+
+		/**
+		 * @brief Disable drag and drop mode
+		 *
+		 */
+		static constexpr QAbstractItemView::DragDropMode dragDropMode = QAbstractItemView::NoDragDrop;
+
+		/**
+		 * @brief Disable edit trigger
+		 *
+		 */
+		static constexpr QAbstractItemView::EditTrigger editTrigger = QAbstractItemView::NoEditTriggers;
+
+		/**
+		 * @brief Disable drag and drop mode
+		 *
+		 */
+		static constexpr QAbstractItemView::SelectionBehavior selection = QAbstractItemView::SelectItems;
+
+		/**
+		 * @brief Maximum number of items to be displayed
+		 *
+		 */
+		static constexpr int maxVisibleItems = 10;
+
+		/**
+		 * @brief Extra width with respect to the minium required width
+		 *
+		 */
+		static constexpr int extraRowWidth = 10;
+
+		/**
+		 * @brief Extra height with respect to the minium required height
+		 *
+		 */
+		static constexpr int extraRowHeight = 10;
+
+	}
+
+}
+
 command_menu::CommandMenu::CommandMenu(QWidget * parent) : QAbstractItemView(parent), menuModel(new command_menu_model::CommandMenuModel(parent)), visibleHeight(0), visibleWidth(parent->width()) {
 
 	QINFO_PRINT(global_types::qinfo_level_e::ZERO, commandMenuOverall,  "Create command menu");

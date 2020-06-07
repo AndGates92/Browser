@@ -55,6 +55,7 @@ namespace main_window_json_data {
 		str.append(data.print());
 		return str;
 	}
+
 }
 
 main_window_json_data::MainWindowJsonData * main_window_json_data::MainWindowJsonData::makeJsonData(const std::string & jsonKey, const std::string & nameKeyValue, const main_window_shared_types::state_e & stateKeyValue, const int & shortcutKeyValue, const std::string & longCmdKeyValue, const std::string & helpKeyValue) {

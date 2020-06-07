@@ -18,6 +18,36 @@
 // Categories
 Q_LOGGING_CATEGORY(tabScrollManagerOverall, "tabScrollManager.overall", MSG_TYPE_LEVEL)
 
+namespace tab_scroll_manager {
+
+	namespace {
+		/**
+		 * @brief minimum value of scroll percentage
+		 *
+		 */
+		static constexpr int minScrollPercentage = 0;
+
+		/**
+		 * @brief maximum value of scroll percentage
+		 *
+		 */
+		static constexpr int maxScrollPercentage = 100;
+
+		/**
+		 * @brief vertical scroll position increase when typing key shortcut
+		 *
+		 */
+		static constexpr int vScrollStep = 100;
+
+		/**
+		 * @brief horitontal scroll position increase when typing key shortcut
+		 *
+		 */
+		static constexpr int hScrollStep = 100;
+	}
+
+}
+
 tab_scroll_manager::TabScrollManager::TabScrollManager(QWidget * parent, QWidget * browserTab, QWidget * tabBar): tab_component_widget::TabComponentWidget<tab_shared_types::direction_e>(parent, browserTab), horizontalScroll(0), verticalScroll(0), scrollPosition(QPointF(0.0, 0.0)), contentsSize(QSizeF(0.0, 0.0)), bar(dynamic_cast<QTabBar *>(tabBar)) {
 	QINFO_PRINT(global_types::qinfo_level_e::ZERO, tabScrollManagerOverall,  "TabScrollManager constructor");
 	this->setTab(dynamic_cast<tab::Tab *>(browserTab));

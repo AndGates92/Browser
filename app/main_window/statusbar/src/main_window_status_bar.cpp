@@ -18,6 +18,67 @@
 // Categories
 Q_LOGGING_CATEGORY(mainWindowStatusBarOverall, "mainWindowStatusBar.overall", MSG_TYPE_LEVEL)
 
+namespace main_window_status_bar {
+
+	namespace {
+		/**
+		 * @brief default origin of text in status bar widget
+		 *
+		 */
+		static const QPoint textOrigin(0,0);
+
+		/**
+		 * @brief bottom information text height
+		 *
+		 */
+		static constexpr int textHeight = 20;
+
+		/**
+		 * @brief horizontal spacing between widgets
+		 *
+		 */
+		static constexpr int horizontalWidgetSpacing = 0;
+
+		/**
+		 * @brief left margin between widget and window
+		 *
+		 */
+		static constexpr int leftMargin = 0;
+
+		/**
+		 * @brief right margin between widget and window
+		 *
+		 */
+		static constexpr int rightMargin = 0;
+
+		/**
+		 * @brief top margin between widget and window
+		 *
+		 */
+		static constexpr int topMargin = 0;
+
+		/**
+		 * @brief bottom margin between widget and window
+		 *
+		 */
+		static constexpr int bottomMargin = 0;
+
+		/**
+		 * @brief minimum value of scrolling
+		 *
+		 */
+		static constexpr int minScrollValue = 0;
+
+		/**
+		 * @brief maximum value of scrolling
+		 *
+		 */
+		static constexpr int maxScrollValue = 100;
+
+	}
+
+}
+
 main_window_status_bar::MainWindowStatusBar::MainWindowStatusBar(QWidget * parent, Qt::WindowFlags flags) : QWidget(parent, flags), userInput(this->newWindowLabel()), contentPath(this->newWindowLabel()), scroll(this->newWindowLabel()), info(this->newWindowLabel()), loadBar(this->newProgressBar()) {
 
 	QINFO_PRINT(global_types::qinfo_level_e::ZERO, mainWindowStatusBarOverall,  "Main window status bar constructor");

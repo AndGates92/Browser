@@ -35,20 +35,6 @@ Q_DECLARE_LOGGING_CATEGORY(tabWidgetTabs)
 
 namespace tab_widget {
 
-	namespace {
-		/**
-		 * @brief minimum height
-		 *
-		 */
-		constexpr int minHeight = 200;// px
-
-		/**
-		 * @brief minimum width
-		 *
-		 */
-		constexpr int minWidth = 100;// px
-	}
-
 	/**
 	 * @brief TabWidget class
 	 *

@@ -39,43 +39,7 @@ namespace main_window_ctrl_tab {
 		 * @brief invalid tab index - default value of optional argument index of executeActionOnTab function
 		 *
 		 */
-		constexpr int emptyUserInput = -1;
-
-		/**
-		 * @brief https string
-		 *
-		 */
-		const QString https("https://");
-
-		/**
-		 * @brief www string
-		 *
-		 */
-		const QString www("www.");
-
-		/**
-		 * @brief default serch engine is duckduckgo
-		 *
-		 */
-		const QString defaultSearchEngine(https + www + "duckduckgo.com/?q=%1");
-
-		/**
-		 * @brief Path towards JSON file storing informations about commands and shortcuts
-		 *
-		 */
-		const QString commandFilePath("json/");
-
-		/**
-		 * @brief Filename storing informations about commands and shortcuts
-		 *
-		 */
-		const QString commandFileName("tab_commands.json");
-
-		/**
-		 * @brief Full path towards JSON file storing informations about commands and shortcuts
-		 *
-		 */
-		const QString commandFileFullPath(commandFilePath + commandFileName);
+		static constexpr int emptyUserInput = -1;
 
 	}
 

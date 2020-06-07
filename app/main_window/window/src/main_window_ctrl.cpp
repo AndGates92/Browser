@@ -22,6 +22,30 @@ Q_LOGGING_CATEGORY(mainWindowCtrlOverall, "mainWindowCtrl.overall", MSG_TYPE_LEV
 Q_LOGGING_CATEGORY(mainWindowCtrlUserInput, "mainWindowCtrl.userInput", MSG_TYPE_LEVEL)
 Q_LOGGING_CATEGORY(mainWindowCtrlSearch, "mainWindowCtrl.search", MSG_TYPE_LEVEL)
 
+namespace main_window_ctrl {
+
+	namespace {
+		/**
+		 * @brief Path towards JSON file storing informations about commands and shortcuts
+		 *
+		 */
+		static const QString commandFilePath("json/");
+
+		/**
+		 * @brief Filename storing informations about commands and shortcuts
+		 *
+		 */
+		static const QString commandFileName("global_commands.json");
+
+		/**
+		 * @brief Full path towards JSON file storing informations about commands and shortcuts
+		 *
+		 */
+		static const QString commandFileFullPath(commandFilePath + commandFileName);
+	}
+
+}
+
 main_window_ctrl::MainWindowCtrl::MainWindowCtrl(QWidget * parent, QSharedPointer<main_window_core::MainWindowCore> core) : main_window_ctrl_base::MainWindowCtrlBase(parent, core, main_window_ctrl::commandFileFullPath) {
 
 	// Shortcuts

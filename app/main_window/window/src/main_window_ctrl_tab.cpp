@@ -26,6 +26,49 @@ Q_LOGGING_CATEGORY(mainWindowCtrlTabSearch, "mainWindowCtrlTab.search", MSG_TYPE
 Q_LOGGING_CATEGORY(mainWindowCtrlTabTabs, "mainWindowCtrlTab.tabs", MSG_TYPE_LEVEL)
 Q_LOGGING_CATEGORY(mainWindowCtrlTabUrl, "mainWindowCtrlTab.url", MSG_TYPE_LEVEL)
 
+namespace main_window_ctrl_tab {
+
+	namespace {
+
+		/**
+		 * @brief https string
+		 *
+		 */
+		static const QString https("https://");
+
+		/**
+		 * @brief www string
+		 *
+		 */
+		static const QString www("www.");
+
+		/**
+		 * @brief default serch engine is duckduckgo
+		 *
+		 */
+		static const QString defaultSearchEngine(https + www + "duckduckgo.com/?q=%1");
+
+		/**
+		 * @brief Path towards JSON file storing informations about commands and shortcuts
+		 *
+		 */
+		static const QString commandFilePath("json/");
+
+		/**
+		 * @brief Filename storing informations about commands and shortcuts
+		 *
+		 */
+		static const QString commandFileName("tab_commands.json");
+
+		/**
+		 * @brief Full path towards JSON file storing informations about commands and shortcuts
+		 *
+		 */
+		static const QString commandFileFullPath(commandFilePath + commandFileName);
+
+	}
+
+}
 
 main_window_ctrl_tab::MainWindowCtrlTab::MainWindowCtrlTab(QWidget * parent, QSharedPointer<main_window_core::MainWindowCore> core) : main_window_ctrl_base::MainWindowCtrlBase(parent, core, main_window_ctrl_tab::commandFileFullPath) {
 

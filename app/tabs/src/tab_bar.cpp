@@ -17,6 +17,18 @@ Q_LOGGING_CATEGORY(tabBarOverall, "tabBar.overall", MSG_TYPE_LEVEL)
 Q_LOGGING_CATEGORY(tabBarSize, "tabBar.size", MSG_TYPE_LEVEL)
 Q_LOGGING_CATEGORY(tabBarSearch, "tabBar.search", MSG_TYPE_LEVEL)
 
+namespace tab_bar {
+
+	namespace {
+		/**
+		 * @brief height
+		 *
+		 */
+		static constexpr int height = 15;// px
+	}
+
+}
+
 tab_bar::TabBar::TabBar(QWidget * parent, int width): QTabBar(parent) {
 	QINFO_PRINT(global_types::qinfo_level_e::ZERO, tabBarOverall,  "Tab bar constructor");
 

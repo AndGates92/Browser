@@ -33,32 +33,6 @@ namespace tab {
 
 namespace tab_scroll_manager {
 
-	namespace {
-		/**
-		 * @brief minimum value of scroll percentage
-		 *
-		 */
-		constexpr int minScrollPercentage = 0;
-
-		/**
-		 * @brief maximum value of scroll percentage
-		 *
-		 */
-		constexpr int maxScrollPercentage = 100;
-
-		/**
-		 * @brief vertical scroll position increase when typing key shortcut
-		 *
-		 */
-		constexpr int vScrollStep = 100;
-
-		/**
-		 * @brief horitontal scroll position increase when typing key shortcut
-		 *
-		 */
-		constexpr int hScrollStep = 100;
-	}
-
 	/**
 	 * @brief TabScrollManager class
 	 *

@@ -22,38 +22,6 @@ Q_DECLARE_LOGGING_CATEGORY(progressBarOverall)
 
 namespace progress_bar {
 
-	namespace {
-		/**
-		 * @brief default progres bar alignment
-		 *
-		 */
-		constexpr Qt::Alignment progressAlignment = (Qt::AlignHCenter | Qt::AlignVCenter);
-
-		/**
-		 * @brief default direction of the text
-		 *
-		 */
-		constexpr QProgressBar::Direction progressTextDirection = QProgressBar::TopToBottom;
-
-		/**
-		 * @brief default visible text flag
-		 *
-		 */
-		constexpr bool progressTextVisible = true;
-
-		/**
-		 * @brief default format of the text
-		 *
-		 */
-		const QString barTextFormat("%p%");
-
-		/**
-		 * @brief default inverted progress flag
-		 *
-		 */
-		constexpr bool invertedProgress = false;
-	}
-
 	/**
 	 * @brief ProgressBar class
 	 *

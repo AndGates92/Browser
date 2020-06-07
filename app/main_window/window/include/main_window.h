@@ -27,39 +27,6 @@ Q_DECLARE_LOGGING_CATEGORY(mainWindowTabs)
 
 namespace main_window {
 
-	namespace {
-		/**
-		 * @brief vertical spacing between widgets
-		 *
-		 */
-		constexpr int verticalWidgetSpacing = 0;
-
-		/**
-		 * @brief left margin between widget and window
-		 *
-		 */
-		constexpr int leftMargin = 0;
-
-		/**
-		 * @brief right margin between widget and window
-		 *
-		 */
-		constexpr int rightMargin = 0;
-
-		/**
-		 * @brief top margin between widget and window
-		 *
-		 */
-		constexpr int topMargin = 0;
-
-		/**
-		 * @brief bottom margin between widget and window
-		 *
-		 */
-		constexpr int bottomMargin = 0;
-
-	}
-
 	/**
 	 * @brief MainWindow class
 	 *

@@ -20,6 +20,26 @@
 Q_LOGGING_CATEGORY(keySequenceOverall, "keySequence.overall", MSG_TYPE_LEVEL)
 Q_LOGGING_CATEGORY(keySequenceString, "keySequence.string", MSG_TYPE_LEVEL)
 
+
+namespace key_sequence {
+
+	namespace {
+		/**
+		 * @brief Maximum number of element on the QKeySequence vector
+		 *
+		 */
+		static constexpr unsigned int maxCount = 4;
+
+		/**
+		 * @brief Maximum number of key codes in every element of the vector
+		 *
+		 */
+		static constexpr unsigned int maxKeyCodesInEl = 1;
+	}
+
+}
+
+
 key_sequence::KeySequence::KeySequence(const QString & keyStr, QKeySequence::SequenceFormat format) {
 	QINFO_PRINT(global_types::qinfo_level_e::ZERO, keySequenceOverall,  "Key Sequence constructor: key " << keyStr);
 

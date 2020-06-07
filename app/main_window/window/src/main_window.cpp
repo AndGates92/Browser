@@ -32,6 +32,43 @@ Q_LOGGING_CATEGORY(mainWindowOverall, "mainWindow.overall", MSG_TYPE_LEVEL)
 Q_LOGGING_CATEGORY(mainWindowCenterWindow, "mainWindow.centerWindow", MSG_TYPE_LEVEL)
 Q_LOGGING_CATEGORY(mainWindowTabs, "mainWindow.tabs", MSG_TYPE_LEVEL)
 
+namespace main_window {
+
+	namespace {
+		/**
+		 * @brief vertical spacing between widgets
+		 *
+		 */
+		static constexpr int verticalWidgetSpacing = 0;
+
+		/**
+		 * @brief left margin between widget and window
+		 *
+		 */
+		static constexpr int leftMargin = 0;
+
+		/**
+		 * @brief right margin between widget and window
+		 *
+		 */
+		static constexpr int rightMargin = 0;
+
+		/**
+		 * @brief top margin between widget and window
+		 *
+		 */
+		static constexpr int topMargin = 0;
+
+		/**
+		 * @brief bottom margin between widget and window
+		 *
+		 */
+		static constexpr int bottomMargin = 0;
+
+	}
+
+}
+
 main_window::MainWindow::MainWindow(QWidget * parent, Qt::WindowFlags flags) : QMainWindow(parent, flags), main_window_base::MainWindowBase(QSharedPointer<main_window_core::MainWindowCore>(new main_window_core::MainWindowCore(this))) {
 
 	QINFO_PRINT(global_types::qinfo_level_e::ZERO, mainWindowOverall,  "Main window constructor");
