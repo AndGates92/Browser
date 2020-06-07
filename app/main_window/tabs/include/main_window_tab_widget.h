@@ -49,11 +49,11 @@ namespace main_window_tab_widget {
 			explicit MainWindowTabWidget(QWidget * parent);
 
 			/**
-			 * @brief Function: ~TabWidget()
+			 * @brief Function: virtual ~TabWidget()
 			 *
 			 * Tab widget destructor
 			 */
-			~MainWindowTabWidget();
+			virtual ~MainWindowTabWidget();
 
 			/**
 			 * @brief Function: int addTab(const main_window_shared_types::page_type_e & type, const void * data = nullptr, const QIcon & icon = QIcon())

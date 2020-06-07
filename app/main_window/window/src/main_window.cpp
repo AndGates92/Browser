@@ -11,6 +11,7 @@
 #include <qt5/QtWidgets/QVBoxLayout>
 #include <qt5/QtWidgets/QStatusBar>
 #include <qt5/QtWidgets/QTabBar>
+#include <qt5/QtWidgets/QSizePolicy>
 #include <qt5/QtGui/QKeyEvent>
 
 // Required by qInfo
@@ -25,7 +26,6 @@
 #include "logging_macros.h"
 #include "global_types.h"
 #include "main_window.h"
-
 
 // Categories
 Q_LOGGING_CATEGORY(mainWindowOverall, "mainWindow.overall", MSG_TYPE_LEVEL)
@@ -69,7 +69,7 @@ namespace main_window {
 
 }
 
-main_window::MainWindow::MainWindow(QWidget * parent, Qt::WindowFlags flags) : QMainWindow(parent, flags), main_window_base::MainWindowBase(QSharedPointer<main_window_core::MainWindowCore>(new main_window_core::MainWindowCore(this))) {
+main_window::MainWindow::MainWindow(QWidget * parent, Qt::WindowFlags flags) : QMainWindow(parent, flags), main_window_base::MainWindowBase(QSharedPointer<main_window_core::MainWindowCore>(new main_window_core::MainWindowCore(this))), overlayedWidgets(std::list<overlayed_widget::OverlayedWidget *>()) {
 
 	QINFO_PRINT(global_types::qinfo_level_e::ZERO, mainWindowOverall,  "Main window constructor");
 
@@ -159,14 +159,16 @@ void main_window::MainWindow::fillMainWindow() {
 	// Status bar
 	this->customizeBottomStatusBar();
 
+	this->populateOverlayedWidgetList();
+
 	if (this->windowCore->cmdMenu != Q_NULLPTR) {
 		// command menu
 		this->windowCore->cmdMenu->setVisible(false);
 	}
 
-	if (this->windowCore->promptMenu != Q_NULLPTR) {
+	if (this->windowCore->popup != Q_NULLPTR) {
 		// prompt widget
-		this->windowCore->promptMenu->setVisible(false);
+		this->windowCore->popup->setVisible(false);
 	}
 
 }
@@ -220,13 +222,10 @@ void main_window::MainWindow::mainWindowLayout() {
 	layout->addWidget(this->windowCore->tabs);
 
 	// command menu
-	layout->addWidget(this->windowCore->cmdMenu);
-
-	// prompt widget
-	layout->addWidget(this->windowCore->promptMenu);
+	layout->addWidget(this->windowCore->cmdMenu, 0, (Qt::AlignHCenter | Qt::AlignBottom));
 
 	// status bar
-	layout->addWidget(this->windowCore->bottomStatusBar);
+	layout->addWidget(this->windowCore->bottomStatusBar, Qt::AlignBottom);
 
 	layout->setSpacing(main_window::verticalWidgetSpacing);
 	layout->setContentsMargins(main_window::leftMargin, main_window::topMargin, main_window::rightMargin, main_window::bottomMargin);
@@ -240,6 +239,9 @@ void main_window::MainWindow::connectSignals() {
 	// Close window
 	connect(this->ctrl->getWinCtrl(), &main_window_ctrl::MainWindowCtrl::closeWindowSignal, this, &main_window::MainWindow::closeWindow);
 
+	for (std::list<overlayed_widget::OverlayedWidget *>::const_iterator widget = this->overlayedWidgets.cbegin(); widget != this->overlayedWidgets.cend(); widget++) {
+		connect(*widget, &overlayed_widget::OverlayedWidget::updateGeometryRequest, this, &main_window::MainWindow::updateWidgetGeometry);
+	}
 }
 
 void main_window::MainWindow::createCtrl() {
@@ -256,4 +258,101 @@ void main_window::MainWindow::closeWindow() {
 	QINFO_PRINT(global_types::qinfo_level_e::ZERO, mainWindowOverall,  "Close main window");
 	const bool success = this->close();
 	Q_ASSERT_X(success, "main window close success check", "Main window close request was not handled properly");
+}
+
+void main_window::MainWindow::resizeEvent(QResizeEvent *event) {
+	QINFO_PRINT(global_types::qinfo_level_e::ZERO, mainWindowOverall,  "Resizing window from size " << event->oldSize() << " to size " << event->size());
+
+	for (std::list<overlayed_widget::OverlayedWidget *>::const_iterator widget = this->overlayedWidgets.cbegin(); widget != this->overlayedWidgets.cend(); widget++) {
+		this->updateWidgetGeometry(*widget);
+	}
+
+	QMainWindow::resizeEvent(event);
+}
+
+void main_window::MainWindow::addOverlayedWidget(overlayed_widget::OverlayedWidget * widget) {
+	this->overlayedWidgets.push_back(widget);
+}
+
+void main_window::MainWindow::populateOverlayedWidgetList() {
+	this->addOverlayedWidget(this->windowCore->popup);
+}
+
+void main_window::MainWindow::updateWidgetGeometry(overlayed_widget::OverlayedWidget * widget) {
+
+	// Widget information
+	const QSize widgetSizeHint(widget->sizeHint());
+	const QSizePolicy::Policy horizontalSizePolicy = widget->sizePolicy().horizontalPolicy();
+	const bool centered = widget->isCentered();
+	const int padding = widget->getPadding();
+
+	// Window information
+	const int windowWidth = this->width();
+	const int windowHeight = this->height();
+
+	int totalPadding = 0;
+	if (centered == true) {
+		// Widget width is the width of the window minus 2 times the padding (i.e. padding on the left and right hand side)
+		totalPadding = 2 * padding;
+	} else {
+		// Widget width is the width of the window minus the padding (i.e. padding on the right hand side)
+		totalPadding = padding;
+	}
+
+	int expandingWidth = 0;
+	// If window width is smaller than the total padding, the widget is expanded to occupy the entire width of the window
+	if (windowWidth > totalPadding) {
+		expandingWidth = windowWidth - totalPadding;
+	} else {
+		expandingWidth = windowWidth;
+	}
+
+	int widgetLeft = 0;
+	int widgetWidth = 0;
+
+	// Horizontal position (left coordinate) and dimension (width)
+	if (horizontalSizePolicy == QSizePolicy::Expanding) {
+		widgetWidth = expandingWidth;
+		if (centered == true) {
+			widgetLeft = padding;
+		} else {
+			widgetLeft = 0;
+		}
+	} else {
+		// Pick minimum between widget size hint and adjusted centered width accounting for padding (width of the window minus total padding)
+		widgetWidth = std::min(widgetSizeHint.width(), expandingWidth);
+		if (centered == true) {
+
+			// Keep widget at the center of the window
+			widgetLeft = (windowWidth - widgetSizeHint.width()) / 2;
+
+		} else {
+			widgetLeft = 0;
+		}
+	}
+
+	// Vertical position (top coordinate) and dimension (height)
+	const int widgetHeight = widgetSizeHint.height();
+
+	int distanceYFromBottom = widgetHeight;
+	if (this->windowCore->bottomStatusBar->isVisible() == true) {
+		const int statusBarHeight = this->windowCore->bottomStatusBar->height();
+		distanceYFromBottom += statusBarHeight;
+	}
+
+	const int widgetTop = windowHeight - distanceYFromBottom;
+
+	QEXCEPTION_ACTION_COND((widgetHeight <= 0), throw, "Widget height " << widgetHeight << " is not within the valid range (width > 0)");
+	QEXCEPTION_ACTION_COND((widgetTop < 0), throw, "Widget top coordinate " << widgetTop << " is not within the valid range (coordinate >= 0)");
+	QEXCEPTION_ACTION_COND((widgetWidth <= 0), throw, "Widget width " << widgetWidth << " is not within the valid range (width > 0)");
+	QEXCEPTION_ACTION_COND((widgetLeft < 0), throw, "Widget left coordinate " << widgetLeft << " is not within the valid range (coordinate >= 0)");
+
+	QPoint topLeftCorner(widgetLeft, widgetTop);
+	QSize widgetSize(widgetWidth, widgetHeight);
+
+	QRect widgetRect(topLeftCorner, widgetSize);
+	if (widgetRect.isValid() == true) {
+		widget->setGeometry(widgetRect);
+	}
+
 }

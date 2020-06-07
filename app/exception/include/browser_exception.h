@@ -48,11 +48,11 @@ namespace browser_exception {
 			explicit BrowserException(const QString & msg);
 
 			/**
-			 * @brief Function: ~BrowserException()
+			 * @brief Function: virtual ~BrowserException()
 			 *
 			 * Browser exception destructor
 			 */
-			~BrowserException();
+			virtual ~BrowserException();
 
 			/**
 			 * @brief Function: void raise() const override

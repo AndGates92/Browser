@@ -66,11 +66,11 @@ namespace elided_label {
 			explicit ElidedLabel(QWidget * parent, Qt::WindowFlags flags = Qt::WindowFlags(), QString textLabel = QString::null, QPoint labelOrigin = QPoint(elided_label::labelOriginX,elided_label::labelOriginY), Qt::TextElideMode textElisionMode = Qt::ElideNone);
 
 			/**
-			 * @brief Function: ~ElidedLabel()
+			 * @brief Function: virtual ~ElidedLabel()
 			 *
 			 * Elided label destructor
 			 */
-			~ElidedLabel();
+			virtual ~ElidedLabel();
 
 			/**
 			 * @brief Function: Qt::TextElideMode getElisionMode() const

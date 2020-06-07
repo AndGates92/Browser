@@ -185,7 +185,32 @@ QKeySequence key_sequence::KeySequence::toQKeySequence() const {
 
 }
 
-QString key_sequence::KeySequence::toString(const QKeySequence::SequenceFormat format) const {
+bool key_sequence::KeySequence::isEmpty() const {
+	const bool emptyVector = keySeqVec.empty();
+
+
+
+	bool unknownKeyAtHead = true;
+
+	if (keySeqVec.size() == 1) {
+		unknownKeyAtHead = (keySeqVec[0] == Qt::Key_unknown);
+	} else {
+		const QVector<QKeySequence>::const_iterator unknownKey = std::find_if(keySeqVec.cbegin(), keySeqVec.cend(),
+			[] (const QKeySequence & keySeq) {
+				return (keySeq[0] == (int)Qt::Key_unknown);
+			}
+		);
+
+		const int unknownKeyPosition = (unknownKey == keySeqVec.cbegin());
+		unknownKeyAtHead = (unknownKeyPosition == 0);
+	}
+
+	const bool emptyKeySequence = emptyVector || unknownKeyAtHead;
+
+	return emptyKeySequence;
+}
+
+QString key_sequence::KeySequence::toString(QKeySequence::SequenceFormat format) const {
 
 	QStringList keySeqList;
 

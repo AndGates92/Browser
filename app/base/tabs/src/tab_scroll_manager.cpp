@@ -137,7 +137,7 @@ void tab_scroll_manager::TabScrollManager::scroll(const tab_shared_types::direct
 				xAxisFactor = 0;
 				break;
 		}
-		const int xScroll = this->scrollPosition.rx() + (xAxisFactor * tab_scroll_manager::hScrollStep);
+		const int xScroll = static_cast<int>(this->scrollPosition.rx()) + (xAxisFactor * tab_scroll_manager::hScrollStep);
 
 		int yAxisFactor = 0;
 		switch (direction) {
@@ -151,7 +151,7 @@ void tab_scroll_manager::TabScrollManager::scroll(const tab_shared_types::direct
 				yAxisFactor = 0;
 				break;
 		}
-		const int yScroll = this->scrollPosition.ry() + (yAxisFactor * tab_scroll_manager::vScrollStep);
+		const int yScroll = static_cast<int>(this->scrollPosition.ry()) + (yAxisFactor * tab_scroll_manager::vScrollStep);
 
 		emit this->scrollRequest(xScroll, yScroll);
 	} else {

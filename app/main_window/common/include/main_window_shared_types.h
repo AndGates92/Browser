@@ -45,6 +45,7 @@ namespace main_window_shared_types {
 		TOGGLE_MENUBAR,   /**< Toggle menu bar */
 		QUIT,             /**< Exit browser */
 		COMMAND,          /**< Typing command */
+		OPEN_FILE,        /**< Open file */
 		OPEN_TAB,         /**< Open new tab */
 		CLOSE_TAB,        /**< Close tab */
 		REFRESH_TAB,      /**< Refresh tab */

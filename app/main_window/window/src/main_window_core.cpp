@@ -19,11 +19,11 @@
 Q_LOGGING_CATEGORY(mainWindowCoreOverall, "mainWindowCore.overall", MSG_TYPE_LEVEL)
 Q_LOGGING_CATEGORY(mainWindowCoreUserInput, "mainWindowCtrlBase.userInput", MSG_TYPE_LEVEL)
 
-main_window_core::MainWindowCore::MainWindowCore(QWidget * parent) : mainWidget(new QWidget(parent)), tabs(new main_window_tab_widget::MainWindowTabWidget(this->mainWidget)), topMenuBar(new main_window_menu_bar::MainWindowMenuBar(parent)), promptMenu(Q_NULLPTR), bottomStatusBar(new main_window_status_bar::MainWindowStatusBar(parent)), cmdMenu(new command_menu::CommandMenu(parent)), mainWindowState(main_window_shared_types::state_e::IDLE), offsetType(main_window_shared_types::offset_type_e::IDLE), userText(QString::null) {
+main_window_core::MainWindowCore::MainWindowCore(QWidget * parent) : mainWidget(new QWidget(parent)), tabs(new main_window_tab_widget::MainWindowTabWidget(this->mainWidget)), topMenuBar(new main_window_menu_bar::MainWindowMenuBar(parent)), popup(new main_window_popup_container::MainWindowPopupContainer(parent)), bottomStatusBar(new main_window_status_bar::MainWindowStatusBar(parent)), cmdMenu(new command_menu::CommandMenu(parent)), mainWindowState(main_window_shared_types::state_e::IDLE), offsetType(main_window_shared_types::offset_type_e::IDLE), userText(QString::null) {
 	QINFO_PRINT(global_types::qinfo_level_e::ZERO, mainWindowCoreOverall,  "Main window core constructor");
 }
 
-main_window_core::MainWindowCore::MainWindowCore(const main_window_core::MainWindowCore & rhs) : mainWidget(rhs.mainWidget), tabs(rhs.tabs), topMenuBar(rhs.topMenuBar), promptMenu(rhs.promptMenu), bottomStatusBar(rhs.bottomStatusBar), cmdMenu(rhs.cmdMenu), mainWindowState(rhs.mainWindowState), offsetType(rhs.offsetType), userText(rhs.userText) {
+main_window_core::MainWindowCore::MainWindowCore(const main_window_core::MainWindowCore & rhs) : mainWidget(rhs.mainWidget), tabs(rhs.tabs), topMenuBar(rhs.topMenuBar), popup(rhs.popup), bottomStatusBar(rhs.bottomStatusBar), cmdMenu(rhs.cmdMenu), mainWindowState(rhs.mainWindowState), offsetType(rhs.offsetType), userText(rhs.userText) {
 
 	QINFO_PRINT(global_types::qinfo_level_e::ZERO, mainWindowCoreOverall,  "Copy constructor main window core");
 
@@ -59,11 +59,11 @@ main_window_core::MainWindowCore & main_window_core::MainWindowCore::operator=(c
 		this->topMenuBar = rhs.topMenuBar;
 	}
 
-	if (this->promptMenu != rhs.promptMenu) {
-		if (this->promptMenu != Q_NULLPTR) {
-			delete this->promptMenu;
+	if (this->popup != rhs.popup) {
+		if (this->popup != Q_NULLPTR) {
+			delete this->popup;
 		}
-		this->promptMenu = rhs.promptMenu;
+		this->popup = rhs.popup;
 	}
 
 	if (this->bottomStatusBar != rhs.bottomStatusBar) {
@@ -95,7 +95,7 @@ main_window_core::MainWindowCore & main_window_core::MainWindowCore::operator=(c
 	return *this;
 }
 
-main_window_core::MainWindowCore::MainWindowCore(main_window_core::MainWindowCore && rhs) : mainWidget(std::exchange(rhs.mainWidget, Q_NULLPTR)), tabs(std::exchange(rhs.tabs, Q_NULLPTR)), topMenuBar(std::exchange(rhs.topMenuBar, Q_NULLPTR)), promptMenu(std::exchange(rhs.promptMenu, Q_NULLPTR)), bottomStatusBar(std::exchange(rhs.bottomStatusBar, Q_NULLPTR)), cmdMenu(std::exchange(rhs.cmdMenu, Q_NULLPTR)), mainWindowState(std::exchange(rhs.mainWindowState, main_window_shared_types::state_e::IDLE)), offsetType(std::exchange(rhs.offsetType, main_window_shared_types::offset_type_e::IDLE)), userText(std::exchange(rhs.userText, QString::null)) {
+main_window_core::MainWindowCore::MainWindowCore(main_window_core::MainWindowCore && rhs) : mainWidget(std::exchange(rhs.mainWidget, Q_NULLPTR)), tabs(std::exchange(rhs.tabs, Q_NULLPTR)), topMenuBar(std::exchange(rhs.topMenuBar, Q_NULLPTR)), popup(std::exchange(rhs.popup, Q_NULLPTR)), bottomStatusBar(std::exchange(rhs.bottomStatusBar, Q_NULLPTR)), cmdMenu(std::exchange(rhs.cmdMenu, Q_NULLPTR)), mainWindowState(std::exchange(rhs.mainWindowState, main_window_shared_types::state_e::IDLE)), offsetType(std::exchange(rhs.offsetType, main_window_shared_types::offset_type_e::IDLE)), userText(std::exchange(rhs.userText, QString::null)) {
 	QINFO_PRINT(global_types::qinfo_level_e::ZERO, mainWindowCoreOverall,  "Move constructor main window core");
 }
 
@@ -119,10 +119,10 @@ main_window_core::MainWindowCore & main_window_core::MainWindowCore::operator=(m
 		}
 		this->topMenuBar = std::exchange(rhs.topMenuBar, Q_NULLPTR);
 
-		if (this->promptMenu != Q_NULLPTR) {
-			delete this->promptMenu;
+		if (this->popup != Q_NULLPTR) {
+			delete this->popup;
 		}
-		this->promptMenu = std::exchange(rhs.promptMenu, Q_NULLPTR);
+		this->popup = std::exchange(rhs.popup, Q_NULLPTR);
 
 		if (this->bottomStatusBar != Q_NULLPTR) {
 			delete this->bottomStatusBar;
@@ -151,8 +151,8 @@ main_window_core::MainWindowCore::~MainWindowCore() {
 	}
 
 	// prompt widget
-	if (this->promptMenu != Q_NULLPTR) {
-		delete this->promptMenu;
+	if (this->popup != Q_NULLPTR) {
+		delete this->popup;
 	}
 
 	// Status bar
@@ -234,13 +234,4 @@ void main_window_core::MainWindowCore::updateUserInput(const main_window_shared_
 			QEXCEPTION_ACTION(throw,  "Unknown action " << action);
 			break;
 	}
-}
-
-void main_window_core::MainWindowCore::setPrompt(main_window_prompt_menu::MainWindowPromptMenu * prompt) {
-	if (this->promptMenu != Q_NULLPTR) {
-		delete this->promptMenu;
-	}
-	this->promptMenu = prompt;
-
-	this->promptMenu->setVisible((prompt != Q_NULLPTR));
 }

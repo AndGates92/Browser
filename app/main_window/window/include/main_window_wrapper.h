@@ -81,11 +81,11 @@ namespace main_window_wrapper {
 			MainWindowWrapper & operator=(main_window_wrapper::MainWindowWrapper && rhs);
 
 			/**
-			 * @brief Function: ~MainWindowWrapper()
+			 * @brief Function: virtual ~MainWindowWrapper()
 			 *
 			 * Main window wrapper destructor
 			 */
-			~MainWindowWrapper();
+			virtual ~MainWindowWrapper();
 
 			/**
 			 * @brief Function: void show()

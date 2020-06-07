@@ -54,12 +54,12 @@ namespace main_window_ctrl_base {
 			virtual ~MainWindowCtrlBase();
 
 			/**
-			 * @brief Function: void keyPressEvent(QKeyEvent * event) override
+			 * @brief Function: virtual void keyPressEvent(QKeyEvent * event) final
 			 *
-			 * \param event: event coming from keyboard 
+			 * \param event: event coming from keyboard
 			 *
 			 * This function handles event coming from the keyboard
-			 * Escape is not triggered in keyPressedEvent 
+			 * Escape is not triggered in keyPressedEvent
 			 * Re-implement key pressed event
 			 */
 			virtual void keyPressEvent(QKeyEvent * event) final;
@@ -83,6 +83,13 @@ namespace main_window_ctrl_base {
 			 * This function sets the state of window
 			 */
 			void windowStateChanged(const main_window_shared_types::state_e & nextState);
+
+			/**
+			 * @brief Function: void updatePrompt(QWidget * widget)
+			 *
+			 * This function requests to update window layout
+			 */
+			void updatePrompt(QWidget * widget);
 
 		protected:
 

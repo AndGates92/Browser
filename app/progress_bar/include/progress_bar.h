@@ -41,11 +41,11 @@ namespace progress_bar {
 			explicit ProgressBar(QWidget * parent);
 
 			/**
-			 * @brief Function: ~ProgressBar()
+			 * @brief Function: virtual ~ProgressBar()
 			 *
 			 * Progress bar destructor
 			 */
-			~ProgressBar();
+			virtual ~ProgressBar();
 
 		public slots:
 			/**

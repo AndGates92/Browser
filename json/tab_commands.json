@@ -1,4 +1,12 @@
 {
+	"OpenFile" : {
+		"Name" : "open file",
+		"State" : "OPEN_FILE",
+		"Shortcut" : "p",
+		"LongCmd" : "open-file",
+		"Help" : "This command opens a new file"
+	},
+
 	"OpenNewTab" : {
 		"Name" : "open new tab",
 		"State" : "OPEN_TAB",

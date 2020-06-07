@@ -72,12 +72,16 @@ void tab_widget::TabWidget::resizeEvent(QResizeEvent * event) {
 	int widgetWidth = this->size().width();
 	this->bar->setWidth(widgetWidth);
 
-	if (this->count() > 0) {
-		// Resize current tab
-		tab::Tab * currentTab = dynamic_cast<tab::Tab *>(this->widget(this->currentIndex(), true));
-		if (currentTab != Q_NULLPTR) {
-			currentTab->resize(newSize);
+	try {
+		if (this->count() > 0) {
+			// Resize current tab
+			tab::Tab * currentTab = dynamic_cast<tab::Tab *>(this->widget(this->currentIndex(), true));
+			if (currentTab != Q_NULLPTR) {
+				currentTab->resize(newSize);
+			}
 		}
+	} catch (const std::bad_cast & badCastE) {
+		QEXCEPTION_ACTION(throw, badCastE.what());
 	}
 
 	QTabWidget::resizeEvent(event);

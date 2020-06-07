@@ -32,7 +32,7 @@ std::string global_functions::readFile(const std::string & filename) {
 
 		ifile.seekg(0, std::ios_base::beg);
 
-		int charCount = 0;
+		long unsigned int charCount = 0;
 		const char delimChar = '\n';
 
 		while(!ifile.eof()) {
@@ -42,7 +42,7 @@ std::string global_functions::readFile(const std::string & filename) {
 			line.push_back(delimChar);
 			content.append(line);
 			charCount += line.length();
-			const float percentageCount = (((float) charCount) * 100.0) / ((float) fileLength);
+			const double percentageCount = (static_cast<double>(charCount) * 100.0) / static_cast<double>(fileLength);
 			QINFO_PRINT(global_types::qinfo_level_e::ZERO, readFileOverall,  "Character counted " << charCount << " out of " << fileLength << " that is " << percentageCount << "%");
 		}
 	} catch (const std::ifstream::failure & e) {

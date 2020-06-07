@@ -73,6 +73,9 @@ void main_window_ctrl::MainWindowCtrl::connectExtraSignals() {
 	QINFO_PRINT(global_types::qinfo_level_e::ZERO, mainWindowCtrlOverall,  "Connect signals");
 
 	connect(this->windowCore->topMenuBar->getFileMenu()->exitAction, &QAction::triggered, this, &main_window_ctrl::MainWindowCtrl::closeWindow);
+	connect(this->windowCore->popup, &main_window_popup_container::MainWindowPopupContainer::closeContainer,  [this] () {
+		this->changeWindowState(main_window_shared_types::state_e::IDLE, main_window_shared_types::state_postprocessing_e::POSTPROCESS);
+	});
 
 }
 

@@ -48,11 +48,11 @@ namespace main_window_ctrl_wrapper {
 			explicit MainWindowCtrlWrapper(QWidget * parent, QSharedPointer<main_window_core::MainWindowCore> core);
 
 			/**
-			 * @brief Function: ~MainWindowCtrlWrapper()
+			 * @brief Function: virtual ~MainWindowCtrlWrapper()
 			 *
 			 * Main window control constructor
 			 */
-			~MainWindowCtrlWrapper();
+			virtual ~MainWindowCtrlWrapper();
 
 			/**
 			 * @brief Function: void keyReleaseEvent(QKeyEvent * event) override

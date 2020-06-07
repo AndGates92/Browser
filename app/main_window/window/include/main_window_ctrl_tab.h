@@ -64,11 +64,11 @@ namespace main_window_ctrl_tab {
 			explicit MainWindowCtrlTab(QWidget * parent, QSharedPointer<main_window_core::MainWindowCore> core);
 
 			/**
-			 * @brief Function: ~MainWindowCtrlTab()
+			 * @brief Function: virtual ~MainWindowCtrlTab()
 			 *
 			 * Main window tab control destructor
 			 */
-			~MainWindowCtrlTab();
+			virtual ~MainWindowCtrlTab();
 
 			/**
 			 * @brief Function: void processTabIndex(const QString & userInputStr)

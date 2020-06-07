@@ -153,7 +153,7 @@ namespace key_sequence {
 			 *
 			 * This function returns a string with all key sequences
 			 */
-			QString toString(const QKeySequence::SequenceFormat format = QKeySequence::NativeText) const;
+			QString toString(QKeySequence::SequenceFormat format = QKeySequence::NativeText) const;
 
 			/**
 			 * @brief Function: std::string toStdString(const QKeySequence::SequenceFormat format = QKeySequence::NativeText) const
@@ -179,6 +179,15 @@ namespace key_sequence {
 			 * - QKeySequence::NoMatch otherwise (i.e. if this object has more elements than the other one or elements are not the same)
 			 */
 			QKeySequence::SequenceMatch matches(const KeySequence & otherSeq) const;
+
+			/**
+			 * @brief Function: bool isEmpty() const
+			 *
+			 * \return true if the key sequence is empty, false otherwise
+			 *
+			 * This function provide the information about whether the key sequence is empty or not
+			 */
+			bool isEmpty() const;
 
 			// Operator overloading
 			/**

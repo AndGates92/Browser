@@ -51,11 +51,11 @@ namespace main_window_ctrl {
 			explicit MainWindowCtrl(QWidget * parent, QSharedPointer<main_window_core::MainWindowCore> core);
 
 			/**
-			 * @brief Function: ~MainWindowCtrl()
+			 * @brief Function: virtual ~MainWindowCtrl()
 			 *
 			 * Main window control constructor
 			 */
-			~MainWindowCtrl();
+			virtual ~MainWindowCtrl();
 
 			/**
 			 * @brief Function: void keyReleaseEvent(QKeyEvent * event) override

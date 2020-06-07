@@ -14,6 +14,7 @@
 
 #include "main_window_ctrl_wrapper.h"
 #include "main_window_base.h"
+#include "overlayed_widget.h"
 #include "constructor_macros.h"
 
 /** @defgroup MainWindowGroup Main Window Doxygen Group
@@ -48,11 +49,11 @@ namespace main_window {
 			explicit MainWindow(QWidget * parent, Qt::WindowFlags flags = Qt::WindowFlags());
 
 			/**
-			 * @brief Function: ~MainWindow()
+			 * @brief Function: virtual ~MainWindow()
 			 *
 			 * Main window destructor
 			 */
-			~MainWindow();
+			virtual ~MainWindow();
 
 			/**
 			 * @brief Function: main_window_ctrl_wrapper::MainWindowCtrlWrapper * getCtrl()
@@ -86,6 +87,15 @@ namespace main_window {
 			 */
 			void closeWindow();
 
+			/**
+			 * @brief Function: void updateWidgetGeometry(overlayed_widget::OverlayedWidget * widget)
+			 *
+			 * \param widget: widget that is requesting to update its geometry
+			 *
+			 * This function updates the geometry of an overlayed widget
+			 */
+			void updateWidgetGeometry(overlayed_widget::OverlayedWidget * widget);
+
 		private:
 
 			/**
@@ -93,6 +103,12 @@ namespace main_window {
 			 *
 			 */
 			main_window_ctrl_wrapper::MainWindowCtrlWrapper * ctrl;
+
+			/**
+			 * @brief list of overlayed widgets
+			 *
+			 */
+			std::list<overlayed_widget::OverlayedWidget *> overlayedWidgets;
 
 			/**
 			 * @brief Function: void customizeMainWidget()
@@ -149,6 +165,32 @@ namespace main_window {
 			 * This function connects signals and slots between main window elements
 			 */
 			void connectSignals();
+
+			/**
+			 * @brief Function: void resizeEvent(QResizeEvent * event)
+			 *
+			 * \param event: resize event
+			 *
+			 * This function is called when the widget is resized
+			 */
+			void resizeEvent(QResizeEvent * event);
+
+			/**
+			 * @brief Function: void addOverlayedWidget(overlayed_widget::OverlayedWidget * widget)
+			 *
+			 * \param widget: widget to add
+			 *
+			 * This function adds a widget to the overlayed widget list
+			 */
+			void addOverlayedWidget(overlayed_widget::OverlayedWidget * widget);
+
+			/**
+			 * @brief Function: void populateOverlayedWidgetList()
+			 *
+			 * This function populates overlayed widget list.
+			 * It must be called before connectSignals in order to properly connect overlayed widget signal with main window slot to update they geometry automatically
+			 */
+			void populateOverlayedWidgetList();
 
 			// Move and copy constructor
 			/**

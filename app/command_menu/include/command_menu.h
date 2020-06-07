@@ -56,11 +56,11 @@ namespace command_menu {
 			explicit CommandMenu(QWidget * parent);
 
 			/**
-			 * @brief Function: ~CommandMenu()
+			 * @brief Function: virtual ~CommandMenu()
 			 *
 			 * Command menu destructor
 			 */
-			~CommandMenu();
+			virtual ~CommandMenu();
 
 		protected:
 

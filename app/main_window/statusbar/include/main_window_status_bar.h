@@ -44,11 +44,11 @@ namespace main_window_status_bar {
 			explicit MainWindowStatusBar(QWidget * parent, Qt::WindowFlags flags = Qt::WindowFlags());
 
 			/**
-			 * @brief Function: ~MainWindowStatusBar()
+			 * @brief Function: virtual ~MainWindowStatusBar()
 			 *
 			 * Main window statusbar destructor
 			 */
-			~MainWindowStatusBar();
+			virtual ~MainWindowStatusBar();
 
 		public slots:
 			/**

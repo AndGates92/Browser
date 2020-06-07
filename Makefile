@@ -65,7 +65,7 @@ MOC_OBJ_EXT = moc.o
 # PIC (Position Independent Code) is required by Qt
 # C++14 standard
 # -rdyanmic: ELF linked adds all symbols to the dynamic symbol table
-CFLAGS = -g -Wall -fPIC -Werror -Wextra -Wpedantic -std=c++14 -rdynamic
+CFLAGS = -g -Wall -Wconversion -fPIC -Werror -Wextra -Wpedantic -std=c++14 -rdynamic
 CEXTRAFLAGS ?=
 BEHFLAGS ?=
 DEPENDFLAG = -MM

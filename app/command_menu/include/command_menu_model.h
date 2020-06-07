@@ -45,11 +45,11 @@ namespace command_menu_model {
 			explicit CommandMenuModel(QObject * parent);
 
 			/**
-			 * @brief Function: ~CommandMenuModel()
+			 * @brief Function: virtual ~CommandMenuModel()
 			 *
 			 * Command menu model destructor
 			 */
-			~CommandMenuModel();
+			virtual ~CommandMenuModel();
 
 		protected:
 

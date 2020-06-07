@@ -13,7 +13,6 @@
 // Required by qInfo
 #include <qt5/QtCore/QtDebug>
 
-#include "open_prompt.h"
 #include "key_sequence.h"
 #include "main_window_ctrl_tab.h"
 #include "main_window_shared_functions.h"
@@ -98,6 +97,7 @@ void main_window_ctrl_tab::MainWindowCtrlTab::connectExtraSignals() {
 
 	// When the file has been read, then show it on the screen
 	connect(this->windowCore->topMenuBar->getFileMenu(), &file_menu::FileMenu::updateCenterWindowSignal, this->windowCore->tabs, &main_window_tab_widget::MainWindowTabWidget::openFileInCurrentTab);
+	connect(this->windowCore->popup->getOpenFilePopup(), &open_popup::OpenPopup::fileRead, this->windowCore->tabs, &main_window_tab_widget::MainWindowTabWidget::openFileInCurrentTab);
 
 	main_window_status_bar::MainWindowStatusBar * statusBar = this->windowCore->bottomStatusBar;
 	connect(this, &main_window_ctrl_tab::MainWindowCtrlTab::currentTabSrcChanged, statusBar, &main_window_status_bar::MainWindowStatusBar::setContentPathText);
@@ -509,7 +509,6 @@ void main_window_ctrl_tab::MainWindowCtrlTab::prepareAction(const main_window_sh
 		case main_window_shared_types::state_e::FIND:
 			if ((pressedKey >= Qt::Key_Space) && (pressedKey <= Qt::Key_ydiaeresis)) {
 				this->printUserInput(main_window_shared_types::text_action_e::APPEND, event->text());
-				this->createOpenPrompt();
 			}
 			break;
 		case main_window_shared_types::state_e::CLOSE_TAB:
@@ -623,12 +622,22 @@ void main_window_ctrl_tab::MainWindowCtrlTab::postprocessWindowStateChange(const
 	QString searchText(QString::null);
 	if (tabCount > 0) {
 		const int tabIndex = this->windowCore->getCurrentTabIndex();
-		tab = dynamic_cast<main_window_tab::MainWindowTab *>(this->windowCore->tabs->widget(tabIndex));
+		try {
+			tab = dynamic_cast<main_window_tab::MainWindowTab *>(this->windowCore->tabs->widget(tabIndex));
+		} catch (const std::bad_cast & badCastE) {
+			QEXCEPTION_ACTION(throw, badCastE.what());
+		}
 		searchText = tab->getSearchText();
 	}
 
 	// If requesting to go to the idle state, enable shortcuts
 	switch (windowState) {
+		case main_window_shared_types::state_e::OPEN_FILE:
+			this->setAllShortcutEnabledProperty(false);
+			this->createOpenPrompt();
+			// Set window state back to idle to be ready to accept a new command upon closure of the popup
+			//this->changeWindowState(main_window_shared_types::state_e::IDLE, main_window_shared_types::state_postprocessing_e::POSTPROCESS);
+			break;
 		case main_window_shared_types::state_e::IDLE:
 			this->setAllShortcutEnabledProperty(true);
 			this->printUserInput(main_window_shared_types::text_action_e::CLEAR);
@@ -688,6 +697,7 @@ bool main_window_ctrl_tab::MainWindowCtrlTab::isValidWindowState(const main_wind
 	const int tabCount = this->windowCore->getTabCount();
 
 	switch (requestedWindowState) {
+		case main_window_shared_types::state_e::OPEN_FILE:
 		case main_window_shared_types::state_e::IDLE:
 			// It is always possible to go to the idle state
 			isValid = true;
@@ -759,6 +769,9 @@ void main_window_ctrl_tab::MainWindowCtrlTab::createContentPathTextFromSource(co
 }
 
 void main_window_ctrl_tab::MainWindowCtrlTab::createOpenPrompt() {
-	open_prompt::OpenPrompt * prompt = new open_prompt::OpenPrompt(this->window());
-	this->windowCore->setPrompt(prompt);
+	main_window_popup_container::MainWindowPopupContainer * container = this->windowCore->popup;
+	bool success = container->showOpenFilePopup();
+//	container->setFocus();
+
+	QEXCEPTION_ACTION_COND((success == false), throw, "Unable to show OpenFile popup");
 }
