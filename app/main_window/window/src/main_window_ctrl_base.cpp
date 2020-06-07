@@ -16,6 +16,8 @@
 #include "main_window_shared_types.h"
 #include "key_sequence.h"
 #include "global_types.h"
+#include "global_functions.h"
+#include "global_qfunctions.h"
 #include "logging_macros.h"
 
 Q_LOGGING_CATEGORY(mainWindowCtrlBaseOverall, "mainWindowCtrlBase.overall", MSG_TYPE_LEVEL)
@@ -255,15 +257,15 @@ void main_window_ctrl_base::MainWindowCtrlBase::populateActionData() {
 			int shortcutKey = (int)Qt::Key_unknown;
 
 			if (paramIter->compare("State") == 0) {
-				state = global_functions::QStringToQEnum<main_window_shared_types::state_e>(QString::fromStdString(value));
+				state = global_qfunctions::qStringToQEnum<main_window_shared_types::state_e>(QString::fromStdString(value));
 				valuePtr = &state;
 			} else if (paramIter->compare("Shortcut") == 0) {
 				// Get key
 				std::string keyStr(this->getShortcutKey(value));
-				Qt::Key key = global_functions::QStringToQEnum<Qt::Key>(QString::fromStdString(keyStr));
+				Qt::Key key = global_qfunctions::qStringToQEnum<Qt::Key>(QString::fromStdString(keyStr));
 				// Get modifier
 				std::string modifierStr(this->getShortcutModifier(value));
-				Qt::KeyboardModifiers modifier = global_functions::QStringToQEnum<Qt::KeyboardModifiers>(QString::fromStdString(modifierStr));
+				Qt::KeyboardModifiers modifier = global_qfunctions::qStringToQEnum<Qt::KeyboardModifiers>(QString::fromStdString(modifierStr));
 				shortcutKey = ((int)key) | ((int)modifier);
 				valuePtr = &shortcutKey;
 			} else {

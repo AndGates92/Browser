@@ -8,11 +8,15 @@
  * @brief Global Types file
 */
 
+#include "type_print_macros.h"
+
 /** @defgroup GlobalTypesGroup Global Types Doxygen Group
  *  Global Types
  *  @{
  */
 namespace global_types {
+
+	Q_NAMESPACE
 
 	/**
 	 * @brief Verbosity levels
@@ -26,6 +30,12 @@ namespace global_types {
 	} qinfo_level_e;
 
 	/**
+	 * @brief Overload operators to ease print of the qinfo level
+	 *
+	 */
+	OVERLOAD_OPERATORS_CUSTOM_TYPE_FUNCTION_PROTOTYPE(qinfo_level_list, global_types::qinfo_level_e)
+
+	/**
 	 * @brief Verbosity levels
 	 *
 	 */
@@ -35,6 +45,11 @@ namespace global_types {
 		PLUS =    1,   /**< Plus sign */
 	} sign_e;
 
+	/**
+	 * @brief Overload operators to ease print of the sign
+	 *
+	 */
+	OVERLOAD_OPERATORS_CUSTOM_TYPE_FUNCTION_PROTOTYPE(sign_list, global_types::sign_e)
 }
 
 /** @} */ // End of GlobalTypesGroup group

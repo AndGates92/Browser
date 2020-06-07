@@ -12,7 +12,7 @@
 
 #include "main_window_core.h"
 #include "exception_macros.h"
-#include "global_functions.h"
+#include "global_qfunctions.h"
 #include "function_macros.h"
 
 // Categories
@@ -179,7 +179,7 @@ main_window_core::MainWindowCore::~MainWindowCore() {
 QString main_window_core::MainWindowCore::getActionName() const {
 	QString actionNameText(QString::null);
 
-	const QString actionName(global_functions::qEnumToQString<main_window_shared_types::state_list>(this->mainWindowState, true));
+	const QString actionName(global_qfunctions::qEnumToQString<main_window_shared_types::state_list>(this->mainWindowState, true));
 	actionNameText.append(actionName);
 
 	if (this->mainWindowState == main_window_shared_types::state_e::MOVE_TAB) {

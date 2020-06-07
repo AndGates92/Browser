@@ -19,6 +19,7 @@
 #include <qt5/QtWidgets/QWidget>
 
 #include "global_types.h"
+#include "logging_macros.h"
 #include "function_macros.h"
 #include "tab_shared_types.h"
 #include "constructor_macros.h"

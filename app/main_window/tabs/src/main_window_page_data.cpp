@@ -13,6 +13,8 @@
 #include <qt5/QtCore/QtDebug>
 
 #include "main_window_page_data.h"
+#include "global_types.h"
+#include "logging_macros.h"
 #include "function_macros.h"
 #include "exception_macros.h"
 

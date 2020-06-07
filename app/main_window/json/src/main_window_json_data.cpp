@@ -14,6 +14,7 @@
 
 #include "main_window_json_data.h"
 #include "global_constants.h"
+#include "logging_macros.h"
 #include "function_macros.h"
 #include "exception_macros.h"
 
@@ -152,7 +153,7 @@ std::string main_window_json_data::MainWindowJsonData::print() const {
 	Qt::Key key = (Qt::Key)(this->shortcut & ~global_constants::qmodifierMask);
 	// In order to get the modifier of the shortcut, bitwise and with the modifier mask
 	Qt::KeyboardModifiers modifier = (Qt::KeyboardModifiers)(this->shortcut & global_constants::qmodifierMask);
-	structInfo = structInfo + "- shortcut key for the action: modifier " + global_functions::qEnumToQString(modifier, true).toStdString() + " key " + global_functions::qEnumToQString(key, true).toStdString() + "\n";
+	structInfo = structInfo + "- shortcut key for the action: modifier " + global_qfunctions::qEnumToQString(modifier, true).toStdString() + " key " + global_qfunctions::qEnumToQString(key, true).toStdString() + "\n";
 	structInfo = structInfo + "- long command for the action: " + this->longCmd + "\n";
 	structInfo = structInfo + "- help for the action: " + this->help + "\n";
 

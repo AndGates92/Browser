@@ -36,7 +36,6 @@ namespace main_window_shared_types {
 	 */
 	OVERLOAD_OPERATORS_CUSTOM_TYPE_FUNCTION_PROTOTYPE(state_postprocessing_list, main_window_shared_types::state_postprocessing_e)
 
-
 	/**
 	 * @brief states
 	 *

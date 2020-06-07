@@ -8,7 +8,7 @@
  * @brief Type Print Macros file
 */
 
-#include "global_functions.h"
+#include "global_qfunctions.h"
 
 /** @defgroup TypePrintMacrosGroup Type Print Macros Doxygen Group
  *  Type Print Macros
@@ -41,7 +41,7 @@
  */
 #define QSTRING_OVERLOAD_PRINT_OP(TYPE) \
 	QString & operator<< (QString & str, const TYPE & value) { \
-		QString valStr(global_functions::qEnumToQString<TYPE>(value, false)); \
+		QString valStr(global_qfunctions::qEnumToQString<TYPE>(value, false)); \
 		str.append(valStr); \
 		return str; \
 	}
@@ -69,7 +69,7 @@
  */
 #define STRING_OVERLOAD_PLUS_OP(TYPE) \
 	const std::string operator+ (const std::string & str, const TYPE & value) { \
-		QString valStr(global_functions::qEnumToQString<TYPE>(value, false)); \
+		QString valStr(global_qfunctions::qEnumToQString<TYPE>(value, false)); \
 		std::string mergedStr; \
 		mergedStr = str + valStr.toStdString(); \
 		return mergedStr; \
@@ -84,7 +84,7 @@
  */
 #define CHAR_OVERLOAD_PLUS_OP(TYPE) \
 	const std::string operator+ (const char * str, const TYPE & value) { \
-		QString valStr(global_functions::qEnumToQString<TYPE>(value, false)); \
+		QString valStr(global_qfunctions::qEnumToQString<TYPE>(value, false)); \
 		std::string mergedStr; \
 		mergedStr = str + valStr.toStdString(); \
 		return mergedStr; \
@@ -99,7 +99,7 @@
  */
 #define QTEXTSTREAM_OVERLOAD_PRINT_OP(TYPE) \
 	QTextStream & operator<< (QTextStream & str, const TYPE & value) { \
-		QString valStr(global_functions::qEnumToQString<TYPE>(value, false)); \
+		QString valStr(global_qfunctions::qEnumToQString<TYPE>(value, false)); \
 		str << valStr; \
 		return str; \
 	}
