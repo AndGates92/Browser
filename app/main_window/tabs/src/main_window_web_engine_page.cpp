@@ -62,8 +62,8 @@ void main_window_web_engine_page::MainWindowWebEnginePage::setBody() {
 main_window_web_engine_page::MainWindowWebEnginePage::~MainWindowWebEnginePage() {
 	QINFO_PRINT(global_types::qinfo_level_e::ZERO, mainWindowWebEnginePageOverall,  "Web engine page destructor");
 
-	if (pageData != nullptr) {
-		delete pageData;
+	if (this->pageData != nullptr) {
+		delete this->pageData;
 	}
 
 }

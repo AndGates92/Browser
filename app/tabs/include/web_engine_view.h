@@ -58,7 +58,7 @@ namespace web_engine_view {
 			virtual ~WebEngineView();
 
 			/**
-			 * @brief Function: web_engine_page::MainWindowWebEnginePage * page() const
+			 * @brief Function: web_engine_page::WebEnginePage * page() const
 			 *
 			 * \return page of the view
 			 *

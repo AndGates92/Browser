@@ -58,6 +58,15 @@ namespace web_engine_page {
 			 */
 			virtual ~WebEnginePage();
 
+			/**
+			 * @brief Function: web_engine_profile::WebEngineProfile * profile() const
+			 *
+			 * \return profile of the page
+			 *
+			 * This function returns the profile of this web engine page
+			 */
+			web_engine_profile::WebEngineProfile * profile() const;
+
 		protected:
 
 		private:

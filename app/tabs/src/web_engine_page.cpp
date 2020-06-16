@@ -11,6 +11,7 @@
 #include <qt5/QtGui/QKeyEvent>
 
 #include "logging_macros.h"
+#include "function_macros.h"
 #include "web_engine_page.h"
 
 // Categories
@@ -22,5 +23,6 @@ web_engine_page::WebEnginePage::WebEnginePage(QWidget * parent, web_engine_profi
 
 web_engine_page::WebEnginePage::~WebEnginePage() {
 	QINFO_PRINT(global_types::qinfo_level_e::ZERO, webEnginePageOverall,  "Web engine page destructor");
-
 }
+
+CASTED_PTR_GETTER(web_engine_page::WebEnginePage::profile, web_engine_profile::WebEngineProfile, QWebEnginePage::profile())

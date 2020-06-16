@@ -252,6 +252,11 @@ void main_window_ctrl_base::MainWindowCtrlBase::populateActionData() {
 			// - second is true if the insertion is successful, false otherwise
 			std::pair<std::map<std::string, main_window_json_data::MainWindowJsonData *>::iterator, bool> it = this->actionData.insert(dataPair);
 
+			// If it is not possible to insert the new item as it already exists in the map, then destroy the data
+			if ((it.second == false) && (newData != nullptr)) {
+				delete newData;
+			}
+
 			void * valuePtr = nullptr;
 			main_window_shared_types::state_e state = main_window_shared_types::state_e::IDLE;
 			int shortcutKey = (int)Qt::Key_unknown;

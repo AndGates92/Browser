@@ -117,7 +117,18 @@ namespace main_window_web_engine_view {
 			 */
 			bool isSameAction(const QAction * lhs, const QAction * rhs) const;
 
-QAction * addActionListToMenu(QMenu * menu, QAction * pos, const QList<QAction *> & actionList);
+			/**
+			 * @brief Function: QAction * addActionListToMenu(QMenu * menu, QAction * pos, const QList<QAction *> & actionList)
+			 *
+			 * \param menu: menu to add actions to
+			 * \param pos: positon of the new added action
+			 * \param actionList: list of actions to add
+			 *
+			 * \return pointer to the action after the last one in the list
+			 *
+			 * This function adds a list of action to a menu and returns a pointer to the action after the last one in the list
+			 */
+			QAction * addActionListToMenu(QMenu * menu, QAction * pos, const QList<QAction *> & actionList);
 
 			// Move and copy constructor
 			/**
