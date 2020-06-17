@@ -59,6 +59,14 @@ tab::Tab::~Tab() {
 	if (this->search != Q_NULLPTR) {
 		delete this->search;
 	}
+
+	if (this->settings != Q_NULLPTR) {
+		delete this->settings;
+	}
+
+	if (this->history != Q_NULLPTR) {
+		delete this->history;
+	}
 }
 
 void tab::Tab::setLoadManager(tab_load_manager::TabLoadManager * value) {

@@ -87,7 +87,7 @@ namespace json_parser {
 			 *
 			 * JSON parser destructor
 			 */
-			~JsonParser();
+			virtual ~JsonParser();
 
 			/**
 			 * @brief Function: QMap<QString, QString> findKeyValue(const QString & key) const

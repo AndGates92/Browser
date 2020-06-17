@@ -46,7 +46,7 @@ namespace main_window_menu_bar {
 			 *
 			 * Destructor of menu bar
 			 */
-			~MainWindowMenuBar();
+			virtual ~MainWindowMenuBar();
 
 			/**
 			 * @brief Function: ~getFileMenu() const
