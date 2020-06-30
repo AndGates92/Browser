@@ -23,9 +23,6 @@ DEP_DIR ?= dep
 # Dependency filename
 DEPFILENAME ?= Makefile.deps
 
-# Dependency file
-DEPFILE=$(DEP_DIR)/$(DEPFILENAME)
-
 # Log directory
 LOG_DIR ?= log
 
@@ -53,6 +50,7 @@ endif
 
 MOC = moc
 
+DEP_EXT = dep
 OBJ_EXT = o
 HEADER_EXT = h
 
@@ -68,7 +66,11 @@ MOC_OBJ_EXT = moc.o
 CFLAGS = -g -Wall -Wconversion -fPIC -Werror -Wextra -Wpedantic -std=c++14 -rdynamic
 CEXTRAFLAGS ?=
 BEHFLAGS ?=
-DEPENDFLAG = -MM
+# -MP workaround for make errors when an header file is removed (Add phony target for each dependency other the main file)
+# -MMD Dependency file listing only header files
+# -MF specifies the dependency file
+DEPENDFLAG = -MT $@ -MP -MMD -MF $(DEPFILE)
+DEPFILE = $(patsubst %.$(OBJ_EXT),$(DEP_DIR)/%.$(DEP_EXT),$(notdir $@))
 
 # Defines
 LOG_DEFINES = LOGFILE="$(LOGFILE)" VERBOSITY=$(VERBOSITY)
@@ -159,6 +161,7 @@ HEADERS := $(notdir $(wildcard $(foreach DIR, ${INCLUDE_PATH}, $(DIR)/*.$(HEADER
 MOC_SRCS = $(patsubst %.$(HEADER_EXT),$(MOC_SRC_DIR)/%.$(MOC_SRC_EXT),$(notdir $(HEADERS)))
 OBJS = $(patsubst %.$(SRC_EXT),$(OBJ_DIR)/%.$(OBJ_EXT),$(notdir $(SRCS)))
 MOC_OBJS = $(patsubst %.$(HEADER_EXT),$(MOC_OBJ_DIR)/%.$(MOC_OBJ_EXT),$(notdir $(HEADERS)))
+DEPS := $(patsubst %.$(OBJ_EXT),$(DEP_DIR)/%.$(DEP_EXT),$(notdir $(OBJS)))
 
 VPATH = $(SRC_PATH) \
         $(INCLUDE_PATH)
@@ -166,7 +169,7 @@ VPATH = $(SRC_PATH) \
 MAIN = main.$(SRC_EXT)
 EXE = $(BIN_DIR)/$(EXE_NAME)
 
-#-include $(DEPFILE)
+-include $(wildcard $(DEPS))
 
 $(EXE) : $(MOC_OBJS) $(OBJS)
 	$(MKDIR) $(LOG_DIR)
@@ -175,9 +178,10 @@ $(EXE) : $(MOC_OBJS) $(OBJS)
 	$(CC) $(CFLAGS) $(INCLUDES) -o $@ $(DFLAGS) $(BEHFLAGS) $(CEXTRAFLAGS) $^ $(LIBS)
 
 $(OBJ_DIR)/%.$(OBJ_EXT) : %.$(SRC_EXT)
+	$(MKDIR) $(DEP_DIR)
 	$(MKDIR) $(@D)
-	$(VERBOSE_ECHO)echo "[${TIMESTAMP}] Compiling $(<F) and creating object $@"
-	$(CC) $(CFLAGS) $(INCLUDES) -c $< $(DFLAGS) $(BEHFLAGS) $(CEXTRAFLAGS) -o $@ $(LIBS)
+	$(VERBOSE_ECHO)echo "[${TIMESTAMP}] Compiling $(<F) and creating object $@ - dependency file is $(DEPFILE)"
+	$(CC) $(DEPENDFLAG) $(CFLAGS) $(INCLUDES) -c $< $(DFLAGS) $(BEHFLAGS) $(CEXTRAFLAGS) -o $@ $(LIBS)
 
 $(MOC_SRC_DIR)/%.$(MOC_SRC_EXT) : %.$(HEADER_EXT)
 	$(MKDIR) $(@D)
@@ -189,15 +193,11 @@ $(MOC_OBJ_DIR)/%.$(MOC_OBJ_EXT) : $(MOC_SRC_DIR)/%.$(MOC_SRC_EXT)
 	$(VERBOSE_ECHO)echo "[${TIMESTAMP}] Compiling $(<F) and creating moc object $@"
 	$(CC) $(CFLAGS) $(INCLUDES) -c $< $(DFLAGS) $(BEHFLAGS) $(CEXTRAFLAGS) -o $@ $(LIBS)
 
-$(DEPFILE) : $(SRCS)
-	rm -rf $(DEP_DIR)
-	$(CC) $(CFLAGS) $(DEPENDFLAG) $(INCLUDES) $^ > $(DEPFILE)
+# Work around to force generating the file
+$(DEPS) :
 
 all : $(EXE)
 	$(VERBOSE_ECHO)echo "[${TIMESTAMP}] Compile $(PROJ_NAME)"
-
-depend : $(DEPFILE)
-	$(VERBOSE_ECHO)echo "[${TIMESTAMP}] Create dependencies for $(PROJ_NAME)"
 
 memleak : $(EXE)
 	valgrind $(MEMCHECKOPTS) $(VALGRINDTOOLOPTS) $(VALGRINDLOGOPTS) $(EXE) $(VALGRINDEXEARGS)
@@ -217,6 +217,7 @@ debug :
 	$(VERBOSE_ECHO)echo "[${TIMESTAMP}] Files lists:"
 	$(VERBOSE_ECHO)echo "[${TIMESTAMP}] --> Source files: $(SRCS)"
 	$(VERBOSE_ECHO)echo "[${TIMESTAMP}] --> Header files: $(HEADERS)"
+	$(VERBOSE_ECHO)echo "[${TIMESTAMP}] --> Dependency files: $(DEPS)"
 	$(VERBOSE_ECHO)echo "[${TIMESTAMP}] --> moc source files: $(notdir $(MOC_SRCS))"
 	$(VERBOSE_ECHO)echo "[${TIMESTAMP}] --> Object files: $(notdir $(OBJS))"
 	$(VERBOSE_ECHO)echo "[${TIMESTAMP}] --> moc object files: $(notdir $(MOC_OBJS))"
