@@ -49,7 +49,7 @@ namespace main_window_tab_search {
 			 *
 			 * Main window web engine search constructor
 			 */
-			explicit MainWindowTabSearch(QWidget * parent, QWidget * attachedTab);
+			explicit MainWindowTabSearch(QWidget * parent, std::weak_ptr<main_window_tab::MainWindowTab> attachedTab);
 
 			/**
 			 * @brief Function: virtual ~MainWindowTabSearch()

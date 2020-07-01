@@ -8,6 +8,8 @@
  * @brief Web Engine View header file
 */
 
+#include <memory>
+
 // Qt libraries
 // Required by qInfo
 #include <qt5/QtCore/QtDebug>
@@ -58,17 +60,32 @@ namespace web_engine_view {
 			virtual ~WebEngineView();
 
 			/**
-			 * @brief Function: web_engine_page::WebEnginePage * page() const
+			 * @brief Function: std::shared_ptr<web_engine_page::WebEnginePage> page() const
 			 *
 			 * \return page of the view
 			 *
 			 * This function returns the page of this web engine view
 			 */
-			web_engine_page::WebEnginePage * page() const;
+			std::shared_ptr<web_engine_page::WebEnginePage> page() const;
 
 		protected:
 
+			/**
+			 * @brief Function: void updatePage(const std::shared_ptr<web_engine_page::WebEnginePage> newPage)
+			 *
+			 * \param: new page to be used for this view
+			 *
+			 * This function changes the page of this web engine view
+			 */
+			void updatePage(const std::shared_ptr<web_engine_page::WebEnginePage> newPage);
+
 		private:
+			/**
+			 * @brief current page linked to the web view
+			 *
+			 */
+			std::shared_ptr<web_engine_page::WebEnginePage> currentPage;
+
 			// Move and copy constructor
 			/**
 			 * @brief Disable move and copy constructors and operator= overloading for class WebEngineView

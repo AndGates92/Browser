@@ -15,6 +15,7 @@
 
 #include "main_window_shared_types.h"
 #include "main_window_page_data.h"
+#include "main_window_tab.h"
 #include "tab_widget.h"
 #include "global_constants.h"
 #include "constructor_macros.h"
@@ -106,7 +107,7 @@ namespace main_window_tab_widget {
 			void moveTab(const int & indexFrom, const int & indexTo);
 
 			/**
-			 * @brief Function: QWidget * widget(const int & index, bool checkError = true)
+			 * @brief Function: std::shared_ptr<main_window_tab::MainWindowTab> widget(const int & index, bool checkError = true)
 			 *
 			 * \param index: index of the tab to return the widget of
 			 * \param checkError: error out if widget is null
@@ -115,28 +116,39 @@ namespace main_window_tab_widget {
 			 *
 			 * remove a tab from tab widget
 			 */
-			QWidget * widget(const int & index, bool checkError = true) const;
+			std::shared_ptr<main_window_tab::MainWindowTab> widget(const int & index, bool checkError = true) const;
 
 			/**
-			 * @brief Function: void setPageData(const int & index, const main_window_page_data::MainWindowPageData * pageData)
+			 * @brief Function: std::shared_ptr<main_window_web_engine_page::MainWindowWebEnginePage> getPage(const int & index) const
+			 *
+			 * \param index: index of the tab to return the type of
+			 *
+			 * \return page
+			 *
+			 * This function returns a page from tab widget
+			 */
+			std::shared_ptr<main_window_web_engine_page::MainWindowWebEnginePage> getPage(const int & index) const;
+
+			/**
+			 * @brief Function: void setPageData(const int & index, const std::shared_ptr<main_window_page_data::MainWindowPageData> & pageData)
 			 *
 			 * \param index: index of the tab to return the type of
 			 * \param pageData: new page data
 			 *
 			 * This function changes the page data of the tab at index index
 			 */
-			void setPageData(const int & index, const main_window_page_data::MainWindowPageData * pageData);
+			void setPageData(const int & index, const std::shared_ptr<main_window_page_data::MainWindowPageData> & pageData);
 
 			/**
-			 * @brief Function: const main_window_page_data::MainWindowPageData * getPageData(const int & index) const
+			 * @brief Function: const std::shared_ptr<main_window_page_data::MainWindowPageData> getPageData(const int & index) const
 			 *
 			 * \param index: index of the tab to return the type of
 			 *
 			 * \return page data
 			 *
-			 * return a page data from tab widget
+			 * This function returns a page data from tab widget
 			 */
-			const main_window_page_data::MainWindowPageData * getPageData(const int & index) const;
+			const std::shared_ptr<main_window_page_data::MainWindowPageData> getPageData(const int & index) const;
 
 			/**
 			 * @brief Function: main_window_shared_types::page_type_e getPageType(const int & index) const
@@ -145,7 +157,7 @@ namespace main_window_tab_widget {
 			 *
 			 * \return type of page page at index index
 			 *
-			 * return a page type from tab widget
+			 * This function returns a page type from tab widget
 			 */
 			main_window_shared_types::page_type_e getPageType(const int & index) const;
 
@@ -156,7 +168,7 @@ namespace main_window_tab_widget {
 			 *
 			 * \return source of the content of the tab page at index index
 			 *
-			 * return the source of the content of a tab from tab widget
+			 * This function returns the source of the content of a tab from tab widget
 			 */
 			const QString getPageSource(const int & index) const;
 
@@ -167,7 +179,7 @@ namespace main_window_tab_widget {
 			 *
 			 * \return data field of tab page at index index
 			 *
-			 * return a page data from tab widget
+			 * This function returns a page data from tab widget
 			 */
 			const void * getPageExtraData(const int & index) const;
 
@@ -179,7 +191,7 @@ namespace main_window_tab_widget {
 			 * \param source: new source of tab at index index
 			 * \param data: extra data to be passed through
 			 *
-			 * this function chnages the type and the extra data of a tab
+			 * This function changes the type and the extra data of a tab
 			 */
 			void changePageData(const int & index, const main_window_shared_types::page_type_e & type, const QString & source, const void * data = nullptr);
 

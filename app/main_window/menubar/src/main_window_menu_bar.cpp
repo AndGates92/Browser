@@ -17,22 +17,18 @@
 
 Q_LOGGING_CATEGORY(mainWindowMenuBarOverall, "menuBar.overall", MSG_TYPE_LEVEL)
 
-main_window_menu_bar::MainWindowMenuBar::MainWindowMenuBar(QWidget * parent) : menu_bar::MenuBar(parent), fileMenu(new file_menu::FileMenu(parent, this, "File", key_sequence::KeySequence(Qt::Key_F))), editMenu(new edit_menu::EditMenu(parent, this, "Edit", key_sequence::KeySequence(Qt::Key_E))) {
+main_window_menu_bar::MainWindowMenuBar::MainWindowMenuBar(QWidget * parent) : menu_bar::MenuBar(parent), fileMenu(Q_NULLPTR), editMenu(Q_NULLPTR) {
 	QINFO_PRINT(global_types::qinfo_level_e::ZERO, mainWindowMenuBarOverall,  "Main window menu bar constructor");
+}
+
+void main_window_menu_bar::MainWindowMenuBar::createMenus() {
+	this->fileMenu = std::make_unique<file_menu::FileMenu>(this, this->weak_from_this(), "File", key_sequence::KeySequence(Qt::Key_F));
+	this->editMenu = std::make_unique<edit_menu::EditMenu>(this, this->weak_from_this(), "Edit", key_sequence::KeySequence(Qt::Key_E));
 }
 
 main_window_menu_bar::MainWindowMenuBar::~MainWindowMenuBar() {
 	QINFO_PRINT(global_types::qinfo_level_e::ZERO, mainWindowMenuBarOverall,  "Main window menu bar destructor");
-
-	// Delete menus
-	if (this->fileMenu != Q_NULLPTR) {
-		delete this->fileMenu;
-	}
-
-	if (this->fileMenu != Q_NULLPTR) {
-		delete this->editMenu;
-	}
 }
 
-PTR_GETTER(main_window_menu_bar::MainWindowMenuBar::getFileMenu, file_menu::FileMenu, this->fileMenu)
-PTR_GETTER(main_window_menu_bar::MainWindowMenuBar::getEditMenu, edit_menu::EditMenu, this->editMenu)
+CONST_GETTER(main_window_menu_bar::MainWindowMenuBar::getFileMenu, std::unique_ptr<file_menu::FileMenu> &, this->fileMenu)
+CONST_GETTER(main_window_menu_bar::MainWindowMenuBar::getEditMenu, std::unique_ptr<edit_menu::EditMenu> &, this->editMenu)

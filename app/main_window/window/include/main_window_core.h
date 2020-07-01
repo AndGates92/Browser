@@ -8,6 +8,8 @@
  * @brief Main Window core class header file
 */
 
+#include <memory>
+
 #include <qt5/QtCore/QLoggingCategory>
 #include <qt5/QtWidgets/QWidget>
 
@@ -180,37 +182,37 @@ namespace main_window_core {
 			 * @brief main widget
 			 *
 			 */
-			QWidget * mainWidget;
+			std::unique_ptr<QWidget> mainWidget;
 
 			/**
 			 * @brief Tabs of browser
 			 *
 			 */
-			main_window_tab_widget::MainWindowTabWidget * tabs;
+			std::unique_ptr<main_window_tab_widget::MainWindowTabWidget> tabs;
 
 			/**
 			 * @brief Top menu bar of browser
 			 *
 			 */
-			main_window_menu_bar::MainWindowMenuBar * topMenuBar;
+			std::shared_ptr<main_window_menu_bar::MainWindowMenuBar> topMenuBar;
 
 			/**
 			 * @brief Prompt widget of the main window
 			 *
 			 */
-			main_window_popup_container::MainWindowPopupContainer * popup;
+			std::shared_ptr<main_window_popup_container::MainWindowPopupContainer> popup;
 
 			/**
 			 * @brief Bottom menu bar of browser
 			 *
 			 */
-			main_window_status_bar::MainWindowStatusBar * bottomStatusBar;
+			std::unique_ptr<main_window_status_bar::MainWindowStatusBar> bottomStatusBar;
 
 			/**
 			 * @brief Command menu 
 			 *
 			 */
-			command_menu::CommandMenu * cmdMenu;
+			std::unique_ptr<command_menu::CommandMenu> cmdMenu;
 
 		private:
 

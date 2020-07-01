@@ -8,6 +8,8 @@
  * @brief Main Window Page Data header file
 */
 
+#include <memory>
+
 #include <qt5/QtCore/QLoggingCategory>
 
 #include "main_window_shared_types.h"
@@ -36,7 +38,7 @@ namespace main_window_page_data {
 		public:
 
 			/**
-			 * @brief Function: static main_window_page_data::MainWindowPageData * makePageData(const main_window_shared_types::page_type_e & type, const std::string src, const void * data)
+			 * @brief Function: static std::shared_ptr<main_window_page_data::MainWindowPageData> makePageData(const main_window_shared_types::page_type_e & type, const std::string src, const void * data)
 			 *
 			 * \param type: type of the page
 			 * \param src: source of the page
@@ -44,7 +46,7 @@ namespace main_window_page_data {
 			 *
 			 * this function constructs a new instance of class MainWindowPageData
 			 */
-			static main_window_page_data::MainWindowPageData * makePageData(const main_window_shared_types::page_type_e & type, const std::string src, const void * data);
+			static std::shared_ptr<main_window_page_data::MainWindowPageData> makePageData(const main_window_shared_types::page_type_e & type, const std::string src, const void * data);
 
 			/**
 			 * @brief Function: MainWindowPageData(main_window_shared_types::page_type_e pageType, std::string src, const void * pageData = nullptr)

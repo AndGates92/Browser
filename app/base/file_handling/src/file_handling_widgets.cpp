@@ -55,49 +55,28 @@ file_handling_widgets::FileHandlingWidgets::FileHandlingWidgets(QWidget *widgetP
 
 	QINFO_PRINT(global_types::qinfo_level_e::ZERO, fileHandlingWidgetsOverall,  "Creating FileHandlingWidgets class");
 
-	this->pathToOpen = this->createLineEdit(widgetParent, std::string());
+	this->pathToOpen = std::move(this->createLineEdit(widgetParent, std::string()));
 
-	this->applyAction = this->createAction(widgetParent, std::string(), std::string(), key_sequence::KeySequence(Qt::Key_unknown));
-	this->browseAction = this->createAction(widgetParent, "Browse", "Browse files", key_sequence::KeySequence(Qt::Key_B));
-	this->cancelAction = this->createAction(widgetParent, "Cancel", "Cancel operation", key_sequence::KeySequence(Qt::Key_Escape));
-	this->typeAction = this->createAction(widgetParent, "Insert", "Insert", key_sequence::KeySequence(Qt::Key_I));
+	this->applyAction = std::move(this->createAction(widgetParent, std::string(), std::string(), key_sequence::KeySequence(Qt::Key_unknown)));
+	this->browseAction = std::move(this->createAction(widgetParent, "Browse", "Browse files", key_sequence::KeySequence(Qt::Key_B)));
+	this->cancelAction = std::move(this->createAction(widgetParent, "Cancel", "Cancel operation", key_sequence::KeySequence(Qt::Key_Escape)));
+	this->typeAction = std::move(this->createAction(widgetParent, "Insert", "Insert", key_sequence::KeySequence(Qt::Key_I)));
 
 
 //	const QStringList filters({"text/html", "application/octet-stream"});
 	const QStringList filters({"*.html", "All (*.*)"});
-	this->fileModel = Q_NULLPTR;
-	this->fileView = this->createFileView(&(this->fileModel), widgetParent, filters, QDir::currentPath());
+	this->fileModel.reset(Q_NULLPTR);
+	this->fileView = std::move(this->createFileView(this->fileModel, widgetParent, filters, QDir::currentPath()));
 
 }
 
 file_handling_widgets::FileHandlingWidgets::~FileHandlingWidgets() {
 	QINFO_PRINT(global_types::qinfo_level_e::ZERO, fileHandlingWidgetsOverall,  "Destructor of FileHandlingWidgets class");
-	if (this->pathToOpen != Q_NULLPTR) {
-		delete this->pathToOpen;
-	}
-	if (this->applyAction != Q_NULLPTR) {
-		delete this->applyAction;
-	}
-	if (this->browseAction != Q_NULLPTR) {
-		delete this->browseAction;
-	}
-	if (this->cancelAction != Q_NULLPTR) {
-		delete this->cancelAction;
-	}
-	if (this->typeAction != Q_NULLPTR) {
-		delete this->typeAction;
-	}
-	if (this->fileModel != Q_NULLPTR) {
-		delete this->fileModel;
-	}
-	if (this->fileView != Q_NULLPTR) {
-		delete this->fileView;
-	}
 }
 
-QFileSystemModel * file_handling_widgets::FileHandlingWidgets::createFileModel(QWidget *parent, const QStringList & filters, const QDir & directory) {
+std::unique_ptr<QFileSystemModel> file_handling_widgets::FileHandlingWidgets::createFileModel(QWidget *parent, const QStringList & filters, const QDir & directory) {
 
-	QFileSystemModel * model = new QFileSystemModel(parent);
+	std::unique_ptr<QFileSystemModel> model = std::make_unique<QFileSystemModel>(parent);
 	#if QT_VERSION >= QT_VERSION_CHECK(5, 14, 0)
 	model->setOption(QFileSystemModel::DontResolveSymlinks, true);
 	#endif
@@ -111,15 +90,15 @@ QFileSystemModel * file_handling_widgets::FileHandlingWidgets::createFileModel(Q
 	return model;
 }
 
-QTreeView * file_handling_widgets::FileHandlingWidgets::createFileView(QFileSystemModel ** model, QWidget *parent, const QStringList & filters, const QDir & directory) {
+std::unique_ptr<QTreeView> file_handling_widgets::FileHandlingWidgets::createFileView(std::unique_ptr<QFileSystemModel> & model, QWidget *parent, const QStringList & filters, const QDir & directory) {
 
-	if ((*model) == Q_NULLPTR) {
-		*model = this->createFileModel(parent, filters, directory);
+	if (model == Q_NULLPTR) {
+		model = std::move(this->createFileModel(parent, filters, directory));
 	}
 
-	QTreeView * tree = new QTreeView(parent);
-	tree->setModel(*model);
-	tree->setRootIndex((*model)->index(directory.path()));
+	std::unique_ptr<QTreeView> tree = std::make_unique<QTreeView>(parent);
+	tree->setModel(model.get());
+	tree->setRootIndex(model->index(directory.path()));
 	tree->setExpandsOnDoubleClick(false);
 	tree->setItemsExpandable(false);
 
@@ -127,14 +106,14 @@ QTreeView * file_handling_widgets::FileHandlingWidgets::createFileView(QFileSyst
 
 }
 
-action::Action * file_handling_widgets::FileHandlingWidgets::createAction(QObject * parent, const std::string & text, const std::string & tip, const key_sequence::KeySequence & shortcut) {
+std::unique_ptr<action::Action> file_handling_widgets::FileHandlingWidgets::createAction(QObject * parent, const std::string & text, const std::string & tip, const key_sequence::KeySequence & shortcut) {
 
 	QString actionText = QString::null;
 	if (text.empty() == false) {
 		actionText = QAction::tr(text.c_str());
 	}
 
-	action::Action * newAction = new action::Action(parent, actionText);
+	std::unique_ptr<action::Action> newAction = std::make_unique<action::Action>(parent, actionText);
 	if (tip.empty() == false) {
 		newAction->setStatusTip(QAction::tr(tip.c_str()));
 	}
@@ -143,8 +122,8 @@ action::Action * file_handling_widgets::FileHandlingWidgets::createAction(QObjec
 	return newAction;
 }
 
-QLineEdit * file_handling_widgets::FileHandlingWidgets::createLineEdit(QWidget * parent, const std::string & text) {
-	QLineEdit * lineEdit = new QLineEdit(parent);
+std::unique_ptr<QLineEdit> file_handling_widgets::FileHandlingWidgets::createLineEdit(QWidget * parent, const std::string & text) {
+	std::unique_ptr<QLineEdit> lineEdit = std::make_unique<QLineEdit>(parent);
 	if (text.empty() == false) {
 		lineEdit->setPlaceholderText(QLineEdit::tr(text.c_str()));
 	}
@@ -155,7 +134,7 @@ QLineEdit * file_handling_widgets::FileHandlingWidgets::createLineEdit(QWidget *
 }
 
 
-const QString file_handling_widgets::FileHandlingWidgets::getPathFromModelIndex(const QFileSystemModel * model, const QModelIndex & index) {
+const QString file_handling_widgets::FileHandlingWidgets::getPathFromModelIndex(const std::unique_ptr<QFileSystemModel> & model, const QModelIndex & index) {
 	QString path = QString::null;
 
 	if (index == QModelIndex()) {
@@ -207,8 +186,8 @@ void file_handling_widgets::FileHandlingWidgets::directoryLoadedAction(const QSt
 
 void file_handling_widgets::FileHandlingWidgets::addActionsToWidget(QWidget * widget) {
 	// Add actions in order to trigger them using shortcuts
-	widget->addAction(this->applyAction);
-	widget->addAction(this->browseAction);
-	widget->addAction(this->cancelAction);
-	widget->addAction(this->typeAction);
+	widget->addAction(this->applyAction.get());
+	widget->addAction(this->browseAction.get());
+	widget->addAction(this->cancelAction.get());
+	widget->addAction(this->typeAction.get());
 }

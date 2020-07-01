@@ -8,6 +8,8 @@
  * @brief Main Window statusbar class header file
 */
 
+#include <memory>
+
 #include <qt5/QtCore/QLoggingCategory>
 #include <qt5/QtWidgets/QWidget>
 
@@ -105,49 +107,49 @@ namespace main_window_status_bar {
 			 * @brief user input
 			 *
 			 */
-			elided_label::ElidedLabel * const userInput;
+			std::unique_ptr<elided_label::ElidedLabel> userInput;
 
 			/**
 			 * @brief content
 			 *
 			 */
-			elided_label::ElidedLabel * const contentPath;
+			std::unique_ptr<elided_label::ElidedLabel> contentPath;
 
 			/**
 			 * @brief scroll position
 			 *
 			 */
-			elided_label::ElidedLabel * const scroll;
+			std::unique_ptr<elided_label::ElidedLabel> scroll;
 
 			/**
 			 * @brief info
 			 *
 			 */
-			elided_label::ElidedLabel * const info;
+			std::unique_ptr<elided_label::ElidedLabel> info;
 
 			/**
 			 * @brief load bar
 			 *
 			 */
-			progress_bar::ProgressBar * const loadBar;
+			std::unique_ptr<progress_bar::ProgressBar> loadBar;
 
 			/**
-			 * @brief Function: elided_label::ElidedLabel * newWindowLabel()
+			 * @brief Function: std::unique_ptr<elided_label::ElidedLabel> newWindowLabel()
 			 *
 			 * \return configured label
 			 *
 			 * Configure window label
 			 */
-			elided_label::ElidedLabel * newWindowLabel();
+			std::unique_ptr<elided_label::ElidedLabel> newWindowLabel();
 
 			/**
-			 * @brief Function: progress_bar::ProgressBar * newProgressBar()
+			 * @brief Function: std::unique_ptr<progress_bar::ProgressBar> newProgressBar()
 			 *
 			 * \return configured progress bar
 			 *
 			 * Configure progress bar
 			 */
-			progress_bar::ProgressBar * newProgressBar();
+			std::unique_ptr<progress_bar::ProgressBar> newProgressBar();
 
 			/**
 			 * @brief Function: void fillStatusBar()
@@ -164,51 +166,6 @@ namespace main_window_status_bar {
 			 * Compute minimum size of the widget
 			 */
 			QSize minimumSizeHint() const override;
-
-			/**
-			 * Function: elided_label::ElidedLabel * getUserInput() const
-			 *
-			 * \return the label containing the text typed by the user
-			 *
-			 * This function returns the label storing the text typed by the user
-			 */
-			elided_label::ElidedLabel * getUserInput() const;
-
-			/**
-			 * Function: elided_label::ElidedLabel * getScroll() const
-			 *
-			 * \return the label containing the text storing information about the scroll position
-			 *
-			 * This function returns the label storing information about the scroll position
-			 */
-			elided_label::ElidedLabel * getScroll() const;
-
-			/**
-			 * Function: elided_label::ElidedLabel * getInfo() const
-			 *
-			 * \return the label containing the text storing information about the webpage/browser
-			 *
-			 * This function returns the label storing information about the webpage/browser
-			 */
-			elided_label::ElidedLabel * getInfo() const;
-
-			/**
-			 * Function: elided_label::ElidedLabel * getContentPath() const
-			 *
-			 * \return the label containing the path to the content (i.e. website URL or file path)
-			 *
-			 * This function returns the label storing the path to the content (i.e. website URL or file path)
-			 */
-			elided_label::ElidedLabel * getContentPath() const;
-
-			/**
-			 * Function: progress_bar::ProgressBar * getLoadBar() const
-			 *
-			 * \return the bar storing the value of the progress in loading a page
-			 *
-			 * This function returns the bar storing the value of the progress in loading a page
-			 */
-			progress_bar::ProgressBar * getLoadBar() const;
 
 			/**
 			 * Function: bool isValidScrollValue(const int & value) const

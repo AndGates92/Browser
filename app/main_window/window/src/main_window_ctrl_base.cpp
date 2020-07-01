@@ -24,7 +24,7 @@ Q_LOGGING_CATEGORY(mainWindowCtrlBaseOverall, "mainWindowCtrlBase.overall", MSG_
 Q_LOGGING_CATEGORY(mainWindowCtrlBaseCheck, "mainWindowCtrlBase.check", MSG_TYPE_LEVEL)
 Q_LOGGING_CATEGORY(mainWindowCtrlBaseUserInput, "mainWindowCtrlBase.userInput", MSG_TYPE_LEVEL)
 
-main_window_ctrl_base::MainWindowCtrlBase::MainWindowCtrlBase(QWidget * parent, QSharedPointer<main_window_core::MainWindowCore> core, QString jsonFileName) : QWidget(parent), main_window_base::MainWindowBase(core), commands(json_parser::JsonParser(jsonFileName, QIODevice::ReadOnly)) {
+main_window_ctrl_base::MainWindowCtrlBase::MainWindowCtrlBase(QWidget * parent, std::shared_ptr<main_window_core::MainWindowCore> core, QString jsonFileName) : QWidget(parent), main_window_base::MainWindowBase(core), commands(json_parser::JsonParser(jsonFileName, QIODevice::ReadOnly)) {
 	QINFO_PRINT(global_types::qinfo_level_e::ZERO, mainWindowCtrlBaseOverall,  "Main window control base classe constructor");
 
 	this->populateActionData();
@@ -39,14 +39,6 @@ main_window_ctrl_base::MainWindowCtrlBase::MainWindowCtrlBase(QWidget * parent, 
 
 main_window_ctrl_base::MainWindowCtrlBase::~MainWindowCtrlBase() {
 	QINFO_PRINT(global_types::qinfo_level_e::ZERO, mainWindowCtrlBaseOverall,  "Main window control base class destructor");
-
-	for(std::map<std::string, main_window_json_data::MainWindowJsonData *>::const_iterator data = this->actionData.cbegin(); data != this->actionData.cend(); data++) {
-		main_window_json_data::MainWindowJsonData * commandData(data->second);
-
-		QINFO_PRINT(global_types::qinfo_level_e::ZERO, mainWindowCtrlBaseOverall,  "Delete command data " << *commandData);
-		delete commandData;
-	}
-
 }
 
 void main_window_ctrl_base::MainWindowCtrlBase::printUserInput(const main_window_shared_types::text_action_e action, const QString text) {
@@ -79,7 +71,7 @@ void main_window_ctrl_base::MainWindowCtrlBase::printUserInput(const main_window
 
 }
 
-void main_window_ctrl_base::MainWindowCtrlBase::changeWindowStateWrapper(const main_window_json_data::MainWindowJsonData * commandData, const main_window_shared_types::state_postprocessing_e postprocess) {
+void main_window_ctrl_base::MainWindowCtrlBase::changeWindowStateWrapper(const std::unique_ptr<main_window_json_data::MainWindowJsonData> & commandData, const main_window_shared_types::state_postprocessing_e postprocess) {
 	QINFO_PRINT(global_types::qinfo_level_e::ZERO, mainWindowCtrlBaseOverall,  "Command " << QString::fromStdString(commandData->getName()) << " (shortcut: " << commandData->getShortcut() << " long command: " << QString::fromStdString(commandData->getLongCmd()) << ") - moving to state " << commandData->getState());
 	this->changeWindowState(commandData->getState(), postprocess);
 }
@@ -87,8 +79,8 @@ void main_window_ctrl_base::MainWindowCtrlBase::changeWindowStateWrapper(const m
 void main_window_ctrl_base::MainWindowCtrlBase::executeCommand(const QString & userCommand, const main_window_shared_types::state_postprocessing_e postprocess) {
 	QINFO_PRINT(global_types::qinfo_level_e::ZERO, mainWindowCtrlBaseOverall,  "Looking for command matching user input: " << userCommand);
 
-	for(std::map<std::string, main_window_json_data::MainWindowJsonData *>::const_iterator data = this->actionData.cbegin(); data != this->actionData.cend(); data++) {
-		const main_window_json_data::MainWindowJsonData * commandData(data->second);
+	std::for_each(this->actionData.cbegin(), this->actionData.cend(), [&] (const auto & data) {
+		const std::unique_ptr<main_window_json_data::MainWindowJsonData> & commandData = data.second;
 		const QString refCommand = QString::fromStdString(commandData->getLongCmd());
 
 		// If user command matches the command in the JSON file
@@ -96,7 +88,7 @@ void main_window_ctrl_base::MainWindowCtrlBase::executeCommand(const QString & u
 			QINFO_PRINT(global_types::qinfo_level_e::ZERO, mainWindowCtrlBaseOverall,  "Found command " << refCommand << " matching user input: " << userCommand);
 			this->changeWindowStateWrapper(commandData, postprocess);
 		}
-	}
+	});
 
 }
 
@@ -110,18 +102,18 @@ void main_window_ctrl_base::MainWindowCtrlBase::connectSignals() {
 
 	QINFO_PRINT(global_types::qinfo_level_e::ZERO, mainWindowCtrlBaseOverall,  "Connect signals");
 
-	for(std::map<std::string, main_window_json_data::MainWindowJsonData *>::const_iterator data = this->actionData.cbegin(); data != this->actionData.cend(); data++) {
-		main_window_json_data::MainWindowJsonData * commandData(data->second);
+	std::for_each(this->actionData.cbegin(), this->actionData.cend(), [&] (const auto & data) {
+		const std::unique_ptr<main_window_json_data::MainWindowJsonData> & commandData = data.second;
 		QShortcut * shortcut = new QShortcut(commandData->getShortcut(), this->window());
 		QMetaObject::Connection connection = connect(shortcut, &QShortcut::activated,
-			[=] () {
+			[&] () {
 				this->changeWindowStateWrapper(commandData, main_window_shared_types::state_postprocessing_e::POSTPROCESS);
 			}
 		);
 
 		QEXCEPTION_ACTION_COND((static_cast<bool>(connection) == false), throw, "Unable to connect shortcut for key " << (commandData->getShortcut()) << " to trigger a change of controller state to " << commandData->getState());
 
-	}
+	});
 
 //	this->connectExtraSignals();
 
@@ -163,7 +155,7 @@ QString main_window_ctrl_base::MainWindowCtrlBase::tabInfoStr(const int & currIn
 }
 
 void main_window_ctrl_base::MainWindowCtrlBase::setAllShortcutEnabledProperty(const bool enabled) {
-	const QList<QShortcut *> shortcuts = this->window()->findChildren<QShortcut *>();
+	const QList<QShortcut *> shortcuts = this->window()->findChildren<QShortcut *>(QString(), Qt::FindChildrenRecursively);
 
 	for (QShortcut * shortcut : shortcuts) {
 		key_sequence::KeySequence key(shortcut->key());
@@ -231,40 +223,35 @@ std::string main_window_ctrl_base::MainWindowCtrlBase::getShortcutModifier(const
 }
 
 void main_window_ctrl_base::MainWindowCtrlBase::populateActionData() {
-
-	for (std::vector<std::string>::const_iterator paramIter = main_window_json_data::defaultActionParameters.cbegin(); paramIter != main_window_json_data::defaultActionParameters.cend(); paramIter++) {
-		const std::map<QString, QString> paramValues = this->commands.findKeyValue(QString::fromStdString(*paramIter)).toStdMap();
-		for(std::map<QString, QString>::const_iterator valIter = paramValues.cbegin(); valIter != paramValues.cend(); valIter++) {
-			std::string key(valIter->first.toStdString());
-			std::string value(valIter->second.toStdString());
+	std::for_each(main_window_json_data::defaultActionParameters.cbegin(), main_window_json_data::defaultActionParameters.cend(), [&] (const std::string & paramIter) {
+		const std::map<QString, QString> paramValues = this->commands.findKeyValue(QString::fromStdString(paramIter)).toStdMap();
+		std::for_each(paramValues.cbegin(), paramValues.cend(), [&] (const std::pair<QString, QString> & valIter) {
+			std::string key(valIter.first.toStdString());
+			std::string value(valIter.second.toStdString());
 
 			// If key is not in actionData map, then it must be added
-			main_window_json_data::MainWindowJsonData * const newData(new main_window_json_data::MainWindowJsonData(key));
+			std::unique_ptr<main_window_json_data::MainWindowJsonData> newData = std::make_unique<main_window_json_data::MainWindowJsonData>(key);
 
-			//std::pair<std::string, main_window_json_data::MainWindowJsonData *>dataPair(key, newData);
-			std::pair<std::string, main_window_json_data::MainWindowJsonData *> dataPair;
+			std::pair<std::string, std::unique_ptr<main_window_json_data::MainWindowJsonData>> dataPair;
 
-			dataPair.first=key;
-			dataPair.second=newData;
+			dataPair.first = key;
+			// Pass ownership to dataPair
+			dataPair.second = std::move(newData);
+
 
 			// insert returns a pair where:
 			// - first points to the newly created iterator or the element with the same key
 			// - second is true if the insertion is successful, false otherwise
-			std::pair<std::map<std::string, main_window_json_data::MainWindowJsonData *>::iterator, bool> it = this->actionData.insert(dataPair);
-
-			// If it is not possible to insert the new item as it already exists in the map, then destroy the data
-			if ((it.second == false) && (newData != nullptr)) {
-				delete newData;
-			}
+			std::pair<std::map<std::string, std::unique_ptr<main_window_json_data::MainWindowJsonData>>::iterator, bool> it = this->actionData.insert(std::move(dataPair));
 
 			void * valuePtr = nullptr;
 			main_window_shared_types::state_e state = main_window_shared_types::state_e::IDLE;
 			int shortcutKey = (int)Qt::Key_unknown;
 
-			if (paramIter->compare("State") == 0) {
+			if (paramIter.compare("State") == 0) {
 				state = global_qfunctions::qStringToQEnum<main_window_shared_types::state_e>(QString::fromStdString(value));
 				valuePtr = &state;
-			} else if (paramIter->compare("Shortcut") == 0) {
+			} else if (paramIter.compare("Shortcut") == 0) {
 				// Get key
 				std::string keyStr(this->getShortcutKey(value));
 				Qt::Key key = global_qfunctions::qStringToQEnum<Qt::Key>(QString::fromStdString(keyStr));
@@ -277,11 +264,11 @@ void main_window_ctrl_base::MainWindowCtrlBase::populateActionData() {
 				valuePtr = &value;
 			}
 
-			std::map<std::string, main_window_json_data::MainWindowJsonData *>::iterator el = it.first;
-			main_window_json_data::MainWindowJsonData * & data = el->second;
-			data->setValueFromMemberName(*paramIter, valuePtr);
-		}
-	}
+			std::map<std::string, std::unique_ptr<main_window_json_data::MainWindowJsonData>>::iterator el = it.first;
+			std::unique_ptr<main_window_json_data::MainWindowJsonData> & data = el->second;
+			data->setValueFromMemberName(paramIter, valuePtr);
+		});
+	});
 
 	for (const auto & data : this->actionData)
 		QINFO_PRINT(global_types::qinfo_level_e::ZERO, mainWindowCtrlBaseUserInput,  "Data for key " << QString::fromStdString(data.first) << " is " << *(data.second));
@@ -350,24 +337,22 @@ void main_window_ctrl_base::MainWindowCtrlBase::keyPressEvent(QKeyEvent * event)
 
 }
 
-const main_window_json_data::MainWindowJsonData * main_window_ctrl_base::MainWindowCtrlBase::findDataWithFieldValue(const std::string & name, const void * value) const {
+const std::unique_ptr<main_window_json_data::MainWindowJsonData> & main_window_ctrl_base::MainWindowCtrlBase::findDataWithFieldValue(const std::string & name, const void * value) const {
 
-	for(std::map<std::string, main_window_json_data::MainWindowJsonData *>::const_iterator data = this->actionData.cbegin(); data != this->actionData.cend(); data++) {
-
-		const main_window_json_data::MainWindowJsonData * commandData(data->second);
+	const std::map<std::string, std::unique_ptr<main_window_json_data::MainWindowJsonData>>::const_iterator data = std::find_if(this->actionData.cbegin(), this->actionData.cend(), [&] (const auto & data) -> bool {
+		const std::unique_ptr<main_window_json_data::MainWindowJsonData> & commandData = data.second;
 		bool found = commandData->isSameFieldValue(name, value);
-		if (found == true) {
-			return commandData;
-		}
-	}
+		return found;
+	});
 
-	return nullptr;
+	QEXCEPTION_ACTION_COND((data == this->actionData.cend()), throw, "Unable to find " << QString::fromStdString(name) << " in action data");
+	return data->second;
 }
 
 void main_window_ctrl_base::MainWindowCtrlBase::moveToCommandStateFromNonIdleState(const main_window_shared_types::state_e & windowState, const Qt::Key & key) {
 	// Saving long command for a given state to set it after changing state
 	const main_window_shared_types::state_e requestedWindowState = main_window_shared_types::state_e::COMMAND;
-	const main_window_json_data::MainWindowJsonData * data(this->findDataWithFieldValue("State", &windowState));
+	const std::unique_ptr<main_window_json_data::MainWindowJsonData> & data = this->findDataWithFieldValue("State", &windowState);
 	if (data != nullptr) {
 		QString longCmd(QString::fromStdString(data->getLongCmd()));
 		this->changeWindowState(requestedWindowState, main_window_shared_types::state_postprocessing_e::POSTPROCESS, key);

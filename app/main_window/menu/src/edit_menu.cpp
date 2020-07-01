@@ -19,7 +19,7 @@
 Q_LOGGING_CATEGORY(editMenuOverall, "editMenu.overall", MSG_TYPE_LEVEL)
 Q_LOGGING_CATEGORY(editMenuAction, "editMenu.action", MSG_TYPE_LEVEL)
 
-edit_menu::EditMenu::EditMenu(QWidget * parent, QMenuBar * menuBar, const char* menuName, const key_sequence::KeySequence & key) : menu::Menu(parent,menuBar,menuName,key) {
+edit_menu::EditMenu::EditMenu(QWidget * parent, std::weak_ptr<QMenuBar> menuBar, const char* menuName, const key_sequence::KeySequence & key) : menu::Menu(parent,menuBar,menuName,key) {
 
 	QINFO_PRINT(global_types::qinfo_level_e::ZERO, editMenuOverall,  "edit menu constructor");
 
@@ -32,69 +32,48 @@ edit_menu::EditMenu::~EditMenu() {
 
 	QINFO_PRINT(global_types::qinfo_level_e::ZERO, editMenuOverall,  "edit menu destructor");
 
-	if (this->undoAction != Q_NULLPTR) {
-		delete this->undoAction;
-	}
-	if (this->redoAction != Q_NULLPTR) {
-		delete this->redoAction;
-	}
-	if (this->cutAction != Q_NULLPTR) {
-		delete this->cutAction;
-	}
-	if (this->copyAction != Q_NULLPTR) {
-		delete this->copyAction;
-	}
-	if (this->pasteAction != Q_NULLPTR) {
-		delete this->pasteAction;
-	}
-	if (this->selectAllAction != Q_NULLPTR) {
-		delete this->selectAllAction;
-	}
-	if (this->findAction != Q_NULLPTR) {
-		delete this->findAction;
-	}
 }
 
 void edit_menu::EditMenu::createActions() {
 
-	this->undoAction = new QAction(tr("Undo"), this);
+	this->undoAction = std::make_unique<QAction>(tr("Undo"), this);
 	this->undoAction->setStatusTip(tr("Undo previous action"));
-	connect(this->undoAction, &QAction::triggered, this, &EditMenu::undo);
+	connect(this->undoAction.get(), &QAction::triggered, this, &EditMenu::undo);
 
-	this->redoAction = new QAction(tr("Redo"), this);
+	this->redoAction = std::make_unique<QAction>(tr("Redo"), this);
 	this->redoAction->setStatusTip(tr("Redo action"));
-	connect(this->redoAction, &QAction::triggered, this, &EditMenu::redo);
+	connect(this->redoAction.get(), &QAction::triggered, this, &EditMenu::redo);
 
-	this->cutAction = new QAction(tr("Cut"), this);
+	this->cutAction = std::make_unique<QAction>(tr("Cut"), this);
 	this->cutAction->setStatusTip(tr("Cut action"));
-	connect(this->cutAction, &QAction::triggered, this, &EditMenu::cut);
+	connect(this->cutAction.get(), &QAction::triggered, this, &EditMenu::cut);
 
-	this->copyAction = new QAction(tr("Copy"), this);
+	this->copyAction = std::make_unique<QAction>(tr("Copy"), this);
 	this->copyAction->setStatusTip(tr("Copy action"));
-	connect(this->copyAction, &QAction::triggered, this, &EditMenu::copy);
+	connect(this->copyAction.get(), &QAction::triggered, this, &EditMenu::copy);
 
-	this->pasteAction = new QAction(tr("Paste"), this);
+	this->pasteAction = std::make_unique<QAction>(tr("Paste"), this);
 	this->pasteAction->setStatusTip(tr("Paste action"));
-	connect(this->pasteAction, &QAction::triggered, this, &EditMenu::paste);
+	connect(this->pasteAction.get(), &QAction::triggered, this, &EditMenu::paste);
 
-	this->selectAllAction = new QAction(tr("Select All"), this);
+	this->selectAllAction = std::make_unique<QAction>(tr("Select All"), this);
 	this->selectAllAction->setStatusTip(tr("Select All action"));
-	connect(this->selectAllAction, &QAction::triggered, this, &EditMenu::selectAll);
+	connect(this->selectAllAction.get(), &QAction::triggered, this, &EditMenu::selectAll);
 
-	this->findAction = new QAction(tr("Find"), this);
+	this->findAction = std::make_unique<QAction>(tr("Find"), this);
 	this->findAction->setStatusTip(tr("Find action"));
-	connect(this->findAction, &QAction::triggered, this, &EditMenu::find);
+	connect(this->findAction.get(), &QAction::triggered, this, &EditMenu::find);
 
 }
 
 void edit_menu::EditMenu::createMenu() {
-	this->winMenu->addAction(undoAction);
-	this->winMenu->addAction(redoAction);
-	this->winMenu->addAction(cutAction);
-	this->winMenu->addAction(copyAction);
-	this->winMenu->addAction(pasteAction);
-	this->winMenu->addAction(selectAllAction);
-	this->winMenu->addAction(findAction);
+	this->winMenu->addAction(undoAction.get());
+	this->winMenu->addAction(redoAction.get());
+	this->winMenu->addAction(cutAction.get());
+	this->winMenu->addAction(copyAction.get());
+	this->winMenu->addAction(pasteAction.get());
+	this->winMenu->addAction(selectAllAction.get());
+	this->winMenu->addAction(findAction.get());
 }
 
 void edit_menu::EditMenu::undo() {

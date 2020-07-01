@@ -51,7 +51,7 @@ namespace tab {
 	 * @brief Tab class
 	 *
 	 */
-	class Tab : public QWidget {
+	class Tab : public QWidget, public std::enable_shared_from_this<tab::Tab> {
 		friend class tab_widget::TabWidget;
 		friend class main_window_tab_widget::MainWindowTabWidget;
 		friend class main_window_tab::MainWindowTab;
@@ -60,14 +60,13 @@ namespace tab {
 
 		public:
 			/**
-			 * @brief Function: explicit Tab(QWidget * parent, QWidget * tabBar)
+			 * @brief Function: explicit Tab(QWidget * parent)
 			 *
 			 * \param parent: parent widget
-			 * \param tabBar: tab bar
 			 *
 			 * Tab constructor
 			 */
-			explicit Tab(QWidget * parent, QWidget * tabBar);
+			explicit Tab(QWidget * parent);
 
 			/**
 			 * @brief Function: virtual ~Tab()
@@ -113,13 +112,20 @@ namespace tab {
 			tab_shared_types::load_status_e getLoadStatus() const;
 
 			/**
-			 * @brief Function: web_engine_page::WebEnginePage * getPage() const
+			 * @brief Function: std::shared_ptr<web_engine_page::WebEnginePage> getPage() const
 			 *
 			 * \return tab web page object
 			 *
 			 * This function returns the page linked to the tab
 			 */
-			web_engine_page::WebEnginePage * getPage() const;
+			std::shared_ptr<web_engine_page::WebEnginePage> getPage() const;
+
+			/**
+			 * @brief Function: virtual void configure(std::shared_ptr<tab_bar::TabBar> tabBar)
+			 *
+			 * This function configures the tab
+			 */
+			virtual void configure(std::shared_ptr<tab_bar::TabBar> tabBar);
 
 		signals:
 			/**
@@ -180,37 +186,37 @@ namespace tab {
 			 * @brief web engine view
 			 *
 			 */
-			web_engine_view::WebEngineView * view;
+			std::shared_ptr<web_engine_view::WebEngineView> view;
 
 			/**
 			 * @brief load manager
 			 *
 			 */
-			tab_load_manager::TabLoadManager * loadManager;
+			std::shared_ptr<tab_load_manager::TabLoadManager> loadManager;
 
 			/**
 			 * @brief seach class
 			 *
 			 */
-			tab_search::TabSearch * search;
+			std::shared_ptr<tab_search::TabSearch> search;
 
 			/**
 			 * @brief history class
 			 *
 			 */
-			web_engine_history::WebEngineHistory * history;
+			std::shared_ptr<web_engine_history::WebEngineHistory> history;
 
 			/**
 			 * @brief settings
 			 *
 			 */
-			web_engine_settings::WebEngineSettings * settings;
+			std::shared_ptr<web_engine_settings::WebEngineSettings> settings;
 
 			/**
 			 * @brief scroll manager
 			 *
 			 */
-			tab_scroll_manager::TabScrollManager * scrollManager;
+			std::shared_ptr<tab_scroll_manager::TabScrollManager> scrollManager;
 
 			/**
 			 * @brief progress bar value setter connection
@@ -230,114 +236,114 @@ namespace tab {
 			 */
 			QMetaObject::Connection hScrollValueConnection;
 
-			// Move and copy constructor
+			// Components
 			/**
-			 * @brief Function: virtual void setView(web_engine_view::WebEngineView * value)
+			 * @brief Function: void setView(std::shared_ptr<web_engine_view::WebEngineView> value)
 			 *
 			 * \param value: view to use
 			 *
 			 * This function sets the tab view
 			 */
-			virtual void setView(web_engine_view::WebEngineView * value);
+			void setView(std::shared_ptr<web_engine_view::WebEngineView> value);
 
 			/**
-			 * @brief Function: virtual web_engine_view::WebEngineView * getView() const
+			 * @brief Function: std::shared_ptr<web_engine_view::WebEngineView> getView() const
 			 *
 			 * \return tab view
 			 *
 			 * This function returns the tab view
 			 */
-			virtual web_engine_view::WebEngineView * getView() const;
+			std::shared_ptr<web_engine_view::WebEngineView> getView() const;
 
 			/**
-			 * @brief Function: virtual void setLoadManager(tab_load_manager::TabLoadManager * value)
+			 * @brief Function: void setLoadManager(std::shared_ptr<tab_load_manager::TabLoadManager> value)
 			 *
 			 * \param value: load manager to use
 			 *
 			 * This function sets the load manager
 			 */
-			virtual void setLoadManager(tab_load_manager::TabLoadManager * value);
+			void setLoadManager(std::shared_ptr<tab_load_manager::TabLoadManager> value);
 
 			/**
-			 * @brief Function: virtual tab_load_manager::TabLoadManager * getLoadManager() const
+			 * @brief Function: std::shared_ptr<tab_load_manager::TabLoadManager> getLoadManager() const
 			 *
 			 * \return load manager
 			 *
 			 * This function returns the load manager
 			 */
-			virtual tab_load_manager::TabLoadManager * getLoadManager() const;
+			std::shared_ptr<tab_load_manager::TabLoadManager> getLoadManager() const;
 
 			/**
-			 * @brief Function: virtual void setSearch(tab_search::TabSearch * value)
+			 * @brief Function: void setSearch(std::shared_ptr<tab_search::TabSearch> value)
 			 *
 			 * \param value: search to use
 			 *
 			 * This function sets the tab search
 			 */
-			virtual void setSearch(tab_search::TabSearch * value);
+			void setSearch(std::shared_ptr<tab_search::TabSearch> value);
 
 			/**
-			 * @brief Function: virtual tab_search::TabSearch * getSearch() const
+			 * @brief Function: std::shared_ptr<tab_search::TabSearch> getSearch() const
 			 *
 			 * \return tab search
 			 *
 			 * This function returns the tab search
 			 */
-			virtual tab_search::TabSearch * getSearch() const;
+			std::shared_ptr<tab_search::TabSearch> getSearch() const;
 
 			/**
-			 * @brief Function: virtual void setHistory(web_engine_history::WebEngineHistory * value)
+			 * @brief Function: void setHistory(std::shared_ptr<web_engine_history::WebEngineHistory> value)
 			 *
 			 * \param value: history of the tab
 			 *
 			 * This function sets the history of the page
 			 */
-			virtual void setHistory(web_engine_history::WebEngineHistory * value);
+			void setHistory(std::shared_ptr<web_engine_history::WebEngineHistory> value);
 
 			/**
-			 * @brief Function: virtual web_engine_history::WebEngineHistory * getHistory() const
+			 * @brief Function: std::shared_ptr<web_engine_history::WebEngineHistory> getHistory() const
 			 *
 			 * \return history of the tab
 			 *
 			 * This function returns the history of the page
 			 */
-			virtual web_engine_history::WebEngineHistory * getHistory() const;
+			std::shared_ptr<web_engine_history::WebEngineHistory> getHistory() const;
 
 			/**
-			 * @brief Function: virtual void setSettings(web_engine_settings::WebEngineSettings * value)
+			 * @brief Function: void setSettings(std::shared_ptr<web_engine_settings::WebEngineSettings> value)
 			 *
 			 * \param value: settings of the web page
 			 *
 			 * This function stores the pointer to the web page settings into web setting class
 			 */
-			virtual void setSettings(web_engine_settings::WebEngineSettings * value);
+			void setSettings(std::shared_ptr<web_engine_settings::WebEngineSettings> value);
 
 			/**
-			 * @brief Function: virtual web_engine_settings::WebEngineSettings * getSettings() const
+			 * @brief Function: std::shared_ptr<web_engine_settings::WebEngineSettings> getSettings() const
 			 *
 			 * \return tab settings
 			 *
 			 * This function returns the settings
 			 */
-			virtual web_engine_settings::WebEngineSettings * getSettings() const;
+			std::shared_ptr<web_engine_settings::WebEngineSettings> getSettings() const;
 
 			/**
-			 * @brief Function: virtual void setScrollManager(tab_scroll_manager::TabScrollManager * value)
+			 * @brief Function: void setScrollManager(std::shared_ptr<tab_scroll_manager::TabScrollManager> value)
 			 *
 			 * \param value: scroll manager to use
 			 *
 			 * This function sets the scroll manager
 			 */
-			virtual void setScrollManager(tab_scroll_manager::TabScrollManager * value);
+			void setScrollManager(std::shared_ptr<tab_scroll_manager::TabScrollManager> value);
 
 			/**
-			 * @brief Function: virtual tab_scroll_manager::TabScrollManager * getScrollManager() const
+			 * @brief Function: std::shared_ptr<tab_scroll_manager::TabScrollManager> getScrollManager() const
 			 *
 			 * \return scroll manager
 			 *
 			 * This function returns the scroll manager
 			 */
-			virtual tab_scroll_manager::TabScrollManager * getScrollManager() const;
+			std::shared_ptr<tab_scroll_manager::TabScrollManager> getScrollManager() const;
 
 			/**
 			 * @brief Function: virtual virtual void find(const int & index, const QString & search, const bool & reverse, const bool & caseSensitive) const

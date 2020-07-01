@@ -75,13 +75,13 @@ namespace main_window_web_engine_page {
 			virtual ~MainWindowWebEnginePage();
 
 			/**
-			 * @brief Function: const main_window_page_data::MainWindowPageData * getData() const
+			 * @brief Function: const std::shared_ptr<main_window_page_data::MainWindowPageData> & getData() const
 			 *
 			 * \return page data
 			 *
 			 * This function returns custom page data
 			 */
-			const main_window_page_data::MainWindowPageData * getData() const;
+			const std::shared_ptr<main_window_page_data::MainWindowPageData> & getData() const;
 
 			/**
 			 * @brief Function: main_window_shared_types::page_type_e getType() const
@@ -138,7 +138,7 @@ namespace main_window_web_engine_page {
 			 * @brief custom page data
 			 *
 			 */
-			main_window_page_data::MainWindowPageData * const pageData;
+			std::shared_ptr<main_window_page_data::MainWindowPageData> pageData;
 
 			/**
 			 * @brief Function: QByteArray getTextFileBody() const
@@ -159,13 +159,13 @@ namespace main_window_web_engine_page {
 			void setBody();
 
 			/**
-			 * @brief Function: void setData(const main_window_page_data::MainWindowPageData * newData)
+			 * @brief Function: void setData(const std::shared_ptr<main_window_page_data::MainWindowPageData> newData)
 			 *
 			 * \param newData: source of the page
 			 *
 			 * This function changes all member of the page data associated with a web engine page object
 			 */
-			void setData(const main_window_page_data::MainWindowPageData * newData);
+			void setData(const std::shared_ptr<main_window_page_data::MainWindowPageData> newData);
 
 			/**
 			 * @brief Function: void setSource(const QString & src)

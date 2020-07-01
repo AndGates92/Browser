@@ -27,6 +27,10 @@
 
 Q_DECLARE_LOGGING_CATEGORY(mainWindowCtrlWrapperOverall)
 
+namespace main_window {
+	class MainWindow;
+}
+
 namespace main_window_ctrl_wrapper {
 
 	/**
@@ -34,18 +38,19 @@ namespace main_window_ctrl_wrapper {
 	 *
 	 */
 	class MainWindowCtrlWrapper final : public QWidget, public main_window_base::MainWindowBase {
+		friend class main_window::MainWindow;
 
 		public:
 
 			/**
-			 * @brief Function: explicit MainWindowCtrlWrapper(QWidget * parent, QSharedPointer<main_window_core::MainWindowCore> core)
+			 * @brief Function: explicit MainWindowCtrlWrapper(QWidget * parent, std::shared_ptr<main_window_core::MainWindowCore> core)
 			 *
 			 * \param core: main window core
 			 * \param parent: parent windget
 			 *
 			 * Main window control constructor
 			 */
-			explicit MainWindowCtrlWrapper(QWidget * parent, QSharedPointer<main_window_core::MainWindowCore> core);
+			explicit MainWindowCtrlWrapper(QWidget * parent, std::shared_ptr<main_window_core::MainWindowCore> core);
 
 			/**
 			 * @brief Function: virtual ~MainWindowCtrlWrapper()
@@ -75,24 +80,6 @@ namespace main_window_ctrl_wrapper {
 			 */
 			void keyPressEvent(QKeyEvent * event) override;
 
-			/**
-			 * @brief Function: main_window_ctrl::MainWindowCtrl * getWinCtrl()
-			 *
-			 * \return the window controller
-			 *
-			 * This function returns the window controller
-			 */
-			main_window_ctrl::MainWindowCtrl * getWinCtrl();
-
-			/**
-			 * @brief Function: main_window_ctrl_tab::MainWindowCtrlTab * getTabCtrl()
-			 *
-			 * \return the tab controller
-			 *
-			 * This function returns the tab controller
-			 */
-			main_window_ctrl_tab::MainWindowCtrlTab * getTabCtrl();
-
 		protected:
 
 		private:
@@ -101,13 +88,13 @@ namespace main_window_ctrl_wrapper {
 			 * @brief Main window control
 			 *
 			 */
-			main_window_ctrl::MainWindowCtrl * winctrl;
+			std::unique_ptr<main_window_ctrl::MainWindowCtrl> winctrl;
 
 			/**
 			 * @brief main window tab control
 			 *
 			 */
-			main_window_ctrl_tab::MainWindowCtrlTab * tabctrl;
+			std::unique_ptr<main_window_ctrl_tab::MainWindowCtrlTab> tabctrl;
 
 			// Move and copy constructor
 			/**

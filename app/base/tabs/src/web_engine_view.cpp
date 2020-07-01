@@ -20,12 +20,20 @@ Q_LOGGING_CATEGORY(webEngineViewOverall, "webEngineView.overall", MSG_TYPE_LEVEL
 web_engine_view::WebEngineView::WebEngineView(QWidget * parent): QWebEngineView(parent) {
 	QINFO_PRINT(global_types::qinfo_level_e::ZERO, webEngineViewOverall,  "Web engine view constructor");
 
-	web_engine_page::WebEnginePage * viewPage = new web_engine_page::WebEnginePage(parent, web_engine_profile::WebEngineProfile::defaultProfile());
-	this->setPage(viewPage);
+	// Use deleteLater to schedule a destruction event in the event loop
+	std::shared_ptr<web_engine_page::WebEnginePage> newPage = std::shared_ptr<web_engine_page::WebEnginePage>(new web_engine_page::WebEnginePage(parent, web_engine_profile::WebEngineProfile::defaultProfile()), [] (web_engine_page::WebEnginePage * p) {
+		p->deleteLater();
+	});
+	this->updatePage(newPage);
 }
 
 web_engine_view::WebEngineView::~WebEngineView() {
 	QINFO_PRINT(global_types::qinfo_level_e::ZERO, webEngineViewOverall,  "Web engine view destructor");
 }
 
-CASTED_PTR_GETTER(web_engine_view::WebEngineView::page, web_engine_page::WebEnginePage, QWebEngineView::page())
+void web_engine_view::WebEngineView::updatePage(const std::shared_ptr<web_engine_page::WebEnginePage> newPage) {
+	this->currentPage = newPage;
+	this->setPage(this->currentPage.get());
+}
+
+BASE_GETTER(web_engine_view::WebEngineView::page, std::shared_ptr<web_engine_page::WebEnginePage>, this->currentPage)

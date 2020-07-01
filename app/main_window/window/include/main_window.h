@@ -8,6 +8,8 @@
  * @brief Main Window header file
 */
 
+#include <memory>
+
 #include <qt5/QtCore/QLoggingCategory>
 #include <qt5/QtWidgets/QMainWindow>
 #include <qt5/QtWidgets/QWidget>
@@ -55,15 +57,6 @@ namespace main_window {
 			 */
 			virtual ~MainWindow();
 
-			/**
-			 * @brief Function: main_window_ctrl_wrapper::MainWindowCtrlWrapper * getCtrl()
-			 *
-			 * \return wrapper to the window controller
-			 *
-			 * This function returns the wrapper to the window controller
-			 */
-			main_window_ctrl_wrapper::MainWindowCtrlWrapper * getCtrl();
-
 		protected:
 		#ifndef QT_NO_CONTEXTMENU
 			/**
@@ -88,13 +81,13 @@ namespace main_window {
 			void closeWindow();
 
 			/**
-			 * @brief Function: void updateWidgetGeometry(overlayed_widget::OverlayedWidget * widget)
+			 * @brief Function: void updateWidgetGeometry(std::shared_ptr<overlayed_widget::OverlayedWidget> widget)
 			 *
 			 * \param widget: widget that is requesting to update its geometry
 			 *
 			 * This function updates the geometry of an overlayed widget
 			 */
-			void updateWidgetGeometry(overlayed_widget::OverlayedWidget * widget);
+			void updateWidgetGeometry(std::shared_ptr<overlayed_widget::OverlayedWidget> widget);
 
 		private:
 
@@ -102,13 +95,13 @@ namespace main_window {
 			 * @brief Main window control
 			 *
 			 */
-			main_window_ctrl_wrapper::MainWindowCtrlWrapper * ctrl;
+			std::unique_ptr<main_window_ctrl_wrapper::MainWindowCtrlWrapper> ctrl;
 
 			/**
 			 * @brief list of overlayed widgets
 			 *
 			 */
-			std::list<overlayed_widget::OverlayedWidget *> overlayedWidgets;
+			std::list<std::shared_ptr<overlayed_widget::OverlayedWidget>> overlayedWidgets;
 
 			/**
 			 * @brief Function: void customizeMainWidget()
@@ -176,13 +169,13 @@ namespace main_window {
 			void resizeEvent(QResizeEvent * event);
 
 			/**
-			 * @brief Function: void addOverlayedWidget(overlayed_widget::OverlayedWidget * widget)
+			 * @brief Function: void addOverlayedWidget(const std::shared_ptr<overlayed_widget::OverlayedWidget> widget)
 			 *
 			 * \param widget: widget to add
 			 *
 			 * This function adds a widget to the overlayed widget list
 			 */
-			void addOverlayedWidget(overlayed_widget::OverlayedWidget * widget);
+			void addOverlayedWidget(const std::shared_ptr<overlayed_widget::OverlayedWidget> widget);
 
 			/**
 			 * @brief Function: void populateOverlayedWidgetList()

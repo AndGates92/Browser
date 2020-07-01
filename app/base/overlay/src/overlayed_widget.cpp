@@ -46,7 +46,7 @@ void overlayed_widget::OverlayedWidget::setGeometry(const QRect & rect) {
 	QWidget::setGeometry(rect);
 
 	// Widgets should occupy the fill size of the popup container, hence pass the new geometry down to them
-	const QList<QWidget *> widgets = this->findChildren<QWidget *>();
+	const QList<QWidget *> widgets = this->findChildren<QWidget *>(QString(), Qt::FindChildrenRecursively);
 	for (QWidget * widget : widgets) {
 		if (widget != Q_NULLPTR) {
 			widget->setGeometry(rect);

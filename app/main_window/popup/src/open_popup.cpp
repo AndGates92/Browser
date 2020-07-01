@@ -138,18 +138,6 @@ open_popup::OpenPopup::OpenPopup(QWidget * parent, Qt::WindowFlags flags) : main
 
 open_popup::OpenPopup::~OpenPopup() {
 	QINFO_PRINT(global_types::qinfo_level_e::ZERO, openPopupOverall,  "Destructor of open popup class");
-	if (this->openLabel != Q_NULLPTR) {
-		delete this->openLabel;
-	}
-	if (this->browseLabel != Q_NULLPTR) {
-		delete this->browseLabel;
-	}
-	if (this->cancelLabel != Q_NULLPTR) {
-		delete this->cancelLabel;
-	}
-	if (this->insertLabel != Q_NULLPTR) {
-		delete this->insertLabel;
-	}
 }
 
 void open_popup::OpenPopup::popupLayout() {
@@ -182,14 +170,14 @@ void open_popup::OpenPopup::popupLayout() {
 			}
 		}
 
-		layout->addWidget(this->pathToOpen);
+		layout->addWidget(this->pathToOpen.get());
 		layout->addSpacing(open_popup::widgetLabelSpacing);
-		layout->addWidget(this->openLabel);
-		layout->addWidget(this->insertLabel);
-		layout->addWidget(this->browseLabel);
-		layout->addWidget(this->cancelLabel);
+		layout->addWidget(this->openLabel.get());
+		layout->addWidget(this->insertLabel.get());
+		layout->addWidget(this->browseLabel.get());
+		layout->addWidget(this->cancelLabel.get());
 		layout->addSpacing(open_popup::widgetLabelSpacing);
-		layout->addWidget(this->fileView);
+		layout->addWidget(this->fileView.get());
 
 	} catch (const std::bad_cast & badCastE) {
 		QEXCEPTION_ACTION(throw, badCastE.what());
@@ -199,10 +187,10 @@ void open_popup::OpenPopup::popupLayout() {
 
 void open_popup::OpenPopup::fillPopup() {
 
-	this->openLabel = this->actionToLabel(this, this->applyAction);
-	this->browseLabel = this->actionToLabel(this, this->browseAction);
-	this->cancelLabel = this->actionToLabel(this, this->cancelAction);
-	this->insertLabel = this->actionToLabel(this, this->typeAction);
+	this->openLabel = std::move(this->actionToLabel(this, this->applyAction));
+	this->browseLabel = std::move(this->actionToLabel(this, this->browseAction));
+	this->cancelLabel = std::move(this->actionToLabel(this, this->cancelAction));
+	this->insertLabel = std::move(this->actionToLabel(this, this->typeAction));
 
 	// Hide file view as user didn't ask for it
 	// Use hide and not setVisible(false) because function hide also does not show it in the layout
@@ -212,22 +200,22 @@ void open_popup::OpenPopup::fillPopup() {
 void open_popup::OpenPopup::connectSignals() {
 	QINFO_PRINT(global_types::qinfo_level_e::ZERO, openPopupOverall,  "Connect signals");
 
-	connect(this->applyAction, &action::Action::triggered, this, &open_popup::OpenPopup::apply);
-	connect(this->cancelAction, &action::Action::triggered, this, &open_popup::OpenPopup::cancel);
-	connect(this->browseAction, &action::Action::triggered, this, &open_popup::OpenPopup::browse);
-	connect(this->typeAction, &action::Action::triggered, this, &open_popup::OpenPopup::insert);
+	connect(this->applyAction.get(), &action::Action::triggered, this, &open_popup::OpenPopup::apply);
+	connect(this->cancelAction.get(), &action::Action::triggered, this, &open_popup::OpenPopup::cancel);
+	connect(this->browseAction.get(), &action::Action::triggered, this, &open_popup::OpenPopup::browse);
+	connect(this->typeAction.get(), &action::Action::triggered, this, &open_popup::OpenPopup::insert);
 
 	// Need to use lambda function as fileViewClickAction is not a slot
-	connect(this->fileView, &QTreeView::clicked, [this] (const QModelIndex & index) {
+	connect(this->fileView.get(), &QTreeView::clicked, [this] (const QModelIndex & index) {
 		this->fileViewClickAction(index);
 	});
 
 	// Need to use lambda function as fileViewDoubleClickAction is not a slot
-	connect(this->fileView, &QTreeView::doubleClicked, [this] (const QModelIndex & index) {
+	connect(this->fileView.get(), &QTreeView::doubleClicked, [this] (const QModelIndex & index) {
 		this->fileViewDoubleClickAction(index);
 	});
 
-	connect(this->fileModel, &QFileSystemModel::directoryLoaded, [this] (const QString & path) {
+	connect(this->fileModel.get(), &QFileSystemModel::directoryLoaded, [this] (const QString & path) {
 		this->directoryLoadedAction(path);
 	});
 

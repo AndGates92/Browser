@@ -9,6 +9,7 @@
 */
 
 #include <string>
+#include <memory>
 
 #include <qt5/QtCore/QLoggingCategory>
 #include <qt5/QtCore/QDir>
@@ -60,43 +61,43 @@ namespace file_handling_widgets {
 			 * @brief user typed text
 			 *
 			 */
-			QLineEdit * pathToOpen;
+			std::unique_ptr<QLineEdit> pathToOpen;
 
 			/**
 			 * @brief open action
 			 *
 			 */
-			action::Action * applyAction;
+			std::shared_ptr<action::Action> applyAction;
 
 			/**
 			 * @brief browse action
 			 *
 			 */
-			action::Action * browseAction;
+			std::shared_ptr<action::Action> browseAction;
 
 			/**
 			 * @brief cancel action
 			 *
 			 */
-			action::Action * cancelAction;
+			std::shared_ptr<action::Action> cancelAction;
 
 			/**
 			 * @brief insert action
 			 *
 			 */
-			action::Action * typeAction;
+			std::shared_ptr<action::Action> typeAction;
 
 			/**
 			 * @brief file browser
 			 *
 			 */
-			QFileSystemModel * fileModel;
+			std::unique_ptr<QFileSystemModel> fileModel;
 
 			/**
 			 * @brief file browser
 			 *
 			 */
-			QTreeView * fileView;
+			std::unique_ptr<QTreeView> fileView;
 
 			/**
 			 * @brief Function: void fileViewClickAction(const QModelIndex & index)
@@ -173,7 +174,7 @@ namespace file_handling_widgets {
 
 		private:
 			/**
-			 * @brief Function: action::Action * createAction(QObject * parent, const std::string & text, const std::string & tip, const key_sequence::KeySequence & shortcut)
+			 * @brief Function: std::unique_ptr<action::Action> createAction(QObject * parent, const std::string & text, const std::string & tip, const key_sequence::KeySequence & shortcut)
 			 *
 			 * \param parent: parent object
 			 * \param text: descriptive text of the action
@@ -182,20 +183,20 @@ namespace file_handling_widgets {
 			 *
 			 * This function creates a new action
 			 */
-			action::Action * createAction(QObject * parent, const std::string & text, const std::string & tip, const key_sequence::KeySequence & shortcut);
+			std::unique_ptr<action::Action> createAction(QObject * parent, const std::string & text, const std::string & tip, const key_sequence::KeySequence & shortcut);
 
 			/**
-			 * @brief Function: QLineEdit * createLineEdit(QWidget *parent, const std::string & text)
+			 * @brief Function: std::unique_ptr<QLineEdit> createLineEdit(QWidget * parent, const std::string & text)
 			 *
 			 * \param parent: parent widget
 			 * \param text: text to show on the line edit
 			 *
 			 * This function creates a new QLineEdit
 			 */
-			QLineEdit * createLineEdit(QWidget *parent, const std::string & text);
+			std::unique_ptr<QLineEdit> createLineEdit(QWidget * parent, const std::string & text);
 
 			/**
-			 * @brief Function: QFileSystemModel * createFileModel(QWidget * parent, const QStringList & filters, const QDir & directory)
+			 * @brief Function: std::unique_ptr<QFileSystemModel> createFileModel(QWidget * parent, const QStringList & filters, const QDir & directory)
 			 *
 			 * \param parent: parent widget
 			 * \param filters: file dialog filters
@@ -203,10 +204,10 @@ namespace file_handling_widgets {
 			 *
 			 * This function creates a new QFileSystemModel
 			 */
-			QFileSystemModel * createFileModel(QWidget * parent, const QStringList & filters, const QDir & directory);
+			std::unique_ptr<QFileSystemModel> createFileModel(QWidget * parent, const QStringList & filters, const QDir & directory);
 
 			/**
-			 * @brief Function: QTreeView * createFileView(QFileSystemModel * model, QWidget *parent, const QStringList & filters, const QDir & directory)
+			 * @brief Function: std::unique_ptr<QTreeView> createFileView(std::unique_ptr<QFileSystemModel> & model, QWidget *parent, const QStringList & filters, const QDir & directory)
 			 *
 			 * \param model: model of the fileview
 			 * \param parent: parent widget
@@ -215,10 +216,10 @@ namespace file_handling_widgets {
 			 *
 			 * This function creates a new QTreeView to display the content of the model. If the pointer to the model is null, this method will construct one based on the informations provided
 			 */
-			QTreeView * createFileView(QFileSystemModel ** model, QWidget *parent, const QStringList & filters = QStringList(), const QDir & directory = QDir::currentPath());
+			std::unique_ptr<QTreeView> createFileView(std::unique_ptr<QFileSystemModel> & model, QWidget *parent, const QStringList & filters = QStringList(), const QDir & directory = QDir::currentPath());
 
 			/**
-			 * @brief Function: const QString getPathFromModelIndex(const QFileSystemModel * model, const QModelIndex & index)
+			 * @brief Function: const QString getPathFromModelIndex(const std::unique_ptr<QFileSystemModel> & model, const QModelIndex & index)
 			 *
 			 * \param model: model of the file system
 			 * \param index: index in the model
@@ -227,7 +228,7 @@ namespace file_handling_widgets {
 			 *
 			 * This function returns the file path matching the provided index in the file system model given as argument
 			 */
-			const QString getPathFromModelIndex(const QFileSystemModel * model, const QModelIndex & index);
+			const QString getPathFromModelIndex(const std::unique_ptr<QFileSystemModel> & model, const QModelIndex & index);
 
 			// Move and copy constructor
 			/**

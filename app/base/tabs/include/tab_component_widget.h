@@ -8,6 +8,7 @@
  * @brief Tab Component Widget header file
 */
 
+#include <memory>
 #include <queue>
 
 // Qt libraries
@@ -46,13 +47,13 @@ namespace tab_component_widget {
 	class TabComponentWidget : public QWidget {
 		public:
 			/**
-			 * @brief Function: explicit TabComponentWidget(QWidget * parent, QWidget * attachedTab)
+			 * @brief Function: explicit TabComponentWidget(QWidget * parent, std::weak_ptr<tab::Tab> attachedTab)
 			 *
 			 * \param parent: parent widget
 			 *
 			 * Tab Component Widget constructor
 			 */
-			explicit TabComponentWidget(QWidget * parent, QWidget * attachedTab);
+			explicit TabComponentWidget(QWidget * parent, std::weak_ptr<tab::Tab> attachedTab);
 
 			/**
 			 * @brief Function: virtual ~TabComponentWidget()
@@ -88,32 +89,32 @@ namespace tab_component_widget {
 			virtual bool canProcessRequests() const = 0;
 
 			/**
-			 * @brief Function: void setTab(QWidget * newTab)
+			 * @brief Function: void setTab(std::weak_ptr<QWidget> newTab)
 			 *
 			 * \param tab: tab the component belongs to
 			 *
 			 * This function sets the tab the component belongs to
 			 * This is a convenience function. The argument must be able to be casted as tab::Tab
 			 */
-			void setTab(QWidget * newTab);
+			void setTab(std::weak_ptr<QWidget> newTab);
 
 			/**
-			 * @brief Function: void setTab(tab::Tab * value)
+			 * @brief Function: void setTab(std::weak_ptr<tab::Tab> value)
 			 *
 			 * \param tab: tab the component belongs to
 			 *
 			 * This function sets the tab the component belongs to
 			 */
-			void setTab(tab::Tab * value);
+			void setTab(std::weak_ptr<tab::Tab> value);
 
 			/**
-			 * @brief Function: tab::Tab * getTab() const
+			 * @brief Function: std::shared_ptr<tab::Tab> getTab() const
 			 *
 			 * \return tab the component belongs to
 			 *
 			 * This function returns the tab the component belongs to
 			 */
-			tab::Tab * getTab() const;
+			std::shared_ptr<tab::Tab> getTab() const;
 
 			/**
 			 * @brief queue of outstanding scroll requests
@@ -126,7 +127,7 @@ namespace tab_component_widget {
 			 * @brief tab the scroll manager belongs to
 			 *
 			 */
-			tab::Tab * browserTab;
+			std::weak_ptr<tab::Tab> browserTab;
 
 			// Move and copy constructor
 			/**
@@ -140,8 +141,10 @@ namespace tab_component_widget {
 /** @} */ // End of TabComponentWidgetGroup group
 
 template<typename type>
-tab_component_widget::TabComponentWidget<type>::TabComponentWidget(QWidget * parent, QWidget * attachedTab): QWidget(parent), browserTab(Q_NULLPTR) {
+tab_component_widget::TabComponentWidget<type>::TabComponentWidget(QWidget * parent, std::weak_ptr<tab::Tab> attachedTab): QWidget(parent) {
 	QINFO_PRINT(global_types::qinfo_level_e::ZERO, tabComponentWidgetOverall,  "TabComponentWidget constructor");
+
+	this->browserTab.reset();
 
 	// Make widget invisible
 	this->setVisible(false);
@@ -155,9 +158,9 @@ tab_component_widget::TabComponentWidget<type>::~TabComponentWidget() {
 }
 
 template<typename type>
-void tab_component_widget::TabComponentWidget<type>::setTab(QWidget * newTab) {
+void tab_component_widget::TabComponentWidget<type>::setTab(std::weak_ptr<QWidget> newTab) {
 	try {
-		tab::Tab * thisTab = dynamic_cast<tab::Tab *>(newTab);
+		std::weak_ptr<tab::Tab> thisTab = std::static_pointer_cast<tab::Tab>(newTab.lock());
 		this->setTab(thisTab);
 	} catch (const std::bad_cast & badCastE) {
 		QEXCEPTION_ACTION(throw, badCastE.what());
@@ -165,9 +168,11 @@ void tab_component_widget::TabComponentWidget<type>::setTab(QWidget * newTab) {
 }
 
 template<typename type>
-PTR_SETTER(tab_component_widget::TabComponentWidget<type>::setTab, tab::Tab, this->browserTab)
+void tab_component_widget::TabComponentWidget<type>::setTab(std::weak_ptr<tab::Tab> value) {
+	this->browserTab = value;
+}
 
 template<typename type>
-PTR_GETTER(tab_component_widget::TabComponentWidget<type>::getTab, tab::Tab, this->browserTab)
+BASE_GETTER(tab_component_widget::TabComponentWidget<type>::getTab, std::shared_ptr<tab::Tab>, this->browserTab.lock())
 
 #endif // TAB_COMPONENT_WIDGET_H

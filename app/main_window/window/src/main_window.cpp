@@ -69,7 +69,7 @@ namespace main_window {
 
 }
 
-main_window::MainWindow::MainWindow(QWidget * parent, Qt::WindowFlags flags) : QMainWindow(parent, flags), main_window_base::MainWindowBase(QSharedPointer<main_window_core::MainWindowCore>(new main_window_core::MainWindowCore(this))), overlayedWidgets(std::list<overlayed_widget::OverlayedWidget *>()) {
+main_window::MainWindow::MainWindow(QWidget * parent, Qt::WindowFlags flags) : QMainWindow(parent, flags), main_window_base::MainWindowBase(std::shared_ptr<main_window_core::MainWindowCore>(new main_window_core::MainWindowCore(this))), overlayedWidgets(std::list<std::shared_ptr<overlayed_widget::OverlayedWidget>>()) {
 
 	QINFO_PRINT(global_types::qinfo_level_e::ZERO, mainWindowOverall,  "Main window constructor");
 
@@ -114,12 +114,7 @@ main_window::MainWindow::MainWindow(QWidget * parent, Qt::WindowFlags flags) : Q
 main_window::MainWindow::~MainWindow() {
 	QINFO_PRINT(global_types::qinfo_level_e::ZERO, mainWindowOverall,  "Main window destructor");
 
-	// deleting window control
-	if (this->ctrl != Q_NULLPTR) {
-		delete this->ctrl;
-	}
-
-	const QList<QShortcut *> shortcuts = this->findChildren<QShortcut *>();
+	const QList<QShortcut *> shortcuts = this->findChildren<QShortcut *>(QString(), Qt::FindDirectChildrenOnly);
 
 	for (QShortcut * shortcut : shortcuts) {
 		if (shortcut != Q_NULLPTR) {
@@ -143,7 +138,7 @@ void main_window::MainWindow::customizeMainWidget() {
 			"border: none; "
 		"}"
 	);
-	this->setCentralWidget(this->windowCore->mainWidget);
+	this->setCentralWidget(this->windowCore->mainWidget.get());
 }
 
 void main_window::MainWindow::fillMainWindow() {
@@ -196,7 +191,7 @@ void main_window::MainWindow::customizeTopMenuBar() {
 	QINFO_PRINT(global_types::qinfo_level_e::ZERO, mainWindowOverall,  "Customize top menu bar");
 
 	// set menu bar of the main window
-	this->setMenuBar(this->windowCore->topMenuBar);
+	this->setMenuBar(this->windowCore->topMenuBar.get());
 }
 
 void main_window::MainWindow::customizeBottomStatusBar() {
@@ -216,16 +211,16 @@ void main_window::MainWindow::mainWindowLayout() {
 	// |                   <statusbar>                 |
 	// -------------------------------------------------
 
-	QVBoxLayout * layout = new QVBoxLayout(this->windowCore->mainWidget);
+	QVBoxLayout * layout = new QVBoxLayout(this);
 
 	// tabs
-	layout->addWidget(this->windowCore->tabs);
+	layout->addWidget(this->windowCore->tabs.get());
 
 	// command menu
-	layout->addWidget(this->windowCore->cmdMenu, 0, (Qt::AlignHCenter | Qt::AlignBottom));
+	layout->addWidget(this->windowCore->cmdMenu.get(), 0, (Qt::AlignHCenter | Qt::AlignBottom));
 
 	// status bar
-	layout->addWidget(this->windowCore->bottomStatusBar, Qt::AlignBottom);
+	layout->addWidget(this->windowCore->bottomStatusBar.get(), Qt::AlignBottom);
 
 	layout->setSpacing(main_window::verticalWidgetSpacing);
 	layout->setContentsMargins(main_window::leftMargin, main_window::topMargin, main_window::rightMargin, main_window::bottomMargin);
@@ -237,10 +232,10 @@ void main_window::MainWindow::connectSignals() {
 	QINFO_PRINT(global_types::qinfo_level_e::ZERO, mainWindowOverall,  "Connect signals");
 
 	// Close window
-	connect(this->ctrl->getWinCtrl(), &main_window_ctrl::MainWindowCtrl::closeWindowSignal, this, &main_window::MainWindow::closeWindow);
+	connect(this->ctrl->winctrl.get(), &main_window_ctrl::MainWindowCtrl::closeWindowSignal, this, &main_window::MainWindow::closeWindow);
 
-	for (std::list<overlayed_widget::OverlayedWidget *>::const_iterator widget = this->overlayedWidgets.cbegin(); widget != this->overlayedWidgets.cend(); widget++) {
-		connect(*widget, &overlayed_widget::OverlayedWidget::updateGeometryRequest, this, &main_window::MainWindow::updateWidgetGeometry);
+	for (std::list<std::shared_ptr<overlayed_widget::OverlayedWidget>>::const_iterator widget = this->overlayedWidgets.cbegin(); widget != this->overlayedWidgets.cend(); widget++) {
+		connect((*widget).get(), &overlayed_widget::OverlayedWidget::updateGeometryRequest, this, &main_window::MainWindow::updateWidgetGeometry);
 	}
 }
 
@@ -248,8 +243,8 @@ void main_window::MainWindow::createCtrl() {
 	QINFO_PRINT(global_types::qinfo_level_e::ZERO, mainWindowOverall,  "Create controller");
 
 	// main window control object
-	this->ctrl = new main_window_ctrl_wrapper::MainWindowCtrlWrapper(this, this->windowCore);
-	this->setFocusProxy(this->ctrl);
+	this->ctrl = std::make_unique<main_window_ctrl_wrapper::MainWindowCtrlWrapper>(this, this->windowCore);
+	this->setFocusProxy(this->ctrl.get());
 	this->ctrl->setFocus();
 
 }
@@ -263,22 +258,22 @@ void main_window::MainWindow::closeWindow() {
 void main_window::MainWindow::resizeEvent(QResizeEvent *event) {
 	QINFO_PRINT(global_types::qinfo_level_e::ZERO, mainWindowOverall,  "Resizing window from size " << event->oldSize() << " to size " << event->size());
 
-	for (std::list<overlayed_widget::OverlayedWidget *>::const_iterator widget = this->overlayedWidgets.cbegin(); widget != this->overlayedWidgets.cend(); widget++) {
+	for (std::list<std::shared_ptr<overlayed_widget::OverlayedWidget>>::iterator widget = this->overlayedWidgets.begin(); widget != this->overlayedWidgets.end(); widget++) {
 		this->updateWidgetGeometry(*widget);
 	}
 
 	QMainWindow::resizeEvent(event);
 }
 
-void main_window::MainWindow::addOverlayedWidget(overlayed_widget::OverlayedWidget * widget) {
+void main_window::MainWindow::addOverlayedWidget(const std::shared_ptr<overlayed_widget::OverlayedWidget> widget) {
 	this->overlayedWidgets.push_back(widget);
 }
 
 void main_window::MainWindow::populateOverlayedWidgetList() {
-	this->addOverlayedWidget(this->windowCore->popup);
+	this->addOverlayedWidget(std::static_pointer_cast<overlayed_widget::OverlayedWidget>(this->windowCore->popup));
 }
 
-void main_window::MainWindow::updateWidgetGeometry(overlayed_widget::OverlayedWidget * widget) {
+void main_window::MainWindow::updateWidgetGeometry(std::shared_ptr<overlayed_widget::OverlayedWidget> widget) {
 
 	// Widget information
 	const QSize widgetSizeHint(widget->sizeHint());

@@ -63,7 +63,8 @@ MOC_OBJ_EXT = moc.o
 # PIC (Position Independent Code) is required by Qt
 # C++14 standard
 # -rdyanmic: ELF linked adds all symbols to the dynamic symbol table
-CFLAGS = -g -Wall -Wconversion -fPIC -Werror -Wextra -Wpedantic -std=c++14 -rdynamic
+CFLAGS = -g -Wnon-virtual-dtor -Wall -Wconversion -fPIC -Werror -Wextra -Wpedantic -std=c++17 -rdynamic -Og
+ASANFLAGS = -fsanitize-address-use-after-scope -fsanitize=leak -fsanitize=undefined -fsanitize=address -fno-omit-frame-pointer
 CEXTRAFLAGS ?=
 BEHFLAGS ?=
 # -MP workaround for make errors when an header file is removed (Add phony target for each dependency other the main file)
@@ -175,13 +176,13 @@ $(EXE) : $(MOC_OBJS) $(OBJS)
 	$(MKDIR) $(LOG_DIR)
 	$(MKDIR) $(@D)
 	$(VERBOSE_ECHO)echo "[${TIMESTAMP}] Compiling $(@F). Object files are: $^"
-	$(CC) $(CFLAGS) $(INCLUDES) -o $@ $(DFLAGS) $(BEHFLAGS) $(CEXTRAFLAGS) $^ $(LIBS)
+	$(CC) $(CFLAGS) $(ASANFLAGS) $(INCLUDES) -o $@ $(DFLAGS) $(BEHFLAGS) $(CEXTRAFLAGS) $^ $(LIBS)
 
 $(OBJ_DIR)/%.$(OBJ_EXT) : %.$(SRC_EXT)
 	$(MKDIR) $(DEP_DIR)
 	$(MKDIR) $(@D)
 	$(VERBOSE_ECHO)echo "[${TIMESTAMP}] Compiling $(<F) and creating object $@ - dependency file is $(DEPFILE)"
-	$(CC) $(DEPENDFLAG) $(CFLAGS) $(INCLUDES) -c $< $(DFLAGS) $(BEHFLAGS) $(CEXTRAFLAGS) -o $@ $(LIBS)
+	$(CC) $(DEPENDFLAG) $(CFLAGS) $(ASANFLAGS) $(INCLUDES) -c $< $(DFLAGS) $(BEHFLAGS) $(CEXTRAFLAGS) -o $@ $(LIBS)
 
 $(MOC_SRC_DIR)/%.$(MOC_SRC_EXT) : %.$(HEADER_EXT)
 	$(MKDIR) $(@D)
@@ -191,7 +192,7 @@ $(MOC_SRC_DIR)/%.$(MOC_SRC_EXT) : %.$(HEADER_EXT)
 $(MOC_OBJ_DIR)/%.$(MOC_OBJ_EXT) : $(MOC_SRC_DIR)/%.$(MOC_SRC_EXT)
 	$(MKDIR) $(@D)
 	$(VERBOSE_ECHO)echo "[${TIMESTAMP}] Compiling $(<F) and creating moc object $@"
-	$(CC) $(CFLAGS) $(INCLUDES) -c $< $(DFLAGS) $(BEHFLAGS) $(CEXTRAFLAGS) -o $@ $(LIBS)
+	$(CC) $(CFLAGS) $(ASANFLAGS) $(INCLUDES) -c $< $(DFLAGS) $(BEHFLAGS) $(CEXTRAFLAGS) -o $@ $(LIBS)
 
 # Work around to force generating the file
 $(DEPS) :
@@ -208,6 +209,7 @@ debug :
 	$(VERBOSE_ECHO)echo "[${TIMESTAMP}] Compiler options:"
 	$(VERBOSE_ECHO)echo "[${TIMESTAMP}] --> $(PROG_LANG) flags: $(CFLAGS)"
 	$(VERBOSE_ECHO)echo "[${TIMESTAMP}] --> $(PROG_LANG) extra flags: $(CEXTRAFLAGS)"
+	$(VERBOSE_ECHO)echo "[${TIMESTAMP}] --> ASAN flags: $(ASANFLAGS)"
 	$(VERBOSE_ECHO)echo "[${TIMESTAMP}] --> Behaviour flags: $(BEHFLAGS)"
 	$(VERBOSE_ECHO)echo "[${TIMESTAMP}] --> logging defines: $(LOG_DEFINES)"
 	$(VERBOSE_ECHO)echo "[${TIMESTAMP}] --> Math libs: $(MATHLIBS)"

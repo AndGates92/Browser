@@ -8,6 +8,8 @@
  * @brief Edit Menu header file
 */
 
+#include <memory>
+
 // Qt libraries
 // Required by qInfo
 #include <qt5/QtCore/QtDebug>
@@ -40,7 +42,7 @@ namespace edit_menu {
 
 		public:
 			/**
-			 * @brief Function: explicit EditMenu(QWidget * parent, QMenuBar * menuBar, const char* menuName, const key_sequence::KeySequence & key)
+			 * @brief Function: explicit EditMenu(QWidget * parent, std::weak_ptr<QMenuBar> menuBar, const char* menuName, const key_sequence::KeySequence & key)
 			 *
 			 * \param parent: pointer to the parent of the menu
 			 * \param menuBar: menubar the menu is part of
@@ -49,14 +51,14 @@ namespace edit_menu {
 			 *
 			 * Constructor of edit menu
 			 */
-			explicit EditMenu(QWidget * parent, QMenuBar * menuBar, const char* menuName, const key_sequence::KeySequence & key);
+			explicit EditMenu(QWidget * parent, std::weak_ptr<QMenuBar> menuBar, const char* menuName, const key_sequence::KeySequence & key);
 
 			/**
-			 * @brief Function: ~EditMenu()
+			 * @brief Function: virtual ~EditMenu()
 			 *
 			 * Destructor of edit menu
 			 */
-			~EditMenu();
+			virtual ~EditMenu();
 
 		protected:
 
@@ -117,43 +119,43 @@ namespace edit_menu {
 			 * @brief undo action
 			 *
 			 */
-			QAction * undoAction;
+			std::unique_ptr<QAction> undoAction;
 
 			/**
 			 * @brief redo action
 			 *
 			 */
-			QAction * redoAction;
+			std::unique_ptr<QAction> redoAction;
 
 			/**
 			 * @brief cut action
 			 *
 			 */
-			QAction * cutAction;
+			std::unique_ptr<QAction> cutAction;
 
 			/**
 			 * @brief copy action
 			 *
 			 */
-			QAction * copyAction;
+			std::unique_ptr<QAction> copyAction;
 
 			/**
 			 * @brief paste action
 			 *
 			 */
-			QAction * pasteAction;
+			std::unique_ptr<QAction> pasteAction;
 
 			/**
 			 * @brief select all action
 			 *
 			 */
-			QAction * selectAllAction;
+			std::unique_ptr<QAction> selectAllAction;
 
 			/**
 			 * @brief find action
 			 *
 			 */
-			QAction * findAction;
+			std::unique_ptr<QAction> findAction;
 
 			/**
 			 * @brief Function: void createMenu()

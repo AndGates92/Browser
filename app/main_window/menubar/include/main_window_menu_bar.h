@@ -8,6 +8,8 @@
  * @brief Main Window menu bar class header file
 */
 
+#include <memory>
+
 #include <qt5/QtCore/QLoggingCategory>
 #include <qt5/QtWidgets/QMenu>
 
@@ -29,7 +31,7 @@ namespace main_window_menu_bar {
 	 * @brief MainWindowMenuBar class
 	 *
 	 */
-	class MainWindowMenuBar final : public menu_bar::MenuBar {
+	class MainWindowMenuBar final : public std::enable_shared_from_this<MainWindowMenuBar>, public menu_bar::MenuBar {
 
 		public:
 			/**
@@ -49,22 +51,30 @@ namespace main_window_menu_bar {
 			virtual ~MainWindowMenuBar();
 
 			/**
-			 * @brief Function: ~getFileMenu() const
+			 * @brief Function: const std::unique_ptr<file_menu::FileMenu> & getFileMenu() const
 			 *
 			 * \return the file menu
 			 *
 			 * This function returns the file menu
 			 */
-			file_menu::FileMenu * getFileMenu() const;
+			const std::unique_ptr<file_menu::FileMenu> & getFileMenu() const;
 
 			/**
-			 * @brief Function: ~getEditMenu() const
+			 * @brief Function: const std::unique_ptr<edit_menu::EditMenu> & getEditMenu() const
 			 *
 			 * \return the edit menu
 			 *
 			 * This function returns the edit menu
 			 */
-			edit_menu::EditMenu * getEditMenu() const;
+			const std::unique_ptr<edit_menu::EditMenu> & getEditMenu() const;
+
+			/**
+			 * @brief Function: void createMenus()
+			 *
+			 * This function creates all menu belonging to the menu bar 
+			 */
+			void createMenus();
+
 		protected:
 
 		private:
@@ -73,14 +83,14 @@ namespace main_window_menu_bar {
 			 * @brief File menu
 			 *
 			 */
-			file_menu::FileMenu * const fileMenu;
+			std::unique_ptr<file_menu::FileMenu> fileMenu;
 
 			// Edit dropdown menu
 			/**
 			 * @brief Edit menu
 			 *
 			 */
-			edit_menu::EditMenu * const editMenu;
+			std::unique_ptr<edit_menu::EditMenu> editMenu;
 
 			// Move and copy constructor
 			/**

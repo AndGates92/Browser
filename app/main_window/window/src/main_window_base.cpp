@@ -15,7 +15,7 @@
 
 Q_LOGGING_CATEGORY(mainWindowBaseOverall, "mainWindowBase.overall", MSG_TYPE_LEVEL)
 
-main_window_base::MainWindowBase::MainWindowBase(QSharedPointer<main_window_core::MainWindowCore> core) : windowCore(core) {
+main_window_base::MainWindowBase::MainWindowBase(std::shared_ptr<main_window_core::MainWindowCore> core) : windowCore(core) {
 
 	QINFO_PRINT(global_types::qinfo_level_e::ZERO, mainWindowBaseOverall,  "Main window base classe constructor");
 }
@@ -42,7 +42,7 @@ main_window_base::MainWindowBase & main_window_base::MainWindowBase::operator=(c
 	return *this;
 }
 
-main_window_base::MainWindowBase::MainWindowBase(main_window_base::MainWindowBase && rhs) : windowCore(std::exchange(rhs.windowCore, QSharedPointer<main_window_core::MainWindowCore>())) {
+main_window_base::MainWindowBase::MainWindowBase(main_window_base::MainWindowBase && rhs) : windowCore(std::exchange(rhs.windowCore, std::shared_ptr<main_window_core::MainWindowCore>())) {
 	QINFO_PRINT(global_types::qinfo_level_e::ZERO, mainWindowBaseOverall,  "Move constructor main window base");
 }
 
@@ -56,10 +56,14 @@ main_window_base::MainWindowBase & main_window_base::MainWindowBase::operator=(m
 	}
 
 	if (this->windowCore != rhs.windowCore) {
-		if (this->windowCore.isNull() == false) {
-			this->windowCore.reset();
+		if (this->windowCore == nullptr) {
+			try {
+				this->windowCore.reset();
+			} catch (const std::bad_alloc & badAllocE) {
+				QEXCEPTION_ACTION(throw, badAllocE.what());
+			}
 		}
-		this->windowCore = std::exchange(rhs.windowCore, QSharedPointer<main_window_core::MainWindowCore>());
+		this->windowCore = std::exchange(rhs.windowCore, std::shared_ptr<main_window_core::MainWindowCore>());
 	}
 
 	return *this;

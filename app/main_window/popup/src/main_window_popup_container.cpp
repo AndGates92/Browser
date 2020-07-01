@@ -73,15 +73,15 @@ bool main_window_popup_container::MainWindowPopupContainer::showOpenFilePopup() 
 	return success;
 }
 
-open_popup::OpenPopup * main_window_popup_container::MainWindowPopupContainer::getOpenFilePopup() const {
+std::shared_ptr<open_popup::OpenPopup> main_window_popup_container::MainWindowPopupContainer::getOpenFilePopup() const {
 	main_window_popup_container::popup_widget_e index = main_window_popup_container::popup_widget_e::OPEN_FILE;
-	popup_properties::PopupProperties * widget = this->getWidget((unsigned int)index);
+	std::shared_ptr<popup_properties::PopupProperties> widget = std::dynamic_pointer_cast<popup_properties::PopupProperties>(this->getWidget((unsigned int)index));
 	QEXCEPTION_ACTION_COND((widget == nullptr), throw, "Unable to find widget " << index);
-	open_popup::OpenPopup * popup = nullptr;
+	std::shared_ptr<open_popup::OpenPopup> popup = nullptr;
 
 	if (widget != Q_NULLPTR) {
 		try {
-			popup = dynamic_cast<open_popup::OpenPopup *>(widget);
+			popup = std::dynamic_pointer_cast<open_popup::OpenPopup>(widget);
 		} catch (const std::bad_cast & badCastE) {
 			QEXCEPTION_ACTION(throw, badCastE.what());
 		}
@@ -91,12 +91,12 @@ open_popup::OpenPopup * main_window_popup_container::MainWindowPopupContainer::g
 }
 
 void main_window_popup_container::MainWindowPopupContainer::connectSignals() {
-	connect(this->getOpenFilePopup(), &open_popup::OpenPopup::sizeChanged,  [this] () {
-		emit this->updateGeometryRequest(this);
+	connect(this->getOpenFilePopup().get(), &open_popup::OpenPopup::sizeChanged,  [this] () {
+		emit this->updateGeometryRequest(this->shared_from_this());
 	});
 }
 
 void main_window_popup_container::MainWindowPopupContainer::addOpenPopup() {
-	open_popup::OpenPopup * popup = new open_popup::OpenPopup(this);
+	std::shared_ptr<open_popup::OpenPopup> popup = std::make_shared<open_popup::OpenPopup>(this);
 	this->addWidget((unsigned int)main_window_popup_container::popup_widget_e::OPEN_FILE, popup);
 }

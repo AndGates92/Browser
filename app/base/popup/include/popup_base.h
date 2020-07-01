@@ -8,6 +8,8 @@
  * @brief Popup base class header file
 */
 
+#include <memory>
+
 #include <qt5/QtCore/QLoggingCategory>
 #include <qt5/QtWidgets/QWidget>
 #include <qt5/QtWidgets/QAction>
@@ -85,14 +87,14 @@ namespace popup_base {
 			virtual void connectSignals() = 0;
 
 			/**
-			 * @brief Function: QLabel * actionToLabel(QWidget * parent, const QAction * action) const
+			 * @brief Function: std::unique_ptr<QLabel> actionToLabel(QWidget * parent, const std::shared_ptr<QAction> & action) const
 			 *
 			 * \param parent: parent widget of QLabel
 			 * \param action: action to convert to QLabel
 			 *
 			 * This function allows to print text and shortcut in a QLabel
 			 */
-			QLabel * actionToLabel(QWidget * parent, const QAction * action) const;
+			std::unique_ptr<QLabel> actionToLabel(QWidget * parent, const std::shared_ptr<QAction> & action) const;
 
 		private:
 

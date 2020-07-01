@@ -6,6 +6,8 @@
  * @brief Graphics functions
  */
 
+#include <memory>
+
 // Qt libraries
 #include <qt5/QtWidgets/QApplication>
 
@@ -26,7 +28,7 @@ void graphics::init_graphics(int & argc, char** argv) {
 
 	QINFO_PRINT(global_types::qinfo_level_e::ZERO, graphicsOverall,  "Create Application");
 
-	main_window_wrapper::MainWindowWrapper * window = new main_window_wrapper::MainWindowWrapper(Q_NULLPTR);
+	main_window_wrapper::MainWindowWrapper * window = new main_window_wrapper::MainWindowWrapper(Q_NULLPTR, Qt::Window);
 	window->show();
 
 	app.exec();

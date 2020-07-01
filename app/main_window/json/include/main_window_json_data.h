@@ -8,6 +8,7 @@
  * @brief Main Window Json Data header file
 */
 
+#include <memory>
 #include <vector>
 #include <set>
 
@@ -56,7 +57,7 @@ namespace main_window_json_data {
 		public:
 
 			/**
-			 * @brief Function: static main_window_json_data::MainWindowJsonData * makeJsonData(const std::string & jsonKey, const std::string & nameKeyValue, const main_window_shared_types::state_e & stateKeyValue, const int & shortcutKeyValue, const std::string & longCmdKeyValue, const std::string & helpKeyValue)
+			 * @brief Function: static std::shared_ptr<main_window_json_data::MainWindowJsonData> makeJsonData(const std::string & jsonKey, const std::string & nameKeyValue, const main_window_shared_types::state_e & stateKeyValue, const int & shortcutKeyValue, const std::string & longCmdKeyValue, const std::string & helpKeyValue)
 			 *
 			 * \param jsonKey: key in te json file
 			 * \param nameKeyValue: name of the action
@@ -67,7 +68,7 @@ namespace main_window_json_data {
 			 *
 			 * this function constructs a new instance of class MainWindowJsonData
 			 */
-			static main_window_json_data::MainWindowJsonData * makeJsonData(const std::string & jsonKey, const std::string & nameKeyValue, const main_window_shared_types::state_e & stateKeyValue, const int & shortcutKeyValue, const std::string & longCmdKeyValue, const std::string & helpKeyValue);
+			static std::shared_ptr<main_window_json_data::MainWindowJsonData> makeJsonData(const std::string & jsonKey, const std::string & nameKeyValue, const main_window_shared_types::state_e & stateKeyValue, const int & shortcutKeyValue, const std::string & longCmdKeyValue, const std::string & helpKeyValue);
 
 			/**
 			 * @brief Function: MainWindowJsonData(const std::string & jsonKey, const std::string & nameKeyValue = std::string(), const main_window_shared_types::state_e & stateKeyValue = main_window_shared_types::state_e::IDLE, const int & shortcutKeyValue = (int)Qt::Key_unknown, const std::string & longCmdKeyValue = std::string(), const std::string & helpKeyValue = std::string())

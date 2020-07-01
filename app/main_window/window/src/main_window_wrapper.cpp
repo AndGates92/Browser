@@ -21,8 +21,10 @@ main_window_wrapper::MainWindowWrapper::MainWindowWrapper(QWidget * parent, Qt::
 
 }
 
-main_window_wrapper::MainWindowWrapper::MainWindowWrapper(const main_window_wrapper::MainWindowWrapper & rhs) : window(rhs.window) {
+main_window_wrapper::MainWindowWrapper::MainWindowWrapper(const main_window_wrapper::MainWindowWrapper & rhs) : window(Q_NULLPTR) {
 	QINFO_PRINT(global_types::qinfo_level_e::ZERO, mainWindowWrapperOverall,  "Copy constructor main window wrapper");
+
+	this->window.reset(rhs.window.get());
 
 }
 main_window_wrapper::MainWindowWrapper & main_window_wrapper::MainWindowWrapper::operator=(const main_window_wrapper::MainWindowWrapper & rhs) {
@@ -35,7 +37,7 @@ main_window_wrapper::MainWindowWrapper & main_window_wrapper::MainWindowWrapper:
 	}
 
 	if (this->window != rhs.window) {
-		this->window = rhs.window;
+		this->window.reset(rhs.window.get());
 	}
 
 	return *this;
@@ -51,10 +53,8 @@ main_window_wrapper::MainWindowWrapper & main_window_wrapper::MainWindowWrapper:
 	QINFO_PRINT(global_types::qinfo_level_e::ZERO, mainWindowWrapperOverall,  "Move assignment operator for main window wrapper");
 
 	if (&rhs != this) {
-		if (this->window != Q_NULLPTR) {
-			delete this->window;
-		}
-		this->window = std::exchange(rhs.window, Q_NULLPTR);
+		this->window = std::move(rhs.window);
+		rhs.window.reset();
 	}
 
 	return *this;
@@ -62,11 +62,6 @@ main_window_wrapper::MainWindowWrapper & main_window_wrapper::MainWindowWrapper:
 
 main_window_wrapper::MainWindowWrapper::~MainWindowWrapper() {
 	QINFO_PRINT(global_types::qinfo_level_e::ZERO, mainWindowWrapperOverall,  "Main window wrapper destructor");
-
-	if (this->window != Q_NULLPTR) {
-		delete this->window;
-	}
-
 }
 
 void main_window_wrapper::MainWindowWrapper::show() {

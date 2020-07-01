@@ -48,9 +48,8 @@ namespace tab_scroll_manager {
 
 }
 
-tab_scroll_manager::TabScrollManager::TabScrollManager(QWidget * parent, QWidget * browserTab, QWidget * tabBar): tab_component_widget::TabComponentWidget<tab_shared_types::direction_e>(parent, browserTab), horizontalScroll(0), verticalScroll(0), scrollPosition(QPointF(0.0, 0.0)), contentsSize(QSizeF(0.0, 0.0)), bar(dynamic_cast<QTabBar *>(tabBar)) {
+tab_scroll_manager::TabScrollManager::TabScrollManager(QWidget * parent, std::weak_ptr<tab::Tab> browserTab, std::shared_ptr<tab_bar::TabBar> tabBar): tab_component_widget::TabComponentWidget<tab_shared_types::direction_e>(parent, browserTab), horizontalScroll(0), verticalScroll(0), scrollPosition(QPointF(0.0, 0.0)), contentsSize(QSizeF(0.0, 0.0)), bar(tabBar) {
 	QINFO_PRINT(global_types::qinfo_level_e::ZERO, tabScrollManagerOverall,  "TabScrollManager constructor");
-	this->setTab(dynamic_cast<tab::Tab *>(browserTab));
 }
 
 tab_scroll_manager::TabScrollManager::~TabScrollManager() {
@@ -164,8 +163,8 @@ void tab_scroll_manager::TabScrollManager::pushRequestQueue(const tab_shared_typ
 }
 
 void tab_scroll_manager::TabScrollManager::popRequestQueue() {
-	const tab::Tab * castedTab(this->getTab());
-	const tab_shared_types::load_status_e & loadManagerStatus = castedTab->getLoadStatus();
+	const std::shared_ptr<tab::Tab> currentTab = this->getTab();
+	const tab_shared_types::load_status_e & loadManagerStatus = currentTab->getLoadStatus();
 
 	QEXCEPTION_ACTION_COND((this->canProcessRequests() == false), throw,  "Function " << __func__ << " cannot be called when load manager is in state " << loadManagerStatus << ". It can only be called if a page is not loading");
 
@@ -176,8 +175,8 @@ void tab_scroll_manager::TabScrollManager::popRequestQueue() {
 }
 
 bool tab_scroll_manager::TabScrollManager::canProcessRequests() const {
-	const tab::Tab * castedTab(this->getTab());
-	const tab_shared_types::load_status_e & loadManagerStatus = castedTab->getLoadStatus();
+	const std::shared_ptr<tab::Tab> currentTab = this->getTab();
+	const tab_shared_types::load_status_e & loadManagerStatus = currentTab->getLoadStatus();
 
 	return ((loadManagerStatus == tab_shared_types::load_status_e::FINISHED) || (loadManagerStatus == tab_shared_types::load_status_e::ERROR));
 }

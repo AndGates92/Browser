@@ -43,7 +43,7 @@ namespace file_menu {
 		public:
 
 			/**
-			 * @brief Function: explicit FileMenu(QWidget * parent, QMenuBar * menuBar, const char* menuName, const key_sequence::KeySequence & key)
+			 * @brief Function: explicit FileMenu(QWidget * parent, std::weak_ptr<QMenuBar> menuBar, const char* menuName, const key_sequence::KeySequence & key)
 			 *
 			 * \param parent: pointer to the parent of the menu
 			 * \param menuBar: menubar the menu is part of
@@ -52,38 +52,38 @@ namespace file_menu {
 			 *
 			 * Constructor of file menu
 			 */
-			explicit FileMenu(QWidget * parent, QMenuBar * menuBar, const char* menuName, const key_sequence::KeySequence & key);
+			explicit FileMenu(QWidget * parent, std::weak_ptr<QMenuBar> menuBar, const char* menuName, const key_sequence::KeySequence & key);
 
 			/**
 			 * @brief open tab action
 			 *
 			 */
-			QAction * openTabAction;
+			std::unique_ptr<QAction> openTabAction;
 
 			/**
 			 * @brief save action
 			 *
 			 */
-			QAction * saveAction;
+			std::unique_ptr<QAction> saveAction;
 
 			/**
 			 * @brief print action
 			 *
 			 */
-			QAction * printAction;
+			std::unique_ptr<QAction> printAction;
 
 			/**
 			 * @brief exit action
 			 *
 			 */
-			QAction * exitAction;
+			std::unique_ptr<QAction> exitAction;
 
 			/**
-			 * @brief Function: ~FileMenu()
+			 * @brief Function: virtual ~FileMenu()
 			 *
 			 * Destructor of file menu
 			 */
-			~FileMenu();
+			virtual ~FileMenu();
 
 		protected:
 
@@ -137,13 +137,13 @@ namespace file_menu {
 			 * @brief open action
 			 *
 			 */
-			QAction * openAction;
+			std::unique_ptr<QAction> openAction;
 
 			/**
 			 * @brief window opened following the opened action being clicked
 			 *
 			 */
-			open_button_window::OpenButtonWindow * openWindow;
+			std::unique_ptr<open_button_window::OpenButtonWindow> openWindow;
 
 			/**
 			 * @brief Function: void createMenu()

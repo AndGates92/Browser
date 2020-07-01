@@ -8,6 +8,8 @@
  * @brief Main Window Control base class header file
 */
 
+#include <memory>
+
 #include <qt5/QtCore/QLoggingCategory>
 #include <qt5/QtWidgets/QWidget>
 
@@ -36,7 +38,7 @@ namespace main_window_ctrl_base {
 
 		public:
 			/**
-			 * @brief Function: explicit MainWindowCtrlBase(QWidget * parent, QSharedPointer<main_window_core::MainWindowCore> core, QString jsonFileName = QString::null)
+			 * @brief Function: explicit MainWindowCtrlBase(QWidget * parent, std::shared_ptr<main_window_core::MainWindowCore> core, QString jsonFileName = QString::null)
 			 *
 			 * \param core: main window core
 			 * \param parent: parent windget
@@ -44,7 +46,7 @@ namespace main_window_ctrl_base {
 			 *
 			 * Main window control base class constructor
 			 */
-			explicit MainWindowCtrlBase(QWidget * parent, QSharedPointer<main_window_core::MainWindowCore> core, QString jsonFileName = QString::null);
+			explicit MainWindowCtrlBase(QWidget * parent, std::shared_ptr<main_window_core::MainWindowCore> core, QString jsonFileName = QString::null);
 
 			/**
 			 * @brief Function: virtual ~MainWindowCtrlBase()
@@ -105,7 +107,7 @@ namespace main_window_ctrl_base {
 			 * value is the class storing information about the action
 			 *
 			 */
-			std::map<std::string, main_window_json_data::MainWindowJsonData *> actionData;
+			std::map<std::string, std::unique_ptr<main_window_json_data::MainWindowJsonData>> actionData;
 
 			/**
 			 * @brief Function: virtual void createExtraShortcuts()
@@ -160,14 +162,14 @@ namespace main_window_ctrl_base {
 			virtual void executeCommand(const QString & userCommand, const main_window_shared_types::state_postprocessing_e postprocess) final;
 
 			/**
-			 * @brief Function: virtual void changeWindowStateWrapper(const main_window_json_data::MainWindowJsonData * commandData, const main_window_shared_types::state_postprocessing_e postprocess) final
+			 * @brief Function: virtual void changeWindowStateWrapper(const std::unique_ptr<main_window_json_data::MainWindowJsonData> & commandData, const main_window_shared_types::state_postprocessing_e postprocess) final
 			 *
 			 * \param commandData: data relative to a command.
 			 * \param postprocess: flag to execute post process after chaning state.
 			 *
 			 * This function is a wrapper to change the state of window
 			 */
-			virtual void changeWindowStateWrapper(const main_window_json_data::MainWindowJsonData * commandData, const main_window_shared_types::state_postprocessing_e postprocess) final;
+			virtual void changeWindowStateWrapper(const std::unique_ptr<main_window_json_data::MainWindowJsonData> & commandData, const main_window_shared_types::state_postprocessing_e postprocess) final;
 
 			/**
 			 * @brief Function: virtual void changeWindowState(const main_window_shared_types::state_e & nextState, const main_window_shared_types::state_postprocessing_e postprocess, const Qt::Key key = Qt::Key_unknown) final
@@ -284,7 +286,7 @@ namespace main_window_ctrl_base {
 			virtual void connectSignals() final;
 
 			/**
-			 * @brief Function: const main_window_json_data::MainWindowJsonData * findDataWithFieldValue(const std::string & name, const void * value) const
+			 * @brief Function: const std::unique_ptr<main_window_json_data::MainWindowJsonData> & findDataWithFieldValue(const std::string & name, const void * value) const
 			 *
 			 * \param name: name of the name of the member as a string
 			 * \param value: value of the member
@@ -294,7 +296,7 @@ namespace main_window_ctrl_base {
 			 * This functions searching a data having a matching field value
 			 * This functions returns the first match or nullptr if no match
 			 */
-			const main_window_json_data::MainWindowJsonData * findDataWithFieldValue(const std::string & name, const void * value) const;
+			const std::unique_ptr<main_window_json_data::MainWindowJsonData> & findDataWithFieldValue(const std::string & name, const void * value) const;
 
 			/**
 			 * @brief Function: void moveToCommandStateFromNonIdleState(const main_window_shared_types::state_e & windowState, const Qt::Key & key)

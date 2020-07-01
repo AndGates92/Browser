@@ -8,6 +8,8 @@
  * @brief Menu header file
 */
 
+#include <memory>
+
 #include <qt5/QtCore/QLoggingCategory>
 #include <qt5/QtWidgets/QMenu>
 #include <qt5/QtWidgets/QWidget>
@@ -37,7 +39,7 @@ namespace menu {
 		public:
 
 			/**
-			 * @brief Function: explicit Menu(QWidget * parent = Q_NULLPTR, QMenuBar * menuBar = Q_NULLPTR, const char* menuName = "Unknown", const key_sequence::KeySequence & key = key_sequence::KeySequence(QKeySequence::UnknownKey))
+			 * @brief Function: explicit Menu(QWidget * parent = Q_NULLPTR, std::weak_ptr<QMenuBar> menuBar = std::weak_ptr<QMenuBar>(), const char* menuName = "Unknown", const key_sequence::KeySequence & key = key_sequence::KeySequence(QKeySequence::UnknownKey))
 			 *
 			 * \param parent: pointer to the parent of the menu
 			 * \param menuBar: menubar the menu is part of
@@ -46,7 +48,7 @@ namespace menu {
 			 *
 			 * Constructor of base class menu
 			 */
-			explicit Menu(QWidget * parent = Q_NULLPTR, QMenuBar * menuBar = Q_NULLPTR, const char* menuName = "Unknown", const key_sequence::KeySequence & key = key_sequence::KeySequence(QKeySequence::UnknownKey));
+			explicit Menu(QWidget * parent = Q_NULLPTR, std::weak_ptr<QMenuBar> menuBar = std::weak_ptr<QMenuBar>(), const char* menuName = "Unknown", const key_sequence::KeySequence & key = key_sequence::KeySequence(QKeySequence::UnknownKey));
 
 			/**
 			 * @brief Function: virtual ~Menu()
@@ -72,19 +74,19 @@ namespace menu {
 			 * @brief menu bar
 			 *
 			 */
-			QMenuBar * menuBar;
+			std::weak_ptr<QMenuBar> menuBar;
 
 			/**
 			 * @brief menu
 			 *
 			 */
-			QMenu * winMenu;
+			std::unique_ptr<QMenu> winMenu;
 
 			/**
 			 * @brief shortcut to expand menu
 			 *
 			 */
-			QShortcut * expandMenu;
+			std::unique_ptr<QShortcut> expandMenu;
 
 			/**
 			 * @brief menu name

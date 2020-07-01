@@ -245,6 +245,46 @@ ARGTYPE * FNAME() const { \
 	CONST_PTR_SETTER(SFNAME, ARGTYPE, VAR) \
 	CONST_PTR_GETTER(GFNAME, ARGTYPE, VAR)
 
+/**
+ * @brief SHARED_PTR_GETTER(FNAME, ARGTYPE, VAR)
+ *
+ * \param FNAME : function name
+ * \param ARGTYPE : type of returned value
+ * \param VAR : class member to return or function returning it
+ *
+ * Getter for a shared pointer in a derived class or struct that requires downcasting
+ */
+#define SHARED_PTR_GETTER(FNAME, ARGTYPE, VAR) \
+std::shared_ptr<ARGTYPE> FNAME() const { \
+	try { \
+		std::shared_ptr<ARGTYPE> ptr(dynamic_cast<ARGTYPE *>(VAR)); \
+		return ptr; \
+	} catch (const std::bad_cast & badCastE) { \
+		QEXCEPTION_ACTION(throw, badCastE.what()); \
+	} \
+	return nullptr; \
+}
+
+/**
+ * @brief CASTED_SHARED_PTR_GETTER(FNAME, ARGTYPE, VAR)
+ *
+ * \param FNAME : function name
+ * \param ARGTYPE : type of returned value
+ * \param VAR : class member to return or function returning it
+ *
+ * Getter for a shared pointer in a derived class or struct that requires downcasting
+ */
+#define CASTED_SHARED_PTR_GETTER(FNAME, ARGTYPE, VAR) \
+std::shared_ptr<ARGTYPE> FNAME() const { \
+	try { \
+		std::shared_ptr<ARGTYPE> ptr = std::dynamic_pointer_cast<ARGTYPE>(VAR); \
+		return ptr; \
+	} catch (const std::bad_cast & badCastE) { \
+		QEXCEPTION_ACTION(throw, badCastE.what()); \
+	} \
+	return nullptr; \
+}
+
 /** @} */ // End of FunctionMacrosGroup group
 
 #endif // FUNCTION_MACROS_H

@@ -61,17 +61,12 @@ void main_window_web_engine_page::MainWindowWebEnginePage::setBody() {
 
 main_window_web_engine_page::MainWindowWebEnginePage::~MainWindowWebEnginePage() {
 	QINFO_PRINT(global_types::qinfo_level_e::ZERO, mainWindowWebEnginePageOverall,  "Web engine page destructor");
-
-	if (this->pageData != nullptr) {
-		delete this->pageData;
-	}
-
 }
 
 BASE_GETTER(main_window_web_engine_page::MainWindowWebEnginePage::getType, main_window_shared_types::page_type_e, this->pageData->type)
 CONST_GETTER(main_window_web_engine_page::MainWindowWebEnginePage::getSource, QString, QString::fromStdString(this->pageData->source))
 CONST_PTR_GETTER(main_window_web_engine_page::MainWindowWebEnginePage::getExtraData, void, this->pageData->data)
-CONST_PTR_GETTER(main_window_web_engine_page::MainWindowWebEnginePage::getData, main_window_page_data::MainWindowPageData, this->pageData)
+CONST_GETTER(main_window_web_engine_page::MainWindowWebEnginePage::getData, std::shared_ptr<main_window_page_data::MainWindowPageData> &, this->pageData)
 
 void main_window_web_engine_page::MainWindowWebEnginePage::reload() {
 	const main_window_shared_types::page_type_e type = this->getType();
@@ -106,8 +101,8 @@ QByteArray main_window_web_engine_page::MainWindowWebEnginePage::getTextFileBody
 	return pageContent;
 }
 
-void main_window_web_engine_page::MainWindowWebEnginePage::setData(const main_window_page_data::MainWindowPageData * newData) {
-	*(this->pageData) = *newData;
+void main_window_web_engine_page::MainWindowWebEnginePage::setData(const std::shared_ptr<main_window_page_data::MainWindowPageData> newData) {
+	this->pageData = newData;
 	emit this->sourceChanged(QString::fromStdString(this->pageData->source));
 }
 

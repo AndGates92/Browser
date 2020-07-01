@@ -44,14 +44,14 @@ namespace tab_search {
 
 		public:
 			/**
-			 * @brief Function: explicit TabSearch(QObject * parent, QWidget * attachedTab)
+			 * @brief Function: explicit TabSearch(QObject * parent, std::weak_ptr<tab::Tab> attachedTab)
 			 *
 			 * \param attachedTab: tab attached to the search instance
 			 * \param parent: parent object
 			 *
 			 * Tab search constructor
 			 */
-			explicit TabSearch(QWidget * parent, QWidget * attachedTab);
+			explicit TabSearch(QWidget * parent, std::weak_ptr<tab::Tab> attachedTab);
 
 			/**
 			 * @brief Function: virtual ~TabSearch()

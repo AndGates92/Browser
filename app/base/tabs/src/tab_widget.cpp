@@ -2,7 +2,7 @@
  * @copyright
  * @file tab_widget.cpp
  * @author Andrea Gianarda
- * @date 02rd October 2019
+ * @date 02nd October 2019
  * @brief Tab Widget functions
  */
 
@@ -11,7 +11,6 @@
 #include <qt5/QtGui/QResizeEvent>
 #include <qt5/QtGui/QKeyEvent>
 
-#include "tab.h"
 #include "tab_widget.h"
 #include "exception_macros.h"
 
@@ -46,24 +45,24 @@ tab_widget::TabWidget::TabWidget(QWidget * parent): QTabWidget(parent) {
 	this->setMinimumHeight(tab_widget::minHeight);
 	this->setMinimumWidth(tab_widget::minWidth);
 
-	this->bar = new tab_bar::TabBar(this, this->size().width());
+	this->bar = std::make_shared<tab_bar::TabBar>(this, this->size().width());
 	this->setTabBar(this->bar);
 
 	this->setVisibleAttribute();
+
+	this->tabs = std::vector<std::shared_ptr<tab::Tab>>();
 
 }
 
 tab_widget::TabWidget::~TabWidget() {
 	QINFO_PRINT(global_types::qinfo_level_e::ZERO, tabWidgetOverall,  "Tab widget destructor");
-
-	if (this->bar != Q_NULLPTR) {
-		delete this->bar;
-	}
 }
 
-void tab_widget::TabWidget::setTabBar(tab_bar::TabBar * tabBar) {
-	QTabWidget::setTabBar(static_cast<QTabBar *>(tabBar));
+void tab_widget::TabWidget::setTabBar(std::shared_ptr<tab_bar::TabBar> newTabBar) {
+	QTabWidget::setTabBar(newTabBar.get());
 }
+
+BASE_GETTER(tab_widget::TabWidget::tabBar, std::shared_ptr<tab_bar::TabBar>, this->bar)
 
 void tab_widget::TabWidget::resizeEvent(QResizeEvent * event) {
 	QSize previousSize(event->oldSize());
@@ -72,16 +71,12 @@ void tab_widget::TabWidget::resizeEvent(QResizeEvent * event) {
 	int widgetWidth = this->size().width();
 	this->bar->setWidth(widgetWidth);
 
-	try {
-		if (this->count() > 0) {
-			// Resize current tab
-			tab::Tab * currentTab = dynamic_cast<tab::Tab *>(this->widget(this->currentIndex(), true));
-			if (currentTab != Q_NULLPTR) {
-				currentTab->resize(newSize);
-			}
+	if (this->count() > 0) {
+		// Resize current tab
+		std::shared_ptr<tab::Tab> currentTab = this->widget(this->currentIndex(), true);
+		if (currentTab != Q_NULLPTR) {
+			currentTab->resize(newSize);
 		}
-	} catch (const std::bad_cast & badCastE) {
-		QEXCEPTION_ACTION(throw, badCastE.what());
 	}
 
 	QTabWidget::resizeEvent(event);
@@ -100,26 +95,34 @@ void tab_widget::TabWidget::keyPressEvent(QKeyEvent * event) {
 
 }
 
-int tab_widget::TabWidget::addTab(QWidget * page, const QString & label, const QIcon & icon) {
+int tab_widget::TabWidget::addTab(std::shared_ptr<tab::Tab> newTab, const QString & label, const QIcon & icon) {
 	QINFO_PRINT(global_types::qinfo_level_e::ZERO, tabWidgetTabs,  "Open tab with label " << label);
 
 	const int index = this->count();
 
-	int tabIndex = this->insertTab(index, page, label, icon);
+	int tabIndex = this->insertTab(index, newTab, label, icon);
 
 	return tabIndex;
 }
 
-int tab_widget::TabWidget::insertTab(const int & index, QWidget * page, const QString & label, const QIcon & icon) {
+int tab_widget::TabWidget::insertTab(const int & index, std::shared_ptr<tab::Tab> newTab, const QString & label, const QIcon & icon) {
 	QINFO_PRINT(global_types::qinfo_level_e::ZERO, tabWidgetTabs,  "Insert tab with label " << label << " at position " << index);
 
 	int tabIndex = -1;
 
+	QEXCEPTION_ACTION_COND((index > this->count()), throw,  "Unable to add tab at index " << index << ". Valid range for argument index is 0 to " << this->count());
+
+	// Inserting tab into the vector before inserting to the QTabWidget because it will trigger an update of the status bar
+	std::vector<std::shared_ptr<tab::Tab>>::const_iterator tabsBegin = this->tabs.cbegin();
+	this->tabs.insert((tabsBegin + index), newTab);
+
 	if (icon.isNull()) {
-		tabIndex = QTabWidget::insertTab(index, page, icon, label);
+		tabIndex = QTabWidget::insertTab(index, newTab.get(), icon, label);
 	} else {
-		tabIndex = QTabWidget::insertTab(index, page, label);
+		tabIndex = QTabWidget::insertTab(index, newTab.get(), label);
 	}
+
+	QEXCEPTION_ACTION_COND((this->tabs.size() != static_cast<std::vector<std::shared_ptr<tab::Tab>>::size_type>(this->count())), throw,  "Number of tabs is not synchronized between QTabWidget and TabWidget. Number of tabs in QTabWidget is " << this->count() << ". Number of tabs in TabWidget is " << this->tabs.size());
 
 	this->setVisibleAttribute();
 
@@ -144,8 +147,13 @@ void tab_widget::TabWidget::setVisibleAttribute() {
 	this->setVisible(visibleFlag);
 }
 
-QWidget * tab_widget::TabWidget::widget(const int & index, const bool & checkError) const {
-	QWidget * requestedWidget = QTabWidget::widget(index);
+std::shared_ptr<tab::Tab> tab_widget::TabWidget::widget(const int & index, const bool & checkError) const {
+	std::shared_ptr<tab::Tab> requestedWidget = nullptr;
+	try {
+		requestedWidget = this->tabs.at(index);
+	} catch (std::out_of_range const & outOfRangeE) {
+		QEXCEPTION_ACTION(throw, outOfRangeE.what());
+	}
 
 	QEXCEPTION_ACTION_COND(((checkError == true) && (requestedWidget == nullptr)), throw,  "Unable to get widget for the tab at index " << index);
 

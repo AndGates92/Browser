@@ -148,25 +148,25 @@ namespace open_popup {
 			 * @brief open label
 			 *
 			 */
-			QLabel * openLabel;
+			std::unique_ptr<QLabel> openLabel;
 
 			/**
 			 * @brief browse label
 			 *
 			 */
-			QLabel * browseLabel;
+			std::unique_ptr<QLabel> browseLabel;
 
 			/**
 			 * @brief cancel label
 			 *
 			 */
-			QLabel * cancelLabel;
+			std::unique_ptr<QLabel> cancelLabel;
 
 			/**
 			 * @brief insert label
 			 *
 			 */
-			QLabel * insertLabel;
+			std::unique_ptr<QLabel> insertLabel;
 
 			/**
 			 * @brief Function: virtual void close() override

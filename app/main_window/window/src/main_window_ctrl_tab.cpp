@@ -69,7 +69,7 @@ namespace main_window_ctrl_tab {
 
 }
 
-main_window_ctrl_tab::MainWindowCtrlTab::MainWindowCtrlTab(QWidget * parent, QSharedPointer<main_window_core::MainWindowCore> core) : main_window_ctrl_base::MainWindowCtrlBase(parent, core, main_window_ctrl_tab::commandFileFullPath) {
+main_window_ctrl_tab::MainWindowCtrlTab::MainWindowCtrlTab(QWidget * parent, std::shared_ptr<main_window_core::MainWindowCore> core) : main_window_ctrl_base::MainWindowCtrlBase(parent, core, main_window_ctrl_tab::commandFileFullPath) {
 
 	// Shortcuts
 	this->createExtraShortcuts();
@@ -93,27 +93,27 @@ void main_window_ctrl_tab::MainWindowCtrlTab::connectExtraSignals() {
 	QINFO_PRINT(global_types::qinfo_level_e::ZERO, mainWindowCtrlTabOverall,  "Connect signals");
 
 	// open tab action (from fileMenu)
-	connect(this->windowCore->topMenuBar->getFileMenu()->openTabAction, &QAction::triggered, this, &main_window_ctrl_tab::MainWindowCtrlTab::setUpOpenNewTab);
+	connect(this->windowCore->topMenuBar->getFileMenu()->openTabAction.get(), &QAction::triggered, this, &main_window_ctrl_tab::MainWindowCtrlTab::setUpOpenNewTab);
 
 	// When the file has been read, then show it on the screen
-	connect(this->windowCore->topMenuBar->getFileMenu(), &file_menu::FileMenu::updateCenterWindowSignal, this->windowCore->tabs, &main_window_tab_widget::MainWindowTabWidget::openFileInCurrentTab);
-	connect(this->windowCore->popup->getOpenFilePopup(), &open_popup::OpenPopup::fileRead, this->windowCore->tabs, &main_window_tab_widget::MainWindowTabWidget::openFileInCurrentTab);
+	connect(this->windowCore->topMenuBar->getFileMenu().get(), &file_menu::FileMenu::updateCenterWindowSignal, this->windowCore->tabs.get(), &main_window_tab_widget::MainWindowTabWidget::openFileInCurrentTab);
+	connect(this->windowCore->popup->getOpenFilePopup().get(), &open_popup::OpenPopup::fileRead, this->windowCore->tabs.get(), &main_window_tab_widget::MainWindowTabWidget::openFileInCurrentTab);
 
-	main_window_status_bar::MainWindowStatusBar * statusBar = this->windowCore->bottomStatusBar;
-	connect(this, &main_window_ctrl_tab::MainWindowCtrlTab::currentTabSrcChanged, statusBar, &main_window_status_bar::MainWindowStatusBar::setContentPathText);
+	std::unique_ptr<main_window_status_bar::MainWindowStatusBar> & statusBar = this->windowCore->bottomStatusBar;
+	connect(this, &main_window_ctrl_tab::MainWindowCtrlTab::currentTabSrcChanged, statusBar.get(), &main_window_status_bar::MainWindowStatusBar::setContentPathText);
 
 	// Updates to the window depending on changes in tabs
-	connect(this->windowCore->tabs, &main_window_tab_widget::MainWindowTabWidget::tabSourceChanged, this, &main_window_ctrl_tab::MainWindowCtrlTab::createContentPathTextFromSource);
+	connect(this->windowCore->tabs.get(), &main_window_tab_widget::MainWindowTabWidget::tabSourceChanged, this, &main_window_ctrl_tab::MainWindowCtrlTab::createContentPathTextFromSource);
 
-	connect(this->windowCore->tabs, &main_window_tab_widget::MainWindowTabWidget::currentChanged, this, &main_window_ctrl_tab::MainWindowCtrlTab::updateStatusBar);
-	connect(this->windowCore->tabs, &main_window_tab_widget::MainWindowTabWidget::numberTabsChanged, this, &main_window_ctrl_tab::MainWindowCtrlTab::updateStatusBar);
+	connect(this->windowCore->tabs.get(), &main_window_tab_widget::MainWindowTabWidget::currentChanged, this, &main_window_ctrl_tab::MainWindowCtrlTab::updateStatusBar);
+	connect(this->windowCore->tabs.get(), &main_window_tab_widget::MainWindowTabWidget::numberTabsChanged, this, &main_window_ctrl_tab::MainWindowCtrlTab::updateStatusBar);
 
 	// Progress bar connections
-	connect(this->windowCore->tabs, &main_window_tab_widget::MainWindowTabWidget::tabNearlyDisconnected, this, &main_window_ctrl_tab::MainWindowCtrlTab::disconnectTab);
-	connect(this->windowCore->tabs, &main_window_tab_widget::MainWindowTabWidget::tabNearlyConnected, this, &main_window_ctrl_tab::MainWindowCtrlTab::connectTab);
+	connect(this->windowCore->tabs.get(), &main_window_tab_widget::MainWindowTabWidget::tabNearlyDisconnected, this, &main_window_ctrl_tab::MainWindowCtrlTab::disconnectTab);
+	connect(this->windowCore->tabs.get(), &main_window_tab_widget::MainWindowTabWidget::tabNearlyConnected, this, &main_window_ctrl_tab::MainWindowCtrlTab::connectTab);
 
 	// Update info bar
-	connect(this->windowCore->tabs, &main_window_tab_widget::MainWindowTabWidget::tabCloseRequested, this, &main_window_ctrl_tab::MainWindowCtrlTab::updateStatusBar);
+	connect(this->windowCore->tabs.get(), &main_window_tab_widget::MainWindowTabWidget::tabCloseRequested, this, &main_window_ctrl_tab::MainWindowCtrlTab::updateStatusBar);
 
 }
 
@@ -256,37 +256,30 @@ void main_window_ctrl_tab::MainWindowCtrlTab::moveCursor(const int & tabIndex) {
 void main_window_ctrl_tab::MainWindowCtrlTab::connectTab(const int & tabIndex) {
 	const main_window_shared_types::page_type_e tabType = this->windowCore->tabs->getPageType(tabIndex);
 	QINFO_PRINT(global_types::qinfo_level_e::ZERO, mainWindowCtrlTabTabs,  "Connect signals from " << tabType << " object of tab " << tabIndex << " to progress bar slots");
-	try {
-		main_window_tab::MainWindowTab * tab = dynamic_cast<main_window_tab::MainWindowTab *>(this->windowCore->tabs->widget(tabIndex));
 
-		main_window_status_bar::MainWindowStatusBar * statusBar = this->windowCore->bottomStatusBar;
-		connect(tab, &main_window_tab::MainWindowTab::verticalScrollChanged, statusBar, &main_window_status_bar::MainWindowStatusBar::setVScroll);
-		statusBar->setVScroll(tab->getVerticalScroll());
+	std::shared_ptr<main_window_tab::MainWindowTab> tab = this->windowCore->tabs->widget(tabIndex);
 
-		connect(tab, &main_window_tab::MainWindowTab::loadProgressChanged, statusBar, &main_window_status_bar::MainWindowStatusBar::setProgressValue);
-		statusBar->setProgressValue(tab->getLoadProgress());
+	std::unique_ptr<main_window_status_bar::MainWindowStatusBar> & statusBar = this->windowCore->bottomStatusBar;
+	connect(tab.get(), &main_window_tab::MainWindowTab::verticalScrollChanged, statusBar.get(), &main_window_status_bar::MainWindowStatusBar::setVScroll);
+	statusBar->setVScroll(tab->getVerticalScroll());
 
-		// Move focus to the tab index
-		tab->setFocus();
+	connect(tab.get(), &main_window_tab::MainWindowTab::loadProgressChanged, statusBar.get(), &main_window_status_bar::MainWindowStatusBar::setProgressValue);
+	statusBar->setProgressValue(tab->getLoadProgress());
 
-	} catch (const std::bad_cast & badCastE) {
-		QEXCEPTION_ACTION(throw, badCastE.what());
-	}
+	// Move focus to the tab index
+	tab->setFocus();
 }
 
 void main_window_ctrl_tab::MainWindowCtrlTab::disconnectTab(const int & tabIndex) {
 	const main_window_shared_types::page_type_e tabType = this->windowCore->tabs->getPageType(tabIndex);
 	QINFO_PRINT(global_types::qinfo_level_e::ZERO, mainWindowCtrlTabTabs,  "Disconnect connect signals from " << tabType << " object of tab " << tabIndex << " to progress bar slots");
-	try {
-		const main_window_tab::MainWindowTab * tab = dynamic_cast<main_window_tab::MainWindowTab *>(this->windowCore->tabs->widget(tabIndex));
 
-		main_window_status_bar::MainWindowStatusBar * statusBar = this->windowCore->bottomStatusBar;
-		disconnect(tab, &main_window_tab::MainWindowTab::verticalScrollChanged, statusBar, &main_window_status_bar::MainWindowStatusBar::setVScroll);
-		disconnect(tab, &main_window_tab::MainWindowTab::loadProgressChanged, statusBar, &main_window_status_bar::MainWindowStatusBar::setProgressValue);
+	const std::shared_ptr<main_window_tab::MainWindowTab> tab = this->windowCore->tabs->widget(tabIndex);
 
-	} catch (const std::bad_cast & badCastE) {
-		QEXCEPTION_ACTION(throw, badCastE.what());
-	}
+	std::unique_ptr<main_window_status_bar::MainWindowStatusBar> & statusBar = this->windowCore->bottomStatusBar;
+	disconnect(tab.get(), &main_window_tab::MainWindowTab::verticalScrollChanged, statusBar.get(), &main_window_status_bar::MainWindowStatusBar::setVScroll);
+	disconnect(tab.get(), &main_window_tab::MainWindowTab::loadProgressChanged, statusBar.get(), &main_window_status_bar::MainWindowStatusBar::setProgressValue);
+
 }
 
 //************************************************************************************
@@ -618,15 +611,11 @@ void main_window_ctrl_tab::MainWindowCtrlTab::postprocessWindowStateChange(const
 	QINFO_PRINT(global_types::qinfo_level_e::ZERO, mainWindowCtrlTabTabs,  "Current state " << windowState << " previousState " << previousState);
 
 	const int tabCount = this->windowCore->getTabCount();
-	const main_window_tab::MainWindowTab * tab = Q_NULLPTR;
+	std::shared_ptr<main_window_tab::MainWindowTab> tab = nullptr;
 	QString searchText(QString::null);
 	if (tabCount > 0) {
 		const int tabIndex = this->windowCore->getCurrentTabIndex();
-		try {
-			tab = dynamic_cast<main_window_tab::MainWindowTab *>(this->windowCore->tabs->widget(tabIndex));
-		} catch (const std::bad_cast & badCastE) {
-			QEXCEPTION_ACTION(throw, badCastE.what());
-		}
+		tab = this->windowCore->tabs->widget(tabIndex);
 		searchText = tab->getSearchText();
 	}
 
@@ -654,7 +643,7 @@ void main_window_ctrl_tab::MainWindowCtrlTab::postprocessWindowStateChange(const
 			this->setFocus();
 			break;
 		case main_window_shared_types::state_e::EDIT_SEARCH:
-			QEXCEPTION_ACTION_COND((tab == Q_NULLPTR), throw,  "Postprocessing state " << windowState << ": Unable to edit string used for previous search as pointer to tab is " << tab);
+			QEXCEPTION_ACTION_COND((tab == nullptr), throw,  "Postprocessing state " << windowState << ": Unable to edit string used for previous search as pointer to tab is " << tab.get());
 			this->printUserInput(main_window_shared_types::text_action_e::SET, searchText);
 			this->setAllShortcutEnabledProperty(false);
 			this->setFocus();
@@ -769,7 +758,7 @@ void main_window_ctrl_tab::MainWindowCtrlTab::createContentPathTextFromSource(co
 }
 
 void main_window_ctrl_tab::MainWindowCtrlTab::createOpenPrompt() {
-	main_window_popup_container::MainWindowPopupContainer * container = this->windowCore->popup;
+	std::shared_ptr<main_window_popup_container::MainWindowPopupContainer> container = this->windowCore->popup;
 	bool success = container->showOpenFilePopup();
 //	container->setFocus();
 

@@ -4,9 +4,11 @@
  * @copyright
  * @file tab_widget.h
  * @author Andrea Gianarda
- * @date 02rd October 2019
+ * @date 02nd October 2019
  * @brief Tab Widget header file
 */
+
+#include <memory>
 
 // Qt libraries
 // Required by qInfo
@@ -20,6 +22,7 @@
 #include "logging_macros.h"
 #include "global_types.h"
 #include "tab_bar.h"
+#include "tab.h"
 #include "constructor_macros.h"
 
 /** @defgroup TabWidgetGroup Tab Widget Doxygen Group
@@ -61,9 +64,9 @@ namespace tab_widget {
 			virtual ~TabWidget();
 
 			/**
-			 * @brief Function: int addTab(QWidget * page, const QString & label, const QIcon & icon = QIcon())
+			 * @brief Function: int addTab(std::shared_ptr<tab::Tab> newTab, const QString & label, const QIcon & icon = QIcon())
 			 *
-			 * \param page: widget to fill in
+			 * \param newTab: widget to fill in
 			 * \param label: label of the tab
 			 * \param icon: icon of the tab
 			 *
@@ -71,13 +74,13 @@ namespace tab_widget {
 			 *
 			 * add tab to tab widget
 			 */
-			int addTab(QWidget * page, const QString & label, const QIcon & icon = QIcon());
+			int addTab(std::shared_ptr<tab::Tab> newTab, const QString & label, const QIcon & icon = QIcon());
 
 			/**
-			 * @brief Function: int insertTab(const int & index, QWidget * page, const QString & label, const QIcon & icon = QIcon())
+			 * @brief Function: int insertTab(const int & index, std::shared_ptr<tab::Tab> newTab, const QString & label, const QIcon & icon = QIcon())
 			 *
 			 * \param index: index to insert tab to
-			 * \param page: widget to fill in
+			 * \param newTab: widget to fill in
 			 * \param label: label of the tab
 			 * \param icon: icon of the tab
 			 *
@@ -85,7 +88,7 @@ namespace tab_widget {
 			 *
 			 * add tab to tab widget at index index
 			 */
-			int insertTab(const int & index, QWidget * page, const QString & label, const QIcon & icon = QIcon());
+			int insertTab(const int & index, std::shared_ptr<tab::Tab> newTab, const QString & label, const QIcon & icon = QIcon());
 
 			/**
 			 * @brief Function: void removeTab(const int & index)
@@ -97,16 +100,16 @@ namespace tab_widget {
 			void removeTab(const int & index);
 
 			/**
-			 * @brief Function: QWidget * widget(const int & index, const bool & checkError = true) const
+			 * @brief Function: std::shared_ptr<tab::Tab> widget(const int & index, const bool & checkError = true) const
 			 *
 			 * \param index: index of the tab to return the widget of
 			 * \param checkError: error out if widget is null
 			 *
-			 * \return widget of tab page
+			 * \return tab at position index
 			 *
 			 * returns a tab from tab widget
 			 */
-			QWidget * widget(const int & index, const bool & checkError = true) const;
+			std::shared_ptr<tab::Tab> widget(const int & index, const bool & checkError = true) const;
 
 		protected:
 			/**
@@ -119,19 +122,28 @@ namespace tab_widget {
 			void resizeEvent(QResizeEvent * event) override;
 
 			/**
-			 * @brief Function: void setTabBar(tab_bar::TabBar * tabBar)
+			 * @brief Function: void setTabBar(std::shared_ptr<tab_bar::TabBar> newTabBar)
 			 *
-			 * \param tabBar: tab bar linked to the tab widget
+			 * \param newTabBar: tab bar linked to the tab widget
 			 *
 			 * add tab bar to tab widget
 			 */
-			void setTabBar(tab_bar::TabBar * tabBar);
+			void setTabBar(std::shared_ptr<tab_bar::TabBar> newTabBar);
+
+			/**
+			 * @brief Function: std::shared_ptr<tab_bar::TabBar> tabBar() const
+			 *
+			 * \return tab bar linked to the tab widget
+			 *
+			 * This function returns the tab bar of the tab widget
+			 */
+			std::shared_ptr<tab_bar::TabBar> tabBar() const;
 
 			/**
 			 * @brief tab bar
 			 *
 			 */
-			tab_bar::TabBar * bar;
+			std::shared_ptr<tab_bar::TabBar> bar;
 
 		private:
 			/**
@@ -140,6 +152,12 @@ namespace tab_widget {
 			 * Set tab visible attribute
 			 */
 			void setVisibleAttribute();
+
+			/**
+			 * @brief tab list
+			 *
+			 */
+			std::vector<std::shared_ptr<tab::Tab>> tabs;
 
 			/**
 			 * @brief Function: void keyPressEvent(QKeyEvent * event)

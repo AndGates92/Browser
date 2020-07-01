@@ -118,7 +118,7 @@ open_button_window::OpenButtonWindow::OpenButtonWindow(QWidget * parent, Qt::Win
 	// Create widgets to put in the window
 	this->fillWindow();
 
-	this->addAction(this->typeAction);
+	this->addAction(this->typeAction.get());
 
 	// define window layout
 	this->windowLayout();
@@ -135,15 +135,6 @@ open_button_window::OpenButtonWindow::OpenButtonWindow(QWidget * parent, Qt::Win
 
 open_button_window::OpenButtonWindow::~OpenButtonWindow() {
 	QINFO_PRINT(global_types::qinfo_level_e::ZERO, openButtonWindowOverall,  "Destructor of OpenButtonWindow class");
-	if (this->openButton != Q_NULLPTR) {
-		delete this->openButton;
-	}
-	if (this->browseButton != Q_NULLPTR) {
-		delete this->browseButton;
-	}
-	if (this->cancelButton != Q_NULLPTR) {
-		delete this->cancelButton;
-	}
 }
 
 void open_button_window::OpenButtonWindow::browse() {
@@ -235,21 +226,21 @@ void open_button_window::OpenButtonWindow::windowLayout() {
 
 		QHBoxLayout * firstRow = new QHBoxLayout(this);
 		// path or URL to open
-		firstRow->addWidget(this->pathToOpen, open_button_window::defaultStretch);
+		firstRow->addWidget(this->pathToOpen.get(), open_button_window::defaultStretch);
 		firstRow->addSpacing(open_button_window::widgetHSpacing);
 		// browse button
-		firstRow->addWidget(this->browseButton, open_button_window::defaultStretch, Qt::AlignRight);
+		firstRow->addWidget(this->browseButton.get(), open_button_window::defaultStretch, Qt::AlignRight);
 
 		QHBoxLayout * lastRow = new QHBoxLayout(this);
 		// open button
-		lastRow->addWidget(this->openButton, open_button_window::defaultStretch, Qt::AlignLeft);
+		lastRow->addWidget(this->openButton.get(), open_button_window::defaultStretch, Qt::AlignLeft);
 		lastRow->addSpacing(open_button_window::widgetHSpacing);
 		// cancel button
-		lastRow->addWidget(this->cancelButton, open_button_window::defaultStretch, Qt::AlignRight);
+		lastRow->addWidget(this->cancelButton.get(), open_button_window::defaultStretch, Qt::AlignRight);
 
 		// Add layouts to main layout
 		layout->addLayout(firstRow);
-		layout->addWidget(this->fileView, open_button_window::defaultStretch);
+		layout->addWidget(this->fileView.get(), open_button_window::defaultStretch);
 		layout->addLayout(lastRow);
 
 	} catch (const std::bad_cast & badCastE) {
@@ -259,9 +250,9 @@ void open_button_window::OpenButtonWindow::windowLayout() {
 
 void open_button_window::OpenButtonWindow::fillWindow() {
 
-	this->openButton = this->createPushButton(this, this->applyAction);
-	this->browseButton = this->createPushButton(this, this->browseAction);
-	this->cancelButton = this->createPushButton(this, this->cancelAction);
+	this->openButton = std::move(this->createPushButton(this, this->applyAction));
+	this->browseButton = std::move(this->createPushButton(this, this->browseAction));
+	this->cancelButton = std::move(this->createPushButton(this, this->cancelAction));
 
 	// Hide file view as user didn't ask for it
 	this->fileView->setMinimumSize(this->fileView->sizeHint());
@@ -274,33 +265,33 @@ void open_button_window::OpenButtonWindow::fillWindow() {
 void open_button_window::OpenButtonWindow::connectSignals() {
 	QINFO_PRINT(global_types::qinfo_level_e::ZERO, openButtonWindowOverall,  "Connect signals");
 
-	connect(this->applyAction, &action::Action::triggered, this, &open_button_window::OpenButtonWindow::apply);
-	connect(this->openButton, &QPushButton::pressed, this, &open_button_window::OpenButtonWindow::apply);
-	connect(this->browseAction, &action::Action::triggered, this, &open_button_window::OpenButtonWindow::browse);
-	connect(this->browseButton, &QPushButton::pressed, this, &open_button_window::OpenButtonWindow::browse);
-	connect(this->cancelAction, &action::Action::triggered, this, &open_button_window::OpenButtonWindow::cancel);
-	connect(this->cancelButton, &QPushButton::released, this, &open_button_window::OpenButtonWindow::cancel);
-	connect(this->typeAction, &action::Action::triggered, this, &open_button_window::OpenButtonWindow::insert);
+	connect(this->applyAction.get(), &action::Action::triggered, this, &open_button_window::OpenButtonWindow::apply);
+	connect(this->openButton.get(), &QPushButton::pressed, this, &open_button_window::OpenButtonWindow::apply);
+	connect(this->browseAction.get(), &action::Action::triggered, this, &open_button_window::OpenButtonWindow::browse);
+	connect(this->browseButton.get(), &QPushButton::pressed, this, &open_button_window::OpenButtonWindow::browse);
+	connect(this->cancelAction.get(), &action::Action::triggered, this, &open_button_window::OpenButtonWindow::cancel);
+	connect(this->cancelButton.get(), &QPushButton::released, this, &open_button_window::OpenButtonWindow::cancel);
+	connect(this->typeAction.get(), &action::Action::triggered, this, &open_button_window::OpenButtonWindow::insert);
 
-	connect(this->pathToOpen, &QLineEdit::textChanged, this, &open_button_window::OpenButtonWindow::pathChangedAction);
+	connect(this->pathToOpen.get(), &QLineEdit::textChanged, this, &open_button_window::OpenButtonWindow::pathChangedAction);
 
 	// Need to use lambda function as fileViewClickAction is not a slot
-	connect(this->fileView, &QTreeView::clicked, [this] (const QModelIndex & index) {
+	connect(this->fileView.get(), &QTreeView::clicked, [this] (const QModelIndex & index) {
 		this->fileViewClickAction(index);
 	});
 
 	// Need to use lambda function as fileViewDoubleClickAction is not a slot
-	connect(this->fileView, &QTreeView::doubleClicked, [this] (const QModelIndex & index) {
+	connect(this->fileView.get(), &QTreeView::doubleClicked, [this] (const QModelIndex & index) {
 		this->fileViewDoubleClickAction(index);
 	});
 
-	connect(this->fileModel, &QFileSystemModel::directoryLoaded, [this] (const QString & path) {
+	connect(this->fileModel.get(), &QFileSystemModel::directoryLoaded, [this] (const QString & path) {
 		this->directoryLoadedAction(path);
 	});
 
 }
 
-QPushButton * open_button_window::OpenButtonWindow::createPushButton(QWidget *parent, const action::Action * actionPtr) {
+std::unique_ptr<QPushButton> open_button_window::OpenButtonWindow::createPushButton(QWidget *parent, const std::shared_ptr<action::Action> & actionPtr) {
 	// Push button text is <actionName> (<shortcut>)
 	std::string buttonText(actionPtr->text().toStdString());
 	if (actionPtr->shortcut().isEmpty() == false) {
@@ -308,8 +299,8 @@ QPushButton * open_button_window::OpenButtonWindow::createPushButton(QWidget *pa
 		buttonText.append(actionPtr->shortcut().toString().toStdString());
 		buttonText.append(")");
 	}
-	QPushButton * button = new QPushButton(QPushButton::tr(buttonText.c_str()), parent);
-	button->addAction(const_cast<action::Action *>(actionPtr));
+	std::unique_ptr<QPushButton> button = std::make_unique<QPushButton>(QPushButton::tr(buttonText.c_str()), parent);
+	button->addAction(const_cast<action::Action *>(actionPtr.get()));
 	button->setSizePolicy(QSizePolicy::Fixed, QSizePolicy::Fixed);
 	button->setFixedHeight(button->fontMetrics().height() + open_button_window::topButtonMargin + open_button_window::bottomButtonMargin);
 
@@ -320,7 +311,7 @@ QSize open_button_window::OpenButtonWindow::sizeHint() const {
 
 	int width = 0;
 
-	const QList<QWidget *> widgets = this->findChildren<QWidget *>();
+	const QList<QWidget *> widgets = this->findChildren<QWidget *>(QString(), Qt::FindChildrenRecursively);
 	for (QWidget * widget : widgets) {
 		if (widget != Q_NULLPTR) {
 			width = std::max(width, widget->sizeHint().width());

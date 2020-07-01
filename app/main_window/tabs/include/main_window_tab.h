@@ -51,17 +51,14 @@ namespace main_window_tab {
 
 		public:
 			/**
-			 * @brief Function: explicit MainWindowTab(QWidget * parent, QWidget * tabBar, const QString & search, const main_window_shared_types::page_type_e type = main_window_shared_types::page_type_e::UNKNOWN, const QString & src = QString::null, const void * data = nullptr)
+			 * @brief Function: explicit MainWindowTab(QWidget * parent, const QString & search)
 			 *
-			 * \param type: tab type
-			 * \param src: source of the tab
-			 * \param data: tab extra data
+			 * \param search: search in the current tab
 			 * \param parent: parent widget
-			 * \param tabBar: tab bar
 			 *
 			 * Main Window Tab constructor
 			 */
-			explicit MainWindowTab(QWidget * parent, QWidget * tabBar, const QString & search, const main_window_shared_types::page_type_e type = main_window_shared_types::page_type_e::UNKNOWN, const QString & src = QString::null, const void * data = nullptr);
+			explicit MainWindowTab(QWidget * parent, const QString & search);
 
 			/**
 			 * @brief Function: virtual ~MainWindowTab()
@@ -71,13 +68,13 @@ namespace main_window_tab {
 			virtual ~MainWindowTab();
 
 			/**
-			 * @brief Function: main_window_web_engine_page::MainWindowWebEnginePage * getPage() const
+			 * @brief Function: std::shared_ptr<main_window_web_engine_page::MainWindowWebEnginePage> getPage() const
 			 *
 			 * \return tab web page object
 			 *
 			 * This function returns the page linked to the tab
 			 */
-			main_window_web_engine_page::MainWindowWebEnginePage * getPage() const;
+			std::shared_ptr<main_window_web_engine_page::MainWindowWebEnginePage> getPage() const;
 
 			/**
 			 * @brief Function: const QString getSearchText() const
@@ -87,6 +84,18 @@ namespace main_window_tab {
 			 * This function returns the text searched by the user for this tab
 			 */
 			const QString getSearchText() const;
+
+			/**
+			 * @brief Function: void configure(std::shared_ptr<tab_bar::TabBar> tabBar, const main_window_shared_types::page_type_e type, const QString & src, const void * data)
+			 *
+			 * \param type: tab type
+			 * \param src: source of the tab
+			 * \param data: tab extra data
+			 * \param tabBar: tab bar
+			 *
+			 * This function configures the main window tab
+			 */
+			void configure(std::shared_ptr<tab_bar::TabBar> tabBar, const main_window_shared_types::page_type_e type, const QString & src, const void * data);
 
 		signals:
 			/**
@@ -142,67 +151,67 @@ namespace main_window_tab {
 			void setSearchText(QString value);
 
 			/**
-			 * @brief Function: virtual main_window_web_engine_view::MainWindowWebEngineView * getView() const override
+			 * @brief Function: std::shared_ptr<main_window_web_engine_view::MainWindowWebEngineView> getView() const
 			 *
 			 * \return tab view
 			 *
 			 * This function returns the tab view
 			 */
-			virtual main_window_web_engine_view::MainWindowWebEngineView * getView() const override;
+			std::shared_ptr<main_window_web_engine_view::MainWindowWebEngineView> getView() const;
 
 			/**
-			 * @brief Function: main_window_tab_load_manager::MainWindowTabLoadManager * getLoadManager() const override
+			 * @brief Function: std::shared_ptr<main_window_tab_load_manager::MainWindowTabLoadManager> getLoadManager() const
 			 *
 			 * \return load manager
 			 *
 			 * This function returns the load manager
 			 */
-			virtual main_window_tab_load_manager::MainWindowTabLoadManager * getLoadManager() const override;
+			std::shared_ptr<main_window_tab_load_manager::MainWindowTabLoadManager> getLoadManager() const;
 
 			/**
-			 * @brief Function: virtual main_window_tab_search::MainWindowTabSearch * getSearch() const override
+			 * @brief Function: std::shared_ptr<main_window_tab_search::MainWindowTabSearch> getSearch() const
 			 *
 			 * \return tab search
 			 *
 			 * This function returns the tab search
 			 */
-			virtual main_window_tab_search::MainWindowTabSearch * getSearch() const override;
+			std::shared_ptr<main_window_tab_search::MainWindowTabSearch> getSearch() const;
 
 			/**
-			 * @brief Function: virtual main_window_web_engine_history::MainWindowWebEngineHistory * getHistory() const override
+			 * @brief Function: std::shared_ptr<main_window_web_engine_history::MainWindowWebEngineHistory> getHistory() const
 			 *
 			 * \return history of the tab
 			 *
 			 * This function returns the history of the page
 			 */
-			virtual main_window_web_engine_history::MainWindowWebEngineHistory * getHistory() const override;
+			std::shared_ptr<main_window_web_engine_history::MainWindowWebEngineHistory> getHistory() const;
 
 			/**
-			 * @brief Function: virtual main_window_web_engine_settings::MainWindowWebEngineSettings * getSettings() const override
+			 * @brief Function: std::shared_ptr<main_window_web_engine_settings::MainWindowWebEngineSettings> getSettings() const
 			 *
 			 * \return tab settings
 			 *
 			 * This function returns the settings
 			 */
-			virtual main_window_web_engine_settings::MainWindowWebEngineSettings * getSettings() const override;
+			std::shared_ptr<main_window_web_engine_settings::MainWindowWebEngineSettings> getSettings() const;
 
 			/**
-			 * @brief Function: virtual main_window_tab_scroll_manager::MainWindowTabScrollManager * getScrollManager() const override
+			 * @brief Function: std::shared_ptr<main_window_tab_scroll_manager::MainWindowTabScrollManager> getScrollManager() const
 			 *
 			 * \return scroll manager
 			 *
 			 * This function returns the scroll manager
 			 */
-			virtual main_window_tab_scroll_manager::MainWindowTabScrollManager * getScrollManager() const override;
+			std::shared_ptr<main_window_tab_scroll_manager::MainWindowTabScrollManager> getScrollManager() const;
 
 			/**
-			 * @brief Function: void updateView(main_window_web_engine_view::MainWindowWebEngineView * value)
+			 * @brief Function: void updateView(std::shared_ptr<main_window_web_engine_view::MainWindowWebEngineView> value)
 			 *
 			 * \param value: view to use
 			 *
 			 * This function updates the current view as well as informations derived from it
 			 */
-			void updateView(main_window_web_engine_view::MainWindowWebEngineView * value);
+			void updateView(std::shared_ptr<main_window_web_engine_view::MainWindowWebEngineView> value);
 
 			/**
 			 * @brief Function: void reload() override
@@ -210,6 +219,24 @@ namespace main_window_tab {
 			 * This function reloads the content of the page
 			 */
 			void reload() override;
+
+			/**
+			 * @brief Function: std::shared_ptr<main_window_tab::MainWindowTab> shared_from_this()
+			 *
+			 * \return shared pointer of this
+			 *
+			 * This function returns a shared pointer to this
+			 */
+			std::shared_ptr<main_window_tab::MainWindowTab> shared_from_this();
+
+			/**
+			 * @brief Function: std::weak_ptr<main_window_tab::MainWindowTab> sweak_from_this()
+			 *
+			 * \return weak pointer of this
+			 *
+			 * This function returns a weak pointer to this
+			 */
+			std::weak_ptr<main_window_tab::MainWindowTab> weak_from_this();
 
 			// Move and copy constructor
 			/**
@@ -220,11 +247,11 @@ namespace main_window_tab {
 
 		private slots:
 			/**
-			 * @brief Function: void postprocessLoadFInished(const bool & success)
+			 * @brief Function: void postprocessLoadFinished(const bool & success)
 			 *
 			 * This function postprocessing the end of a page load
 			 */
-			void postprocessLoadFInished(const bool & success);
+			void postprocessLoadFinished(const bool & success);
 
 	};
 }

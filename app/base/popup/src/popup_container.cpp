@@ -4,7 +4,7 @@
  * @author Andrea Gianarda
  * @date 07th of June 2020
  * @brief Popup container menu functions
-*/
+ */
 
 // Qt libraries
 #include <qt5/QtCore/QtGlobal>
@@ -28,7 +28,7 @@ namespace popup_container {
 	}
 }
 
-popup_container::PopupContainer::PopupContainer(QWidget * parent, Qt::WindowFlags flags) : overlayed_widget::OverlayedWidget(parent, flags), popupWidgets(std::map<unsigned int, popup_base::PopupBase *>()) {
+popup_container::PopupContainer::PopupContainer(QWidget * parent, Qt::WindowFlags flags) : overlayed_widget::OverlayedWidget(parent, flags), popupWidgets(std::map<unsigned int, std::shared_ptr<popup_base::PopupBase>>()) {
 
 	QINFO_PRINT(global_types::qinfo_level_e::ZERO, popupContainerOverall,  "Popup container constructor");
 
@@ -38,13 +38,6 @@ popup_container::PopupContainer::PopupContainer(QWidget * parent, Qt::WindowFlag
 
 popup_container::PopupContainer::~PopupContainer() {
 	QINFO_PRINT(global_types::qinfo_level_e::ZERO, popupContainerOverall,  "Popup container destructor");
-
-	for (std::map<unsigned int, popup_base::PopupBase *>::const_iterator it = this->popupWidgets.cbegin(); it != this->popupWidgets.cend(); it++) {
-		unsigned int idx = it->first;
-		popup_base::PopupBase * widget = it->second;
-		QINFO_PRINT(global_types::qinfo_level_e::ZERO, popupContainerOverall,  "Deleting widget " << widget << " with ID " << idx);
-		delete widget;
-	}
 }
 
 void popup_container::PopupContainer::popupLayout() {
@@ -63,55 +56,55 @@ void popup_container::PopupContainer::popupLayout() {
 		QStackedLayout * containerLayout = dynamic_cast<QStackedLayout *>(this->layout());
 		const int layoutSize = containerLayout->count();
 		for (int idx = 0; idx < layoutSize; idx++) {
-			popup_base::PopupBase * w(dynamic_cast<popup_base::PopupBase *>(containerLayout->widget(idx)));
-			this->deleteWidgetFromLayout(w);
+			QWidget * w(containerLayout->widget(idx));
+			containerLayout->removeWidget(w);
 		}
 	} catch (const std::bad_cast & badCastE) {
 		QEXCEPTION_ACTION(throw, badCastE.what());
 	}
 
-	for (std::map<unsigned int, popup_base::PopupBase *>::const_iterator it = this->popupWidgets.cbegin(); it != this->popupWidgets.cend(); it++) {
+	for (std::map<unsigned int, std::shared_ptr<popup_base::PopupBase>>::const_iterator it = this->popupWidgets.cbegin(); it != this->popupWidgets.cend(); it++) {
 		this->addWidgetToLayout(it->first, it->second);
 	}
 
 }
 
-bool popup_container::PopupContainer::addWidget(const unsigned int & index, popup_base::PopupBase * widget) {
+bool popup_container::PopupContainer::addWidget(const unsigned int & index, std::shared_ptr<popup_base::PopupBase> widget) {
 
 	// Pair to detect whether an element is succesfully added to the map
 	// The first argument is the returned iterator if an element already exists at the requested index or the newly created element
 	// The second argument states wheter the addition was succesfull or not
-	std::pair<std::map<unsigned int, popup_base::PopupBase *>::const_iterator, bool> insertReturn;
+	std::pair<std::map<unsigned int, std::shared_ptr<popup_base::PopupBase>>::const_iterator, bool> insertReturn;
 
 	// Pair to be added to the map
 	// Remove constness of method arguments
-	std::pair<unsigned int, popup_base::PopupBase *> keyElPair(const_cast<unsigned int&>(index), widget);
+	std::pair<unsigned int, std::shared_ptr<popup_base::PopupBase>> keyElPair(const_cast<unsigned int&>(index), widget);
 
 	insertReturn = this->popupWidgets.insert(keyElPair);
 
-	std::map<unsigned int, popup_base::PopupBase *>::const_iterator el(insertReturn.first);
+	std::map<unsigned int, std::shared_ptr<popup_base::PopupBase>>::const_iterator el(insertReturn.first);
 	bool  success(insertReturn.second);
 	if (success == true) {
-		QINFO_PRINT(global_types::qinfo_level_e::ZERO, popupContainerOverall,  "Widget " << widget << " has been successfully added to the widget map at index " << index);
+		QINFO_PRINT(global_types::qinfo_level_e::ZERO, popupContainerOverall,  "Widget " << widget.get() << " has been successfully added to the widget map at index " << index);
 		this->addWidgetToLayout(index, widget);
 
 		// Connect close popup to close container on order to move the main window to IDLE state and re-enabke shortcuts
-		connect(widget, &popup_base::PopupBase::closePopup, [this] () {
+		connect(widget.get(), &popup_base::PopupBase::closePopup, [this] () {
 			emit this->closeContainer();
 		});
 
 
 	} else {
-		QINFO_PRINT(global_types::qinfo_level_e::ZERO, popupContainerOverall,  "Widget " << widget << " has not been successfully added to the widget map at index " << index << " as it was already filled with widget " << el->second);
+		QINFO_PRINT(global_types::qinfo_level_e::ZERO, popupContainerOverall,  "Widget " << widget.get() << " has not been successfully added to the widget map at index " << index << " as it was already filled with widget " << el->second.get());
 	}
 
 	return success;
 }
 
-void popup_container::PopupContainer::addWidgetToLayout(const unsigned int & index, popup_base::PopupBase * widget) {
+void popup_container::PopupContainer::addWidgetToLayout(const unsigned int & index, std::shared_ptr<popup_base::PopupBase> widget) {
 	try {
 		QStackedLayout * containerLayout = dynamic_cast<QStackedLayout *>(this->layout());
-		containerLayout->insertWidget(index, widget);
+		containerLayout->insertWidget(index, widget.get());
 	} catch (const std::bad_cast & badCastE) {
 		QEXCEPTION_ACTION(throw, badCastE.what());
 	}
@@ -121,7 +114,7 @@ int popup_container::PopupContainer::searchFreeIndex(const unsigned int startIdx
 	// Start idx at 1 because widget with key startIdx exists
 	for (unsigned int idx = 1; idx < range; idx++) {
 		const unsigned int probableIndex = (startIdx + idx);
-		std::map<unsigned int, popup_base::PopupBase *>::iterator it = this->popupWidgets.find(probableIndex);
+		std::map<unsigned int, std::shared_ptr<popup_base::PopupBase>>::iterator it = this->popupWidgets.find(probableIndex);
 		// If element at key probableIndex is not found, use this free location for the element to append
 		if (it == this->popupWidgets.end()) {
 			return static_cast<int>(probableIndex);
@@ -131,7 +124,7 @@ int popup_container::PopupContainer::searchFreeIndex(const unsigned int startIdx
 	return popup_container::undefinedIndex;
 }
 
-unsigned int popup_container::PopupContainer::appendWidget(popup_base::PopupBase * widget) {
+unsigned int popup_container::PopupContainer::appendWidget(std::shared_ptr<popup_base::PopupBase> widget) {
 	// TODO: find lowest available key instead of using size
 	int index = popup_container::undefinedIndex;
 	unsigned int uIndex = 0;
@@ -139,7 +132,7 @@ unsigned int popup_container::PopupContainer::appendWidget(popup_base::PopupBase
 	unsigned int maxKey = 0;
 
 	// Search gaps between indexes
-	for (std::map<unsigned int, popup_base::PopupBase *>::iterator it = this->popupWidgets.begin(); it != this->popupWidgets.end(); it++) {
+	for (std::map<unsigned int, std::shared_ptr<popup_base::PopupBase>>::iterator it = this->popupWidgets.begin(); it != this->popupWidgets.end(); it++) {
 
 		maxKey = std::max(static_cast<unsigned int>(it->first), maxKey);
 		if (it == this->popupWidgets.begin()) {
@@ -172,24 +165,24 @@ unsigned int popup_container::PopupContainer::appendWidget(popup_base::PopupBase
 		uIndex = maxKey + 1;
 	}
 	bool success = this->addWidget(uIndex, widget);
-	QEXCEPTION_ACTION_COND((success == false), throw, "Unable to add widget " << widget << " at index " << uIndex);
+	QEXCEPTION_ACTION_COND((success == false), throw, "Unable to add widget " << widget.get() << " at index " << uIndex);
 
 	return uIndex;
 }
 
-bool popup_container::PopupContainer::replaceWidget(const unsigned int & index, popup_base::PopupBase * widget) {
+bool popup_container::PopupContainer::replaceWidget(const unsigned int & index, std::shared_ptr<popup_base::PopupBase> widget) {
 
 	this->removeWidget(index);
 
 	bool success = this->addWidget(index, widget);
-	QEXCEPTION_ACTION_COND((success == false), throw, "Unable to replace widget at index " << index << " with " << widget);
+	QEXCEPTION_ACTION_COND((success == false), throw, "Unable to replace widget at index " << index << " with " << widget.get());
 	return success;
 
 }
 
 bool popup_container::PopupContainer::removeWidget(const unsigned int & index) {
 
-	std::map<unsigned int, popup_base::PopupBase *>::iterator it = this->popupWidgets.find(index);
+	std::map<unsigned int, std::shared_ptr<popup_base::PopupBase>>::iterator it = this->popupWidgets.find(index);
 	bool found = (it != this->popupWidgets.end());
 	if (it != this->popupWidgets.end()) {
 		this->popupWidgets.erase(it);
@@ -200,9 +193,9 @@ bool popup_container::PopupContainer::removeWidget(const unsigned int & index) {
 
 }
 
-bool popup_container::PopupContainer::removeWidget(popup_base::PopupBase * widget) {
+bool popup_container::PopupContainer::removeWidget(std::shared_ptr<popup_base::PopupBase> widget) {
 
-	for (std::map<unsigned int, popup_base::PopupBase *>::iterator it = this->popupWidgets.begin(); it != this->popupWidgets.end(); it++) {
+	for (std::map<unsigned int, std::shared_ptr<popup_base::PopupBase>>::iterator it = this->popupWidgets.begin(); it != this->popupWidgets.end(); it++) {
 		if (it->second == widget) {
 			bool found = this->removeWidget(it->first);
 			return found;
@@ -214,7 +207,7 @@ bool popup_container::PopupContainer::removeWidget(popup_base::PopupBase * widge
 
 bool popup_container::PopupContainer::chooseWidgetToShow(const unsigned int & index) {
 
-	std::map<unsigned int, popup_base::PopupBase *>::iterator it = this->popupWidgets.find(index);
+	std::map<unsigned int, std::shared_ptr<popup_base::PopupBase>>::iterator it = this->popupWidgets.find(index);
 	bool found = (it != this->popupWidgets.end());
 
 	// Forward size policy of widget to contqiner
@@ -223,7 +216,7 @@ bool popup_container::PopupContainer::chooseWidgetToShow(const unsigned int & in
 	if (found == true) {
 		// Change visible attribute only if widget is found
 		this->setVisible(true);
-		emit this->updateGeometryRequest(this);
+		emit this->updateGeometryRequest(this->shared_from_this());
 		try {
 			QStackedLayout * containerLayout = dynamic_cast<QStackedLayout *>(this->layout());
 			containerLayout->setCurrentIndex(index);
@@ -236,9 +229,9 @@ bool popup_container::PopupContainer::chooseWidgetToShow(const unsigned int & in
 
 }
 
-bool popup_container::PopupContainer::chooseWidgetToShow(popup_base::PopupBase * widget) {
+bool popup_container::PopupContainer::chooseWidgetToShow(std::shared_ptr<popup_base::PopupBase> widget) {
 
-	for (std::map<unsigned int, popup_base::PopupBase *>::const_iterator it = this->popupWidgets.cbegin(); it != this->popupWidgets.cend(); it++) {
+	for (std::map<unsigned int, std::shared_ptr<popup_base::PopupBase>>::const_iterator it = this->popupWidgets.cbegin(); it != this->popupWidgets.cend(); it++) {
 		if (it->second == widget) {
 			bool found = this->chooseWidgetToShow(it->first);
 			return found;
@@ -248,11 +241,11 @@ bool popup_container::PopupContainer::chooseWidgetToShow(popup_base::PopupBase *
 	return false;
 }
 
-popup_base::PopupBase * popup_container::PopupContainer::getWidget(const unsigned int & index) const {
+std::shared_ptr<popup_base::PopupBase> popup_container::PopupContainer::getWidget(const unsigned int & index) const {
 
-	std::map<unsigned int, popup_base::PopupBase *>::const_iterator it = this->popupWidgets.find(index);
+	std::map<unsigned int, std::shared_ptr<popup_base::PopupBase>>::const_iterator it = this->popupWidgets.find(index);
 	bool found = (it != this->popupWidgets.end());
-	popup_base::PopupBase * widget = nullptr;
+	std::shared_ptr<popup_base::PopupBase> widget = nullptr;
 	if (found == false) {
 		// Print a warning if widget is not found
 		QWARNING_PRINT(popupContainerOverall, "Unable to find widget at index " << index);
@@ -265,10 +258,10 @@ popup_base::PopupBase * popup_container::PopupContainer::getWidget(const unsigne
 
 }
 
-void popup_container::PopupContainer::deleteWidgetFromLayout(popup_base::PopupBase * widget) {
+void popup_container::PopupContainer::deleteWidgetFromLayout(std::shared_ptr<popup_base::PopupBase> widget) {
 	try {
 		QStackedLayout * containerLayout = dynamic_cast<QStackedLayout *>(this->layout());
-		containerLayout->removeWidget(const_cast<popup_base::PopupBase *>(widget));
+		containerLayout->removeWidget(widget.get());
 	} catch (const std::bad_cast & badCastE) {
 		QEXCEPTION_ACTION(throw, badCastE.what());
 	}
@@ -278,7 +271,7 @@ void popup_container::PopupContainer::updateLayout() {
 	this->popupLayout();
 }
 
-std::map<unsigned int, popup_base::PopupBase *>::size_type popup_container::PopupContainer::getWidgetCount() const {
+std::map<unsigned int, std::shared_ptr<popup_base::PopupBase>>::size_type popup_container::PopupContainer::getWidgetCount() const {
 	return this->popupWidgets.size();
 }
 
@@ -286,12 +279,12 @@ bool popup_container::PopupContainer::isCentered() const {
 	try {
 		QStackedLayout * containerLayout = dynamic_cast<QStackedLayout *>(this->layout());
 		const int idx = containerLayout->currentIndex();
-		popup_base::PopupBase * widget = this->getWidget(idx);
+		std::shared_ptr<popup_base::PopupBase> widget = this->getWidget(idx);
 		return widget->isCentered();
 	} catch (const std::bad_cast & badCastE) {
 		QEXCEPTION_ACTION(throw, badCastE.what());
 	}
-	popup_base::PopupBase * widget = this->getCurrentWidget();
+	std::shared_ptr<popup_base::PopupBase> widget = this->getCurrentWidget();
 
 	bool centered = false;
 	if (widget != Q_NULLPTR) {
@@ -302,7 +295,7 @@ bool popup_container::PopupContainer::isCentered() const {
 }
 
 int popup_container::PopupContainer::getPadding() const {
-	popup_base::PopupBase * widget = this->getCurrentWidget();
+	std::shared_ptr<popup_base::PopupBase> widget = this->getCurrentWidget();
 
 	int padding = 0;
 	if (widget != Q_NULLPTR) {
@@ -312,11 +305,11 @@ int popup_container::PopupContainer::getPadding() const {
 	return padding;
 }
 
-popup_base::PopupBase * popup_container::PopupContainer::getCurrentWidget() const {
+std::shared_ptr<popup_base::PopupBase> popup_container::PopupContainer::getCurrentWidget() const {
 	try {
 		QStackedLayout * containerLayout = dynamic_cast<QStackedLayout *>(this->layout());
 		const int idx = containerLayout->currentIndex();
-		popup_base::PopupBase * widget = this->getWidget(idx);
+		std::shared_ptr<popup_base::PopupBase> widget = this->getWidget(idx);
 		return widget;
 	} catch (const std::bad_cast & badCastE) {
 		QEXCEPTION_ACTION(throw, badCastE.what());
@@ -324,6 +317,6 @@ popup_base::PopupBase * popup_container::PopupContainer::getCurrentWidget() cons
 
 }
 
-const std::map<unsigned int, popup_base::PopupBase *> popup_container::PopupContainer::getWidgetMap() const {
+const std::map<unsigned int, std::shared_ptr<popup_base::PopupBase>> popup_container::PopupContainer::getWidgetMap() const {
 	return this->popupWidgets;
 }

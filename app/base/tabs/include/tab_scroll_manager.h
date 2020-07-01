@@ -8,6 +8,8 @@
  * @brief Tab Scroll Manager header file
 */
 
+#include <memory>
+
 // Qt libraries
 // Required by qInfo
 #include <qt5/QtCore/QtDebug>
@@ -18,6 +20,7 @@
 #include "global_types.h"
 #include "tab_component_widget.h"
 #include "tab_shared_types.h"
+#include "tab_bar.h"
 #include "constructor_macros.h"
 
 /** @defgroup TabScrollManagerGroup Tab Scroll Manager Doxygen Group
@@ -29,6 +32,10 @@ Q_DECLARE_LOGGING_CATEGORY(tabScrollManagerOverall)
 
 namespace tab {
 	class Tab;
+}
+
+namespace tab_bar {
+	class TabBar;
 }
 
 namespace tab_scroll_manager {
@@ -44,7 +51,7 @@ namespace tab_scroll_manager {
 
 		public:
 			/**
-			 * @brief Function: explicit TabScrollManager(QWidget * parent, QWidget * browserTab, QWidget * tabBar)
+			 * @brief Function: explicit TabScrollManager(QWidget * parent, std::weak_ptr<tab::Tab> browserTab, std::shared_ptr<tab_bar::TabBar> tabBar)
 			 *
 			 * \param parent: parent widget
 			 * \param tabBar: tab bar
@@ -52,7 +59,7 @@ namespace tab_scroll_manager {
 			 *
 			 * Tab Scroll Manager constructor
 			 */
-			explicit TabScrollManager(QWidget * parent, QWidget * browserTab, QWidget * tabBar);
+			explicit TabScrollManager(QWidget * parent, std::weak_ptr<tab::Tab> browserTab, std::shared_ptr<tab_bar::TabBar> tabBar);
 
 			/**
 			 * @brief Function: virtual ~TabScrollManager()
@@ -198,7 +205,7 @@ namespace tab_scroll_manager {
 			 * @brief tab bar the tab belong to
 			 *
 			 */
-			QTabBar * bar;
+			std::shared_ptr<tab_bar::TabBar> bar;
 
 			/**
 			 * @brief Function: virtual void pushRequestQueue(const tab_shared_types::direction_e & entry) override

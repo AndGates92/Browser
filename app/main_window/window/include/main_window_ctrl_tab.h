@@ -54,14 +54,14 @@ namespace main_window_ctrl_tab {
 		public:
 
 			/**
-			 * @brief Function: explicit MainWindowCtrlTab(QWidget * parent, main_window_core::MainWindowCore * core)
+			 * @brief Function: explicit MainWindowCtrlTab(QWidget * parent, std::shared_ptr<main_window_core::MainWindowCore> core)
 			 *
 			 * \param core: main window core
 			 * \param parent: parent windget
 			 *
 			 * Main window tab control constructor
 			 */
-			explicit MainWindowCtrlTab(QWidget * parent, QSharedPointer<main_window_core::MainWindowCore> core);
+			explicit MainWindowCtrlTab(QWidget * parent, std::shared_ptr<main_window_core::MainWindowCore> core);
 
 			/**
 			 * @brief Function: virtual ~MainWindowCtrlTab()

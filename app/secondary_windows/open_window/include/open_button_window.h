@@ -107,14 +107,14 @@ namespace open_button_window {
 
 		private:
 			/**
-			 * @brief Function: QPushButton * createPushButton(QWidget *parent, const action::Action * & actionPtr)
+			 * @brief Function: std::unique_ptr<QPushButton> createPushButton(QWidget *parent, const std::shared_ptr<action::Action> & actionPtr)
 			 *
 			 * \param parent: parent widget
 			 * \param action: action to link to the push button
 			 *
 			 * This function creates a new QPushButton
 			 */
-			QPushButton * createPushButton(QWidget *parent, const action::Action * actionPtr);
+			std::unique_ptr<QPushButton> createPushButton(QWidget *parent, const std::shared_ptr<action::Action> & actionPtr);
 
 			/**
 			 * @brief Function: void windowLayout()
@@ -166,19 +166,19 @@ namespace open_button_window {
 			 * @brief open button
 			 *
 			 */
-			QPushButton * openButton;
+			std::unique_ptr<QPushButton> openButton;
 
 			/**
 			 * @brief browse button
 			 *
 			 */
-			QPushButton * browseButton;
+			std::unique_ptr<QPushButton> browseButton;
 
 			/**
 			 * @brief cancel button
 			 *
 			 */
-			QPushButton * cancelButton;
+			std::unique_ptr<QPushButton> cancelButton;
 
 			// Move and copy constructor
 			/**

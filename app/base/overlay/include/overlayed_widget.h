@@ -8,6 +8,8 @@
  * @brief Overlayed widget class header file
 */
 
+#include <memory>
+
 #include <qt5/QtCore/QLoggingCategory>
 #include <qt5/QtWidgets/QWidget>
 
@@ -26,7 +28,7 @@ namespace overlayed_widget {
 	 * @brief OverlayedWidget class
 	 *
 	 */
-	class OverlayedWidget : public QWidget {
+	class OverlayedWidget : public QWidget, public std::enable_shared_from_this<overlayed_widget::OverlayedWidget> {
 
 		Q_OBJECT
 
@@ -88,13 +90,13 @@ namespace overlayed_widget {
 		signals:
 
 			/**
-			 * @brief Function: void updateGeometryRequest(overlayed_widget::OverlayedWidget * widget)
+			 * @brief Function: void updateGeometryRequest(std::shared_ptr<overlayed_widget::OverlayedWidget> widget)
 			 *
 			 * \param widget: widget that is requesting to update its geometry
 			 *
 			 * This function is a signal to trigger an update of the widget geometry
 			 */
-			void updateGeometryRequest(overlayed_widget::OverlayedWidget * widget);
+			void updateGeometryRequest(std::shared_ptr<overlayed_widget::OverlayedWidget> widget);
 
 		protected:
 

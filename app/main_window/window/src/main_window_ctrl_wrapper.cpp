@@ -20,23 +20,12 @@
 // Categories
 Q_LOGGING_CATEGORY(mainWindowCtrlWrapperOverall, "mainWindowCtrlWrapper.overall", MSG_TYPE_LEVEL)
 
-main_window_ctrl_wrapper::MainWindowCtrlWrapper::MainWindowCtrlWrapper(QWidget * parent, QSharedPointer<main_window_core::MainWindowCore> core) : QWidget(parent), main_window_base::MainWindowBase(core), winctrl(new main_window_ctrl::MainWindowCtrl(this, core)), tabctrl(new main_window_ctrl_tab::MainWindowCtrlTab(this, core)) {
+main_window_ctrl_wrapper::MainWindowCtrlWrapper::MainWindowCtrlWrapper(QWidget * parent, std::shared_ptr<main_window_core::MainWindowCore> core) : QWidget(parent), main_window_base::MainWindowBase(core), winctrl(new main_window_ctrl::MainWindowCtrl(this, core)), tabctrl(new main_window_ctrl_tab::MainWindowCtrlTab(this, core)) {
 
 }
 
 main_window_ctrl_wrapper::MainWindowCtrlWrapper::~MainWindowCtrlWrapper() {
 	QINFO_PRINT(global_types::qinfo_level_e::ZERO, mainWindowCtrlWrapperOverall,  "Main window destructor");
-
-	// deleting window control
-	if (this->winctrl != Q_NULLPTR) {
-		delete this->winctrl;
-	}
-
-	// deleting tab control
-	if (this->tabctrl != Q_NULLPTR) {
-		delete this->tabctrl;
-	}
-
 }
 
 void main_window_ctrl_wrapper::MainWindowCtrlWrapper::keyPressEvent(QKeyEvent * event) {
@@ -59,12 +48,4 @@ void main_window_ctrl_wrapper::MainWindowCtrlWrapper::keyReleaseEvent(QKeyEvent 
 
 	this->windowCore->mainWidget->repaint();
 
-}
-
-main_window_ctrl::MainWindowCtrl * main_window_ctrl_wrapper::MainWindowCtrlWrapper::getWinCtrl() {
-	return this->winctrl;
-}
-
-main_window_ctrl_tab::MainWindowCtrlTab * main_window_ctrl_wrapper::MainWindowCtrlWrapper::getTabCtrl() {
-	return this->tabctrl;
 }

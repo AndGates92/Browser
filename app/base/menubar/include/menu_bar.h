@@ -47,6 +47,13 @@ namespace menu_bar {
 
 		protected:
 
+			/**
+			 * @brief Function: virtual void createMenus()
+			 *
+			 * This function creates all menu belonging to the menu bar
+			 */
+			virtual void createMenus() = 0;
+
 		private:
 			// Move and copy constructor
 			/**

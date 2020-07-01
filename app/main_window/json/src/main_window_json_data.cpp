@@ -58,8 +58,8 @@ namespace main_window_json_data {
 
 }
 
-main_window_json_data::MainWindowJsonData * main_window_json_data::MainWindowJsonData::makeJsonData(const std::string & jsonKey, const std::string & nameKeyValue, const main_window_shared_types::state_e & stateKeyValue, const int & shortcutKeyValue, const std::string & longCmdKeyValue, const std::string & helpKeyValue) {
-	main_window_json_data::MainWindowJsonData * newData = new main_window_json_data::MainWindowJsonData(jsonKey, nameKeyValue, stateKeyValue, shortcutKeyValue, longCmdKeyValue, helpKeyValue);
+std::shared_ptr<main_window_json_data::MainWindowJsonData> main_window_json_data::MainWindowJsonData::makeJsonData(const std::string & jsonKey, const std::string & nameKeyValue, const main_window_shared_types::state_e & stateKeyValue, const int & shortcutKeyValue, const std::string & longCmdKeyValue, const std::string & helpKeyValue) {
+	std::shared_ptr<main_window_json_data::MainWindowJsonData> newData = std::make_shared<main_window_json_data::MainWindowJsonData>(jsonKey, nameKeyValue, stateKeyValue, shortcutKeyValue, longCmdKeyValue, helpKeyValue);
 	QINFO_PRINT(global_types::qinfo_level_e::ZERO, mainWindowJsonDataOverall,  "Creating JSON data: " << *newData);
 	return newData;
 }

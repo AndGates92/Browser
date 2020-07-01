@@ -24,7 +24,7 @@ Q_LOGGING_CATEGORY(fileMenuSaveAction, "fileMenu.saveAction", MSG_TYPE_LEVEL)
 Q_LOGGING_CATEGORY(fileMenuPrintAction, "fileMenu.printAction", MSG_TYPE_LEVEL)
 Q_LOGGING_CATEGORY(fileMenuExitAction, "fileMenu.exitAction", MSG_TYPE_LEVEL)
 
-file_menu::FileMenu::FileMenu(QWidget * parent, QMenuBar * menuBar, const char* menuName, const key_sequence::KeySequence & key) : menu::Menu(parent,menuBar,menuName,key) {
+file_menu::FileMenu::FileMenu(QWidget * parent, std::weak_ptr<QMenuBar> menuBar, const char* menuName, const key_sequence::KeySequence & key) : menu::Menu(parent,menuBar,menuName,key) {
 
 	QINFO_PRINT(global_types::qinfo_level_e::ZERO, fileMenuOverall,  "Creating file menu");
 	this->createActions();
@@ -36,59 +36,43 @@ file_menu::FileMenu::~FileMenu() {
 
 	QINFO_PRINT(global_types::qinfo_level_e::ZERO, fileMenuOverall,  "file menu destructor");
 
-	if (this->openAction != Q_NULLPTR) {
-		delete this->openAction;
-	}
-	if (this->openTabAction != Q_NULLPTR) {
-		delete this->openTabAction;
-	}
-	if (this->saveAction != Q_NULLPTR) {
-		delete this->saveAction;
-	}
-	if (this->printAction != Q_NULLPTR) {
-		delete this->printAction;
-	}
-	if (this->exitAction != Q_NULLPTR) {
-		delete this->exitAction;
-	}
-
 }
 
 void file_menu::FileMenu::createActions() {
 
-	this->openAction = new QAction(tr("Open"), this);
+	this->openAction = std::make_unique<QAction>(tr("Open"), this);
 	this->openAction->setStatusTip(tr("Open URL"));
-	connect(this->openAction, &QAction::triggered, this, &file_menu::FileMenu::open);
+	connect(this->openAction.get(), &QAction::triggered, this, &file_menu::FileMenu::open);
 
-	this->openTabAction = new QAction(tr("OpenTab"), this);
+	this->openTabAction = std::make_unique<QAction>(tr("OpenTab"), this);
 	this->openTabAction->setStatusTip(tr("Open Tab"));
 
-	this->saveAction = new QAction(tr("Save"), this);
+	this->saveAction = std::make_unique<QAction>(tr("Save"), this);
 	this->saveAction->setStatusTip(tr("Save"));
-	connect(this->saveAction, &QAction::triggered, this, &file_menu::FileMenu::save);
+	connect(this->saveAction.get(), &QAction::triggered, this, &file_menu::FileMenu::save);
 
-	this->printAction = new QAction(tr("Print"), this);
+	this->printAction = std::make_unique<QAction>(tr("Print"), this);
 	this->printAction->setStatusTip(tr("Print"));
-	connect(this->printAction, &QAction::triggered, this, &file_menu::FileMenu::print);
+	connect(this->printAction.get(), &QAction::triggered, this, &file_menu::FileMenu::print);
 
-	this->exitAction = new QAction(tr("Exit"), this);
+	this->exitAction = std::make_unique<QAction>(tr("Exit"), this);
 	this->exitAction->setStatusTip(tr("Exit"));
 
 }
 
 void file_menu::FileMenu::createMenu() {
-	this->winMenu->addAction(openAction);
-	this->winMenu->addAction(openTabAction);
-	this->winMenu->addAction(saveAction);
-	this->winMenu->addAction(printAction);
-	this->winMenu->addAction(exitAction);
+	this->winMenu->addAction(openAction.get());
+	this->winMenu->addAction(openTabAction.get());
+	this->winMenu->addAction(saveAction.get());
+	this->winMenu->addAction(printAction.get());
+	this->winMenu->addAction(exitAction.get());
 }
 
 void file_menu::FileMenu::open() {
 	QINFO_PRINT(global_types::qinfo_level_e::ZERO, fileMenuOpenAction,  "Open slot: connect signal from open window to slot seding signal to the main window");
 
-	this->openWindow = new open_button_window::OpenButtonWindow(this->parentWidget(), Qt::Window);
-	connect(this->openWindow, &open_button_window::OpenButtonWindow::fileRead, this, &file_menu::FileMenu::updateCenterWindow);
+	this->openWindow = std::make_unique<open_button_window::OpenButtonWindow>(this->parentWidget(), Qt::Window);
+	connect(this->openWindow.get(), &open_button_window::OpenButtonWindow::fileRead, this, &file_menu::FileMenu::updateCenterWindow);
 	this->openWindow->show();
 	this->openWindow->setFocus();
 }

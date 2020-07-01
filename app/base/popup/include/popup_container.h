@@ -6,14 +6,17 @@
  * @author Andrea Gianarda
  * @date 07th of June 2020
  * @brief Popup container class header file
-*/
+ */
+
+#include <memory>
 
 #include <qt5/QtCore/QLoggingCategory>
 
+#include "constructor_macros.h"
+#include "smart_ptr_macros.h"
 #include "overlayed_widget.h"
 #include "popup_base.h"
 
-#include "constructor_macros.h"
 
 /** @defgroup PopupContainerGroup Main Window Prompt Widget Doxygen Group
  *  Pop up container functions and classes
@@ -68,14 +71,14 @@ namespace popup_container {
 
 		public:
 			/**
-			 * @brief Function: std::map<unsigned int, popup_base::PopupBase *>::size_type getWidgetCount() const
+			 * @brief Function: std::map<unsigned int, std::shared_ptr<popup_base::PopupBase>>::size_type getWidgetCount() const
 			 *
 			 * This function returns the number of widgets in the container
 			 */
-			std::map<unsigned int, popup_base::PopupBase *>::size_type getWidgetCount() const;
+			std::map<unsigned int, std::shared_ptr<popup_base::PopupBase>>::size_type getWidgetCount() const;
 
 			/**
-			 * @brief Function: popup_base::PopupBase * getWidget(const unsigned int & index)
+			 * @brief Function: std::shared_ptr<popup_base::PopupBase> getWidget(const unsigned int & index)
 			 *
 			 * \param index: index of the widget to return
 			 *
@@ -83,7 +86,7 @@ namespace popup_container {
 			 *
 			 * This function returns a pointer to the widget at index index or nullptr if it is not found
 			 */
-			popup_base::PopupBase * getWidget(const unsigned int & index) const;
+			std::shared_ptr<popup_base::PopupBase> getWidget(const unsigned int & index) const;
 
 			/**
 			 * @brief Function: virtual bool isCentered() const override
@@ -102,6 +105,12 @@ namespace popup_container {
 			 * This function returns the padding of the widget shown in the container
 			 */
 			virtual int getPadding() const override;
+
+			/**
+			 * @brief Define methods to get smart pointer from this
+			 *
+			 */
+			SMART_PTR_FROM_THIS_FUNCTIONS(popup_container::PopupContainer, overlayed_widget::OverlayedWidget)
 
 		signals:
 			/**
@@ -131,7 +140,7 @@ namespace popup_container {
 			virtual ~PopupContainer();
 
 			/**
-			 * @brief Function: bool addWidget(const unsigned int & index, popup_base::PopupBase * widget)
+			 * @brief Function: bool addWidget(const unsigned int & index, std::shared_ptr<popup_base::PopupBase> widget)
 			 *
 			 * \param index: index the widget has to be added to
 			 * \param widget: widget to add
@@ -140,10 +149,10 @@ namespace popup_container {
 			 *
 			 * This function adds a widget to the desired index to the stacked layout and widget map
 			 */
-			bool addWidget(const unsigned int & index, popup_base::PopupBase * widget);
+			bool addWidget(const unsigned int & index, std::shared_ptr<popup_base::PopupBase> widget);
 
 			/**
-			 * @brief Function: unsigned int appendWidget(popup_base::PopupBase * widget)
+			 * @brief Function: unsigned int appendWidget(std::shared_ptr<popup_base::PopupBase> widget)
 			 *
 			 * \param widget: widget to add
 			 *
@@ -152,10 +161,10 @@ namespace popup_container {
 			 * This function appends a widget to the stacked layout and widget map
 			 * It searches the lowest possible index free to use as key for the widget
 			 */
-			unsigned int appendWidget(popup_base::PopupBase * widget);
+			unsigned int appendWidget(std::shared_ptr<popup_base::PopupBase> widget);
 
 			/**
-			 * @brief Function: bool replaceWidget(const unsigned int & index, popup_base::PopupBase * widget)
+			 * @brief Function: bool replaceWidget(const unsigned int & index, std::shared_ptr<popup_base::PopupBase> widget)
 			 *
 			 * \param index: index of the widget to replace
 			 * \param widget: replacement widget
@@ -165,7 +174,7 @@ namespace popup_container {
 			 * This function replaces a widget to the desired index in the stacked layout and widget map
 			 * If no widget is present at the requested index, it will be added
 			 */
-			bool replaceWidget(const unsigned int & index, popup_base::PopupBase * widget);
+			bool replaceWidget(const unsigned int & index, std::shared_ptr<popup_base::PopupBase> widget);
 
 			/**
 			 * @brief Function: bool removeWidget(const unsigned int & index)
@@ -179,7 +188,7 @@ namespace popup_container {
 			bool removeWidget(const unsigned int & index);
 
 			/**
-			 * @brief Function: bool removeWidget(popup_base::PopupBase * widget)
+			 * @brief Function: bool removeWidget(std::shared_ptr<popup_base::PopupBase> widget)
 			 *
 			 * \param widget: widget to remove
 			 *
@@ -187,7 +196,7 @@ namespace popup_container {
 			 *
 			 * This function removes a widget from the stacked layout and widget map
 			 */
-			bool removeWidget(popup_base::PopupBase * widget);
+			bool removeWidget(std::shared_ptr<popup_base::PopupBase> widget);
 
 			/**
 			 * @brief Function: bool chooseWidgetToShow(const unsigned int & index)
@@ -201,7 +210,7 @@ namespace popup_container {
 			bool chooseWidgetToShow(const unsigned int & index);
 
 			/**
-			 * @brief Function: bool chooseWidgetToShow(popup_base::PopupBase * widget)
+			 * @brief Function: bool chooseWidgetToShow(std::shared_ptr<popup_base::PopupBase> widget)
 			 *
 			 * \param widget: widget to remove
 			 *
@@ -209,7 +218,7 @@ namespace popup_container {
 			 *
 			 * This function selects the widget from the stacked layout to show
 			 */
-			bool chooseWidgetToShow(popup_base::PopupBase * widget);
+			bool chooseWidgetToShow(std::shared_ptr<popup_base::PopupBase> widget);
 
 			/**
 			 * @brief Function: void updateLayout()
@@ -219,20 +228,20 @@ namespace popup_container {
 			void updateLayout();
 
 			/**
-			 * @brief Function: virtual popup_base::PopupBase * getCurrentWidget() const final
+			 * @brief Function: virtual std::shared_ptr<popup_base::PopupBase> getCurrentWidget() const final
 			 *
 			 * \return widget shown in the container
 			 *
 			 * This function returns the widget shown in the container
 			 */
-			virtual popup_base::PopupBase * getCurrentWidget() const final;
+			virtual std::shared_ptr<popup_base::PopupBase> getCurrentWidget() const final;
 
 			/**
-			 * @brief Function: std::map<unsigned int, popup_base::PopupBase *> getWidgetMap() const
+			 * @brief Function: std::map<unsigned int, std::shared_ptr<popup_base::PopupBase>> getWidgetMap() const
 			 *
 			 * This function returns the widget map in the container
 			 */
-			const std::map<unsigned int, popup_base::PopupBase *> getWidgetMap() const;
+			const std::map<unsigned int, std::shared_ptr<popup_base::PopupBase>> getWidgetMap() const;
 
 		private:
 
@@ -242,7 +251,7 @@ namespace popup_container {
 			 * - the element is the widget to be added to the list
 			 *
 			 */
-			std::map<unsigned int, popup_base::PopupBase *> popupWidgets;
+			std::map<unsigned int, std::shared_ptr<popup_base::PopupBase>> popupWidgets;
 
 			/**
 			 * @brief Function: virtual void promptLayout()
@@ -253,23 +262,23 @@ namespace popup_container {
 			virtual void popupLayout() final;
 
 			/**
-			 * @brief Function: void addWidgetToLayout(const unsigned int & index, popup_base::PopupBase * widget)
+			 * @brief Function: void addWidgetToLayout(const unsigned int & index, std::shared_ptr<popup_base::PopupBase> widget)
 			 *
 			 * \param index: index of the widget in the layout
 			 * \param widget: widget to add to the layout
 			 *
 			 * This function adds a widget to the layout
 			 */
-			void addWidgetToLayout(const unsigned int & index, popup_base::PopupBase * widget);
+			void addWidgetToLayout(const unsigned int & index, std::shared_ptr<popup_base::PopupBase> widget);
 
 			/**
-			 * @brief Function: bool removeWidget(popup_base::PopupBase * widget)
+			 * @brief Function: bool removeWidget(std::shared_ptr<popup_base::PopupBase> widget)
 			 *
 			 * \param widget: widget to remove from layout
 			 *
 			 * This function removes a widget from the layout
 			 */
-			void deleteWidgetFromLayout(popup_base::PopupBase * widget);
+			void deleteWidgetFromLayout(std::shared_ptr<popup_base::PopupBase> widget);
 
 			/**
 			 * @brief Function: int searchFreeIndex(const unsigned int startIdx, const unsigned int range)

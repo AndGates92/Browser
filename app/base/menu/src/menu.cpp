@@ -18,7 +18,7 @@
 // Categories
 Q_LOGGING_CATEGORY(menuOverall, "menu.overall", MSG_TYPE_LEVEL)
 
-menu::Menu::Menu(QWidget * parent, QMenuBar * menuBar, const char* menuName, const key_sequence::KeySequence & key) : QWidget(parent), menuBar(menuBar), menuName(menuName), key(key) {
+menu::Menu::Menu(QWidget * parent, std::weak_ptr<QMenuBar> menuBar, const char* menuName, const key_sequence::KeySequence & key) : QWidget(parent), menuBar(menuBar), menuName(menuName), key(key) {
 
 	QINFO_PRINT(global_types::qinfo_level_e::ZERO, menuOverall, "Create menu " << this->menuName << " shortcut key " << this->key.toString());
 	this->createMenu();
@@ -26,41 +26,37 @@ menu::Menu::Menu(QWidget * parent, QMenuBar * menuBar, const char* menuName, con
 }
 
 menu::Menu::~Menu() {
-
 	QINFO_PRINT(global_types::qinfo_level_e::ZERO, menuOverall,  "menu destructor");
-
-	if (this->winMenu != Q_NULLPTR) {
-		delete this->winMenu;
-	}
-
-	// Do not call delete on the following members:
-	// - this->menuName -> not created with new;
-	// - this->menuBar -> pointer to the menu bar of the window and it will be deleted while deleting the window;
-	// - this->expandMenu -> pointer to shortcut delete by the parent
-
 }
 
 void menu::Menu::createMenu() {
-	//Use QObject::tr as Menu is not a derived class of QObject
-	this->winMenu = this->menuBar->addMenu(QObject::tr(menuName));
+	QEXCEPTION_ACTION_COND((this->menuBar.expired() == true), throw,  "Unable to get menu bar for menu " << menuName << " as it has already expired");
+	std::shared_ptr<QMenuBar> bar = this->menuBar.lock();
+	if (bar != Q_NULLPTR) {
+		this->winMenu.reset(bar->addMenu(QWidget::tr(menuName)));
+	}
 }
 
 void menu::Menu::createShortcuts() {
-	this->expandMenu = new QShortcut(this->window());
+	this->expandMenu.reset(new QShortcut(this));
 
 	// Do not bind key if it is not set
 	if (this->key != key_sequence::KeySequence(QKeySequence::UnknownKey)) {
 		this->expandMenu->setKey(this->key.toQKeySequence());
-		connect(this->expandMenu, &QShortcut::activated, this, &menu::Menu::expand);
+		connect(this->expandMenu.get(), &QShortcut::activated, this, &menu::Menu::expand);
 	}
 }
 
 void menu::Menu::expand() {
-	// menu is expanded only if menu bar is visible
-	if (this->menuBar->isVisible()) {
-		QINFO_PRINT(global_types::qinfo_level_e::ZERO, menuOverall, "Expand menu " << this->menuName << " because shortcut key " << this->key.toString() << " has been pressed");
-		this->winMenu->exec();
-		this->setFocus();
+	QEXCEPTION_ACTION_COND((this->menuBar.expired() == true), throw,  "Unable to get menu bar for menu " << menuName << " as it has already expired");
+	std::shared_ptr<QMenuBar> bar = this->menuBar.lock();
+	if (bar != Q_NULLPTR) {
+		// menu is expanded only if menu bar is visible
+		if (bar->isVisible()) {
+			QINFO_PRINT(global_types::qinfo_level_e::ZERO, menuOverall, "Expand menu " << this->menuName << " because shortcut key " << this->key.toString() << " has been pressed");
+			this->winMenu->exec();
+			this->setFocus();
+		}
 	}
 }
 

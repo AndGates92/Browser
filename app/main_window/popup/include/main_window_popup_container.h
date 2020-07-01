@@ -14,6 +14,7 @@
 #include "open_popup.h"
 
 #include "type_print_macros.h"
+#include "smart_ptr_macros.h"
 #include "popup_container.h"
 #include "constructor_macros.h"
 
@@ -63,13 +64,19 @@ namespace main_window_popup_container {
 			bool showOpenFilePopup();
 
 			/**
-			 * @brief Function: open_popup::OpenPopup * getOpenFilePopup() const
+			 * @brief Function: std::shared_ptr<open_popup::OpenPopup> getOpenFilePopup() const
 			 *
 			 * \return a pointer to the open file popup
 			 *
 			 * This function returns a pointer to the open file popup
 			 */
-			open_popup::OpenPopup * getOpenFilePopup() const;
+			std::shared_ptr<open_popup::OpenPopup> getOpenFilePopup() const;
+
+			/**
+			 * @brief Define methods to get smart pointer from this
+			 *
+			 */
+			SMART_PTR_FROM_THIS_FUNCTIONS(main_window_popup_container::MainWindowPopupContainer, popup_container::PopupContainer)
 
 		protected:
 

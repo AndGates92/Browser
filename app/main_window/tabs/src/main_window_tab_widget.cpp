@@ -14,7 +14,6 @@
 
 #include "main_window_web_engine_page.h"
 #include "main_window_tab_widget.h"
-#include "main_window_tab.h"
 #include "main_window_shared_functions.h"
 #include "type_print_macros.h"
 #include "exception_macros.h"
@@ -103,90 +102,97 @@ void main_window_tab_widget::MainWindowTabWidget::connectTab(const int & index) 
 	const int tabCount = this->count();
 
 	if (tabCount > 0) {
-		try {
-			main_window_tab::MainWindowTab * tab = dynamic_cast<main_window_tab::MainWindowTab *>(this->widget(index, true));
-			this->tabSourceConnection = connect(tab, &main_window_tab::MainWindowTab::sourceChanged, this, &main_window_tab_widget::MainWindowTabWidget::processTabSourceChanged);
-			this->tabUrlConnection = connect(tab, &main_window_tab::MainWindowTab::urlChanged, this, &main_window_tab_widget::MainWindowTabWidget::processTabUrlChanged);
-			this->tabTitleConnection = connect(tab, &main_window_tab::MainWindowTab::titleChanged, this, &main_window_tab_widget::MainWindowTabWidget::processTabTitleChanged);
+		std::shared_ptr<main_window_tab::MainWindowTab> tab = this->widget(index, true);
+		this->tabSourceConnection = connect(tab.get(), &main_window_tab::MainWindowTab::sourceChanged, this, &main_window_tab_widget::MainWindowTabWidget::processTabSourceChanged);
+		this->tabUrlConnection = connect(tab.get(), &main_window_tab::MainWindowTab::urlChanged, this, &main_window_tab_widget::MainWindowTabWidget::processTabUrlChanged);
+		this->tabTitleConnection = connect(tab.get(), &main_window_tab::MainWindowTab::titleChanged, this, &main_window_tab_widget::MainWindowTabWidget::processTabTitleChanged);
 
-			// Move focus to the newly connected tab
-			tab->setFocus();
+		// Move focus to the newly connected tab
+		tab->setFocus();
 
-			emit this->tabNearlyConnected(index);
-		} catch (const std::bad_cast & badCastE) {
-			QEXCEPTION_ACTION(throw, badCastE.what());
-		}
+		emit this->tabNearlyConnected(index);
 	}
 }
 
-QWidget * main_window_tab_widget::MainWindowTabWidget::widget(const int & index, bool checkError) const {
-	QWidget * requestedWidget = tab_widget::TabWidget::widget(index, checkError);
+std::shared_ptr<main_window_tab::MainWindowTab> main_window_tab_widget::MainWindowTabWidget::widget(const int & index, bool checkError) const {
+	std::shared_ptr<main_window_tab::MainWindowTab> requestedWidget = std::dynamic_pointer_cast<main_window_tab::MainWindowTab>(tab_widget::TabWidget::widget(index, checkError));
 
 	return requestedWidget;
 }
 
-void main_window_tab_widget::MainWindowTabWidget::setPageData(const int & index, const main_window_page_data::MainWindowPageData * pageData) {
-
-	const int tabCount = this->count();
-
-	QEXCEPTION_ACTION_COND(((index < 0) || (index >= tabCount)), throw,  "Unable to retrieve tab type as index must be larger or equal to 0 and smaller than the number of tabs " << tabCount << ". Got " << index << ".");
-
-	if (tabCount > 0) {
-		try {
-			const main_window_tab::MainWindowTab * tab = dynamic_cast<main_window_tab::MainWindowTab *>(this->widget(index, true));
-			main_window_web_engine_page::MainWindowWebEnginePage * page = tab->getPage();
-			page->setData(pageData);
-		} catch (const std::bad_cast & badCastE) {
-			QEXCEPTION_ACTION(throw, badCastE.what());
-		}
+void main_window_tab_widget::MainWindowTabWidget::setPageData(const int & index, const std::shared_ptr<main_window_page_data::MainWindowPageData> & pageData) {
+	std::shared_ptr<main_window_web_engine_page::MainWindowWebEnginePage> page = this->getPage(index);
+	if (page != nullptr) {
+		page->setData(pageData);
 	}
 }
 
-const main_window_page_data::MainWindowPageData * main_window_tab_widget::MainWindowTabWidget::getPageData(const int & index) const {
+std::shared_ptr<main_window_web_engine_page::MainWindowWebEnginePage> main_window_tab_widget::MainWindowTabWidget::getPage(const int & index) const {
 
 	const int tabCount = this->count();
 
 	QEXCEPTION_ACTION_COND(((index < 0) || (index >= tabCount)), throw,  "Unable to retrieve tab type as index must be larger or equal to 0 and smaller than the number of tabs " << tabCount << ". Got " << index << ".");
 
-	const main_window_page_data::MainWindowPageData * pageData = nullptr;
+	std::shared_ptr<main_window_web_engine_page::MainWindowWebEnginePage> page = nullptr;
 
 	if (tabCount > 0) {
-		try {
-			const main_window_tab::MainWindowTab * tab = dynamic_cast<main_window_tab::MainWindowTab *>(this->widget(index, true));
-			const main_window_web_engine_page::MainWindowWebEnginePage * page = tab->getPage();
-			pageData = page->getData();
-		} catch (const std::bad_cast & badCastE) {
-			QEXCEPTION_ACTION(throw, badCastE.what());
-		}
+		const std::shared_ptr<main_window_tab::MainWindowTab> tab = this->widget(index, true);
+		page = tab->getPage();
+	}
+
+	return page;
+}
+
+const std::shared_ptr<main_window_page_data::MainWindowPageData> main_window_tab_widget::MainWindowTabWidget::getPageData(const int & index) const {
+
+	const int tabCount = this->count();
+
+	QEXCEPTION_ACTION_COND(((index < 0) || (index >= tabCount)), throw,  "Unable to retrieve tab type as index must be larger or equal to 0 and smaller than the number of tabs " << tabCount << ". Got " << index << ".");
+
+	std::shared_ptr<main_window_page_data::MainWindowPageData> pageData = nullptr;
+	const std::shared_ptr<main_window_web_engine_page::MainWindowWebEnginePage> page = this->getPage(index);
+
+	if (page != nullptr) {
+		pageData = page->getData();
 	}
 
 	return pageData;
 }
 
 main_window_shared_types::page_type_e main_window_tab_widget::MainWindowTabWidget::getPageType(const int & index) const {
-	const main_window_tab::MainWindowTab * tab = dynamic_cast<main_window_tab::MainWindowTab *>(this->widget(index, true));
-	const main_window_web_engine_page::MainWindowWebEnginePage * page = tab->getPage();
-	return page->getType();
+	const std::shared_ptr<main_window_web_engine_page::MainWindowWebEnginePage> page = this->getPage(index);
+
+	if (page != nullptr) {
+		return page->getType();
+	}
+
+	return main_window_shared_types::page_type_e::UNKNOWN;
 }
 
 const QString main_window_tab_widget::MainWindowTabWidget::getPageSource(const int & index) const {
-	const main_window_tab::MainWindowTab * tab = dynamic_cast<main_window_tab::MainWindowTab *>(this->widget(index, true));
-	const main_window_web_engine_page::MainWindowWebEnginePage * page = tab->getPage();
-	return page->getSource();
+	const std::shared_ptr<main_window_web_engine_page::MainWindowWebEnginePage> page = this->getPage(index);
+
+	if (page != nullptr) {
+		return page->getSource();
+	}
+	return QString::null;
 }
 
 const void * main_window_tab_widget::MainWindowTabWidget::getPageExtraData(const int & index) const {
-	const main_window_tab::MainWindowTab * tab = dynamic_cast<main_window_tab::MainWindowTab *>(this->widget(index, true));
-	const main_window_web_engine_page::MainWindowWebEnginePage * page = tab->getPage();
-	return page->getData();
+	const std::shared_ptr<main_window_web_engine_page::MainWindowWebEnginePage> page = this->getPage(index);
+
+	if (page != nullptr) {
+		return page->getData().get();
+	}
+	return nullptr;
 }
 
 void main_window_tab_widget::MainWindowTabWidget::changePageData(const int & index, const main_window_shared_types::page_type_e & type, const QString & source, const void * data) {
 
-	const main_window_page_data::MainWindowPageData * currentData = this->getPageData(index);
-	main_window_page_data::MainWindowPageData * newData = main_window_page_data::MainWindowPageData::makePageData(type, source.toStdString(), data);
-	QINFO_PRINT(global_types::qinfo_level_e::ZERO, mainWindowTabWidgetTabs, "Current data of tab at index " << index << " is " << *currentData);
-	QINFO_PRINT(global_types::qinfo_level_e::ZERO, mainWindowTabWidgetTabs, "New data of tab at index " << index << " is " << *newData);
+	const std::shared_ptr<main_window_page_data::MainWindowPageData> currentData = this->getPageData(index);
+	std::shared_ptr<main_window_page_data::MainWindowPageData> newData = main_window_page_data::MainWindowPageData::makePageData(type, source.toStdString(), data);
+	QINFO_PRINT(global_types::qinfo_level_e::ZERO, mainWindowTabWidgetTabs, "Current data of tab at index " << index << " is " << *(currentData.get()));
+	QINFO_PRINT(global_types::qinfo_level_e::ZERO, mainWindowTabWidgetTabs, "New data of tab at index " << index << " is " << *(newData.get()));
 
 	if (currentData != newData) {
 		this->setPageData(index, newData);
@@ -199,7 +205,8 @@ int main_window_tab_widget::MainWindowTabWidget::insertTab(const int & index, co
 
 	const QString source(QString::null);
 	const QString search(QString::null);
-	main_window_tab::MainWindowTab * tab = new main_window_tab::MainWindowTab(this, this->tabBar(), search, type, source, data);
+	std::shared_ptr<main_window_tab::MainWindowTab> tab = std::make_shared<main_window_tab::MainWindowTab>(this, search);
+	tab->configure(this->tabBar(), type, source, data);
 
 	QINFO_PRINT(global_types::qinfo_level_e::ZERO, mainWindowTabWidgetTabs,  "Insert tab of type " << type << " with source " << source << " at position " << index);
 
@@ -209,84 +216,72 @@ int main_window_tab_widget::MainWindowTabWidget::insertTab(const int & index, co
 	this->connectTab(currIndex);
 
 	// Move to the newly opened tab
-	this->setCurrentIndex(currIndex);
+		this->setCurrentIndex(currIndex);
 
 
 	return currIndex;
 }
 
 void main_window_tab_widget::MainWindowTabWidget::findInTab(const int & index, const QString & text, const main_window_shared_types::navigation_type_e & direction) {
-	try {
-		const main_window_tab::MainWindowTab * tab = dynamic_cast<main_window_tab::MainWindowTab *>(this->widget(index, true));
-		// Find text in tab
-		switch (direction) {
-			case main_window_shared_types::navigation_type_e::UNDEFINED:
-				tab->find(text, false, false);
-				break;
-			case main_window_shared_types::navigation_type_e::NEXT:
-				tab->findNext();
-				break;
-			case main_window_shared_types::navigation_type_e::PREVIOUS:
-				tab->findPrev();
-				break;
-			default:
-				QEXCEPTION_ACTION(throw,  "Undefined direction of search " << direction);
-				break;
-		}
-	} catch (const std::bad_cast & badCastE) {
-		QEXCEPTION_ACTION(throw, badCastE.what());
+	const std::shared_ptr<main_window_tab::MainWindowTab> tab = this->widget(index, true);
+	// Find text in tab
+	switch (direction) {
+		case main_window_shared_types::navigation_type_e::UNDEFINED:
+			tab->find(text, false, false);
+			break;
+		case main_window_shared_types::navigation_type_e::NEXT:
+			tab->findNext();
+			break;
+		case main_window_shared_types::navigation_type_e::PREVIOUS:
+			tab->findPrev();
+			break;
+		default:
+			QEXCEPTION_ACTION(throw,  "Undefined direction of search " << direction);
+			break;
 	}
 }
 
 void main_window_tab_widget::MainWindowTabWidget::scrollTab(const int & index, const main_window_shared_types::offset_type_e direction) {
-	try {
-		const main_window_tab::MainWindowTab * tab = dynamic_cast<main_window_tab::MainWindowTab *>(this->widget(index, true));
-		// Scroll tab
-		switch (direction) {
-			case main_window_shared_types::offset_type_e::UP:
-				tab->scrollUp();
-				break;
-			case main_window_shared_types::offset_type_e::DOWN:
-				tab->scrollDown();
-				break;
-			case main_window_shared_types::offset_type_e::LEFT:
-				tab->scrollLeft();
-				break;
-			case main_window_shared_types::offset_type_e::RIGHT:
-				tab->scrollRight();
-				break;
-			default:
-				QEXCEPTION_ACTION(throw, "Unable to scroll in direction " << direction);
-				break;
-		}
-	} catch (const std::bad_cast & badCastE) {
-		QEXCEPTION_ACTION(throw, badCastE.what());
+	const std::shared_ptr<main_window_tab::MainWindowTab> tab = this->widget(index, true);
+	// Scroll tab
+	switch (direction) {
+		case main_window_shared_types::offset_type_e::UP:
+			tab->scrollUp();
+			break;
+		case main_window_shared_types::offset_type_e::DOWN:
+			tab->scrollDown();
+			break;
+		case main_window_shared_types::offset_type_e::LEFT:
+			tab->scrollLeft();
+			break;
+		case main_window_shared_types::offset_type_e::RIGHT:
+			tab->scrollRight();
+			break;
+		default:
+			QEXCEPTION_ACTION(throw, "Unable to scroll in direction " << direction);
+			break;
 	}
 }
 
 
 void main_window_tab_widget::MainWindowTabWidget::goToHistoryItem(const int & index, const main_window_shared_types::navigation_type_e & direction) {
-	try {
-		const main_window_tab::MainWindowTab * tab = dynamic_cast<main_window_tab::MainWindowTab *>(this->widget(index, true));
-		// Go through history in tab
-		switch (direction) {
-			case main_window_shared_types::navigation_type_e::UNDEFINED:
-			{
-				QEXCEPTION_ACTION(throw, "Unable to go to history item for direction " << direction);
-				break;
-			}
-			case main_window_shared_types::navigation_type_e::NEXT:
-				tab->historyNext();
-				break;
-			case main_window_shared_types::navigation_type_e::PREVIOUS:
-				tab->historyPrev();
-				break;
-			default:
-				QEXCEPTION_ACTION(throw,  "Undefined direction of history item " << direction);
-				break;
+	const std::shared_ptr<main_window_tab::MainWindowTab> tab = this->widget(index, true);
+	// Go through history in tab
+	switch (direction) {
+		case main_window_shared_types::navigation_type_e::UNDEFINED:
+		{
+			QEXCEPTION_ACTION(throw, "Unable to go to history item for direction " << direction);
+			break;
 		}
-	} catch (const std::bad_cast & badCastE) {
-		QEXCEPTION_ACTION(throw, badCastE.what());
+		case main_window_shared_types::navigation_type_e::NEXT:
+			tab->historyNext();
+			break;
+		case main_window_shared_types::navigation_type_e::PREVIOUS:
+			tab->historyPrev();
+			break;
+		default:
+			QEXCEPTION_ACTION(throw,  "Undefined direction of history item " << direction);
+			break;
 	}
 }
 
@@ -349,21 +344,17 @@ void main_window_tab_widget::MainWindowTabWidget::changeTabContent(const int & i
 	// Change tab label
 	this->setTabText(index, label);
 
-	try {
-		main_window_tab::MainWindowTab * tab = dynamic_cast<main_window_tab::MainWindowTab *>(this->widget(index, true));
+	std::shared_ptr<main_window_tab::MainWindowTab> tab = this->widget(index, true);
 
-		// Update text searched by the user
-		tab->setSearchText(userInput);
+	// Update text searched by the user
+	tab->setSearchText(userInput);
 
-		main_window_web_engine_page::MainWindowWebEnginePage * page = tab->getPage();
-		// Set tab body
-		page->setBody();
+	std::shared_ptr<main_window_web_engine_page::MainWindowWebEnginePage> page = tab->getPage();
+	// Set tab body
+	page->setBody();
 
-		// Set focus to the tab in case it was lost or changed
-		tab->setFocus();
-	} catch (const std::bad_cast & badCastE) {
-		QEXCEPTION_ACTION(throw, badCastE.what());
-	}
+	// Set focus to the tab in case it was lost or changed
+	tab->setFocus();
 }
 
 void main_window_tab_widget::MainWindowTabWidget::processTabUrlChanged(const QUrl & url) {
@@ -389,23 +380,16 @@ void main_window_tab_widget::MainWindowTabWidget::processTabSourceChanged(const 
 }
 
 void main_window_tab_widget::MainWindowTabWidget::reloadTabContent(const int & index) {
-	try {
-		main_window_tab::MainWindowTab * tab = dynamic_cast<main_window_tab::MainWindowTab *>(this->widget(index, true));
-		tab->reload();
-	} catch (const std::bad_cast & badCastE) {
-		QEXCEPTION_ACTION(throw, badCastE.what());
-	}
+	std::shared_ptr<main_window_tab::MainWindowTab> tab = this->widget(index, true);
+	tab->reload();
 }
 
 void main_window_tab_widget::MainWindowTabWidget::setTabTitle(const int & index, const QString & source) {
 	this->setTabText(index, source);
-	try {
-		// Set tab title
-		main_window_tab::MainWindowTab * tab = dynamic_cast<main_window_tab::MainWindowTab *>(this->widget(index, true));
-		main_window_web_engine_page::MainWindowWebEnginePage * page = tab->getPage();
+
+	std::shared_ptr<main_window_web_engine_page::MainWindowWebEnginePage> page = this->getPage(index);
+	if (page != nullptr) {
 		page->setSource(source);
-	} catch (const std::bad_cast & badCastE) {
-		QEXCEPTION_ACTION(throw, badCastE.what());
 	}
 }
 

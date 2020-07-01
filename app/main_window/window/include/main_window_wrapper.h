@@ -102,7 +102,7 @@ namespace main_window_wrapper {
 			 * @brief Main window
 			 *
 			 */
-			main_window::MainWindow * window;
+			std::unique_ptr<main_window::MainWindow> window;
 
 	};
 

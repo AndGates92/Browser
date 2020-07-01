@@ -29,8 +29,8 @@ popup_base::PopupBase::~PopupBase() {
 
 }
 
-QLabel * popup_base::PopupBase::actionToLabel(QWidget * parent, const QAction * action) const {
-	QLabel * label = new QLabel(parent);
+std::unique_ptr<QLabel> popup_base::PopupBase::actionToLabel(QWidget * parent, const std::shared_ptr<QAction> & action) const {
+	std::unique_ptr<QLabel> label = std::make_unique<QLabel>(parent);
 
 	key_sequence::KeySequence actionKey(action->shortcut());
 	QString actionText(action->text());

@@ -46,6 +46,9 @@ int main (int argc, char* argv[]) {
 	} catch (const QUnhandledException & unhandledexc) {
 		browser_exception::printException("Got unhandled exception");
 		return EXIT_FAILURE;
+	} catch (const std::exception & exc) {
+		browser_exception::printException(exc.what());
+		return EXIT_FAILURE;
 	}
 
 	return EXIT_SUCCESS;
