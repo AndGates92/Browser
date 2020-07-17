@@ -760,7 +760,7 @@ void main_window_ctrl_tab::MainWindowCtrlTab::createContentPathTextFromSource(co
 void main_window_ctrl_tab::MainWindowCtrlTab::createOpenPrompt() {
 	std::shared_ptr<main_window_popup_container::MainWindowPopupContainer> container = this->windowCore->popup;
 	bool success = container->showOpenFilePopup();
-//	container->setFocus();
+	container->setFocus();
 
 	QEXCEPTION_ACTION_COND((success == false), throw, "Unable to show OpenFile popup");
 }
