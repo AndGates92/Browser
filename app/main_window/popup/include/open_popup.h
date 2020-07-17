@@ -143,6 +143,15 @@ namespace open_popup {
 			 */
 			virtual void insert() override;
 
+			/**
+			 * @brief Function: virtual void pathChanged(const QString & path) override
+			 *
+			 * \param path: path of the file
+			 *
+			 * This function is the slot triggered whenever the path of the file changes on the QLineEdit
+			 */
+			virtual void pathChanged(const QString & path) override;
+
 		private:
 			/**
 			 * @brief open label

@@ -105,6 +105,9 @@ open_popup::OpenPopup::OpenPopup(QWidget * parent, Qt::WindowFlags flags) : main
 		"QLabel {"
 			"color: black;"
 		"}"
+		"QLabel::disabled {"
+			"color: lightgray;"
+		"}"
 		"QLineEdit {"
 			"border-color: black;"
 			"border-width: 2px;"
@@ -195,6 +198,8 @@ void open_popup::OpenPopup::fillPopup() {
 	// Hide file view as user didn't ask for it
 	// Use hide and not setVisible(false) because function hide also does not show it in the layout
 	this->fileView->hide();
+
+	this->pathChanged(this->pathToOpen->text());
 }
 
 void open_popup::OpenPopup::connectSignals() {
@@ -204,6 +209,8 @@ void open_popup::OpenPopup::connectSignals() {
 	connect(this->cancelAction.get(), &action::Action::triggered, this, &open_popup::OpenPopup::cancel);
 	connect(this->browseAction.get(), &action::Action::triggered, this, &open_popup::OpenPopup::browse);
 	connect(this->typeAction.get(), &action::Action::triggered, this, &open_popup::OpenPopup::insert);
+
+	connect(this->pathToOpen.get(), &QLineEdit::textChanged, this, &open_popup::OpenPopup::pathChanged);
 
 	// Need to use lambda function as fileViewClickAction is not a slot
 	connect(this->fileView.get(), &QTreeView::clicked, [this] (const QModelIndex & index) {
@@ -225,6 +232,8 @@ void open_popup::OpenPopup::insert() {
 	// Using here setFocus on the QLineEdit instead of setProxyFocus because of bug QTBUG-79707
 	this->pathToOpen->setFocus();
 	//this->setFocusProxy(this->pathToOpen);
+	this->insertLabel->setEnabled(false);
+	this->typeAction->setEnabled(false);
 }
 
 void open_popup::OpenPopup::apply() {
@@ -251,6 +260,8 @@ void open_popup::OpenPopup::cancel() {
 	QINFO_PRINT(global_types::qinfo_level_e::ZERO, openPopupCancel,  "Closing popup as Cancel button has been clicked");
 	if (this->pathToOpen->hasFocus() == true) {
 		this->setFocus();
+		this->insertLabel->setEnabled(true);
+		this->typeAction->setEnabled(true);
 	} else {
 		this->close();
 	}
@@ -306,4 +317,10 @@ QSize open_popup::OpenPopup::sizeHint() const {
 	QSize hint(width,height);
 
 	return hint;
+}
+
+void open_popup::OpenPopup::pathChanged(const QString & path) {
+	const QFileInfo pathInfo(path);
+	this->openLabel->setEnabled(pathInfo.exists());
+	this->applyAction->setEnabled(pathInfo.exists());
 }

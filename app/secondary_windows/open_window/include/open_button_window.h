@@ -86,13 +86,13 @@ namespace open_button_window {
 			virtual void insert() override;
 
 			/**
-			 * @brief Function: void pathChangedAction(const QString & path)
+			 * @brief Function: virtual void pathChanged(const QString & path) override
 			 *
 			 * \param path: path of the file
 			 *
 			 * This function is the slot triggered whenever the path of the file changes on the QLineEdit
 			 */
-			void pathChangedAction(const QString & path);
+			virtual void pathChanged(const QString & path) override;
 
 		signals:
 			/**

@@ -183,7 +183,7 @@ void open_button_window::OpenButtonWindow::openItem(const QString & path) {
 	emit this->fileRead(path, nullptr);
 }
 
-void open_button_window::OpenButtonWindow::pathChangedAction(const QString & path) {
+void open_button_window::OpenButtonWindow::pathChanged(const QString & path) {
 	const QFileInfo pathInfo(path);
 	this->openButton->setEnabled(pathInfo.exists());
 }
@@ -258,7 +258,7 @@ void open_button_window::OpenButtonWindow::fillWindow() {
 	this->fileView->setMinimumSize(this->fileView->sizeHint());
 	this->fileView->hide();
 
-	this->pathChangedAction(this->pathToOpen->text());
+	this->pathChanged(this->pathToOpen->text());
 
 }
 
@@ -273,7 +273,7 @@ void open_button_window::OpenButtonWindow::connectSignals() {
 	connect(this->cancelButton.get(), &QPushButton::released, this, &open_button_window::OpenButtonWindow::cancel);
 	connect(this->typeAction.get(), &action::Action::triggered, this, &open_button_window::OpenButtonWindow::insert);
 
-	connect(this->pathToOpen.get(), &QLineEdit::textChanged, this, &open_button_window::OpenButtonWindow::pathChangedAction);
+	connect(this->pathToOpen.get(), &QLineEdit::textChanged, this, &open_button_window::OpenButtonWindow::pathChanged);
 
 	// Need to use lambda function as fileViewClickAction is not a slot
 	connect(this->fileView.get(), &QTreeView::clicked, [this] (const QModelIndex & index) {

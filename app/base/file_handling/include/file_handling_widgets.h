@@ -145,7 +145,7 @@ namespace file_handling_widgets {
 			/**
 			 * @brief Function: virtual void browse()
 			 *
-			 * This function is the slot of the browse action 
+			 * This function is the slot of the browse action
 			 */
 			virtual void browse() = 0;
 
@@ -162,6 +162,15 @@ namespace file_handling_widgets {
 			 * This function is the slot of the insert action
 			 */
 			virtual void insert() = 0;
+
+			/**
+			 * @brief Function: virtual void pathChanged(const QString & path)
+			 *
+			 * \param path: path of the file
+			 *
+			 * This function is the slot triggered whenever the path of the file changes on the QLineEdit
+			 */
+			virtual void pathChanged(const QString & path) = 0;
 
 			/**
 			 * @brief Function: virtual void doubleClickOnFile(const QFileInfo & pathInfo) = 0
