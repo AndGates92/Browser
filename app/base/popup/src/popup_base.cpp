@@ -13,23 +13,23 @@
 #include "popup_base.h"
 #include "key_sequence.h"
 #include "logging_macros.h"
-#include "global_types.h"
+#include "global_enums.h"
 
 // Categories
 Q_LOGGING_CATEGORY(popupBaseOverall, "PopupBase.overall", MSG_TYPE_LEVEL)
 
 popup_base::PopupBase::PopupBase(QWidget * parent, const bool & centerWidget, const int & widgetPadding, Qt::WindowFlags flags) : QWidget(parent, flags), popup_properties::PopupProperties(centerWidget, widgetPadding) {
 
-	QINFO_PRINT(global_types::qinfo_level_e::ZERO, popupBaseOverall,  "Popup base constructor");
+	QINFO_PRINT(global_enums::qinfo_level_e::ZERO, popupBaseOverall,  "Popup base constructor");
 
 }
 
 popup_base::PopupBase::~PopupBase() {
-	QINFO_PRINT(global_types::qinfo_level_e::ZERO, popupBaseOverall,  "Popup base destructor");
+	QINFO_PRINT(global_enums::qinfo_level_e::ZERO, popupBaseOverall,  "Popup base destructor");
 
 }
 
-std::unique_ptr<QLabel> popup_base::PopupBase::actionToLabel(QWidget * parent, const std::shared_ptr<QAction> & action) const {
+std::unique_ptr<QLabel> popup_base::PopupBase::actionToLabel(QWidget * parent, const std::unique_ptr<action::Action> & action) const {
 	std::unique_ptr<QLabel> label = std::make_unique<QLabel>(parent);
 
 	key_sequence::KeySequence actionKey(action->shortcut());

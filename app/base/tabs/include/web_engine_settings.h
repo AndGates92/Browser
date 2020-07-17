@@ -16,7 +16,7 @@
 
 #include <qt5/QtWebEngineWidgets/QWebEngineSettings>
 
-#include "global_types.h"
+#include "global_enums.h"
 
 /** @defgroup WebEngineSettingsGroup Web Engine Settings Doxygen Group
  *  Web Engine Settings functions and classes

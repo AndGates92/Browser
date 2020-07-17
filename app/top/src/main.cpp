@@ -35,8 +35,8 @@ int main (int argc, char* argv[]) {
 		logging::set_default_category();
 		qInstallMessageHandler(logging::handler);
 
-		QINFO_PRINT(global_types::qinfo_level_e::ZERO, ,  "Starting browser");
-		QINFO_PRINT(global_types::qinfo_level_e::ZERO, ,  "Built on " << __DATE__ << " at " << __TIME__);
+		QINFO_PRINT(global_enums::qinfo_level_e::ZERO, ,  "Starting browser");
+		QINFO_PRINT(global_enums::qinfo_level_e::ZERO, ,  "Built on " << __DATE__ << " at " << __TIME__);
 
 		graphics::init_graphics(argc, argv);
 	} catch (const browser_exception::BrowserException & bexc) {

@@ -8,7 +8,7 @@
  * @brief Logging Macros file
 */
 
-#include "global_types.h"
+#include "global_enums.h"
 
 /** @defgroup LoggingMacrosGroup Logging Macros Doxygen Group
  *  Logging Macros
@@ -28,7 +28,7 @@
  *
  */
 #if !defined(QINFO_VERBOSITY)
-	#define QINFO_VERBOSITY global_types::qinfo_level_e::MEDIUM
+	#define QINFO_VERBOSITY global_enums::qinfo_level_e::MEDIUM
 #endif
 
 /**
@@ -55,7 +55,7 @@
  * Print a message to the log file if the chosen verbosity is less or equal to the default verbosity
  */
 #define QINFO_PRINT(VERBOSITY, CATEGORY, ...)\
-	if (VERBOSITY <= static_cast<global_types::qinfo_level_e>(QINFO_VERBOSITY)) { \
+	if (VERBOSITY <= static_cast<global_enums::qinfo_level_e>(QINFO_VERBOSITY)) { \
 		QDebug infoMsg(qInfo(CATEGORY)); \
 		infoMsg.noquote(); \
 		infoMsg.nospace(); \

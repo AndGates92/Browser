@@ -13,7 +13,7 @@
 #include "popup_container.h"
 #include "exception_macros.h"
 #include "logging_macros.h"
-#include "global_types.h"
+#include "global_enums.h"
 
 // Categories
 Q_LOGGING_CATEGORY(popupContainerOverall, "popupContainer.overall", MSG_TYPE_LEVEL)
@@ -30,14 +30,14 @@ namespace popup_container {
 
 popup_container::PopupContainer::PopupContainer(QWidget * parent, Qt::WindowFlags flags) : overlayed_widget::OverlayedWidget(parent, flags), popupWidgets(std::map<unsigned int, std::shared_ptr<popup_base::PopupBase>>()) {
 
-	QINFO_PRINT(global_types::qinfo_level_e::ZERO, popupContainerOverall,  "Popup container constructor");
+	QINFO_PRINT(global_enums::qinfo_level_e::ZERO, popupContainerOverall,  "Popup container constructor");
 
 	this->popupLayout();
 
 }
 
 popup_container::PopupContainer::~PopupContainer() {
-	QINFO_PRINT(global_types::qinfo_level_e::ZERO, popupContainerOverall,  "Popup container destructor");
+	QINFO_PRINT(global_enums::qinfo_level_e::ZERO, popupContainerOverall,  "Popup container destructor");
 }
 
 void popup_container::PopupContainer::popupLayout() {
@@ -85,7 +85,7 @@ bool popup_container::PopupContainer::addWidget(const unsigned int & index, std:
 	std::map<unsigned int, std::shared_ptr<popup_base::PopupBase>>::const_iterator el(insertReturn.first);
 	bool  success(insertReturn.second);
 	if (success == true) {
-		QINFO_PRINT(global_types::qinfo_level_e::ZERO, popupContainerOverall,  "Widget " << widget.get() << " has been successfully added to the widget map at index " << index);
+		QINFO_PRINT(global_enums::qinfo_level_e::ZERO, popupContainerOverall,  "Widget " << widget.get() << " has been successfully added to the widget map at index " << index);
 		this->addWidgetToLayout(index, widget);
 
 		// Connect close popup to close container on order to move the main window to IDLE state and re-enabke shortcuts
@@ -95,7 +95,7 @@ bool popup_container::PopupContainer::addWidget(const unsigned int & index, std:
 
 
 	} else {
-		QINFO_PRINT(global_types::qinfo_level_e::ZERO, popupContainerOverall,  "Widget " << widget.get() << " has not been successfully added to the widget map at index " << index << " as it was already filled with widget " << el->second.get());
+		QINFO_PRINT(global_enums::qinfo_level_e::ZERO, popupContainerOverall,  "Widget " << widget.get() << " has not been successfully added to the widget map at index " << index << " as it was already filled with widget " << el->second.get());
 	}
 
 	return success;

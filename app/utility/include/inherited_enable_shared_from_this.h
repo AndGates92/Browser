@@ -16,7 +16,7 @@
 
 #include <qt5/QtCore/QLoggingCategory>
 
-#include "global_types.h"
+#include "global_enums.h"
 #include "logging_macros.h"
 
 /** @defgroup InheritedEnableSharedFromThisGroup Inherited Enable Shared From This Doxygen Group
@@ -74,13 +74,13 @@ namespace inherited_enable_shared_from_this {
 
 template<typename derivedType, typename baseType>
 inherited_enable_shared_from_this::InheritedEnableSharedFromThis<derivedType, baseType>::InheritedEnableSharedFromThis() {
-	QINFO_PRINT(global_types::qinfo_level_e::ZERO, inheritedEnableSharedFromThisOverall,  "InheritedEnableSharedFromThis constructor");
+	QINFO_PRINT(global_enums::qinfo_level_e::ZERO, inheritedEnableSharedFromThisOverall,  "InheritedEnableSharedFromThis constructor");
 
 }
 
 template<typename derivedType, typename baseType>
 inherited_enable_shared_from_this::InheritedEnableSharedFromThis<derivedType, baseType>::~InheritedEnableSharedFromThis() {
-	QINFO_PRINT(global_types::qinfo_level_e::ZERO, inheritedEnableSharedFromThisOverall,  "InheritedEnableSharedFromThis destructor");
+	QINFO_PRINT(global_enums::qinfo_level_e::ZERO, inheritedEnableSharedFromThisOverall,  "InheritedEnableSharedFromThis destructor");
 
 }
 

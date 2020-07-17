@@ -48,19 +48,19 @@
 	},
 
 	"FindNext" : {
-		"Name" : "find next",
-		"State" : "FIND_NEXT",
+		"Name" : "find downward in the page",
+		"State" : "FIND_DOWN",
 		"Shortcut" : "n",
-		"LongCmd" : "find-next",
-		"Help" : "This command find next match of the user-type string in the current tab."
+		"LongCmd" : "find-down",
+		"Help" : "This command find downwards a match of the user-type string in the current tab."
 	},
 
 	"FindPrevious" : {
-		"Name" : "find previous",
-		"State" : "FIND_PREV",
+		"Name" : "find upward in the page",
+		"State" : "FIND_UP",
 		"Shortcut" : "N",
-		"LongCmd" : "find-prev",
-		"Help" : "This command find previous match of the user-type string in the current tab."
+		"LongCmd" : "find-up",
+		"Help" : "This command find upwards a match of the user-type string in the current tab."
 	},
 
 	"MoveTab" : {

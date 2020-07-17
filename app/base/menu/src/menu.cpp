@@ -11,7 +11,7 @@
 #include <qt5/QtCore/QtDebug>
 
 #include "logging_macros.h"
-#include "global_types.h"
+#include "global_enums.h"
 
 #include "menu.h"
 
@@ -20,13 +20,13 @@ Q_LOGGING_CATEGORY(menuOverall, "menu.overall", MSG_TYPE_LEVEL)
 
 menu::Menu::Menu(QWidget * parent, std::weak_ptr<QMenuBar> menuBar, const char* menuName, const key_sequence::KeySequence & key) : QWidget(parent), menuBar(menuBar), menuName(menuName), key(key) {
 
-	QINFO_PRINT(global_types::qinfo_level_e::ZERO, menuOverall, "Create menu " << this->menuName << " shortcut key " << this->key.toString());
+	QINFO_PRINT(global_enums::qinfo_level_e::ZERO, menuOverall, "Create menu " << this->menuName << " shortcut key " << this->key.toString());
 	this->createMenu();
 	this->createShortcuts();
 }
 
 menu::Menu::~Menu() {
-	QINFO_PRINT(global_types::qinfo_level_e::ZERO, menuOverall,  "menu destructor");
+	QINFO_PRINT(global_enums::qinfo_level_e::ZERO, menuOverall,  "menu destructor");
 }
 
 void menu::Menu::createMenu() {
@@ -53,7 +53,7 @@ void menu::Menu::expand() {
 	if (bar != Q_NULLPTR) {
 		// menu is expanded only if menu bar is visible
 		if (bar->isVisible()) {
-			QINFO_PRINT(global_types::qinfo_level_e::ZERO, menuOverall, "Expand menu " << this->menuName << " because shortcut key " << this->key.toString() << " has been pressed");
+			QINFO_PRINT(global_enums::qinfo_level_e::ZERO, menuOverall, "Expand menu " << this->menuName << " because shortcut key " << this->key.toString() << " has been pressed");
 			this->winMenu->exec();
 			this->setFocus();
 		}

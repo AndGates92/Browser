@@ -2,7 +2,7 @@
  * @copyright
  * @file global_classes.cpp
  * @author Andrea Gianarda
- * @date 31st of Mqrch 2020
+ * @date 31st of March 2020
  * @brief Global class definition
  */
 

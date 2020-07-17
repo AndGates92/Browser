@@ -19,7 +19,7 @@
 
 #include <qt5/QtWidgets/QWidget>
 
-#include "global_types.h"
+#include "global_enums.h"
 #include "logging_macros.h"
 #include "function_macros.h"
 #include "tab_shared_types.h"
@@ -142,7 +142,7 @@ namespace tab_component_widget {
 
 template<typename type>
 tab_component_widget::TabComponentWidget<type>::TabComponentWidget(QWidget * parent, std::weak_ptr<tab::Tab> attachedTab): QWidget(parent) {
-	QINFO_PRINT(global_types::qinfo_level_e::ZERO, tabComponentWidgetOverall,  "TabComponentWidget constructor");
+	QINFO_PRINT(global_enums::qinfo_level_e::ZERO, tabComponentWidgetOverall,  "TabComponentWidget constructor");
 
 	this->browserTab.reset();
 
@@ -154,7 +154,7 @@ tab_component_widget::TabComponentWidget<type>::TabComponentWidget(QWidget * par
 
 template<typename type>
 tab_component_widget::TabComponentWidget<type>::~TabComponentWidget() {
-	QINFO_PRINT(global_types::qinfo_level_e::ZERO, tabComponentWidgetOverall,  "TabComponentWidget destructor");
+	QINFO_PRINT(global_enums::qinfo_level_e::ZERO, tabComponentWidgetOverall,  "TabComponentWidget destructor");
 }
 
 template<typename type>

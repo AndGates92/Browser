@@ -40,7 +40,7 @@ namespace tab_widget {
 }
 
 tab_widget::TabWidget::TabWidget(QWidget * parent): QTabWidget(parent) {
-	QINFO_PRINT(global_types::qinfo_level_e::ZERO, tabWidgetOverall,  "Tab widget constructor");
+	QINFO_PRINT(global_enums::qinfo_level_e::ZERO, tabWidgetOverall,  "Tab widget constructor");
 	this->setMovable(true);
 	this->setMinimumHeight(tab_widget::minHeight);
 	this->setMinimumWidth(tab_widget::minWidth);
@@ -55,7 +55,7 @@ tab_widget::TabWidget::TabWidget(QWidget * parent): QTabWidget(parent) {
 }
 
 tab_widget::TabWidget::~TabWidget() {
-	QINFO_PRINT(global_types::qinfo_level_e::ZERO, tabWidgetOverall,  "Tab widget destructor");
+	QINFO_PRINT(global_enums::qinfo_level_e::ZERO, tabWidgetOverall,  "Tab widget destructor");
 }
 
 void tab_widget::TabWidget::setTabBar(std::shared_ptr<tab_bar::TabBar> newTabBar) {
@@ -67,7 +67,7 @@ BASE_GETTER(tab_widget::TabWidget::tabBar, std::shared_ptr<tab_bar::TabBar>, thi
 void tab_widget::TabWidget::resizeEvent(QResizeEvent * event) {
 	QSize previousSize(event->oldSize());
 	QSize newSize(event->size());
-	QINFO_PRINT(global_types::qinfo_level_e::ZERO, tabWidgetSize,  "Tab widget resize from " << previousSize << " to " << newSize);
+	QINFO_PRINT(global_enums::qinfo_level_e::ZERO, tabWidgetSize,  "Tab widget resize from " << previousSize << " to " << newSize);
 	int widgetWidth = this->size().width();
 	this->bar->setWidth(widgetWidth);
 
@@ -89,14 +89,14 @@ void tab_widget::TabWidget::keyPressEvent(QKeyEvent * event) {
 		userText = "No text provided";
 	}
 
-	QINFO_PRINT(global_types::qinfo_level_e::ZERO, tabWidgetSearch,  "User typed text " << userText << " to search");
+	QINFO_PRINT(global_enums::qinfo_level_e::ZERO, tabWidgetSearch,  "User typed text " << userText << " to search");
 
 	QTabWidget::keyPressEvent(event);
 
 }
 
 int tab_widget::TabWidget::addTab(std::shared_ptr<tab::Tab> newTab, const QString & label, const QIcon & icon) {
-	QINFO_PRINT(global_types::qinfo_level_e::ZERO, tabWidgetTabs,  "Open tab with label " << label);
+	QINFO_PRINT(global_enums::qinfo_level_e::ZERO, tabWidgetTabs,  "Open tab with label " << label);
 
 	const int index = this->count();
 
@@ -106,7 +106,7 @@ int tab_widget::TabWidget::addTab(std::shared_ptr<tab::Tab> newTab, const QStrin
 }
 
 int tab_widget::TabWidget::insertTab(const int & index, std::shared_ptr<tab::Tab> newTab, const QString & label, const QIcon & icon) {
-	QINFO_PRINT(global_types::qinfo_level_e::ZERO, tabWidgetTabs,  "Insert tab with label " << label << " at position " << index);
+	QINFO_PRINT(global_enums::qinfo_level_e::ZERO, tabWidgetTabs,  "Insert tab with label " << label << " at position " << index);
 
 	int tabIndex = -1;
 
@@ -130,7 +130,7 @@ int tab_widget::TabWidget::insertTab(const int & index, std::shared_ptr<tab::Tab
 }
 
 void tab_widget::TabWidget::removeTab(const int & index) {
-	QINFO_PRINT(global_types::qinfo_level_e::ZERO, tabWidgetTabs,  "Close tab " << index);
+	QINFO_PRINT(global_enums::qinfo_level_e::ZERO, tabWidgetTabs,  "Close tab " << index);
 	QTabWidget::removeTab(index);
 	this->setVisibleAttribute();
 }
@@ -143,7 +143,7 @@ void tab_widget::TabWidget::setVisibleAttribute() {
 	} else {
 		visibleFlag = true;
 	}
-	QINFO_PRINT(global_types::qinfo_level_e::ZERO, tabWidgetVisibility,  "Set visibility of tab widget to " << visibleFlag);
+	QINFO_PRINT(global_enums::qinfo_level_e::ZERO, tabWidgetVisibility,  "Set visibility of tab widget to " << visibleFlag);
 	this->setVisible(visibleFlag);
 }
 

@@ -14,7 +14,6 @@
 #include <qt5/QtCore/QLoggingCategory>
 #include <qt5/QtCore/QDir>
 #include <qt5/QtWidgets/QLineEdit>
-#include <qt5/QtWidgets/QPushButton>
 #include <qt5/QtWidgets/QAction>
 #include <qt5/QtWidgets/QFileSystemModel>
 #include <qt5/QtWidgets/QTreeView>
@@ -22,6 +21,7 @@
 #include "action.h"
 #include "key_sequence.h"
 #include "constructor_macros.h"
+#include "secondary_window_interface.h"
 
 /** @defgroup FileHandlingWidgetsGroup File Handling Widgets Doxygen Group
  *  File Handling Widgets functions and classes
@@ -36,7 +36,7 @@ namespace file_handling_widgets {
 	 * @brief FileHandlingWidgets class
 	 *
 	 */
-	class FileHandlingWidgets {
+	class FileHandlingWidgets : public secondary_window_interface::SecondaryWindowInterface {
 
 		public:
 
@@ -61,31 +61,31 @@ namespace file_handling_widgets {
 			 * @brief user typed text
 			 *
 			 */
-			std::unique_ptr<QLineEdit> pathToOpen;
+			std::shared_ptr<QLineEdit> pathToOpen;
 
 			/**
 			 * @brief open action
 			 *
 			 */
-			std::shared_ptr<action::Action> applyAction;
+			std::unique_ptr<action::Action> applyAction;
 
 			/**
 			 * @brief browse action
 			 *
 			 */
-			std::shared_ptr<action::Action> browseAction;
+			std::unique_ptr<action::Action> browseAction;
 
 			/**
 			 * @brief cancel action
 			 *
 			 */
-			std::shared_ptr<action::Action> cancelAction;
+			std::unique_ptr<action::Action> cancelAction;
 
 			/**
 			 * @brief insert action
 			 *
 			 */
-			std::shared_ptr<action::Action> typeAction;
+			std::unique_ptr<action::Action> typeAction;
 
 			/**
 			 * @brief file browser
@@ -136,32 +136,11 @@ namespace file_handling_widgets {
 			void addActionsToWidget(QWidget * widget);
 
 			/**
-			 * @brief Function: virtual void apply()
-			 *
-			 * This function is the slot of the apply action
-			 */
-			virtual void apply() = 0;
-
-			/**
 			 * @brief Function: virtual void browse()
 			 *
 			 * This function is the slot of the browse action
 			 */
 			virtual void browse() = 0;
-
-			/**
-			 * @brief Function: virtual void cancel()
-			 *
-			 * This function is the slot of the cancel action
-			 */
-			virtual void cancel() = 0;
-
-			/**
-			 * @brief Function: virtual void insert()
-			 *
-			 * This function is the slot of the insert action
-			 */
-			virtual void insert() = 0;
 
 			/**
 			 * @brief Function: virtual void pathChanged(const QString & path)
@@ -182,51 +161,6 @@ namespace file_handling_widgets {
 			virtual void doubleClickOnFile(const QFileInfo & pathInfo) = 0;
 
 		private:
-			/**
-			 * @brief Function: std::unique_ptr<action::Action> createAction(QObject * parent, const std::string & text, const std::string & tip, const key_sequence::KeySequence & shortcut)
-			 *
-			 * \param parent: parent object
-			 * \param text: descriptive text of the action
-			 * \param tip: action status tip
-			 * \param shortcut: shortcut linked to the action
-			 *
-			 * This function creates a new action
-			 */
-			std::unique_ptr<action::Action> createAction(QObject * parent, const std::string & text, const std::string & tip, const key_sequence::KeySequence & shortcut);
-
-			/**
-			 * @brief Function: std::unique_ptr<QLineEdit> createLineEdit(QWidget * parent, const std::string & text)
-			 *
-			 * \param parent: parent widget
-			 * \param text: text to show on the line edit
-			 *
-			 * This function creates a new QLineEdit
-			 */
-			std::unique_ptr<QLineEdit> createLineEdit(QWidget * parent, const std::string & text);
-
-			/**
-			 * @brief Function: std::unique_ptr<QFileSystemModel> createFileModel(QWidget * parent, const QStringList & filters, const QDir & directory)
-			 *
-			 * \param parent: parent widget
-			 * \param filters: file dialog filters
-			 * \param directory: current dialog directory
-			 *
-			 * This function creates a new QFileSystemModel
-			 */
-			std::unique_ptr<QFileSystemModel> createFileModel(QWidget * parent, const QStringList & filters, const QDir & directory);
-
-			/**
-			 * @brief Function: std::unique_ptr<QTreeView> createFileView(std::unique_ptr<QFileSystemModel> & model, QWidget *parent, const QStringList & filters, const QDir & directory)
-			 *
-			 * \param model: model of the fileview
-			 * \param parent: parent widget
-			 * \param filters: file dialog filters
-			 * \param directory: current dialog directory
-			 *
-			 * This function creates a new QTreeView to display the content of the model. If the pointer to the model is null, this method will construct one based on the informations provided
-			 */
-			std::unique_ptr<QTreeView> createFileView(std::unique_ptr<QFileSystemModel> & model, QWidget *parent, const QStringList & filters = QStringList(), const QDir & directory = QDir::currentPath());
-
 			/**
 			 * @brief Function: const QString getPathFromModelIndex(const std::unique_ptr<QFileSystemModel> & model, const QModelIndex & index)
 			 *

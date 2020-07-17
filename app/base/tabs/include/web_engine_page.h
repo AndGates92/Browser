@@ -17,7 +17,7 @@
 #include <qt5/QtWebEngineWidgets/QWebEnginePage>
 
 #include "web_engine_profile.h"
-#include "global_types.h"
+#include "global_enums.h"
 #include "constructor_macros.h"
 
 /** @defgroup WebEnginePageGroup Web Engine Page Doxygen Group

@@ -18,11 +18,11 @@
 Q_LOGGING_CATEGORY(webEnginePageOverall, "webEnginePage.overall", MSG_TYPE_LEVEL)
 
 web_engine_page::WebEnginePage::WebEnginePage(QWidget * parent, web_engine_profile::WebEngineProfile * profile): QWebEnginePage(profile, parent) {
-	QINFO_PRINT(global_types::qinfo_level_e::ZERO, webEnginePageOverall,  "Web engine page constructor");
+	QINFO_PRINT(global_enums::qinfo_level_e::ZERO, webEnginePageOverall,  "Web engine page constructor");
 }
 
 web_engine_page::WebEnginePage::~WebEnginePage() {
-	QINFO_PRINT(global_types::qinfo_level_e::ZERO, webEnginePageOverall,  "Web engine page destructor");
+	QINFO_PRINT(global_enums::qinfo_level_e::ZERO, webEnginePageOverall,  "Web engine page destructor");
 }
 
 CASTED_PTR_GETTER(web_engine_page::WebEnginePage::profile, web_engine_profile::WebEngineProfile, QWebEnginePage::profile())

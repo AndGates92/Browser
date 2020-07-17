@@ -43,14 +43,14 @@ std::string global_functions::readFile(const std::string & filename) {
 			content.append(line);
 			charCount += line.length();
 			const double percentageCount = (static_cast<double>(charCount) * 100.0) / static_cast<double>(fileLength);
-			QINFO_PRINT(global_types::qinfo_level_e::ZERO, readFileOverall,  "Character counted " << charCount << " out of " << fileLength << " that is " << percentageCount << "%");
+			QINFO_PRINT(global_enums::qinfo_level_e::ZERO, readFileOverall,  "Character counted " << charCount << " out of " << fileLength << " that is " << percentageCount << "%");
 		}
 	} catch (const std::ifstream::failure & e) {
 		if (ifile.is_open()) {
 			ifile.close();
 		}
 		if (ifile.eof()) {
-			QINFO_PRINT(global_types::qinfo_level_e::ZERO, readFileOverall,  "Finished reading content from file " << filename.c_str());
+			QINFO_PRINT(global_enums::qinfo_level_e::ZERO, readFileOverall,  "Finished reading content from file " << filename.c_str());
 		} else {
 			// Convert std::error_code print to std::string so that it can be printed
 			const std::error_code errorCode(e.code());

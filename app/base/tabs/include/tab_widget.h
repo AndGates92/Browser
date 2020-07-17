@@ -20,7 +20,7 @@
 #include <qt5/QtGui/QIcon>
 
 #include "logging_macros.h"
-#include "global_types.h"
+#include "global_enums.h"
 #include "tab_bar.h"
 #include "tab.h"
 #include "constructor_macros.h"

@@ -1,0 +1,117 @@
+/**
+ * @copyright
+ * @file progress_bar.cpp
+ * @author Andrea Gianarda
+ * @date 04th of March 2020
+ * @brief Progress bar functions
+*/
+
+// Qt libraries
+#include <qt5/QtCore/QtGlobal>
+
+#include "progress_bar.h"
+#include "exception_macros.h"
+#include "logging_macros.h"
+#include "global_enums.h"
+
+// Categories
+Q_LOGGING_CATEGORY(progressBarOverall, "progressBar.overall", MSG_TYPE_LEVEL)
+
+namespace progress_bar {
+
+	namespace {
+		/**
+		 * @brief default progres bar alignment
+		 *
+		 */
+		static constexpr Qt::Alignment progressAlignment = (Qt::AlignHCenter | Qt::AlignVCenter);
+
+		/**
+		 * @brief default direction of the text
+		 *
+		 */
+		static constexpr QProgressBar::Direction progressTextDirection = QProgressBar::TopToBottom;
+
+		/**
+		 * @brief default visible text flag
+		 *
+		 */
+		static constexpr bool progressTextVisible = true;
+
+		/**
+		 * @brief default format of the text
+		 *
+		 */
+		static const QString barTextFormat("%p%");
+
+		/**
+		 * @brief default inverted progress flag
+		 *
+		 */
+		static constexpr bool invertedProgress = false;
+	}
+
+}
+
+
+progress_bar::ProgressBar::ProgressBar(QWidget * parent) : QProgressBar(parent) {
+	QINFO_PRINT(global_enums::qinfo_level_e::ZERO, progressBarOverall,  "Progress bar constructor");
+
+	this->setAlignment(progress_bar::progressAlignment);
+
+	this->setInvertedAppearance(progress_bar::invertedProgress);
+
+	this->setFormat(progress_bar::barTextFormat);
+	this->setTextVisible(progress_bar::progressTextVisible);
+	this->setTextDirection(progress_bar::progressTextDirection);
+
+	this->setSizePolicy(QSizePolicy::Preferred, QSizePolicy::Minimum);
+
+	// Hide the bar at the start
+	this->setVisible(false);
+}
+
+progress_bar::ProgressBar::~ProgressBar() {
+	QINFO_PRINT(global_enums::qinfo_level_e::ZERO, progressBarOverall,  "Progress bar destructor");
+}
+
+void progress_bar::ProgressBar::startLoading() {
+	this->setValue(0);
+}
+
+void progress_bar::ProgressBar::setValue(const int & value) {
+	this->setVisible(true);
+	QProgressBar::setValue(value);
+
+	// When tabs are refreshed, loadFinished is not send therefore endLoadign slot is not called
+	// Forcing call endLoading
+	if (value == this->maximum()) {
+		this->endLoading(true);
+	}
+}
+
+void progress_bar::ProgressBar::endLoading(const bool & success) {
+
+	QEXCEPTION_ACTION_COND((!success), throw,  "Operation didn't complete succesfully");
+
+	// Hide progress bar after operation completes
+	this->setVisible(false);
+}
+
+QSize progress_bar::ProgressBar::minimumSizeHint() {
+	return this->sizeHint();
+}
+
+QSize progress_bar::ProgressBar::sizeHint() {
+	const QWidget * parent = this->parentWidget();
+	int width;
+	if (parent == Q_NULLPTR) {
+		width = QWidget::sizeHint().width();
+	} else {
+		width = parent->sizeHint().width();
+	}
+
+	const int height = this->fontMetrics().height();
+
+	return QSize(width,height);
+}

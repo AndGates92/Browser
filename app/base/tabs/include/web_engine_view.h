@@ -18,7 +18,7 @@
 
 #include <qt5/QtWebEngineWidgets/QWebEngineView>
 
-#include "global_types.h"
+#include "global_enums.h"
 #include "constructor_macros.h"
 #include "web_engine_page.h"
 

@@ -17,7 +17,7 @@
 #include <qt5/QtCore/QLoggingCategory>
 #include <qt5/QtWidgets/QTabBar>
 
-#include "global_types.h"
+#include "global_enums.h"
 #include "tab_component_widget.h"
 #include "tab_shared_types.h"
 #include "tab_bar.h"

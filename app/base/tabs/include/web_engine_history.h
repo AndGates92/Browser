@@ -16,7 +16,7 @@
 
 #include <qt5/QtWebEngineWidgets/QWebEngineHistory>
 
-#include "global_types.h"
+#include "global_enums.h"
 #include "tab_shared_types.h"
 
 /** @defgroup WebEngineHistoryGroup Web Engine History Doxygen Group

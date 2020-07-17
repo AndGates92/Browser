@@ -17,7 +17,7 @@
 #include <qt5/QtWidgets/QTabBar>
 
 #include "logging_macros.h"
-#include "global_types.h"
+#include "global_enums.h"
 #include "constructor_macros.h"
 
 /** @defgroup TabBarGroup Tab Bar Doxygen Group

@@ -16,7 +16,7 @@
 
 #include <qt5/QtWidgets/QWidget>
 
-#include "global_types.h"
+#include "global_enums.h"
 #include "constructor_macros.h"
 #include "web_engine_view.h"
 #include "web_engine_settings.h"
@@ -346,29 +346,13 @@ namespace tab {
 			std::shared_ptr<tab_scroll_manager::TabScrollManager> getScrollManager() const;
 
 			/**
-			 * @brief Function: virtual virtual void find(const int & index, const QString & search, const bool & reverse, const bool & caseSensitive) const
+			 * @brief Function: virtual virtual void find(const find_settings::FindSettings & settings) const
 			 *
-			 * \param search: text to search.
-			 * \param reverse: true if searching in the reverse direction, false otherwise.
-			 * \param caseSensitive: true if case sensitive search, false otherwise.
+			 * \param settings: settings of the search.
 			 *
 			 * This function searches text in a webpage
 			 */
-			virtual void find(const QString & search, const bool & reverse, const bool & caseSensitive) const;
-
-			/**
-			 * @brief Function: virtual void findPrev() const
-			 *
-			 * This function searches previous match in a webpage
-			 */
-			virtual void findPrev() const;
-
-			/**
-			 * @brief Function: virtual void findNext() const
-			 *
-			 * This function searches next match in a webpage
-			 */
-			virtual void findNext() const;
+			virtual void find(const find_settings::FindSettings & settings) const;
 
 			/**
 			 * @brief Function: virtual void historyPrev() const

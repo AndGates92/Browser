@@ -17,19 +17,19 @@
 Q_LOGGING_CATEGORY(webEngineHistoryOverall, "webEngineHistory.overall", MSG_TYPE_LEVEL)
 
 web_engine_history::WebEngineHistory::WebEngineHistory(QWebEngineHistory * newHistory): history(newHistory) {
-	QINFO_PRINT(global_types::qinfo_level_e::ZERO, webEngineHistoryOverall,  "Web engine history constructor");
+	QINFO_PRINT(global_enums::qinfo_level_e::ZERO, webEngineHistoryOverall,  "Web engine history constructor");
 
 }
 
 web_engine_history::WebEngineHistory::WebEngineHistory(const web_engine_history::WebEngineHistory & rhs) : history(rhs.history) {
 
-	QINFO_PRINT(global_types::qinfo_level_e::ZERO, webEngineHistoryOverall,  "Copy constructor web engine history");
+	QINFO_PRINT(global_enums::qinfo_level_e::ZERO, webEngineHistoryOverall,  "Copy constructor web engine history");
 
 }
 
 web_engine_history::WebEngineHistory & web_engine_history::WebEngineHistory::operator=(const web_engine_history::WebEngineHistory & rhs) {
 
-	QINFO_PRINT(global_types::qinfo_level_e::ZERO, webEngineHistoryOverall,  "Copy assignment operator for web engine history");
+	QINFO_PRINT(global_enums::qinfo_level_e::ZERO, webEngineHistoryOverall,  "Copy assignment operator for web engine history");
 
 	// If rhs points to the same address as this, then return this
 	if (&rhs == this) {
@@ -45,12 +45,12 @@ web_engine_history::WebEngineHistory & web_engine_history::WebEngineHistory::ope
 
 web_engine_history::WebEngineHistory::WebEngineHistory(web_engine_history::WebEngineHistory && rhs) : history(std::exchange(rhs.history, Q_NULLPTR)) {
 
-	QINFO_PRINT(global_types::qinfo_level_e::ZERO, webEngineHistoryOverall,  "Move constructor web engine history");
+	QINFO_PRINT(global_enums::qinfo_level_e::ZERO, webEngineHistoryOverall,  "Move constructor web engine history");
 }
 
 web_engine_history::WebEngineHistory & web_engine_history::WebEngineHistory::operator=(web_engine_history::WebEngineHistory && rhs) {
 
-	QINFO_PRINT(global_types::qinfo_level_e::ZERO, webEngineHistoryOverall,  "Move assignment operator for web engine history");
+	QINFO_PRINT(global_enums::qinfo_level_e::ZERO, webEngineHistoryOverall,  "Move assignment operator for web engine history");
 
 	// If rhs doesn't point to the same address as this, then execute move
 	if (&rhs != this) {
@@ -61,7 +61,7 @@ web_engine_history::WebEngineHistory & web_engine_history::WebEngineHistory::ope
 }
 
 web_engine_history::WebEngineHistory::~WebEngineHistory() {
-	QINFO_PRINT(global_types::qinfo_level_e::ZERO, webEngineHistoryOverall,  "Web engine history destructor");
+	QINFO_PRINT(global_enums::qinfo_level_e::ZERO, webEngineHistoryOverall,  "Web engine history destructor");
 
 }
 
@@ -86,7 +86,7 @@ void web_engine_history::WebEngineHistory::goToItem(const tab_shared_types::step
 			this->forward();
 			break;
 		default:
-			QINFO_PRINT(global_types::qinfo_level_e::ZERO, webEngineHistoryOverall,  "Unable to step across items of the history list with direcion set to " << step);
+			QINFO_PRINT(global_enums::qinfo_level_e::ZERO, webEngineHistoryOverall,  "Unable to step across items of the history list with direcion set to " << step);
 			break;
 	}
 }

@@ -19,7 +19,7 @@ Q_LOGGING_CATEGORY(tabOverall, "tab.overall", MSG_TYPE_LEVEL)
 Q_LOGGING_CATEGORY(tabSize, "tab.size", MSG_TYPE_LEVEL)
 
 tab::Tab::Tab(QWidget * parent): QWidget(parent), view(Q_NULLPTR), loadManager(Q_NULLPTR), search(Q_NULLPTR), history(Q_NULLPTR), settings(Q_NULLPTR), scrollManager(Q_NULLPTR) {
-	QINFO_PRINT(global_types::qinfo_level_e::ZERO, tabOverall,  "Tab constructor");
+	QINFO_PRINT(global_enums::qinfo_level_e::ZERO, tabOverall,  "Tab constructor");
 }
 
 void tab::Tab::configure(std::shared_ptr<tab_bar::TabBar> tabBar) {
@@ -43,7 +43,7 @@ void tab::Tab::configure(std::shared_ptr<tab_bar::TabBar> tabBar) {
 }
 
 tab::Tab::~Tab() {
-	QINFO_PRINT(global_types::qinfo_level_e::ZERO, tabOverall,  "Tab destructor");
+	QINFO_PRINT(global_enums::qinfo_level_e::ZERO, tabOverall,  "Tab destructor");
 }
 
 void tab::Tab::setLoadManager(std::shared_ptr<tab_load_manager::TabLoadManager> value) {
@@ -97,22 +97,14 @@ BASE_SETTER_GETTER(tab::Tab::setSettings, tab::Tab::getSettings, std::shared_ptr
 void tab::Tab::resize(const QSize size) {
 	// Resize view
 	if (this->view != Q_NULLPTR) {
-		QINFO_PRINT(global_types::qinfo_level_e::ZERO, tabSize,  "Resize view to" << size);
+		QINFO_PRINT(global_enums::qinfo_level_e::ZERO, tabSize,  "Resize view to" << size);
 		this->view->resize(size);
 	}
 	QWidget::resize(size);
 }
 
-void tab::Tab::find(const QString & searchText, const bool & reverse, const bool & caseSensitive) const {
-	this->search->find(tab_shared_types::stepping_e::ITEM, searchText, reverse, caseSensitive);
-}
-
-void tab::Tab::findNext() const {
-	this->search->find(tab_shared_types::stepping_e::NEXT);
-}
-
-void tab::Tab::findPrev() const {
-	this->search->find(tab_shared_types::stepping_e::PREVIOUS);
+void tab::Tab::find(const find_settings::FindSettings & settings) const {
+	this->search->find(settings);
 }
 
 void tab::Tab::historyNext() const {

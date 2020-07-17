@@ -17,9 +17,10 @@
 #include <qt5/QtCore/QString>
 #include <qt5/QtWebEngineWidgets/QWebEnginePage>
 
-#include "global_types.h"
+#include "global_enums.h"
 #include "tab_component_widget.h"
 #include "constructor_macros.h"
+#include "find_settings.h"
 
 /** @defgroup TabSearchGroup Tab Search Doxygen Group
  *  Tab Search functions and classes
@@ -39,7 +40,7 @@ namespace tab_search {
 	 * @brief TabSearch class
 	 *
 	 */
-	class TabSearch : public tab_component_widget::TabComponentWidget<QWebEnginePage::FindFlags> {
+	class TabSearch : public tab_component_widget::TabComponentWidget<find_settings::FindSettings> {
 		friend class tab::Tab;
 
 		public:
@@ -62,16 +63,10 @@ namespace tab_search {
 
 		protected:
 			/**
-			 * @brief text to search
+			 * @brief find settings
 			 *
 			 */
-			QString text;
-
-			/**
-			 * @brief search flags
-			 *
-			 */
-			QWebEnginePage::FindFlags flags;
+			find_settings::FindSettings settings;
 
 			/**
 			 * @brief callback
@@ -80,31 +75,14 @@ namespace tab_search {
 			std::function<void(bool)> callback;
 
 			/**
-			 * @brief Function: virtual void findPrev() final
+			 * @brief Function: virtual void find(const find_settings::FindSettings & newSettings, std::function<void(bool)> cb = std::function<void(bool)>()) final
 			 *
-			 * This function searches previous match in a webpage
-			 */
-			virtual void findPrev() final;
-
-			/**
-			 * @brief Function: virtual void findNext() final
-			 *
-			 * This function searches next match in a webpage
-			 */
-			virtual void findNext() final;
-
-			/**
-			 * @brief Function: virtual void find(const tab_shared_types::stepping_e step, const QString & searchText = QString::null, const bool & reverse = false, const bool & caseSensitive = false, std::function<void(bool)> cb = std::function<void(bool)>()) final
-			 *
-			 * \param step: direction of search.
-			 * \param searchText: text to search.
-			 * \param reverse: true if searching in the reverse direction, false otherwise.
-			 * \param caseSensitive: true if case sensitive search, false otherwise.
+			 * \param newSettings: new settings of search.
 			 * \param cb: callback to call
 			 *
 			 * This function searches text in a webpage
 			 */
-			virtual void find(const tab_shared_types::stepping_e step, const QString & searchText = QString::null, const bool & reverse = false, const bool & caseSensitive = false, std::function<void(bool)> cb = std::function<void(bool)>()) final;
+			virtual void find(const find_settings::FindSettings & newSettings, std::function<void(bool)> cb = std::function<void(bool)>()) final;
 
 			/**
 			 * @brief Function: virtual void popRequestQueue() override
@@ -122,13 +100,13 @@ namespace tab_search {
 			virtual void search() final;
 
 			/**
-			 * @brief Function: virtual void pushRequestQueue(const QWebEnginePage::FindFlags & entry) override
+			 * @brief Function: virtual void pushRequestQueue(const find_settings::FindSettings & newSettings) override
 			 *
-			 * \param entry: search flags
+			 * \param settings: settings of the search
 			 *
 			 * This function pushes a new entry to the queue
 			 */
-			virtual void pushRequestQueue(const QWebEnginePage::FindFlags & entry) override;
+			virtual void pushRequestQueue(const find_settings::FindSettings & newSettings) override;
 
 			/**
 			 * @brief Function: virtual void canProcessRequests() const override

@@ -15,7 +15,7 @@
 #include <qt5/QtCore/QtDebug>
 
 #include "logging_macros.h"
-#include "global_types.h"
+#include "global_enums.h"
 #include "main_window_wrapper.h"
 #include "graphics.h"
 
@@ -26,7 +26,7 @@ Q_LOGGING_CATEGORY(graphicsOverall, "graphics.overall", MSG_TYPE_LEVEL)
 void graphics::init_graphics(int & argc, char** argv) {
 	QApplication app(argc, argv);
 
-	QINFO_PRINT(global_types::qinfo_level_e::ZERO, graphicsOverall,  "Create Application");
+	QINFO_PRINT(global_enums::qinfo_level_e::ZERO, graphicsOverall,  "Create Application");
 
 	main_window_wrapper::MainWindowWrapper * window = new main_window_wrapper::MainWindowWrapper(Q_NULLPTR, Qt::Window);
 	window->show();

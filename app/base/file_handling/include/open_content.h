@@ -61,13 +61,6 @@ namespace open_content {
 			void openPath();
 
 			/**
-			 * @brief Function: virtual void close()
-			 *
-			 * This function closes the popup
-			 */
-			virtual void close() = 0;
-
-			/**
 			 * @brief Function: virtual void openItem(const QString & path)
 			 *
 			 * \param path: path of the file
@@ -86,13 +79,6 @@ namespace open_content {
 			virtual void doubleClickOnFile(const QFileInfo & pathInfo) override;
 
 		private:
-
-			/**
-			 * @brief Function: virtual void connectSignals()
-			 *
-			 * This function connects signals and slots between main window elements from the derived class
-			 */
-			virtual void connectSignals() = 0;
 
 	};
 

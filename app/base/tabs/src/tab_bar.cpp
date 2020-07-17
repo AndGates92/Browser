@@ -30,7 +30,7 @@ namespace tab_bar {
 }
 
 tab_bar::TabBar::TabBar(QWidget * parent, int width): QTabBar(parent) {
-	QINFO_PRINT(global_types::qinfo_level_e::ZERO, tabBarOverall,  "Tab bar constructor");
+	QINFO_PRINT(global_enums::qinfo_level_e::ZERO, tabBarOverall,  "Tab bar constructor");
 
 	this->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Minimum);
 	this->setExpanding(true);
@@ -44,7 +44,7 @@ tab_bar::TabBar::TabBar(QWidget * parent, int width): QTabBar(parent) {
 }
 
 QSize tab_bar::TabBar::tabSizeHint(int index) const {
-	QINFO_PRINT(global_types::qinfo_level_e::ZERO, tabBarSize,  "Tab bar size hint for tab " << index);
+	QINFO_PRINT(global_enums::qinfo_level_e::ZERO, tabBarSize,  "Tab bar size hint for tab " << index);
 
 	int barWidth = this->parentWidget()->size().width();
 	int barHeight = this->size().height();
@@ -59,7 +59,7 @@ QSize tab_bar::TabBar::tabSizeHint(int index) const {
 		tabWidth = barWidth/tabNumber;
 	}
 	int tabHeight = barHeight;
-	QINFO_PRINT(global_types::qinfo_level_e::ZERO, tabBarSize,  "Tab bar dimensions: width " << barWidth << " height " << barHeight << " Tab width " << tabWidth << " height " << tabHeight << " number of tabs " << tabNumber);
+	QINFO_PRINT(global_enums::qinfo_level_e::ZERO, tabBarSize,  "Tab bar dimensions: width " << barWidth << " height " << barHeight << " Tab width " << tabWidth << " height " << tabHeight << " number of tabs " << tabNumber);
 	QSize tabSize(tabWidth, tabHeight);
 
 	return tabSize;
@@ -67,7 +67,7 @@ QSize tab_bar::TabBar::tabSizeHint(int index) const {
 
 void tab_bar::TabBar::setWidth(const int & newWidth) {
 	int tabHeight = tab_bar::height;
-	QINFO_PRINT(global_types::qinfo_level_e::ZERO, tabBarSize,  "Tab bar size width: " << newWidth << " height " << tabHeight);
+	QINFO_PRINT(global_enums::qinfo_level_e::ZERO, tabBarSize,  "Tab bar size width: " << newWidth << " height " << tabHeight);
 	this->resize(QSize(newWidth, tabHeight));
 }
 
@@ -78,7 +78,7 @@ void tab_bar::TabBar::keyPressEvent(QKeyEvent * event) {
 		userText = "No text provided";
 	}
 
-	QINFO_PRINT(global_types::qinfo_level_e::ZERO, tabBarSearch,  "User typed text " << userText << " to search");
+	QINFO_PRINT(global_enums::qinfo_level_e::ZERO, tabBarSearch,  "User typed text " << userText << " to search");
 
 	QTabBar::keyPressEvent(event);
 
@@ -87,6 +87,6 @@ void tab_bar::TabBar::keyPressEvent(QKeyEvent * event) {
 void tab_bar::TabBar::resizeEvent(QResizeEvent * event) {
 	QSize previousSize(event->oldSize());
 	QSize newSize(event->size());
-	QINFO_PRINT(global_types::qinfo_level_e::ZERO, tabBarSize,  "Tab bar resize from " << previousSize << " to " << newSize);
+	QINFO_PRINT(global_enums::qinfo_level_e::ZERO, tabBarSize,  "Tab bar resize from " << previousSize << " to " << newSize);
 	QTabBar::resizeEvent(event);
 }

@@ -31,11 +31,11 @@ web_engine_profile::WebEngineProfile * web_engine_profile::WebEngineProfile::def
 }
 
 web_engine_profile::WebEngineProfile::WebEngineProfile(QObject * parent, const QString & storageName): QWebEngineProfile(storageName, parent) {
-	QINFO_PRINT(global_types::qinfo_level_e::ZERO, webEngineProfileOverall,  "Web engine profile constructor");
+	QINFO_PRINT(global_enums::qinfo_level_e::ZERO, webEngineProfileOverall,  "Web engine profile constructor");
 
 }
 
 web_engine_profile::WebEngineProfile::~WebEngineProfile() {
-	QINFO_PRINT(global_types::qinfo_level_e::ZERO, webEngineProfileOverall,  "Web engine profile destructor");
+	QINFO_PRINT(global_enums::qinfo_level_e::ZERO, webEngineProfileOverall,  "Web engine profile destructor");
 
 }

@@ -17,6 +17,7 @@
 
 #include "popup_properties.h"
 
+#include "action.h"
 #include "constructor_macros.h"
 
 /** @defgroup PopupBaseGroup Main Window Popup Base Doxygen Group
@@ -87,14 +88,14 @@ namespace popup_base {
 			virtual void connectSignals() = 0;
 
 			/**
-			 * @brief Function: std::unique_ptr<QLabel> actionToLabel(QWidget * parent, const std::shared_ptr<QAction> & action) const
+			 * @brief Function: std::unique_ptr<QLabel> actionToLabel(QWidget * parent, const std::unique_ptr<QAction> & action) const
 			 *
 			 * \param parent: parent widget of QLabel
 			 * \param action: action to convert to QLabel
 			 *
 			 * This function allows to print text and shortcut in a QLabel
 			 */
-			std::unique_ptr<QLabel> actionToLabel(QWidget * parent, const std::shared_ptr<QAction> & action) const;
+			std::unique_ptr<QLabel> actionToLabel(QWidget * parent, const std::unique_ptr<action::Action> & action) const;
 
 		private:
 

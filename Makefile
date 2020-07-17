@@ -92,8 +92,9 @@ LIBS := $(foreach LIB, ${LIB_LIST}, -l${LIB})
 # Directory containing source and header files
 APP_DIR = app
 TEST_DIR =
-COMP_DIR = $(wildcard $(APP_DIR)/*)
-SUBCOMP_DIR = $(wildcard $(APP_DIR)/*/*)
+CLASSCOMPONENT_DIR = $(sort $(dir $(wildcard $(APP_DIR)/*/)))
+COMPONENT_DIR = $(sort $(dir $(wildcard $(APP_DIR)/*/*/)))
+SUBCOMPONENT_DIR = $(sort $(dir $(wildcard $(APP_DIR)/*/*/*/)))
 
 # Directory containing source files
 SRC_DIR = src
@@ -135,11 +136,12 @@ VALGRINDLOGFILE = $(LOG_DIR)/$(VALGRINDLOGFILENAME)
 VALGRINDLOGOPTS = -v --log-file=$(VALGRINDLOGFILE) --time-stamp=yes
 VALGRINDEXEARGS ?=
 
-DIR_LIST = $(COMP_DIR) \
-           $(SUBCOMP_DIR) \
+DIR_LIST = $(CLASSCOMPONENT_DIR) \
+           $(COMPONENT_DIR) \
+           $(SUBCOMPONENT_DIR) \
            $(TEST_DIR)
 
-INCLUDE_PATH := $(foreach DIR, ${DIR_LIST}, $(DIR)/$(INCLUDE_DIR))
+INCLUDE_PATH := $(foreach DIR, ${DIR_LIST}, $(DIR)$(INCLUDE_DIR))
 INCLUDE_HEADERS := $(foreach INCHEADER, ${INCLUDE_PATH}, -I${INCHEADER})
 
 ifneq ($(wildcard /usr/include/x86_64-linux-gnu/qt5),)
@@ -156,7 +158,7 @@ endif
 INCLUDES = $(INCLUDE_HEADERS) \
            $(INCLUDE_LIBS)
 
-SRC_PATH := $(foreach DIR, ${DIR_LIST}, $(DIR)/$(SRC_DIR))
+SRC_PATH := $(foreach DIR, ${DIR_LIST}, $(DIR)$(SRC_DIR))
 SRCS := $(notdir $(wildcard $(foreach DIR, ${SRC_PATH}, $(DIR)/*.$(SRC_EXT))))
 HEADERS := $(notdir $(wildcard $(foreach DIR, ${INCLUDE_PATH}, $(DIR)/*.$(HEADER_EXT))))
 MOC_SRCS = $(patsubst %.$(HEADER_EXT),$(MOC_SRC_DIR)/%.$(MOC_SRC_EXT),$(notdir $(HEADERS)))

@@ -11,7 +11,7 @@
 #include <qt5/QtCore/QtDebug>
 
 #include "logging_macros.h"
-#include "global_types.h"
+#include "global_enums.h"
 #include "open_content.h"
 #include "exception_macros.h"
 
@@ -21,7 +21,7 @@ Q_LOGGING_CATEGORY(openContentOverall, "openContent.overall", MSG_TYPE_LEVEL)
 
 open_content::OpenContent::OpenContent(QWidget *widgetParent) : file_handling_widgets::FileHandlingWidgets(widgetParent) {
 
-	QINFO_PRINT(global_types::qinfo_level_e::ZERO, openContentOverall,  "Creating OpenContent class");
+	QINFO_PRINT(global_enums::qinfo_level_e::ZERO, openContentOverall,  "Creating OpenContent class");
 
 	this->pathToOpen->setPlaceholderText("<URL or file to open>");
 
@@ -32,7 +32,7 @@ open_content::OpenContent::OpenContent(QWidget *widgetParent) : file_handling_wi
 }
 
 open_content::OpenContent::~OpenContent() {
-	QINFO_PRINT(global_types::qinfo_level_e::ZERO, openContentOverall,  "Destructor of OpenContent class");
+	QINFO_PRINT(global_enums::qinfo_level_e::ZERO, openContentOverall,  "Destructor of OpenContent class");
 }
 
 void open_content::OpenContent::openPath() {
@@ -51,9 +51,9 @@ void open_content::OpenContent::openPath() {
 			// Path is an existing file
 			// Do not try to open and read file if the name is empty
 			if (!path.isEmpty()) {
-				QINFO_PRINT(global_types::qinfo_level_e::ZERO, openContentOverall,  "Opening " << path);
+				QINFO_PRINT(global_enums::qinfo_level_e::ZERO, openContentOverall,  "Opening " << path);
 				this->openItem(path);
-				QINFO_PRINT(global_types::qinfo_level_e::ZERO, openContentOverall,  "Close " << path);
+				QINFO_PRINT(global_enums::qinfo_level_e::ZERO, openContentOverall,  "Close " << path);
 			}
 			// Close window when Open is clicked and a file has been opened
 			this->close();

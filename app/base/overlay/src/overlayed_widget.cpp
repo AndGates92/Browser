@@ -15,19 +15,19 @@
 
 #include "overlayed_widget.h"
 #include "logging_macros.h"
-#include "global_types.h"
+#include "global_enums.h"
 
 // Categories
 Q_LOGGING_CATEGORY(overlayedWidgetOverall, "overlayedWidget.overall", MSG_TYPE_LEVEL)
 
 overlayed_widget::OverlayedWidget::OverlayedWidget(QWidget * parent, Qt::WindowFlags flags) : QWidget(parent, flags) {
 
-	QINFO_PRINT(global_types::qinfo_level_e::ZERO, overlayedWidgetOverall,  "Overlayed widget constructor");
+	QINFO_PRINT(global_enums::qinfo_level_e::ZERO, overlayedWidgetOverall,  "Overlayed widget constructor");
 
 }
 
 overlayed_widget::OverlayedWidget::~OverlayedWidget() {
-	QINFO_PRINT(global_types::qinfo_level_e::ZERO, overlayedWidgetOverall,  "Overlayed widget destructor");
+	QINFO_PRINT(global_enums::qinfo_level_e::ZERO, overlayedWidgetOverall,  "Overlayed widget destructor");
 }
 
 void overlayed_widget::OverlayedWidget::paintEvent(QPaintEvent * event) {

@@ -49,11 +49,11 @@ namespace tab_scroll_manager {
 }
 
 tab_scroll_manager::TabScrollManager::TabScrollManager(QWidget * parent, std::weak_ptr<tab::Tab> browserTab, std::shared_ptr<tab_bar::TabBar> tabBar): tab_component_widget::TabComponentWidget<tab_shared_types::direction_e>(parent, browserTab), horizontalScroll(0), verticalScroll(0), scrollPosition(QPointF(0.0, 0.0)), contentsSize(QSizeF(0.0, 0.0)), bar(tabBar) {
-	QINFO_PRINT(global_types::qinfo_level_e::ZERO, tabScrollManagerOverall,  "TabScrollManager constructor");
+	QINFO_PRINT(global_enums::qinfo_level_e::ZERO, tabScrollManagerOverall,  "TabScrollManager constructor");
 }
 
 tab_scroll_manager::TabScrollManager::~TabScrollManager() {
-	QINFO_PRINT(global_types::qinfo_level_e::ZERO, tabScrollManagerOverall,  "TabScrollManager destructor");
+	QINFO_PRINT(global_enums::qinfo_level_e::ZERO, tabScrollManagerOverall,  "TabScrollManager destructor");
 }
 
 CONST_GETTER(tab_scroll_manager::TabScrollManager::getContentsSize, QSizeF &, this->contentsSize)

@@ -19,12 +19,12 @@ Q_LOGGING_CATEGORY(tabLoadManagerOverall, "tabLoadManager.overall", MSG_TYPE_LEV
 Q_LOGGING_CATEGORY(tabLoadManagerStatus, "tabLoadManager.status", MSG_TYPE_LEVEL)
 
 tab_load_manager::TabLoadManager::TabLoadManager(QWidget * parent): QWidget(parent), status(tab_shared_types::load_status_e::IDLE), progress(0) {
-	QINFO_PRINT(global_types::qinfo_level_e::ZERO, tabLoadManagerOverall,  "TabLoadManager constructor");
+	QINFO_PRINT(global_enums::qinfo_level_e::ZERO, tabLoadManagerOverall,  "TabLoadManager constructor");
 
 }
 
 tab_load_manager::TabLoadManager::~TabLoadManager() {
-	QINFO_PRINT(global_types::qinfo_level_e::ZERO, tabLoadManagerOverall,  "TabLoadManager destructor");
+	QINFO_PRINT(global_enums::qinfo_level_e::ZERO, tabLoadManagerOverall,  "TabLoadManager destructor");
 
 }
 
@@ -50,7 +50,7 @@ void tab_load_manager::TabLoadManager::endLoading(const bool & success) {
 
 void tab_load_manager::TabLoadManager::setStatus(tab_shared_types::load_status_e value) {
 	if (this->status != value) {
-		QINFO_PRINT(global_types::qinfo_level_e::ZERO, tabLoadManagerStatus,  "tab load status changed from " << this->status << " to " << value);
+		QINFO_PRINT(global_enums::qinfo_level_e::ZERO, tabLoadManagerStatus,  "tab load status changed from " << this->status << " to " << value);
 		this->status = value;
 		emit statusChanged(this->status);
 	}
