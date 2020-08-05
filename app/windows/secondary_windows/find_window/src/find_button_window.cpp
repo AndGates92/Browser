@@ -105,7 +105,6 @@ void find_button_window::FindButtonWindow::apply() {
 
 	emit find(settings);
 
-	this->close();
 }
 
 void find_button_window::FindButtonWindow::windowLayout() {
