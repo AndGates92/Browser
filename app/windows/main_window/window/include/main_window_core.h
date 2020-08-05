@@ -47,16 +47,7 @@ namespace main_window_core {
 			 */
 			explicit MainWindowCore(QWidget * parent);
 
-			// Move and copy constructor
-			/**
-			 * @brief Function: MainWindowCore(const main_window_core::MainWindowCore & rhs)
-			 *
-			 * \param rhs: class to copy
-			 *
-			 * MainWindowCore copy constructor
-			 */
-			explicit MainWindowCore(const main_window_core::MainWindowCore & rhs);
-
+			// Move constructor
 			/**
 			 * @brief Function: MainWindowCore(main_window_core::MainWindowCore && rhs)
 			 *
@@ -66,16 +57,7 @@ namespace main_window_core {
 			 */
 			explicit MainWindowCore(main_window_core::MainWindowCore && rhs);
 
-			// Move and copy assignment operators
-			/**
-			 * @brief Function: MainWindowCore & operator=(const main_window_core::MainWindowCore & rhs)
-			 *
-			 * \param rhs: class to copy
-			 *
-			 * MainWindowCore copy assignment operator
-			 */
-			MainWindowCore & operator=(const main_window_core::MainWindowCore & rhs);
-
+			// Move assignment operators
 			/**
 			 * @brief Function: MainWindowCore & operator=(main_window_core::MainWindowCore && rhs)
 			 *
@@ -215,6 +197,25 @@ namespace main_window_core {
 			std::unique_ptr<command_menu::CommandMenu> cmdMenu;
 
 		private:
+
+			/**
+			 * @brief Function: MainWindowCore(const main_window_core::MainWindowCore & rhs)
+			 *
+			 * \param rhs: class to copy
+			 *
+			 * MainWindowCore copy constructor
+			 */
+			explicit MainWindowCore(const main_window_core::MainWindowCore & rhs) = delete;
+
+			/**
+			 * @brief Function: MainWindowCore & operator=(const main_window_core::MainWindowCore & rhs)
+			 *
+			 * \param rhs: class to copy
+			 *
+			 * MainWindowCore copy assignment operator
+			 */
+			MainWindowCore & operator=(const main_window_core::MainWindowCore & rhs) = delete;
+
 
 			// Control members
 			/**

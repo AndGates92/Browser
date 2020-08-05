@@ -21,28 +21,6 @@ main_window_wrapper::MainWindowWrapper::MainWindowWrapper(QWidget * parent, Qt::
 
 }
 
-main_window_wrapper::MainWindowWrapper::MainWindowWrapper(const main_window_wrapper::MainWindowWrapper & rhs) : window(Q_NULLPTR) {
-	QINFO_PRINT(global_enums::qinfo_level_e::ZERO, mainWindowWrapperOverall,  "Copy constructor main window wrapper");
-
-	this->window.reset(rhs.window.get());
-
-}
-main_window_wrapper::MainWindowWrapper & main_window_wrapper::MainWindowWrapper::operator=(const main_window_wrapper::MainWindowWrapper & rhs) {
-
-	QINFO_PRINT(global_enums::qinfo_level_e::ZERO, mainWindowWrapperOverall,  "Copy assignment operator for main window wrapper");
-
-	// If rhs points to the same address as this, then return this
-	if (&rhs == this) {
-		return *this;
-	}
-
-	if (this->window != rhs.window) {
-		this->window.reset(rhs.window.get());
-	}
-
-	return *this;
-}
-
 main_window_wrapper::MainWindowWrapper::MainWindowWrapper(main_window_wrapper::MainWindowWrapper && rhs) : window(std::exchange(rhs.window, Q_NULLPTR)) {
 	QINFO_PRINT(global_enums::qinfo_level_e::ZERO, mainWindowWrapperOverall,  "Move constructor main window wrapper");
 

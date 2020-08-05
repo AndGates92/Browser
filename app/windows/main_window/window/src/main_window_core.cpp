@@ -24,65 +24,6 @@ main_window_core::MainWindowCore::MainWindowCore(QWidget * parent) : mainWidget(
 	this->topMenuBar->createMenus();
 }
 
-main_window_core::MainWindowCore::MainWindowCore(const main_window_core::MainWindowCore & rhs) : mainWidget(Q_NULLPTR), tabs(Q_NULLPTR), topMenuBar(rhs.topMenuBar), popup(rhs.popup), bottomStatusBar(Q_NULLPTR), cmdMenu(Q_NULLPTR), mainWindowState(rhs.mainWindowState), offsetType(rhs.offsetType), userText(rhs.userText) {
-
-	QINFO_PRINT(global_enums::qinfo_level_e::ZERO, mainWindowCoreOverall,  "Copy constructor main window core");
-
-	this->cmdMenu.reset(rhs.cmdMenu.get());
-	this->bottomStatusBar.reset(rhs.bottomStatusBar.get());
-	this->mainWidget.reset(rhs.mainWidget.get());
-	this->tabs.reset(rhs.tabs.get());
-
-}
-
-main_window_core::MainWindowCore & main_window_core::MainWindowCore::operator=(const main_window_core::MainWindowCore & rhs) {
-
-	QINFO_PRINT(global_enums::qinfo_level_e::ZERO, mainWindowCoreOverall,  "Copy assignment operator for main window core");
-
-	// If rhs points to the same address as this, then return this
-	if (&rhs == this) {
-		return *this;
-	}
-
-	if (this->mainWidget != rhs.mainWidget) {
-		this->mainWidget.reset(rhs.mainWidget.get());
-	}
-
-	if (this->tabs != rhs.tabs) {
-		this->tabs.reset(rhs.tabs.get());
-	}
-
-	if (this->topMenuBar != rhs.topMenuBar) {
-		this->topMenuBar = rhs.topMenuBar;
-	}
-
-	if (this->popup != rhs.popup) {
-		this->popup = rhs.popup;
-	}
-
-	if (this->bottomStatusBar != rhs.bottomStatusBar) {
-		this->bottomStatusBar.reset(rhs.bottomStatusBar.get());
-	}
-
-	if (this->cmdMenu != rhs.cmdMenu) {
-		this->cmdMenu.reset(rhs.cmdMenu.get());
-	}
-
-	if (this->mainWindowState != rhs.mainWindowState) {
-		this->mainWindowState = rhs.mainWindowState;
-	}
-
-	if (this->offsetType != rhs.offsetType) {
-		this->offsetType = rhs.offsetType;
-	}
-
-	if (this->userText != rhs.userText) {
-		this->userText = rhs.userText;
-	}
-
-	return *this;
-}
-
 main_window_core::MainWindowCore::MainWindowCore(main_window_core::MainWindowCore && rhs) :  mainWidget(std::exchange(rhs.mainWidget, Q_NULLPTR)), tabs(std::exchange(rhs.tabs, Q_NULLPTR)), topMenuBar(std::exchange(rhs.topMenuBar, Q_NULLPTR)), popup(std::exchange(rhs.popup, Q_NULLPTR)), bottomStatusBar(std::exchange(rhs.bottomStatusBar, Q_NULLPTR)), cmdMenu(std::exchange(rhs.cmdMenu, Q_NULLPTR)), mainWindowState(std::exchange(rhs.mainWindowState, main_window_shared_types::state_e::IDLE)), offsetType(std::exchange(rhs.offsetType, global_enums::offset_type_e::IDLE)), userText(std::exchange(rhs.userText, QString::null)) {
 	QINFO_PRINT(global_enums::qinfo_level_e::ZERO, mainWindowCoreOverall,  "Move constructor main window core");
 }
