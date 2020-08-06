@@ -7,7 +7,7 @@
  */
 
 // Qt libraries
-#include <qt5/QtCore/QLoggingCategory>
+#include <QtCore/QLoggingCategory>
 
 #include "inherited_enable_shared_from_this.h"
 

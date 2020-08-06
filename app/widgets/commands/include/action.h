@@ -10,9 +10,9 @@
 
 #include <list>
 
-#include <qt5/QtCore/QLoggingCategory>
-#include <qt5/QtWidgets/QWidget>
-#include <qt5/QtWidgets/QAction>
+#include <QtCore/QLoggingCategory>
+#include <QtWidgets/QWidget>
+#include <QtWidgets/QAction>
 
 #include "constructor_macros.h"
 
@@ -35,7 +35,7 @@ namespace action {
 
 		public:
 			/**
-			 * @brief Function: explicit Action(QObject * parent, const QString & text = QString::null, const QIcon & icon = QIcon())
+			 * @brief Function: explicit Action(QObject * parent, const QString & text = QString(), const QIcon & icon = QIcon())
 			 *
 			 * \param parent: parent window
 			 * \param text: descriptive text
@@ -43,7 +43,7 @@ namespace action {
 			 *
 			 * Main window popup menu constructor
 			 */
-			explicit Action(QObject * parent, const QString & text = QString::null, const QIcon & icon = QIcon());
+			explicit Action(QObject * parent, const QString & text = QString(), const QIcon & icon = QIcon());
 
 			/**
 			 * @brief Function: ~Action()

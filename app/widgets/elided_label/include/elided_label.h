@@ -8,11 +8,11 @@
  * @brief Elided label class header file
 */
 
-#include <qt5/QtCore/QLoggingCategory>
-#include <qt5/QtCore/QPoint>
-#include <qt5/QtGui/QResizeEvent>
-#include <qt5/QtWidgets/QWidget>
-#include <qt5/QtWidgets/QLabel>
+#include <QtCore/QLoggingCategory>
+#include <QtCore/QPoint>
+#include <QtGui/QResizeEvent>
+#include <QtWidgets/QWidget>
+#include <QtWidgets/QLabel>
 
 #include "constructor_macros.h"
 
@@ -53,7 +53,7 @@ namespace elided_label {
 
 		public:
 			/**
-			 * @brief Function: explicit ElidedLabel(QWidget * parent, Qt::WindowFlags flags = Qt::WindowFlags(), QString textLabel = QString::null, QPoint labelOrigin = QPoint(elided_label::labelOriginX,elided_label::labelOriginY), Qt::TextElideMode textElisionMode = Qt::ElideNone)
+			 * @brief Function: explicit ElidedLabel(QWidget * parent, Qt::WindowFlags flags = Qt::WindowFlags(), QString textLabel = QString(), QPoint labelOrigin = QPoint(elided_label::labelOriginX,elided_label::labelOriginY), Qt::TextElideMode textElisionMode = Qt::ElideNone)
 			 *
 			 * \param textLabel: text to write into QLabel
 			 * \param labelOrigin: origin of the rectangle the label is drawn into
@@ -63,7 +63,7 @@ namespace elided_label {
 			 *
 			 * Elided label constructor
 			 */
-			explicit ElidedLabel(QWidget * parent, Qt::WindowFlags flags = Qt::WindowFlags(), QString textLabel = QString::null, QPoint labelOrigin = QPoint(elided_label::labelOriginX,elided_label::labelOriginY), Qt::TextElideMode textElisionMode = Qt::ElideNone);
+			explicit ElidedLabel(QWidget * parent, Qt::WindowFlags flags = Qt::WindowFlags(), QString textLabel = QString(), QPoint labelOrigin = QPoint(elided_label::labelOriginX,elided_label::labelOriginY), Qt::TextElideMode textElisionMode = Qt::ElideNone);
 
 			/**
 			 * @brief Function: virtual ~ElidedLabel()
@@ -146,7 +146,7 @@ namespace elided_label {
 			 * \param width: width of the elided text
 			 *
 			 * This function sets elided text variable
-			 * text label will be QString::null if elision is not enabled
+			 * text label will be QString() if elision is not enabled
 			 */
 			void updateElidedText(const int & width);
 

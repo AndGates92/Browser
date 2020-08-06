@@ -7,10 +7,10 @@
  */
 
 // Qt libraries
-#include <qt5/QtCore/QtGlobal>
+#include <QtCore/QtGlobal>
 
 // Required by qInfo
-#include <qt5/QtCore/QtDebug>
+#include <QtCore/QtDebug>
 
 #include "main_window_web_engine_page.h"
 #include "main_window_tab_widget.h"
@@ -175,7 +175,7 @@ const QString main_window_tab_widget::MainWindowTabWidget::getPageSource(const i
 	if (page != nullptr) {
 		return page->getSource();
 	}
-	return QString::null;
+	return QString();
 }
 
 const void * main_window_tab_widget::MainWindowTabWidget::getPageExtraData(const int & index) const {
@@ -203,14 +203,14 @@ int main_window_tab_widget::MainWindowTabWidget::insertTab(const int & index, co
 
 	this->disconnectTab(this->currentIndex());
 
-	const QString source(QString::null);
-	const QString search(QString::null);
+	const QString source = QString();
+	const QString search = QString();
 	std::shared_ptr<main_window_tab::MainWindowTab> tab = std::make_shared<main_window_tab::MainWindowTab>(this, search);
 	tab->configure(this->tabBar(), type, source, data);
 
 	QINFO_PRINT(global_enums::qinfo_level_e::ZERO, mainWindowTabWidgetTabs,  "Insert tab of type " << type << " with source " << source << " at position " << index);
 
-	const QString label(QString::null);
+	const QString label = QString();
 	const int currIndex = tab_widget::TabWidget::insertTab(index, tab, label, icon);
 
 	this->connectTab(currIndex);
@@ -275,7 +275,7 @@ void main_window_tab_widget::MainWindowTabWidget::goToHistoryItem(const int & in
 
 QString main_window_tab_widget::MainWindowTabWidget::createSource(const main_window_shared_types::page_type_e & type, const QString & userInput) {
 
-	QString source(QString::null);
+	QString source = QString();
 
 	switch (type) {
 		case main_window_shared_types::page_type_e::WEB_CONTENT:
@@ -296,7 +296,7 @@ QString main_window_tab_widget::MainWindowTabWidget::createSource(const main_win
 
 QString main_window_tab_widget::MainWindowTabWidget::createLabel(const main_window_shared_types::page_type_e & type, const QString & userInput) {
 
-	QString label(QString::null);
+	QString label = QString();
 
 	switch (type) {
 		case main_window_shared_types::page_type_e::WEB_CONTENT:
@@ -411,7 +411,7 @@ void main_window_tab_widget::MainWindowTabWidget::openFileInCurrentTab(const QSt
 }
 
 QString main_window_tab_widget::MainWindowTabWidget::searchToUrl(const QString & search) const {
-	QString url(QString::null);
+	QString url = QString();
 
 	if (main_window_shared_functions::isUrl(search) == true) {
 

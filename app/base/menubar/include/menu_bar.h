@@ -8,8 +8,8 @@
  * @brief Menu bar class header file
 */
 
-#include <qt5/QtCore/QLoggingCategory>
-#include <qt5/QtWidgets/QMenuBar>
+#include <QtCore/QLoggingCategory>
+#include <QtWidgets/QMenuBar>
 
 #include "constructor_macros.h"
 

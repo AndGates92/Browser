@@ -9,8 +9,8 @@
 #include <utility>
 
 // Qt libraries
-#include <qt5/QtCore/QtGlobal>
-#include <qt5/QtWidgets/QShortcut>
+#include <QtCore/QtGlobal>
+#include <QtWidgets/QShortcut>
 
 #include "main_window_ctrl_base.h"
 #include "main_window_shared_types.h"
@@ -43,8 +43,8 @@ main_window_ctrl_base::MainWindowCtrlBase::~MainWindowCtrlBase() {
 
 void main_window_ctrl_base::MainWindowCtrlBase::printUserInput(const main_window_shared_types::text_action_e action, const QString text) {
 
-	QString textPrint(QString::null);
-	if (text == QString::null) {
+	QString textPrint = QString();
+	if (text == QString()) {
 		textPrint.append("Not provided");
 	} else {
 		textPrint.append(text);
@@ -56,9 +56,9 @@ void main_window_ctrl_base::MainWindowCtrlBase::printUserInput(const main_window
 
 	const main_window_shared_types::state_e windowState = this->windowCore->getMainWindowState();
 
-	QString textLabel(QString::null);
+	QString textLabel = QString();
 	if (windowState != main_window_shared_types::state_e::IDLE) {
-		QString userAction(QString::null);
+		QString userAction = QString();
 		if (windowState != main_window_shared_types::state_e::COMMAND) {
 			// Get action name
 			userAction = this->windowCore->getActionName();
@@ -141,7 +141,7 @@ QString main_window_ctrl_base::MainWindowCtrlBase::tabInfoStr(const int & currIn
 
 	const int tabCount = this->windowCore->getTabCount();
 
-	QString tabInfo(QString::null);
+	QString tabInfo = QString();
 	if (tabCount == 0) {
 		tabInfo.append("No tabs");
 	} else {
@@ -365,8 +365,8 @@ void main_window_ctrl_base::MainWindowCtrlBase::resetWindowState() {
 	const main_window_shared_types::state_e requestedWindowState = main_window_shared_types::state_e::IDLE;
 	this->windowCore->setMainWindowState(requestedWindowState);
 
-	this->windowCore->updateUserInput(main_window_shared_types::text_action_e::CLEAR, QString::null);
-	this->windowCore->bottomStatusBar->setUserInputText(QString::null);
+	this->windowCore->updateUserInput(main_window_shared_types::text_action_e::CLEAR, QString());
+	this->windowCore->bottomStatusBar->setUserInputText(QString());
 	this->windowCore->getUserText();
 
 	// Enable all shortcuts

@@ -8,8 +8,8 @@
  * @brief Main Window popup container class header file
 */
 
-#include <qt5/QtCore/QLoggingCategory>
-#include <qt5/QtWidgets/QWidget>
+#include <QtCore/QLoggingCategory>
+#include <QtWidgets/QWidget>
 
 #include "open_popup.h"
 

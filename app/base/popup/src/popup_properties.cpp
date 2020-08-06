@@ -7,11 +7,11 @@
 */
 
 // Qt libraries
-#include <qt5/QtCore/QtGlobal>
-#include <qt5/QtGui/QPainter>
+#include <QtCore/QtGlobal>
+#include <QtGui/QPainter>
 
-#include <qt5/QtWidgets/QStyle>
-#include <qt5/QtWidgets/QStyleOption>
+#include <QtWidgets/QStyle>
+#include <QtWidgets/QStyleOption>
 
 #include "popup_properties.h"
 #include "logging_macros.h"

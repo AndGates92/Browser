@@ -7,7 +7,7 @@
  */
 
 // Qt libraries
-#include <qt5/QtCore/QtGlobal>
+#include <QtCore/QtGlobal>
 
 #include "main_window_base.h"
 #include "global_enums.h"

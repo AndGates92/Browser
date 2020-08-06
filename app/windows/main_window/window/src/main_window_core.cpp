@@ -8,7 +8,7 @@
 
 #include <iostream>
 // Qt libraries
-#include <qt5/QtCore/QtGlobal>
+#include <QtCore/QtGlobal>
 
 #include "main_window_core.h"
 #include "exception_macros.h"
@@ -19,12 +19,12 @@
 Q_LOGGING_CATEGORY(mainWindowCoreOverall, "mainWindowCore.overall", MSG_TYPE_LEVEL)
 Q_LOGGING_CATEGORY(mainWindowCoreUserInput, "mainWindowCore.userInput", MSG_TYPE_LEVEL)
 
-main_window_core::MainWindowCore::MainWindowCore(QWidget * parent) : mainWidget(new QWidget(parent)), tabs(new main_window_tab_widget::MainWindowTabWidget(parent)), topMenuBar(new main_window_menu_bar::MainWindowMenuBar(parent)), popup(new main_window_popup_container::MainWindowPopupContainer(parent)), bottomStatusBar(new main_window_status_bar::MainWindowStatusBar(parent)), cmdMenu(new command_menu::CommandMenu(parent)), mainWindowState(main_window_shared_types::state_e::IDLE), offsetType(global_enums::offset_type_e::IDLE), userText(QString::null) {
+main_window_core::MainWindowCore::MainWindowCore(QWidget * parent) : mainWidget(new QWidget(parent)), tabs(new main_window_tab_widget::MainWindowTabWidget(parent)), topMenuBar(new main_window_menu_bar::MainWindowMenuBar(parent)), popup(new main_window_popup_container::MainWindowPopupContainer(parent)), bottomStatusBar(new main_window_status_bar::MainWindowStatusBar(parent)), cmdMenu(new command_menu::CommandMenu(parent)), mainWindowState(main_window_shared_types::state_e::IDLE), offsetType(global_enums::offset_type_e::IDLE), userText(QString()) {
 	QINFO_PRINT(global_enums::qinfo_level_e::ZERO, mainWindowCoreOverall,  "Main window core constructor");
 	this->topMenuBar->createMenus();
 }
 
-main_window_core::MainWindowCore::MainWindowCore(main_window_core::MainWindowCore && rhs) :  mainWidget(std::exchange(rhs.mainWidget, Q_NULLPTR)), tabs(std::exchange(rhs.tabs, Q_NULLPTR)), topMenuBar(std::exchange(rhs.topMenuBar, Q_NULLPTR)), popup(std::exchange(rhs.popup, Q_NULLPTR)), bottomStatusBar(std::exchange(rhs.bottomStatusBar, Q_NULLPTR)), cmdMenu(std::exchange(rhs.cmdMenu, Q_NULLPTR)), mainWindowState(std::exchange(rhs.mainWindowState, main_window_shared_types::state_e::IDLE)), offsetType(std::exchange(rhs.offsetType, global_enums::offset_type_e::IDLE)), userText(std::exchange(rhs.userText, QString::null)) {
+main_window_core::MainWindowCore::MainWindowCore(main_window_core::MainWindowCore && rhs) :  mainWidget(std::exchange(rhs.mainWidget, Q_NULLPTR)), tabs(std::exchange(rhs.tabs, Q_NULLPTR)), topMenuBar(std::exchange(rhs.topMenuBar, Q_NULLPTR)), popup(std::exchange(rhs.popup, Q_NULLPTR)), bottomStatusBar(std::exchange(rhs.bottomStatusBar, Q_NULLPTR)), cmdMenu(std::exchange(rhs.cmdMenu, Q_NULLPTR)), mainWindowState(std::exchange(rhs.mainWindowState, main_window_shared_types::state_e::IDLE)), offsetType(std::exchange(rhs.offsetType, global_enums::offset_type_e::IDLE)), userText(std::exchange(rhs.userText, QString())) {
 	QINFO_PRINT(global_enums::qinfo_level_e::ZERO, mainWindowCoreOverall,  "Move constructor main window core");
 }
 
@@ -53,7 +53,7 @@ main_window_core::MainWindowCore & main_window_core::MainWindowCore::operator=(m
 
 		this->mainWindowState = std::exchange(rhs.mainWindowState, main_window_shared_types::state_e::IDLE);
 		this->offsetType = std::exchange(rhs.offsetType, global_enums::offset_type_e::IDLE);
-		this->userText = std::exchange(rhs.userText, QString::null);
+		this->userText = std::exchange(rhs.userText, QString());
 	}
 
 	return *this;
@@ -69,7 +69,7 @@ main_window_core::MainWindowCore::~MainWindowCore() {
 }
 
 QString main_window_core::MainWindowCore::getActionName() const {
-	QString actionNameText(QString::null);
+	QString actionNameText = QString();
 
 	const QString actionName(global_qfunctions::qEnumToQString<main_window_shared_types::state_list>(this->mainWindowState, true));
 	actionNameText.append(actionName);

@@ -10,9 +10,9 @@
 
 #include <memory>
 
-#include <qt5/QtCore/QLoggingCategory>
-#include <qt5/QtWidgets/QMainWindow>
-#include <qt5/QtWidgets/QWidget>
+#include <QtCore/QLoggingCategory>
+#include <QtWidgets/QMainWindow>
+#include <QtWidgets/QWidget>
 
 #include "main_window_ctrl_wrapper.h"
 #include "main_window_base.h"

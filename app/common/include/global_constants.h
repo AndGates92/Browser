@@ -8,7 +8,7 @@
  * @brief Global Constants file
 */
 
-#include <qt5/QtCore/QString>
+#include <QtCore/QString>
 
 /** @defgroup GlobalConstantsGroup Global Constants Doxygen Group
  *  Global Constants

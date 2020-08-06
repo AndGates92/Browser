@@ -7,8 +7,8 @@
 */
 
 // Qt libraries
-#include <qt5/QtCore/QtGlobal>
-#include <qt5/QtGui/QPainter>
+#include <QtCore/QtGlobal>
+#include <QtGui/QPainter>
 
 #include "elided_label.h"
 #include "function_macros.h"
@@ -41,9 +41,9 @@ void elided_label::ElidedLabel::setText(const QString & text) {
 
 void elided_label::ElidedLabel::updateElidedText(const int & width) {
 	// If no elision or text is null, then set elision text to null
-	if ((this->elisionMode == Qt::ElideNone) || (this->text() == QString::null)) {
+	if ((this->elisionMode == Qt::ElideNone) || (this->text() == QString())) {
 		QINFO_PRINT(global_enums::qinfo_level_e::ZERO, elidedLabelElision,  "Elided text is set to null");
-		this->elisionText = QString::null;
+		this->elisionText = QString();
 	} else {
 		this->elisionText = this->fontMetrics().elidedText(this->text(), this->elisionMode, width, Qt::TextShowMnemonic);
 	}

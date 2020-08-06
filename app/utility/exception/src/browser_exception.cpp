@@ -7,10 +7,10 @@
  */
 
 // Qt libraries
-#include <qt5/QtCore/QtGlobal>
+#include <QtCore/QtGlobal>
 
 // Required by qInfo
-#include <qt5/QtCore/QtDebug>
+#include <QtCore/QtDebug>
 
 #include "logging_macros.h"
 #include "global_enums.h"
@@ -45,6 +45,11 @@ QString browser_exception::BrowserException::print() const {
 
 void browser_exception::printException(QString message) {
 	QTextStream errStream(stderr);
-	// endl write a carriage return and flushed the stream
-	errStream << "Exception caught: " << message << endl;
+	// Qt::endl write a carriage return and flushed the stream
+	errStream << "Exception caught: " << message;
+	#if QT_VERSION >= QT_VERSION_CHECK(5, 15, 0)
+	errStream << Qt::endl;
+	#else
+	errStream << endl;
+	#endif
 }

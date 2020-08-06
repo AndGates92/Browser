@@ -25,7 +25,7 @@
  */
 #define QDEBUG_OVERLOAD_PRINT_OP(TYPE) \
 	QDebug & operator<< (QDebug & os, const TYPE & value) { \
-		QString str(QString::null); \
+		QString str = QString(); \
 		str << value; \
 		os << str; \
 		return os; \
@@ -55,7 +55,7 @@
  */
 #define QSTRING_OVERLOAD_PLUS_OP(TYPE) \
 	const QString operator+ (const QString & str, const TYPE & value) { \
-		QString mergedStr(QString::null); \
+		QString mergedStr = QString(); \
 		QTextStream(&mergedStr) << str << value; \
 		return str; \
 	}

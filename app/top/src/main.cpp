@@ -6,10 +6,10 @@
  * @brief Main function of the program
  */
 
-#include <qt5/QtCore/QtDebug>
-#include <qt5/QtCore/QtGlobal>
-#include <qt5/QtCore/QtMessageHandler>
-#include <qt5/QtCore/QUnhandledException>
+#include <QtCore/QtDebug>
+#include <QtCore/QtGlobal>
+#include <QtCore/QtMessageHandler>
+#include <QtCore/QUnhandledException>
 
 #include "logging_macros.h"
 #include "browser_exception.h"

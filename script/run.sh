@@ -11,7 +11,7 @@ clean=0
 cleanbyproduct=0
 debug=0
 doc=0
-
+qtbasedir=
 
 # Make file settings
 PROJNAME=browser
@@ -34,6 +34,8 @@ VERBOSITY=1
 CEXTRAFLAGS=-DENABLE_ASSERTIONS
 BEHFLAGS=
 
+QTBASEDIR=/opt/qt/5.15.0/gcc_64
+
 DATE_FORMAT="%a %d %b %Y"
 TIME_FORMAT=%H:%M:%S
 
@@ -54,6 +56,9 @@ usage () {
 	echotimestamp "       --compile|-co:		compile only"
 	echotimestamp "       --memleak|-m:		compile and check memory leaks using valgrind" 
 	echotimestamp "       --test|-t:		compile and run tests"
+	echotimestamp "       --qtbasedir:		base directory of QT or system"
+	echotimestamp "       				- system: use system QT libraries"
+	echotimestamp "       				- <directory>: base directory of QT. It is assumed that it contains the following directories: lib, include and bin. QT specific environment variables are set as follows: QTLIBDIR = QTBASEDIR/lib and QTTOLLDIR = QTBASEDIR/bin"
 	echotimestamp "       --help|-h:		print this help"
 }
 
@@ -93,6 +98,10 @@ do
 			clean=1
 			shift 1
 			;;
+		--qtbasedir)
+			qtbasedir=$2
+			shift 2
+			;;
 		--help|-h)
 			usage
 			exit 0
@@ -104,6 +113,29 @@ do
 			;;
 	esac
 done
+
+# Settings QT libraries path
+if ! [ -z "${qtbasedir}" ]; then
+	if [ "${qtbasedir}" = "system" ]; then
+		QTBASEDIR=
+	elif [ -d ${qtbasedir} ]; then
+		QTBASEDIR=${qtbasedir}
+	fi
+fi
+
+if [ ! [ -z "${QTBASEDIR}" ] ] && [ -d ${QTBASEDIR} ]; then
+	if [ -d ${QTBASEDIR}/lib ]; then
+		export QTLIBDIR=${QTBASEDIR}/lib
+	fi
+	if [ -d ${QTBASEDIR}/include ]; then
+		export QTINCLUDEDIR=${QTBASEDIR}/include
+	fi
+	if [ -d ${QTBASEDIR}/bin ]; then
+		export QTTOOLDIR=${QTBASEDIR}/bin
+	fi
+fi
+export PATH=${QTTOOLDIR}:${PATH}
+export LD_LIBRARY_PATH=${QTLIBDIR}:${LD_LIBRARY_PATH}
 
 if [ ${compile} -eq 1 ] || [ ${doc} -eq 1 ] || [ ${memleak} -eq 1 ]; then
 	echotimestamp " Run script variables"

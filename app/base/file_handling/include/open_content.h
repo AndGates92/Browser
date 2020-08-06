@@ -10,7 +10,7 @@
 
 #include <string>
 
-#include <qt5/QtCore/QLoggingCategory>
+#include <QtCore/QLoggingCategory>
 #include "action.h"
 #include "key_sequence.h"
 #include "constructor_macros.h"

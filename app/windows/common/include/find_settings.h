@@ -10,7 +10,7 @@
 
 #include <memory>
 
-#include <qt5/QtCore/QLoggingCategory>
+#include <QtCore/QLoggingCategory>
 
 #include "global_enums.h"
 #include "constructor_macros.h"

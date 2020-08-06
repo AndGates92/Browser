@@ -10,8 +10,8 @@
 
 #include <memory>
 
-#include <qt5/QtCore/QLoggingCategory>
-#include <qt5/QtWidgets/QWidget>
+#include <QtCore/QLoggingCategory>
+#include <QtWidgets/QWidget>
 
 #include "main_window_base.h"
 #include "constructor_macros.h"
@@ -38,7 +38,7 @@ namespace main_window_ctrl_base {
 
 		public:
 			/**
-			 * @brief Function: explicit MainWindowCtrlBase(QWidget * parent, std::shared_ptr<main_window_core::MainWindowCore> core, QString jsonFileName = QString::null)
+			 * @brief Function: explicit MainWindowCtrlBase(QWidget * parent, std::shared_ptr<main_window_core::MainWindowCore> core, QString jsonFileName = QString())
 			 *
 			 * \param core: main window core
 			 * \param parent: parent windget
@@ -46,7 +46,7 @@ namespace main_window_ctrl_base {
 			 *
 			 * Main window control base class constructor
 			 */
-			explicit MainWindowCtrlBase(QWidget * parent, std::shared_ptr<main_window_core::MainWindowCore> core, QString jsonFileName = QString::null);
+			explicit MainWindowCtrlBase(QWidget * parent, std::shared_ptr<main_window_core::MainWindowCore> core, QString jsonFileName = QString());
 
 			/**
 			 * @brief Function: virtual ~MainWindowCtrlBase()
@@ -213,14 +213,14 @@ namespace main_window_ctrl_base {
 			void updateInfo(const int & currIndex);
 
 			/**
-			 * @brief Function: void printUserInput(const main_window_shared_types::text_action_e action, const QString text = QString::null)
+			 * @brief Function: void printUserInput(const main_window_shared_types::text_action_e action, const QString text = QString())
 			 *
 			 * \param action: action to execute - valid values are: SET, APPEND and CLEAR
 			 * \param text: text to append to userText
 			 *
 			 * This function updates the user input label
 			 */
-			void printUserInput(const main_window_shared_types::text_action_e action, const QString text = QString::null);
+			void printUserInput(const main_window_shared_types::text_action_e action, const QString text = QString());
 
 			/**
 			 * @brief Function: QString tabInfoStr(const int & currIndex) const

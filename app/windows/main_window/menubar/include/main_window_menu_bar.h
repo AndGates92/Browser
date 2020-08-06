@@ -10,8 +10,8 @@
 
 #include <memory>
 
-#include <qt5/QtCore/QLoggingCategory>
-#include <qt5/QtWidgets/QMenu>
+#include <QtCore/QLoggingCategory>
+#include <QtWidgets/QMenu>
 
 #include "menu_bar.h"
 #include "file_menu.h"

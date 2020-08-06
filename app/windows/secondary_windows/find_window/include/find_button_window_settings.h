@@ -10,12 +10,12 @@
 
 #include <memory>
 
-#include <qt5/QtCore/QLoggingCategory>
-#include <qt5/QtWidgets/QWidget>
+#include <QtCore/QLoggingCategory>
+#include <QtWidgets/QWidget>
 
-#include <qt5/QtWidgets/QCheckBox>
-#include <qt5/QtWidgets/QComboBox>
-#include <qt5/QtWidgets/QGroupBox>
+#include <QtWidgets/QCheckBox>
+#include <QtWidgets/QComboBox>
+#include <QtWidgets/QGroupBox>
 
 #include "global_enums.h"
 #include "constructor_macros.h"

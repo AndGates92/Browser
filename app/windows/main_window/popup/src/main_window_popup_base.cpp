@@ -7,7 +7,7 @@
 */
 
 // Qt libraries
-#include <qt5/QtCore/QtGlobal>
+#include <QtCore/QtGlobal>
 
 #include "main_window_popup_base.h"
 #include "logging_macros.h"

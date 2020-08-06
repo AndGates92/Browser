@@ -7,8 +7,8 @@
  */
 
 // Qt libraries
-#include <qt5/QtCore/QtGlobal>
-#include <qt5/QtWidgets/QStackedLayout>
+#include <QtCore/QtGlobal>
+#include <QtWidgets/QStackedLayout>
 
 #include "popup_container.h"
 #include "exception_macros.h"

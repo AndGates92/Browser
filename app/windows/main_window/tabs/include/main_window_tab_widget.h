@@ -10,8 +10,8 @@
 
 #include <list>
 
-#include <qt5/QtCore/QLoggingCategory>
-#include <qt5/QtWidgets/QWidget>
+#include <QtCore/QLoggingCategory>
+#include <QtWidgets/QWidget>
 
 #include "main_window_shared_types.h"
 #include "main_window_page_data.h"

@@ -8,7 +8,7 @@
 
 #include <iostream>
 
-#include <qt5/QtCore/QTextStream>
+#include <QtCore/QTextStream>
 
 #include "type_print_macros.h"
 #include "tab_shared_types.h"

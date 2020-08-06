@@ -10,10 +10,10 @@
 
 #include <memory>
 
-#include <qt5/QtCore/QLoggingCategory>
-#include <qt5/QtWidgets/QWidget>
-#include <qt5/QtWidgets/QAction>
-#include <qt5/QtWidgets/QLabel>
+#include <QtCore/QLoggingCategory>
+#include <QtWidgets/QWidget>
+#include <QtWidgets/QAction>
+#include <QtWidgets/QLabel>
 
 #include "popup_properties.h"
 

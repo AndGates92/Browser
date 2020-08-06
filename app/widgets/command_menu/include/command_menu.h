@@ -9,14 +9,14 @@
  * @brief Command Menu file
 */
 
-#include <qt5/QtWidgets/QAbstractItemView>
-#include <qt5/QtWidgets/QWidget>
-#include <qt5/QtCore/QLoggingCategory>
-#include <qt5/QtCore/QRect>
-#include <qt5/QtCore/QModelIndex>
-#include <qt5/QtGui/QRegion>
-#include <qt5/QtGui/QResizeEvent>
-#include <qt5/QtGui/QMouseEvent>
+#include <QtWidgets/QAbstractItemView>
+#include <QtWidgets/QWidget>
+#include <QtCore/QLoggingCategory>
+#include <QtCore/QRect>
+#include <QtCore/QModelIndex>
+#include <QtGui/QRegion>
+#include <QtGui/QResizeEvent>
+#include <QtGui/QMouseEvent>
 
 #include "command_menu_model.h"
 #include "constructor_macros.h"

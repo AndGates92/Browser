@@ -8,9 +8,9 @@
  * @brief Key Sequence header file
 */
 
-#include <qt5/QtCore/QLoggingCategory>
-#include <qt5/QtGui/QKeySequence>
-#include <qt5/QtCore/QString>
+#include <QtCore/QLoggingCategory>
+#include <QtGui/QKeySequence>
+#include <QtCore/QString>
 
 /** @defgroup KeySequenceGroup Key Sequence Doxygen Group
  *  Key Sequence functions and classes

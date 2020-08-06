@@ -7,8 +7,8 @@
  */
 
 // Qt libraries
-#include <qt5/QtCore/QLoggingCategory>
-#include <qt5/QtGui/QKeyEvent>
+#include <QtCore/QLoggingCategory>
+#include <QtGui/QKeyEvent>
 
 #include "logging_macros.h"
 #include "function_macros.h"
@@ -22,7 +22,7 @@ main_window_web_engine_page::MainWindowWebEnginePage::MainWindowWebEnginePage(QW
 	QINFO_PRINT(global_enums::qinfo_level_e::ZERO, mainWindowWebEnginePageOverall,  "Web engine page constructor");
 
 	this->setBody();
-	if (src != QString::null) {
+	if (src != QString()) {
 		emit this->sourceChanged(src);
 	}
 

@@ -7,13 +7,13 @@
  */
 
 
-#include <qt5/QtCore/QMessageLogContext>
-#include <qt5/QtCore/QTextStream>
-#include <qt5/QtCore/QString>
-#include <qt5/QtCore/QtGlobal>
+#include <QtCore/QMessageLogContext>
+#include <QtCore/QTextStream>
+#include <QtCore/QString>
+#include <QtCore/QtGlobal>
 
 // Get pointer to default category
-#include <qt5/QtCore/QLoggingCategory>
+#include <QtCore/QLoggingCategory>
 
 #include "logging_functions.h"
 #include "exception_macros.h"
@@ -112,7 +112,12 @@ void logging::handler(QtMsgType type, const QMessageLogContext & context, const 
 
 	QTextStream ologfile(&logfile);
 
-	ologfile << info_str << " " << message << endl;
+	ologfile << info_str << " " << message;
+	#if QT_VERSION >= QT_VERSION_CHECK(5, 15, 0)
+	ologfile << Qt::endl;
+	#else
+	ologfile << endl;
+	#endif
 
 	logfile.close();
 

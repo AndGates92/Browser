@@ -10,16 +10,16 @@
 
 // Qt libraries
 // Required by qInfo
-#include <qt5/QtCore/QtDebug>
+#include <QtCore/QtDebug>
 
-#include <qt5/QtCore/QObject>
-#include <qt5/QtCore/QDir>
-#include <qt5/QtCore/QFile>
+#include <QtCore/QObject>
+#include <QtCore/QDir>
+#include <QtCore/QFile>
 
-#include <qt5/QtGui/QKeyEvent>
+#include <QtGui/QKeyEvent>
 
-#include <qt5/QtWidgets/QVBoxLayout>
-#include <qt5/QtWidgets/QApplication>
+#include <QtWidgets/QVBoxLayout>
+#include <QtWidgets/QApplication>
 
 #include "logging_macros.h"
 #include "global_enums.h"

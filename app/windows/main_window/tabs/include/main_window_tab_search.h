@@ -10,9 +10,9 @@
 
 // Qt libraries
 // Required by qInfo
-#include <qt5/QtCore/QtDebug>
+#include <QtCore/QtDebug>
 
-#include <qt5/QtCore/QLoggingCategory>
+#include <QtCore/QLoggingCategory>
 
 #include "tab_search.h"
 #include "main_window_web_engine_profile.h"

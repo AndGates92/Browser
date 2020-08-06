@@ -7,9 +7,9 @@
  */
 
 // Qt libraries
-#include <qt5/QtCore/QLoggingCategory>
-#include <qt5/QtGui/QResizeEvent>
-#include <qt5/QtGui/QKeyEvent>
+#include <QtCore/QLoggingCategory>
+#include <QtGui/QResizeEvent>
+#include <QtGui/QKeyEvent>
 
 #include "tab_widget.h"
 #include "exception_macros.h"

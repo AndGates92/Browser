@@ -7,8 +7,8 @@
 */
 
 // Qt libraries
-#include <qt5/QtCore/QtGlobal>
-#include <qt5/QtGui/QResizeEvent>
+#include <QtCore/QtGlobal>
+#include <QtGui/QResizeEvent>
 
 #include "main_window_popup_container.h"
 #include "exception_macros.h"

@@ -7,7 +7,7 @@
 */
 
 // Qt libraries
-#include <qt5/QtCore/QtGlobal>
+#include <QtCore/QtGlobal>
 
 #include "progress_bar.h"
 #include "exception_macros.h"

@@ -6,8 +6,8 @@
  * @brief Command menu functions
  */
 
-#include <qt5/QtGui/QPainter>
-#include <qt5/QtWidgets/QScrollBar>
+#include <QtGui/QPainter>
+#include <QtWidgets/QScrollBar>
 
 #include "logging_macros.h"
 #include "command_menu.h"
@@ -144,7 +144,11 @@ void command_menu::CommandMenu::updateHashTable() const {
 	for (int row = 0; row < numberItemsInModel; row++) {
 		const QModelIndex rowIndex(this->model()->index(row, 0, this->rootIndex()));
 		const QString text = this->model()->data(rowIndex).toString();
+		#if QT_VERSION >= QT_VERSION_CHECK(5, 11, 0)
+		const int textWidth = fontProperties.horizontalAdvance(text);
+		#else
 		const int textWidth = fontProperties.width(text);
+		#endif
 
 		const int rowWidth = textWidth + command_menu::extraRowWidth;
 
@@ -306,7 +310,12 @@ QModelIndex command_menu::CommandMenu::moveCursor(const QAbstractItemView::Curso
 				}
 
 				// Move point left by the width of one charcter
+
+				#if QT_VERSION >= QT_VERSION_CHECK(5, 11, 0)
+				point.rx() -= fontProperties.horizontalAdvance("n");
+				#else
 				point.rx() -= fontProperties.width("n");
+				#endif
 			}
 
 		}
@@ -457,7 +466,11 @@ void command_menu::CommandMenu::updateScrollbars() {
 	QFontMetrics fontProperties(this->font());
 
 	const int viewportWidth = this->viewport()->width();
+	#if QT_VERSION >= QT_VERSION_CHECK(5, 11, 0)
+	this->horizontalScrollBar()->setSingleStep(fontProperties.horizontalAdvance("n"));
+	#else
 	this->horizontalScrollBar()->setSingleStep(fontProperties.width("n"));
+	#endif
 	this->horizontalScrollBar()->setPageStep(viewportWidth);
 	this->horizontalScrollBar()->setRange(0, qMax(0, (this->visibleWidth - viewportWidth)));
 

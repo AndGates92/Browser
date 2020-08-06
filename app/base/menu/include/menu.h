@@ -10,11 +10,11 @@
 
 #include <memory>
 
-#include <qt5/QtCore/QLoggingCategory>
-#include <qt5/QtWidgets/QMenu>
-#include <qt5/QtWidgets/QWidget>
-#include <qt5/QtWidgets/QMenuBar>
-#include <qt5/QtWidgets/QShortcut>
+#include <QtCore/QLoggingCategory>
+#include <QtWidgets/QMenu>
+#include <QtWidgets/QWidget>
+#include <QtWidgets/QMenuBar>
+#include <QtWidgets/QShortcut>
 
 #include "key_sequence.h"
 #include "constructor_macros.h"

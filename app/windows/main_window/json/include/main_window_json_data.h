@@ -12,7 +12,7 @@
 #include <vector>
 #include <set>
 
-#include <qt5/QtCore/QLoggingCategory>
+#include <QtCore/QLoggingCategory>
 
 #include "key_sequence.h"
 #include "global_classes.h"

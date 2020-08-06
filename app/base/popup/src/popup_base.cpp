@@ -7,8 +7,8 @@
 */
 
 // Qt libraries
-#include <qt5/QtCore/QtGlobal>
-#include <qt5/QtGui/QFont>
+#include <QtCore/QtGlobal>
+#include <QtGui/QFont>
 
 #include "popup_base.h"
 #include "key_sequence.h"
@@ -35,7 +35,7 @@ std::unique_ptr<QLabel> popup_base::PopupBase::actionToLabel(QWidget * parent, c
 	key_sequence::KeySequence actionKey(action->shortcut());
 	QString actionText(action->text());
 
-	QString labelText(QString::null);
+	QString labelText = QString();
 	if (actionText.isEmpty() == false) {
 		labelText.append(actionText);
 	}

@@ -8,10 +8,10 @@
  * @brief Open Button Window header file
 */
 
-#include <qt5/QtCore/QLoggingCategory>
-#include <qt5/QtWidgets/QWidget>
+#include <QtCore/QLoggingCategory>
+#include <QtWidgets/QWidget>
 
-#include <qt5/QtWidgets/QPushButton>
+#include <QtWidgets/QPushButton>
 
 #include "open_content.h"
 #include "constructor_macros.h"

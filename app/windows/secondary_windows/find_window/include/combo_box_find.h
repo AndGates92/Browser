@@ -10,10 +10,10 @@
 
 #include <memory>
 
-#include <qt5/QtCore/QLoggingCategory>
-#include <qt5/QtCore/QtDebug>
-#include <qt5/QtCore/QVariant>
-#include <qt5/QtGui/QIcon>
+#include <QtCore/QLoggingCategory>
+#include <QtCore/QtDebug>
+#include <QtCore/QVariant>
+#include <QtGui/QIcon>
 
 #include "global_enums.h"
 #include "action.h"

@@ -8,7 +8,7 @@
  * @brief Graphics header file
 */
 
-#include <qt5/QtCore/QLoggingCategory>
+#include <QtCore/QLoggingCategory>
 
 Q_DECLARE_LOGGING_CATEGORY(graphicsOverall)
 

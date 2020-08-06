@@ -10,8 +10,8 @@
 
 #include <memory>
 
-#include <qt5/QtCore/QLoggingCategory>
-#include <qt5/QtWidgets/QWidget>
+#include <QtCore/QLoggingCategory>
+#include <QtWidgets/QWidget>
 
 #include "command_menu.h"
 #include "main_window_menu_bar.h"
@@ -150,14 +150,14 @@ namespace main_window_core {
 			void setOffsetType(global_enums::offset_type_e type);
 
 			/**
-			 * @brief Function: void updateUserInput(const main_window_shared_types::text_action_e action, QString text = QString::null)
+			 * @brief Function: void updateUserInput(const main_window_shared_types::text_action_e action, QString text = QString())
 			 *
 			 * \param action: action to execute - valid values are: SET, APPEND and CLEAR
 			 * \param text: text to append to userText
 			 *
 			 * This function updates the user input string
 			 */
-			void updateUserInput(const main_window_shared_types::text_action_e action, QString text = QString::null);
+			void updateUserInput(const main_window_shared_types::text_action_e action, QString text = QString());
 
 			// main widget
 			/**

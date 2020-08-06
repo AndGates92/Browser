@@ -6,8 +6,8 @@
  * @brief JSON Parser
  */
 
-#include <qt5/QtCore/QJsonObject>
-#include <qt5/QtCore/QJsonArray>
+#include <QtCore/QJsonObject>
+#include <QtCore/QJsonArray>
 
 #include "json_parser.h"
 #include "logging_macros.h"
@@ -99,7 +99,7 @@ QMap<QString, QString> json_parser::JsonParser::findKeyValue(const QString & key
 
 QString json_parser::JsonParser::searchJson(const QJsonValue & content, const QString & key) const {
 
-	QString value(QString::null);
+	QString value = QString();
 	switch (content.type()) {
 		case QJsonValue::Object:
 		{
@@ -130,7 +130,7 @@ QString json_parser::JsonParser::searchJson(const QJsonValue & content, const QS
 }
 
 QString json_parser::JsonParser::searchJsonObject(const QJsonObject & object, const QString & key) const {
-	QString valueStr(QString::null);
+	QString valueStr = QString();
 	if (object.contains(key) == true) {
 		QJsonObject::const_iterator iter = object.constFind(key);
 		QJsonValue value(iter.value());
@@ -147,7 +147,7 @@ QString json_parser::JsonParser::searchJsonObject(const QJsonObject & object, co
 			QINFO_PRINT(global_enums::qinfo_level_e::ZERO, jsonWrapperFileContent, "JSON key: " << *keyIter);
 			const QJsonValue value(object.value(*keyIter));
 			valueStr = this->searchJson(value, key);
-			if (valueStr != QString::null) {
+			if (valueStr != QString()) {
 				break;
 			}
 		}

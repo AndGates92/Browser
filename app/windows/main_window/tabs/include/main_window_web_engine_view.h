@@ -10,10 +10,10 @@
 
 // Qt libraries
 // Required by qInfo
-#include <qt5/QtCore/QtDebug>
-#include <qt5/QtCore/QLoggingCategory>
+#include <QtCore/QtDebug>
+#include <QtCore/QLoggingCategory>
 
-#include <qt5/QtWidgets/QAction>
+#include <QtWidgets/QAction>
 
 #include "web_engine_view.h"
 #include "main_window_web_engine_page.h"

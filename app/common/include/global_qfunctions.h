@@ -10,8 +10,8 @@
 
 #include <string>
 
-#include <qt5/QtCore/QtDebug>
-#include <qt5/QtCore/QMetaEnum>
+#include <QtCore/QtDebug>
+#include <QtCore/QMetaEnum>
 
 #include "exception_macros.h"
 
@@ -61,7 +61,7 @@ QString global_qfunctions::qEnumToQString(const qenum value, const bool printEnu
 	//std::string valueStr(metaEnum.valueToKey(int(value)));
 	const char * valueCStr = metaEnum.valueToKey(int(value));
 
-	QString fullValueStr(QString::null);
+	QString fullValueStr = QString();
 	if (valueCStr == NULL)
 		fullValueStr.append("UNKNOWN_ENUM");
 	else {

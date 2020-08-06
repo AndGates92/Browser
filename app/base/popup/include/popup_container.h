@@ -10,7 +10,7 @@
 
 #include <memory>
 
-#include <qt5/QtCore/QLoggingCategory>
+#include <QtCore/QLoggingCategory>
 
 #include "constructor_macros.h"
 #include "smart_ptr_macros.h"

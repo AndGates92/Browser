@@ -7,8 +7,8 @@
  */
 
 // Qt libraries
-#include <qt5/QtCore/QLoggingCategory>
-#include <qt5/QtCore/QVariant>
+#include <QtCore/QLoggingCategory>
+#include <QtCore/QVariant>
 
 #include "logging_macros.h"
 #include "function_macros.h"

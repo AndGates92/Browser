@@ -10,11 +10,11 @@
 
 // Qt libraries
 // Required by qInfo
-#include <qt5/QtCore/QtDebug>
+#include <QtCore/QtDebug>
 
-#include <qt5/QtWidgets/QVBoxLayout>
-#include <qt5/QtWidgets/QHBoxLayout>
-#include <qt5/QtWidgets/QLayoutItem>
+#include <QtWidgets/QVBoxLayout>
+#include <QtWidgets/QHBoxLayout>
+#include <QtWidgets/QLayoutItem>
 
 #include "logging_macros.h"
 #include "find_button_window.h"
@@ -173,7 +173,7 @@ void find_button_window::FindButtonWindow::createActions() {
 void find_button_window::FindButtonWindow::fillWindow() {
 
 	this->textToFind = secondary_window_utility::createLineEdit(this, "<text to search>", this->typeAction);
-	this->textToFind->setText(QString::null);
+	this->textToFind->setText(QString());
 
 	this->findButton = std::move(secondary_window_utility::createPushButton(this, this->findAction));
 	this->cancelButton = std::move(secondary_window_utility::createPushButton(this, this->cancelAction));

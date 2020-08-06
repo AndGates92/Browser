@@ -8,10 +8,10 @@
  * @brief Logging header file
 */
 
-#include <qt5/QtCore/QMessageLogContext>
-#include <qt5/QtCore/QString>
-#include <qt5/QtCore/QtGlobal>
-#include <qt5/QtCore/QFile>
+#include <QtCore/QMessageLogContext>
+#include <QtCore/QString>
+#include <QtCore/QtGlobal>
+#include <QtCore/QFile>
 
 /**
  * @brief log filename

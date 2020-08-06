@@ -11,9 +11,9 @@
 #include <unordered_map>
 #include <functional>
 
-#include <qt5/QtCore/QLoggingCategory>
-#include <qt5/QtGui/QKeySequence>
-#include <qt5/QtCore/QString>
+#include <QtCore/QLoggingCategory>
+#include <QtGui/QKeySequence>
+#include <QtCore/QString>
 
 /**
  * @brief QINFO_PRINT(KEY, STR)

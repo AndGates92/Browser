@@ -7,11 +7,11 @@
  */
 
 // Qt libraries
-#include <qt5/QtCore/QtGlobal>
-#include <qt5/QtGui/QKeyEvent>
+#include <QtCore/QtGlobal>
+#include <QtGui/QKeyEvent>
 
 // Required by qInfo
-#include <qt5/QtCore/QtDebug>
+#include <QtCore/QtDebug>
 
 #include "key_sequence.h"
 #include "main_window_ctrl_tab.h"
@@ -69,7 +69,7 @@ namespace main_window_ctrl_tab {
 
 }
 
-main_window_ctrl_tab::MainWindowCtrlTab::MainWindowCtrlTab(QWidget * parent, std::shared_ptr<main_window_core::MainWindowCore> core) : main_window_ctrl_base::MainWindowCtrlBase(parent, core, main_window_ctrl_tab::commandFileFullPath), findSettings(QString::null, global_enums::offset_type_e::IDLE, false, false) {
+main_window_ctrl_tab::MainWindowCtrlTab::MainWindowCtrlTab(QWidget * parent, std::shared_ptr<main_window_core::MainWindowCore> core) : main_window_ctrl_base::MainWindowCtrlBase(parent, core, main_window_ctrl_tab::commandFileFullPath), findSettings(QString(), global_enums::offset_type_e::IDLE, false, false) {
 
 	// Shortcuts
 	this->createExtraShortcuts();
@@ -231,7 +231,7 @@ void main_window_ctrl_tab::MainWindowCtrlTab::extractContentPath(const int & ind
 		this->createContentPathTextFromSource(tabType, tabSrc);
 
 	} else {
-		emit this->currentTabSrcChanged(QString::null);
+		emit this->currentTabSrcChanged(QString());
 	}
 
 }
@@ -455,16 +455,16 @@ void main_window_ctrl_tab::MainWindowCtrlTab::executeAction(const main_window_sh
 			this->findSettings.setText(userTypedText);
 			this->findSettings.setMatchFullWord(false);
 			this->findSettings.setCaseSensitive(false);
-			this->searchCurrentTab(QString::null);
+			this->searchCurrentTab(QString());
 			break;
 		case main_window_shared_types::state_e::FIND_DOWN:
 			this->findSettings.setDirection(global_enums::offset_type_e::DOWN);
-			this->searchCurrentTab(QString::null);
+			this->searchCurrentTab(QString());
 			this->changeWindowState(main_window_shared_types::state_e::IDLE, main_window_shared_types::state_postprocessing_e::POSTPROCESS);
 			break;
 		case main_window_shared_types::state_e::FIND_UP:
 			this->findSettings.setDirection(global_enums::offset_type_e::UP);
-			this->searchCurrentTab(QString::null);
+			this->searchCurrentTab(QString());
 			this->changeWindowState(main_window_shared_types::state_e::IDLE, main_window_shared_types::state_postprocessing_e::POSTPROCESS);
 			break;
 		case main_window_shared_types::state_e::SCROLL_UP:
@@ -619,7 +619,7 @@ void main_window_ctrl_tab::MainWindowCtrlTab::postprocessWindowStateChange(const
 
 	const int tabCount = this->windowCore->getTabCount();
 	std::shared_ptr<main_window_tab::MainWindowTab> tab = nullptr;
-	QString searchText(QString::null);
+	QString searchText = QString();
 	if (tabCount > 0) {
 		const int tabIndex = this->windowCore->getCurrentTabIndex();
 		tab = this->windowCore->tabs->widget(tabIndex);
@@ -657,12 +657,12 @@ void main_window_ctrl_tab::MainWindowCtrlTab::postprocessWindowStateChange(const
 			break;
 		case main_window_shared_types::state_e::FIND_DOWN:
 			this->findSettings.setDirection(global_enums::offset_type_e::DOWN);
-			this->searchCurrentTab(QString::null);
+			this->searchCurrentTab(QString());
 			this->changeWindowState(main_window_shared_types::state_e::IDLE, main_window_shared_types::state_postprocessing_e::POSTPROCESS);
 			break;
 		case main_window_shared_types::state_e::FIND_UP:
 			this->findSettings.setDirection(global_enums::offset_type_e::UP);
-			this->searchCurrentTab(QString::null);
+			this->searchCurrentTab(QString());
 			this->changeWindowState(main_window_shared_types::state_e::IDLE, main_window_shared_types::state_postprocessing_e::POSTPROCESS);
 			break;
 		case main_window_shared_types::state_e::SCROLL_UP:
@@ -742,7 +742,7 @@ void main_window_ctrl_tab::MainWindowCtrlTab::updateStatusBar(const int & tabInd
 
 void main_window_ctrl_tab::MainWindowCtrlTab::createContentPathTextFromSource(const main_window_shared_types::page_type_e & type, const QString & source) {
 
-	QString text(QString::null);
+	QString text = QString();
 
 	switch (type) {
 		case main_window_shared_types::page_type_e::WEB_CONTENT:

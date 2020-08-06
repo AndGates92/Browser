@@ -7,17 +7,17 @@
  */
 
 // Qt libraries
-#include <qt5/QtCore/QtGlobal>
-#include <qt5/QtWidgets/QVBoxLayout>
-#include <qt5/QtWidgets/QStatusBar>
-#include <qt5/QtWidgets/QTabBar>
-#include <qt5/QtWidgets/QSizePolicy>
-#include <qt5/QtGui/QKeyEvent>
+#include <QtCore/QtGlobal>
+#include <QtWidgets/QVBoxLayout>
+#include <QtWidgets/QStatusBar>
+#include <QtWidgets/QTabBar>
+#include <QtWidgets/QSizePolicy>
+#include <QtGui/QKeyEvent>
 
 // Required by qInfo
-#include <qt5/QtCore/QtDebug>
+#include <QtCore/QtDebug>
 
-#include <qt5/QtCore/QObject>
+#include <QtCore/QObject>
 
 #include "main_window_menu_bar.h"
 #include "main_window_status_bar.h"

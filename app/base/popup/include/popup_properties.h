@@ -8,8 +8,8 @@
  * @brief Popup properties class header file
 */
 
-#include <qt5/QtCore/QLoggingCategory>
-#include <qt5/QtWidgets/QWidget>
+#include <QtCore/QLoggingCategory>
+#include <QtWidgets/QWidget>
 
 #include "constructor_macros.h"
 

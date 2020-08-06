@@ -7,11 +7,11 @@
  */
 
 // Qt libraries
-#include <qt5/QtCore/QtGlobal>
-#include <qt5/QtGui/QKeyEvent>
+#include <QtCore/QtGlobal>
+#include <QtGui/QKeyEvent>
 
 // Required by qInfo
-#include <qt5/QtCore/QtDebug>
+#include <QtCore/QtDebug>
 
 #include "key_sequence.h"
 #include "main_window_ctrl.h"

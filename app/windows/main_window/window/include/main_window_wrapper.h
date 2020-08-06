@@ -8,8 +8,8 @@
  * @brief Main Window wrapper class header file
 */
 
-#include <qt5/QtCore/QLoggingCategory>
-#include <qt5/QtWidgets/QWidget>
+#include <QtCore/QLoggingCategory>
+#include <QtWidgets/QWidget>
 
 #include "main_window_base.h"
 #include "main_window_ctrl.h"

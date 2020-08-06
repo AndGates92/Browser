@@ -8,10 +8,10 @@
  * @brief JSON Parser header file
 */
 
-#include <qt5/QtCore/QtDebug>
-#include <qt5/QtCore/QLoggingCategory>
+#include <QtCore/QtDebug>
+#include <QtCore/QLoggingCategory>
 
-#include <qt5/QtCore/QString>
+#include <QtCore/QString>
 
 #include "json_wrapper.h"
 

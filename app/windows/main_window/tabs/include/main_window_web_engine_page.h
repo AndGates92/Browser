@@ -10,9 +10,9 @@
 
 // Qt libraries
 // Required by qInfo
-#include <qt5/QtCore/QtDebug>
+#include <QtCore/QtDebug>
 
-#include <qt5/QtCore/QLoggingCategory>
+#include <QtCore/QLoggingCategory>
 
 #include "web_engine_page.h"
 #include "main_window_page_data.h"
@@ -65,7 +65,7 @@ namespace main_window_web_engine_page {
 			 *
 			 * Main window web engine page constructor
 			 */
-			explicit MainWindowWebEnginePage(QWidget * parent, const main_window_shared_types::page_type_e type = main_window_shared_types::page_type_e::UNKNOWN, const QString & src = QString::null, main_window_web_engine_profile::MainWindowWebEngineProfile * profile = main_window_web_engine_profile::MainWindowWebEngineProfile::defaultProfile(), const void * data = nullptr);
+			explicit MainWindowWebEnginePage(QWidget * parent, const main_window_shared_types::page_type_e type = main_window_shared_types::page_type_e::UNKNOWN, const QString & src = QString(), main_window_web_engine_profile::MainWindowWebEngineProfile * profile = main_window_web_engine_profile::MainWindowWebEngineProfile::defaultProfile(), const void * data = nullptr);
 
 			/**
 			 * @brief Function: virtual ~MainWindowWebEnginePage()

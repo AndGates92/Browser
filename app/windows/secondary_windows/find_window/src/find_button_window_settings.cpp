@@ -10,11 +10,11 @@
 
 // Qt libraries
 // Required by qInfo
-#include <qt5/QtCore/QtDebug>
+#include <QtCore/QtDebug>
 
-#include <qt5/QtWidgets/QVBoxLayout>
-#include <qt5/QtWidgets/QHBoxLayout>
-#include <qt5/QtWidgets/QLayoutItem>
+#include <QtWidgets/QVBoxLayout>
+#include <QtWidgets/QHBoxLayout>
+#include <QtWidgets/QLayoutItem>
 
 #include "logging_macros.h"
 #include "exception_macros.h"

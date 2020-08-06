@@ -7,10 +7,10 @@
  */
 
 // Qt libraries
-#include <qt5/QtCore/QLoggingCategory>
-#include <qt5/QtGui/QKeyEvent>
-#include <qt5/QtWidgets/QMenu>
-#include <qt5/QtWebEngineWidgets/QWebEngineHistory>
+#include <QtCore/QLoggingCategory>
+#include <QtGui/QKeyEvent>
+#include <QtWidgets/QMenu>
+#include <QtWebEngineWidgets/QWebEngineHistory>
 
 #include "logging_macros.h"
 #include "function_macros.h"

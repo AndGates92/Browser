@@ -9,10 +9,10 @@
  * @brief Command Menu Model file
 */
 
-#include <qt5/QtCore/QLoggingCategory>
-#include <qt5/QtCore/QAbstractItemModel>
-#include <qt5/QtCore/QModelIndex>
-#include <qt5/QtCore/QVariant>
+#include <QtCore/QLoggingCategory>
+#include <QtCore/QAbstractItemModel>
+#include <QtCore/QModelIndex>
+#include <QtCore/QVariant>
 
 #include "constructor_macros.h"
 

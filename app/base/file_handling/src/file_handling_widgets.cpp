@@ -10,9 +10,9 @@
 
 // Qt libraries
 // Required by qInfo
-#include <qt5/QtCore/QtDebug>
+#include <QtCore/QtDebug>
 
-#include <qt5/QtCore/QObject>
+#include <QtCore/QObject>
 
 #include "logging_macros.h"
 #include "global_enums.h"
@@ -54,7 +54,7 @@ file_handling_widgets::FileHandlingWidgets::~FileHandlingWidgets() {
 }
 
 const QString file_handling_widgets::FileHandlingWidgets::getPathFromModelIndex(const std::unique_ptr<QFileSystemModel> & model, const QModelIndex & index) {
-	QString path = QString::null;
+	QString path = QString();
 
 	if (index == QModelIndex()) {
 		path = model->rootPath();

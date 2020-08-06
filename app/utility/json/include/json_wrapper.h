@@ -8,12 +8,12 @@
  * @brief JSON Wrapper header file
 */
 
-#include <qt5/QtCore/QtDebug>
-#include <qt5/QtCore/QLoggingCategory>
-#include <qt5/QtCore/QJsonValue>
+#include <QtCore/QtDebug>
+#include <QtCore/QLoggingCategory>
+#include <QtCore/QJsonValue>
 
-#include <qt5/QtCore/QString>
-#include <qt5/QtCore/QFile>
+#include <QtCore/QString>
+#include <QtCore/QFile>
 
 #include "type_print_macros.h"
 
@@ -148,7 +148,7 @@ namespace json_wrapper {
 			void walkJson(const QJsonValue & content) const;
 
 			/**
-			 * @brief Function: void addJsonValue(QJsonValue & content, QJsonValue val, const QString & key = QString::null)
+			 * @brief Function: void addJsonValue(QJsonValue & content, QJsonValue val, const QString & key = QString())
 			 *
 			 * \param content: input content to add to
 			 * \param key: key of the item to add (available only when the file is a QJsonObject)
@@ -156,7 +156,7 @@ namespace json_wrapper {
 			 *
 			 * function that adds a JSON value. It doesn't write to the file
 			 */
-			void addJsonValue(QJsonValue & content, const QJsonValue & val, const QString & key = QString::null);
+			void addJsonValue(QJsonValue & content, const QJsonValue & val, const QString & key = QString());
 
 			/**
 			 * @brief Function: void writeJson()

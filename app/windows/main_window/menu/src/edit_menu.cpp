@@ -7,11 +7,11 @@
  */
 
 // Qt libraries
-#include <qt5/QtCore/QLoggingCategory>
-#include <qt5/QtWidgets/QMenu>
-#include <qt5/QtWidgets/QAction>
-#include <qt5/QtWidgets/QWidget>
-#include <qt5/QtWidgets/QMenuBar>
+#include <QtCore/QLoggingCategory>
+#include <QtWidgets/QMenu>
+#include <QtWidgets/QAction>
+#include <QtWidgets/QWidget>
+#include <QtWidgets/QMenuBar>
 
 #include "edit_menu.h"
 

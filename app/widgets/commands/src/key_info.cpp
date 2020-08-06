@@ -7,7 +7,7 @@
  */
 
 // Qt libraries
-#include <qt5/QtCore/QLoggingCategory>
+#include <QtCore/QLoggingCategory>
 
 #include "global_enums.h"
 #include "logging_macros.h"
@@ -201,7 +201,7 @@ QString key_info::KeyInfo::toString(QKeySequence::SequenceFormat format) const {
 
 	// Convert key to string
 	QString keyStr(this->keyToString(this->key, format));
-	QString commentStr(QString::null);
+	QString commentStr = QString();
 
 	int tmpModifier = int(this->modifier);
 	modifierKeyMap::const_iterator modifierKey = key_info::modifierKeys.find(this->key);
@@ -225,7 +225,7 @@ QString key_info::KeyInfo::toString(QKeySequence::SequenceFormat format) const {
 
 	const QString modifierStr(this->modifierToString(Qt::KeyboardModifier(tmpModifier), format));
 
-	QString keySeqStr(QString::null);
+	QString keySeqStr = QString();
 	keySeqStr.append(modifierStr);
 	keySeqStr.append(keyStr);
 	// If commentStr is not empty, then add a space and print it
@@ -242,7 +242,7 @@ QString key_info::KeyInfo::toString(QKeySequence::SequenceFormat format) const {
 QString key_info::KeyInfo::keyToString(const Qt::Key keyPrint, const QKeySequence::SequenceFormat format) const {
 	specialKeyMap::const_iterator specialKey = key_info::specialKeys.find(keyPrint);
 
-	QString keyStr(QString::null);
+	QString keyStr = QString();
 
 	// key no found in specialKeys unordered map
 	if (specialKey == key_info::specialKeys.end()) {
@@ -256,7 +256,7 @@ QString key_info::KeyInfo::keyToString(const Qt::Key keyPrint, const QKeySequenc
 }
 
 QString key_info::KeyInfo::modifierToString(const Qt::KeyboardModifier modifierPrint, const QKeySequence::SequenceFormat format) const {
-	QString modifierStr(QString::null);
+	QString modifierStr = QString();
 
 	// Concert to key sequence
 	QKeySequence modifierSeq(modifierPrint);

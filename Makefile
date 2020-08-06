@@ -81,7 +81,7 @@ DFLAGS := $(foreach DEF, ${DEFINE_LIST}, -D${DEF})
 # Libraries
 MATHLIBS= m
 GLUTLIBS = GLU GL glut
-QTLIBS = Qt5Widgets Qt5Gui Qt5Core Qt5WebEngineWidgets
+QTLIBS = Qt5Widgets Qt5Gui Qt5Core Qt5WebEngineCore Qt5WebEngineWidgets
 X11LIBS = X11
 LIB_LIST = $(MATHLIBS) \
            $(GLUTLIBS) \
@@ -144,12 +144,26 @@ DIR_LIST = $(CLASSCOMPONENT_DIR) \
 INCLUDE_PATH := $(foreach DIR, ${DIR_LIST}, $(DIR)$(INCLUDE_DIR))
 INCLUDE_HEADERS := $(foreach INCHEADER, ${INCLUDE_PATH}, -I${INCHEADER})
 
-ifneq ($(wildcard /usr/include/x86_64-linux-gnu/qt5),)
-  INCLUDE_QT_LIBS = /usr/include/x86_64-linux-gnu/qt5
-else
-  $(error Qt libraries not found)
+ifneq ($(QTLIBDIR),)
+  QT_LIB_DIR = $(QTLIBDIR)
 endif
-INCLUDE_PATH_LIBS = $(INCLUDE_QT_LIBS)
+
+LIB_DIR_PATH = $(QT_LIB_DIR)
+
+ifneq ($(LIB_DIR_PATH),)
+  LIB_DIR := $(foreach LIBDIR, ${LIB_DIR_PATH}, -L${LIBDIR})
+endif
+
+ifneq ($(QTINCLUDEDIR),)
+  QT_HEADERS = $(QTINCLUDEDIR)
+else
+  ifneq ($(wildcard /usr/include/x86_64-linux-gnu/qt5),)
+    QT_HEADERS = /usr/include/x86_64-linux-gnu/qt5
+  else
+    $(error Qt libraries not found - QTINCLUDEDIR is not defined)
+  endif
+endif
+INCLUDE_PATH_LIBS = $(QT_HEADERS)
 
 ifneq ($(INCLUDE_PATH_LIBS),)
   INCLUDE_LIBS := $(foreach INCLIB, ${INCLUDE_PATH_LIBS}, -isystem${INCLIB})
@@ -178,7 +192,7 @@ $(EXE) : $(MOC_OBJS) $(OBJS)
 	$(MKDIR) $(LOG_DIR)
 	$(MKDIR) $(@D)
 	$(VERBOSE_ECHO)echo "[${TIMESTAMP}] Compiling $(@F). Object files are: $^"
-	$(CC) $(CFLAGS) $(ASANFLAGS) $(INCLUDES) -o $@ $(DFLAGS) $(BEHFLAGS) $(CEXTRAFLAGS) $^ $(LIBS)
+	$(CC) $(CFLAGS) $(ASANFLAGS) $(INCLUDES) -o $@ $(DFLAGS) $(BEHFLAGS) $(CEXTRAFLAGS) $^ $(LIB_DIR) $(LIBS)
 
 $(OBJ_DIR)/%.$(OBJ_EXT) : %.$(SRC_EXT)
 	$(MKDIR) $(DEP_DIR)
@@ -230,7 +244,8 @@ debug :
 	$(VERBOSE_ECHO)echo "[${TIMESTAMP}] --> Source directories: $(SRC_PATH)"
 	$(VERBOSE_ECHO)echo "[${TIMESTAMP}] --> moc source directories: $(MOC_SRC_DIR)"
 	$(VERBOSE_ECHO)echo "[${TIMESTAMP}] --> Include directories: $(INCLUDE_PATH)"
-	$(VERBOSE_ECHO)echo "[${TIMESTAMP}] --> Include Qt library path: $(INCLUDE_QT_LIBS)"
+	$(VERBOSE_ECHO)echo "[${TIMESTAMP}] --> Include Qt library path: $(QT_HEADERS)"
+	$(VERBOSE_ECHO)echo "[${TIMESTAMP}] --> Extra libraries: $(LIB_DIR_PATH)"
 	$(VERBOSE_ECHO)echo "[${TIMESTAMP}] --> Exeutable directory: $(BIN_DIR)"
 	$(VERBOSE_ECHO)echo "[${TIMESTAMP}] --> Log directory: $(LOG_DIR)"
 

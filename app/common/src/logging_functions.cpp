@@ -6,17 +6,18 @@
  * @brief Logging function definition
  */
 
-#include <qt5/QtCore/QDateTime>
-#include <qt5/QtCore/QTimeZone>
+#include <QtCore/QDateTime>
+#include <QtCore/QTimeZone>
 
 #include "logging_functions.h"
 
 QString logging_functions::getDateTime() {
-	QString datetimeStr(QString::null);
+	QString datetimeStr = QString();
 
+	QLocale locale(QLocale::AnyLanguage, QLocale::AnyScript, QLocale::AnyCountry);
 	QDateTime datetime = QDateTime::currentDateTime();
 	datetime.setTimeSpec(Qt::TimeZone);
-	datetimeStr.append(datetime.toString(Qt::SystemLocaleShortDate));
+	datetimeStr.append(locale.dateTimeFormat(QLocale::ShortFormat));
 	datetimeStr.append(" ");
 	datetimeStr.append(datetime.timeZoneAbbreviation());
 

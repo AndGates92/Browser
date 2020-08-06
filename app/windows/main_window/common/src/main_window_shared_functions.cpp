@@ -7,12 +7,12 @@
  */
 
 // Qt libraries
-#include <qt5/QtCore/QtGlobal>
-#include <qt5/QtCore/QFile>
-#include <qt5/QtCore/QUrl>
+#include <QtCore/QtGlobal>
+#include <QtCore/QFile>
+#include <QtCore/QUrl>
 
 // Required by qInfo
-#include <qt5/QtCore/QtDebug>
+#include <QtCore/QtDebug>
 
 #include "global_constants.h"
 #include "main_window_shared_functions.h"
@@ -25,7 +25,7 @@ bool main_window_shared_functions::isUrl(const QString & text) {
 	// Check also the number of dots in the argument text.
 	// In fact QUrl considers as valid an URL that is missing the .TLD (example .com)
 	// For example, if text is "cc", the URL built by this method is https://www.cc. It is considered a valid URL by QT whereas it is not
-	QString urlStr(QString::null);
+	QString urlStr = QString();
 
 	if (containsHttps == false) {
 		urlStr += global_constants::https;

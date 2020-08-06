@@ -12,16 +12,16 @@
 #include <string>
 #include <memory>
 
-#include <qt5/QtCore/QLoggingCategory>
-#include <qt5/QtCore/QDir>
-#include <qt5/QtWidgets/QLineEdit>
-#include <qt5/QtWidgets/QPushButton>
-#include <qt5/QtWidgets/QAction>
-#include <qt5/QtWidgets/QFileSystemModel>
-#include <qt5/QtWidgets/QComboBox>
-#include <qt5/QtWidgets/QTreeView>
-#include <qt5/QtWidgets/QCheckBox>
-#include <qt5/QtWidgets/QGroupBox>
+#include <QtCore/QLoggingCategory>
+#include <QtCore/QDir>
+#include <QtWidgets/QLineEdit>
+#include <QtWidgets/QPushButton>
+#include <QtWidgets/QAction>
+#include <QtWidgets/QFileSystemModel>
+#include <QtWidgets/QComboBox>
+#include <QtWidgets/QTreeView>
+#include <QtWidgets/QCheckBox>
+#include <QtWidgets/QGroupBox>
 
 #include "action.h"
 #include "key_sequence.h"

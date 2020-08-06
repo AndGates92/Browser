@@ -9,10 +9,10 @@
 #include <memory>
 
 // Qt libraries
-#include <qt5/QtWidgets/QApplication>
+#include <QtWidgets/QApplication>
 
 // Required by qInfo
-#include <qt5/QtCore/QtDebug>
+#include <QtCore/QtDebug>
 
 #include "logging_macros.h"
 #include "global_enums.h"

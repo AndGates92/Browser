@@ -7,7 +7,7 @@
  */
 
 // Qt libraries
-#include <qt5/QtCore/QLoggingCategory>
+#include <QtCore/QLoggingCategory>
 
 #include "key_info.h"
 #include "key_sequence.h"
@@ -44,7 +44,11 @@ key_sequence::KeySequence::KeySequence(const QString & keyStr, QKeySequence::Seq
 	QINFO_PRINT(global_enums::qinfo_level_e::ZERO, keySequenceOverall,  "Key Sequence constructor: key " << keyStr);
 
 	// Split key sequence string into individual key sequences
+	#if QT_VERSION >= QT_VERSION_CHECK(5, 14, 0)
+	QStringList keySeqList = keyStr.split(",", Qt::SkipEmptyParts);
+	#else
 	QStringList keySeqList = keyStr.split(",", QString::SkipEmptyParts);
+	#endif
 
 	for (QStringList::const_iterator cIter = keySeqList.cbegin(); cIter != keySeqList.cend(); cIter++) {
 		QKeySequence keySeq(*cIter, format);

@@ -8,8 +8,8 @@
  * @brief Browser exception functions
  */
 
-#include <qt5/QtCore/QLoggingCategory>
-#include <qt5/QtCore/QException>
+#include <QtCore/QLoggingCategory>
+#include <QtCore/QException>
 
 /** @defgroup BrowserExceptionGroup Browser Exception Doxygen Group
  *  Browser Exception functions and classes

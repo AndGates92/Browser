@@ -7,8 +7,8 @@
 */
 
 // Qt libraries
-#include <qt5/QtCore/QtGlobal>
-#include <qt5/QtWidgets/QHBoxLayout>
+#include <QtCore/QtGlobal>
+#include <QtWidgets/QHBoxLayout>
 
 #include "main_window_status_bar.h"
 #include "function_macros.h"
@@ -125,7 +125,7 @@ main_window_status_bar::MainWindowStatusBar::~MainWindowStatusBar() {
 }
 
 std::unique_ptr<elided_label::ElidedLabel> main_window_status_bar::MainWindowStatusBar::newWindowLabel() {
-	std::unique_ptr<elided_label::ElidedLabel> newLabel = std::make_unique<elided_label::ElidedLabel>(this, this->windowFlags(), QString::null, main_window_status_bar::textOrigin, Qt::ElideRight);
+	std::unique_ptr<elided_label::ElidedLabel> newLabel = std::make_unique<elided_label::ElidedLabel>(this, this->windowFlags(), QString(), main_window_status_bar::textOrigin, Qt::ElideRight);
 	newLabel->setAttribute(Qt::WA_DeleteOnClose);
 	newLabel->setFrameStyle(QFrame::NoFrame | QFrame::Sunken);
 	newLabel->setFixedHeight(main_window_status_bar::textHeight);
@@ -225,7 +225,7 @@ bool main_window_status_bar::MainWindowStatusBar::isValidScrollValue(const int &
 }
 
 void main_window_status_bar::MainWindowStatusBar::setVScroll(const int & vScroll) {
-	QString vScrollText(QString::null);
+	QString vScrollText = QString();
 	// Keep 3 characters for all scroll positions
 	if (this->isValidScrollValue(vScroll) == true) {
 		if (vScroll == main_window_status_bar::minScrollValue) {

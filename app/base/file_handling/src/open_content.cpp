@@ -8,7 +8,7 @@
 
 // Qt libraries
 // Required by qInfo
-#include <qt5/QtCore/QtDebug>
+#include <QtCore/QtDebug>
 
 #include "logging_macros.h"
 #include "global_enums.h"

@@ -8,8 +8,8 @@
  * @brief Open popup class header file
 */
 
-#include <qt5/QtCore/QLoggingCategory>
-#include <qt5/QtWidgets/QWidget>
+#include <QtCore/QLoggingCategory>
+#include <QtWidgets/QWidget>
 
 #include "open_content.h"
 #include "main_window_popup_base.h"

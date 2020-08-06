@@ -8,9 +8,9 @@
 
 // Qt libraries
 // Required by qInfo
-#include <qt5/QtCore/QtDebug>
+#include <QtCore/QtDebug>
 
-#include <qt5/QtGui/QKeySequence>
+#include <QtGui/QKeySequence>
 
 #include "logging_macros.h"
 #include "global_enums.h"
@@ -23,7 +23,7 @@ Q_LOGGING_CATEGORY(actionShortcut, "action.shortcut", MSG_TYPE_LEVEL)
 
 namespace action {
 	QDebug & operator<<(QDebug & os, const action::Action & action) {
-		QString str(QString::null);
+		QString str = QString();
 		str << action;
 		os << str;
 		return os;

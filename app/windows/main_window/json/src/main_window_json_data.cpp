@@ -7,10 +7,10 @@
  */
 
 // Qt libraries
-#include <qt5/QtCore/QtGlobal>
+#include <QtCore/QtGlobal>
 
 // Required by qInfo
-#include <qt5/QtCore/QtDebug>
+#include <QtCore/QtDebug>
 
 #include "main_window_json_data.h"
 #include "global_constants.h"
@@ -40,7 +40,7 @@ namespace main_window_json_data {
 	}
 
 	QDebug & operator<<(QDebug & os, const main_window_json_data::MainWindowJsonData & data) {
-		QString str(QString::null);
+		QString str = QString();
 		str << data;
 		os << str;
 		return os;

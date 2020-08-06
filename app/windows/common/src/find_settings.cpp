@@ -10,7 +10,7 @@
 
 // Qt libraries
 // Required by qInfo
-#include <qt5/QtCore/QtDebug>
+#include <QtCore/QtDebug>
 
 #include "logging_macros.h"
 #include "find_settings.h"
@@ -21,7 +21,7 @@ Q_LOGGING_CATEGORY(findSettingsOverall, "findSettings.overall", MSG_TYPE_LEVEL)
 
 namespace find_settings {
 	QDebug & operator<<(QDebug & os, const find_settings::FindSettings & settings) {
-		QString str(QString::null);
+		QString str = QString();
 		str << settings;
 		os << str;
 		return os;
@@ -78,7 +78,7 @@ find_settings::FindSettings & find_settings::FindSettings::operator=(const find_
 	return *this;
 }
 
-find_settings::FindSettings::FindSettings(find_settings::FindSettings && rhs) : text(std::exchange(rhs.text, QString::null)), direction(std::exchange(rhs.direction, global_enums::offset_type_e::IDLE)), caseSensitive(std::exchange(rhs.caseSensitive, false)), matchFullWord(std::exchange(rhs.matchFullWord, false)) {
+find_settings::FindSettings::FindSettings(find_settings::FindSettings && rhs) : text(std::exchange(rhs.text, QString())), direction(std::exchange(rhs.direction, global_enums::offset_type_e::IDLE)), caseSensitive(std::exchange(rhs.caseSensitive, false)), matchFullWord(std::exchange(rhs.matchFullWord, false)) {
 
 	QINFO_PRINT(global_enums::qinfo_level_e::ZERO, findSettingsOverall,  "Move constructor find settings");
 }
@@ -92,7 +92,7 @@ find_settings::FindSettings & find_settings::FindSettings::operator=(find_settin
 		this->direction = std::exchange(rhs.direction, global_enums::offset_type_e::IDLE);
 		this->caseSensitive = std::exchange(rhs.caseSensitive, false);
 		this->matchFullWord = std::exchange(rhs.matchFullWord, false);
-		this->text = std::exchange(rhs.text, QString::null);
+		this->text = std::exchange(rhs.text, QString());
 	}
 
 	return *this;

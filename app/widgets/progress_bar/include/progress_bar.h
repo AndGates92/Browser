@@ -8,8 +8,8 @@
  * @brief Progress bar class header file
 */
 
-#include <qt5/QtCore/QLoggingCategory>
-#include <qt5/QtWidgets/QProgressBar>
+#include <QtCore/QLoggingCategory>
+#include <QtWidgets/QProgressBar>
 
 #include "constructor_macros.h"
 

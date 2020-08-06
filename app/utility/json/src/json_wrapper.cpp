@@ -6,10 +6,10 @@
  * @brief JSON Wrapper
  */
 
-#include <qt5/QtCore/QJsonArray>
-#include <qt5/QtCore/QJsonObject>
-#include <qt5/QtCore/QJsonDocument>
-#include <qt5/QtCore/QJsonParseError>
+#include <QtCore/QJsonArray>
+#include <QtCore/QJsonObject>
+#include <QtCore/QJsonDocument>
+#include <QtCore/QJsonParseError>
 
 #include "json_wrapper.h"
 #include "logging_macros.h"

@@ -7,8 +7,8 @@
  */
 
 // Qt libraries
-#include <qt5/QtCore/QLoggingCategory>
-#include <qt5/QtGui/QKeyEvent>
+#include <QtCore/QLoggingCategory>
+#include <QtGui/QKeyEvent>
 
 #include "logging_macros.h"
 #include "exception_macros.h"

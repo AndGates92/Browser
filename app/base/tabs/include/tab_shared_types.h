@@ -8,7 +8,7 @@
  * @brief Tab Shared Types file
 */
 
-#include <qt5/QtCore/QtDebug>
+#include <QtCore/QtDebug>
 
 #include "type_print_macros.h"
 

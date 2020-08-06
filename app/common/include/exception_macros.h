@@ -39,7 +39,7 @@
  * Execute action on an exception
  */
 #define QEXCEPTION_ACTION(ACTION, ...)\
-	QString str(QString::null); \
+	QString str = QString(); \
 	QTextStream(&str) << "[" << logging_functions::getDateTime() << "] Exception caught on file " << __FILE__ << " at line " << __LINE__ << ": " << __VA_ARGS__; \
 	ACTION browser_exception::BrowserException(str);
 

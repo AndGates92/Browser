@@ -8,7 +8,7 @@
  * @brief Logging Functions header file
 */
 
-#include <qt5/QtCore/Qt>
+#include <QtCore/Qt>
 
 /** @defgroup LoggingFunctionsGroup Logging Functions Doxygen Group
  *  Logging Functions

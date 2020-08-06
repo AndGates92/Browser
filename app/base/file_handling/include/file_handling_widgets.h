@@ -11,12 +11,12 @@
 #include <string>
 #include <memory>
 
-#include <qt5/QtCore/QLoggingCategory>
-#include <qt5/QtCore/QDir>
-#include <qt5/QtWidgets/QLineEdit>
-#include <qt5/QtWidgets/QAction>
-#include <qt5/QtWidgets/QFileSystemModel>
-#include <qt5/QtWidgets/QTreeView>
+#include <QtCore/QLoggingCategory>
+#include <QtCore/QDir>
+#include <QtWidgets/QLineEdit>
+#include <QtWidgets/QAction>
+#include <QtWidgets/QFileSystemModel>
+#include <QtWidgets/QTreeView>
 
 #include "action.h"
 #include "key_sequence.h"

@@ -10,7 +10,7 @@
 
 #include <memory>
 
-#include <qt5/QtCore/QLoggingCategory>
+#include <QtCore/QLoggingCategory>
 
 #include "main_window_shared_types.h"
 

@@ -8,7 +8,7 @@
 
 #include <iostream>
 // Qt libraries
-#include <qt5/QtCore/QtGlobal>
+#include <QtCore/QtGlobal>
 
 #include "menu_bar.h"
 #include "global_enums.h"

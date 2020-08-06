@@ -10,9 +10,9 @@
 
 // Qt libraries
 // Required by qInfo
-#include <qt5/QtCore/QtDebug>
+#include <QtCore/QtDebug>
 
-#include <qt5/QtCore/QObject>
+#include <QtCore/QObject>
 
 #include "logging_macros.h"
 #include "global_enums.h"
@@ -98,7 +98,7 @@ std::unique_ptr<action::Action> secondary_window_utility::createAction(QObject *
 
 	QINFO_PRINT(global_enums::qinfo_level_e::ZERO, secondaryWindowUtilityOverall,  "Creating Action object with text " << QString::fromStdString(text) << " tip " << QString::fromStdString(tip) << " key " << shortcut.toString());
 
-	QString actionText = QString::null;
+	QString actionText = QString();
 	if (text.empty() == false) {
 		actionText = QAction::tr(text.c_str());
 	}
@@ -162,7 +162,7 @@ std::unique_ptr<QCheckBox> secondary_window_utility::createCheckBox(QWidget *par
 
 	QINFO_PRINT(global_enums::qinfo_level_e::ZERO, secondaryWindowUtilityOverall,  "Creating Check Box object");
 
-	std::unique_ptr<QCheckBox> checkBox = std::make_unique<QCheckBox>(QString::null, parent);
+	std::unique_ptr<QCheckBox> checkBox = std::make_unique<QCheckBox>(QString(), parent);
 	checkBox->setCheckState(Qt::Unchecked);
 	checkBox->setTristate(false);
 	if (toggleAction != nullptr) {
