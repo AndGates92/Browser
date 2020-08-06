@@ -19,7 +19,7 @@ Q_LOGGING_CATEGORY(comboBoxItemOverall, "comboBoxItem.overall", MSG_TYPE_LEVEL)
 
 combo_box_item::ComboBoxItem::ComboBoxItem(const QIcon itemIcon, const QVariant itemUserData, std::unique_ptr<action::Action> & itemAction) : icon(itemIcon), userData(itemUserData), action(std::move(itemAction)) {
 	QEXCEPTION_ACTION_COND((this->action == nullptr), throw,  "Action must not be null");
-	QEXCEPTION_ACTION_COND((this->action->textWithShortcut().empty() == true), throw,  "Action text cannot be empty");
+	QEXCEPTION_ACTION_COND((this->action->print().empty() == true), throw,  "Action text cannot be empty");
 	QINFO_PRINT(global_enums::qinfo_level_e::ZERO, comboBoxItemOverall,  "combo box item constructor with action " << this->action.get());
 
 }
@@ -45,4 +45,4 @@ combo_box_item::ComboBoxItem & combo_box_item::ComboBoxItem::operator=(combo_box
 CONST_GETTER(combo_box_item::ComboBoxItem::getIcon, QIcon, this->icon)
 CONST_GETTER(combo_box_item::ComboBoxItem::getUserData, QVariant, this->userData)
 CONST_GETTER(combo_box_item::ComboBoxItem::getAction, std::unique_ptr<action::Action> &, this->action)
-CONST_GETTER(combo_box_item::ComboBoxItem::getText, std::string, this->action->textWithShortcut())
+CONST_GETTER(combo_box_item::ComboBoxItem::getText, std::string, this->action->print())

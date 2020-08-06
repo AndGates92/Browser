@@ -89,13 +89,54 @@ namespace action {
 			std::list<key_sequence::KeySequence> shortcuts() const;
 
 			/**
-			 * @brief Function: std::string textWithShortcut() const
+			 * @brief Function: friend QDebug & operator<<(QDebug & os, const action::Action & action)
 			 *
-			 * \return a string concatenating the action text and the shortcut
+			 * \param os: output stream to append the action to
+			 * \param action: action to print
 			 *
-			 * This function returns a string concatenating the action text and the shortcut following template: <text> (<shortcut>)
+			 * action operator << overloading with QDebug
 			 */
-			std::string textWithShortcut() const;
+			friend QDebug & operator<<(QDebug & os, const action::Action & action);
+
+			/**
+			 * @brief Function: friend QString & operator<<(QString & str, const action::Action & action)
+			 *
+			 * \param str: string to append the action to
+			 * \param action: action to print
+			 *
+			 * action operator << overloading with QString
+			 */
+			friend QString & operator<<(QString & str, const action::Action & action);
+
+			/**
+			 * @brief Function: friend std::string & operator<<(std::string & str, const action::Action & action)
+			 *
+			 * \param str: string to append the action to
+			 * \param action: action to print
+			 *
+			 * action operator << overloading with std::string
+			 */
+			friend std::string & operator<<(std::string & str, const action::Action & action);
+
+			/**
+			 * @brief Function: std::string print() const
+			 *
+			 * \return action to print converted to std::string
+			 *
+			 * This functions prints action to print info to std::string
+			 */
+			std::string print() const;
+
+			/**
+			 * @brief Function: QString qprint() const
+			 *
+			 * \return action to print converted to QString
+			 *
+			 * This functions prints action to print to QString
+			 */
+			const QString qprint() const;
+
+		protected:
 
 		private:
 			// Move and copy constructor

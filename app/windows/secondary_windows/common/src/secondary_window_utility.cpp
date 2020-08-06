@@ -134,7 +134,7 @@ std::shared_ptr<QLineEdit> secondary_window_utility::createLineEdit(QWidget * pa
 
 std::unique_ptr<QPushButton> secondary_window_utility::createPushButton(QWidget *parent, const std::unique_ptr<action::Action> & actionPtr) {
 
-	std::string buttonText(actionPtr->textWithShortcut());
+	std::string buttonText(actionPtr->print());
 
 	QINFO_PRINT(global_enums::qinfo_level_e::ZERO, secondaryWindowUtilityOverall,  "Creating Push Button object with text " << QString::fromStdString(buttonText));
 
@@ -166,7 +166,7 @@ std::unique_ptr<QCheckBox> secondary_window_utility::createCheckBox(QWidget *par
 	checkBox->setCheckState(Qt::Unchecked);
 	checkBox->setTristate(false);
 	if (toggleAction != nullptr) {
-		std::string checkBoxText(toggleAction->textWithShortcut());
+		std::string checkBoxText(toggleAction->print());
 		QINFO_PRINT(global_enums::qinfo_level_e::ZERO, secondaryWindowUtilityOverall,  "Setting Check Box text to " << QString::fromStdString(checkBoxText));
 		checkBox->setText(QCheckBox::tr(checkBoxText.c_str()));
 		checkBox->addAction(const_cast<action::Action *>(toggleAction.get()));

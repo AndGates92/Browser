@@ -21,6 +21,25 @@
 Q_LOGGING_CATEGORY(actionOverall, "action.overall", MSG_TYPE_LEVEL)
 Q_LOGGING_CATEGORY(actionShortcut, "action.shortcut", MSG_TYPE_LEVEL)
 
+namespace action {
+	QDebug & operator<<(QDebug & os, const action::Action & action) {
+		QString str(QString::null);
+		str << action;
+		os << str;
+		return os;
+	}
+
+	QString & operator<<(QString & str, const action::Action & action) {
+		str.append(action.qprint());
+		return str;
+	}
+
+	std::string & operator<<(std::string & str, const action::Action & action) {
+		str.append(action.print());
+		return str;
+	}
+}
+
 action::Action::Action(QObject * parent, const QString & text, const QIcon & icon) : QAction(icon, text, parent) {
 
 	QINFO_PRINT(global_enums::qinfo_level_e::ZERO, actionOverall,  "Creating action");
@@ -79,7 +98,7 @@ std::list<key_sequence::KeySequence> action::Action::shortcuts() const {
 
 }
 
-std::string action::Action::textWithShortcut() const {
+std::string action::Action::print() const {
 
 	QEXCEPTION_ACTION_COND((this->text().isEmpty() == true), throw,  "Action text cannot be empty when getting text using method " << __func__);
 
@@ -91,4 +110,11 @@ std::string action::Action::textWithShortcut() const {
 	}
 
 	return actionText;
+}
+
+const QString action::Action::qprint() const {
+	const std::string action = this->print();
+	const QString qStr (QString::fromStdString(action));
+
+	return qStr;
 }
