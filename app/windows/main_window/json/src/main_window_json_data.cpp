@@ -39,23 +39,6 @@ namespace main_window_json_data {
 		return !isSame;
 	}
 
-	QDebug & operator<<(QDebug & os, const main_window_json_data::MainWindowJsonData & data) {
-		QString str = QString();
-		str << data;
-		os << str;
-		return os;
-	}
-
-	QString & operator<<(QString & str, const main_window_json_data::MainWindowJsonData & data) {
-		str.append(data.qprint());
-		return str;
-	}
-
-	std::string & operator<<(std::string & str, const main_window_json_data::MainWindowJsonData & data) {
-		str.append(data.print());
-		return str;
-	}
-
 }
 
 std::shared_ptr<main_window_json_data::MainWindowJsonData> main_window_json_data::MainWindowJsonData::makeJsonData(const std::string & jsonKey, const std::string & nameKeyValue, const main_window_shared_types::state_e & stateKeyValue, const int & shortcutKeyValue, const std::string & longCmdKeyValue, const std::string & helpKeyValue) {
@@ -64,7 +47,7 @@ std::shared_ptr<main_window_json_data::MainWindowJsonData> main_window_json_data
 	return newData;
 }
 
-main_window_json_data::MainWindowJsonData::MainWindowJsonData(const std::string & jsonKey, const std::string & nameKeyValue, const main_window_shared_types::state_e & stateKeyValue, const int & shortcutKeyValue, const std::string & longCmdKeyValue, const std::string & helpKeyValue): key(jsonKey), name(nameKeyValue), state(stateKeyValue), shortcut(shortcutKeyValue), longCmd(longCmdKeyValue), help(helpKeyValue) {
+main_window_json_data::MainWindowJsonData::MainWindowJsonData(const std::string & jsonKey, const std::string & nameKeyValue, const main_window_shared_types::state_e & stateKeyValue, const int & shortcutKeyValue, const std::string & longCmdKeyValue, const std::string & helpKeyValue): printable_object::PrintableObject(), key(jsonKey), name(nameKeyValue), state(stateKeyValue), shortcut(shortcutKeyValue), longCmd(longCmdKeyValue), help(helpKeyValue) {
 
 	this->actionParameters.insert(main_window_json_data::defaultActionParameters.cbegin(), main_window_json_data::defaultActionParameters.cend());
 
@@ -136,14 +119,7 @@ main_window_json_data::MainWindowJsonData::~MainWindowJsonData() {
 
 }
 
-const QString main_window_json_data::MainWindowJsonData::qprint() const {
-	const std::string mainWindowJsonDataInfo(this->print());
-	const QString qStr(QString::fromStdString(mainWindowJsonDataInfo));
-
-	return qStr;
-}
-
-std::string main_window_json_data::MainWindowJsonData::print() const {
+const std::string main_window_json_data::MainWindowJsonData::print() const {
 	std::string structInfo;
 
 	structInfo = "\n";

@@ -14,6 +14,7 @@
 
 #include "global_enums.h"
 #include "constructor_macros.h"
+#include "printable_object.h"
 
 /** @defgroup FindSettingsGroup Find Settings Doxygen Group
  *  Find Settings functions and classes
@@ -32,7 +33,7 @@ namespace find_settings {
 	 * @brief FindSettings class
 	 *
 	 */
-	class FindSettings final {
+	class FindSettings final : public printable_object::PrintableObject {
 
 		friend main_window_ctrl_tab::MainWindowCtrlTab;
 
@@ -95,36 +96,6 @@ namespace find_settings {
 			virtual ~FindSettings();
 
 			/**
-			 * @brief Function: friend QDebug & operator<<(QDebug & os, const find_settings::FindSettings & settings)
-			 *
-			 * \param os: output stream to append the settings to
-			 * \param settings: find settings
-			 *
-			 * settings operator << overloading with QDebug
-			 */
-			friend QDebug & operator<<(QDebug & os, const find_settings::FindSettings & settings);
-
-			/**
-			 * @brief Function: friend QString & operator<<(QString & str, const find_settings::FindSettings & settings)
-			 *
-			 * \param str: string to append the settings to
-			 * \param settings: find settings
-			 *
-			 * settings operator << overloading with QString
-			 */
-			friend QString & operator<<(QString & str, const find_settings::FindSettings & settings);
-
-			/**
-			 * @brief Function: friend std::string & operator<<(std::string & str, const find_settings::FindSettings & settings)
-			 *
-			 * \param str: string to append the settings to
-			 * \param settings: find settings
-			 *
-			 * settings operator << overloading with std::string
-			 */
-			friend std::string & operator<<(std::string & str, const find_settings::FindSettings & settings);
-
-			/**
 			 * @brief Function: bool getCaseSensitive() const
 			 *
 			 * \return case sensitive search
@@ -161,22 +132,13 @@ namespace find_settings {
 			const QString getText() const;
 
 			/**
-			 * @brief Function: std::string print() const
+			 * @brief Function: const std::string print() const
 			 *
 			 * \return find settings converted to std::string
 			 *
 			 * This functions prints find settings info to std::string
 			 */
-			std::string print() const;
-
-			/**
-			 * @brief Function: QString qprint() const
-			 *
-			 * \return find settings converted to QString
-			 *
-			 * This functions prints find settings to QString
-			 */
-			const QString qprint() const;
+			const std::string print() const;
 
 		protected:
 

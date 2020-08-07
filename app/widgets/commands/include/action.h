@@ -17,6 +17,7 @@
 #include "constructor_macros.h"
 
 #include "key_sequence.h"
+#include "printable_object.h"
 
 /** @defgroup ActionGroup Action Widget Doxygen Group
  *  Action menu functions and classes
@@ -31,7 +32,7 @@ namespace action {
 	 * @brief Action class
 	 *
 	 */
-	class Action final : public QAction {
+	class Action final : public QAction, public printable_object::PrintableObject {
 
 		public:
 			/**
@@ -41,14 +42,14 @@ namespace action {
 			 * \param text: descriptive text
 			 * \param icon: icon linked to the action
 			 *
-			 * Main window popup menu constructor
+			 * Action constructor
 			 */
 			explicit Action(QObject * parent, const QString & text = QString(), const QIcon & icon = QIcon());
 
 			/**
 			 * @brief Function: ~Action()
 			 *
-			 * Main window popup menu destructor
+			 * Action destructor
 			 */
 			virtual ~Action();
 
@@ -89,52 +90,13 @@ namespace action {
 			std::list<key_sequence::KeySequence> shortcuts() const;
 
 			/**
-			 * @brief Function: friend QDebug & operator<<(QDebug & os, const action::Action & action)
-			 *
-			 * \param os: output stream to append the action to
-			 * \param action: action to print
-			 *
-			 * action operator << overloading with QDebug
-			 */
-			friend QDebug & operator<<(QDebug & os, const action::Action & action);
-
-			/**
-			 * @brief Function: friend QString & operator<<(QString & str, const action::Action & action)
-			 *
-			 * \param str: string to append the action to
-			 * \param action: action to print
-			 *
-			 * action operator << overloading with QString
-			 */
-			friend QString & operator<<(QString & str, const action::Action & action);
-
-			/**
-			 * @brief Function: friend std::string & operator<<(std::string & str, const action::Action & action)
-			 *
-			 * \param str: string to append the action to
-			 * \param action: action to print
-			 *
-			 * action operator << overloading with std::string
-			 */
-			friend std::string & operator<<(std::string & str, const action::Action & action);
-
-			/**
-			 * @brief Function: std::string print() const
+			 * @brief Function: virtual const std::string print() const override
 			 *
 			 * \return action to print converted to std::string
 			 *
 			 * This functions prints action to print info to std::string
 			 */
-			std::string print() const;
-
-			/**
-			 * @brief Function: QString qprint() const
-			 *
-			 * \return action to print converted to QString
-			 *
-			 * This functions prints action to print to QString
-			 */
-			const QString qprint() const;
+			virtual const std::string print() const override;
 
 		protected:
 

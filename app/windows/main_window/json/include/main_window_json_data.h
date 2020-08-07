@@ -17,6 +17,7 @@
 #include "key_sequence.h"
 #include "global_classes.h"
 #include "main_window_shared_types.h"
+#include "printable_object.h"
 
 /** @defgroup MainWindowJsonDataGroup Main Window Json Data Doxygen Group
  *  Main Window json data functions and classes
@@ -49,7 +50,7 @@ namespace main_window_json_data {
 	 * @brief MainWindowJsonData class
 	 *
 	 */
-	class MainWindowJsonData {
+	class MainWindowJsonData : public printable_object::PrintableObject {
 		friend class main_window_ctrl::MainWindowCtrl;
 		friend class main_window_ctrl_base::MainWindowCtrlBase;
 		friend class main_window_ctrl_tab::MainWindowCtrlTab;
@@ -151,52 +152,13 @@ namespace main_window_json_data {
 			friend bool operator!=(const main_window_json_data::MainWindowJsonData & lhs, const main_window_json_data::MainWindowJsonData & rhs);
 
 			/**
-			 * @brief Function: friend QDebug & operator<<(QDebug & os, const main_window_json_data::MainWindowJsonData & data)
-			 *
-			 * \param os: output stream to append the JSON data to
-			 * \param data: JSON data
-			 *
-			 * json data operator << overloading with QDebug
-			 */
-			friend QDebug & operator<<(QDebug & os, const main_window_json_data::MainWindowJsonData & data);
-
-			/**
-			 * @brief Function: friend QString & operator<<(QString & str, const main_window_json_data::MainWindowJsonData & data)
-			 *
-			 * \param str: string to append the JSON data to
-			 * \param data: JSON data
-			 *
-			 * json data operator << overloading with QString
-			 */
-			friend QString & operator<<(QString & str, const main_window_json_data::MainWindowJsonData & data);
-
-			/**
-			 * @brief Function: friend std::string & operator<<(std::string & str, const main_window_json_data::MainWindowJsonData & data)
-			 *
-			 * \param str: string to append the JSON data to 
-			 * \param data: JSON data
-			 *
-			 * json data operator << overloading with std::string
-			 */
-			friend std::string & operator<<(std::string & str, const main_window_json_data::MainWindowJsonData & data);
-
-			/**
-			 * @brief Function: std::string print() const
+			 * @brief Function: const std::string print() const
 			 *
 			 * \return json data converted to std::string
 			 *
 			 * This functions prints json data info to std::string
 			 */
-			std::string print() const;
-
-			/**
-			 * @brief Function: QString qprint() const
-			 *
-			 * \return json data converted to QString
-			 *
-			 * This functions prints json data info to QString
-			 */
-			const QString qprint() const;
+			const std::string print() const;
 
 			/**
 			 * @brief Function: const std::string getKey() const

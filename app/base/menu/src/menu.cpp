@@ -18,9 +18,9 @@
 // Categories
 Q_LOGGING_CATEGORY(menuOverall, "menu.overall", MSG_TYPE_LEVEL)
 
-menu::Menu::Menu(QWidget * parent, std::weak_ptr<QMenuBar> menuBar, const char* menuName, const key_sequence::KeySequence & key) : QWidget(parent), menuBar(menuBar), menuName(menuName), key(key) {
+menu::Menu::Menu(QWidget * parent, std::weak_ptr<QMenuBar> menuBar, const char* menuName, const key_sequence::KeySequence & key) : QWidget(parent), printable_object::PrintableObject(), menuBar(menuBar), menuName(menuName), key(key) {
 
-	QINFO_PRINT(global_enums::qinfo_level_e::ZERO, menuOverall, "Create menu " << this->menuName << " shortcut key " << this->key.toString());
+	QINFO_PRINT(global_enums::qinfo_level_e::ZERO, menuOverall, "Create menu:  " << *this);
 	this->createMenu();
 	this->createShortcuts();
 }
@@ -48,7 +48,7 @@ void menu::Menu::createShortcuts() {
 }
 
 void menu::Menu::expand() {
-	QEXCEPTION_ACTION_COND((this->menuBar.expired() == true), throw,  "Unable to get menu bar for menu " << menuName << " as it has already expired");
+	QEXCEPTION_ACTION_COND((this->menuBar.expired() == true), throw,  "Unable to get menu bar for menu " << this->menuName << " as it has already expired");
 	std::shared_ptr<QMenuBar> bar = this->menuBar.lock();
 	if (bar != Q_NULLPTR) {
 		// menu is expanded only if menu bar is visible
@@ -62,4 +62,13 @@ void menu::Menu::expand() {
 
 void menu::Menu::setEnabledProperty(const bool & enabled) {
 	this->expandMenu->setEnabled(enabled);
+}
+
+const std::string menu::Menu::print() const {
+	std::string menuInfo;
+
+	menuInfo = menuInfo + " name: " + this->menuName;
+	menuInfo = menuInfo + " shortcut key: " + this->key.toString().toStdString();
+
+	return menuInfo;
 }

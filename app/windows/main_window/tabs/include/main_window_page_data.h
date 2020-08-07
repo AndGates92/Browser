@@ -13,6 +13,7 @@
 #include <QtCore/QLoggingCategory>
 
 #include "main_window_shared_types.h"
+#include "printable_object.h"
 
 /** @defgroup MainWindowPageDataGroup Main Window Page Data Doxygen Group
  *  Main Window page data functions and classes
@@ -32,7 +33,7 @@ namespace main_window_page_data {
 	 * @brief MainWindowPageData class
 	 *
 	 */
-	class MainWindowPageData final {
+	class MainWindowPageData final : public printable_object::PrintableObject {
 		friend class main_window_web_engine_page::MainWindowWebEnginePage;
 
 		public:
@@ -126,52 +127,13 @@ namespace main_window_page_data {
 			friend bool operator!=(const main_window_page_data::MainWindowPageData & lhs, const main_window_page_data::MainWindowPageData & rhs);
 
 			/**
-			 * @brief Function: friend QDebug & operator<<(QDebug & os, const main_window_page_data::MainWindowPageData & data)
-			 *
-			 * \param os: output stream to append the page data to
-			 * \param data: page data
-			 *
-			 * page data operator << overloading with QDebug
-			 */
-			friend QDebug & operator<<(QDebug & os, const main_window_page_data::MainWindowPageData & data);
-
-			/**
-			 * @brief Function: friend QString & operator<<(QString & str, const main_window_page_data::MainWindowPageData & data)
-			 *
-			 * \param str: string to append the page data to
-			 * \param data: page data
-			 *
-			 * page data operator << overloading with QString
-			 */
-			friend QString & operator<<(QString & str, const main_window_page_data::MainWindowPageData & data);
-
-			/**
-			 * @brief Function: friend std::string & operator<<(std::string & str, const main_window_page_data::MainWindowPageData & data)
-			 *
-			 * \param str: string to append the page data to
-			 * \param data: page data
-			 *
-			 * page data operator << overloading with std::string
-			 */
-			friend std::string & operator<<(std::string & str, const main_window_page_data::MainWindowPageData & data);
-
-			/**
-			 * @brief Function: std::string print() const
+			 * @brief Function: const std::string print() const
 			 *
 			 * \return page data converted to std::string
 			 *
 			 * This functions prints page data info to std::string
 			 */
-			std::string print() const;
-
-			/**
-			 * @brief Function: QString qprint() const
-			 *
-			 * \return page data converted to QString
-			 *
-			 * This functions prints page data info to QString
-			 */
-			const QString qprint() const;
+			const std::string print() const;
 
 		protected:
 
@@ -213,7 +175,7 @@ namespace main_window_page_data {
 			main_window_shared_types::page_type_e getType() const;
 
 			/**
-			 * @brief Function: QString qprint() const
+			 * @brief Function: const void * getData() const
 			 *
 			 * \return data field of a page data object
 			 *

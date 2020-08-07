@@ -114,7 +114,7 @@ std::unique_ptr<action::Action> secondary_window_utility::createAction(QObject *
 
 std::shared_ptr<QLineEdit> secondary_window_utility::createLineEdit(QWidget * parent, const std::string & text, const std::unique_ptr<action::Action> & focusAction) {
 
-	QINFO_PRINT(global_enums::qinfo_level_e::ZERO, secondaryWindowUtilityOverall,  "Creating Line Edit object with text " << QString::fromStdString(text));
+	QINFO_PRINT(global_enums::qinfo_level_e::ZERO, secondaryWindowUtilityOverall,  "Creating Line Edit object with text " << QString::fromStdString(text) << " action " << *focusAction);
 
 	std::shared_ptr<QLineEdit> lineEdit = std::make_unique<QLineEdit>(parent);
 	if (text.empty() == false) {
@@ -136,7 +136,7 @@ std::unique_ptr<QPushButton> secondary_window_utility::createPushButton(QWidget 
 
 	std::string buttonText(actionPtr->print());
 
-	QINFO_PRINT(global_enums::qinfo_level_e::ZERO, secondaryWindowUtilityOverall,  "Creating Push Button object with text " << QString::fromStdString(buttonText));
+	QINFO_PRINT(global_enums::qinfo_level_e::ZERO, secondaryWindowUtilityOverall,  "Creating Push Button object with text " << QString::fromStdString(buttonText) << " action " << *actionPtr);
 
 	std::unique_ptr<QPushButton> button = std::make_unique<QPushButton>(QPushButton::tr(buttonText.c_str()), parent);
 	button->addAction(const_cast<action::Action *>(actionPtr.get()));
@@ -160,7 +160,7 @@ std::unique_ptr<QGroupBox> secondary_window_utility::createGroupBox(QWidget *par
 
 std::unique_ptr<QCheckBox> secondary_window_utility::createCheckBox(QWidget *parent, const std::unique_ptr<action::Action> & toggleAction) {
 
-	QINFO_PRINT(global_enums::qinfo_level_e::ZERO, secondaryWindowUtilityOverall,  "Creating Check Box object");
+	QINFO_PRINT(global_enums::qinfo_level_e::ZERO, secondaryWindowUtilityOverall,  "Creating Check Box object" << " action " << *toggleAction);
 
 	std::unique_ptr<QCheckBox> checkBox = std::make_unique<QCheckBox>(QString(), parent);
 	checkBox->setCheckState(Qt::Unchecked);

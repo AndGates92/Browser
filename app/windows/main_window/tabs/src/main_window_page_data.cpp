@@ -37,23 +37,6 @@ namespace main_window_page_data {
 		return !isSame;
 	}
 
-	QDebug & operator<<(QDebug & os, const main_window_page_data::MainWindowPageData & data) {
-		QString str = QString();
-		str << data;
-		os << str;
-		return os;
-	}
-
-	QString & operator<<(QString & str, const main_window_page_data::MainWindowPageData & data) {
-		str.append(data.qprint());
-		return str;
-	}
-
-	std::string & operator<<(std::string & str, const main_window_page_data::MainWindowPageData & data) {
-		str.append(data.print());
-		return str;
-	}
-
 }
 
 std::shared_ptr<main_window_page_data::MainWindowPageData> main_window_page_data::MainWindowPageData::makePageData(const main_window_shared_types::page_type_e & type, const std::string src, const void * data) {
@@ -62,7 +45,7 @@ std::shared_ptr<main_window_page_data::MainWindowPageData> main_window_page_data
 	return newData;
 }
 
-main_window_page_data::MainWindowPageData::MainWindowPageData(main_window_shared_types::page_type_e pageType, std::string src, const void * pageData): type(pageType), source(src), data(pageData) {
+main_window_page_data::MainWindowPageData::MainWindowPageData(main_window_shared_types::page_type_e pageType, std::string src, const void * pageData): printable_object::PrintableObject(), type(pageType), source(src), data(pageData) {
 	QINFO_PRINT(global_enums::qinfo_level_e::ZERO, mainWindowPageDataOverall,  "Page Data structure constructor. Data " << *this);
 
 }
@@ -120,14 +103,7 @@ main_window_page_data::MainWindowPageData::~MainWindowPageData() {
 	QINFO_PRINT(global_enums::qinfo_level_e::ZERO, mainWindowPageDataOverall,  "Destructor of main window page data class");
 }
 
-const QString main_window_page_data::MainWindowPageData::qprint() const {
-	const std::string mainWindowPageDataInfo = this->print();
-	const QString qStr (QString::fromStdString(mainWindowPageDataInfo));
-
-	return qStr;
-}
-
-std::string main_window_page_data::MainWindowPageData::print() const {
+const std::string main_window_page_data::MainWindowPageData::print() const {
 	std::string structInfo;
 
 	structInfo = structInfo + " type: " + this->type;

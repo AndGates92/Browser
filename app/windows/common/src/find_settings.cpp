@@ -19,26 +19,7 @@
 // Categories
 Q_LOGGING_CATEGORY(findSettingsOverall, "findSettings.overall", MSG_TYPE_LEVEL)
 
-namespace find_settings {
-	QDebug & operator<<(QDebug & os, const find_settings::FindSettings & settings) {
-		QString str = QString();
-		str << settings;
-		os << str;
-		return os;
-	}
-
-	QString & operator<<(QString & str, const find_settings::FindSettings & settings) {
-		str.append(settings.qprint());
-		return str;
-	}
-
-	std::string & operator<<(std::string & str, const find_settings::FindSettings & settings) {
-		str.append(settings.print());
-		return str;
-	}
-}
-
-find_settings::FindSettings::FindSettings(const QString & initText, const global_enums::offset_type_e & initDirection, const bool & initCaseSensitive, const bool & initMatchFullWord) : text(initText), direction(initDirection), caseSensitive(initCaseSensitive), matchFullWord(initMatchFullWord) {
+find_settings::FindSettings::FindSettings(const QString & initText, const global_enums::offset_type_e & initDirection, const bool & initCaseSensitive, const bool & initMatchFullWord) : printable_object::PrintableObject(), text(initText), direction(initDirection), caseSensitive(initCaseSensitive), matchFullWord(initMatchFullWord) {
 
 	QINFO_PRINT(global_enums::qinfo_level_e::ZERO, findSettingsOverall,  "Creating find button window");
 
@@ -102,14 +83,7 @@ find_settings::FindSettings::~FindSettings() {
 	QINFO_PRINT(global_enums::qinfo_level_e::ZERO, findSettingsOverall,  "Destructor of FindSettings class");
 }
 
-const QString find_settings::FindSettings::qprint() const {
-	const std::string settings = this->print();
-	const QString qStr (QString::fromStdString(settings));
-
-	return qStr;
-}
-
-std::string find_settings::FindSettings::print() const {
+const std::string find_settings::FindSettings::print() const {
 	std::string settings;
 
 	settings = settings + " text: " + this->text.toStdString();

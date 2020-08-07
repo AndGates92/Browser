@@ -18,6 +18,7 @@
 
 #include "key_sequence.h"
 #include "constructor_macros.h"
+#include "printable_object.h"
 
 /** @defgroup MenuGroup Menu Doxygen Group
  *  Menu functions and classes
@@ -32,7 +33,7 @@ namespace menu {
 	 * @brief Menu class
 	 *
 	 */
-	class Menu : public QWidget {
+	class Menu : public QWidget, public printable_object::PrintableObject {
 
 		Q_OBJECT
 
@@ -56,6 +57,15 @@ namespace menu {
 			 * Destructor of base class menu
 			 */
 			virtual ~Menu();
+
+			/**
+			 * @brief Function: const std::string print() const
+			 *
+			 * \return menu information converted to std::string
+			 *
+			 * This functions prints menu info to std::string
+			 */
+			const std::string print() const;
 
 		public slots:
 
