@@ -17,7 +17,7 @@ QString logging_functions::getDateTime() {
 	QLocale locale(QLocale::AnyLanguage, QLocale::AnyScript, QLocale::AnyCountry);
 	QDateTime datetime = QDateTime::currentDateTime();
 	datetime.setTimeSpec(Qt::TimeZone);
-	datetimeStr.append(locale.dateTimeFormat(QLocale::ShortFormat));
+	datetimeStr.append(locale.toString(datetime, QLocale::ShortFormat));
 	datetimeStr.append(" ");
 	datetimeStr.append(datetime.timeZoneAbbreviation());
 
