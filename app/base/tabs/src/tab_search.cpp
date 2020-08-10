@@ -2,7 +2,7 @@
  * @copyright
  * @file tab_search.cpp
  * @author Andrea Gianarda
- * @date 02rd April 2020
+ * @date 02nd April 2020
  * @brief Tab search functions
  */
 
@@ -30,25 +30,6 @@ tab_search::TabSearch::~TabSearch() {
 	QINFO_PRINT(global_enums::qinfo_level_e::ZERO, tabSearchOverall,  "Tab search destructor");
 
 }
-
-void tab_search::TabSearch::connectSignals() {
-
-	#if QT_VERSION >= QT_VERSION_CHECK(5, 14, 0)
-	std::shared_ptr<tab::Tab> currentTab = this->getTab();
-	std::shared_ptr<web_engine_page::WebEnginePage> currentTabPage = currentTab->getPage();
-	connect(currentTabPage.get(), &web_engine_page::WebEnginePage::findTextFinished, this, &tab_search::TabSearch::postProcessSearch, Qt::UniqueConnection);
-	#endif
-
-}
-
-#if QT_VERSION >= QT_VERSION_CHECK(5, 14, 0)
-void tab_search::TabSearch::postProcessSearch(const QWebEngineFindTextResult & result) {
-	const int & activeMatch = result.activeMatch();
-	const int & numberOfMatches = result.numberOfMatches();
-
-	QINFO_PRINT(global_enums::qinfo_level_e::ZERO, tabSearchFind,  "Match " << activeMatch << " out of " << numberOfMatches);
-}
-#endif
 
 void tab_search::TabSearch::find(const find_settings::FindSettings & newSettings, std::function<void(bool)> cb) {
 

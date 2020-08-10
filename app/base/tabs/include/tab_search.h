@@ -16,9 +16,6 @@
 
 #include <QtCore/QString>
 #include <QtWebEngineWidgets/QWebEnginePage>
-#if QT_VERSION >= QT_VERSION_CHECK(5, 14, 0)
-#include <QtWebEngineCore/QWebEngineFindTextResult>
-#endif
 
 #include "global_enums.h"
 #include "tab_component_widget.h"
@@ -45,8 +42,6 @@ namespace tab_search {
 	 */
 	class TabSearch : public tab_component_widget::TabComponentWidget<find_settings::FindSettings> {
 		friend class tab::Tab;
-
-		Q_OBJECT
 
 		public:
 			/**
@@ -98,13 +93,6 @@ namespace tab_search {
 
 		private:
 			/**
-			 * @brief Function: void connectSignals()
-			 *
-			 * This function connects signals and slots within the tab search
-			 */
-			void connectSignals();
-
-			/**
 			 * @brief Function: virtual void search() final
 			 *
 			 * This function searches text in a webpage
@@ -136,19 +124,6 @@ namespace tab_search {
 			 */
 			DISABLE_COPY_MOVE(TabSearch)
 
-		private slots:
-			//#if QT_VERSION >= QT_VERSION_CHECK(5, 14, 0)
-			// Dirty workaround for bug QTBUG-57121
-			#if QT_VERSION >= 0x050e00
-			/**
-			 * @brief Function: void postProcessSearch(const QWebEngineFindTextResult & result)
-			 *
-			 * \param result: result of search
-			 *
-			 * This function is the slot that receives the result of the text search
-			 */
-			void postProcessSearch(const QWebEngineFindTextResult & result);
-			#endif
 	};
 }
 /** @} */ // End of TabSearchGroup group

@@ -37,6 +37,7 @@ int main (int argc, char* argv[]) {
 
 		QINFO_PRINT(global_enums::qinfo_level_e::ZERO, ,  "Starting browser");
 		QINFO_PRINT(global_enums::qinfo_level_e::ZERO, ,  "Built on " << __DATE__ << " at " << __TIME__);
+		QINFO_PRINT(global_enums::qinfo_level_e::ZERO, ,  "QT version " << QT_VERSION_STR);
 
 		graphics::init_graphics(argc, argv);
 	} catch (const browser_exception::BrowserException & bexc) {

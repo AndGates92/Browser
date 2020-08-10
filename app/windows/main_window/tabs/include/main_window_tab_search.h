@@ -13,6 +13,9 @@
 #include <QtCore/QtDebug>
 
 #include <QtCore/QLoggingCategory>
+#if QT_VERSION >= QT_VERSION_CHECK(5, 14, 0)
+#include <QtWebEngineCore/QWebEngineFindTextResult>
+#endif
 
 #include "tab_search.h"
 #include "main_window_web_engine_profile.h"
@@ -34,11 +37,22 @@ namespace main_window_tab {
 namespace main_window_tab_search {
 
 	/**
+	 * @brief search data changed
+	 *
+	 */
+	typedef struct search_data_list {
+		const int activeMatch;       /**< active match */
+		const int numberOfMatches;   /**< total number of matches */
+	} search_data_s;
+
+	/**
 	 * @brief MainWindowTabSearch class
 	 *
 	 */
 	class MainWindowTabSearch final : public tab_search::TabSearch {
 		friend class main_window_tab::MainWindowTab;
+
+		Q_OBJECT
 
 		public:
 			/**
@@ -58,9 +72,26 @@ namespace main_window_tab_search {
 			 */
 			virtual ~MainWindowTabSearch();
 
+		signals:
+
 		protected:
 
 		private:
+			/**
+			 * @brief Function: void connectSignals()
+			 *
+			 * This function connects signals and slots within the tab search
+			 */
+			void connectSignals();
+
+			/**
+			 * @brief Function: std::shared_ptr<main_window_tab::MainWindowTab> getTab() const
+			 *
+			 * \return tab the scroll manager belongs to
+			 *
+			 * This function returns the tab the scroll manager belongs to
+			 */
+			std::shared_ptr<main_window_tab::MainWindowTab> getTab() const;
 
 			// Move and copy constructor
 			/**
@@ -69,6 +100,19 @@ namespace main_window_tab_search {
 			 */
 			DISABLE_COPY_MOVE(MainWindowTabSearch)
 
+		private slots:
+			//#if QT_VERSION >= QT_VERSION_CHECK(5, 14, 0)
+			// Dirty workaround for bug QTBUG-57121
+			#if QT_VERSION >= 0x050e00
+			/**
+			 * @brief Function: void postProcessSearch(const QWebEngineFindTextResult & result)
+			 *
+			 * \param result: result of search
+			 *
+			 * This function is the slot that receives the result of the text search
+			 */
+			void postProcessSearch(const QWebEngineFindTextResult & result);
+			#endif // QT_VERSION
 	};
 }
 /** @} */ // End of MainWindowTabSearchGroup group
