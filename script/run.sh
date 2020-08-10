@@ -123,7 +123,7 @@ if ! [ -z "${qtbasedir}" ]; then
 	fi
 fi
 
-if [ ! [ -z "${QTBASEDIR}" ] ] && [ -d ${QTBASEDIR} ]; then
+if ! [ -z "${QTBASEDIR}" ] && [ -d ${QTBASEDIR} ]; then
 	if [ -d ${QTBASEDIR}/lib ]; then
 		export QTLIBDIR=${QTBASEDIR}/lib
 	fi
