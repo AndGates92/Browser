@@ -30,10 +30,6 @@
 
 Q_DECLARE_LOGGING_CATEGORY(tabScrollManagerOverall)
 
-namespace tab {
-	class Tab;
-}
-
 namespace tab_bar {
 	class TabBar;
 }
@@ -161,13 +157,6 @@ namespace tab_scroll_manager {
 			 */
 			void updateVerticalScrollPercentage();
 
-			/**
-			 * @brief Function: virtual void popRequestQueue() override
-			 *
-			 * This function empties the queue of scroll requests
-			 */
-			virtual void popRequestQueue() override;
-
 		protected slots:
 			/**
 			 * @brief Function: void updateContentsSize(const QSizeF & value)
@@ -208,22 +197,13 @@ namespace tab_scroll_manager {
 			std::shared_ptr<tab_bar::TabBar> bar;
 
 			/**
-			 * @brief Function: virtual void pushRequestQueue(const tab_shared_types::direction_e & entry) override
-			 *
-			 * \param entry: direction of scrolling
-			 *
-			 * This function pushes a new entry to the queue
-			 */
-			virtual void pushRequestQueue(const tab_shared_types::direction_e & entry) override;
-
-			/**
-			 * @brief Function: void scroll(const tab_shared_types::direction_e direction)
+			 * @brief Function: vortual void execute(const tab_shared_types::direction_e & direction) override final
 			 *
 			 * \param direction: direction of scrolling
 			 *
 			 * This function scroll the tab in the direction provided as argument
 			 */
-			void scroll(const tab_shared_types::direction_e direction);
+			virtual void execute(const tab_shared_types::direction_e & direction) override final;
 
 			/**
 			 * @brief Function: void checkScrollValue(const int & scroll, const QString direction) const

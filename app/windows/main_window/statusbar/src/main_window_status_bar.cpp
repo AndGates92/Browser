@@ -79,7 +79,7 @@ namespace main_window_status_bar {
 
 }
 
-main_window_status_bar::MainWindowStatusBar::MainWindowStatusBar(QWidget * parent, Qt::WindowFlags flags) : QWidget(parent, flags), userInput(Q_NULLPTR), contentPath(Q_NULLPTR), scroll(Q_NULLPTR), info(Q_NULLPTR), loadBar(Q_NULLPTR) {
+main_window_status_bar::MainWindowStatusBar::MainWindowStatusBar(QWidget * parent, Qt::WindowFlags flags) : QWidget(parent, flags), userInput(Q_NULLPTR), contentPath(Q_NULLPTR), scroll(Q_NULLPTR), info(Q_NULLPTR), searchResult(Q_NULLPTR), loadBar(Q_NULLPTR) {
 
 	QINFO_PRINT(global_enums::qinfo_level_e::ZERO, mainWindowStatusBarOverall,  "Main window status bar constructor");
 
@@ -87,6 +87,7 @@ main_window_status_bar::MainWindowStatusBar::MainWindowStatusBar(QWidget * paren
 	this->contentPath = std::move(this->newWindowLabel());
 	this->scroll= std::move(this->newWindowLabel());
 	this->info = std::move(this->newWindowLabel());
+	this->searchResult = std::move(this->newWindowLabel());
 	this->loadBar = std::move(this->newProgressBar());
 
 	this->setSizePolicy(QSizePolicy::Preferred, QSizePolicy::Fixed);
@@ -111,6 +112,11 @@ main_window_status_bar::MainWindowStatusBar::MainWindowStatusBar(QWidget * paren
 	// scroll
 	this->scroll->setAlignment(Qt::AlignRight | Qt::AlignBottom);
 	this->scroll->setSizePolicy(QSizePolicy::Fixed, QSizePolicy::Fixed);
+
+	// search result
+	this->showSearchResult(false);
+	this->searchResult->setAlignment(Qt::AlignRight | Qt::AlignBottom);
+	this->searchResult->setSizePolicy(QSizePolicy::Fixed, QSizePolicy::Fixed);
 
 	// loadBar
 	this->loadBar->setSizePolicy(QSizePolicy::Fixed, QSizePolicy::Fixed);
@@ -186,9 +192,9 @@ std::unique_ptr<progress_bar::ProgressBar> main_window_status_bar::MainWindowSta
 void main_window_status_bar::MainWindowStatusBar::fillStatusBar() {
 
 	// Layout
-	// ------------------------------------------------------------------
-	// | <user text> |      <content>     |   <info>   | <progress bar> |
-	// ------------------------------------------------------------------
+	// ------------------------------------------------------------------------------------
+	// | <user text> |      <content>     |   <info>   | <progress bar> | <search result> |
+	// ------------------------------------------------------------------------------------
 
 	QHBoxLayout * layout = new QHBoxLayout(this);
 
@@ -206,6 +212,9 @@ void main_window_status_bar::MainWindowStatusBar::fillStatusBar() {
 
 	// load bar
 	layout->addWidget(this->loadBar.get());
+
+	// search result
+	layout->addWidget(this->searchResult.get());
 
 	layout->setSpacing(main_window_status_bar::horizontalWidgetSpacing);
 	layout->setContentsMargins(main_window_status_bar::leftMargin, main_window_status_bar::topMargin, main_window_status_bar::rightMargin, main_window_status_bar::bottomMargin);
@@ -255,4 +264,17 @@ void main_window_status_bar::MainWindowStatusBar::setUserInputText(const QString
 
 void main_window_status_bar::MainWindowStatusBar::setContentPathText(const QString & text) {
 	this->contentPath->setText(text);
+}
+
+void main_window_status_bar::MainWindowStatusBar::setSearchResultText(const QString & text) {
+	this->searchResult->setText(text);
+}
+
+void main_window_status_bar::MainWindowStatusBar::showSearchResult(const bool showWidget) {
+	const bool isTextEmpty = this->searchResult->text().isEmpty();
+	if ((showWidget == true) && (isTextEmpty == false)) {
+		this->searchResult->show();
+	} else {
+		this->searchResult->hide();
+	}
 }

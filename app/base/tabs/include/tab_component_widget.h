@@ -9,7 +9,7 @@
 */
 
 #include <memory>
-#include <queue>
+#include <list>
 
 // Qt libraries
 // Required by qInfo
@@ -24,6 +24,7 @@
 #include "function_macros.h"
 #include "tab_shared_types.h"
 #include "constructor_macros.h"
+#include "tab.h"
 
 /** @defgroup TabComponentWidgetGroup Tab Component Widget Doxygen Group
  *  Tab Component Widget functions and classes
@@ -63,21 +64,15 @@ namespace tab_component_widget {
 			virtual ~TabComponentWidget();
 
 		protected:
-			/**
-			 * @brief Function: virtual void popRequestQueue()
-			 *
-			 * This function empties the queue of scroll requests
-			 */
-			virtual void popRequestQueue() = 0;
 
 			/**
-			 * @brief Function: virtual void pushRequestQueue(const type & entry)
+			 * @brief Function: virtual void pushRequestQueue(const type & entry) final
 			 *
 			 * \param entry: direction of scrolling
 			 *
 			 * This function pushes a new entry to the queue
 			 */
-			virtual void pushRequestQueue(const type & entry) = 0;
+			virtual void pushRequestQueue(const type & entry) final;
 
 			/**
 			 * @brief Function: virtual bool canProcessRequests() const
@@ -87,6 +82,22 @@ namespace tab_component_widget {
 			 * This function check if requests can be processed
 			 */
 			virtual bool canProcessRequests() const = 0;
+
+			/**
+			 * @brief Function: virtual void execute(const type & element)
+			 *
+			 * \param element: element ot execute action on.
+			 *
+			 * This function execute the action of the component
+			 */
+			virtual void execute(const type & newSettings) = 0;
+
+			/**
+			 * @brief Function: virtual void emptyRequestQueue() final
+			 *
+			 * This function empties the queue of scroll requests
+			 */
+			virtual void emptyRequestQueue() final;
 
 			/**
 			 * @brief Function: void setTab(std::weak_ptr<QWidget> newTab)
@@ -120,7 +131,7 @@ namespace tab_component_widget {
 			 * @brief queue of outstanding scroll requests
 			 *
 			 */
-			std::queue<type> requestQueue;
+			std::list<type> requestQueue;
 
 		private:
 			/**
@@ -170,6 +181,27 @@ void tab_component_widget::TabComponentWidget<type>::setTab(std::weak_ptr<QWidge
 template<typename type>
 void tab_component_widget::TabComponentWidget<type>::setTab(std::weak_ptr<tab::Tab> value) {
 	this->browserTab = value;
+}
+
+template<typename type>
+void tab_component_widget::TabComponentWidget<type>::pushRequestQueue(const type & entry) {
+	this->requestQueue.push_back(entry);
+}
+
+template<typename type>
+void tab_component_widget::TabComponentWidget<type>::emptyRequestQueue() {
+	const std::shared_ptr<tab::Tab> currentTab = this->getTab();
+	const tab_shared_types::load_status_e & loadManagerStatus = currentTab->getLoadStatus();
+
+	QEXCEPTION_ACTION_COND((this->canProcessRequests() == false), throw,  "Function " << __func__ << " cannot be called when load manager is in state " << loadManagerStatus << ". It can only be called if a page is not loading");
+
+	for (auto & element : this->requestQueue) {
+		if ((this->requestQueue.empty() == false) && (this->canProcessRequests() == true)) {
+			this->execute(element);
+		}
+	}
+
+	this->requestQueue.clear();
 }
 
 template<typename type>

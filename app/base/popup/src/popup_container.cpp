@@ -8,9 +8,9 @@
 
 // Qt libraries
 #include <QtCore/QtGlobal>
-#include <QtWidgets/QStackedLayout>
 
 #include "popup_container.h"
+#include "popup_container_layout.h"
 #include "exception_macros.h"
 #include "logging_macros.h"
 #include "global_enums.h"
@@ -44,7 +44,7 @@ void popup_container::PopupContainer::popupLayout() {
 
 	// Create layout if not already defined
 	if (this->layout() == Q_NULLPTR) {
-		QStackedLayout * containerLayout = new QStackedLayout(this);
+		popup_container_layout::PopupContainerLayout * containerLayout = new popup_container_layout::PopupContainerLayout(this);
 		containerLayout->setSizeConstraint(QLayout::SetFixedSize);
 		containerLayout->setStackingMode(QStackedLayout::StackOne);
 		containerLayout->setSpacing(popup_container::horizontalWidgetSpacing);
@@ -53,7 +53,7 @@ void popup_container::PopupContainer::popupLayout() {
 	}
 
 	try {
-		QStackedLayout * containerLayout = dynamic_cast<QStackedLayout *>(this->layout());
+		popup_container_layout::PopupContainerLayout * containerLayout = dynamic_cast<popup_container_layout::PopupContainerLayout *>(this->layout());
 		const int layoutSize = containerLayout->count();
 		for (int idx = 0; idx < layoutSize; idx++) {
 			QWidget * w(containerLayout->widget(idx));
@@ -103,7 +103,7 @@ bool popup_container::PopupContainer::addWidget(const unsigned int & index, std:
 
 void popup_container::PopupContainer::addWidgetToLayout(const unsigned int & index, std::shared_ptr<popup_base::PopupBase> widget) {
 	try {
-		QStackedLayout * containerLayout = dynamic_cast<QStackedLayout *>(this->layout());
+		popup_container_layout::PopupContainerLayout * containerLayout = dynamic_cast<popup_container_layout::PopupContainerLayout *>(this->layout());
 		containerLayout->insertWidget(index, widget.get());
 	} catch (const std::bad_cast & badCastE) {
 		QEXCEPTION_ACTION(throw, badCastE.what());
@@ -210,16 +210,17 @@ bool popup_container::PopupContainer::chooseWidgetToShow(const unsigned int & in
 	std::map<unsigned int, std::shared_ptr<popup_base::PopupBase>>::iterator it = this->popupWidgets.find(index);
 	bool found = (it != this->popupWidgets.end());
 
-	// Forward size policy of widget to contqiner
-	this->setSizePolicy(it->second->sizePolicy());
-
 	if (found == true) {
+		// Forward size policy of widget to container
+		this->setSizePolicy(it->second->sizePolicy());
+
 		// Change visible attribute only if widget is found
 		this->setVisible(true);
-		emit this->updateGeometryRequest(this->shared_from_this());
+
 		try {
-			QStackedLayout * containerLayout = dynamic_cast<QStackedLayout *>(this->layout());
+			popup_container_layout::PopupContainerLayout * containerLayout = dynamic_cast<popup_container_layout::PopupContainerLayout *>(this->layout());
 			containerLayout->setCurrentIndex(index);
+			emit this->updateGeometryRequest(this->shared_from_this());
 		} catch (const std::bad_cast & badCastE) {
 			QEXCEPTION_ACTION(throw, badCastE.what());
 		}
@@ -260,7 +261,7 @@ std::shared_ptr<popup_base::PopupBase> popup_container::PopupContainer::getWidge
 
 void popup_container::PopupContainer::deleteWidgetFromLayout(std::shared_ptr<popup_base::PopupBase> widget) {
 	try {
-		QStackedLayout * containerLayout = dynamic_cast<QStackedLayout *>(this->layout());
+		popup_container_layout::PopupContainerLayout * containerLayout = dynamic_cast<popup_container_layout::PopupContainerLayout *>(this->layout());
 		containerLayout->removeWidget(widget.get());
 	} catch (const std::bad_cast & badCastE) {
 		QEXCEPTION_ACTION(throw, badCastE.what());
@@ -277,7 +278,7 @@ std::map<unsigned int, std::shared_ptr<popup_base::PopupBase>>::size_type popup_
 
 bool popup_container::PopupContainer::isCentered() const {
 	try {
-		QStackedLayout * containerLayout = dynamic_cast<QStackedLayout *>(this->layout());
+		popup_container_layout::PopupContainerLayout * containerLayout = dynamic_cast<popup_container_layout::PopupContainerLayout *>(this->layout());
 		const int idx = containerLayout->currentIndex();
 		std::shared_ptr<popup_base::PopupBase> widget = this->getWidget(idx);
 		return widget->isCentered();
@@ -307,7 +308,7 @@ int popup_container::PopupContainer::getPadding() const {
 
 std::shared_ptr<popup_base::PopupBase> popup_container::PopupContainer::getCurrentWidget() const {
 	try {
-		QStackedLayout * containerLayout = dynamic_cast<QStackedLayout *>(this->layout());
+		popup_container_layout::PopupContainerLayout * containerLayout = dynamic_cast<popup_container_layout::PopupContainerLayout *>(this->layout());
 		const int idx = containerLayout->currentIndex();
 		std::shared_ptr<popup_base::PopupBase> widget = this->getWidget(idx);
 		return widget;
@@ -319,4 +320,16 @@ std::shared_ptr<popup_base::PopupBase> popup_container::PopupContainer::getCurre
 
 const std::map<unsigned int, std::shared_ptr<popup_base::PopupBase>> popup_container::PopupContainer::getWidgetMap() const {
 	return this->popupWidgets;
+}
+
+QSize popup_container::PopupContainer::sizeHint() const {
+
+	std::shared_ptr<popup_base::PopupBase> widget = this->getCurrentWidget();
+
+	QSize hint(0,0);
+	if (widget != Q_NULLPTR) {
+		hint = widget->sizeHint();
+	}
+
+	return hint;
 }

@@ -89,6 +89,12 @@ void main_window_tab_widget::MainWindowTabWidget::disconnectTab(const int & inde
 			if (this->tabTitleConnection) {
 				disconnect(this->tabTitleConnection);
 			}
+			if (this->tabSearchDataConnection) {
+				disconnect(this->tabSearchDataConnection);
+			}
+			if (this->tabFindTextConnection) {
+				disconnect(this->tabFindTextConnection);
+			}
 
 			emit this->tabNearlyDisconnected(index);
 		} catch (const std::bad_cast & badCastE) {
@@ -106,6 +112,8 @@ void main_window_tab_widget::MainWindowTabWidget::connectTab(const int & index) 
 		this->tabSourceConnection = connect(tab.get(), &main_window_tab::MainWindowTab::sourceChanged, this, &main_window_tab_widget::MainWindowTabWidget::processTabSourceChanged);
 		this->tabUrlConnection = connect(tab.get(), &main_window_tab::MainWindowTab::urlChanged, this, &main_window_tab_widget::MainWindowTabWidget::processTabUrlChanged);
 		this->tabTitleConnection = connect(tab.get(), &main_window_tab::MainWindowTab::titleChanged, this, &main_window_tab_widget::MainWindowTabWidget::processTabTitleChanged);
+		this->tabSearchDataConnection = connect(tab.get(), &main_window_tab::MainWindowTab::searchResultChanged, this, &main_window_tab_widget::MainWindowTabWidget::processSearchResultData);
+		this->tabFindTextConnection = connect(tab.get(), &main_window_tab::MainWindowTab::findTextFinished, this, &main_window_tab_widget::MainWindowTabWidget::processFindTextFinished);
 
 		// Move focus to the newly connected tab
 		tab->setFocus();
@@ -352,7 +360,7 @@ void main_window_tab_widget::MainWindowTabWidget::processTabUrlChanged(const QUr
 	// Propagate URL only if page is of type WEB_CONTENT - if no URL is set, this function is called with about::black
 	if ((type == main_window_shared_types::page_type_e::WEB_CONTENT) && (url.isValid())) {
 		const QString urlStr = url.toDisplayString(QUrl::FullyDecoded);
-		emit tabUrlChanged(type, urlStr);
+		emit this->tabUrlChanged(type, urlStr);
 	}
 }
 
@@ -364,7 +372,15 @@ void main_window_tab_widget::MainWindowTabWidget::processTabSourceChanged(const 
 	const int idx = this->currentIndex();
 	const main_window_shared_types::page_type_e type = this->getPageType(idx);
 
-	emit tabSourceChanged(type, source);
+	emit this->tabSourceChanged(type, source);
+}
+
+void main_window_tab_widget::MainWindowTabWidget::processSearchResultData(const main_window_tab_search::search_data_s & data) const {
+	emit this->searchResultChanged(data);
+}
+
+void main_window_tab_widget::MainWindowTabWidget::processFindTextFinished(bool found) {
+	emit this->findTextFinished(found);
 }
 
 void main_window_tab_widget::MainWindowTabWidget::reloadTabContent(const int & index) {

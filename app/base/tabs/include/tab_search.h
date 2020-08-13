@@ -75,21 +75,20 @@ namespace tab_search {
 			std::function<void(bool)> callback;
 
 			/**
-			 * @brief Function: virtual void find(const find_settings::FindSettings & newSettings, std::function<void(bool)> cb = std::function<void(bool)>()) final
+			 * @brief Function: virtual void execute(const find_settings::FindSettings & newSettings) override final
 			 *
 			 * \param newSettings: new settings of search.
-			 * \param cb: callback to call
 			 *
 			 * This function searches text in a webpage
 			 */
-			virtual void find(const find_settings::FindSettings & newSettings, std::function<void(bool)> cb = std::function<void(bool)>()) final;
+			virtual void execute(const find_settings::FindSettings & newSettings) override final;
 
 			/**
-			 * @brief Function: virtual void popRequestQueue() override
+			 * @brief Function: virtual void setCallback()
 			 *
-			 * This function empties the queue of scroll requests
+			 * This function sets the callback to be run after the search
 			 */
-			virtual void popRequestQueue() override;
+			virtual void setCallback();
 
 		private:
 			/**
@@ -98,15 +97,6 @@ namespace tab_search {
 			 * This function searches text in a webpage
 			 */
 			virtual void search() final;
-
-			/**
-			 * @brief Function: virtual void pushRequestQueue(const find_settings::FindSettings & newSettings) override
-			 *
-			 * \param settings: settings of the search
-			 *
-			 * This function pushes a new entry to the queue
-			 */
-			virtual void pushRequestQueue(const find_settings::FindSettings & newSettings) override;
 
 			/**
 			 * @brief Function: virtual void canProcessRequests() const override

@@ -265,6 +265,8 @@ void open_popup::OpenPopup::cancel() {
 }
 
 void open_popup::OpenPopup::close() {
+
+	// Make popup container invisible
 	QWidget * parent(this->parentWidget());
 	if (parent == Q_NULLPTR) {
 		QWidget::setVisible(false);

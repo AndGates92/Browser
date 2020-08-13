@@ -52,6 +52,24 @@ namespace main_window_status_bar {
 			 */
 			virtual ~MainWindowStatusBar();
 
+			/**
+			 * Function: void showSearchResult(const bool showWidget)
+			 *
+			 * \param showWidget: boolean indicating whether to show the search result or not
+			 *
+			 * This function shows or hides the search result label
+			 */
+			void showSearchResult(const bool showWidget);
+
+			/**
+			 * Function: void setContentPathText(const QString & text)
+			 *
+			 * \param text: text to set the label to
+			 *
+			 * This function sets the text in the search result label
+			 */
+			void setSearchResultText(const QString & text);
+
 		public slots:
 			/**
 			 * Function: void setProgressValue(const int & value)
@@ -126,6 +144,12 @@ namespace main_window_status_bar {
 			 *
 			 */
 			std::unique_ptr<elided_label::ElidedLabel> info;
+
+			/**
+			 * @brief search result
+			 *
+			 */
+			std::unique_ptr<elided_label::ElidedLabel> searchResult;
 
 			/**
 			 * @brief load bar

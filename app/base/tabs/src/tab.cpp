@@ -13,6 +13,8 @@
 #include "function_macros.h"
 #include "logging_macros.h"
 #include "tab.h"
+#include "tab_search.h"
+#include "tab_scroll_manager.h"
 
 // Categories
 Q_LOGGING_CATEGORY(tabOverall, "tab.overall", MSG_TYPE_LEVEL)
@@ -104,7 +106,7 @@ void tab::Tab::resize(const QSize size) {
 }
 
 void tab::Tab::find(const find_settings::FindSettings & settings) const {
-	this->search->find(settings);
+	this->search->execute(settings);
 }
 
 void tab::Tab::historyNext() const {
@@ -116,19 +118,19 @@ void tab::Tab::historyPrev() const {
 }
 
 void tab::Tab::scrollUp() const {
-	this->scrollManager->scroll(tab_shared_types::direction_e::UP);
+	this->scrollManager->execute(tab_shared_types::direction_e::UP);
 }
 
 void tab::Tab::scrollDown() const {
-	this->scrollManager->scroll(tab_shared_types::direction_e::DOWN);
+	this->scrollManager->execute(tab_shared_types::direction_e::DOWN);
 }
 
 void tab::Tab::scrollLeft() const {
-	this->scrollManager->scroll(tab_shared_types::direction_e::LEFT);
+	this->scrollManager->execute(tab_shared_types::direction_e::LEFT);
 }
 
 void tab::Tab::scrollRight() const {
-	this->scrollManager->scroll(tab_shared_types::direction_e::RIGHT);
+	this->scrollManager->execute(tab_shared_types::direction_e::RIGHT);
 }
 
 int tab::Tab::getLoadProgress() const {

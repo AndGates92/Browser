@@ -11,8 +11,9 @@
 #include <QtGui/QResizeEvent>
 #include <QtGui/QKeyEvent>
 
-#include "tab_widget.h"
+#include "function_macros.h"
 #include "exception_macros.h"
+#include "tab_widget.h"
 
 // Categories
 Q_LOGGING_CATEGORY(tabWidgetOverall, "tabWidget.overall", MSG_TYPE_LEVEL)

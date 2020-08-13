@@ -95,8 +95,16 @@ void main_window_tab::MainWindowTab::connectSignals() {
 	connect(page.get(), &main_window_web_engine_page::MainWindowWebEnginePage::scrollPositionChanged, scrollManager.get(), &main_window_tab_scroll_manager::MainWindowTabScrollManager::updateScrollPosition);
 	connect(scrollManager.get(), &main_window_tab_scroll_manager::MainWindowTabScrollManager::scrollRequest, page.get(), &main_window_web_engine_page::MainWindowWebEnginePage::applyScrollRequest);
 
-	connect(page.get(), &main_window_web_engine_page::MainWindowWebEnginePage::loadFinished, this, &main_window_tab::MainWindowTab::postprocessLoadFinished);
+	const std::shared_ptr<main_window_tab_search::MainWindowTabSearch> searchManager = this->getSearch();
+	connect(searchManager.get(), &main_window_tab_search::MainWindowTabSearch::searchResultChanged, [this] (const main_window_tab_search::search_data_s & data) {
+		emit this->searchResultChanged(data);
+	});
 
+	connect(searchManager.get(), &main_window_tab_search::MainWindowTabSearch::findTextFinished, [this] (bool found) {
+		emit this->findTextFinished(found);
+	});
+
+	connect(page.get(), &main_window_web_engine_page::MainWindowWebEnginePage::loadFinished, this, &main_window_tab::MainWindowTab::postprocessLoadFinished);
 
 	connect(page.get(), &main_window_web_engine_page::MainWindowWebEnginePage::sourceChanged,  [this] (const QString & source) {
 		emit this->sourceChanged(source);
@@ -117,10 +125,10 @@ void main_window_tab::MainWindowTab::postprocessLoadFinished(const bool & succes
 	loadManager->endLoading(success);
 
 	std::shared_ptr<main_window_tab_scroll_manager::MainWindowTabScrollManager> scrollManager = this->getScrollManager();
-	scrollManager->popRequestQueue();
+	scrollManager->emptyRequestQueue();
 
 	std::shared_ptr<main_window_tab_search::MainWindowTabSearch> tabSearch = this->getSearch();
-	tabSearch->popRequestQueue();
+	tabSearch->emptyRequestQueue();
 }
 
 std::shared_ptr<main_window_web_engine_page::MainWindowWebEnginePage> main_window_tab::MainWindowTab::getPage() const {

@@ -74,7 +74,7 @@ namespace main_window_ctrl_base {
 			 * This function handles event coming from the keyboard
 			 * Re-implement key released event
 			 */
-			virtual void keyReleaseEvent(QKeyEvent * event) = 0;
+			virtual void keyReleaseEvent(QKeyEvent * event);
 
 		signals:
 			/**
@@ -122,6 +122,16 @@ namespace main_window_ctrl_base {
 			 * This function connects extra signals and slots within main window controller a part from those listed in the JSON file
 			 */
 			virtual void connectExtraSignals() = 0;
+
+			/**
+			 * @brief Function: virtual void actionOnReleasedKey(const main_window_shared_types::state_e & windowState, QKeyEvent * event)
+			 *
+			 * \param windowState: state the window is into.
+			 * \param event: key event.
+			 *
+			 * This function is abstract and it executes an action when a key is released
+			 */
+			virtual void actionOnReleasedKey(const main_window_shared_types::state_e & windowState, QKeyEvent * event) = 0;
 
 			/**
 			 * @brief Function: virtual void executeAction(const main_window_shared_types::state_e & windowState)

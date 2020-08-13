@@ -77,16 +77,6 @@ namespace main_window_ctrl_tab {
 			 */
 			void processTabIndex(const QString & userInputStr);
 
-			/**
-			 * @brief Function: void keyReleaseEvent(QKeyEvent * event) override
-			 *
-			 * \param event: event coming from keyboard
-			 *
-			 * This function handles event coming from the keyboard
-			 * Re-implement key released event
-			 */
-			void keyReleaseEvent(QKeyEvent * event) override;
-
 		public slots:
 
 			/**
@@ -107,8 +97,35 @@ namespace main_window_ctrl_tab {
 			void currentTabSrcChanged(const QString & path);
 
 		protected:
+			/**
+			 * @brief Function: virtual void actionOnReleasedKey(const main_window_shared_types::state_e & windowState, QKeyEvent * event) override
+			 *
+			 * \param windowState: state the window is into.
+			 * \param event: key event.
+			 *
+			 * This function executes an action when a key is released
+			 */
+			virtual void actionOnReleasedKey(const main_window_shared_types::state_e & windowState, QKeyEvent * event) override;
 
 		private slots:
+
+			/**
+			 * @brief Function: void processSearchReturnValue(bool found)
+			 *
+			 * \param found: search result data.
+			 *
+			 * This function is a slot that receives a notification that the search data changed
+			 */
+			void processSearchReturnValue(bool found);
+
+			/**
+			 * @brief Function: void printSearchResult(const main_window_tab_search::search_data_s & data) const
+			 *
+			 * \param data: search result data.
+			 *
+			 * This function is a slot that receives a notification that the search data changed
+			 */
+			void printSearchResult(const main_window_tab_search::search_data_s & data) const;
 
 			/**
 			 * @brief Function: void updateStatusBar(const int & tabIndex)

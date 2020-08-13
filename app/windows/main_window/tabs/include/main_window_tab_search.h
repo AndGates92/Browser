@@ -73,8 +73,31 @@ namespace main_window_tab_search {
 			virtual ~MainWindowTabSearch();
 
 		signals:
+			/**
+			 * @brief Function: void searchResultChanged(const main_window_tab_search::search_data_s & data) const
+			 *
+			 * \param data: search result data.
+			 *
+			 * This function is a signal to notify that the search changed
+			 */
+			void searchResultChanged(const main_window_tab_search::search_data_s & data) const;
+
+			/**
+			 * @brief Function: void findTextFinished(bool found)
+			 *
+			 * \param found: boolean stating whether the text was found or not.
+			 *
+			 * This function is a signal to notify whether a search was successful
+			 */
+			void findTextFinished(bool found);
 
 		protected:
+			/**
+			 * @brief Function: virtual void setCallback() override
+			 *
+			 * This function sets the callback to be run after the search
+			 */
+			virtual void setCallback() override;
 
 		private:
 			/**

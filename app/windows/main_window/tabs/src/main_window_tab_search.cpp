@@ -48,6 +48,19 @@ void main_window_tab_search::MainWindowTabSearch::postProcessSearch(const QWebEn
 	const int & activeMatch = result.activeMatch();
 	const int & numberOfMatches = result.numberOfMatches();
 
-	QINFO_PRINT(global_enums::qinfo_level_e::ZERO, mainWindowTabSearchFind,  "Match " << activeMatch << " out of " << numberOfMatches);
+	const QString text = this->settings.getText();
+	QINFO_PRINT(global_enums::qinfo_level_e::ZERO, mainWindowTabSearchFind,  "Searching text " << text << " in the current tab - Match " << activeMatch << " out of " << numberOfMatches);
+
+	const main_window_tab_search::search_data_s & data { activeMatch, numberOfMatches };
+	emit searchResultChanged(data);
 }
 #endif // QT_VERSION
+
+void main_window_tab_search::MainWindowTabSearch::setCallback() {
+
+	this->callback = [=] (bool found) {
+		QINFO_PRINT(global_enums::qinfo_level_e::ZERO, mainWindowTabSearchFind,  "Searching text in the current tab - Found: " << found);
+		emit this->findTextFinished(found);
+	};
+
+}

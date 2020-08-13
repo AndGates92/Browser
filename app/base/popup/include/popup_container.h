@@ -18,7 +18,7 @@
 #include "popup_base.h"
 
 
-/** @defgroup PopupContainerGroup Main Window Prompt Widget Doxygen Group
+/** @defgroup PopupContainerGroup Popup Container Doxygen Group
  *  Pop up container functions and classes
  *  @{
  */
@@ -65,7 +65,7 @@ namespace popup_container {
 	 * @brief PopupContainer class
 	 *
 	 */
-	class PopupContainer :  public overlayed_widget::OverlayedWidget {
+	class PopupContainer : public overlayed_widget::OverlayedWidget {
 
 		Q_OBJECT
 
@@ -304,7 +304,7 @@ namespace popup_container {
 			 *
 			 * Compute recommendend size of the widget
 			 */
-//			virtual QSize sizeHint() const override;
+			virtual QSize sizeHint() const override;
 
 			// Move and copy constructor
 			/**

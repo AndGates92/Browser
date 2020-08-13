@@ -316,6 +316,24 @@ namespace main_window_tab_widget {
 			 */
 			void tabUrlChanged(const main_window_shared_types::page_type_e & type, const QString & url);
 
+			/**
+			 * @brief Function: void searchResultChanged(const main_window_tab_search::search_data_s & data) const
+			 *
+			 * \param data: search result data.
+			 *
+			 * This function is a signal to notify that the search changed
+			 */
+			void searchResultChanged(const main_window_tab_search::search_data_s & data) const;
+
+			/**
+			 * @brief Function: void findTextFinished(bool found)
+			 *
+			 * \param found: boolean stating whether the text was found or not.
+			 *
+			 * This function is a signal to notify whether a search was successful
+			 */
+			void findTextFinished(bool found);
+
 		protected:
 
 		private:
@@ -337,6 +355,18 @@ namespace main_window_tab_widget {
 			 *
 			 */
 			QMetaObject::Connection tabTitleConnection;
+
+			/**
+			 * @brief title change connection
+			 *
+			 */
+			QMetaObject::Connection tabSearchDataConnection;
+
+			/**
+			 * @brief find text finished connection
+			 *
+			 */
+			QMetaObject::Connection tabFindTextConnection;
 
 			/**
 			 * @brief Function: void disconnectTab(const int & index)
@@ -439,6 +469,24 @@ namespace main_window_tab_widget {
 			 * This function is a slot that receives a notification that the url of a tab has changed
 			 */
 			void processTabUrlChanged(const QUrl & url);
+
+			/**
+			 * @brief Function: void processSearchResultData(const main_window_tab_search::search_data_s & data) const
+			 *
+			 * \param data: search result data.
+			 *
+			 * This function is a slot that receives a notification that the search data changed
+			 */
+			void processSearchResultData(const main_window_tab_search::search_data_s & data) const;
+
+			/**
+			 * @brief Function: void processFindTextFinished(bool found)
+			 *
+			 * \param found: search result data.
+			 *
+			 * This function is a slot that receives a notification that the search data changed
+			 */
+			void processFindTextFinished(bool found);
 
 	};
 

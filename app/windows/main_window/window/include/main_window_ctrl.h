@@ -58,14 +58,15 @@ namespace main_window_ctrl {
 			virtual ~MainWindowCtrl();
 
 			/**
-			 * @brief Function: void keyReleaseEvent(QKeyEvent * event) override
+			 * @brief Function: virtual void actionOnReleasedKey(const main_window_shared_types::state_e & windowState, QKeyEvent * event) override
 			 *
-			 * \param event: event coming from keyboard
+			 * \param windowState: state the window is into.
+			 * \param event: key event.
 			 *
-			 * This function handles event coming from the keyboard
-			 * Re-implement key released event
+			 * This function executes an action when a key is released
 			 */
-			void keyReleaseEvent(QKeyEvent * event) override;
+			virtual void actionOnReleasedKey(const main_window_shared_types::state_e & windowState, QKeyEvent * event) override;
+
 
 		protected:
 

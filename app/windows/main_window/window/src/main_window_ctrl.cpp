@@ -79,34 +79,19 @@ void main_window_ctrl::MainWindowCtrl::connectExtraSignals() {
 
 }
 
-void main_window_ctrl::MainWindowCtrl::keyReleaseEvent(QKeyEvent * event) {
+void main_window_ctrl::MainWindowCtrl::actionOnReleasedKey(const main_window_shared_types::state_e & windowState, QKeyEvent * event) {
 
 	const int releasedKey = event->key();
 	const Qt::KeyboardModifiers keyModifiers = event->modifiers();
 
 	const key_sequence::KeySequence keySeq(releasedKey | keyModifiers);
 
-	const main_window_shared_types::state_e windowState = this->windowCore->getMainWindowState();
-	QString userTypedText = this->windowCore->getUserText();
-
 	if (event->type() == QEvent::KeyRelease) {
 
+		// Retrieve main window controller state
 		QINFO_PRINT(global_enums::qinfo_level_e::ZERO, mainWindowCtrlUserInput,  "State " << windowState << " key " << keySeq.toString());
 
 		switch (releasedKey) {
-			case Qt::Key_Backspace:
-				QINFO_PRINT(global_enums::qinfo_level_e::ZERO, mainWindowCtrlUserInput,  "User typed text " << userTypedText);
-				// Last position of the string
-				if (userTypedText.isEmpty() == false) {
-					// Compute position of the last character in the string
-					const int endString = userTypedText.count() - 1;
-					// Delete last character of the string
-					userTypedText = userTypedText.remove(endString, 1);
-					this->printUserInput(main_window_shared_types::text_action_e::SET, userTypedText);
-				} else if (windowState != main_window_shared_types::state_e::COMMAND) {
-					this->moveToCommandStateFromNonIdleState(windowState, static_cast<Qt::Key>(releasedKey));
-				}
-				break;
 			default:
 				break;
 		}

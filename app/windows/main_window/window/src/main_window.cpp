@@ -348,6 +348,7 @@ void main_window::MainWindow::updateWidgetGeometry(std::shared_ptr<overlayed_wid
 	QRect widgetRect(topLeftCorner, widgetSize);
 	if (widgetRect.isValid() == true) {
 		widget->setGeometry(widgetRect);
+		widget->resize(widgetSizeHint);
 	}
 
 }

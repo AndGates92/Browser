@@ -13,16 +13,14 @@
 #include <QtGui/QKeyEvent>
 
 #include "logging_macros.h"
-#include "tab.h"
 #include "tab_search.h"
-#include "web_engine_view.h"
 #include "exception_macros.h"
 
 // Categories
 Q_LOGGING_CATEGORY(tabSearchOverall, "tabSearch.overall", MSG_TYPE_LEVEL)
 Q_LOGGING_CATEGORY(tabSearchFind, "tabSearch.find", MSG_TYPE_LEVEL)
 
-tab_search::TabSearch::TabSearch(QWidget * parent, std::weak_ptr<tab::Tab> attachedTab): tab_component_widget::TabComponentWidget<find_settings::FindSettings>(parent, attachedTab), settings(QString(), global_enums::offset_type_e::IDLE, false, false) {
+tab_search::TabSearch::TabSearch(QWidget * parent, std::weak_ptr<tab::Tab> attachedTab): tab_component_widget::TabComponentWidget<find_settings::FindSettings>(parent, attachedTab), settings(QString(), global_enums::offset_type_e::IDLE, false, false), callback(nullptr) {
 	QINFO_PRINT(global_enums::qinfo_level_e::ZERO, tabSearchOverall,  "Tab search constructor");
 }
 
@@ -31,10 +29,10 @@ tab_search::TabSearch::~TabSearch() {
 
 }
 
-void tab_search::TabSearch::find(const find_settings::FindSettings & newSettings, std::function<void(bool)> cb) {
+void tab_search::TabSearch::execute(const find_settings::FindSettings & newSettings) {
 
 	this->settings = newSettings;
-	this->callback = cb;
+	this->setCallback();
 
 	this->search();
 }
@@ -79,8 +77,6 @@ void tab_search::TabSearch::search() {
 			QEXCEPTION_ACTION(throw, badCastE.what());
 		}
 
-		this->popRequestQueue();
-
 	} else {
 		this->pushRequestQueue(this->settings);
 	}
@@ -93,21 +89,8 @@ bool tab_search::TabSearch::canProcessRequests() const {
 	return ((loadManagerStatus == tab_shared_types::load_status_e::FINISHED) || (loadManagerStatus == tab_shared_types::load_status_e::ERROR));
 }
 
-void tab_search::TabSearch::pushRequestQueue(const find_settings::FindSettings & newSettings) {
-	this->requestQueue.push(newSettings);
-}
+void tab_search::TabSearch::setCallback() {
 
-void tab_search::TabSearch::popRequestQueue() {
-	const std::shared_ptr<tab::Tab> currentTab = this->getTab();
-	const tab_shared_types::load_status_e & loadManagerStatus = currentTab->getLoadStatus();
+	this->callback = nullptr;
 
-	QEXCEPTION_ACTION_COND((this->canProcessRequests() == false), throw,  "Function " << __func__ << " cannot be called when load manager is in state " << loadManagerStatus << ". It can only be called if a page is not loading");
-
-	if ((this->requestQueue.empty() == false) && (this->canProcessRequests() == true)) {
-		const find_settings::FindSettings & currentSettings = this->requestQueue.front();
-
-		this->find(currentSettings, nullptr);
-
-		this->requestQueue.pop();
-	}
 }

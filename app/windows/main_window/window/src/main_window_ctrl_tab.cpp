@@ -119,6 +119,10 @@ void main_window_ctrl_tab::MainWindowCtrlTab::connectExtraSignals() {
 	// Update info bar
 	connect(tabs.get(), &main_window_tab_widget::MainWindowTabWidget::tabCloseRequested, this, &main_window_ctrl_tab::MainWindowCtrlTab::updateStatusBar);
 
+	// Search text in tab
+	connect(tabs.get(), &main_window_tab_widget::MainWindowTabWidget::searchResultChanged, this, &main_window_ctrl_tab::MainWindowCtrlTab::printSearchResult);
+	connect(tabs.get(), &main_window_tab_widget::MainWindowTabWidget::findTextFinished, this, &main_window_ctrl_tab::MainWindowCtrlTab::processSearchReturnValue);
+
 }
 
 //************************************************************************************
@@ -312,7 +316,6 @@ void main_window_ctrl_tab::MainWindowCtrlTab::executeActionOnOffset(const int & 
 	}
 
 	Q_ASSERT_X(((sign == global_enums::sign_e::MINUS) || (sign == global_enums::sign_e::PLUS)), "sign check to execute movement on offset", "sign input must be either global_enums::sign_e::MINUS or global_enums::sign_e::PLUS");
-	QINFO_PRINT(global_enums::qinfo_level_e::ZERO, mainWindowCtrlTabTabs, "DEBUG offset " << offset << " state " << windowState << " offset type " << offsetType);
 	this->convertToAbsTabIndex(offset, sign);
 }
 
@@ -329,8 +332,6 @@ void main_window_ctrl_tab::MainWindowCtrlTab::executeActionOnTab(const int & ind
 	const int tabCount = this->windowCore->getTabCount();
 
 	const main_window_shared_types::state_e windowState = this->windowCore->getMainWindowState();
-
-	QINFO_PRINT(global_enums::qinfo_level_e::ZERO, mainWindowCtrlTabTabs, "DEBUG Tab " << tabIndex << " doesn't exists. Valid range of tab is the integer number between 1 and " << tabCount);
 
 	// Check that tabIndex is larger than 0 and there is at least a tab opened
 	// By default, if not tabs are opened, the number of tabs is set to 0 and the current index is set to -1 therefore (tabCount > tabIndex) is true
@@ -401,7 +402,7 @@ void main_window_ctrl_tab::MainWindowCtrlTab::processTabIndex(const QString & us
 	}
 }
 
-void main_window_ctrl_tab::MainWindowCtrlTab::keyReleaseEvent(QKeyEvent * event) {
+void main_window_ctrl_tab::MainWindowCtrlTab::actionOnReleasedKey(const main_window_shared_types::state_e & windowState, QKeyEvent * event) {
 
 	const int releasedKey = event->key();
 	const Qt::KeyboardModifiers keyModifiers = event->modifiers();
@@ -410,28 +411,12 @@ void main_window_ctrl_tab::MainWindowCtrlTab::keyReleaseEvent(QKeyEvent * event)
 
 	if (event->type() == QEvent::KeyRelease) {
 
-		const main_window_shared_types::state_e windowState = this->windowCore->getMainWindowState();
-		const QString userTypedText = this->windowCore->getUserText();
-
 		// Retrieve main window controller state
 		QINFO_PRINT(global_enums::qinfo_level_e::ZERO, mainWindowCtrlTabUserInput,  "State " << windowState << " key " << keySeq.toString());
 
 		switch (releasedKey) {
 			case Qt::Key_Escape:
 				this->windowCore->setOffsetType(global_enums::offset_type_e::IDLE);
-				break;
-			case Qt::Key_Backspace:
-				QINFO_PRINT(global_enums::qinfo_level_e::ZERO, mainWindowCtrlTabUserInput,  "User typed text " << userTypedText);
-				// If in state TAB MOVE and the windowCore->userText is empty after deleting the last character, set the move value to IDLE
-				if (userTypedText.isEmpty() == true) {
-					if (windowState != main_window_shared_types::state_e::COMMAND) {
-						if (windowState == main_window_shared_types::state_e::MOVE_TAB) {
-							this->windowCore->setOffsetType(global_enums::offset_type_e::IDLE);
-							this->printUserInput(main_window_shared_types::text_action_e::CLEAR);
-						}
-						this->moveToCommandStateFromNonIdleState(windowState, static_cast<Qt::Key>(releasedKey));
-					}
-				}
 				break;
 			default:
 				break;
@@ -590,7 +575,6 @@ void main_window_ctrl_tab::MainWindowCtrlTab::convertToAbsTabIndex(const int & o
 		QWARNING_PRINT(mainWindowCtrlTabTabs, "Offset " << offset << " is bigger than the number of tabs " << tabCount << ". Bringing tab index withing the valid range of tab (between 0 and " << maxTabRange);
 	}
 	while (tabIndexDst < 0) {
-		QINFO_PRINT(global_enums::qinfo_level_e::ZERO, mainWindowCtrlTabTabs, "DEBUG Tab " << tabIndexDst << " tab count " << tabCount << " current tab index " << this->windowCore->getCurrentTabIndex());
 		tabIndexDst +=  tabCount;
 	}
 
@@ -625,6 +609,11 @@ void main_window_ctrl_tab::MainWindowCtrlTab::postprocessWindowStateChange(const
 		tab = this->windowCore->tabs->widget(tabIndex);
 		searchText = tab->getSearchText();
 	}
+
+	// Hide search results if not in find state
+	const bool isFindState = ((windowState == main_window_shared_types::state_e::FIND) || (windowState == main_window_shared_types::state_e::FIND_DOWN) || (windowState == main_window_shared_types::state_e::FIND_UP));
+	std::unique_ptr<main_window_status_bar::MainWindowStatusBar> & statusBar = this->windowCore->bottomStatusBar;
+	statusBar->showSearchResult(isFindState);
 
 	// If requesting to go to the idle state, enable shortcuts
 	switch (windowState) {
@@ -738,6 +727,42 @@ void main_window_ctrl_tab::MainWindowCtrlTab::updateStatusBar(const int & tabInd
 	this->updateInfo(tabIndex);
 	this->updateScroll();
 	this->extractContentPath(tabIndex);
+}
+
+void main_window_ctrl_tab::MainWindowCtrlTab::printSearchResult(const main_window_tab_search::search_data_s & data) const {
+	std::unique_ptr<main_window_status_bar::MainWindowStatusBar> & statusBar = this->windowCore->bottomStatusBar;
+	const bool textFound = (data.numberOfMatches > 0);
+	if (textFound == true) {
+		// Integers are to be converted in base 10
+		const int base = 10;
+		QString text = QString();
+		text = QString("search: ") + QString::number(data.activeMatch, base) + QString("/") + QString::number(data.numberOfMatches, base);
+
+		statusBar->setSearchResultText(text);
+	}
+
+	// Show search result label only of text has been found
+	statusBar->showSearchResult(textFound);
+
+}
+
+void main_window_ctrl_tab::MainWindowCtrlTab::processSearchReturnValue(bool found) {
+
+	if (found == false) {
+		std::shared_ptr<main_window_popup_container::MainWindowPopupContainer> container = this->windowCore->popup;
+		bool success = container->showTextNotFoundPopup();
+		std::shared_ptr<label_popup::LabelPopup> labelPopup = container->getTextNotFoundPopup();
+		QString popupText = QString();
+		QString text = this->findSettings.getText();
+		if (text.isEmpty() == true) {
+			text = "<empty string>";
+		}
+		popupText = QString("No match for string ") + text + QString(" in current tab.");
+		labelPopup->setLabelText(popupText);
+
+		QEXCEPTION_ACTION_COND((success == false), throw, "Unable to show TextNotFound popup");
+	}
+
 }
 
 void main_window_ctrl_tab::MainWindowCtrlTab::createContentPathTextFromSource(const main_window_shared_types::page_type_e & type, const QString & source) {

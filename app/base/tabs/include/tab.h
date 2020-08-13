@@ -18,12 +18,11 @@
 
 #include "global_enums.h"
 #include "constructor_macros.h"
+#include "find_settings.h"
 #include "web_engine_view.h"
 #include "web_engine_settings.h"
 #include "web_engine_history.h"
 #include "tab_load_manager.h"
-#include "tab_scroll_manager.h"
-#include "tab_search.h"
 
 /** @defgroup TabGroup Tab Doxygen Group
  *  Tab functions and classes
@@ -33,8 +32,20 @@
 Q_DECLARE_LOGGING_CATEGORY(tabOverall)
 Q_DECLARE_LOGGING_CATEGORY(tabSize)
 
+namespace tab_bar {
+	class TabBar;
+}
+
 namespace tab_widget {
 	class TabWidget;
+}
+
+namespace tab_search {
+	class TabSearch;
+}
+
+namespace tab_scroll_manager {
+	class TabScrollManager;
 }
 
 namespace main_window_tab {
@@ -346,13 +357,13 @@ namespace tab {
 			std::shared_ptr<tab_scroll_manager::TabScrollManager> getScrollManager() const;
 
 			/**
-			 * @brief Function: virtual virtual void find(const find_settings::FindSettings & settings) const
+			 * @brief Function: virtual virtual void find(const find_settings::FindSettings & settings) const final
 			 *
 			 * \param settings: settings of the search.
 			 *
 			 * This function searches text in a webpage
 			 */
-			virtual void find(const find_settings::FindSettings & settings) const;
+			virtual void find(const find_settings::FindSettings & settings) const final;
 
 			/**
 			 * @brief Function: virtual void historyPrev() const

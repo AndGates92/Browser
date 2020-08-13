@@ -12,6 +12,7 @@
 #include <QtWidgets/QWidget>
 
 #include "open_popup.h"
+#include "label_popup.h"
 
 #include "type_print_macros.h"
 #include "smart_ptr_macros.h"
@@ -73,6 +74,24 @@ namespace main_window_popup_container {
 			std::shared_ptr<open_popup::OpenPopup> getOpenFilePopup() const;
 
 			/**
+			 * @brief Function: bool showOpenFilePopup()
+			 *
+			 * \return a boolean value indicating whether the shown widget was successfully changed
+			 *
+			 * This function shows the widget having the open file popup
+			 */
+			bool showTextNotFoundPopup();
+
+			/**
+			 * @brief Function: std::shared_ptr<label_popup::LabelPopup> getTextNotFoundPopup() const
+			 *
+			 * \return a pointer to the text not found popup
+			 *
+			 * This function returns a pointer to the text not found popup
+			 */
+			std::shared_ptr<label_popup::LabelPopup> getTextNotFoundPopup() const;
+
+			/**
 			 * @brief Define methods to get smart pointer from this
 			 *
 			 */
@@ -96,10 +115,68 @@ namespace main_window_popup_container {
 			 */
 			void addOpenPopup();
 
+			/**
+			 * @brief Function: void addTextNotFoundPopup()
+			 *
+			 * This function adds an instance of the text not found popup widget to the widgets map
+			 */
+			void addTextNotFoundPopup();
+
+			/**
+			 * @brief Function: std::shared_ptr<PopupClass> getPopup(const unsigned int index) const
+			 *
+			 * \param index: index of the popup to search
+			 *
+			 * \return a pointer to the text not found popup
+			 *
+			 * This function returns a pointer to the popup at index provided as argument
+			 */
+			template<class PopupClass>
+			std::shared_ptr<PopupClass> getPopup(const unsigned int index) const;
+
+			/**
+			 * @brief Function: bool showPopup(const unsigned int index)
+			 *
+			 * \param index: index of the popup to search
+			 *
+			 * \return whether operation was successful or not
+			 *
+			 * This function try to show widget at index provided as argument
+			 */
+			template<class PopupClass>
+			bool showPopup(const unsigned int index);
+
 	};
 
 }
 
+template<class PopupClass>
+std::shared_ptr<PopupClass> main_window_popup_container::MainWindowPopupContainer::getPopup(const unsigned int index) const {
+	std::shared_ptr<popup_properties::PopupProperties> widget = std::dynamic_pointer_cast<popup_properties::PopupProperties>(this->getWidget(index));
+	QEXCEPTION_ACTION_COND((widget == nullptr), throw, "Unable to find widget " << index);
+	std::shared_ptr<PopupClass> popup = nullptr;
+
+	if (widget != Q_NULLPTR) {
+		try {
+			popup = std::dynamic_pointer_cast<PopupClass>(widget);
+		} catch (const std::bad_cast & badCastE) {
+			QEXCEPTION_ACTION(throw, badCastE.what());
+		}
+	}
+
+	return popup;
+}
+
+template<class PopupClass>
+bool main_window_popup_container::MainWindowPopupContainer::showPopup(const unsigned int index) {
+	bool success = this->chooseWidgetToShow(index);
+
+	if (success == true) {
+		this->getPopup<PopupClass>((unsigned int)index)->activatePopup();
+	}
+
+	return success;
+}
 /** @} */ // End of MainWindowPopupContainerGroup group
 
 #endif // MAIN_WINDOW_POPUP_CONTAINER_H

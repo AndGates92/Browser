@@ -306,6 +306,50 @@ void main_window_ctrl_base::MainWindowCtrlBase::changeWindowState(const main_win
 	}
 }
 
+void main_window_ctrl_base::MainWindowCtrlBase::keyReleaseEvent(QKeyEvent * event) {
+
+	const int releasedKey = event->key();
+	const Qt::KeyboardModifiers keyModifiers = event->modifiers();
+
+	const key_sequence::KeySequence keySeq(releasedKey | keyModifiers);
+
+	if (event->type() == QEvent::KeyRelease) {
+
+		const main_window_shared_types::state_e windowState = this->windowCore->getMainWindowState();
+		QString userTypedText = this->windowCore->getUserText();
+
+		// Retrieve main window controller state
+		QINFO_PRINT(global_enums::qinfo_level_e::ZERO, mainWindowCtrlBaseUserInput,  "State " << windowState << " key " << keySeq.toString());
+
+		switch (releasedKey) {
+			case Qt::Key_Backspace:
+				QINFO_PRINT(global_enums::qinfo_level_e::ZERO, mainWindowCtrlBaseUserInput,  "User typed text " << userTypedText);
+				// If in state TAB MOVE and the windowCore->userText is empty after deleting the last character, set the move value to IDLE
+				if (userTypedText.isEmpty() == true) {
+					if (windowState != main_window_shared_types::state_e::COMMAND) {
+						if (windowState == main_window_shared_types::state_e::MOVE_TAB) {
+							this->windowCore->setOffsetType(global_enums::offset_type_e::IDLE);
+							this->printUserInput(main_window_shared_types::text_action_e::CLEAR);
+						}
+						this->moveToCommandStateFromNonIdleState(windowState, static_cast<Qt::Key>(releasedKey));
+					}
+				} else {
+					// Compute position of the last character in the string
+					const int endString = userTypedText.count() - 1;
+					// Delete last character of the string
+					userTypedText = userTypedText.remove(endString, 1);
+					this->printUserInput(main_window_shared_types::text_action_e::SET, userTypedText);
+				}
+				break;
+			default:
+				this->actionOnReleasedKey(windowState, event);
+				break;
+		}
+	}
+}
+
+
+
 void main_window_ctrl_base::MainWindowCtrlBase::keyPressEvent(QKeyEvent * event) {
 
 	const int pressedKey = event->key();

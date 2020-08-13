@@ -11,7 +11,6 @@
 
 #include "logging_macros.h"
 #include "function_macros.h"
-#include "tab.h"
 #include "tab_scroll_manager.h"
 #include "exception_macros.h"
 
@@ -71,7 +70,7 @@ void tab_scroll_manager::TabScrollManager::updateScrollPosition(const QPointF & 
 	this->updateVerticalScrollPercentage();
 	this->updateHorizontalScrollPercentage();
 
-	this->popRequestQueue();
+	this->emptyRequestQueue();
 }
 
 void tab_scroll_manager::TabScrollManager::updateVerticalScrollPercentage() {
@@ -121,7 +120,7 @@ void tab_scroll_manager::TabScrollManager::checkScrollValue(const int & scroll, 
 	QEXCEPTION_ACTION_COND(((scroll < tab_scroll_manager::minScrollPercentage) || (scroll > tab_scroll_manager::maxScrollPercentage)), throw,  "Invalid value of " << direction << " scroll: " << scroll << ". Valid range is between " << tab_scroll_manager::minScrollPercentage << " and " << tab_scroll_manager::maxScrollPercentage);
 }
 
-void tab_scroll_manager::TabScrollManager::scroll(const tab_shared_types::direction_e direction) {
+void tab_scroll_manager::TabScrollManager::execute(const tab_shared_types::direction_e & direction) {
 
 	if (this->canProcessRequests() == true) {
 		int xAxisFactor = 0;
@@ -155,22 +154,6 @@ void tab_scroll_manager::TabScrollManager::scroll(const tab_shared_types::direct
 		emit this->scrollRequest(xScroll, yScroll);
 	} else {
 		this->pushRequestQueue(direction);
-	}
-}
-
-void tab_scroll_manager::TabScrollManager::pushRequestQueue(const tab_shared_types::direction_e & direction) {
-	this->requestQueue.push(direction);
-}
-
-void tab_scroll_manager::TabScrollManager::popRequestQueue() {
-	const std::shared_ptr<tab::Tab> currentTab = this->getTab();
-	const tab_shared_types::load_status_e & loadManagerStatus = currentTab->getLoadStatus();
-
-	QEXCEPTION_ACTION_COND((this->canProcessRequests() == false), throw,  "Function " << __func__ << " cannot be called when load manager is in state " << loadManagerStatus << ". It can only be called if a page is not loading");
-
-	if ((this->requestQueue.empty() == false) && (this->canProcessRequests() == true)) {
-		this->scroll(this->requestQueue.front());
-		this->requestQueue.pop();
 	}
 }
 
