@@ -69,26 +69,26 @@ void tab_scroll_manager::TabScrollManager::updateScrollPosition(const QPointF & 
 	this->scrollPosition = value;
 	this->updateVerticalScrollPercentage();
 	this->updateHorizontalScrollPercentage();
-
-	this->emptyRequestQueue();
 }
 
 void tab_scroll_manager::TabScrollManager::updateVerticalScrollPercentage() {
-	const qreal & height = this->contentsSize.rheight();
-	// Take out parent widget height and tab bar height from content size as scroll position wil never be able to span this range
-	int tabBarHeight = 0;
-	const QTabBar::Shape & barShape = this->bar->shape();
-	if ((barShape == QTabBar::RoundedNorth) || (barShape == QTabBar::RoundedSouth) || (barShape == QTabBar::TriangularNorth) || (barShape == QTabBar::TriangularSouth)) {
-		tabBarHeight = this->bar->size().height();
+	if (this->canProcessRequests() == true) {
+		const qreal & height = this->contentsSize.rheight();
+		// Take out parent widget height and tab bar height from content size as scroll position will never be able to span this range
+		int tabBarHeight = 0;
+		const QTabBar::Shape & barShape = this->bar->shape();
+		if ((barShape == QTabBar::RoundedNorth) || (barShape == QTabBar::RoundedSouth) || (barShape == QTabBar::TriangularNorth) || (barShape == QTabBar::TriangularSouth)) {
+			tabBarHeight = this->bar->size().height();
+		}
+		const qreal scrollableHeight = height - this->parentWidget()->size().rheight() - tabBarHeight;
+		const qreal & vScroll = this->scrollPosition.ry();
+		const qreal vScrollPercentage = 100.0 * vScroll/scrollableHeight;
+		this->verticalScroll = qRound(vScrollPercentage);
+
+		this->checkScrollValue(this->verticalScroll, "vertical");
+
+		emit this->verticalScrollChanged(this->verticalScroll);
 	}
-	const qreal scrollableHeight = height - this->parentWidget()->size().rheight() - tabBarHeight;
-	const qreal & vScroll = this->scrollPosition.ry();
-	const qreal vScrollPercentage = 100.0 * vScroll/scrollableHeight;
-	this->verticalScroll = qRound(vScrollPercentage);
-
-	this->checkScrollValue(this->verticalScroll, "vertical");
-
-	emit this->verticalScrollChanged(this->verticalScroll);
 }
 
 void tab_scroll_manager::TabScrollManager::updateHorizontalScrollPercentage() {
@@ -161,5 +161,5 @@ bool tab_scroll_manager::TabScrollManager::canProcessRequests() const {
 	const std::shared_ptr<tab::Tab> currentTab = this->getTab();
 	const tab_shared_types::load_status_e & loadManagerStatus = currentTab->getLoadStatus();
 
-	return ((loadManagerStatus == tab_shared_types::load_status_e::FINISHED) || (loadManagerStatus == tab_shared_types::load_status_e::ERROR));
+	return (loadManagerStatus == tab_shared_types::load_status_e::FINISHED);
 }

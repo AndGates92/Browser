@@ -15,6 +15,7 @@
 #include "tab.h"
 #include "tab_search.h"
 #include "tab_scroll_manager.h"
+#include "tab_history.h"
 
 // Categories
 Q_LOGGING_CATEGORY(tabOverall, "tab.overall", MSG_TYPE_LEVEL)
@@ -34,7 +35,7 @@ void tab::Tab::configure(std::shared_ptr<tab_bar::TabBar> tabBar) {
 	std::shared_ptr<tab_search::TabSearch> tabSearch = std::make_shared<tab_search::TabSearch>(this, this->weak_from_this());
 	this->setSearch(tabSearch);
 
-	std::shared_ptr<web_engine_history::WebEngineHistory> tabHistory = std::make_shared<web_engine_history::WebEngineHistory>(this->getView()->history());
+	std::shared_ptr<tab_history::TabHistory> tabHistory = std::make_shared<tab_history::TabHistory>(this, this->weak_from_this(), this->getView()->history());
 	this->setHistory(tabHistory);
 
 	std::shared_ptr<web_engine_settings::WebEngineSettings> tabSettings = std::make_shared<web_engine_settings::WebEngineSettings>(this->getView()->settings());
@@ -68,7 +69,22 @@ BASE_SETTER_GETTER(tab::Tab::setView, tab::Tab::getView, std::shared_ptr<web_eng
 
 BASE_SETTER_GETTER(tab::Tab::setSearch, tab::Tab::getSearch, std::shared_ptr<tab_search::TabSearch>, this->search)
 
-BASE_SETTER_GETTER(tab::Tab::setHistory, tab::Tab::getHistory, std::shared_ptr<web_engine_history::WebEngineHistory>, this->history)
+void tab::Tab::setHistory(std::shared_ptr<tab_history::TabHistory> value) {
+	if (this->history != value) {
+
+		if (this->historyItemChangedConnection) {
+			disconnect(this->historyItemChangedConnection);
+		}
+
+		this->history = value;
+
+		this->historyItemChangedConnection = connect(this->history.get(), &tab_history::TabHistory::historyItemChanged, [this] (const global_enums::element_position_e & position) {
+			emit this->historyItemChanged(position);
+		});
+	}
+}
+
+BASE_GETTER(tab::Tab::getHistory, std::shared_ptr<tab_history::TabHistory>, this->history)
 
 void tab::Tab::setScrollManager(std::shared_ptr<tab_scroll_manager::TabScrollManager> value) {
 	if (this->scrollManager != value) {
@@ -110,11 +126,11 @@ void tab::Tab::find(const find_settings::FindSettings & settings) const {
 }
 
 void tab::Tab::historyNext() const {
-	this->history->goToItem(tab_shared_types::stepping_e::NEXT);
+	this->history->execute(tab_shared_types::stepping_e::NEXT);
 }
 
 void tab::Tab::historyPrev() const {
-	this->history->goToItem(tab_shared_types::stepping_e::PREVIOUS);
+	this->history->execute(tab_shared_types::stepping_e::PREVIOUS);
 }
 
 void tab::Tab::scrollUp() const {

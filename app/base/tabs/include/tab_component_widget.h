@@ -190,11 +190,6 @@ void tab_component_widget::TabComponentWidget<type>::pushRequestQueue(const type
 
 template<typename type>
 void tab_component_widget::TabComponentWidget<type>::emptyRequestQueue() {
-	const std::shared_ptr<tab::Tab> currentTab = this->getTab();
-	const tab_shared_types::load_status_e & loadManagerStatus = currentTab->getLoadStatus();
-
-	QEXCEPTION_ACTION_COND((this->canProcessRequests() == false), throw,  "Function " << __func__ << " cannot be called when load manager is in state " << loadManagerStatus << ". It can only be called if a page is not loading");
-
 	for (auto & element : this->requestQueue) {
 		if ((this->requestQueue.empty() == false) && (this->canProcessRequests() == true)) {
 			this->execute(element);

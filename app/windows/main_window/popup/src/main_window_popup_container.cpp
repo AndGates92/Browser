@@ -26,7 +26,7 @@ namespace main_window_popup_container {
 	 */
 	typedef enum class popup_widget_list {
 		OPEN_FILE,       /**< Open file popup */
-		TEXT_NOT_FOUND   /**< Text Not Found popup */
+		WARNING          /**< Warning popup */
 	} popup_widget_e;
 
 	/**
@@ -44,7 +44,7 @@ main_window_popup_container::MainWindowPopupContainer::MainWindowPopupContainer(
 	QINFO_PRINT(global_enums::qinfo_level_e::ZERO, mainWindowPopupContainerOverall,  "Main window popup container constructor");
 
 	this->addOpenPopup();
-	this->addTextNotFoundPopup();
+	this->addWarningPopup();
 
 	this->connectSignals();
 
@@ -66,8 +66,8 @@ main_window_popup_container::MainWindowPopupContainer::~MainWindowPopupContainer
 	QINFO_PRINT(global_enums::qinfo_level_e::ZERO, mainWindowPopupContainerOverall,  "Main window popup container destructor");
 }
 
-bool main_window_popup_container::MainWindowPopupContainer::showTextNotFoundPopup() {
-	const main_window_popup_container::popup_widget_e index = main_window_popup_container::popup_widget_e::TEXT_NOT_FOUND;
+bool main_window_popup_container::MainWindowPopupContainer::showWarningPopup() {
+	const main_window_popup_container::popup_widget_e index = main_window_popup_container::popup_widget_e::WARNING;
 	return this->showPopup<label_popup::LabelPopup>((unsigned int)index);
 }
 
@@ -76,8 +76,8 @@ bool main_window_popup_container::MainWindowPopupContainer::showOpenFilePopup() 
 	return this->showPopup<open_popup::OpenPopup>((unsigned int)index);
 }
 
-std::shared_ptr<label_popup::LabelPopup> main_window_popup_container::MainWindowPopupContainer::getTextNotFoundPopup() const {
-	const main_window_popup_container::popup_widget_e index = main_window_popup_container::popup_widget_e::TEXT_NOT_FOUND;
+std::shared_ptr<label_popup::LabelPopup> main_window_popup_container::MainWindowPopupContainer::getWarningPopup() const {
+	const main_window_popup_container::popup_widget_e index = main_window_popup_container::popup_widget_e::WARNING;
 	return this->getPopup<label_popup::LabelPopup>((unsigned int)index);
 }
 
@@ -97,7 +97,12 @@ void main_window_popup_container::MainWindowPopupContainer::addOpenPopup() {
 	this->addWidget((unsigned int)main_window_popup_container::popup_widget_e::OPEN_FILE, popup);
 }
 
-void main_window_popup_container::MainWindowPopupContainer::addTextNotFoundPopup() {
+void main_window_popup_container::MainWindowPopupContainer::addWarningPopup() {
 	std::shared_ptr<label_popup::LabelPopup> popup = std::make_shared<label_popup::LabelPopup>(this);
-	this->addWidget((unsigned int)main_window_popup_container::popup_widget_e::TEXT_NOT_FOUND, popup);
+	popup->setStyleSheet(
+		"QLabel {"
+			"color: orange;"
+		"}"
+	);
+	this->addWidget((unsigned int)main_window_popup_container::popup_widget_e::WARNING, popup);
 }

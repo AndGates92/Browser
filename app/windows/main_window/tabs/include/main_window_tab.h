@@ -22,7 +22,7 @@
 #include "main_window_shared_types.h"
 #include "main_window_web_engine_view.h"
 #include "main_window_web_engine_settings.h"
-#include "main_window_web_engine_history.h"
+#include "main_window_tab_history.h"
 #include "main_window_tab_search.h"
 #include "main_window_tab_load_manager.h"
 #include "main_window_tab_scroll_manager.h"
@@ -196,13 +196,13 @@ namespace main_window_tab {
 			std::shared_ptr<main_window_tab_search::MainWindowTabSearch> getSearch() const;
 
 			/**
-			 * @brief Function: std::shared_ptr<main_window_web_engine_history::MainWindowWebEngineHistory> getHistory() const
+			 * @brief Function: std::shared_ptr<main_window_tab_history::MainWindowTabHistory> getHistory() const
 			 *
 			 * \return history of the tab
 			 *
 			 * This function returns the history of the page
 			 */
-			std::shared_ptr<main_window_web_engine_history::MainWindowWebEngineHistory> getHistory() const;
+			std::shared_ptr<main_window_tab_history::MainWindowTabHistory> getHistory() const;
 
 			/**
 			 * @brief Function: std::shared_ptr<main_window_web_engine_settings::MainWindowWebEngineSettings> getSettings() const

@@ -22,4 +22,7 @@ namespace global_enums {
 	// Overload << operator for offset_type_e
 	OVERLOAD_OPERATORS_CUSTOM_TYPE(global_enums::offset_type_e)
 
+	// Overload << operator for element_position_e
+	OVERLOAD_OPERATORS_CUSTOM_TYPE(global_enums::element_position_e)
+
 }

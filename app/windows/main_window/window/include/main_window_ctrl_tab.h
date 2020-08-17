@@ -110,6 +110,15 @@ namespace main_window_ctrl_tab {
 		private slots:
 
 			/**
+			 * @brief Function: void historyBoundaryHit(const global_enums::element_position_e & position)
+			 *
+			 * \param position: position in the history.
+			 *
+			 * This function is a slot that receives a notification that the tab moved in the history of the tab
+			 */
+			void historyBoundaryHit(const global_enums::element_position_e & position);
+
+			/**
 			 * @brief Function: void processSearchReturnValue(bool found)
 			 *
 			 * \param found: search result data.

@@ -226,7 +226,7 @@ namespace tab_scroll_manager {
 
 			// Move and copy constructor
 			/**
-			 * @brief Disable move and copy constructors and operator= overscrolling for class TabScrollManager
+			 * @brief Disable move and copy constructors and operator= overloading for class TabScrollManager
 			 *
 			 */
 			DISABLE_COPY_MOVE(TabScrollManager)

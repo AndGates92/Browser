@@ -123,6 +123,9 @@ void main_window_ctrl_tab::MainWindowCtrlTab::connectExtraSignals() {
 	connect(tabs.get(), &main_window_tab_widget::MainWindowTabWidget::searchResultChanged, this, &main_window_ctrl_tab::MainWindowCtrlTab::printSearchResult);
 	connect(tabs.get(), &main_window_tab_widget::MainWindowTabWidget::findTextFinished, this, &main_window_ctrl_tab::MainWindowCtrlTab::processSearchReturnValue);
 
+	// History of the tab
+	connect(tabs.get(), &main_window_tab_widget::MainWindowTabWidget::historyItemChanged, this, &main_window_ctrl_tab::MainWindowCtrlTab::historyBoundaryHit);
+
 }
 
 //************************************************************************************
@@ -746,12 +749,35 @@ void main_window_ctrl_tab::MainWindowCtrlTab::printSearchResult(const main_windo
 
 }
 
+void main_window_ctrl_tab::MainWindowCtrlTab::historyBoundaryHit(const global_enums::element_position_e & position) {
+
+	if ((position == global_enums::element_position_e::BEGINNING) || (position == global_enums::element_position_e::END)) {
+		std::shared_ptr<main_window_popup_container::MainWindowPopupContainer> container = this->windowCore->popup;
+		bool success = container->showWarningPopup();
+		QEXCEPTION_ACTION_COND((success == false), throw, "Unable to show Warning popup");
+
+		std::shared_ptr<label_popup::LabelPopup> labelPopup = container->getWarningPopup();
+		QString positionText = QString("unknown position");
+		if (position == global_enums::element_position_e::BEGINNING) {
+			positionText = "beginning";
+		} else if (position == global_enums::element_position_e::END) {
+			positionText = "end";
+		}
+		QString popupText = QString();
+		popupText = QString("At the ") + positionText + QString(" of the history.");
+		labelPopup->setLabelText(popupText);
+	}
+
+}
+
 void main_window_ctrl_tab::MainWindowCtrlTab::processSearchReturnValue(bool found) {
 
 	if (found == false) {
 		std::shared_ptr<main_window_popup_container::MainWindowPopupContainer> container = this->windowCore->popup;
-		bool success = container->showTextNotFoundPopup();
-		std::shared_ptr<label_popup::LabelPopup> labelPopup = container->getTextNotFoundPopup();
+		bool success = container->showWarningPopup();
+		QEXCEPTION_ACTION_COND((success == false), throw, "Unable to show Warning popup");
+
+		std::shared_ptr<label_popup::LabelPopup> labelPopup = container->getWarningPopup();
 		QString popupText = QString();
 		QString text = this->findSettings.getText();
 		if (text.isEmpty() == true) {
@@ -759,8 +785,6 @@ void main_window_ctrl_tab::MainWindowCtrlTab::processSearchReturnValue(bool foun
 		}
 		popupText = QString("No match for string ") + text + QString(" in current tab.");
 		labelPopup->setLabelText(popupText);
-
-		QEXCEPTION_ACTION_COND((success == false), throw, "Unable to show TextNotFound popup");
 	}
 
 }

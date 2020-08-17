@@ -74,22 +74,22 @@ namespace main_window_popup_container {
 			std::shared_ptr<open_popup::OpenPopup> getOpenFilePopup() const;
 
 			/**
-			 * @brief Function: bool showOpenFilePopup()
+			 * @brief Function: bool showWarningPopup()
 			 *
 			 * \return a boolean value indicating whether the shown widget was successfully changed
 			 *
-			 * This function shows the widget having the open file popup
+			 * This function shows the widget having the warning popup
 			 */
-			bool showTextNotFoundPopup();
+			bool showWarningPopup();
 
 			/**
-			 * @brief Function: std::shared_ptr<label_popup::LabelPopup> getTextNotFoundPopup() const
+			 * @brief Function: std::shared_ptr<label_popup::LabelPopup> getWarningPopup() const
 			 *
-			 * \return a pointer to the text not found popup
+			 * \return a pointer to the warning popup
 			 *
-			 * This function returns a pointer to the text not found popup
+			 * This function returns a pointer to the warning popup
 			 */
-			std::shared_ptr<label_popup::LabelPopup> getTextNotFoundPopup() const;
+			std::shared_ptr<label_popup::LabelPopup> getWarningPopup() const;
 
 			/**
 			 * @brief Define methods to get smart pointer from this
@@ -116,18 +116,18 @@ namespace main_window_popup_container {
 			void addOpenPopup();
 
 			/**
-			 * @brief Function: void addTextNotFoundPopup()
+			 * @brief Function: void addWarningPopup()
 			 *
-			 * This function adds an instance of the text not found popup widget to the widgets map
+			 * This function adds an instance of the warning popup widget to the widgets map
 			 */
-			void addTextNotFoundPopup();
+			void addWarningPopup();
 
 			/**
 			 * @brief Function: std::shared_ptr<PopupClass> getPopup(const unsigned int index) const
 			 *
 			 * \param index: index of the popup to search
 			 *
-			 * \return a pointer to the text not found popup
+			 * \return a pointer to the popup
 			 *
 			 * This function returns a pointer to the popup at index provided as argument
 			 */

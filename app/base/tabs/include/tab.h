@@ -21,7 +21,6 @@
 #include "find_settings.h"
 #include "web_engine_view.h"
 #include "web_engine_settings.h"
-#include "web_engine_history.h"
 #include "tab_load_manager.h"
 
 /** @defgroup TabGroup Tab Doxygen Group
@@ -46,6 +45,10 @@ namespace tab_search {
 
 namespace tab_scroll_manager {
 	class TabScrollManager;
+}
+
+namespace tab_history {
+	class TabHistory;
 }
 
 namespace main_window_tab {
@@ -166,6 +169,15 @@ namespace tab {
 			 */
 			void horizontalScrollChanged(const int & value) const;
 
+			/**
+			 * @brief Function: void historyItemChanged(const global_enums::element_position_e & position)
+			 *
+			 * \param position: position in the history.
+			 *
+			 * This function is a signal to notify the current position in the history of the tab
+			 */
+			void historyItemChanged(const global_enums::element_position_e & position);
+
 		protected:
 
 			/**
@@ -215,7 +227,7 @@ namespace tab {
 			 * @brief history class
 			 *
 			 */
-			std::shared_ptr<web_engine_history::WebEngineHistory> history;
+			std::shared_ptr<tab_history::TabHistory> history;
 
 			/**
 			 * @brief settings
@@ -246,6 +258,12 @@ namespace tab {
 			 *
 			 */
 			QMetaObject::Connection hScrollValueConnection;
+
+			/**
+			 * @brief history item change connection
+			 *
+			 */
+			QMetaObject::Connection historyItemChangedConnection;
 
 			// Components
 			/**
@@ -303,22 +321,22 @@ namespace tab {
 			std::shared_ptr<tab_search::TabSearch> getSearch() const;
 
 			/**
-			 * @brief Function: void setHistory(std::shared_ptr<web_engine_history::WebEngineHistory> value)
+			 * @brief Function: void setHistory(std::shared_ptr<tab_history::TabHistory> value)
 			 *
 			 * \param value: history of the tab
 			 *
 			 * This function sets the history of the page
 			 */
-			void setHistory(std::shared_ptr<web_engine_history::WebEngineHistory> value);
+			void setHistory(std::shared_ptr<tab_history::TabHistory> value);
 
 			/**
-			 * @brief Function: std::shared_ptr<web_engine_history::WebEngineHistory> getHistory() const
+			 * @brief Function: std::shared_ptr<tab_history::TabHistory> getHistory() const
 			 *
 			 * \return history of the tab
 			 *
 			 * This function returns the history of the page
 			 */
-			std::shared_ptr<web_engine_history::WebEngineHistory> getHistory() const;
+			std::shared_ptr<tab_history::TabHistory> getHistory() const;
 
 			/**
 			 * @brief Function: void setSettings(std::shared_ptr<web_engine_settings::WebEngineSettings> value)

@@ -95,6 +95,9 @@ void main_window_tab_widget::MainWindowTabWidget::disconnectTab(const int & inde
 			if (this->tabFindTextConnection) {
 				disconnect(this->tabFindTextConnection);
 			}
+			if (this->tabHistoryItemChangedConnection) {
+				disconnect(this->tabHistoryItemChangedConnection);
+			}
 
 			emit this->tabNearlyDisconnected(index);
 		} catch (const std::bad_cast & badCastE) {
@@ -114,6 +117,7 @@ void main_window_tab_widget::MainWindowTabWidget::connectTab(const int & index) 
 		this->tabTitleConnection = connect(tab.get(), &main_window_tab::MainWindowTab::titleChanged, this, &main_window_tab_widget::MainWindowTabWidget::processTabTitleChanged);
 		this->tabSearchDataConnection = connect(tab.get(), &main_window_tab::MainWindowTab::searchResultChanged, this, &main_window_tab_widget::MainWindowTabWidget::processSearchResultData);
 		this->tabFindTextConnection = connect(tab.get(), &main_window_tab::MainWindowTab::findTextFinished, this, &main_window_tab_widget::MainWindowTabWidget::processFindTextFinished);
+		this->tabHistoryItemChangedConnection = connect(tab.get(), &main_window_tab::MainWindowTab::historyItemChanged, this, &main_window_tab_widget::MainWindowTabWidget::processHistoryItemChanged);
 
 		// Move focus to the newly connected tab
 		tab->setFocus();
@@ -377,6 +381,10 @@ void main_window_tab_widget::MainWindowTabWidget::processTabSourceChanged(const 
 
 void main_window_tab_widget::MainWindowTabWidget::processSearchResultData(const main_window_tab_search::search_data_s & data) const {
 	emit this->searchResultChanged(data);
+}
+
+void main_window_tab_widget::MainWindowTabWidget::processHistoryItemChanged(const global_enums::element_position_e & position) {
+	emit this->historyItemChanged(position);
 }
 
 void main_window_tab_widget::MainWindowTabWidget::processFindTextFinished(bool found) {

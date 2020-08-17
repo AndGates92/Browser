@@ -58,7 +58,7 @@ void main_window_tab::MainWindowTab::reload() {
 void main_window_tab::MainWindowTab::updateView(std::shared_ptr<main_window_web_engine_view::MainWindowWebEngineView> view) {
 	this->setView(view);
 
-	std::shared_ptr<main_window_web_engine_history::MainWindowWebEngineHistory> tabHistory = std::make_shared<main_window_web_engine_history::MainWindowWebEngineHistory>(this->getView()->history());
+	std::shared_ptr<main_window_tab_history::MainWindowTabHistory> tabHistory = std::make_shared<main_window_tab_history::MainWindowTabHistory>(this, this->weak_from_this(), this->getView()->history());
 	this->setHistory(tabHistory);
 
 	std::shared_ptr<main_window_web_engine_settings::MainWindowWebEngineSettings> tabSettings = std::make_shared<main_window_web_engine_settings::MainWindowWebEngineSettings>(this->getView()->settings());
@@ -75,7 +75,7 @@ CASTED_SHARED_PTR_GETTER(main_window_tab::MainWindowTab::getLoadManager, main_wi
 
 CASTED_SHARED_PTR_GETTER(main_window_tab::MainWindowTab::getSearch, main_window_tab_search::MainWindowTabSearch, tab::Tab::getSearch())
 
-CASTED_SHARED_PTR_GETTER(main_window_tab::MainWindowTab::getHistory, main_window_web_engine_history::MainWindowWebEngineHistory, tab::Tab::getHistory())
+CASTED_SHARED_PTR_GETTER(main_window_tab::MainWindowTab::getHistory, main_window_tab_history::MainWindowTabHistory, tab::Tab::getHistory())
 
 CASTED_SHARED_PTR_GETTER(main_window_tab::MainWindowTab::getSettings, main_window_web_engine_settings::MainWindowWebEngineSettings, tab::Tab::getSettings())
 

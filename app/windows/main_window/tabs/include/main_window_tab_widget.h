@@ -334,6 +334,15 @@ namespace main_window_tab_widget {
 			 */
 			void findTextFinished(bool found);
 
+			/**
+			 * @brief Function: void historyItemChanged(const global_enums::element_position_e & position)
+			 *
+			 * \param position: position in the history.
+			 *
+			 * This function is a signal to notify the current position in the history of the tab
+			 */
+			void historyItemChanged(const global_enums::element_position_e & position);
+
 		protected:
 
 		private:
@@ -357,7 +366,7 @@ namespace main_window_tab_widget {
 			QMetaObject::Connection tabTitleConnection;
 
 			/**
-			 * @brief title change connection
+			 * @brief search data connection
 			 *
 			 */
 			QMetaObject::Connection tabSearchDataConnection;
@@ -367,6 +376,12 @@ namespace main_window_tab_widget {
 			 *
 			 */
 			QMetaObject::Connection tabFindTextConnection;
+
+			/**
+			 * @brief history item changed connection
+			 *
+			 */
+			QMetaObject::Connection tabHistoryItemChangedConnection;
 
 			/**
 			 * @brief Function: void disconnectTab(const int & index)
@@ -487,6 +502,15 @@ namespace main_window_tab_widget {
 			 * This function is a slot that receives a notification that the search data changed
 			 */
 			void processFindTextFinished(bool found);
+
+			/**
+			 * @brief Function: void processHistoryItemChanged(const global_enums::element_position_e & position)
+			 *
+			 * \param position: position in the history.
+			 *
+			 * This function is a slot that receives a notification that the tab moved in the history of the tab
+			 */
+			void processHistoryItemChanged(const global_enums::element_position_e & position);
 
 	};
 

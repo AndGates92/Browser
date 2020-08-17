@@ -70,6 +70,23 @@ namespace global_enums {
 	 */
 	OVERLOAD_OPERATORS_CUSTOM_TYPE_FUNCTION_PROTOTYPE(offset_type_list, global_enums::offset_type_e)
 
+	/**
+	 * @brief element position in a list
+	 *
+	 */
+	typedef enum class element_position_list {
+		UNKNOWN,          /**< Unknown */
+		BEGINNING,        /**< Beginning */
+		MIDDLE,           /**< Middle */
+		END               /**< End */
+	} element_position_e;
+
+	/**
+	 * @brief Overload operators to ease print of the element position in a list
+	 *
+	 */
+	OVERLOAD_OPERATORS_CUSTOM_TYPE_FUNCTION_PROTOTYPE(element_position_list, global_enums::element_position_e)
+
 }
 
 /** @} */ // End of GlobalTypesGroup group
