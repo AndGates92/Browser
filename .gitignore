@@ -5,3 +5,5 @@ log/*.*
 dep/
 moc_obj/
 moc_src/
+profile/
+coverage/
