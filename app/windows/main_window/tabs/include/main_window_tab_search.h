@@ -1,5 +1,5 @@
-#ifndef MAIN_WINDOW_WEB_ENGINE_SEARCH_H
-#define MAIN_WINDOW_WEB_ENGINE_SEARCH_H
+#ifndef MAIN_WINDOW_TAB_SEARCH_H
+#define MAIN_WINDOW_TAB_SEARCH_H
 /**
  * @copyright
  * @file main_window_tab_search.h
@@ -61,14 +61,14 @@ namespace main_window_tab_search {
 			 * \param profile: profile of the search
 			 * \param parent: parent widget
 			 *
-			 * Main window web engine search constructor
+			 * Main window tab search constructor
 			 */
 			explicit MainWindowTabSearch(QWidget * parent, std::weak_ptr<main_window_tab::MainWindowTab> attachedTab);
 
 			/**
 			 * @brief Function: virtual ~MainWindowTabSearch()
 			 *
-			 * Main window web engine search destructor
+			 * Main window tab search destructor
 			 */
 			virtual ~MainWindowTabSearch();
 
@@ -140,4 +140,4 @@ namespace main_window_tab_search {
 }
 /** @} */ // End of MainWindowTabSearchGroup group
 
-#endif // MAIN_WINDOW_WEB_ENGINE_SEARCH_H
+#endif // MAIN_WINDOW_TAB_SEARCH_H

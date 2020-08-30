@@ -56,7 +56,7 @@ namespace find_settings {
 			 *
 			 * \param rhs: class to copy
 			 *
-			 * JSON parser copy constructor
+			 * Find settings copy constructor
 			 */
 			FindSettings(const find_settings::FindSettings & rhs);
 
@@ -65,7 +65,7 @@ namespace find_settings {
 			 *
 			 * \param rhs: class to move
 			 *
-			 * JSON parser move constructor
+			 * Find settings move constructor
 			 */
 			explicit FindSettings(find_settings::FindSettings && rhs);
 
@@ -75,7 +75,7 @@ namespace find_settings {
 			 *
 			 * \param rhs: class to copy
 			 *
-			 * JSON parser copy assignment operator
+			 * Find settings copy assignment operator
 			 */
 			FindSettings & operator=(const find_settings::FindSettings & rhs);
 
@@ -84,14 +84,14 @@ namespace find_settings {
 			 *
 			 * \param rhs: class to move
 			 *
-			 * JSON parser move assignment operator
+			 * Find settings move assignment operator
 			 */
 			FindSettings & operator=(find_settings::FindSettings && rhs);
 
 			/**
 			 * @brief Function: virtual ~FindSettingsSettings()
 			 *
-			 * Find button window destructor
+			 * Find settings window destructor
 			 */
 			virtual ~FindSettings();
 

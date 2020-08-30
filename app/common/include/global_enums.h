@@ -1,17 +1,17 @@
-#ifndef GLOBAL_TYPES_H
-#define GLOBAL_TYPES_H
+#ifndef GLOBAL_ENUMS_H
+#define GLOBAL_ENUMS_H
 /**
  * @copyright
  * @file global_enums.h
  * @author Andrea Gianarda
  * @date 17th of September 2019
- * @brief Global Types file
+ * @brief Global Enums file
 */
 
 #include "type_print_macros.h"
 
-/** @defgroup GlobalTypesGroup Global Types Doxygen Group
- *  Global Types
+/** @defgroup GlobalEnumsGroup Global Enums Doxygen Group
+ *  Global Enums
  *  @{
  */
 namespace global_enums {
@@ -89,6 +89,6 @@ namespace global_enums {
 
 }
 
-/** @} */ // End of GlobalTypesGroup group
+/** @} */ // End of GlobalEnumsGroup group
 
-#endif // GLOBAL_TYPES_H
+#endif // GLOBAL_ENUMS_H

@@ -21,13 +21,13 @@ Q_LOGGING_CATEGORY(mainWindowTabSearchOverall, "mainWindowTabSearch.overall", MS
 Q_LOGGING_CATEGORY(mainWindowTabSearchFind, "mainWindowTabSearch.find", MSG_TYPE_LEVEL)
 
 main_window_tab_search::MainWindowTabSearch::MainWindowTabSearch(QWidget * parent, std::weak_ptr<main_window_tab::MainWindowTab> attachedTab): tab_search::TabSearch(parent, attachedTab) {
-	QINFO_PRINT(global_enums::qinfo_level_e::ZERO, mainWindowTabSearchOverall,  "Tab search constructor");
+	QINFO_PRINT(global_enums::qinfo_level_e::ZERO, mainWindowTabSearchOverall,  "Main window tab search constructor");
 
 	this->connectSignals();
 }
 
 main_window_tab_search::MainWindowTabSearch::~MainWindowTabSearch() {
-	QINFO_PRINT(global_enums::qinfo_level_e::ZERO, mainWindowTabSearchOverall,  "Tab search destructor");
+	QINFO_PRINT(global_enums::qinfo_level_e::ZERO, mainWindowTabSearchOverall,  "Main window tab search destructor");
 
 }
 

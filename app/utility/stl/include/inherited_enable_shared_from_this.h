@@ -60,7 +60,7 @@ namespace inherited_enable_shared_from_this {
 			std::shared_ptr<derivedType> shared_from_this();
 
 			/**
-			 * @brief Function: std::weak_ptr<derivedType> sweak_from_this()
+			 * @brief Function: std::weak_ptr<derivedType> weak_from_this()
 			 *
 			 * \return weak pointer of this
 			 *

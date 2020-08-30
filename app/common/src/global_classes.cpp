@@ -9,5 +9,5 @@
 #include "global_classes.h"
 
 bool global_classes::StringCompare::operator() (const std::string & rhs, const std::string & lhs) const {
-		return (rhs.compare(lhs) < 0);
+	return (rhs.compare(lhs) < 0);
 }
