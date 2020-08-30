@@ -28,7 +28,7 @@ void graphics::init_graphics(int & argc, char** argv) {
 
 	QINFO_PRINT(global_enums::qinfo_level_e::ZERO, graphicsOverall,  "Create Application");
 
-	main_window_wrapper::MainWindowWrapper * window = new main_window_wrapper::MainWindowWrapper(Q_NULLPTR, Qt::Window);
+	std::unique_ptr<main_window_wrapper::MainWindowWrapper> window = std::make_unique<main_window_wrapper::MainWindowWrapper>(Q_NULLPTR, Qt::Window);
 	window->show();
 
 	app.exec();

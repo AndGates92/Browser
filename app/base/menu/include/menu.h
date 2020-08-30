@@ -59,13 +59,13 @@ namespace menu {
 			virtual ~Menu();
 
 			/**
-			 * @brief Function: const std::string print() const
+			 * @brief Function: virtual const std::string print() const override
 			 *
 			 * \return menu information converted to std::string
 			 *
 			 * This functions prints menu info to std::string
 			 */
-			const std::string print() const;
+			virtual const std::string print() const override;
 
 		public slots:
 

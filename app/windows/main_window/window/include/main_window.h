@@ -57,6 +57,15 @@ namespace main_window {
 			 */
 			virtual ~MainWindow();
 
+			/**
+			 * @brief Function: const std::unique_ptr<main_window_ctrl_wrapper::MainWindowCtrlWrapper> & getCtrl() const
+			 *
+			 * \return window controller
+			 *
+			 * This method return the window controller
+			 */
+			const std::unique_ptr<main_window_ctrl_wrapper::MainWindowCtrlWrapper> & getCtrl() const;
+
 		protected:
 		#ifndef QT_NO_CONTEXTMENU
 			/**

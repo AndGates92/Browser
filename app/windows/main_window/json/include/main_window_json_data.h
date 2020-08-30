@@ -10,14 +10,12 @@
 
 #include <memory>
 #include <vector>
-#include <set>
 
 #include <QtCore/QLoggingCategory>
 
 #include "key_sequence.h"
-#include "global_classes.h"
 #include "main_window_shared_types.h"
-#include "printable_object.h"
+#include "json_data.h"
 
 /** @defgroup MainWindowJsonDataGroup Main Window Json Data Doxygen Group
  *  Main Window json data functions and classes
@@ -40,17 +38,19 @@ namespace main_window_ctrl_tab {
 
 namespace main_window_json_data {
 
-	/**
-	 * @brief default action parameters which are the keys of the JSON file
-	 *
-	 */
-	static const std::vector<std::string> defaultActionParameters{"Key", "Name", "State", "Shortcut", "LongCmd", "Help"};
+	namespace {
+		/**
+		 * @brief default action parameters which are the keys of the JSON file
+		 *
+		 */
+		static const std::vector<std::string> keyNames{"Key", "Name", "State", "Shortcut", "LongCmd", "Help"};
+	}
 
 	/**
 	 * @brief MainWindowJsonData class
 	 *
 	 */
-	class MainWindowJsonData : public printable_object::PrintableObject {
+	class MainWindowJsonData : public json_data::JsonData {
 		friend class main_window_ctrl::MainWindowCtrl;
 		friend class main_window_ctrl_base::MainWindowCtrlBase;
 		friend class main_window_ctrl_tab::MainWindowCtrlTab;
@@ -60,7 +60,7 @@ namespace main_window_json_data {
 			/**
 			 * @brief Function: static std::shared_ptr<main_window_json_data::MainWindowJsonData> makeJsonData(const std::string & jsonKey, const std::string & nameKeyValue, const main_window_shared_types::state_e & stateKeyValue, const int & shortcutKeyValue, const std::string & longCmdKeyValue, const std::string & helpKeyValue)
 			 *
-			 * \param jsonKey: key in te json file
+			 * \param jsonKey: key in the json file
 			 * \param nameKeyValue: name of the action
 			 * \param stateKeyValue: state the action puts the main controller into
 			 * \param shortcutKeyValue: shortcut associated with the action
@@ -74,14 +74,14 @@ namespace main_window_json_data {
 			/**
 			 * @brief Function: MainWindowJsonData(const std::string & jsonKey, const std::string & nameKeyValue = std::string(), const main_window_shared_types::state_e & stateKeyValue = main_window_shared_types::state_e::IDLE, const int & shortcutKeyValue = (int)Qt::Key_unknown, const std::string & longCmdKeyValue = std::string(), const std::string & helpKeyValue = std::string())
 			 *
-			 * \param jsonKey: key in te json file
+			 * \param jsonKey: key in the json file
 			 * \param nameKeyValue: name of the action
 			 * \param stateKeyValue: state the action puts the main controller into
 			 * \param shortcutKeyValue: shortcut associated with the action
 			 * \param longCmdKeyValue: long command the user has to type to trigger the action
 			 * \param helpKeyValue: help for the action
 			 *
-			 * json data constructor
+			 * Main Window json data constructor
 			 */
 			explicit MainWindowJsonData(const std::string & jsonKey, const std::string & nameKeyValue = std::string(), const main_window_shared_types::state_e & stateKeyValue = main_window_shared_types::state_e::IDLE, const int & shortcutKeyValue = (int)Qt::Key_unknown, const std::string & longCmdKeyValue = std::string(), const std::string & helpKeyValue = std::string());
 
@@ -91,7 +91,7 @@ namespace main_window_json_data {
 			 *
 			 * \param rhs: class to copy
 			 *
-			 * json data copy constructor
+			 * Main Window json data copy constructor
 			 * Do not set it as explicit as copy-initialization is allowed
 			 */
 			MainWindowJsonData(const main_window_json_data::MainWindowJsonData & rhs);
@@ -101,14 +101,14 @@ namespace main_window_json_data {
 			 *
 			 * \param rhs: class to move
 			 *
-			 * json data move constructor
+			 * Main Window json data move constructor
 			 */
 			explicit MainWindowJsonData(main_window_json_data::MainWindowJsonData && rhs);
 
 			/**
 			 * @brief Function: virtual ~MainWindowJsonData()
 			 *
-			 * json data structure destructor
+			 * Main Window json data structure destructor
 			 */
 			virtual ~MainWindowJsonData();
 
@@ -118,7 +118,7 @@ namespace main_window_json_data {
 			 *
 			 * \param rhs: class to copy
 			 *
-			 * json data copy assignment operator
+			 * Main Window json data copy assignment operator
 			 */
 			MainWindowJsonData & operator=(const main_window_json_data::MainWindowJsonData & rhs);
 
@@ -127,38 +127,37 @@ namespace main_window_json_data {
 			 *
 			 * \param rhs: class to move
 			 *
-			 * json data move assignment operator
+			 * Main Window json data move assignment operator
 			 */
 			MainWindowJsonData & operator=(main_window_json_data::MainWindowJsonData && rhs);
 
 			/**
-			 * @brief Function: friend bool operator==(const main_window_json_data::MainWindowJsonData & rhs)
+			 * @brief Function: bool operator==(const main_window_json_data::MainWindowJsonData & rhs)
+			 *
+			 * \param rhs: right side class to compare
+			 *
+			 * Main Window json data operator == overloading
+			 */
+			bool operator==(const main_window_json_data::MainWindowJsonData & rhs);
+
+			/**
+			 * @brief Function: bool operator!=(const main_window_json_data::MainWindowJsonData & rhs)
 			 *
 			 * \param lhs: left side class to compare
 			 * \param rhs: right side class to compare
 			 *
-			 * json data operator == overloading
+			 * Main Window json data operator != overloading
 			 */
-			friend bool operator==(const main_window_json_data::MainWindowJsonData & lhs, const main_window_json_data::MainWindowJsonData & rhs);
+			bool operator!=(const main_window_json_data::MainWindowJsonData & rhs);
 
 			/**
-			 * @brief Function: friend bool operator!=(const main_window_json_data::MainWindowJsonData & lhs, const main_window_json_data::MainWindowJsonData & rhs)
+			 * @brief Function: virtual const std::string print() const override
 			 *
-			 * \param lhs: left side class to compare
-			 * \param rhs: right side class to compare
+			 * \return main window json data converted to std::string
 			 *
-			 * json data operator != overloading
+			 * This functions prints main window json data info to std::string
 			 */
-			friend bool operator!=(const main_window_json_data::MainWindowJsonData & lhs, const main_window_json_data::MainWindowJsonData & rhs);
-
-			/**
-			 * @brief Function: const std::string print() const
-			 *
-			 * \return json data converted to std::string
-			 *
-			 * This functions prints json data info to std::string
-			 */
-			const std::string print() const;
+			virtual const std::string print() const override;
 
 			/**
 			 * @brief Function: const std::string getKey() const
@@ -215,24 +214,16 @@ namespace main_window_json_data {
 			const std::string getHelp() const;
 
 			/**
-			 * @brief Function: const std::set<std::string, global_classes::StringCompare> getActionParameters() const
+			 * @brief Function: virtual bool isSameFieldValue(const std::string & name, const void * value) const override
 			 *
-			 * \return help of the action
+			 * \param name: name of the name of the member as a string
+			 * \param value: value of the member
 			 *
-			 * This functions returns the help of the action
+			 * \return if field value matches value
+			 *
+			 * This functions compares the input value with the member of MainWindowJsonData by accessing it through its name
 			 */
-			//const std::set<std::string, global_classes::StringCompare> getActionParameters() const;
-			const auto getActionParameters() const;
-
-		protected:
-			/**
-			 * @brief action parameters
-			 * Using set because:
-			 * - values will not be changed
-			 * - ensure fast find (order O(log(N)))
-			 *
-			 */
-			std::set<std::string, global_classes::StringCompare> actionParameters;
+			virtual bool isSameFieldValue(const std::string & name, const void * value) const override;
 
 		private:
 			/**
@@ -272,26 +263,17 @@ namespace main_window_json_data {
 			std::string help;
 
 			/**
-			 * @brief Function: void addActionParameters(const std::string & name)
+			 * @brief Function: virtual void setValueFromMemberName(const std::string & name, const void * value) override
 			 *
-			 * \param name: name of the name of the member as a string
-			 *
-			 * This functions returns the help of the action
-			 */
-			void addActionParameters(const std::string & name);
-
-			/**
-			 * @brief Function: virtual void setValueFromMemberName(const std::string & name, const void * value)
-			 *
-			 * \param name: name of the name of the member as a string
+			 * \param name: name of the member as a string
 			 * \param value: value to be assigned to the element
 			 *
 			 * This functions assign a value to a member of MainWindowJsonData by accessing it through its name
 			 */
-			virtual void setValueFromMemberName(const std::string & name, const void * value);
+			virtual void setValueFromMemberName(const std::string & name, const void * value) override;
 
 			/**
-			 * @brief Function: virtual const void * getValueFromMemberName(const std::string & name) const
+			 * @brief Function: virtual const void * getValueFromMemberName(const std::string & name) const override
 			 *
 			 * \param name: name of the name of the member as a string
 			 *
@@ -299,19 +281,7 @@ namespace main_window_json_data {
 			 *
 			 * This functions returns the value of a member of MainWindowJsonData by accessing it through its name
 			 */
-			virtual const void * getValueFromMemberName(const std::string & name) const;
-
-			/**
-			 * @brief Function: virtual bool isSameFieldValue(const std::string & name, const void * value) const
-			 *
-			 * \param name: name of the name of the member as a string
-			 * \param value: value of the member
-			 *
-			 * \return if field value matches value
-			 *
-			 * This functions compares the input value with the member of MainWindowJsonData by accessing it through its name
-			 */
-			virtual bool isSameFieldValue(const std::string & name, const void * value) const;
+			virtual const void * getValueFromMemberName(const std::string & name) const override;
 
 	};
 

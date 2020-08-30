@@ -127,13 +127,13 @@ namespace main_window_page_data {
 			friend bool operator!=(const main_window_page_data::MainWindowPageData & lhs, const main_window_page_data::MainWindowPageData & rhs);
 
 			/**
-			 * @brief Function: const std::string print() const
+			 * @brief Function: virtual const std::string print() const override
 			 *
 			 * \return page data converted to std::string
 			 *
 			 * This functions prints page data info to std::string
 			 */
-			const std::string print() const;
+			virtual const std::string print() const override;
 
 		protected:
 

@@ -18,7 +18,6 @@ Q_DECLARE_LOGGING_CATEGORY(graphicsOverall)
  */
 namespace graphics {
 
-
 	/**
 	 * @brief Function: void init_graphics(int argc, char** argv)
 	 *

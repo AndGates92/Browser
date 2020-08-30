@@ -46,3 +46,5 @@ void main_window_wrapper::MainWindowWrapper::show() {
 	QINFO_PRINT(global_enums::qinfo_level_e::ZERO, mainWindowWrapperOverall,  "Show main window");
 	this->window->show();
 }
+
+CONST_GETTER(main_window_wrapper::MainWindowWrapper::getWindow, std::unique_ptr<main_window::MainWindow> &, this->window)

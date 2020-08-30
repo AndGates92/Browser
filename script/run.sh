@@ -19,6 +19,7 @@ qtbasedir=
 # Make file settings
 PROJNAME=browser
 EXENAME=${PROJNAME}
+TESTEREXENAME=${PROJNAME}_tester
 EXEDIR=bin
 
 LOGDIR=log
@@ -71,7 +72,7 @@ usage () {
 	echotimestamp "       --coverage|-cov:		add coverage flags while compiling and generate coverage report"
 	echotimestamp "       --profiler|-p:		add profiling flags while compiling and generate profiling report"
 	echotimestamp "       --memleak|-m:		compile and check memory leaks using valgrind" 
-	echotimestamp "       --test|-t:		compile and run tests"
+	echotimestamp "       --test|-t:			run tests"
 	echotimestamp "       --qtbasedir:		base directory of QT or system"
 	echotimestamp "       				- system: use system QT libraries"
 	echotimestamp "       				- <directory>: base directory of QT. It is assumed that it contains the following directories: lib, include and bin. QT specific environment variables are set as follows: QTLIBDIR = QTBASEDIR/lib and QTTOLLDIR = QTBASEDIR/bin"
@@ -224,7 +225,7 @@ if [ ${clean} -eq 1 ]; then
 	echotimestamp " Clean workspace"
 	echotimestamp " ========================================================================="
 	(set -x; \
-	 make clean LOG_DIR=${LOGDIR} PROJ_NAME=${PROJNAME} EXE_NAME=${EXENAME} BIN_DIR=${EXEDIR})
+	 make clean LOG_DIR=${LOGDIR} PROJ_NAME=${PROJNAME} EXE_NAME=${EXENAME} TESTER_EXE_NAME=${TESTEREXENAME} BIN_DIR=${EXEDIR})
 elif [ ${compile} -eq 1 ]; then
 	# Delete executable in order to avoid using the previous one if compile fails and running tests
 	(set -x; \
@@ -244,7 +245,7 @@ if [ ${debug} -eq 1 ]; then
 	echotimestamp " Makefile variables"
 	echotimestamp " ========================================================================="
 	(set -x; \
-	 make debug LOG_DIR=${LOGDIR} LOGFILENAME=${EXELOG} PROJ_NAME=${PROJNAME} EXE_NAME=${EXENAME} BIN_DIR=${EXEDIR} CEXTRAFLAGS=${CEXTRAFLAGS} SANITIZER=${SANITIZER} COVERAGE=${COVERAGE} PROFILER=${PROFILER} PROFEXTRAOPTS=${PROFEXTRAOPTS} COVEXTRAOPTS=${COVEXTRAOPTS} 1> ${LOGDIR}/${DEBUGLOG} 2> ${LOGDIR}/${DEBUGERR})
+	 make debug LOG_DIR=${LOGDIR} LOGFILENAME=${EXELOG} PROJ_NAME=${PROJNAME} EXE_NAME=${EXENAME} TESTER_EXE_NAME=${TESTEREXENAME} BIN_DIR=${EXEDIR} CEXTRAFLAGS=${CEXTRAFLAGS} SANITIZER=${SANITIZER} COVERAGE=${COVERAGE} PROFILER=${PROFILER} PROFEXTRAOPTS=${PROFEXTRAOPTS} COVEXTRAOPTS=${COVEXTRAOPTS} 1> ${LOGDIR}/${DEBUGLOG} 2> ${LOGDIR}/${DEBUGERR})
 fi
 
 if [ ${compile} -eq 1 ]; then
@@ -252,7 +253,7 @@ if [ ${compile} -eq 1 ]; then
 	echotimestamp " Compile sources"
 	echotimestamp " ========================================================================="
 	(set -x; \
-	 make all LOG_DIR=${LOGDIR} LOGFILENAME=${EXELOG} PROJ_NAME=${PROJNAME} EXE_NAME=${EXENAME} BIN_DIR=${EXEDIR} VERBOSITY=${VERBOSITY} CEXTRAFLAGS=${CEXTRAFLAGS} SANITIZER=${SANITIZER} COVERAGE=${COVERAGE} PROFILER=${PROFILER} 1> ${LOGDIR}/${COMPLOG} 2> ${LOGDIR}/${COMPERR})
+	 make all LOG_DIR=${LOGDIR} LOGFILENAME=${EXELOG} PROJ_NAME=${PROJNAME} EXE_NAME=${EXENAME} TESTER_EXE_NAME=${TESTEREXENAME} BIN_DIR=${EXEDIR} VERBOSITY=${VERBOSITY} CEXTRAFLAGS=${CEXTRAFLAGS} SANITIZER=${SANITIZER} COVERAGE=${COVERAGE} PROFILER=${PROFILER} 1> ${LOGDIR}/${COMPLOG} 2> ${LOGDIR}/${COMPERR})
 	# If make returns code 2, it means it encountered errors
 	retCode=$?
 	if [ ${retCode} -eq 2 ]; then
@@ -268,20 +269,20 @@ if [ ${cleanbyproduct} -eq 1 ]; then
 	echotimestamp " Clean by-product"
 	echotimestamp " ========================================================================="
 	(set -x; \
-	 make clean_byprod LOG_DIR=${LOGDIR} PROJ_NAME=${PROJNAME} EXE_NAME=${EXENAME} BIN_DIR=${EXEDIR})
+	 make clean_byprod LOG_DIR=${LOGDIR} PROJ_NAME=${PROJNAME} EXE_NAME=${EXENAME} TESTER_EXE_NAME=${TESTEREXENAME} BIN_DIR=${EXEDIR})
 fi
 
 if [ ${tests} -eq 1 ]; then
-	if [ -f ./${EXEDIR}/${EXENAME} ]; then
+	if [ -f ./${EXEDIR}/${TESTEREXENAME} ]; then
 		echotimestamp " ========================================================================="
 		echotimestamp " Run program"
 		echotimestamp " ========================================================================="
 		echotimestamp " START: Testing with no input file"
 		(set -x; \
-		 ./${EXEDIR}/${EXENAME})
+		 ./${EXEDIR}/${TESTEREXENAME})
 		echotimestamp " COMPLETED: Testing with no input file"
 	else
-		echotimestamp " FAILED: Compilation failed - Cannot find  ./${EXEDIR}/${EXENAME}"
+		echotimestamp " FAILED: Compilation failed - Cannot find  ./${EXEDIR}/${TESTEREXENAME}"
 	fi
 fi
 
@@ -302,7 +303,7 @@ if [ ${profiler} -eq 1 ]; then
 	echotimestamp " ${ITEMSYMBOL} Profiling logfile name: ${PROFILERLOG}"
 	echotimestamp " ${ITEMSYMBOL} Profiling error file name: ${PROFILERERR}"
 	(set -x; \
-	 make profiling EXE_NAME=${EXENAME} BIN_DIR=${EXEDIR} PROFEXTRAOPTS=${PROFEXTRAOPTS} 1> ${LOGDIR}/${PROFILERLOG} 2> ${LOGDIR}/${PROFILERERR})
+	 make profiling EXE_NAME=${EXENAME} TESTER_EXE_NAME=${TESTEREXENAME} BIN_DIR=${EXEDIR} PROFEXTRAOPTS=${PROFEXTRAOPTS} 1> ${LOGDIR}/${PROFILERLOG} 2> ${LOGDIR}/${PROFILERERR})
 	exit 1
 fi
 
@@ -311,7 +312,7 @@ if [ ${doc} -eq 1 ]; then
 	echotimestamp " Compile documetation"
 	echotimestamp " ========================================================================="
 	(set -x; \
-	 make doc LOG_DIR=${LOGDIR} LOGFILENAME=${EXELOG} PROJ_NAME=${PROJNAME} EXE_NAME=${EXENAME} BIN_DIR=${EXEDIR} CEXTRAFLAGS=${CEXTRAFLAGS} 1> ${LOGDIR}/${DOCLOG} 2> ${LOGDIR}/${DOCERR})
+	 make doc LOG_DIR=${LOGDIR} LOGFILENAME=${EXELOG} PROJ_NAME=${PROJNAME} EXE_NAME=${EXENAME} TESTER_EXE_NAME=${TESTEREXENAME} BIN_DIR=${EXEDIR} CEXTRAFLAGS=${CEXTRAFLAGS} 1> ${LOGDIR}/${DOCLOG} 2> ${LOGDIR}/${DOCERR})
 fi
 
 if [ ${memleak} -eq 1 ]; then
@@ -320,6 +321,6 @@ if [ ${memleak} -eq 1 ]; then
 	echotimestamp " ========================================================================="
 	echotimestamp " START: Valgrind with no input file"
 	(set -x; \
-	 make memleak LOG_DIR=${LOGDIR} LOGFILENAME=${EXEVALGRINDLOG} PROJ_NAME=${PROJNAME} EXE_NAME=${EXENAME} BIN_DIR=${EXEDIR} VERBOSITY=${VERBOSITY} VALGRINDLOGFILENAME=${VALGRINDNOINPUTLOG} VALGRINDEXEARGS="")
+	 make memleak LOG_DIR=${LOGDIR} LOGFILENAME=${EXEVALGRINDLOG} PROJ_NAME=${PROJNAME} EXE_NAME=${EXENAME} TESTER_EXE_NAME=${TESTEREXENAME} BIN_DIR=${EXEDIR} VERBOSITY=${VERBOSITY} VALGRINDLOGFILENAME=${VALGRINDNOINPUTLOG} VALGRINDEXEARGS="")
 	echotimestamp " COMPLETED: Valgrind with no input file"
 fi

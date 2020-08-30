@@ -76,6 +76,15 @@ namespace main_window_wrapper {
 			 */
 			void show();
 
+			/**
+			 * @brief Function: const std::unique_ptr<main_window::MainWindow> & getWindow() const
+			 *
+			 * \return main window
+			 *
+			 * This function returns the main window
+			 */
+			const std::unique_ptr<main_window::MainWindow> & getWindow() const;
+
 		protected:
 
 		private:

@@ -6,8 +6,6 @@
  * @brief Main Window Control base class functions
  */
 
-#include <utility>
-
 // Qt libraries
 #include <QtCore/QtGlobal>
 #include <QtWidgets/QShortcut>
@@ -25,7 +23,7 @@ Q_LOGGING_CATEGORY(mainWindowCtrlBaseOverall, "mainWindowCtrlBase.overall", MSG_
 Q_LOGGING_CATEGORY(mainWindowCtrlBaseCheck, "mainWindowCtrlBase.check", MSG_TYPE_LEVEL)
 Q_LOGGING_CATEGORY(mainWindowCtrlBaseUserInput, "mainWindowCtrlBase.userInput", MSG_TYPE_LEVEL)
 
-main_window_ctrl_base::MainWindowCtrlBase::MainWindowCtrlBase(QWidget * parent, std::shared_ptr<main_window_core::MainWindowCore> core, QString jsonFileName) : QWidget(parent), main_window_base::MainWindowBase(core), commands(json_parser::JsonParser(jsonFileName, QIODevice::ReadOnly)) {
+main_window_ctrl_base::MainWindowCtrlBase::MainWindowCtrlBase(QWidget * parent, std::shared_ptr<main_window_core::MainWindowCore> core, QString jsonFileName) : QWidget(parent), main_window_base::MainWindowBase(core), json_action::JsonAction<main_window_json_data::MainWindowJsonData>(jsonFileName) {
 	QINFO_PRINT(global_enums::qinfo_level_e::ZERO, mainWindowCtrlBaseOverall,  "Main window control base classe constructor");
 
 	this->populateActionData();
@@ -106,6 +104,7 @@ void main_window_ctrl_base::MainWindowCtrlBase::connectSignals() {
 	std::for_each(this->actionData.cbegin(), this->actionData.cend(), [&] (const auto & data) {
 		const std::unique_ptr<main_window_json_data::MainWindowJsonData> & commandData = data.second;
 		QShortcut * shortcut = new QShortcut(commandData->getShortcut(), this->window());
+		QINFO_PRINT(global_enums::qinfo_level_e::ZERO, mainWindowCtrlBaseOverall, "Connecting shortcut for key " << (commandData->getShortcut()) << " to trigger a change of controller state to " << commandData->getState());
 		QMetaObject::Connection connection = connect(shortcut, &QShortcut::activated,
 			[&] () {
 				this->changeWindowStateWrapper(commandData, main_window_shared_types::state_postprocessing_e::POSTPROCESS);
@@ -223,57 +222,29 @@ std::string main_window_ctrl_base::MainWindowCtrlBase::getShortcutModifier(const
 	return modifierName;
 }
 
-void main_window_ctrl_base::MainWindowCtrlBase::populateActionData() {
-	std::for_each(main_window_json_data::defaultActionParameters.cbegin(), main_window_json_data::defaultActionParameters.cend(), [&] (const std::string & paramIter) {
-		const std::map<QString, QString> paramValues = this->commands.findKeyValue(QString::fromStdString(paramIter)).toStdMap();
-		std::for_each(paramValues.cbegin(), paramValues.cend(), [&] (const std::pair<QString, QString> & valIter) {
-			std::string key(valIter.first.toStdString());
-			std::string value(valIter.second.toStdString());
+void main_window_ctrl_base::MainWindowCtrlBase::addItemToActionData(std::unique_ptr<main_window_json_data::MainWindowJsonData> & data, const std::string & key, const std::string & item) {
+	void * valuePtr = nullptr;
+	main_window_shared_types::state_e state = main_window_shared_types::state_e::IDLE;
+	int shortcutKey = (int)Qt::Key_unknown;
 
-			// If key is not in actionData map, then it must be added
-			std::unique_ptr<main_window_json_data::MainWindowJsonData> newData = std::make_unique<main_window_json_data::MainWindowJsonData>(key);
+	if (key.compare("State") == 0) {
+		state = global_qfunctions::qStringToQEnum<main_window_shared_types::state_e>(QString::fromStdString(item));
+		QEXCEPTION_ACTION_COND(((int)state == -1), throw, "Unable to match state enumerator for state " << QString::fromStdString(item));
+		valuePtr = &state;
+	} else if (key.compare("Shortcut") == 0) {
+		// Get key
+		std::string keyStr(this->getShortcutKey(item));
+		Qt::Key key = global_qfunctions::qStringToQEnum<Qt::Key>(QString::fromStdString(keyStr));
+		// Get modifier
+		std::string modifierStr(this->getShortcutModifier(item));
+		Qt::KeyboardModifiers modifier = global_qfunctions::qStringToQEnum<Qt::KeyboardModifiers>(QString::fromStdString(modifierStr));
+		shortcutKey = ((int)key) | ((int)modifier);
+		valuePtr = &shortcutKey;
+	} else {
+		valuePtr = &const_cast<std::string &>(item);
+	}
 
-			std::pair<std::string, std::unique_ptr<main_window_json_data::MainWindowJsonData>> dataPair;
-
-			dataPair.first = key;
-			// Pass ownership to dataPair
-			dataPair.second = std::move(newData);
-
-			// insert returns a pair where:
-			// - first points to the newly created iterator or the element with the same key
-			// - second is true if the insertion is successful, false otherwise
-			std::pair<std::map<std::string, std::unique_ptr<main_window_json_data::MainWindowJsonData>>::iterator, bool> it = this->actionData.insert(std::move(dataPair));
-
-			void * valuePtr = nullptr;
-			main_window_shared_types::state_e state = main_window_shared_types::state_e::IDLE;
-			int shortcutKey = (int)Qt::Key_unknown;
-
-			if (paramIter.compare("State") == 0) {
-				state = global_qfunctions::qStringToQEnum<main_window_shared_types::state_e>(QString::fromStdString(value));
-				QEXCEPTION_ACTION_COND(((int)state == -1), throw, "Unable to match state enumerator for state " << value);
-				valuePtr = &state;
-			} else if (paramIter.compare("Shortcut") == 0) {
-				// Get key
-				std::string keyStr(this->getShortcutKey(value));
-				Qt::Key key = global_qfunctions::qStringToQEnum<Qt::Key>(QString::fromStdString(keyStr));
-				// Get modifier
-				std::string modifierStr(this->getShortcutModifier(value));
-				Qt::KeyboardModifiers modifier = global_qfunctions::qStringToQEnum<Qt::KeyboardModifiers>(QString::fromStdString(modifierStr));
-				shortcutKey = ((int)key) | ((int)modifier);
-				valuePtr = &shortcutKey;
-			} else {
-				valuePtr = &value;
-			}
-
-			std::map<std::string, std::unique_ptr<main_window_json_data::MainWindowJsonData>>::iterator el = it.first;
-			std::unique_ptr<main_window_json_data::MainWindowJsonData> & data = el->second;
-			data->setValueFromMemberName(paramIter, valuePtr);
-		});
-	});
-
-	for (const auto & data : this->actionData)
-		QINFO_PRINT(global_enums::qinfo_level_e::ZERO, mainWindowCtrlBaseUserInput,  "Data for key " << data.first << " is " << *(data.second));
-
+	data->setValueFromMemberName(key, valuePtr);
 }
 
 void main_window_ctrl_base::MainWindowCtrlBase::changeWindowState(const main_window_shared_types::state_e & nextState, const main_window_shared_types::state_postprocessing_e postprocess, const Qt::Key key) {
@@ -382,18 +353,6 @@ void main_window_ctrl_base::MainWindowCtrlBase::keyPressEvent(QKeyEvent * event)
 
 }
 
-const std::unique_ptr<main_window_json_data::MainWindowJsonData> & main_window_ctrl_base::MainWindowCtrlBase::findDataWithFieldValue(const std::string & name, const void * value) const {
-
-	const std::map<std::string, std::unique_ptr<main_window_json_data::MainWindowJsonData>>::const_iterator data = std::find_if(this->actionData.cbegin(), this->actionData.cend(), [&] (const auto & data) -> bool {
-		const std::unique_ptr<main_window_json_data::MainWindowJsonData> & commandData = data.second;
-		bool found = commandData->isSameFieldValue(name, value);
-		return found;
-	});
-
-	QEXCEPTION_ACTION_COND((data == this->actionData.cend()), throw, "Unable to find " << name << " in action data");
-	return data->second;
-}
-
 void main_window_ctrl_base::MainWindowCtrlBase::moveToCommandStateFromNonIdleState(const main_window_shared_types::state_e & windowState, const Qt::Key & key) {
 	// Saving long command for a given state to set it after changing state
 	const main_window_shared_types::state_e requestedWindowState = main_window_shared_types::state_e::COMMAND;
@@ -420,4 +379,3 @@ void main_window_ctrl_base::MainWindowCtrlBase::resetWindowState() {
 	// Give the focus back to the parent widget
 	this->parentWidget()->setFocus();
 }
-

@@ -30,7 +30,17 @@ namespace printable_object {
 		return str;
 	}
 
-	std::string & operator<<(std::string & str, const printable_object::PrintableObject & object) {
+	QTextStream & operator<<(QTextStream & str, const printable_object::PrintableObject & object) {
+		str << object.qprint();
+		return str;
+	}
+
+	std::string operator<<(std::string str, const printable_object::PrintableObject & object) {
+		str.append(object.print());
+		return str;
+	}
+
+	std::string operator+(std::string str, const printable_object::PrintableObject & object) {
 		str.append(object.print());
 		return str;
 	}

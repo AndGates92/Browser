@@ -16,10 +16,10 @@
 #include "main_window_base.h"
 #include "constructor_macros.h"
 #include "main_window_json_data.h"
-#include "json_parser.h"
+#include "json_action.h"
 
-/** @defgroup MainWindowCtrlBaseGroup Main Window Doxygen Group
- *  Main Window base control functions and classes
+/** @defgroup MainWindowCtrlBaseGroup Main Window Control base Doxygen Group
+ *  Main Window Control base functions and classes
  *  @{
  */
 
@@ -32,7 +32,7 @@ namespace main_window_ctrl_base {
 	 * @brief MainWindowCtrlBase class
 	 *
 	 */
-	class MainWindowCtrlBase : public QWidget, public main_window_base::MainWindowBase {
+	class MainWindowCtrlBase : public QWidget, public main_window_base::MainWindowBase, public json_action::JsonAction<main_window_json_data::MainWindowJsonData> {
 
 		Q_OBJECT
 
@@ -94,20 +94,6 @@ namespace main_window_ctrl_base {
 			void updatePrompt(QWidget * widget);
 
 		protected:
-
-			/**
-			 * @brief tab commands and information
-			 *
-			 */
-			json_parser::JsonParser commands;
-
-			/**
-			 * @brief tab commands and information
-			 * key is the action in the JSON file
-			 * value is the class storing information about the action
-			 *
-			 */
-			std::map<std::string, std::unique_ptr<main_window_json_data::MainWindowJsonData>> actionData;
 
 			/**
 			 * @brief Function: virtual void createExtraShortcuts()
@@ -253,11 +239,15 @@ namespace main_window_ctrl_base {
 			void setAllShortcutEnabledProperty(const bool enabled);
 
 			/**
-			 * @brief Function: virtual void populateActionData()
+			 * @brief Function: virtual void addItemToActionData(std::unique_ptr<main_window_json_data::MainWindowJsonData> & data, const std::string & key, const std::string & item) override
 			 *
-			 * This function populates the action data map with the content from the json data
+			 * \param data: data to be updated
+			 * \param key: key the tiem belongs to
+			 * \param item: item to add
+			 *
+			 * This functions adds an item linked to the key to the data provided as input
 			 */
-			virtual void populateActionData();
+			virtual void addItemToActionData(std::unique_ptr<main_window_json_data::MainWindowJsonData> & data, const std::string & key, const std::string & item) override;
 
 			/**
 			 * @brief Function: std::string getShortcutKey(const std::string & value)
@@ -296,19 +286,6 @@ namespace main_window_ctrl_base {
 			virtual void connectSignals() final;
 
 			/**
-			 * @brief Function: const std::unique_ptr<main_window_json_data::MainWindowJsonData> & findDataWithFieldValue(const std::string & name, const void * value) const
-			 *
-			 * \param name: name of the name of the member as a string
-			 * \param value: value of the member
-			 *
-			 * \return JSON data having a matching field value
-			 *
-			 * This functions searching a data having a matching field value
-			 * This functions returns the first match or nullptr if no match
-			 */
-			const std::unique_ptr<main_window_json_data::MainWindowJsonData> & findDataWithFieldValue(const std::string & name, const void * value) const;
-
-			/**
 			 * @brief Function: void moveToCommandStateFromNonIdleState(const main_window_shared_types::state_e & windowState, const Qt::Key & key)
 			 *
 			 * \param nextState: state the window is requested to go into.
@@ -324,7 +301,6 @@ namespace main_window_ctrl_base {
 			 * this function resets the window state to IDLE and clear user input
 			 */
 			void resetWindowState();
-
 
 		private:
 			// Move and copy constructor

@@ -1,0 +1,20 @@
+{
+	"Suite" : {
+		"Name" : "suite",
+		"ShortCmd" : "s",
+		"LongCmd" : "suite",
+		"DefaultValue" : "all",
+		"NumberArguments" : 1,
+		"Help" : "Choose suite to run or all to run all suites. A list of comma separated arguments will allow to run multiple suites."
+	},
+
+	"Test" : {
+		"Name" : "test",
+		"ShortCmd" : "t",
+		"LongCmd" : "test",
+		"DefaultValue" : "all",
+		"NumberArguments" : 1,
+		"Help" : "Choose test to run or all to run all tests in the selected suites. A list of comma separated arguments will allow to run all tests in the selected suites."
+	}
+
+}

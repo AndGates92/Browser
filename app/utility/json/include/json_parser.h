@@ -21,7 +21,7 @@
  */
 
 Q_DECLARE_LOGGING_CATEGORY(jsonParserOverall)
-Q_DECLARE_LOGGING_CATEGORY(jsonParserFile)
+Q_DECLARE_LOGGING_CATEGORY(jsonParserFileContent)
 Q_DECLARE_LOGGING_CATEGORY(jsonParserValue)
 
 namespace json_parser {
@@ -90,15 +90,36 @@ namespace json_parser {
 			virtual ~JsonParser();
 
 			/**
-			 * @brief Function: QMap<QString, QString> findKeyValue(const QString & key) const
+			 * @brief Function: QMap<QString, QString> findKeyAllValues(const QString & key) const
 			 *
 			 * \param key: key to look for in the JSON file
 			 *
-			 * \return the pair key-value value th matches
+			 * \return a map of all the pairs key-value that match
 			 *
-			 * Finds all values matching the key in the JSON file
+			 * This function finds all values matching the key in the JSON file
 			 */
-			QMap<QString, QString> findKeyValue(const QString & key) const;
+			QMap<QString, QString> findKeyAllValues(const QString & key) const;
+
+			/**
+			 * @brief Function: const QString findKeyValue(const QString & treeRoot, const QString & key) const
+			 *
+			 * \param treeRoot: tree under which the key has to be searched
+			 * \param key: key to look for in the JSON file
+			 *
+			 * \return value of the key or an empty string if not found
+			 *
+			 * This function find the value of a key under a root tree
+			 */
+			const QString findKeyValue(const QString & treeRoot, const QString & key) const;
+
+			/**
+			 * @brief Function: const QStringList getJsonKeys() const
+			 *
+			 * \return a list of keys of the JSON file if it is of type object
+			 *
+			 * This function returns the key of a JSON file
+			 */
+			const QStringList getJsonKeys() const;
 
 		protected:
 

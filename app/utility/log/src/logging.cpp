@@ -6,6 +6,7 @@
  * @brief Logging functions
  */
 
+#include <mutex>
 
 #include <QtCore/QMessageLogContext>
 #include <QtCore/QTextStream>
@@ -55,11 +56,19 @@ namespace logging {
 		 *
 		 */
 		QFile logfile(QT_STRINGIFY(LOGFILE));
+
+		/**
+		 * @brief mutex to handle concurrent access to logfile
+		 *
+		 */
+		std::mutex logfile_mutex;
 	}
 
 }
 
 void logging::handler(QtMsgType type, const QMessageLogContext & context, const QString & message) {
+
+	logfile_mutex.lock();
 
 	QString info_str("");
 
@@ -121,12 +130,14 @@ void logging::handler(QtMsgType type, const QMessageLogContext & context, const 
 
 	logfile.close();
 
+	logfile_mutex.unlock();
+
 }
 
 void logging::set_default_category() {
 	QLoggingCategory * defaultMsgCategory = QLoggingCategory::defaultCategory();
 
-	// Fatal cannpt be disabled therefore not trying to enable it here
+	// Fatal cannot be disabled therefore not trying to enable it here
 	SetMsgLevel(QtDebugMsg, defaultMsgCategory)
 	SetMsgLevel(QtInfoMsg, defaultMsgCategory)
 	SetMsgLevel(QtWarningMsg, defaultMsgCategory)

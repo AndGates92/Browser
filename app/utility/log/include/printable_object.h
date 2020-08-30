@@ -47,14 +47,34 @@ namespace printable_object {
 			friend QString & operator<<(QString & str, const printable_object::PrintableObject & object);
 
 			/**
-			 * @brief Function: friend std::string & operator<<(std::string & str, const printable_object::PrintableObject & object)
+			 * @brief Function: friend QTextStream & operator<<(QTextStream & str, const printable_object::PrintableObject & object)
+			 *
+			 * \param str: string to append the object to
+			 * \param object: object to print
+			 *
+			 * object operator << overloading with QTextStream
+			 */
+			friend QTextStream & operator<<(QTextStream & str, const printable_object::PrintableObject & object);
+
+			/**
+			 * @brief Function: friend std::string operator<<(std::string str, const printable_object::PrintableObject & object)
 			 *
 			 * \param str: string to append the object to
 			 * \param object: object to print
 			 *
 			 * object operator << overloading with std::string
 			 */
-			friend std::string & operator<<(std::string & str, const printable_object::PrintableObject & object);
+			friend std::string operator<<(std::string str, const printable_object::PrintableObject & object);
+
+			/**
+			 * @brief Function: friend std::string operator+(std::string str, const printable_object::PrintableObject & object)
+			 *
+			 * \param str: string to append the object to
+			 * \param object: object to print
+			 *
+			 * object operator + overloading with std::string
+			 */
+			friend std::string operator+(std::string str, const printable_object::PrintableObject & object);
 
 		protected:
 			/**

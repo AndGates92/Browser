@@ -15,7 +15,7 @@
 #include "exception_macros.h"
 
 Q_LOGGING_CATEGORY(jsonParserOverall, "jsonParser.overall", MSG_TYPE_LEVEL)
-Q_LOGGING_CATEGORY(jsonParserFile, "jsonParser.file", MSG_TYPE_LEVEL)
+Q_LOGGING_CATEGORY(jsonParserFileContent, "jsonParser.file_content", MSG_TYPE_LEVEL)
 Q_LOGGING_CATEGORY(jsonParserValue, "jsonParser.value", MSG_TYPE_LEVEL)
 
 json_parser::JsonParser::JsonParser(QString fileName, QIODevice::OpenModeFlag openFlags) : json_wrapper::JsonWrapper::JsonWrapper(fileName,openFlags) {
@@ -69,7 +69,38 @@ json_parser::JsonParser::~JsonParser() {
 
 }
 
-QMap<QString, QString> json_parser::JsonParser::findKeyValue(const QString & key) const {
+const QStringList json_parser::JsonParser::getJsonKeys() const {
+	if (this->jsonContent.type() == QJsonValue::Object) {
+		const QJsonObject jsonObject(this->jsonContent.toObject());
+		const QStringList jsonKeys(jsonObject.keys());
+		return jsonKeys;
+	} else {
+		QEXCEPTION_ACTION(throw,  "JSON file content is of type " << this->jsonContent.type() << ". Unable to retrive key for a file content of type different from object");
+	}
+
+	return QStringList();
+}
+
+const QString json_parser::JsonParser::findKeyValue(const QString & treeRoot, const QString & key) const {
+
+	QString foundValue = QString();
+
+	// If it is a QJsonObject, get all keys otherwise throw an exception
+	if (this->jsonContent.type() == QJsonValue::Object) {
+		const QJsonObject jsonObject(this->jsonContent.toObject());
+		const QJsonValue value(jsonObject.value(treeRoot));
+		foundValue = this->searchJson(value, key);
+	} else {
+		QEXCEPTION_ACTION(throw,  "JSON file content is of type " << this->jsonContent.type() << ". Unable to retrive key for a file content of type different from object");
+	}
+
+	QINFO_PRINT(global_enums::qinfo_level_e::ZERO, jsonParserFileContent, "JSON tree root: " << treeRoot << " key: " << key << " value " << foundValue);
+
+	return foundValue;
+
+}
+
+QMap<QString, QString> json_parser::JsonParser::findKeyAllValues(const QString & key) const {
 
 	QMap<QString, QString> foundMap;
 
@@ -79,9 +110,8 @@ QMap<QString, QString> json_parser::JsonParser::findKeyValue(const QString & key
 		const QStringList jsonKeys (jsonObject.keys());
 		// Iterate over all key of the object
 		for (QStringList::const_iterator keyIter = jsonKeys.cbegin(); keyIter != jsonKeys.cend(); keyIter++) {
-			QINFO_PRINT(global_enums::qinfo_level_e::ZERO, jsonWrapperFileContent, "JSON key: " << *keyIter);
-			const QJsonValue value(jsonObject.value(*keyIter));
-			QString valueStr(this->searchJson(value, key));
+			QINFO_PRINT(global_enums::qinfo_level_e::ZERO, jsonParserFileContent, "Searching key: " << key << " under tree " << *keyIter);
+			QString valueStr(this->findKeyValue(*keyIter, key));
 
 			// Add value only if it is not empty
 			if (valueStr.isEmpty() == false) {
@@ -90,7 +120,7 @@ QMap<QString, QString> json_parser::JsonParser::findKeyValue(const QString & key
 			}
 		}
 	} else {
-		QEXCEPTION_ACTION(throw,  "JSON file content is of type " << this->jsonContent.type() << ". It was expected to be an object");
+		QEXCEPTION_ACTION(throw,  "JSON file content is of type " << this->jsonContent.type() << ". Unable to retrive key for a file content of type different from object");
 	}
 
 	return foundMap;
@@ -136,8 +166,16 @@ QString json_parser::JsonParser::searchJsonObject(const QJsonObject & object, co
 		QJsonValue value(iter.value());
 		if (value.isString() == true) {
 			valueStr = value.toString();
+		} else if (value.isDouble() == true) {
+			valueStr.setNum(value.toDouble(), 'f', 6);
+		} else if (value.isBool() == true) {
+			if (value.toBool() == true) {
+				valueStr = "true";
+			} else {
+				valueStr = "false";
+			}
 		} else {
-			QEXCEPTION_ACTION(throw,  "Found value is not of type string but of type " << value.type());
+			QEXCEPTION_ACTION(throw,  "Unable to convert value of type "  << value.type() << " of key " << key << " to string");
 		}
 		QINFO_PRINT(global_enums::qinfo_level_e::ZERO, jsonParserValue, "Found key " << key << " with value " << valueStr);
 	} else {

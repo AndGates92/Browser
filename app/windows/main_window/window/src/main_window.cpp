@@ -105,8 +105,6 @@ main_window::MainWindow::MainWindow(QWidget * parent, Qt::WindowFlags flags) : Q
 		"}"
 	);
 
-	this->setAttribute(Qt::WA_DeleteOnClose);
-
 	const QSize winSize(320,400);
 	this->resize(winSize);
 }
@@ -124,6 +122,8 @@ main_window::MainWindow::~MainWindow() {
 	}
 
 }
+
+CONST_GETTER(main_window::MainWindow::getCtrl, std::unique_ptr<main_window_ctrl_wrapper::MainWindowCtrlWrapper> &, this->ctrl)
 
 void main_window::MainWindow::customizeMainWidget() {
 	this->windowCore->mainWidget->setAttribute(Qt::WA_DeleteOnClose);

@@ -79,4 +79,3 @@ std::vector<std::string> global_functions::splitStringByDelimiter(const std::str
 
 	return subStrs;
 }
-

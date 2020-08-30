@@ -1,4 +1,4 @@
-# Makefile for machine learning C implementation
+# Makefile for browser C implementation
 
 DATE_FORMAT = %a %d %b %Y
 TIME_FORMAT = %H:%M:%S
@@ -9,6 +9,9 @@ TIMESTAMP = ${shell date "+${DATE_FORMAT} ${TIME_FORMAT}"}
 VERBOSE =
 VERBOSE_ECHO = @
 
+# tester suffix
+TESTER_SUFFIX = _tester
+
 RM = rm -rf
 MKDIR = mkdir -p
 MV = mv
@@ -18,12 +21,17 @@ PROJ_NAME ?= browser
 
 # Executable filename
 EXE_NAME ?= $(PROJ_NAME)
+TESTER_EXE_NAME ?= $(PROJ_NAME)$(TESTER_SUFFIX)
 
 # Dependency directory
 DEP_DIR ?= dep
 
 # Dependency filename
 DEPFILENAME ?= Makefile.deps
+
+# file name without extension that contain the main method
+APP_MAIN = main
+TESTER_MAIN = tester
 
 # Log directory
 LOG_DIR ?= log
@@ -107,6 +115,10 @@ else
 PROFILERFLAGS =
 endif
 
+ifeq ($(APP_MAIN), $(TESTER_MAIN))
+  $(warning application top level filename $(APP_MAIN) is the same as tester top level filename $(TESTER_MAIN))
+endif
+
 TESTFLAGS ?=
 CEXTRAFLAGS ?=
 BEHFLAGS ?=
@@ -117,28 +129,41 @@ DEPENDFLAG = -MT $@ -MP -MMD -MF $(DEPFILE)
 DEPFILE = $(patsubst %.$(OBJ_EXT),$(DEP_DIR)/%.$(DEP_EXT),$(notdir $@))
 
 # Defines
+QTTESTER_DEFINES = QT_TESTLIB_LIB QT_WIDGETS_LIB QT_GUI_LIB
 LOG_DEFINES = LOGFILE="$(LOGFILE)" VERBOSITY=$(VERBOSITY)
-DEFINE_LIST = $(LOG_DEFINES)
+DEFINE_LIST = $(LOG_DEFINES) \
+              $(QTTESTER_DEFINES)
 DFLAGS := $(foreach DEF, ${DEFINE_LIST}, -D${DEF})
 
 # Libraries
+THREADLIBS= pthread
 MATHLIBS= m
 GLUTLIBS = GLU GL glut
 QTLIBS = Qt5Widgets Qt5Gui Qt5Core Qt5WebEngineCore Qt5WebEngineWidgets
+QTTESTLIBS = Qt5Test
 X11LIBS = X11
-LIB_LIST = $(MATHLIBS) \
-           $(GLUTLIBS) \
-           $(QTLIBS)   \
-           $(X11LIBS)   \
+LIB_LIST = $(MATHLIBS)   \
+           $(THREADLIBS) \
+           $(GLUTLIBS)   \
+           $(QTLIBS)     \
+           $(QTTESTLIBS) \
+           $(X11LIBS)    \
            $(COVLIBS)
 LIBS := $(foreach LIB, ${LIB_LIST}, -l${LIB})
 
 # Directory containing source and header files
 APP_DIR = app
-TEST_DIR =
-CLASSCOMPONENT_DIR = $(sort $(dir $(wildcard $(APP_DIR)/*/)))
-COMPONENT_DIR = $(sort $(dir $(wildcard $(APP_DIR)/*/*/)))
-SUBCOMPONENT_DIR = $(sort $(dir $(wildcard $(APP_DIR)/*/*/*/)))
+TESTER_DIR = tester
+
+ROOT_DIR = ${APP_DIR} \
+           ${TESTER_DIR}
+
+CLASSCOMPONENT_DIR = $(foreach DIR, ${ROOT_DIR}, $(sort $(dir $(wildcard $(DIR)/*/))))
+COMPONENT_DIR = $(foreach DIR, ${CLASSCOMPONENT_DIR}, $(sort $(dir $(wildcard $(DIR)/*/))))
+SUBCOMPONENT_DIR = $(foreach DIR, ${COMPONENT_DIR}, $(sort $(dir $(wildcard $(DIR)/*/))))
+
+# Directory containing top level
+MAIN_DIR = top
 
 # Directory containing source files
 SRC_DIR = src
@@ -182,8 +207,7 @@ VALGRINDEXEARGS ?=
 
 DIR_LIST = $(CLASSCOMPONENT_DIR) \
            $(COMPONENT_DIR) \
-           $(SUBCOMPONENT_DIR) \
-           $(TEST_DIR)
+           $(SUBCOMPONENT_DIR)
 
 INCLUDE_PATH := $(foreach DIR, ${DIR_LIST}, $(DIR)$(INCLUDE_DIR))
 INCLUDE_HEADERS := $(foreach INCHEADER, ${INCLUDE_PATH}, -I${INCHEADER})
@@ -227,9 +251,26 @@ DEPS := $(patsubst %.$(OBJ_EXT),$(DEP_DIR)/%.$(DEP_EXT),$(notdir $(OBJS)))
 VPATH = $(SRC_PATH) \
         $(INCLUDE_PATH)
 
-# Coverage
+# Object directoy and files
 OBJS_DIR = $(MOC_OBJ_DIR) \
            $(OBJ_DIR)
+
+OBJS_LIST = $(MOC_OBJS) \
+            $(OBJS)
+
+APP_MAIN_OBJ = $(OBJ_DIR)/$(APP_MAIN).$(OBJ_EXT) \
+               $(MOC_OBJ_DIR)/$(APP_MAIN).$(MOC_OBJ_EXT)
+
+TESTER_MAIN_OBJ = $(OBJ_DIR)/$(TESTER_MAIN).$(OBJ_EXT) \
+                  $(MOC_OBJ_DIR)/$(TESTER_MAIN).$(MOC_OBJ_EXT)
+
+MAIN_OBJS = $(APP_MAIN_OBJ) \
+            $(TESTER_MAIN_OBJ)
+
+# Leave only one top level
+APP_OBJS = $(filter-out $(filter-out $(APP_MAIN_OBJ), $(MAIN_OBJS)), $(OBJS_LIST))
+TESTER_OBJS = $(filter-out $(filter-out $(TESTER_MAIN_OBJ), $(MAIN_OBJS)), $(OBJS_LIST))
+
 COVSEARCHDIR := $(foreach DIR, ${OBJS_DIR}, --object-directory ${DIR})
 COVOPTS = --all-blocks --branch-probabilities --function-summaries --demangled-names --unconditional-branches
 COVEXTRAOPTS ?=
@@ -242,13 +283,19 @@ ANALYSISPROFOPTS = --static-call-graph --display-unused-functions
 MISCPROFOPTS =
 PROFEXTRAOPTS ?=
 
-MAIN = main.$(SRC_EXT)
-EXE = $(BIN_DIR)/$(EXE_NAME)
+APP_EXE = $(BIN_DIR)/$(EXE_NAME)
+TESTER_EXE = $(BIN_DIR)/$(TESTER_EXE_NAME)
 PROFILE_DATA = gmon.out
 
 -include $(wildcard $(DEPS))
 
-$(EXE) : $(MOC_OBJS) $(OBJS)
+$(TESTER_EXE) : $(TESTER_OBJS)
+	$(MKDIR) $(LOG_DIR)
+	$(MKDIR) $(@D)
+	$(VERBOSE_ECHO)echo "[${TIMESTAMP}] Linking $(@F). Object files are: $^"
+	$(CC) $(ASANFLAGS) $(PROFILERFLAGS) -o $@ $(DFLAGS) $(BEHFLAGS) $(CEXTRAFLAGS) $^ $(LIB_DIR) $(LIBS)
+
+$(APP_EXE) : $(APP_OBJS)
 	$(MKDIR) $(LOG_DIR)
 	$(MKDIR) $(@D)
 	$(VERBOSE_ECHO)echo "[${TIMESTAMP}] Linking $(@F). Object files are: $^"
@@ -273,11 +320,11 @@ $(MOC_OBJ_DIR)/%.$(MOC_OBJ_EXT) : $(MOC_SRC_DIR)/%.$(MOC_SRC_EXT)
 # Work around to force generating the file
 $(DEPS) :
 
-all : $(EXE)
+all : $(APP_EXE) $(TESTER_EXE)
 	$(VERBOSE_ECHO)echo "[${TIMESTAMP}] Compile $(PROJ_NAME)"
 
-memleak : $(EXE)
-	valgrind $(MEMCHECKOPTS) $(VALGRINDTOOLOPTS) $(VALGRINDLOGOPTS) $(EXE) $(VALGRINDEXEARGS)
+memleak : $(APP_EXE)
+	valgrind $(MEMCHECKOPTS) $(VALGRINDTOOLOPTS) $(VALGRINDLOGOPTS) $(APP_EXE) $(VALGRINDEXEARGS)
 
 debug :
 	$(VERBOSE_ECHO)echo "[${TIMESTAMP}] Language: $(PROG_LANG)"
@@ -296,6 +343,7 @@ debug :
 	$(VERBOSE_ECHO)echo "[${TIMESTAMP}] --> OpenGL GLUT libraries: $(GLUTLIBS)"
 	$(VERBOSE_ECHO)echo "[${TIMESTAMP}] --> X11 libraries: $(X11LIBS)"
 	$(VERBOSE_ECHO)echo "[${TIMESTAMP}] --> Qt libraries: $(QTLIBS)"
+	$(VERBOSE_ECHO)echo "[${TIMESTAMP}] --> Qt Test libraries: $(QTTESTLIBS)"
 	$(VERBOSE_ECHO)echo "[${TIMESTAMP}] --> Coverage libraries: $(COVLIBS)"
 	$(VERBOSE_ECHO)echo "[${TIMESTAMP}] Compiler options:"
 	$(VERBOSE_ECHO)echo "[${TIMESTAMP}] --> Coverage options: $(GCOVOPTS)"
@@ -385,11 +433,11 @@ profiling:
 	$(VERBOSE_ECHO)echo "[${TIMESTAMP}] Profiler extra options $(PROFEXTRAOPTS)"
 	$(VERBOSE_ECHO)echo "[${TIMESTAMP}] Profiler search directory options $(PROFSEARCHDIR)"
 	$(MKDIR) $(PROFILE_DIR)
-	$(PROFILER) $(OUTPROFOPTS) $(INCLUDE_HEADERS) $(ANALYSISPROFOPTS) $(MISCPROFOPTS) $(PROFEXTRAOPTS) $(EXE) $(PROFILE_DATA) > $(PROFILE_DIR)/$(PROFILERLOGFILENAME)
+	$(PROFILER) $(OUTPROFOPTS) $(INCLUDE_HEADERS) $(ANALYSISPROFOPTS) $(MISCPROFOPTS) $(PROFEXTRAOPTS) $(APP_EXE) $(PROFILE_DATA) > $(PROFILE_DIR)/$(PROFILERLOGFILENAME)
 	$(MV) *$(ANNSRC_EXT) $(PROFILE_DIR)
 
 # phony target to avoid conflicts with a possible file with the same name
-.PHONY: all,clean,depend,$(EXE),debug,doc,memleak,coverage,profiling
+.PHONY: all,clean,depend,$(TESTER_EXE),$(APP_EXE),debug,doc,memleak,coverage,profiling
 
 # Prevent intermediate files from being deleted
 .SECONDARY: $(MOC_SRCS) $(MOC_OBJS) $(OBJS)
