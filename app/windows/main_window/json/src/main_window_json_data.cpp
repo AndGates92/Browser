@@ -12,6 +12,7 @@
 // Required by qInfo
 #include <QtCore/QtDebug>
 
+#include "qt_operator.h"
 #include "main_window_json_data.h"
 #include "global_constants.h"
 #include "logging_macros.h"
@@ -150,7 +151,7 @@ void main_window_json_data::MainWindowJsonData::addActionParameters(const std::s
 }
 
 void main_window_json_data::MainWindowJsonData::setValueFromMemberName(const std::string & name, const void * value) {
-	QEXCEPTION_ACTION_COND((this->actionParameters.find(name) == this->actionParameters.end()), throw, "Parameter " << QString::fromStdString(name) << " has not been found among the action parameters. In order to add it, please call void main_window_json_data::MainWindowJsonData::addActionParameters(const std::string & name)");
+	QEXCEPTION_ACTION_COND((this->actionParameters.find(name) == this->actionParameters.end()), throw, "Parameter " << name << " has not been found among the action parameters. In order to add it, please call void main_window_json_data::MainWindowJsonData::addActionParameters(const std::string & name)");
 
 	if (name.compare("Key") == 0) {
 		const std::string * const strPtr(static_cast<const std::string *>(value));
@@ -171,12 +172,12 @@ void main_window_json_data::MainWindowJsonData::setValueFromMemberName(const std
 		const std::string * const strPtr(static_cast<const std::string *>(value));
 		this->help = *strPtr;
 	} else {
-		QEXCEPTION_ACTION(throw, "Cannot find class member associated with parameter " << QString::fromStdString(name) << ".");
+		QEXCEPTION_ACTION(throw, "Cannot find class member associated with parameter " << name << ".");
 	}
 }
 
 const void * main_window_json_data::MainWindowJsonData::getValueFromMemberName(const std::string & name) const {
-	QEXCEPTION_ACTION_COND((this->actionParameters.find(name) == this->actionParameters.cend()), throw, "Parameter " << QString::fromStdString(name) << " has not been found among the action parameters. In order to add it, please call void main_window_json_data::MainWindowJsonData::addActionParameters(const std::string & name)");
+	QEXCEPTION_ACTION_COND((this->actionParameters.find(name) == this->actionParameters.cend()), throw, "Parameter " << name << " has not been found among the action parameters. In order to add it, please call void main_window_json_data::MainWindowJsonData::addActionParameters(const std::string & name)");
 
 	const void * value = nullptr;
 
@@ -193,14 +194,14 @@ const void * main_window_json_data::MainWindowJsonData::getValueFromMemberName(c
 	} else if (name.compare("Help") == 0) {
 		value = &(this->help);
 	} else {
-		QEXCEPTION_ACTION(throw, "Cannot find class member associated with parameter " << QString::fromStdString(name) << ".");
+		QEXCEPTION_ACTION(throw, "Cannot find class member associated with parameter " << name << ".");
 	}
 
 	return value;
 }
 
 bool main_window_json_data::MainWindowJsonData::isSameFieldValue(const std::string & name, const void * value) const {
-	QEXCEPTION_ACTION_COND((this->actionParameters.find(name) == this->actionParameters.cend()), throw, "Parameter " << QString::fromStdString(name) << " has not been found among the action parameters. In order to add it, please call void main_window_json_data::MainWindowJsonData::addActionParameters(const std::string & name)");
+	QEXCEPTION_ACTION_COND((this->actionParameters.find(name) == this->actionParameters.cend()), throw, "Parameter " << name << " has not been found among the action parameters. In order to add it, please call void main_window_json_data::MainWindowJsonData::addActionParameters(const std::string & name)");
 
 	bool isSame = false;
 
@@ -223,7 +224,7 @@ bool main_window_json_data::MainWindowJsonData::isSameFieldValue(const std::stri
 		const std::string * const strPtr(static_cast<const std::string *>(value));
 		isSame = (this->help.compare(*strPtr) == 0);
 	} else {
-		QEXCEPTION_ACTION(throw, "Cannot find class member associated with parameter " << QString::fromStdString(name) << ".");
+		QEXCEPTION_ACTION(throw, "Cannot find class member associated with parameter " << name << ".");
 	}
 
 	return isSame;

@@ -12,13 +12,14 @@
 #include <QtCore/QtGlobal>
 #include <QtWidgets/QShortcut>
 
-#include "main_window_ctrl_base.h"
-#include "main_window_shared_types.h"
-#include "key_sequence.h"
+#include "qt_operator.h"
 #include "global_enums.h"
 #include "global_functions.h"
 #include "global_qfunctions.h"
 #include "logging_macros.h"
+#include "main_window_shared_types.h"
+#include "main_window_ctrl_base.h"
+#include "key_sequence.h"
 
 Q_LOGGING_CATEGORY(mainWindowCtrlBaseOverall, "mainWindowCtrlBase.overall", MSG_TYPE_LEVEL)
 Q_LOGGING_CATEGORY(mainWindowCtrlBaseCheck, "mainWindowCtrlBase.check", MSG_TYPE_LEVEL)
@@ -72,7 +73,7 @@ void main_window_ctrl_base::MainWindowCtrlBase::printUserInput(const main_window
 }
 
 void main_window_ctrl_base::MainWindowCtrlBase::changeWindowStateWrapper(const std::unique_ptr<main_window_json_data::MainWindowJsonData> & commandData, const main_window_shared_types::state_postprocessing_e postprocess) {
-	QINFO_PRINT(global_enums::qinfo_level_e::ZERO, mainWindowCtrlBaseOverall,  "Command " << QString::fromStdString(commandData->getName()) << " (shortcut: " << commandData->getShortcut() << " long command: " << QString::fromStdString(commandData->getLongCmd()) << ") - moving to state " << commandData->getState());
+	QINFO_PRINT(global_enums::qinfo_level_e::ZERO, mainWindowCtrlBaseOverall,  "Command " << commandData->getName() << " (shortcut: " << commandData->getShortcut() << " long command: " << commandData->getLongCmd() << ") - moving to state " << commandData->getState());
 	this->changeWindowState(commandData->getState(), postprocess);
 }
 
@@ -196,7 +197,7 @@ std::string main_window_ctrl_base::MainWindowCtrlBase::getShortcutKey(const std:
 			// If string contains only 1 backslash
 			keyName.append("Key_Slash");
 		} else {
-			QEXCEPTION_ACTION(throw,  "Value in JSON file " << QString::fromStdString(value) << " is not alphanumeric and lowercase ");
+			QEXCEPTION_ACTION(throw,  "Value in JSON file " << value << " is not alphanumeric and lowercase ");
 		}
 	}
 
@@ -249,7 +250,7 @@ void main_window_ctrl_base::MainWindowCtrlBase::populateActionData() {
 
 			if (paramIter.compare("State") == 0) {
 				state = global_qfunctions::qStringToQEnum<main_window_shared_types::state_e>(QString::fromStdString(value));
-				QEXCEPTION_ACTION_COND(((int)state == -1), throw, "Unable to match state enumerator for state " << QString::fromStdString(value));
+				QEXCEPTION_ACTION_COND(((int)state == -1), throw, "Unable to match state enumerator for state " << value);
 				valuePtr = &state;
 			} else if (paramIter.compare("Shortcut") == 0) {
 				// Get key
@@ -271,7 +272,7 @@ void main_window_ctrl_base::MainWindowCtrlBase::populateActionData() {
 	});
 
 	for (const auto & data : this->actionData)
-		QINFO_PRINT(global_enums::qinfo_level_e::ZERO, mainWindowCtrlBaseUserInput,  "Data for key " << QString::fromStdString(data.first) << " is " << *(data.second));
+		QINFO_PRINT(global_enums::qinfo_level_e::ZERO, mainWindowCtrlBaseUserInput,  "Data for key " << data.first << " is " << *(data.second));
 
 }
 
@@ -389,7 +390,7 @@ const std::unique_ptr<main_window_json_data::MainWindowJsonData> & main_window_c
 		return found;
 	});
 
-	QEXCEPTION_ACTION_COND((data == this->actionData.cend()), throw, "Unable to find " << QString::fromStdString(name) << " in action data");
+	QEXCEPTION_ACTION_COND((data == this->actionData.cend()), throw, "Unable to find " << name << " in action data");
 	return data->second;
 }
 

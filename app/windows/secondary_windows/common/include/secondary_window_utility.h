@@ -23,6 +23,7 @@
 #include <QtWidgets/QCheckBox>
 #include <QtWidgets/QGroupBox>
 
+#include "qt_operator.h"
 #include "action.h"
 #include "key_sequence.h"
 #include "combo_box_item.h"
@@ -142,7 +143,7 @@ std::shared_ptr<QComboBox> secondary_window_utility::createComboBox(QWidget *par
 	comboBox->setFixedHeight(comboBox->fontMetrics().height() + 2 * comboBoxVSpacing);
 
 	for (auto item = items.cbegin(); item != items.cend(); item++) {
-		QINFO_PRINT(global_enums::qinfo_level_e::ZERO, secondaryWindowUtilityOverall,  "Adding item " << QString::fromStdString(item->getText()) << " to Combo Box");
+		QINFO_PRINT(global_enums::qinfo_level_e::ZERO, secondaryWindowUtilityOverall,  "Adding item " << item->getText() << " to Combo Box");
 		comboBox->addItem(item->getIcon(), QComboBox::tr(item->getText().c_str()), item->getUserData());
 		if (item->getAction() != nullptr) {
 			comboBox->addAction(const_cast<action::Action *>(item->getAction().get()));
