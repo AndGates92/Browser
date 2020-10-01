@@ -46,7 +46,7 @@ namespace main_window_ctrl {
 
 }
 
-main_window_ctrl::MainWindowCtrl::MainWindowCtrl(QWidget * parent, std::shared_ptr<main_window_core::MainWindowCore> core) : main_window_ctrl_base::MainWindowCtrlBase(parent, core, main_window_ctrl::commandFileFullPath) {
+main_window_ctrl::MainWindowCtrl::MainWindowCtrl(QWidget * parent, const std::shared_ptr<main_window_core::MainWindowCore> & core) : main_window_ctrl_base::MainWindowCtrlBase(parent, core, main_window_ctrl::commandFileFullPath) {
 
 	// Shortcuts
 	this->createExtraShortcuts();

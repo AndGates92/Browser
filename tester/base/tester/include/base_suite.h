@@ -53,7 +53,7 @@ namespace base_suite {
 			typedef std::set<std::shared_ptr<base_test::BaseTest>, base_test::TestPtrCompare> tests_container_t;
 
 			/**
-			 * @brief Function: explicit BaseSuite(const std::shared_ptr<base_factory::BaseFactory> testFactory, const std::string & suiteName, const tests_container_t & testList = tests_container_t())
+			 * @brief Function: explicit BaseSuite(const std::shared_ptr<base_factory::BaseFactory> & testFactory, const std::string & suiteName, const tests_container_t & testList = tests_container_t())
 			 *
 			 * \param testFactory: test factory
 			 * \param suiteName: name of the suite
@@ -61,7 +61,7 @@ namespace base_suite {
 			 *
 			 * Base suite constructor
 			 */
-			explicit BaseSuite(const std::shared_ptr<base_factory::BaseFactory> testFactory, const std::string & suiteName, const tests_container_t & testList = tests_container_t());
+			explicit BaseSuite(const std::shared_ptr<base_factory::BaseFactory> & testFactory, const std::string & suiteName, const tests_container_t & testList = tests_container_t());
 
 			/**
 			 * @brief Function: virtual ~BaseSuite()

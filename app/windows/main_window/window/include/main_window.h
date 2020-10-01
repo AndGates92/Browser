@@ -90,13 +90,13 @@ namespace main_window {
 			void closeWindow();
 
 			/**
-			 * @brief Function: void updateWidgetGeometry(std::shared_ptr<overlayed_widget::OverlayedWidget> widget)
+			 * @brief Function: void updateWidgetGeometry(const std::shared_ptr<overlayed_widget::OverlayedWidget> & widget)
 			 *
 			 * \param widget: widget that is requesting to update its geometry
 			 *
 			 * This function updates the geometry of an overlayed widget
 			 */
-			void updateWidgetGeometry(std::shared_ptr<overlayed_widget::OverlayedWidget> widget);
+			void updateWidgetGeometry(const std::shared_ptr<overlayed_widget::OverlayedWidget> & widget);
 
 		private:
 
@@ -178,13 +178,13 @@ namespace main_window {
 			void resizeEvent(QResizeEvent * event);
 
 			/**
-			 * @brief Function: void addOverlayedWidget(const std::shared_ptr<overlayed_widget::OverlayedWidget> widget)
+			 * @brief Function: void addOverlayedWidget(const std::shared_ptr<overlayed_widget::OverlayedWidget> & widget)
 			 *
 			 * \param widget: widget to add
 			 *
 			 * This function adds a widget to the overlayed widget list
 			 */
-			void addOverlayedWidget(const std::shared_ptr<overlayed_widget::OverlayedWidget> widget);
+			void addOverlayedWidget(const std::shared_ptr<overlayed_widget::OverlayedWidget> & widget);
 
 			/**
 			 * @brief Function: void populateOverlayedWidgetList()

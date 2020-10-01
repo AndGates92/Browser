@@ -96,40 +96,40 @@ namespace find_settings {
 			virtual ~FindSettings();
 
 			/**
-			 * @brief Function: bool getCaseSensitive() const
+			 * @brief Function: const bool & getCaseSensitive() const
 			 *
 			 * \return case sensitive search
 			 *
 			 * This function returns a boolean with the case sensitive flag
 			 */
-			bool getCaseSensitive() const;
+			const bool & getCaseSensitive() const;
 
 			/**
-			 * @brief Function: bool getMatchFullWord() const
+			 * @brief Function: const bool & getMatchFullWord() const
 			 *
 			 * \return match full word flag
 			 *
 			 * This function returns a boolean with the match full word flag
 			 */
-			bool getMatchFullWord() const;
+			const bool & getMatchFullWord() const;
 
 			/**
-			 * @brief Function: global_enums::offset_type_e getDirection() const
+			 * @brief Function: const global_enums::offset_type_e & getDirection() const
 			 *
 			 * \return search direction
 			 *
 			 * This function returns the direction of the search
 			 */
-			global_enums::offset_type_e getDirection() const;
+			const global_enums::offset_type_e & getDirection() const;
 
 			/**
-			 * @brief Function: const QString getText() const
+			 * @brief Function: const QString & getText() const
 			 *
 			 * \return text to search
 			 *
 			 * This function returns the text to search
 			 */
-			const QString getText() const;
+			const QString & getText() const;
 
 			/**
 			 * @brief Function: virtual const std::string print() const override

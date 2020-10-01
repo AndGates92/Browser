@@ -31,7 +31,7 @@ web_engine_view::WebEngineView::~WebEngineView() {
 	QINFO_PRINT(global_enums::qinfo_level_e::ZERO, webEngineViewOverall,  "Web engine view destructor");
 }
 
-void web_engine_view::WebEngineView::updatePage(const std::shared_ptr<web_engine_page::WebEnginePage> newPage) {
+void web_engine_view::WebEngineView::updatePage(const std::shared_ptr<web_engine_page::WebEnginePage> & newPage) {
 	this->currentPage = newPage;
 	this->setPage(this->currentPage.get());
 }

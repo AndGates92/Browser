@@ -270,7 +270,7 @@ void main_window_status_bar::MainWindowStatusBar::setSearchResultText(const QStr
 	this->searchResult->setText(text);
 }
 
-void main_window_status_bar::MainWindowStatusBar::showSearchResult(const bool showWidget) {
+void main_window_status_bar::MainWindowStatusBar::showSearchResult(const bool & showWidget) {
 	const bool isTextEmpty = this->searchResult->text().isEmpty();
 	if ((showWidget == true) && (isTextEmpty == false)) {
 		this->searchResult->show();

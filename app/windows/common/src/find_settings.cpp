@@ -94,10 +94,7 @@ const std::string find_settings::FindSettings::print() const {
 	return settings;
 }
 
-CONST_REF_SETTER(find_settings::FindSettings::setDirection, global_enums::offset_type_e, this->direction)
-BASE_GETTER(find_settings::FindSettings::getDirection, global_enums::offset_type_e, this->direction)
-CONST_REF_SETTER(find_settings::FindSettings::setCaseSensitive, bool, this->caseSensitive)
-BASE_GETTER(find_settings::FindSettings::getCaseSensitive, bool, this->caseSensitive)
-CONST_REF_SETTER(find_settings::FindSettings::setMatchFullWord, bool, this->matchFullWord)
-BASE_GETTER(find_settings::FindSettings::getMatchFullWord, bool, this->matchFullWord)
-CONST_REF_SETTER_GETTER(find_settings::FindSettings::setText, find_settings::FindSettings::getText, QString, this->text)
+CONST_SETTER_GETTER(find_settings::FindSettings::setDirection, find_settings::FindSettings::getDirection, global_enums::offset_type_e &, this->direction)
+CONST_SETTER_GETTER(find_settings::FindSettings::setCaseSensitive, find_settings::FindSettings::getCaseSensitive, bool &, this->caseSensitive)
+CONST_SETTER_GETTER(find_settings::FindSettings::setMatchFullWord, find_settings::FindSettings::getMatchFullWord, bool &, this->matchFullWord)
+CONST_SETTER_GETTER(find_settings::FindSettings::setText, find_settings::FindSettings::getText, QString &, this->text)

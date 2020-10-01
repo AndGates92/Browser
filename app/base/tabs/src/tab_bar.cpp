@@ -29,7 +29,7 @@ namespace tab_bar {
 
 }
 
-tab_bar::TabBar::TabBar(QWidget * parent, int width): QTabBar(parent) {
+tab_bar::TabBar::TabBar(QWidget * parent, const int & width): QTabBar(parent) {
 	QINFO_PRINT(global_enums::qinfo_level_e::ZERO, tabBarOverall,  "Tab bar constructor");
 
 	this->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Minimum);

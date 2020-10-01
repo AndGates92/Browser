@@ -15,7 +15,7 @@
 
 Q_LOGGING_CATEGORY(mainWindowBaseOverall, "mainWindowBase.overall", MSG_TYPE_LEVEL)
 
-main_window_base::MainWindowBase::MainWindowBase(std::shared_ptr<main_window_core::MainWindowCore> core) : windowCore(core) {
+main_window_base::MainWindowBase::MainWindowBase(const std::shared_ptr<main_window_core::MainWindowCore> & core) : windowCore(core) {
 
 	QINFO_PRINT(global_enums::qinfo_level_e::ZERO, mainWindowBaseOverall,  "Main window base classe constructor");
 }

@@ -241,7 +241,7 @@ void main_window_tab_widget::MainWindowTabWidget::findInTab(const int & index, c
 	tab->find(settings);
 }
 
-void main_window_tab_widget::MainWindowTabWidget::scrollTab(const int & index, const global_enums::offset_type_e direction) {
+void main_window_tab_widget::MainWindowTabWidget::scrollTab(const int & index, const global_enums::offset_type_e & direction) {
 	const std::shared_ptr<main_window_tab::MainWindowTab> tab = this->widget(index, true);
 	// Scroll tab
 	switch (direction) {
@@ -387,7 +387,7 @@ void main_window_tab_widget::MainWindowTabWidget::processHistoryItemChanged(cons
 	emit this->historyItemChanged(position);
 }
 
-void main_window_tab_widget::MainWindowTabWidget::processFindTextFinished(bool found) {
+void main_window_tab_widget::MainWindowTabWidget::processFindTextFinished(const bool & found) {
 	emit this->findTextFinished(found);
 }
 

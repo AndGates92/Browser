@@ -39,13 +39,13 @@ namespace main_window_page_data {
 
 }
 
-std::shared_ptr<main_window_page_data::MainWindowPageData> main_window_page_data::MainWindowPageData::makePageData(const main_window_shared_types::page_type_e & type, const std::string src, const void * data) {
+std::shared_ptr<main_window_page_data::MainWindowPageData> main_window_page_data::MainWindowPageData::makePageData(const main_window_shared_types::page_type_e & type, const std::string & src, const void * data) {
 	std::shared_ptr<main_window_page_data::MainWindowPageData> newData = std::make_shared<main_window_page_data::MainWindowPageData>(type, src, data);
 	QINFO_PRINT(global_enums::qinfo_level_e::ZERO, mainWindowPageDataOverall,  "Creating page data: " << newData.get());
 	return newData;
 }
 
-main_window_page_data::MainWindowPageData::MainWindowPageData(main_window_shared_types::page_type_e pageType, std::string src, const void * pageData): printable_object::PrintableObject(), type(pageType), source(src), data(pageData) {
+main_window_page_data::MainWindowPageData::MainWindowPageData(const main_window_shared_types::page_type_e & pageType, const std::string & src, const void * pageData): printable_object::PrintableObject(), type(pageType), source(src), data(pageData) {
 	QINFO_PRINT(global_enums::qinfo_level_e::ZERO, mainWindowPageDataOverall,  "Page Data structure constructor. Data " << *this);
 
 }
@@ -127,7 +127,7 @@ const std::string main_window_page_data::MainWindowPageData::print() const {
 }
 
 CONST_REF_SETTER(main_window_page_data::MainWindowPageData::setType, main_window_shared_types::page_type_e, this->type)
-BASE_GETTER(main_window_page_data::MainWindowPageData::getType, main_window_shared_types::page_type_e, this->type)
+CONST_GETTER(main_window_page_data::MainWindowPageData::getType, main_window_shared_types::page_type_e &, this->type)
 BASE_SETTER(main_window_page_data::MainWindowPageData::setData, const void *, this->data)
 CONST_PTR_GETTER(main_window_page_data::MainWindowPageData::getData, void, this->data)
 
@@ -142,4 +142,4 @@ bool main_window_page_data::MainWindowPageData::setSource(const std::string & ne
 	return hasChanged;
 }
 
-CONST_GETTER(main_window_page_data::MainWindowPageData::getSource, std::string, this->source)
+CONST_GETTER(main_window_page_data::MainWindowPageData::getSource, std::string &, this->source)

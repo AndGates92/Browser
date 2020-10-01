@@ -20,7 +20,7 @@
 // Categories
 Q_LOGGING_CATEGORY(mainWindowWebEngineViewOverall, "mainWindowWebEngineView.overall", MSG_TYPE_LEVEL)
 
-main_window_web_engine_view::MainWindowWebEngineView::MainWindowWebEngineView(QWidget * parent, const main_window_shared_types::page_type_e type, const QString & src, const void * data): web_engine_view::WebEngineView(parent) {
+main_window_web_engine_view::MainWindowWebEngineView::MainWindowWebEngineView(QWidget * parent, const main_window_shared_types::page_type_e & type, const QString & src, const void * data): web_engine_view::WebEngineView(parent) {
 	QINFO_PRINT(global_enums::qinfo_level_e::ZERO, mainWindowWebEngineViewOverall,  "Web engine view constructor");
 
 	// Use deleteLater to schedule a destruction event in the event loop

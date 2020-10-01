@@ -123,12 +123,12 @@ const std::string main_window_json_data::MainWindowJsonData::print() const {
 	return structInfo;
 }
 
-CONST_GETTER(main_window_json_data::MainWindowJsonData::getKey, std::string, this->key)
-CONST_GETTER(main_window_json_data::MainWindowJsonData::getName, std::string, this->name)
-BASE_GETTER(main_window_json_data::MainWindowJsonData::getState, main_window_shared_types::state_e, this->state)
-BASE_GETTER(main_window_json_data::MainWindowJsonData::getShortcut, int, this->shortcut)
-CONST_GETTER(main_window_json_data::MainWindowJsonData::getLongCmd, std::string, this->longCmd)
-CONST_GETTER(main_window_json_data::MainWindowJsonData::getHelp, std::string, this->help)
+CONST_GETTER(main_window_json_data::MainWindowJsonData::getKey, std::string &, this->key)
+CONST_GETTER(main_window_json_data::MainWindowJsonData::getName, std::string &, this->name)
+CONST_GETTER(main_window_json_data::MainWindowJsonData::getState, main_window_shared_types::state_e &, this->state)
+CONST_GETTER(main_window_json_data::MainWindowJsonData::getShortcut, int &, this->shortcut)
+CONST_GETTER(main_window_json_data::MainWindowJsonData::getLongCmd, std::string &, this->longCmd)
+CONST_GETTER(main_window_json_data::MainWindowJsonData::getHelp, std::string &, this->help)
 
 void main_window_json_data::MainWindowJsonData::setValueFromMemberName(const std::string & name, const void * value) {
 	QEXCEPTION_ACTION_COND((this->getParameters().find(name) == this->getParameters().end()), throw, "Parameter " << name << " has not been found among the action parameters. In order to add it, please call void main_window_json_data::MainWindowJsonData::addParameter(const std::string & name)");

@@ -39,7 +39,7 @@ namespace main_window_page_data {
 		public:
 
 			/**
-			 * @brief Function: static std::shared_ptr<main_window_page_data::MainWindowPageData> makePageData(const main_window_shared_types::page_type_e & type, const std::string src, const void * data)
+			 * @brief Function: static std::shared_ptr<main_window_page_data::MainWindowPageData> makePageData(const main_window_shared_types::page_type_e & type, const std::string & src, const void * data)
 			 *
 			 * \param type: type of the page
 			 * \param src: source of the page
@@ -47,10 +47,10 @@ namespace main_window_page_data {
 			 *
 			 * this function constructs a new instance of class MainWindowPageData
 			 */
-			static std::shared_ptr<main_window_page_data::MainWindowPageData> makePageData(const main_window_shared_types::page_type_e & type, const std::string src, const void * data);
+			static std::shared_ptr<main_window_page_data::MainWindowPageData> makePageData(const main_window_shared_types::page_type_e & type, const std::string & src, const void * data);
 
 			/**
-			 * @brief Function: MainWindowPageData(main_window_shared_types::page_type_e pageType, std::string src, const void * pageData = nullptr)
+			 * @brief Function: MainWindowPageData(const main_window_shared_types::page_type_e & pageType, const std::string & src, const void * pageData = nullptr)
 			 *
 			 * \param pageType: type of the page
 			 * \param src: source of the content of the page
@@ -58,7 +58,7 @@ namespace main_window_page_data {
 			 *
 			 * page data constructor
 			 */
-			explicit MainWindowPageData(main_window_shared_types::page_type_e pageType, std::string src, const void * pageData = nullptr);
+			explicit MainWindowPageData(const main_window_shared_types::page_type_e & pageType, const std::string & src, const void * pageData = nullptr);
 
 			// Move and copy constructor
 			/**
@@ -157,22 +157,22 @@ namespace main_window_page_data {
 			const void * data;
 
 			/**
-			 * @brief Function: const std::string getSource() const
+			 * @brief Function: const std::string & getSource() const
 			 *
 			 * \return source field of a page data object
 			 *
 			 * This functions returns the source field of a page data object
 			 */
-			const std::string getSource() const;
+			const std::string & getSource() const;
 
 			/**
-			 * @brief Function: main_window_shared_types::page_type_e getType() const
+			 * @brief Function: const main_window_shared_types::page_type_e & getType() const
 			 *
 			 * \return type field of a page data object
 			 *
 			 * This functions returns the type field of a page data object
 			 */
-			main_window_shared_types::page_type_e getType() const;
+			const main_window_shared_types::page_type_e & getType() const;
 
 			/**
 			 * @brief Function: const void * getData() const

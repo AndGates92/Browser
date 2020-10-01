@@ -64,7 +64,7 @@ namespace tab_widget {
 			virtual ~TabWidget();
 
 			/**
-			 * @brief Function: int addTab(std::shared_ptr<tab::Tab> newTab, const QString & label, const QIcon & icon = QIcon())
+			 * @brief Function: int addTab(const std::shared_ptr<tab::Tab> & newTab, const QString & label, const QIcon & icon = QIcon())
 			 *
 			 * \param newTab: widget to fill in
 			 * \param label: label of the tab
@@ -74,10 +74,10 @@ namespace tab_widget {
 			 *
 			 * add tab to tab widget
 			 */
-			int addTab(std::shared_ptr<tab::Tab> newTab, const QString & label, const QIcon & icon = QIcon());
+			int addTab(const std::shared_ptr<tab::Tab> & newTab, const QString & label, const QIcon & icon = QIcon());
 
 			/**
-			 * @brief Function: int insertTab(const int & index, std::shared_ptr<tab::Tab> newTab, const QString & label, const QIcon & icon = QIcon())
+			 * @brief Function: int insertTab(const int & index, const std::shared_ptr<tab::Tab> & newTab, const QString & label, const QIcon & icon = QIcon())
 			 *
 			 * \param index: index to insert tab to
 			 * \param newTab: widget to fill in
@@ -88,7 +88,7 @@ namespace tab_widget {
 			 *
 			 * add tab to tab widget at index index
 			 */
-			int insertTab(const int & index, std::shared_ptr<tab::Tab> newTab, const QString & label, const QIcon & icon = QIcon());
+			int insertTab(const int & index, const std::shared_ptr<tab::Tab> & newTab, const QString & label, const QIcon & icon = QIcon());
 
 			/**
 			 * @brief Function: void removeTab(const int & index)
@@ -131,13 +131,13 @@ namespace tab_widget {
 			void setTabBar(std::shared_ptr<tab_bar::TabBar> newTabBar);
 
 			/**
-			 * @brief Function: std::shared_ptr<tab_bar::TabBar> tabBar() const
+			 * @brief Function: const std::shared_ptr<tab_bar::TabBar> & tabBar() const
 			 *
 			 * \return tab bar linked to the tab widget
 			 *
 			 * This function returns the tab bar of the tab widget
 			 */
-			std::shared_ptr<tab_bar::TabBar> tabBar() const;
+			const std::shared_ptr<tab_bar::TabBar> & tabBar() const;
 
 			/**
 			 * @brief tab bar

@@ -49,14 +49,14 @@ namespace tab_bar {
 
 		public:
 			/**
-			 * @brief Function: explicit TabBar(QWidget * parent, int width = tab_bar::minWidth)
+			 * @brief Function: explicit TabBar(QWidget * parent, const int & width = tab_bar::minWidth)
 			 *
 			 * \param parent: parent widget
 			 * \param width: width of the tab bar
 			 *
 			 * Tab bar constructor
 			 */
-			explicit TabBar(QWidget * parent, int width = tab_bar::minWidth);
+			explicit TabBar(QWidget * parent, const int & width = tab_bar::minWidth);
 
 			/**
 			 * @brief Function: void setWdith(int newWidth)

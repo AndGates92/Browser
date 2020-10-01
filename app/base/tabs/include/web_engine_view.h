@@ -71,13 +71,13 @@ namespace web_engine_view {
 		protected:
 
 			/**
-			 * @brief Function: void updatePage(const std::shared_ptr<web_engine_page::WebEnginePage> newPage)
+			 * @brief Function: void updatePage(const std::shared_ptr<web_engine_page::WebEnginePage> & newPage)
 			 *
 			 * \param: new page to be used for this view
 			 *
 			 * This function changes the page of this web engine view
 			 */
-			void updatePage(const std::shared_ptr<web_engine_page::WebEnginePage> newPage);
+			void updatePage(const std::shared_ptr<web_engine_page::WebEnginePage> & newPage);
 
 		private:
 			/**

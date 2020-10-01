@@ -273,7 +273,7 @@ namespace tab {
 			 *
 			 * This function sets the tab view
 			 */
-			void setView(std::shared_ptr<web_engine_view::WebEngineView> value);
+			void setView(const std::shared_ptr<web_engine_view::WebEngineView> & value);
 
 			/**
 			 * @brief Function: std::shared_ptr<web_engine_view::WebEngineView> getView() const
@@ -285,13 +285,13 @@ namespace tab {
 			std::shared_ptr<web_engine_view::WebEngineView> getView() const;
 
 			/**
-			 * @brief Function: void setLoadManager(std::shared_ptr<tab_load_manager::TabLoadManager> value)
+			 * @brief Function: void setLoadManager(const std::shared_ptr<tab_load_manager::TabLoadManager> & value)
 			 *
 			 * \param value: load manager to use
 			 *
 			 * This function sets the load manager
 			 */
-			void setLoadManager(std::shared_ptr<tab_load_manager::TabLoadManager> value);
+			void setLoadManager(const std::shared_ptr<tab_load_manager::TabLoadManager> & value);
 
 			/**
 			 * @brief Function: std::shared_ptr<tab_load_manager::TabLoadManager> getLoadManager() const
@@ -303,13 +303,13 @@ namespace tab {
 			std::shared_ptr<tab_load_manager::TabLoadManager> getLoadManager() const;
 
 			/**
-			 * @brief Function: void setSearch(std::shared_ptr<tab_search::TabSearch> value)
+			 * @brief Function: void setSearch(const std::shared_ptr<tab_search::TabSearch> & value)
 			 *
 			 * \param value: search to use
 			 *
 			 * This function sets the tab search
 			 */
-			void setSearch(std::shared_ptr<tab_search::TabSearch> value);
+			void setSearch(const std::shared_ptr<tab_search::TabSearch> & value);
 
 			/**
 			 * @brief Function: std::shared_ptr<tab_search::TabSearch> getSearch() const
@@ -321,13 +321,13 @@ namespace tab {
 			std::shared_ptr<tab_search::TabSearch> getSearch() const;
 
 			/**
-			 * @brief Function: void setHistory(std::shared_ptr<tab_history::TabHistory> value)
+			 * @brief Function: void setHistory(const std::shared_ptr<tab_history::TabHistory> & value)
 			 *
 			 * \param value: history of the tab
 			 *
 			 * This function sets the history of the page
 			 */
-			void setHistory(std::shared_ptr<tab_history::TabHistory> value);
+			void setHistory(const std::shared_ptr<tab_history::TabHistory> & value);
 
 			/**
 			 * @brief Function: std::shared_ptr<tab_history::TabHistory> getHistory() const
@@ -339,13 +339,13 @@ namespace tab {
 			std::shared_ptr<tab_history::TabHistory> getHistory() const;
 
 			/**
-			 * @brief Function: void setSettings(std::shared_ptr<web_engine_settings::WebEngineSettings> value)
+			 * @brief Function: void setSettings(const std::shared_ptr<web_engine_settings::WebEngineSettings> & value)
 			 *
 			 * \param value: settings of the web page
 			 *
 			 * This function stores the pointer to the web page settings into web setting class
 			 */
-			void setSettings(std::shared_ptr<web_engine_settings::WebEngineSettings> value);
+			void setSettings(const std::shared_ptr<web_engine_settings::WebEngineSettings> & value);
 
 			/**
 			 * @brief Function: std::shared_ptr<web_engine_settings::WebEngineSettings> getSettings() const
@@ -357,13 +357,13 @@ namespace tab {
 			std::shared_ptr<web_engine_settings::WebEngineSettings> getSettings() const;
 
 			/**
-			 * @brief Function: void setScrollManager(std::shared_ptr<tab_scroll_manager::TabScrollManager> value)
+			 * @brief Function: void setScrollManager(const std::shared_ptr<tab_scroll_manager::TabScrollManager> & value)
 			 *
 			 * \param value: scroll manager to use
 			 *
 			 * This function sets the scroll manager
 			 */
-			void setScrollManager(std::shared_ptr<tab_scroll_manager::TabScrollManager> value);
+			void setScrollManager(const std::shared_ptr<tab_scroll_manager::TabScrollManager> & value);
 
 			/**
 			 * @brief Function: std::shared_ptr<tab_scroll_manager::TabScrollManager> getScrollManager() const

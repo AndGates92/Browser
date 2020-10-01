@@ -23,7 +23,7 @@ Q_LOGGING_CATEGORY(mainWindowCtrlBaseOverall, "mainWindowCtrlBase.overall", MSG_
 Q_LOGGING_CATEGORY(mainWindowCtrlBaseCheck, "mainWindowCtrlBase.check", MSG_TYPE_LEVEL)
 Q_LOGGING_CATEGORY(mainWindowCtrlBaseUserInput, "mainWindowCtrlBase.userInput", MSG_TYPE_LEVEL)
 
-main_window_ctrl_base::MainWindowCtrlBase::MainWindowCtrlBase(QWidget * parent, std::shared_ptr<main_window_core::MainWindowCore> core, QString jsonFileName) : QWidget(parent), main_window_base::MainWindowBase(core), json_action::JsonAction<main_window_json_data::MainWindowJsonData>(jsonFileName) {
+main_window_ctrl_base::MainWindowCtrlBase::MainWindowCtrlBase(QWidget * parent, const std::shared_ptr<main_window_core::MainWindowCore> & core, const QString & jsonFileName) : QWidget(parent), main_window_base::MainWindowBase(core), json_action::JsonAction<main_window_json_data::MainWindowJsonData>(jsonFileName) {
 	QINFO_PRINT(global_enums::qinfo_level_e::ZERO, mainWindowCtrlBaseOverall,  "Main window control base classe constructor");
 
 	this->populateActionData();
@@ -40,7 +40,7 @@ main_window_ctrl_base::MainWindowCtrlBase::~MainWindowCtrlBase() {
 	QINFO_PRINT(global_enums::qinfo_level_e::ZERO, mainWindowCtrlBaseOverall,  "Main window control base class destructor");
 }
 
-void main_window_ctrl_base::MainWindowCtrlBase::printUserInput(const main_window_shared_types::text_action_e action, const QString text) {
+void main_window_ctrl_base::MainWindowCtrlBase::printUserInput(const main_window_shared_types::text_action_e & action, const QString & text) {
 
 	QString textPrint = QString();
 	if (text == QString()) {
@@ -70,12 +70,12 @@ void main_window_ctrl_base::MainWindowCtrlBase::printUserInput(const main_window
 
 }
 
-void main_window_ctrl_base::MainWindowCtrlBase::changeWindowStateWrapper(const std::unique_ptr<main_window_json_data::MainWindowJsonData> & commandData, const main_window_shared_types::state_postprocessing_e postprocess) {
+void main_window_ctrl_base::MainWindowCtrlBase::changeWindowStateWrapper(const std::unique_ptr<main_window_json_data::MainWindowJsonData> & commandData, const main_window_shared_types::state_postprocessing_e & postprocess) {
 	QINFO_PRINT(global_enums::qinfo_level_e::ZERO, mainWindowCtrlBaseOverall,  "Command " << commandData->getName() << " (shortcut: " << commandData->getShortcut() << " long command: " << commandData->getLongCmd() << ") - moving to state " << commandData->getState());
 	this->changeWindowState(commandData->getState(), postprocess);
 }
 
-void main_window_ctrl_base::MainWindowCtrlBase::executeCommand(const QString & userCommand, const main_window_shared_types::state_postprocessing_e postprocess) {
+void main_window_ctrl_base::MainWindowCtrlBase::executeCommand(const QString & userCommand, const main_window_shared_types::state_postprocessing_e & postprocess) {
 	QINFO_PRINT(global_enums::qinfo_level_e::ZERO, mainWindowCtrlBaseOverall,  "Looking for command matching user input: " << userCommand);
 
 	std::for_each(this->actionData.cbegin(), this->actionData.cend(), [&] (const auto & data) {

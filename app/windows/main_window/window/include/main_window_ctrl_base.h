@@ -38,7 +38,7 @@ namespace main_window_ctrl_base {
 
 		public:
 			/**
-			 * @brief Function: explicit MainWindowCtrlBase(QWidget * parent, std::shared_ptr<main_window_core::MainWindowCore> core, QString jsonFileName = QString())
+			 * @brief Function: explicit MainWindowCtrlBase(QWidget * parent, const std::shared_ptr<main_window_core::MainWindowCore> & core, const QString & jsonFileName = QString())
 			 *
 			 * \param core: main window core
 			 * \param parent: parent windget
@@ -46,7 +46,7 @@ namespace main_window_ctrl_base {
 			 *
 			 * Main window control base class constructor
 			 */
-			explicit MainWindowCtrlBase(QWidget * parent, std::shared_ptr<main_window_core::MainWindowCore> core, QString jsonFileName = QString());
+			explicit MainWindowCtrlBase(QWidget * parent, const std::shared_ptr<main_window_core::MainWindowCore> & core, const QString & jsonFileName = QString());
 
 			/**
 			 * @brief Function: virtual ~MainWindowCtrlBase()
@@ -148,24 +148,24 @@ namespace main_window_ctrl_base {
 			virtual void postprocessWindowStateChange(const main_window_shared_types::state_e & previousState) = 0;
 
 			/**
-			 * @brief Function: virtual void executeCommand(const QString & userCommand, const main_window_shared_types::state_postprocessing_e postprocess) final
+			 * @brief Function: virtual void executeCommand(const QString & userCommand, const main_window_shared_types::state_postprocessing_e & postprocess) final
 			 *
 			 * \param userCommand: command to execute.
 			 * \param postprocess: flag to execute post process after chaning state.
 			 *
 			 * This function executes a command on a based on user input
 			 */
-			virtual void executeCommand(const QString & userCommand, const main_window_shared_types::state_postprocessing_e postprocess) final;
+			virtual void executeCommand(const QString & userCommand, const main_window_shared_types::state_postprocessing_e & postprocess) final;
 
 			/**
-			 * @brief Function: virtual void changeWindowStateWrapper(const std::unique_ptr<main_window_json_data::MainWindowJsonData> & commandData, const main_window_shared_types::state_postprocessing_e postprocess) final
+			 * @brief Function: virtual void changeWindowStateWrapper(const std::unique_ptr<main_window_json_data::MainWindowJsonData> & commandData, const main_window_shared_types::state_postprocessing_e & postprocess) final
 			 *
 			 * \param commandData: data relative to a command.
 			 * \param postprocess: flag to execute post process after chaning state.
 			 *
 			 * This function is a wrapper to change the state of window
 			 */
-			virtual void changeWindowStateWrapper(const std::unique_ptr<main_window_json_data::MainWindowJsonData> & commandData, const main_window_shared_types::state_postprocessing_e postprocess) final;
+			virtual void changeWindowStateWrapper(const std::unique_ptr<main_window_json_data::MainWindowJsonData> & commandData, const main_window_shared_types::state_postprocessing_e & postprocess) final;
 
 			/**
 			 * @brief Function: virtual void changeWindowState(const main_window_shared_types::state_e & nextState, const main_window_shared_types::state_postprocessing_e postprocess, const Qt::Key key = Qt::Key_unknown) final
@@ -209,14 +209,14 @@ namespace main_window_ctrl_base {
 			void updateInfo(const int & currIndex);
 
 			/**
-			 * @brief Function: void printUserInput(const main_window_shared_types::text_action_e action, const QString text = QString())
+			 * @brief Function: void printUserInput(const main_window_shared_types::text_action_e & action, const QString & text = QString())
 			 *
 			 * \param action: action to execute - valid values are: SET, APPEND and CLEAR
 			 * \param text: text to append to userText
 			 *
 			 * This function updates the user input label
 			 */
-			void printUserInput(const main_window_shared_types::text_action_e action, const QString text = QString());
+			void printUserInput(const main_window_shared_types::text_action_e & action, const QString & text = QString());
 
 			/**
 			 * @brief Function: QString tabInfoStr(const int & currIndex) const

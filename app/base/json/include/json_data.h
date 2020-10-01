@@ -47,11 +47,11 @@ namespace json_data {
 
 		protected:
 			/**
-			 * @brief Function: explicit JsonData(const parameter_t jsonParameters = parameter_t())
+			 * @brief Function: explicit JsonData(const parameter_t & jsonParameters = parameter_t())
 			 *
 			 * json data constructor
 			 */
-			explicit JsonData(const parameter_t jsonParameters = parameter_t());
+			explicit JsonData(const parameter_t & jsonParameters = parameter_t());
 
 			// Move and copy constructor
 			/**

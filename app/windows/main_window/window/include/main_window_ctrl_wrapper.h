@@ -43,14 +43,14 @@ namespace main_window_ctrl_wrapper {
 		public:
 
 			/**
-			 * @brief Function: explicit MainWindowCtrlWrapper(QWidget * parent, std::shared_ptr<main_window_core::MainWindowCore> core)
+			 * @brief Function: explicit MainWindowCtrlWrapper(QWidget * parent, const std::shared_ptr<main_window_core::MainWindowCore> & core)
 			 *
 			 * \param core: main window core
 			 * \param parent: parent windget
 			 *
 			 * Main window control constructor
 			 */
-			explicit MainWindowCtrlWrapper(QWidget * parent, std::shared_ptr<main_window_core::MainWindowCore> core);
+			explicit MainWindowCtrlWrapper(QWidget * parent, const std::shared_ptr<main_window_core::MainWindowCore> & core);
 
 			/**
 			 * @brief Function: virtual ~MainWindowCtrlWrapper()

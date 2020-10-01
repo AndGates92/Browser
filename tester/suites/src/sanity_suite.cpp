@@ -15,7 +15,7 @@
 
 Q_LOGGING_CATEGORY(sanitySuiteOverall, "sanitySuite.overall", MSG_TYPE_LEVEL)
 
-sanity_suite::SanitySuite::SanitySuite(const std::shared_ptr<base_factory::BaseFactory> testFactory, const base_suite::BaseSuite::tests_container_t & testList) : base_suite::BaseSuite(testFactory, "Sanity suite", testList) {
+sanity_suite::SanitySuite::SanitySuite(const std::shared_ptr<base_factory::BaseFactory> & testFactory, const base_suite::BaseSuite::tests_container_t & testList) : base_suite::BaseSuite(testFactory, "Sanity suite", testList) {
 
 }
 

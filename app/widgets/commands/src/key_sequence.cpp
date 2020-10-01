@@ -239,7 +239,7 @@ std::string key_sequence::KeySequence::toStdString(const QKeySequence::SequenceF
 	return keyQStr.toStdString();
 }
 
-CONST_GETTER(key_sequence::KeySequence::getSeqVec, QVector<QKeySequence>, this->keySeqVec)
+CONST_GETTER(key_sequence::KeySequence::getSeqVec, QVector<QKeySequence> &, this->keySeqVec)
 
 QKeySequence::SequenceMatch key_sequence::KeySequence::matches(const key_sequence::KeySequence & otherSeq) const {
 	const unsigned int thisSize = this->count();

@@ -48,7 +48,7 @@ void tab_load_manager::TabLoadManager::endLoading(const bool & success) {
 	}
 }
 
-void tab_load_manager::TabLoadManager::setStatus(tab_shared_types::load_status_e value) {
+void tab_load_manager::TabLoadManager::setStatus(const tab_shared_types::load_status_e & value) {
 	if (this->status != value) {
 		QINFO_PRINT(global_enums::qinfo_level_e::ZERO, tabLoadManagerStatus,  "tab load status changed from " << this->status << " to " << value);
 		this->status = value;
@@ -56,6 +56,6 @@ void tab_load_manager::TabLoadManager::setStatus(tab_shared_types::load_status_e
 	}
 }
 
-BASE_GETTER(tab_load_manager::TabLoadManager::getProgress, int, this->progress)
+CONST_GETTER(tab_load_manager::TabLoadManager::getProgress, int &, this->progress)
 
-BASE_GETTER(tab_load_manager::TabLoadManager::getStatus, tab_shared_types::load_status_e, this->status)
+CONST_GETTER(tab_load_manager::TabLoadManager::getStatus, tab_shared_types::load_status_e &, this->status)

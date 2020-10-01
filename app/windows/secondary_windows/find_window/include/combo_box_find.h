@@ -64,13 +64,13 @@ namespace combo_box_find {
 			ComboBoxFind & operator=(combo_box_find::ComboBoxFind && rhs);
 
 			/**
-			 * @brief Function: const QIcon getDirection() const
+			 * @brief Function: const global_enums::offset_type_e & getDirection() const
 			 *
 			 * \return the direction of the search of a combo box find
 			 *
 			 * This function returns the direction of the search of a combo box find
 			 */
-			global_enums::offset_type_e getDirection() const;
+			const global_enums::offset_type_e & getDirection() const;
 
 		protected:
 

@@ -22,7 +22,7 @@ bool base_suite::SuitePtrCompare::operator() (const std::shared_ptr<base_suite::
 	return isSame;
 }
 
-base_suite::BaseSuite::BaseSuite(const std::shared_ptr<base_factory::BaseFactory> testFactory, const std::string & suiteName, const base_suite::BaseSuite::tests_container_t & testList) : factory(testFactory), name(suiteName), tests(testList) {
+base_suite::BaseSuite::BaseSuite(const std::shared_ptr<base_factory::BaseFactory> & testFactory, const std::string & suiteName, const base_suite::BaseSuite::tests_container_t & testList) : factory(testFactory), name(suiteName), tests(testList) {
 
 	QEXCEPTION_ACTION_COND((this->name.empty() == true), throw, "Cannot create test suite with no name");
 	QINFO_PRINT(global_enums::qinfo_level_e::ZERO, baseSuiteOverall,  "Creating " << *this);

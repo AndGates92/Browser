@@ -62,13 +62,13 @@ namespace combo_box_item {
 			ComboBoxItem & operator=(combo_box_item::ComboBoxItem && rhs);
 
 			/**
-			 * @brief Function: const QIcon getIcon() const
+			 * @brief Function: const QIcon & getIcon() const
 			 *
 			 * \return the icon of a combo box item
 			 *
 			 * This function returns the icon of a combo box item
 			 */
-			const QIcon getIcon() const;
+			const QIcon & getIcon() const;
 
 			/**
 			 * @brief Function: const std::string getText() const
@@ -80,13 +80,13 @@ namespace combo_box_item {
 			const std::string getText() const;
 
 			/**
-			 * @brief Function: const QIcon getUserData() const
+			 * @brief Function: const QIcon & getUserData() const
 			 *
 			 * \return the user data of a combo box item
 			 *
 			 * This function returns the user data of a combo box item
 			 */
-			const QVariant getUserData() const;
+			const QVariant & getUserData() const;
 
 			/**
 			 * @brief Function: const std::unique_ptr<action::Action> & getAction() const

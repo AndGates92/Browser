@@ -42,7 +42,7 @@ namespace main_window_tab_scroll_manager {
 
 		public:
 			/**
-			 * @brief Function: explicit MainWindowTabScrollManager(QWidget * parent, std::weak_ptr<main_window_tab::MainWindowTab> browserTab, std::shared_ptr<tab_bar::TabBar> tabBar)
+			 * @brief Function: explicit MainWindowTabScrollManager(QWidget * parent, std::weak_ptr<main_window_tab::MainWindowTab> browserTab, const std::shared_ptr<tab_bar::TabBar> & tabBar)
 			 *
 			 * \param parent: parent widget
 			 * \param tabBar: tab bar
@@ -50,7 +50,7 @@ namespace main_window_tab_scroll_manager {
 			 *
 			 * Main Window Tab Scroll Manager constructor
 			 */
-			explicit MainWindowTabScrollManager(QWidget * parent, std::weak_ptr<main_window_tab::MainWindowTab> browserTab, std::shared_ptr<tab_bar::TabBar> tabBar);
+			explicit MainWindowTabScrollManager(QWidget * parent, std::weak_ptr<main_window_tab::MainWindowTab> browserTab, const std::shared_ptr<tab_bar::TabBar> & tabBar);
 
 			/**
 			 * @brief Function: virtual ~MainWindowTabScrollManager()

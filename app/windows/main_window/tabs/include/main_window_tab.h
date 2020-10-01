@@ -77,16 +77,16 @@ namespace main_window_tab {
 			std::shared_ptr<main_window_web_engine_page::MainWindowWebEnginePage> getPage() const;
 
 			/**
-			 * @brief Function: const QString getSearchText() const
+			 * @brief Function: const QString & getSearchText() const
 			 *
 			 * \return text searched by the user for this tab
 			 *
 			 * This function returns the text searched by the user for this tab
 			 */
-			const QString getSearchText() const;
+			const QString & getSearchText() const;
 
 			/**
-			 * @brief Function: void configure(std::shared_ptr<tab_bar::TabBar> tabBar, const main_window_shared_types::page_type_e type, const QString & src, const void * data)
+			 * @brief Function: void configure(const std::shared_ptr<tab_bar::TabBar> & tabBar, const main_window_shared_types::page_type_e & type, const QString & src, const void * data)
 			 *
 			 * \param type: tab type
 			 * \param src: source of the tab
@@ -95,7 +95,7 @@ namespace main_window_tab {
 			 *
 			 * This function configures the main window tab
 			 */
-			void configure(std::shared_ptr<tab_bar::TabBar> tabBar, const main_window_shared_types::page_type_e type, const QString & src, const void * data);
+			void configure(const std::shared_ptr<tab_bar::TabBar> & tabBar, const main_window_shared_types::page_type_e & type, const QString & src, const void * data);
 
 		signals:
 			/**
@@ -135,13 +135,13 @@ namespace main_window_tab {
 			void searchResultChanged(const main_window_tab_search::search_data_s & data) const;
 
 			/**
-			 * @brief Function: void findTextFinished(bool found)
+			 * @brief Function: void findTextFinished(const bool & found)
 			 *
 			 * \param found: boolean stating whether the text was found or not.
 			 *
 			 * This function is a signal to notify whether a search was successful
 			 */
-			void findTextFinished(bool found);
+			void findTextFinished(const bool & found);
 
 		protected:
 
@@ -160,13 +160,13 @@ namespace main_window_tab {
 			void connectSignals() override;
 
 			/**
-			 * @brief Function: void setSearchText(QString value)
+			 * @brief Function: void setSearchText(const QString & value)
 			 *
 			 * \param value: text searched by the user for this tab
 			 *
 			 * This function sets the text searched by the user for this tab
 			 */
-			void setSearchText(QString value);
+			void setSearchText(const QString & value);
 
 			/**
 			 * @brief Function: std::shared_ptr<main_window_web_engine_view::MainWindowWebEngineView> getView() const
@@ -223,13 +223,13 @@ namespace main_window_tab {
 			std::shared_ptr<main_window_tab_scroll_manager::MainWindowTabScrollManager> getScrollManager() const;
 
 			/**
-			 * @brief Function: void updateView(std::shared_ptr<main_window_web_engine_view::MainWindowWebEngineView> value)
+			 * @brief Function: void updateView(const std::shared_ptr<main_window_web_engine_view::MainWindowWebEngineView> & value)
 			 *
 			 * \param value: view to use
 			 *
 			 * This function updates the current view as well as informations derived from it
 			 */
-			void updateView(std::shared_ptr<main_window_web_engine_view::MainWindowWebEngineView> value);
+			void updateView(const std::shared_ptr<main_window_web_engine_view::MainWindowWebEngineView> & value);
 
 			/**
 			 * @brief Function: void reload() override

@@ -55,7 +55,7 @@ namespace main_window_web_engine_page {
 
 		public:
 			/**
-			 * @brief Function: explicit MainWindowWebEnginePage(QWidget * parent, const main_window_shared_types::page_type_e type, const QString & src, web_engine_profile::WebEngineProfile * profile, const void * data = nullptr)
+			 * @brief Function: explicit MainWindowWebEnginePage(QWidget * parent, const main_window_shared_types::page_type_e & type, const QString & src, web_engine_profile::WebEngineProfile * profile, const void * data = nullptr)
 			 *
 			 * \param type: page type
 			 * \param src: source of the page content
@@ -65,7 +65,7 @@ namespace main_window_web_engine_page {
 			 *
 			 * Main window web engine page constructor
 			 */
-			explicit MainWindowWebEnginePage(QWidget * parent, const main_window_shared_types::page_type_e type = main_window_shared_types::page_type_e::UNKNOWN, const QString & src = QString(), main_window_web_engine_profile::MainWindowWebEngineProfile * profile = main_window_web_engine_profile::MainWindowWebEngineProfile::defaultProfile(), const void * data = nullptr);
+			explicit MainWindowWebEnginePage(QWidget * parent, const main_window_shared_types::page_type_e & type = main_window_shared_types::page_type_e::UNKNOWN, const QString & src = QString(), main_window_web_engine_profile::MainWindowWebEngineProfile * profile = main_window_web_engine_profile::MainWindowWebEngineProfile::defaultProfile(), const void * data = nullptr);
 
 			/**
 			 * @brief Function: virtual ~MainWindowWebEnginePage()
@@ -84,13 +84,13 @@ namespace main_window_web_engine_page {
 			const std::shared_ptr<main_window_page_data::MainWindowPageData> & getData() const;
 
 			/**
-			 * @brief Function: main_window_shared_types::page_type_e getType() const
+			 * @brief Function: const main_window_shared_types::page_type_e & getType() const
 			 *
 			 * \return page type
 			 *
 			 * This function returns page type
 			 */
-			main_window_shared_types::page_type_e getType() const;
+			const main_window_shared_types::page_type_e & getType() const;
 
 			/**
 			 * @brief Function: const void * getExtraData() const
@@ -124,14 +124,14 @@ namespace main_window_web_engine_page {
 
 		private slots:
 			/**
-			 * @brief Function: void applyScrollRequest(const int x, const int y)
+			 * @brief Function: void applyScrollRequest(const int & x, const int & y)
 			 *
 			 * \param x: scroll on the x axis
 			 * \param y: scroll on the y axis
 			 *
 			 * This function honors the scroll position change request
 			 */
-			void applyScrollRequest(const int x, const int y);
+			void applyScrollRequest(const int & x, const int & y);
 
 		private:
 			/**
@@ -159,13 +159,13 @@ namespace main_window_web_engine_page {
 			void setBody();
 
 			/**
-			 * @brief Function: void setData(const std::shared_ptr<main_window_page_data::MainWindowPageData> newData)
+			 * @brief Function: void setData(const std::shared_ptr<main_window_page_data::MainWindowPageData> & newData)
 			 *
 			 * \param newData: source of the page
 			 *
 			 * This function changes all member of the page data associated with a web engine page object
 			 */
-			void setData(const std::shared_ptr<main_window_page_data::MainWindowPageData> newData);
+			void setData(const std::shared_ptr<main_window_page_data::MainWindowPageData> & newData);
 
 			/**
 			 * @brief Function: void setSource(const QString & src)

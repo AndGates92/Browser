@@ -47,7 +47,7 @@ namespace tab_scroll_manager {
 
 		public:
 			/**
-			 * @brief Function: explicit TabScrollManager(QWidget * parent, std::weak_ptr<tab::Tab> browserTab, std::shared_ptr<tab_bar::TabBar> tabBar)
+			 * @brief Function: explicit TabScrollManager(QWidget * parent, std::weak_ptr<tab::Tab> browserTab, const std::shared_ptr<tab_bar::TabBar> & tabBar)
 			 *
 			 * \param parent: parent widget
 			 * \param tabBar: tab bar
@@ -55,7 +55,7 @@ namespace tab_scroll_manager {
 			 *
 			 * Tab Scroll Manager constructor
 			 */
-			explicit TabScrollManager(QWidget * parent, std::weak_ptr<tab::Tab> browserTab, std::shared_ptr<tab_bar::TabBar> tabBar);
+			explicit TabScrollManager(QWidget * parent, std::weak_ptr<tab::Tab> browserTab, const std::shared_ptr<tab_bar::TabBar> & tabBar);
 
 			/**
 			 * @brief Function: virtual ~TabScrollManager()
@@ -206,14 +206,14 @@ namespace tab_scroll_manager {
 			virtual void execute(const tab_shared_types::direction_e & direction) override final;
 
 			/**
-			 * @brief Function: void checkScrollValue(const int & scroll, const QString direction) const
+			 * @brief Function: void checkScrollValue(const int & scroll, const QString & direction) const
 			 *
 			 * \param scroll: value of scrolling
 			 * \param direction: direction of scrolling
 			 *
 			 * This function checks that the value of scrolling is within the allowed range defined by tab_scroll_manager::minScrollPercentage and tab_scroll_manager::maxScrollPercentage
 			 */
-			void checkScrollValue(const int & scroll, const QString direction) const;
+			void checkScrollValue(const int & scroll, const QString & direction) const;
 
 			/**
 			 * @brief Function: virtual void canProcessRequests() const override

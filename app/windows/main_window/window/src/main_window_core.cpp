@@ -68,7 +68,7 @@ main_window_core::MainWindowCore::~MainWindowCore() {
 
 }
 
-QString main_window_core::MainWindowCore::getActionName() const {
+const QString main_window_core::MainWindowCore::getActionName() const {
 	QString actionNameText = QString();
 
 	const QString actionName(global_qfunctions::qEnumToQString<main_window_shared_types::state_list>(this->mainWindowState, true));
@@ -92,24 +92,12 @@ QString main_window_core::MainWindowCore::getActionName() const {
 }
 
 BASE_GETTER(main_window_core::MainWindowCore::getTabCount, int, this->tabs->count())
-
 BASE_GETTER(main_window_core::MainWindowCore::getCurrentTabIndex, int, this->tabs->currentIndex())
+CONST_SETTER_GETTER(main_window_core::MainWindowCore::setMainWindowState, main_window_core::MainWindowCore::getMainWindowState, main_window_shared_types::state_e &, this->mainWindowState)
+CONST_SETTER_GETTER(main_window_core::MainWindowCore::setOffsetType, main_window_core::MainWindowCore::getOffsetType, global_enums::offset_type_e &, this->offsetType)
+CONST_GETTER(main_window_core::MainWindowCore::getUserText, QString &, this->userText)
 
-BASE_GETTER(main_window_core::MainWindowCore::getMainWindowState, main_window_shared_types::state_e, this->mainWindowState)
-
-BASE_GETTER(main_window_core::MainWindowCore::getOffsetType, global_enums::offset_type_e, this->offsetType)
-
-CONST_GETTER(main_window_core::MainWindowCore::getUserText, QString, this->userText)
-
-void main_window_core::MainWindowCore::setMainWindowState(main_window_shared_types::state_e windowState) {
-	this->mainWindowState = windowState;
-}
-
-void main_window_core::MainWindowCore::setOffsetType(global_enums::offset_type_e type) {
-	this->offsetType = type;
-}
-
-void main_window_core::MainWindowCore::updateUserInput(const main_window_shared_types::text_action_e action, QString text) {
+void main_window_core::MainWindowCore::updateUserInput(const main_window_shared_types::text_action_e & action, const QString & text) {
 
 	switch (action) {
 		case main_window_shared_types::text_action_e::SET:

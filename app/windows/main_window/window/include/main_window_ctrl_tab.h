@@ -54,14 +54,14 @@ namespace main_window_ctrl_tab {
 		public:
 
 			/**
-			 * @brief Function: explicit MainWindowCtrlTab(QWidget * parent, std::shared_ptr<main_window_core::MainWindowCore> core)
+			 * @brief Function: explicit MainWindowCtrlTab(QWidget * parent, const std::shared_ptr<main_window_core::MainWindowCore> & core)
 			 *
 			 * \param core: main window core
 			 * \param parent: parent windget
 			 *
 			 * Main window tab control constructor
 			 */
-			explicit MainWindowCtrlTab(QWidget * parent, std::shared_ptr<main_window_core::MainWindowCore> core);
+			explicit MainWindowCtrlTab(QWidget * parent, const std::shared_ptr<main_window_core::MainWindowCore> & core);
 
 			/**
 			 * @brief Function: virtual ~MainWindowCtrlTab()
@@ -119,13 +119,13 @@ namespace main_window_ctrl_tab {
 			void historyBoundaryHit(const global_enums::element_position_e & position);
 
 			/**
-			 * @brief Function: void processSearchReturnValue(bool found)
+			 * @brief Function: void processSearchReturnValue(const bool & found)
 			 *
 			 * \param found: search result data.
 			 *
 			 * This function is a slot that receives a notification that the search data changed
 			 */
-			void processSearchReturnValue(bool found);
+			void processSearchReturnValue(const bool & found);
 
 			/**
 			 * @brief Function: void printSearchResult(const main_window_tab_search::search_data_s & data) const
@@ -174,13 +174,13 @@ namespace main_window_ctrl_tab {
 			void createContentPathTextFromSource(const main_window_shared_types::page_type_e & type, const QString & source);
 
 			/**
-			 * @brief Function: void setUpSearchFromMenu(const find_settings::FindSettings settings)
+			 * @brief Function: void setUpSearchFromMenu(const find_settings::FindSettings & settings)
 			 *
 			 * \param settings: search settings
 			 *
 			 * This function is the slot to trigger a find in the current tab
 			 */
-			void setUpSearchFromMenu(const find_settings::FindSettings settings);
+			void setUpSearchFromMenu(const find_settings::FindSettings & settings);
 
 		private:
 			/**

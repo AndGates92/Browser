@@ -42,7 +42,7 @@ combo_box_item::ComboBoxItem & combo_box_item::ComboBoxItem::operator=(combo_box
 	return *this;
 }
 
-CONST_GETTER(combo_box_item::ComboBoxItem::getIcon, QIcon, this->icon)
-CONST_GETTER(combo_box_item::ComboBoxItem::getUserData, QVariant, this->userData)
+CONST_GETTER(combo_box_item::ComboBoxItem::getIcon, QIcon &, this->icon)
+CONST_GETTER(combo_box_item::ComboBoxItem::getUserData, QVariant &, this->userData)
 CONST_GETTER(combo_box_item::ComboBoxItem::getAction, std::unique_ptr<action::Action> &, this->action)
 CONST_GETTER(combo_box_item::ComboBoxItem::getText, std::string, this->action->print())

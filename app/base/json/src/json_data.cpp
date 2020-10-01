@@ -22,7 +22,7 @@
 // Categories
 Q_LOGGING_CATEGORY(jsonDataOverall, "jsonData.overall", MSG_TYPE_LEVEL)
 
-json_data::JsonData::JsonData(const json_data::JsonData::parameter_t jsonParameters) : printable_object::PrintableObject(), parameters(jsonParameters) {
+json_data::JsonData::JsonData(const json_data::JsonData::parameter_t & jsonParameters) : printable_object::PrintableObject(), parameters(jsonParameters) {
 
 	QINFO_PRINT(global_enums::qinfo_level_e::ZERO, jsonDataOverall,  "JSON Data constructor. Data " << *this);
 

@@ -32,13 +32,13 @@ namespace main_window_base {
 		public:
 
 			/**
-			 * @brief Function: explicit MainWindowBase(std::shared_ptr<main_window_core::MainWindowCore> core)
+			 * @brief Function: explicit MainWindowBase(const std::shared_ptr<main_window_core::MainWindowCore> & core)
 			 *
 			 * \param core: main window core
 			 *
 			 * Main window base constructor
 			 */
-			explicit MainWindowBase(std::shared_ptr<main_window_core::MainWindowCore> core);
+			explicit MainWindowBase(const std::shared_ptr<main_window_core::MainWindowCore> & core);
 
 			// Move and copy constructor
 			/**

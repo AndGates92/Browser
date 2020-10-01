@@ -53,7 +53,7 @@ namespace elided_label {
 
 		public:
 			/**
-			 * @brief Function: explicit ElidedLabel(QWidget * parent, Qt::WindowFlags flags = Qt::WindowFlags(), QString textLabel = QString(), QPoint labelOrigin = QPoint(elided_label::labelOriginX,elided_label::labelOriginY), Qt::TextElideMode textElisionMode = Qt::ElideNone)
+			 * @brief Function: explicit ElidedLabel(QWidget * parent, Qt::WindowFlags flags = Qt::WindowFlags(), const QString & textLabel = QString(), const QPoint & labelOrigin = QPoint(elided_label::labelOriginX,elided_label::labelOriginY), const Qt::TextElideMode & textElisionMode = Qt::ElideNone)
 			 *
 			 * \param textLabel: text to write into QLabel
 			 * \param labelOrigin: origin of the rectangle the label is drawn into
@@ -63,7 +63,7 @@ namespace elided_label {
 			 *
 			 * Elided label constructor
 			 */
-			explicit ElidedLabel(QWidget * parent, Qt::WindowFlags flags = Qt::WindowFlags(), QString textLabel = QString(), QPoint labelOrigin = QPoint(elided_label::labelOriginX,elided_label::labelOriginY), Qt::TextElideMode textElisionMode = Qt::ElideNone);
+			explicit ElidedLabel(QWidget * parent, Qt::WindowFlags flags = Qt::WindowFlags(), const QString & textLabel = QString(), const QPoint & labelOrigin = QPoint(elided_label::labelOriginX,elided_label::labelOriginY), const Qt::TextElideMode & textElisionMode = Qt::ElideNone);
 
 			/**
 			 * @brief Function: virtual ~ElidedLabel()
@@ -73,22 +73,22 @@ namespace elided_label {
 			virtual ~ElidedLabel();
 
 			/**
-			 * @brief Function: Qt::TextElideMode getElisionMode() const
+			 * @brief Function: const Qt::TextElideMode & getElisionMode() const
 			 *
 			 * \return elision mode
 			 *
 			 * This functions returns the elision mode of a label
 			 */
-			Qt::TextElideMode getElisionMode() const;
+			const Qt::TextElideMode & getElisionMode() const;
 
 			/**
-			 * @brief Function: const QPoint getOrigin() const
+			 * @brief Function: const QPoint & getOrigin() const
 			 *
 			 * \param value: new origin
 			 *
 			 * This functions returns the origin of the label
 			 */
-			const QPoint getOrigin() const;
+			const QPoint & getOrigin() const;
 
 			/**
 			 * @brief Function: void setElisionMode(const Qt::TextElideMode & value)

@@ -160,58 +160,58 @@ namespace main_window_json_data {
 			virtual const std::string print() const override;
 
 			/**
-			 * @brief Function: const std::string getKey() const
+			 * @brief Function: const std::string & getKey() const
 			 *
 			 * \return key under which the JSON object for this action is
 			 *
 			 * This functions returns the key under which the JSON object for this action is
 			 */
-			const std::string getKey() const;
+			const std::string & getKey() const;
 
 			/**
-			 * @brief Function: const std::string getName() const
+			 * @brief Function: const std::string & getName() const
 			 *
 			 * \return name of the action
 			 *
 			 * This functions returns the name of the action
 			 */
-			const std::string getName() const;
+			const std::string & getName() const;
 
 			/**
-			 * @brief Function: main_window_shared_types::state_e getLongCmd() const
+			 * @brief Function: const main_window_shared_types::state_e & getLongCmd() const
 			 *
 			 * \return state the main window has to be put into to execute the action
 			 *
 			 * This functions returns the state the main window has to be put into to execute the action
 			 */
-			main_window_shared_types::state_e getState() const;
+			const main_window_shared_types::state_e & getState() const;
 
 			/**
-			 * @brief Function: int getShortcut() const
+			 * @brief Function: const int & getShortcut() const
 			 *
 			 * \return shortcut for the action
 			 *
 			 * This functions returns the shortcut for the action
 			 */
-			int getShortcut() const;
+			const int & getShortcut() const;
 
 			/**
-			 * @brief Function: const std::string getLongCmd() const
+			 * @brief Function: const std::string & getLongCmd() const
 			 *
 			 * \return long command for the action
 			 *
 			 * This functions returns the long command for the action
 			 */
-			const std::string getLongCmd() const;
+			const std::string & getLongCmd() const;
 
 			/**
-			 * @brief Function: const std::string getHelp() const
+			 * @brief Function: const std::string & getHelp() const
 			 *
 			 * \return help of the action
 			 *
 			 * This functions returns the help of the action
 			 */
-			const std::string getHelp() const;
+			const std::string & getHelp() const;
 
 			/**
 			 * @brief Function: virtual bool isSameFieldValue(const std::string & name, const void * value) const override

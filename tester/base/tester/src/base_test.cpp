@@ -138,7 +138,7 @@ const std::shared_ptr<base_factory::BaseFactory> & base_test::BaseTest::getFacto
 
 const std::shared_ptr<base_suite::BaseSuite> base_test::BaseTest::getSuite() const {
 	QEXCEPTION_ACTION_COND((this->suite.expired() == true), throw,  "Unable to get test suite bar for test " << QString::fromStdString(this->name) << " as it has already expired");
-	std::shared_ptr<base_suite::BaseSuite> testSuite = this->suite.lock();
+	const std::shared_ptr<base_suite::BaseSuite> testSuite = this->suite.lock();
 	QEXCEPTION_ACTION_COND((testSuite == nullptr), throw, "Test suite is a nullptr - test " << QString::fromStdString(this->name) << " must belong to suite");
 
 	return testSuite;
@@ -152,8 +152,8 @@ const std::unique_ptr<main_window_wrapper::MainWindowWrapper> & base_test::BaseT
 
 CONST_GETTER(base_test::BaseTest::getErrorMap, base_test::BaseTest::test_error_container_t &, this->errorMap)
 CONST_GETTER(base_test::BaseTest::getExpectedErrors, base_test::BaseTest::test_error_container_t &, this->expectedErrors)
-BASE_SETTER_GETTER(base_test::BaseTest::setState, base_test::BaseTest::getState, test_enums::test_state_e, this->state)
-BASE_GETTER(base_test::BaseTest::getStatus, test_enums::test_status_e, this->status)
+CONST_SETTER_GETTER(base_test::BaseTest::setState, base_test::BaseTest::getState, test_enums::test_state_e &, this->state)
+CONST_GETTER(base_test::BaseTest::getStatus, test_enums::test_status_e &, this->status)
 
 void base_test::BaseTest::addExpectedError(const base_test::BaseTest::test_error_container_t & errors) {
 	for (auto it = errors.cbegin(); it != errors.cend(); it++) {

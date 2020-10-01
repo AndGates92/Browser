@@ -77,31 +77,31 @@ namespace main_window_core {
 			// Getters
 			// Control members
 			/**
-			 * Function: main_window_shared_types::state_e getMainWindowState() const
+			 * Function: const main_window_shared_types::state_e & getMainWindowState() const
 			 *
 			 * \return the state of the main window
 			 *
 			 * This function returns the state of the main window
 			 */
-			main_window_shared_types::state_e getMainWindowState() const;
+			const main_window_shared_types::state_e & getMainWindowState() const;
 
 			/**
-			 * Function: global_enums::offset_type_e getOffsetType() const
+			 * Function: const global_enums::offset_type_e & getOffsetType() const
 			 *
 			 * \return the type of value of movements in tab bar
 			 *
 			 * This function returns the type of value of movements in the tab bar
 			 */
-			global_enums::offset_type_e getOffsetType() const;
+			const global_enums::offset_type_e & getOffsetType() const;
 
 			/**
-			 * Function: const QString getUserText() const
+			 * Function: const QString & getUserText() const
 			 *
 			 * \return the text typed by the user
 			 *
 			 * This function returns the text typed by the user
 			 */
-			const QString getUserText() const;
+			const QString & getUserText() const;
 
 			/**
 			 * @brief Function: int getTabCount() const
@@ -113,13 +113,13 @@ namespace main_window_core {
 			int getTabCount() const;
 
 			/**
-			 * @brief Function: QString getActionName() const
+			 * @brief Function: const QString getActionName() const
 			 *
 			 * \return string with the text to display as action
 			 *
 			 * Get action name to display in the userInputText label
 			 */
-			QString getActionName() const;
+			const QString getActionName() const;
 
 			/**
 			 * @brief Function: int getCurrentTabIndex() const
@@ -132,32 +132,32 @@ namespace main_window_core {
 
 			// Setters
 			/**
-			 * Function: main_window_shared_types::state_e setMainWindowState(main_window_shared_types::state_e windowState)
+			 * Function: main_window_shared_types::state_e setMainWindowState(const main_window_shared_types::state_e & value)
 			 *
-			 * \param windowState: state of the main window
+			 * \param value: state of the main window
 			 *
 			 * This function returns the state of the main window
 			 */
-			void setMainWindowState(main_window_shared_types::state_e windowState);
+			void setMainWindowState(const main_window_shared_types::state_e & value);
 
 			/**
-			 * Function: void setOffsetType(global_enums::offset_type_e type)
+			 * Function: void setOffsetType(const global_enums::offset_type_e & value)
 			 *
-			 * \param type: type of value of movements in tab bar
+			 * \param value: type of value of movements in tab bar
 			 *
 			 * This function returns the type of value of movements in the tab bar
 			 */
-			void setOffsetType(global_enums::offset_type_e type);
+			void setOffsetType(const global_enums::offset_type_e & value);
 
 			/**
-			 * @brief Function: void updateUserInput(const main_window_shared_types::text_action_e action, QString text = QString())
+			 * @brief Function: void updateUserInput(const main_window_shared_types::text_action_e & action, const QString & text = QString())
 			 *
 			 * \param action: action to execute - valid values are: SET, APPEND and CLEAR
 			 * \param text: text to append to userText
 			 *
 			 * This function updates the user input string
 			 */
-			void updateUserInput(const main_window_shared_types::text_action_e action, QString text = QString());
+			void updateUserInput(const main_window_shared_types::text_action_e & action, const QString & text = QString());
 
 			// main widget
 			/**

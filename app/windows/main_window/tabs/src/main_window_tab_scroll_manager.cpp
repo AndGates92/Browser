@@ -18,7 +18,7 @@
 // Categories
 Q_LOGGING_CATEGORY(mainWindowTabScrollManagerOverall, "mainWindowTabScrollManager.overall", MSG_TYPE_LEVEL)
 
-main_window_tab_scroll_manager::MainWindowTabScrollManager::MainWindowTabScrollManager(QWidget * parent, std::weak_ptr<main_window_tab::MainWindowTab> browserTab, std::shared_ptr<tab_bar::TabBar> tabBar): tab_scroll_manager::TabScrollManager(parent, browserTab, tabBar) {
+main_window_tab_scroll_manager::MainWindowTabScrollManager::MainWindowTabScrollManager(QWidget * parent, std::weak_ptr<main_window_tab::MainWindowTab> browserTab, const std::shared_ptr<tab_bar::TabBar> & tabBar): tab_scroll_manager::TabScrollManager(parent, browserTab, tabBar) {
 	QINFO_PRINT(global_enums::qinfo_level_e::ZERO, mainWindowTabScrollManagerOverall,  "MainWindowTabScrollManager constructor");
 
 }

@@ -228,14 +228,14 @@ namespace main_window_tab_widget {
 			void findInTab(const int & index, const find_settings::FindSettings & settings);
 
 			/**
-			 * @brief Function: void scrollTab(const int & index, const global_enums::offset_type_e direction)
+			 * @brief Function: void scrollTab(const int & index, const global_enums::offset_type_e & direction)
 			 *
 			 * \param index: index of the tab
 			 * \param direction: direction of scrolling
 			 *
 			 * This function scroll the tab in the direction provided as argument
 			 */
-			void scrollTab(const int & index, const global_enums::offset_type_e direction);
+			void scrollTab(const int & index, const global_enums::offset_type_e & direction);
 
 			/**
 			 * @brief Function: void goToHistoryItem(const int & index, const main_window_shared_types::navigation_type_e & direction)
@@ -279,13 +279,13 @@ namespace main_window_tab_widget {
 			void tabNearlyConnected(const int & index);
 
 			/**
-			 * @brief Function: void numberTabsChanged(int index)
+			 * @brief Function: void numberTabsChanged(const int & index)
 			 *
 			 * \param index: index of the current tab
 			 *
 			 * This function is a signal to notify that the number of tabs has changed
 			 */
-			void numberTabsChanged(int index);
+			void numberTabsChanged(const int & index);
 
 			/**
 			 * @brief Function: void tabSourceChanged(const main_window_shared_types::page_type_e & type, const QString & source)
@@ -326,13 +326,13 @@ namespace main_window_tab_widget {
 			void searchResultChanged(const main_window_tab_search::search_data_s & data) const;
 
 			/**
-			 * @brief Function: void findTextFinished(bool found)
+			 * @brief Function: void findTextFinished(const bool & found)
 			 *
 			 * \param found: boolean stating whether the text was found or not.
 			 *
 			 * This function is a signal to notify whether a search was successful
 			 */
-			void findTextFinished(bool found);
+			void findTextFinished(const bool & found);
 
 			/**
 			 * @brief Function: void historyItemChanged(const global_enums::element_position_e & position)
@@ -501,7 +501,7 @@ namespace main_window_tab_widget {
 			 *
 			 * This function is a slot that receives a notification that the search data changed
 			 */
-			void processFindTextFinished(bool found);
+			void processFindTextFinished(const bool & found);
 
 			/**
 			 * @brief Function: void processHistoryItemChanged(const global_enums::element_position_e & position)

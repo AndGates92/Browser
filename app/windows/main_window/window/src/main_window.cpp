@@ -258,14 +258,14 @@ void main_window::MainWindow::closeWindow() {
 void main_window::MainWindow::resizeEvent(QResizeEvent *event) {
 	QINFO_PRINT(global_enums::qinfo_level_e::ZERO, mainWindowOverall,  "Resizing window from size " << event->oldSize() << " to size " << event->size());
 
-	for (std::list<std::shared_ptr<overlayed_widget::OverlayedWidget>>::iterator widget = this->overlayedWidgets.begin(); widget != this->overlayedWidgets.end(); widget++) {
-		this->updateWidgetGeometry(*widget);
+	for (const std::shared_ptr<overlayed_widget::OverlayedWidget> & widget : this->overlayedWidgets) {
+		this->updateWidgetGeometry(widget);
 	}
 
 	QMainWindow::resizeEvent(event);
 }
 
-void main_window::MainWindow::addOverlayedWidget(const std::shared_ptr<overlayed_widget::OverlayedWidget> widget) {
+void main_window::MainWindow::addOverlayedWidget(const std::shared_ptr<overlayed_widget::OverlayedWidget> & widget) {
 	this->overlayedWidgets.push_back(widget);
 }
 
@@ -273,7 +273,7 @@ void main_window::MainWindow::populateOverlayedWidgetList() {
 	this->addOverlayedWidget(std::static_pointer_cast<overlayed_widget::OverlayedWidget>(this->windowCore->popup));
 }
 
-void main_window::MainWindow::updateWidgetGeometry(std::shared_ptr<overlayed_widget::OverlayedWidget> widget) {
+void main_window::MainWindow::updateWidgetGeometry(const std::shared_ptr<overlayed_widget::OverlayedWidget> & widget) {
 
 	// Widget information
 	const QSize widgetSizeHint(widget->sizeHint());

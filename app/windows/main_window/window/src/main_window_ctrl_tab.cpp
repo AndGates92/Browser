@@ -69,7 +69,7 @@ namespace main_window_ctrl_tab {
 
 }
 
-main_window_ctrl_tab::MainWindowCtrlTab::MainWindowCtrlTab(QWidget * parent, std::shared_ptr<main_window_core::MainWindowCore> core) : main_window_ctrl_base::MainWindowCtrlBase(parent, core, main_window_ctrl_tab::commandFileFullPath), findSettings(QString(), global_enums::offset_type_e::IDLE, false, false) {
+main_window_ctrl_tab::MainWindowCtrlTab::MainWindowCtrlTab(QWidget * parent, const std::shared_ptr<main_window_core::MainWindowCore> & core) : main_window_ctrl_base::MainWindowCtrlBase(parent, core, main_window_ctrl_tab::commandFileFullPath), findSettings(QString(), global_enums::offset_type_e::IDLE, false, false) {
 
 	// Shortcuts
 	this->createExtraShortcuts();
@@ -770,7 +770,7 @@ void main_window_ctrl_tab::MainWindowCtrlTab::historyBoundaryHit(const global_en
 
 }
 
-void main_window_ctrl_tab::MainWindowCtrlTab::processSearchReturnValue(bool found) {
+void main_window_ctrl_tab::MainWindowCtrlTab::processSearchReturnValue(const bool & found) {
 
 	if (found == false) {
 		std::shared_ptr<main_window_popup_container::MainWindowPopupContainer> container = this->windowCore->popup;
@@ -821,7 +821,7 @@ void main_window_ctrl_tab::MainWindowCtrlTab::createOpenPrompt() {
 	QEXCEPTION_ACTION_COND((success == false), throw, "Unable to show OpenFile popup");
 }
 
-void main_window_ctrl_tab::MainWindowCtrlTab::setUpSearchFromMenu(const find_settings::FindSettings settings) {
+void main_window_ctrl_tab::MainWindowCtrlTab::setUpSearchFromMenu(const find_settings::FindSettings & settings) {
 	this->findSettings = settings;
 
 	main_window_shared_types::state_e windowState = main_window_shared_types::state_e::IDLE;

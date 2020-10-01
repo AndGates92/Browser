@@ -35,14 +35,14 @@ namespace sanity_suite {
 
 		public:
 			/**
-			 * @brief Function: explicit SanitySuite(const std::shared_ptr<base_factory::BaseFactory> testFactory, const base_suite::BaseSuite::tests_container_t & testList = base_suite::BaseSuite::tests_container_t())
+			 * @brief Function: explicit SanitySuite(const std::shared_ptr<base_factory::BaseFactory> & testFactory, const base_suite::BaseSuite::tests_container_t & testList = base_suite::BaseSuite::tests_container_t())
 			 *
 			 * \param testFactory: test factory
 			 * \param testList: initial collection of tests
 			 *
 			 * Sanity suite constructor
 			 */
-			explicit SanitySuite(const std::shared_ptr<base_factory::BaseFactory> testFactory, const base_suite::BaseSuite::tests_container_t & testList = base_suite::BaseSuite::tests_container_t());
+			explicit SanitySuite(const std::shared_ptr<base_factory::BaseFactory> & testFactory, const base_suite::BaseSuite::tests_container_t & testList = base_suite::BaseSuite::tests_container_t());
 
 			/**
 			 * @brief Function: virtual ~SanitySuite()

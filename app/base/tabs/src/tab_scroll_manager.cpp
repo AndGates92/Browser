@@ -47,7 +47,7 @@ namespace tab_scroll_manager {
 
 }
 
-tab_scroll_manager::TabScrollManager::TabScrollManager(QWidget * parent, std::weak_ptr<tab::Tab> browserTab, std::shared_ptr<tab_bar::TabBar> tabBar): tab_component_widget::TabComponentWidget<tab_shared_types::direction_e>(parent, browserTab), horizontalScroll(0), verticalScroll(0), scrollPosition(QPointF(0.0, 0.0)), contentsSize(QSizeF(0.0, 0.0)), bar(tabBar) {
+tab_scroll_manager::TabScrollManager::TabScrollManager(QWidget * parent, std::weak_ptr<tab::Tab> browserTab, const std::shared_ptr<tab_bar::TabBar> & tabBar): tab_component_widget::TabComponentWidget<tab_shared_types::direction_e>(parent, browserTab), horizontalScroll(0), verticalScroll(0), scrollPosition(QPointF(0.0, 0.0)), contentsSize(QSizeF(0.0, 0.0)), bar(tabBar) {
 	QINFO_PRINT(global_enums::qinfo_level_e::ZERO, tabScrollManagerOverall,  "TabScrollManager constructor");
 }
 
@@ -116,7 +116,7 @@ const int & tab_scroll_manager::TabScrollManager::getHorizontalScrollPercentage(
 	return this->horizontalScroll;
 }
 
-void tab_scroll_manager::TabScrollManager::checkScrollValue(const int & scroll, const QString direction) const {
+void tab_scroll_manager::TabScrollManager::checkScrollValue(const int & scroll, const QString & direction) const {
 	QEXCEPTION_ACTION_COND(((scroll < tab_scroll_manager::minScrollPercentage) || (scroll > tab_scroll_manager::maxScrollPercentage)), throw,  "Invalid value of " << direction << " scroll: " << scroll << ". Valid range is between " << tab_scroll_manager::minScrollPercentage << " and " << tab_scroll_manager::maxScrollPercentage);
 }
 

@@ -18,7 +18,7 @@
 // Categories
 Q_LOGGING_CATEGORY(mainWindowWebEnginePageOverall, "mainWindowWebEnginePage.overall", MSG_TYPE_LEVEL)
 
-main_window_web_engine_page::MainWindowWebEnginePage::MainWindowWebEnginePage(QWidget * parent, const main_window_shared_types::page_type_e type, const QString & src, main_window_web_engine_profile::MainWindowWebEngineProfile * profile, const void * data): web_engine_page::WebEnginePage(parent, profile), pageData(main_window_page_data::MainWindowPageData::makePageData(type, src.toStdString(), data)) {
+main_window_web_engine_page::MainWindowWebEnginePage::MainWindowWebEnginePage(QWidget * parent, const main_window_shared_types::page_type_e & type, const QString & src, main_window_web_engine_profile::MainWindowWebEngineProfile * profile, const void * data): web_engine_page::WebEnginePage(parent, profile), pageData(main_window_page_data::MainWindowPageData::makePageData(type, src.toStdString(), data)) {
 	QINFO_PRINT(global_enums::qinfo_level_e::ZERO, mainWindowWebEnginePageOverall,  "Web engine page constructor");
 
 	this->setBody();
@@ -63,7 +63,7 @@ main_window_web_engine_page::MainWindowWebEnginePage::~MainWindowWebEnginePage()
 	QINFO_PRINT(global_enums::qinfo_level_e::ZERO, mainWindowWebEnginePageOverall,  "Web engine page destructor");
 }
 
-BASE_GETTER(main_window_web_engine_page::MainWindowWebEnginePage::getType, main_window_shared_types::page_type_e, this->pageData->type)
+CONST_GETTER(main_window_web_engine_page::MainWindowWebEnginePage::getType, main_window_shared_types::page_type_e &, this->pageData->type)
 CONST_GETTER(main_window_web_engine_page::MainWindowWebEnginePage::getSource, QString, QString::fromStdString(this->pageData->source))
 CONST_PTR_GETTER(main_window_web_engine_page::MainWindowWebEnginePage::getExtraData, void, this->pageData->data)
 CONST_GETTER(main_window_web_engine_page::MainWindowWebEnginePage::getData, std::shared_ptr<main_window_page_data::MainWindowPageData> &, this->pageData)
@@ -101,12 +101,12 @@ QByteArray main_window_web_engine_page::MainWindowWebEnginePage::getTextFileBody
 	return pageContent;
 }
 
-void main_window_web_engine_page::MainWindowWebEnginePage::setData(const std::shared_ptr<main_window_page_data::MainWindowPageData> newData) {
+void main_window_web_engine_page::MainWindowWebEnginePage::setData(const std::shared_ptr<main_window_page_data::MainWindowPageData> & newData) {
 	this->pageData = newData;
 	emit this->sourceChanged(QString::fromStdString(this->pageData->source));
 }
 
-void main_window_web_engine_page::MainWindowWebEnginePage::applyScrollRequest(const int x, const int y) {
+void main_window_web_engine_page::MainWindowWebEnginePage::applyScrollRequest(const int & x, const int & y) {
 	// Quite annoying work-around as QT C++ API doesn't allow the user to set the scroll position of a web page direction
 	this->runJavaScript(QString("window.scrollTo(%1, %2)").arg(x).arg(y));
 }

@@ -22,7 +22,7 @@ main_window_tab::MainWindowTab::MainWindowTab(QWidget * parent, const QString & 
 
 }
 
-void main_window_tab::MainWindowTab::configure(std::shared_ptr<tab_bar::TabBar> tabBar, const main_window_shared_types::page_type_e type, const QString & src, const void * data) {
+void main_window_tab::MainWindowTab::configure(const std::shared_ptr<tab_bar::TabBar> & tabBar, const main_window_shared_types::page_type_e & type, const QString & src, const void * data) {
 	std::shared_ptr<main_window_web_engine_view::MainWindowWebEngineView> tabView = std::make_shared<main_window_web_engine_view::MainWindowWebEngineView>(this, type, src, data);
 	this->updateView(tabView);
 
@@ -55,7 +55,7 @@ void main_window_tab::MainWindowTab::reload() {
 	this->getView()->page()->reload();
 }
 
-void main_window_tab::MainWindowTab::updateView(std::shared_ptr<main_window_web_engine_view::MainWindowWebEngineView> view) {
+void main_window_tab::MainWindowTab::updateView(const std::shared_ptr<main_window_web_engine_view::MainWindowWebEngineView> & view) {
 	this->setView(view);
 
 	std::shared_ptr<main_window_tab_history::MainWindowTabHistory> tabHistory = std::make_shared<main_window_tab_history::MainWindowTabHistory>(this, this->weak_from_this(), this->getView()->history());
@@ -67,18 +67,12 @@ void main_window_tab::MainWindowTab::updateView(std::shared_ptr<main_window_web_
 
 }
 
-CONST_SETTER_GETTER(main_window_tab::MainWindowTab::setSearchText, main_window_tab::MainWindowTab::getSearchText, QString, this->searchText)
-
+CONST_SETTER_GETTER(main_window_tab::MainWindowTab::setSearchText, main_window_tab::MainWindowTab::getSearchText, QString &, this->searchText)
 CASTED_SHARED_PTR_GETTER(main_window_tab::MainWindowTab::getView, main_window_web_engine_view::MainWindowWebEngineView, tab::Tab::getView())
-
 CASTED_SHARED_PTR_GETTER(main_window_tab::MainWindowTab::getLoadManager, main_window_tab_load_manager::MainWindowTabLoadManager, tab::Tab::getLoadManager())
-
 CASTED_SHARED_PTR_GETTER(main_window_tab::MainWindowTab::getSearch, main_window_tab_search::MainWindowTabSearch, tab::Tab::getSearch())
-
 CASTED_SHARED_PTR_GETTER(main_window_tab::MainWindowTab::getHistory, main_window_tab_history::MainWindowTabHistory, tab::Tab::getHistory())
-
 CASTED_SHARED_PTR_GETTER(main_window_tab::MainWindowTab::getSettings, main_window_web_engine_settings::MainWindowWebEngineSettings, tab::Tab::getSettings())
-
 CASTED_SHARED_PTR_GETTER(main_window_tab::MainWindowTab::getScrollManager, main_window_tab_scroll_manager::MainWindowTabScrollManager, tab::Tab::getScrollManager())
 
 void main_window_tab::MainWindowTab::connectSignals() {
@@ -100,7 +94,7 @@ void main_window_tab::MainWindowTab::connectSignals() {
 		emit this->searchResultChanged(data);
 	});
 
-	connect(searchManager.get(), &main_window_tab_search::MainWindowTabSearch::findTextFinished, [this] (bool found) {
+	connect(searchManager.get(), &main_window_tab_search::MainWindowTabSearch::findTextFinished, [this] (const bool & found) {
 		emit this->findTextFinished(found);
 	});
 

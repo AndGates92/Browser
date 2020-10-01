@@ -110,22 +110,22 @@ namespace base_test {
 			const std::string & getName() const;
 
 			/**
-			 * @brief Function: test_enums::test_state_e getState() const
+			 * @brief Function: const test_enums::test_state_e & getState() const
 			 *
 			 * \return state of the test
 			 *
 			 * This function returns the state of the test
 			 */
-			test_enums::test_state_e getState() const;
+			const test_enums::test_state_e & getState() const;
 
 			/**
-			 * @brief Function: test_enums::test_status_e getStatus() const
+			 * @brief Function: const test_enums::test_status_e & getStatus() const
 			 *
 			 * \return status of the test
 			 *
 			 * This function returns the status of the test
 			 */
-			test_enums::test_status_e getStatus() const;
+			const test_enums::test_status_e & getStatus() const;
 
 			/**
 			 * @brief Function: const test_error_container_t & getErrorMap() const
@@ -330,13 +330,13 @@ namespace base_test {
 			bool searchError(const test_error_container_t & container, const test_enums::error_type_e & type, const error_data::ErrorData & data, const bool & fullMatch) const;
 
 			/**
-			 * @brief Function: void setState(test_enums::test_state_e value)
+			 * @brief Function: void setState(const test_enums::test_state_e & value)
 			 *
 			 * \param value: state of the test
 			 *
 			 * This function sets the state of the test
 			 */
-			void setState(test_enums::test_state_e value);
+			void setState(const test_enums::test_state_e & value);
 
 			/**
 			 * @brief Function: void checkCreation() const

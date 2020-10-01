@@ -63,7 +63,7 @@ void tab_widget::TabWidget::setTabBar(std::shared_ptr<tab_bar::TabBar> newTabBar
 	QTabWidget::setTabBar(newTabBar.get());
 }
 
-BASE_GETTER(tab_widget::TabWidget::tabBar, std::shared_ptr<tab_bar::TabBar>, this->bar)
+CONST_GETTER(tab_widget::TabWidget::tabBar, std::shared_ptr<tab_bar::TabBar> &, this->bar)
 
 void tab_widget::TabWidget::resizeEvent(QResizeEvent * event) {
 	QSize previousSize(event->oldSize());
@@ -96,7 +96,7 @@ void tab_widget::TabWidget::keyPressEvent(QKeyEvent * event) {
 
 }
 
-int tab_widget::TabWidget::addTab(std::shared_ptr<tab::Tab> newTab, const QString & label, const QIcon & icon) {
+int tab_widget::TabWidget::addTab(const std::shared_ptr<tab::Tab> & newTab, const QString & label, const QIcon & icon) {
 	QINFO_PRINT(global_enums::qinfo_level_e::ZERO, tabWidgetTabs,  "Open tab with label " << label);
 
 	const int index = this->count();
@@ -106,7 +106,7 @@ int tab_widget::TabWidget::addTab(std::shared_ptr<tab::Tab> newTab, const QStrin
 	return tabIndex;
 }
 
-int tab_widget::TabWidget::insertTab(const int & index, std::shared_ptr<tab::Tab> newTab, const QString & label, const QIcon & icon) {
+int tab_widget::TabWidget::insertTab(const int & index, const std::shared_ptr<tab::Tab> & newTab, const QString & label, const QIcon & icon) {
 	QINFO_PRINT(global_enums::qinfo_level_e::ZERO, tabWidgetTabs,  "Insert tab with label " << label << " at position " << index);
 
 	int tabIndex = -1;

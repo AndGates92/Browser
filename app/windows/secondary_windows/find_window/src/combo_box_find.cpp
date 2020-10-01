@@ -38,4 +38,4 @@ combo_box_find::ComboBoxFind & combo_box_find::ComboBoxFind::operator=(combo_box
 	return *this;
 }
 
-BASE_GETTER(combo_box_find::ComboBoxFind::getDirection, global_enums::offset_type_e, this->direction)
+CONST_GETTER(combo_box_find::ComboBoxFind::getDirection, global_enums::offset_type_e &, this->direction)

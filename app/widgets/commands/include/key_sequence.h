@@ -118,13 +118,13 @@ namespace key_sequence {
 			virtual ~KeySequence();
 
 			/**
-			 * @brief Function: const QVector<QKeySequence> getSeqVec() const
+			 * @brief Function: const QVector<QKeySequence> & getSeqVec() const
 			 *
 			 * \return vector of QKeySequence
 			 *
 			 * This function returns the vector of QKeySequence
 			 */
-			const QVector<QKeySequence> getSeqVec() const;
+			const QVector<QKeySequence> & getSeqVec() const;
 
 			/**
 			 * @brief Function: unsigned int count() const

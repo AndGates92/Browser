@@ -20,7 +20,7 @@ Q_LOGGING_CATEGORY(elidedLabelOverall, "elidedLabel.overall", MSG_TYPE_LEVEL)
 Q_LOGGING_CATEGORY(elidedLabelElision, "elidedLabel.elision", MSG_TYPE_LEVEL)
 Q_LOGGING_CATEGORY(elidedLabelPaint, "elidedLabel.paint", MSG_TYPE_LEVEL)
 
-elided_label::ElidedLabel::ElidedLabel(QWidget * parent, Qt::WindowFlags flags, QString textLabel, QPoint labelOrigin, Qt::TextElideMode textElisionMode) : QLabel(textLabel, parent, flags), elisionMode(textElisionMode), origin(labelOrigin) {
+elided_label::ElidedLabel::ElidedLabel(QWidget * parent, Qt::WindowFlags flags, const QString & textLabel, const QPoint & labelOrigin, const Qt::TextElideMode & textElisionMode) : QLabel(textLabel, parent, flags), elisionMode(textElisionMode), origin(labelOrigin) {
 
 	QINFO_PRINT(global_enums::qinfo_level_e::ZERO, elidedLabelOverall,  "Elided label constructor for text " << this->text() << " origin " << this->origin << " elision mode " << this->elisionMode);
 
@@ -73,6 +73,5 @@ void elided_label::ElidedLabel::paintEvent(QPaintEvent * event) {
 
 }
 
-CONST_REF_SETTER(elided_label::ElidedLabel::setElisionMode, Qt::TextElideMode, this->elisionMode)
-BASE_GETTER(elided_label::ElidedLabel::getElisionMode, Qt::TextElideMode, this->elisionMode)
-CONST_REF_SETTER_GETTER(elided_label::ElidedLabel::setOrigin, elided_label::ElidedLabel::getOrigin, QPoint, this->origin)
+CONST_SETTER_GETTER(elided_label::ElidedLabel::setElisionMode, elided_label::ElidedLabel::getElisionMode, Qt::TextElideMode &, this->elisionMode)
+CONST_SETTER_GETTER(elided_label::ElidedLabel::setOrigin, elided_label::ElidedLabel::getOrigin, QPoint &, this->origin)

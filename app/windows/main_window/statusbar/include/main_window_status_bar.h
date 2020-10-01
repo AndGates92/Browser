@@ -59,7 +59,7 @@ namespace main_window_status_bar {
 			 *
 			 * This function shows or hides the search result label
 			 */
-			void showSearchResult(const bool showWidget);
+			void showSearchResult(const bool & showWidget);
 
 			/**
 			 * Function: void setContentPathText(const QString & text)

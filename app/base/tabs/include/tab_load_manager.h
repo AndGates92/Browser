@@ -61,22 +61,22 @@ namespace tab_load_manager {
 			virtual ~TabLoadManager();
 
 			/**
-			 * @brief Function: int getProgress() const
+			 * @brief Function: const int & getProgress() const
 			 *
 			 * \return value of the progress
 			 *
 			 * This function returns the value of the progress
 			 */
-			int getProgress() const;
+			const int & getProgress() const;
 
 			/**
-			 * @brief Function: tab_shared_types::load_status_e getStatus() const
+			 * @brief Function: const tab_shared_types::load_status_e & getStatus() const
 			 *
 			 * \return value of the status
 			 *
 			 * This function returns the value of the status
 			 */
-			tab_shared_types::load_status_e getStatus() const;
+			const tab_shared_types::load_status_e & getStatus() const;
 
 		signals:
 			/**
@@ -137,13 +137,13 @@ namespace tab_load_manager {
 
 		private:
 			/**
-			 * @brief Function: void setStatus(tab_shared_types::load_status_e value);
+			 * @brief Function: void setStatus(const tab_shared_types::load_status_e & value);
 			 *
 			 * \param value: new status of the load manager
 			 *
 			 * This function sets the status to value provided as argument
 			 */
-			void setStatus(tab_shared_types::load_status_e value);
+			void setStatus(const tab_shared_types::load_status_e & value);
 
 			// Move and copy constructor
 			/**
