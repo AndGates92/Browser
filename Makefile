@@ -159,8 +159,8 @@ ROOT_DIR = ${APP_DIR} \
            ${TESTER_DIR}
 
 CLASSCOMPONENT_DIR = $(foreach DIR, ${ROOT_DIR}, $(sort $(dir $(wildcard $(DIR)/*/))))
-COMPONENT_DIR = $(foreach DIR, ${CLASSCOMPONENT_DIR}, $(sort $(dir $(wildcard $(DIR)/*/))))
-SUBCOMPONENT_DIR = $(foreach DIR, ${COMPONENT_DIR}, $(sort $(dir $(wildcard $(DIR)/*/))))
+COMPONENT_DIR = $(foreach DIR, ${CLASSCOMPONENT_DIR}, $(sort $(dir $(wildcard $(DIR)*/))))
+SUBCOMPONENT_DIR = $(foreach DIR, ${COMPONENT_DIR}, $(sort $(dir $(wildcard $(DIR)*/))))
 
 # Directory containing top level
 MAIN_DIR = top
@@ -268,7 +268,9 @@ MAIN_OBJS = $(APP_MAIN_OBJ) \
             $(TESTER_MAIN_OBJ)
 
 # Leave only one top level
-APP_OBJS = $(filter-out $(filter-out $(APP_MAIN_OBJ), $(MAIN_OBJS)), $(OBJS_LIST))
+# Filter out top level files from the main objects and then filter out the outcome from the full list of objects
+APP_UNNEEDED_OBJ = $(filter-out $(APP_MAIN_OBJ), $(MAIN_OBJS)) $(filter $(TESTER_DIR), $(OBJS_LIST))
+APP_OBJS = $(filter-out $(APP_UNNEEDED_OBJ), $(OBJS_LIST))
 TESTER_OBJS = $(filter-out $(filter-out $(TESTER_MAIN_OBJ), $(MAIN_OBJS)), $(OBJS_LIST))
 
 COVSEARCHDIR := $(foreach DIR, ${OBJS_DIR}, --object-directory ${DIR})
@@ -320,8 +322,14 @@ $(MOC_OBJ_DIR)/%.$(MOC_OBJ_EXT) : $(MOC_SRC_DIR)/%.$(MOC_SRC_EXT)
 # Work around to force generating the file
 $(DEPS) :
 
+app : $(APP_EXE)
+	$(VERBOSE_ECHO)echo "[${TIMESTAMP}] Compile $(APP_EXE)"
+
+tester : $(TESTER_EXE)
+	$(VERBOSE_ECHO)echo "[${TIMESTAMP}] Compile $(TESTER_EXE)"
+
 all : $(APP_EXE) $(TESTER_EXE)
-	$(VERBOSE_ECHO)echo "[${TIMESTAMP}] Compile $(PROJ_NAME)"
+	$(VERBOSE_ECHO)echo "[${TIMESTAMP}] Compile application and tester for $(PROJ_NAME)"
 
 memleak : $(APP_EXE)
 	valgrind $(MEMCHECKOPTS) $(VALGRINDTOOLOPTS) $(VALGRINDLOGOPTS) $(APP_EXE) $(VALGRINDEXEARGS)
@@ -331,6 +339,9 @@ debug :
 	$(VERBOSE_ECHO)echo "[${TIMESTAMP}] Compiler: $(CC)"
 	$(VERBOSE_ECHO)echo "[${TIMESTAMP}] Coverage tool: $(COV)"
 	$(VERBOSE_ECHO)echo "[${TIMESTAMP}] Profiler tool: $(PROFILER)"
+	$(VERBOSE_ECHO)echo "[${TIMESTAMP}] Executables:"
+	$(VERBOSE_ECHO)echo "[${TIMESTAMP}] --> application: $(APP_EXE)"
+	$(VERBOSE_ECHO)echo "[${TIMESTAMP}] --> tester: $(TESTER_EXE)"
 	$(VERBOSE_ECHO)echo "[${TIMESTAMP}] Compiler options:"
 	$(VERBOSE_ECHO)echo "[${TIMESTAMP}] --> $(PROG_LANG) flags: $(CFLAGS)"
 	$(VERBOSE_ECHO)echo "[${TIMESTAMP}] --> $(PROG_LANG) extra flags: $(CEXTRAFLAGS)"
@@ -339,12 +350,13 @@ debug :
 	$(VERBOSE_ECHO)echo "[${TIMESTAMP}] --> Profiler flags: $(PROFILERFLAGS)"
 	$(VERBOSE_ECHO)echo "[${TIMESTAMP}] --> Behaviour flags: $(BEHFLAGS)"
 	$(VERBOSE_ECHO)echo "[${TIMESTAMP}] --> logging defines: $(LOG_DEFINES)"
+	$(VERBOSE_ECHO)echo "[${TIMESTAMP}] --> tester defines: $(QTTESTER_DEFINES)"
 	$(VERBOSE_ECHO)echo "[${TIMESTAMP}] --> Math libs: $(MATHLIBS)"
 	$(VERBOSE_ECHO)echo "[${TIMESTAMP}] --> OpenGL GLUT libraries: $(GLUTLIBS)"
 	$(VERBOSE_ECHO)echo "[${TIMESTAMP}] --> X11 libraries: $(X11LIBS)"
 	$(VERBOSE_ECHO)echo "[${TIMESTAMP}] --> Qt libraries: $(QTLIBS)"
-	$(VERBOSE_ECHO)echo "[${TIMESTAMP}] --> Qt Test libraries: $(QTTESTLIBS)"
 	$(VERBOSE_ECHO)echo "[${TIMESTAMP}] --> Coverage libraries: $(COVLIBS)"
+	$(VERBOSE_ECHO)echo "[${TIMESTAMP}] --> tester libraries: $(QTTESTLIBS)"
 	$(VERBOSE_ECHO)echo "[${TIMESTAMP}] Compiler options:"
 	$(VERBOSE_ECHO)echo "[${TIMESTAMP}] --> Coverage options: $(GCOVOPTS)"
 	$(VERBOSE_ECHO)echo "[${TIMESTAMP}] --> Coverage extra options: $(COVEXTRAOPTS)"
@@ -359,6 +371,8 @@ debug :
 	$(VERBOSE_ECHO)echo "[${TIMESTAMP}] --> moc object files: $(notdir $(MOC_OBJS))"
 	$(VERBOSE_ECHO)echo "[${TIMESTAMP}] --> Executable file: $(notdir $(EXE_NAME))"
 	$(VERBOSE_ECHO)echo "[${TIMESTAMP}] Directories lists:"
+	$(VERBOSE_ECHO)echo "[${TIMESTAMP}] --> Application directory: $(APP_DIR)"
+	$(VERBOSE_ECHO)echo "[${TIMESTAMP}] --> Tester directory: $(TESTER_DIR)"
 	$(VERBOSE_ECHO)echo "[${TIMESTAMP}] --> Source directories: $(SRC_PATH)"
 	$(VERBOSE_ECHO)echo "[${TIMESTAMP}] --> moc source directories: $(MOC_SRC_DIR)"
 	$(VERBOSE_ECHO)echo "[${TIMESTAMP}] --> Include directories: $(INCLUDE_PATH)"

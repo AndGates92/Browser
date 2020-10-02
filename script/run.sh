@@ -53,13 +53,13 @@ TIME_FORMAT=%H:%M:%S
 
 ITEMSYMBOL="-->"
 
-echotimestamp () {
+echotimestamp() {
 	# set +x do not print commands as they are executed
 	(set +x; \
 	echo "[`date "+${DATE_FORMAT} ${TIME_FORMAT}"`]  - $1")
 }
 
-usage () {
+usage() {
 	echotimestamp "  - Usage:"
 	echotimestamp "  - >$0 <options>"
 	echotimestamp ""
@@ -78,6 +78,37 @@ usage () {
 	echotimestamp "       				- <directory>: base directory of QT. It is assumed that it contains the following directories: lib, include and bin. QT specific environment variables are set as follows: QTLIBDIR = QTBASEDIR/lib and QTTOLLDIR = QTBASEDIR/bin"
 	echotimestamp "       --help|-h:		print this help"
 }
+
+compile_binary() {
+	filename=""
+	directoryname=""
+	if [ $# -eq 0 ] || [ $# -gt 1 ]; then
+		echotimestamp " Function $0 accepts only 1 arguments - provided $#."
+		echotimestamp " Usage:"
+		echotimestamp " >$0 <target>"
+		exit 1
+	else
+		target=$1
+	fi
+
+	if [ ${compile} -eq 1 ]; then
+		echo "\n"
+		echotimestamp " ========================================================================="
+		echotimestamp " Execute target ${target}"
+		echotimestamp " ========================================================================="
+		(set -x; \
+		 make ${target} LOG_DIR=${LOGDIR} LOGFILENAME=${EXELOG} PROJ_NAME=${PROJNAME} EXE_NAME=${EXENAME} TESTER_EXE_NAME=${TESTEREXENAME} BIN_DIR=${EXEDIR} VERBOSITY=${VERBOSITY} CEXTRAFLAGS=${CEXTRAFLAGS} SANITIZER=${SANITIZER} COVERAGE=${COVERAGE} PROFILER=${PROFILER} 1> ${LOGDIR}/${COMPLOG} 2> ${LOGDIR}/${COMPERR})
+		# If make returns code 2, it means it encountered errors
+		retCode=$?
+		if [ ${retCode} -eq 2 ]; then
+			echotimestamp " FAILED: Execution of target ${target} failed as Makefile return code is ${retCode}"
+			exit 1
+		else
+			echotimestamp " SUCCEED: Execution of target ${target} succeeded as Makefile return code is ${retCode}"
+		fi
+	fi
+}
+
 
 if [ $# -lt 1 ]; then
 	usage
@@ -227,12 +258,16 @@ if [ ${clean} -eq 1 ]; then
 	(set -x; \
 	 make clean LOG_DIR=${LOGDIR} PROJ_NAME=${PROJNAME} EXE_NAME=${EXENAME} TESTER_EXE_NAME=${TESTEREXENAME} BIN_DIR=${EXEDIR})
 elif [ ${compile} -eq 1 ]; then
-	# Delete executable in order to avoid using the previous one if compile fails and running tests
+	echotimestamp " ========================================================================="
+	echotimestamp " Delete executable directory ${EXEDIR}"
+	echotimestamp " ========================================================================="
+	# Delete executable directory in order to avoid using the previous executables if compile fails and running tests
 	(set -x; \
-	 /bin/rm -rf ${EXEDIR}/${EXENAME})
+	 /bin/rm -rf ${EXEDIR}/*)
 fi
 
 if [ ${compile} -eq 1 ] || [ ${tests} -eq 1 ] || [ ${debug} -eq 1 ] || [ ${doc} -eq 1 ] || [ ${memleak} -eq 1 ]; then
+	echo "\n"
 	echotimestamp " ========================================================================="
 	echotimestamp " Create log directory"
 	echotimestamp " ========================================================================="
@@ -241,6 +276,7 @@ if [ ${compile} -eq 1 ] || [ ${tests} -eq 1 ] || [ ${debug} -eq 1 ] || [ ${doc} 
 fi
 
 if [ ${debug} -eq 1 ]; then
+	echo "\n"
 	echotimestamp " ========================================================================="
 	echotimestamp " Makefile variables"
 	echotimestamp " ========================================================================="
@@ -248,23 +284,10 @@ if [ ${debug} -eq 1 ]; then
 	 make debug LOG_DIR=${LOGDIR} LOGFILENAME=${EXELOG} PROJ_NAME=${PROJNAME} EXE_NAME=${EXENAME} TESTER_EXE_NAME=${TESTEREXENAME} BIN_DIR=${EXEDIR} CEXTRAFLAGS=${CEXTRAFLAGS} SANITIZER=${SANITIZER} COVERAGE=${COVERAGE} PROFILER=${PROFILER} PROFEXTRAOPTS=${PROFEXTRAOPTS} COVEXTRAOPTS=${COVEXTRAOPTS} 1> ${LOGDIR}/${DEBUGLOG} 2> ${LOGDIR}/${DEBUGERR})
 fi
 
-if [ ${compile} -eq 1 ]; then
-	echotimestamp " ========================================================================="
-	echotimestamp " Compile sources"
-	echotimestamp " ========================================================================="
-	(set -x; \
-	 make all LOG_DIR=${LOGDIR} LOGFILENAME=${EXELOG} PROJ_NAME=${PROJNAME} EXE_NAME=${EXENAME} TESTER_EXE_NAME=${TESTEREXENAME} BIN_DIR=${EXEDIR} VERBOSITY=${VERBOSITY} CEXTRAFLAGS=${CEXTRAFLAGS} SANITIZER=${SANITIZER} COVERAGE=${COVERAGE} PROFILER=${PROFILER} 1> ${LOGDIR}/${COMPLOG} 2> ${LOGDIR}/${COMPERR})
-	# If make returns code 2, it means it encountered errors
-	retCode=$?
-	if [ ${retCode} -eq 2 ]; then
-		echotimestamp " FAILED: Compilation failed as Makefile return code is ${retCode}"
-		exit 1
-	else
-		echotimestamp " SUCCEED: Compilation succeeded as Makefile return code is ${retCode}"
-	fi
-fi
+compile_binary app
 
 if [ ${cleanbyproduct} -eq 1 ]; then
+	echo "\n"
 	echotimestamp " ========================================================================="
 	echotimestamp " Clean by-product"
 	echotimestamp " ========================================================================="
@@ -273,6 +296,9 @@ if [ ${cleanbyproduct} -eq 1 ]; then
 fi
 
 if [ ${tests} -eq 1 ]; then
+
+	compile_binary tester
+
 	if [ -f ./${EXEDIR}/${TESTEREXENAME} ]; then
 		echotimestamp " ========================================================================="
 		echotimestamp " Run program"
