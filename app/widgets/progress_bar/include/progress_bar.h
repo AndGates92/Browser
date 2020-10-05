@@ -47,6 +47,24 @@ namespace progress_bar {
 			 */
 			virtual ~ProgressBar();
 
+			/**
+			 * @brief Function: static int getMinimumValue()
+			 *
+			 * \return the minimum value of the progress bar
+			 *
+			 * this function returns the minimum value of the progress bar
+			 */
+			static int getMinimumValue();
+
+			/**
+			 * @brief Function: static int getMaximumValue()
+			 *
+			 * \return the maximum value of the progress bar
+			 *
+			 * this function returns the maximum value of the progress bar
+			 */
+			static int getMaximumValue();
+
 		public slots:
 			/**
 			 * @brief Function: void startLoading()
@@ -76,6 +94,24 @@ namespace progress_bar {
 		protected:
 
 		private:
+
+			/**
+			 * @brief Function: void setMinimum(const int value)
+			 *
+			 * \param value: minimum value of the progress bar
+			 *
+			 * This function sets the minimum value of the progress bar
+			 */
+			void setMinimum(const int value);
+
+			/**
+			 * @brief Function: void setMaximum(const int value)
+			 *
+			 * \param value: maximum value of the progress bar
+			 *
+			 * This function sets the maximum value of the progress bar
+			 */
+			void setMaximum(const int value);
 
 			/**
 			 * @brief Function: QSize minimumSizeHint()

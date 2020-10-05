@@ -10,7 +10,6 @@
 // Qt libraries
 // Required by qInfo
 #include <QtCore/QtDebug>
-#include <QtWidgets/QApplication>
 
 #include <memory>
 #include <map>
@@ -21,7 +20,7 @@
 #include "error_data.h"
 #include "printable_object.h"
 #include "base_element_creation.h"
-#include "main_window_wrapper.h"
+#include "main_window_tester_wrapper.h"
 
 /** @defgroup BaseTestGroup Base Test Group
  *  Base test functions and classes
@@ -151,22 +150,22 @@ namespace base_test {
 			const test_error_container_t & getExpectedErrors() const;
 
 			/**
-			 * @brief Function: const std::unique_ptr<main_window_wrapper::MainWindowWrapper> & getWindow() const
+			 * @brief Function: const std::unique_ptr<main_window::MainWindow> & getWindow() const
 			 *
 			 * \return browser window
 			 *
 			 * This function returns the window used for the test
 			 */
-			const std::unique_ptr<main_window_wrapper::MainWindowWrapper> & getWindow() const;
+			const std::unique_ptr<main_window::MainWindow> & getWindow() const;
 
 
 		protected:
 
 			/**
-			 * @brief browser window
+			 * @brief browser window wrapper
 			 *
 			 */
-			std::unique_ptr<main_window_wrapper::MainWindowWrapper> window;
+			std::unique_ptr<main_window_tester_wrapper::MainWindowTesterWrapper> windowWrapper;
 
 			/**
 			 * @brief Function: explicit BaseTest(const std::shared_ptr<base_suite::BaseSuite> & testSuite, const std::string & testName)
@@ -195,6 +194,15 @@ namespace base_test {
 			 * Base test destructor
 			 */
 			virtual ~BaseTest();
+
+			/**
+			 * @brief Function: void setName(const std::string & testName)
+			 *
+			 * \param testName: name of the test
+			 *
+			 * This function sets the name of the test
+			 */
+			void setName(const std::string & testName);
 
 			/**
 			 * @brief Function: void addExpectedError(const test_error_container_t & errors)
@@ -249,6 +257,18 @@ namespace base_test {
 			 * This function adds an item to the expected error multi map of type exception and call the wrap-up function if the window is visible
 			 */
 			void addExceptionThrown(const int & line, const std::string & filename, const std::string & condition, const std::string & errorMessage);
+
+			/**
+			 * @brief Function: bool waitForCondition(const std::function<bool(void)> & conditionFunction, const std::chrono::milliseconds & timeout) const
+			 *
+			 * \param conditionFunction: function that the method is waiting to become true
+			 * \param timeout: timeout of the wait for the function to become true
+			 *
+			 * \return value returned by the function when exiting the method
+			 *
+			 * This function wait for a condition to become true before the timeout
+			 */
+			bool waitForCondition(const std::function<bool(void)> & conditionFunction, const std::chrono::milliseconds & timeout) const;
 
 			/**
 			 * @brief Function: const std::string print() const override
@@ -311,11 +331,13 @@ namespace base_test {
 			void test();
 
 			/**
-			 * @brief Function: virtual void setup() final
+			 * @brief Function: virtual bool setup() final
+			 *
+			 * \return whether setup was successful
 			 *
 			 * This function contains the setup of the test
 			 */
-			virtual void setup() final;
+			virtual bool setup() final;
 
 			/**
 			 * @brief Function: virtual void wrapup() final

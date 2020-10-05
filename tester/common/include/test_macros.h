@@ -20,13 +20,28 @@
  * \param TYPE      : error type
  * \param MESSAGE   : error message
  *
- * Verify that the condition is true, add to failure ist otherwise
+ * Verify that the condition is true, add to failure list otherwise
  */
 #define ASSERT(CONDITION, TYPE, MESSAGE)\
 	if (!CONDITION) { \
 		this->addAssertionFailure(__LINE__, __FILE__, #CONDITION, TYPE, MESSAGE); \
 	}
 
+/**
+ * @brief WAIT_FOR_CONDITION(CONDITION, TYPE, MESSAGE, TIMEOUT)
+ *
+ * \param CONDITION : condition to execute action on exception
+ * \param TYPE      : error type
+ * \param MESSAGE   : error message
+ * \param TIMEOUT   : timeout in milliseconds
+ *
+ * Wait for the condition to become true and add it to failure list if it is still false
+ */
+#define WAIT_FOR_CONDITION(CONDITION, TYPE, MESSAGE, TIMEOUT)\
+	this->waitForCondition([&] () { \
+			return CONDITION; \
+		}, std::chrono::milliseconds(TIMEOUT)); \
+	ASSERT(CONDITION, TYPE, MESSAGE)
 
 /** @} */ // End of TestMacrosGroup group
 

@@ -10,6 +10,7 @@
 #include <QtCore/QLoggingCategory>
 
 #include "global_enums.h"
+#include "stl_helper.h"
 #include "qt_operator.h"
 #include "logging_macros.h"
 #include "function_macros.h"
@@ -80,11 +81,16 @@ void command_line_parser::CommandLineParser::extractArguments() {
 	int counter = 1;
 	while (counter < this->argc) {
 		const std::string option(this->argv[counter]);
-		const std::unique_ptr<command_line_argument::CommandLineArgument> & shortCmdMatch = this->findDataWithFieldValue("ShortCmd", &option);
-		const std::unique_ptr<command_line_argument::CommandLineArgument> & longCmdMatch = this->findDataWithFieldValue("LongCmd", &option);
 
-		QEXCEPTION_ACTION_COND(((shortCmdMatch == nullptr) && (longCmdMatch == nullptr)), throw, "Unrecognized option " << option << ". No match found for short or long command");
-		QEXCEPTION_ACTION_COND(((shortCmdMatch != nullptr) && (longCmdMatch != nullptr)), throw, "Option " << option << " matches a short or long command");
+		const std::string searchString("-");
+		const std::string replacingString("");
+		const std::string prunedOption(stl_helper::findAndReplaceString(option, searchString, replacingString));
+
+		const std::unique_ptr<command_line_argument::CommandLineArgument> & shortCmdMatch = this->findDataWithFieldValue("ShortCmd", &prunedOption);
+		const std::unique_ptr<command_line_argument::CommandLineArgument> & longCmdMatch = this->findDataWithFieldValue("LongCmd", &prunedOption);
+
+		QEXCEPTION_ACTION_COND(((shortCmdMatch == this->getInvalidData()) && (longCmdMatch == this->getInvalidData())), throw, "Unrecognized option " << option << ". No match found for short or long command");
+		QEXCEPTION_ACTION_COND(((shortCmdMatch != this->getInvalidData()) && (longCmdMatch != this->getInvalidData())), throw, "Option " << option << " matches a short or long command");
 
 		const std::unique_ptr<command_line_argument::CommandLineArgument> & match = (shortCmdMatch == nullptr) ? longCmdMatch : shortCmdMatch;
 

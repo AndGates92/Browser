@@ -15,8 +15,7 @@
 
 #include "main_window_base.h"
 #include "constructor_macros.h"
-#include "main_window_json_data.h"
-#include "json_action.h"
+#include "main_window_json_action.h"
 
 /** @defgroup MainWindowCtrlBaseGroup Main Window Control base Doxygen Group
  *  Main Window Control base functions and classes
@@ -32,7 +31,7 @@ namespace main_window_ctrl_base {
 	 * @brief MainWindowCtrlBase class
 	 *
 	 */
-	class MainWindowCtrlBase : public QWidget, public main_window_base::MainWindowBase, public json_action::JsonAction<main_window_json_data::MainWindowJsonData> {
+	class MainWindowCtrlBase : public QWidget, public main_window_base::MainWindowBase, public main_window_json_action::MainWindowJsonAction {
 
 		Q_OBJECT
 
@@ -237,39 +236,6 @@ namespace main_window_ctrl_base {
 			 * This function sets the enabled property of all shortcuts of the main window and menus of the main window
 			 */
 			void setAllShortcutEnabledProperty(const bool enabled);
-
-			/**
-			 * @brief Function: virtual void addItemToActionData(std::unique_ptr<main_window_json_data::MainWindowJsonData> & data, const std::string & key, const std::string & item) override
-			 *
-			 * \param data: data to be updated
-			 * \param key: key the tiem belongs to
-			 * \param item: item to add
-			 *
-			 * This functions adds an item linked to the key to the data provided as input
-			 */
-			virtual void addItemToActionData(std::unique_ptr<main_window_json_data::MainWindowJsonData> & data, const std::string & key, const std::string & item) override;
-
-			/**
-			 * @brief Function: std::string getShortcutKey(const std::string & value)
-			 *
-			 * \param value: value read from JSON file
-			 *
-			 * \return a string ready to be use to construct a KeqSequence object
-			 *
-			 * This function process the value read from the JSON file in order to easily construct a KeySequence object
-			 */
-			std::string getShortcutKey(const std::string & value);
-
-			/**
-			 * @brief Function: std::string getShortcutModifier(const std::string & value)
-			 *
-			 * \param value: value read from JSON file
-			 *
-			 * \return a string ready to be use to construct a KeqSequence object
-			 *
-			 * This function process the value read from the JSON file in order to easily construct a KeySequence object
-			 */
-			std::string getShortcutModifier(const std::string & value);
 
 			/**
 			 * @brief Function: virtual void createShortcuts() final

@@ -68,6 +68,7 @@ void main_window_tab::MainWindowTab::updateView(const std::shared_ptr<main_windo
 }
 
 CONST_SETTER_GETTER(main_window_tab::MainWindowTab::setSearchText, main_window_tab::MainWindowTab::getSearchText, QString &, this->searchText)
+BASE_GETTER(main_window_tab::MainWindowTab::getVerticalScrollPercentage, int, this->getScrollManager()->getVerticalScrollPercentage())
 CASTED_SHARED_PTR_GETTER(main_window_tab::MainWindowTab::getView, main_window_web_engine_view::MainWindowWebEngineView, tab::Tab::getView())
 CASTED_SHARED_PTR_GETTER(main_window_tab::MainWindowTab::getLoadManager, main_window_tab_load_manager::MainWindowTabLoadManager, tab::Tab::getLoadManager())
 CASTED_SHARED_PTR_GETTER(main_window_tab::MainWindowTab::getSearch, main_window_tab_search::MainWindowTabSearch, tab::Tab::getSearch())

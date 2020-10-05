@@ -55,7 +55,7 @@ main_window_ctrl::MainWindowCtrl::MainWindowCtrl(QWidget * parent, const std::sh
 	this->connectExtraSignals();
 
 	// Update info label - as no tabs in the window, then updateInfo must be explicitely called
-	const int tabIndex = this->windowCore->getCurrentTabIndex();
+	const int tabIndex = this->core->getCurrentTabIndex();
 	this->updateInfo(tabIndex);
 }
 
@@ -72,8 +72,8 @@ void main_window_ctrl::MainWindowCtrl::connectExtraSignals() {
 
 	QINFO_PRINT(global_enums::qinfo_level_e::ZERO, mainWindowCtrlOverall,  "Connect signals");
 
-	connect(this->windowCore->topMenuBar->getFileMenu()->exitAction.get(), &QAction::triggered, this, &main_window_ctrl::MainWindowCtrl::closeWindow);
-	connect(this->windowCore->popup.get(), &main_window_popup_container::MainWindowPopupContainer::closeContainer,  [this] () {
+	connect(this->core->topMenuBar->getFileMenu()->exitAction.get(), &QAction::triggered, this, &main_window_ctrl::MainWindowCtrl::closeWindow);
+	connect(this->core->popup.get(), &main_window_popup_container::MainWindowPopupContainer::closeContainer,  [this] () {
 		this->changeWindowState(main_window_shared_types::state_e::IDLE, main_window_shared_types::state_postprocessing_e::POSTPROCESS);
 	});
 
@@ -99,7 +99,7 @@ void main_window_ctrl::MainWindowCtrl::actionOnReleasedKey(const main_window_sha
 }
 
 void main_window_ctrl::MainWindowCtrl::executeAction(const main_window_shared_types::state_e & windowState) {
-	const QString userTypedText = this->windowCore->getUserText();
+	const QString userTypedText = this->core->getUserText();
 	switch (windowState) {
 		case main_window_shared_types::state_e::QUIT:
 			this->closeWindow();
@@ -125,7 +125,7 @@ void main_window_ctrl::MainWindowCtrl::prepareAction(const main_window_shared_ty
 	switch (windowState) {
 		case main_window_shared_types::state_e::COMMAND:
 			if (pressedKey == Qt::Key_Space) {
-				this->executeCommand(this->windowCore->getUserText(), main_window_shared_types::state_postprocessing_e::NONE);
+				this->executeCommand(this->core->getUserText(), main_window_shared_types::state_postprocessing_e::NONE);
 			} else if ((pressedKey >= Qt::Key_Space) && (pressedKey <= Qt::Key_ydiaeresis)) {
 				this->printUserInput(main_window_shared_types::text_action_e::APPEND, event->text());
 			}
@@ -145,8 +145,8 @@ void main_window_ctrl::MainWindowCtrl::prepareAction(const main_window_shared_ty
 }
 
 void main_window_ctrl::MainWindowCtrl::toggleShowMenubar() {
-	const bool menubarVisible = this->windowCore->topMenuBar->isVisible();
-	this->windowCore->topMenuBar->setVisible(!menubarVisible);
+	const bool menubarVisible = this->core->topMenuBar->isVisible();
+	this->core->topMenuBar->setVisible(!menubarVisible);
 }
 
 void main_window_ctrl::MainWindowCtrl::closeWindow() {
@@ -155,7 +155,7 @@ void main_window_ctrl::MainWindowCtrl::closeWindow() {
 }
 
 void main_window_ctrl::MainWindowCtrl::postprocessWindowStateChange(const main_window_shared_types::state_e & previousState) {
-	const main_window_shared_types::state_e windowState = this->windowCore->getMainWindowState();
+	const main_window_shared_types::state_e windowState = this->core->getMainWindowState();
 
 	QINFO_PRINT(global_enums::qinfo_level_e::ZERO, mainWindowCtrlOverall,  "Previous windowState " << previousState << " and current windowState " << windowState );
 
@@ -183,7 +183,7 @@ void main_window_ctrl::MainWindowCtrl::postprocessWindowStateChange(const main_w
 
 bool main_window_ctrl::MainWindowCtrl::isValidWindowState(const main_window_shared_types::state_e & requestedWindowState) {
 	bool isValid = false;
-	const main_window_shared_types::state_e windowState = this->windowCore->getMainWindowState();
+	const main_window_shared_types::state_e windowState = this->core->getMainWindowState();
 
 	switch (requestedWindowState) {
 		case main_window_shared_types::state_e::IDLE:

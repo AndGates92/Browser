@@ -126,11 +126,11 @@ main_window::MainWindow::~MainWindow() {
 CONST_GETTER(main_window::MainWindow::getCtrl, std::unique_ptr<main_window_ctrl_wrapper::MainWindowCtrlWrapper> &, this->ctrl)
 
 void main_window::MainWindow::customizeMainWidget() {
-	this->windowCore->mainWidget->setAttribute(Qt::WA_DeleteOnClose);
+	this->core->mainWidget->setAttribute(Qt::WA_DeleteOnClose);
 	// Disable widget resizing - it will get as much space as possible
-	this->windowCore->mainWidget->setSizePolicy(QSizePolicy::Ignored, QSizePolicy::Ignored);
+	this->core->mainWidget->setSizePolicy(QSizePolicy::Ignored, QSizePolicy::Ignored);
 
-	this->windowCore->mainWidget->setStyleSheet(
+	this->core->mainWidget->setStyleSheet(
 		"QWidget {"
 			"background: brown; "
 			"color: white; "
@@ -138,7 +138,7 @@ void main_window::MainWindow::customizeMainWidget() {
 			"border: none; "
 		"}"
 	);
-	this->setCentralWidget(this->windowCore->mainWidget.get());
+	this->setCentralWidget(this->core->mainWidget.get());
 }
 
 void main_window::MainWindow::fillMainWindow() {
@@ -156,14 +156,14 @@ void main_window::MainWindow::fillMainWindow() {
 
 	this->populateOverlayedWidgetList();
 
-	if (this->windowCore->cmdMenu != Q_NULLPTR) {
+	if (this->core->cmdMenu != Q_NULLPTR) {
 		// command menu
-		this->windowCore->cmdMenu->setVisible(false);
+		this->core->cmdMenu->setVisible(false);
 	}
 
-	if (this->windowCore->popup != Q_NULLPTR) {
+	if (this->core->popup != Q_NULLPTR) {
 		// prompt widget
-		this->windowCore->popup->setVisible(false);
+		this->core->popup->setVisible(false);
 	}
 
 }
@@ -172,9 +172,9 @@ void main_window::MainWindow::customizeTabs() {
 	QINFO_PRINT(global_enums::qinfo_level_e::ZERO, mainWindowOverall,  "Customize tabs");
 
 	// Disable widget resizing
-	this->windowCore->tabs->setSizePolicy(QSizePolicy::Ignored, QSizePolicy::Ignored);
+	this->core->tabs->setSizePolicy(QSizePolicy::Ignored, QSizePolicy::Ignored);
 
-	this->windowCore->tabs->setStyleSheet(
+	this->core->tabs->setStyleSheet(
 		"QTabBar::tab {"
 			"background: gray; "
 			"color: white; "
@@ -191,7 +191,7 @@ void main_window::MainWindow::customizeTopMenuBar() {
 	QINFO_PRINT(global_enums::qinfo_level_e::ZERO, mainWindowOverall,  "Customize top menu bar");
 
 	// set menu bar of the main window
-	this->setMenuBar(this->windowCore->topMenuBar.get());
+	this->setMenuBar(this->core->topMenuBar.get());
 }
 
 void main_window::MainWindow::customizeBottomStatusBar() {
@@ -214,18 +214,18 @@ void main_window::MainWindow::mainWindowLayout() {
 	QVBoxLayout * layout = new QVBoxLayout(this);
 
 	// tabs
-	layout->addWidget(this->windowCore->tabs.get());
+	layout->addWidget(this->core->tabs.get());
 
 	// command menu
-	layout->addWidget(this->windowCore->cmdMenu.get(), 0, (Qt::AlignHCenter | Qt::AlignBottom));
+	layout->addWidget(this->core->cmdMenu.get(), 0, (Qt::AlignHCenter | Qt::AlignBottom));
 
 	// status bar
-	layout->addWidget(this->windowCore->bottomStatusBar.get(), Qt::AlignBottom);
+	layout->addWidget(this->core->bottomStatusBar.get(), Qt::AlignBottom);
 
 	layout->setSpacing(main_window::verticalWidgetSpacing);
 	layout->setContentsMargins(main_window::leftMargin, main_window::topMargin, main_window::rightMargin, main_window::bottomMargin);
 
-	this->windowCore->mainWidget->setLayout(layout);
+	this->core->mainWidget->setLayout(layout);
 }
 
 void main_window::MainWindow::connectSignals() {
@@ -243,7 +243,7 @@ void main_window::MainWindow::createCtrl() {
 	QINFO_PRINT(global_enums::qinfo_level_e::ZERO, mainWindowOverall,  "Create controller");
 
 	// main window control object
-	this->ctrl = std::make_unique<main_window_ctrl_wrapper::MainWindowCtrlWrapper>(this, this->windowCore);
+	this->ctrl = std::make_unique<main_window_ctrl_wrapper::MainWindowCtrlWrapper>(this, this->core);
 	this->setFocusProxy(this->ctrl.get());
 	this->ctrl->setFocus();
 
@@ -270,7 +270,7 @@ void main_window::MainWindow::addOverlayedWidget(const std::shared_ptr<overlayed
 }
 
 void main_window::MainWindow::populateOverlayedWidgetList() {
-	this->addOverlayedWidget(std::static_pointer_cast<overlayed_widget::OverlayedWidget>(this->windowCore->popup));
+	this->addOverlayedWidget(std::static_pointer_cast<overlayed_widget::OverlayedWidget>(this->core->popup));
 }
 
 void main_window::MainWindow::updateWidgetGeometry(const std::shared_ptr<overlayed_widget::OverlayedWidget> & widget) {
@@ -330,8 +330,8 @@ void main_window::MainWindow::updateWidgetGeometry(const std::shared_ptr<overlay
 	const int widgetHeight = widgetSizeHint.height();
 
 	int distanceYFromBottom = widgetHeight;
-	if (this->windowCore->bottomStatusBar->isVisible() == true) {
-		const int statusBarHeight = this->windowCore->bottomStatusBar->height();
+	if (this->core->bottomStatusBar->isVisible() == true) {
+		const int statusBarHeight = this->core->bottomStatusBar->height();
 		distanceYFromBottom += statusBarHeight;
 	}
 

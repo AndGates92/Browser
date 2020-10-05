@@ -24,16 +24,8 @@
 
 Q_DECLARE_LOGGING_CATEGORY(mainWindowJsonDataOverall)
 
-namespace main_window_ctrl {
-	class MainWindowCtrl;
-}
-
-namespace main_window_ctrl_base {
-	class MainWindowCtrlBase;
-}
-
-namespace main_window_ctrl_tab {
-	class MainWindowCtrlTab;
+namespace main_window_json_action {
+	class MainWindowJsonAction;
 }
 
 namespace main_window_json_data {
@@ -51,9 +43,7 @@ namespace main_window_json_data {
 	 *
 	 */
 	class MainWindowJsonData : public json_data::JsonData {
-		friend class main_window_ctrl::MainWindowCtrl;
-		friend class main_window_ctrl_base::MainWindowCtrlBase;
-		friend class main_window_ctrl_tab::MainWindowCtrlTab;
+		friend class main_window_json_action::MainWindowJsonAction;
 
 		public:
 
@@ -225,6 +215,17 @@ namespace main_window_json_data {
 			 */
 			virtual bool isSameFieldValue(const std::string & name, const void * value) const override;
 
+			/**
+			 * @brief Function: virtual const void * getValueFromMemberName(const std::string & name) const override
+			 *
+			 * \param name: name of the name of the member as a string
+			 *
+			 * \return value of the member
+			 *
+			 * This functions returns the value of a member of MainWindowJsonData by accessing it through its name
+			 */
+			virtual const void * getValueFromMemberName(const std::string & name) const override;
+
 		private:
 			/**
 			 * @brief key under which the JSON object is
@@ -271,17 +272,6 @@ namespace main_window_json_data {
 			 * This functions assign a value to a member of MainWindowJsonData by accessing it through its name
 			 */
 			virtual void setValueFromMemberName(const std::string & name, const void * value) override;
-
-			/**
-			 * @brief Function: virtual const void * getValueFromMemberName(const std::string & name) const override
-			 *
-			 * \param name: name of the name of the member as a string
-			 *
-			 * \return value of the member
-			 *
-			 * This functions returns the value of a member of MainWindowJsonData by accessing it through its name
-			 */
-			virtual const void * getValueFromMemberName(const std::string & name) const override;
 
 	};
 

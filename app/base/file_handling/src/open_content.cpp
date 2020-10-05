@@ -11,6 +11,7 @@
 #include <QtCore/QtDebug>
 
 #include "logging_macros.h"
+#include "function_macros.h"
 #include "global_enums.h"
 #include "open_content.h"
 #include "exception_macros.h"
@@ -66,3 +67,5 @@ void open_content::OpenContent::doubleClickOnFile(const QFileInfo & pathInfo) {
 	this->pathToOpen->setText(pathInfo.absoluteFilePath());
 	this->openPath();
 }
+
+CONST_GETTER(open_content::OpenContent::getTypedPath, QString, this->pathToOpen->text())

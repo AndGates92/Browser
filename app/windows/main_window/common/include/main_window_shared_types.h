@@ -41,6 +41,7 @@ namespace main_window_shared_types {
 	 *
 	 */
 	typedef enum class state_list {
+		UNKNOWN,          /**< Unknown state */
 		IDLE,             /**< Idle state - no user input */
 		TOGGLE_MENUBAR,   /**< Toggle menu bar */
 		QUIT,             /**< Exit browser */

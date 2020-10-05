@@ -123,7 +123,22 @@ namespace json_action {
 			 */
 			const std::unique_ptr<Data> & getInvalidData() const;
 
+			/**
+			 * @brief Function: const QString & getSourceFileName() const
+			 *
+			 * \return the name of the JSON source file parsed
+			 *
+			 * This functions returns the name of the JSON source file parsed
+			 */
+			const QString & getSourceFileName() const;
+
 		private:
+
+			/**
+			 * @brief JSON file name that was parsed
+			 *
+			 */
+			const QString sourceFileName;
 
 			/**
 			 * @brief invalid data
@@ -144,7 +159,7 @@ namespace json_action {
 /** @} */ // End of JsonActionGroup group
 
 template<class Data>
-json_action::JsonAction<Data>::JsonAction(QString jsonFileName) : commands(json_parser::JsonParser(jsonFileName, QIODevice::ReadOnly)), actionData(json_action::JsonAction<Data>::action_data_t()), invalidData(nullptr) {
+json_action::JsonAction<Data>::JsonAction(QString jsonFileName) : commands(json_parser::JsonParser(jsonFileName, QIODevice::ReadOnly)), actionData(json_action::JsonAction<Data>::action_data_t()), sourceFileName(jsonFileName), invalidData(nullptr) {
 	QINFO_PRINT(global_enums::qinfo_level_e::ZERO, jsonActionOverall,  "Json Action classe constructor");
 }
 
@@ -196,6 +211,9 @@ template<class Data>
 CONST_GETTER(json_action::JsonAction<Data>::getInvalidData, std::unique_ptr<Data> &, this->invalidData)
 
 template<class Data>
+CONST_GETTER(json_action::JsonAction<Data>::getSourceFileName, QString &, this->sourceFileName)
+
+template<class Data>
 template<typename FuncRet>
 typename json_action::JsonAction<Data>::template enableFunction<FuncRet> json_action::JsonAction<Data>::findDataWithFieldValue(const std::string & name, const void * value) const {
 	const typename json_action::JsonAction<Data>::action_data_t::const_iterator foundData = std::find_if(this->actionData.cbegin(), this->actionData.cend(), [&] (const auto & data) -> bool {
@@ -204,12 +222,13 @@ typename json_action::JsonAction<Data>::template enableFunction<FuncRet> json_ac
 		return found;
 	});
 
-	QEXCEPTION_ACTION_COND((foundData == this->actionData.cend()), throw, "Unable to find " << QString::fromStdString(name) << " in action data");
 	if (foundData != this->actionData.cend()) {
 		return foundData->second;
 	}
 
-	return json_action::JsonAction<Data>::invalidData;
+	QINFO_PRINT(global_enums::qinfo_level_e::ZERO, jsonActionOverall,  "Unable to find matching value for field " << QString::fromStdString(name));
+
+	return this->invalidData;
 }
 
 #endif // JSON_ACTION_H

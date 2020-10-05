@@ -15,26 +15,13 @@
 #include "main_window_web_engine_page.h"
 #include "main_window_tab_widget.h"
 #include "main_window_shared_functions.h"
+#include "main_window_constants.h"
 #include "type_print_macros.h"
 #include "exception_macros.h"
 
 // Categories
 Q_LOGGING_CATEGORY(mainWindowTabWidgetOverall, "mainWindowTabWidget.overall", MSG_TYPE_LEVEL)
 Q_LOGGING_CATEGORY(mainWindowTabWidgetTabs, "mainWindowTabWidget.tabs", MSG_TYPE_LEVEL)
-
-namespace main_window_tab_widget {
-
-	namespace {
-
-		/**
-		 * @brief default serch engine is duckduckgo
-		 *
-		 */
-		static const QString defaultSearchEngine(global_constants::https + global_constants::www + "duckduckgo.com/?q=%1");
-
-	}
-
-}
 
 main_window_tab_widget::MainWindowTabWidget::MainWindowTabWidget(QWidget * parent): tab_widget::TabWidget(parent) {
 	QINFO_PRINT(global_enums::qinfo_level_e::ZERO, mainWindowTabWidgetOverall,  "Main Window Tab widget constructor");
@@ -317,7 +304,7 @@ QString main_window_tab_widget::MainWindowTabWidget::createLabel(const main_wind
 			break;
 		case main_window_shared_types::page_type_e::TEXT:
 			// User provides the path towards the files, hence the source fo the page content is the user input itself
-			label = QString("file: ") + userInput;
+			label = QString(main_window_constants::filePrefix) + userInput;
 			break;
 		default:
 			QEXCEPTION_ACTION(throw, "Unable to create label for tab from user input " << userInput << " because tab type " << type << " is not recognised");
@@ -451,7 +438,7 @@ QString main_window_tab_widget::MainWindowTabWidget::searchToUrl(const QString &
 
 		url += search;
 	} else if (main_window_shared_functions::isText(search) == true) {
-		url = main_window_tab_widget::defaultSearchEngine.arg(search);
+		url = global_constants::https + global_constants::www + main_window_constants::defaultSearchEngine.arg(search);
 	} else {
 		QEXCEPTION_ACTION(throw, "Unable to associate a  page type to search " << search);
 	}

@@ -67,8 +67,28 @@ progress_bar::ProgressBar::ProgressBar(QWidget * parent) : QProgressBar(parent) 
 
 	this->setSizePolicy(QSizePolicy::Preferred, QSizePolicy::Minimum);
 
+	// range
+	this->setMinimum(progress_bar::ProgressBar::getMinimumValue());
+	this->setMaximum(progress_bar::ProgressBar::getMaximumValue());
+
 	// Hide the bar at the start
 	this->setVisible(false);
+}
+
+void progress_bar::ProgressBar::setMaximum(const int value) {
+	QProgressBar::setMaximum(value);
+}
+
+int progress_bar::ProgressBar::getMaximumValue() {
+	return 100;
+}
+
+void progress_bar::ProgressBar::setMinimum(const int value) {
+	QProgressBar::setMinimum(value);
+}
+
+int progress_bar::ProgressBar::getMinimumValue() {
+	return 0;
 }
 
 progress_bar::ProgressBar::~ProgressBar() {
@@ -76,14 +96,14 @@ progress_bar::ProgressBar::~ProgressBar() {
 }
 
 void progress_bar::ProgressBar::startLoading() {
-	this->setValue(0);
+	this->setValue(this->minimum());
 }
 
 void progress_bar::ProgressBar::setValue(const int & value) {
 	this->setVisible(true);
 	QProgressBar::setValue(value);
 
-	// When tabs are refreshed, loadFinished is not send therefore endLoadign slot is not called
+	// When tabs are refreshed, loadFinished is not send therefore endLoading slot is not called
 	// Forcing call endLoading
 	if (value == this->maximum()) {
 		this->endLoading(true);

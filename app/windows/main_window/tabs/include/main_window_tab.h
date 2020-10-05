@@ -86,6 +86,15 @@ namespace main_window_tab {
 			const QString & getSearchText() const;
 
 			/**
+			 * @brief Function: int getVerticalScrollPercentage() const
+			 *
+			 * \return the vertical position of the scrollbar
+			 *
+			 * This function returns the vertical position of the scrollbar
+			 */
+			int getVerticalScrollPercentage() const;
+
+			/**
 			 * @brief Function: void configure(const std::shared_ptr<tab_bar::TabBar> & tabBar, const main_window_shared_types::page_type_e & type, const QString & src, const void * data)
 			 *
 			 * \param type: tab type

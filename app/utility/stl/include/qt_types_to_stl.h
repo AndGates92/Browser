@@ -2,7 +2,7 @@
 #define QT_TYPES_TO_STL_H
 /**
  * @copyright
- * @file qt_typers_to_stl.h
+ * @file qt_types_to_stl.h
  * @author Andrea Gianarda
  * @date 19th of September 2020
  * @brief Qt Types To STL header file

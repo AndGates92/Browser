@@ -35,7 +35,7 @@ void main_window_ctrl_wrapper::MainWindowCtrlWrapper::keyPressEvent(QKeyEvent * 
 	this->winctrl->keyPressEvent(event);
 	this->tabctrl->keyPressEvent(event);
 
-	this->windowCore->mainWidget->repaint();
+	this->core->mainWidget->repaint();
 
 }
 
@@ -46,6 +46,6 @@ void main_window_ctrl_wrapper::MainWindowCtrlWrapper::keyReleaseEvent(QKeyEvent 
 	this->winctrl->keyReleaseEvent(event);
 	this->tabctrl->keyReleaseEvent(event);
 
-	this->windowCore->mainWidget->repaint();
+	this->core->mainWidget->repaint();
 
 }

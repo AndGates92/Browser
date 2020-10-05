@@ -34,6 +34,15 @@ namespace open_content {
 
 		public:
 
+			/**
+			 * @brief Function: const QString getTypedPath() const
+			 *
+			 * \return text typed by the user
+			 *
+			 * This method return the path typed by the user
+			 */
+			const QString getTypedPath() const;
+
 		protected:
 			/**
 			 * @brief Function: explicit OpenContent(QWidget *widgetParent)

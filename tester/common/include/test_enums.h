@@ -25,7 +25,11 @@ namespace test_enums {
 	typedef enum class error_type_list {
 		UNKNOWN,   /**< Unknown error type */
 		EXCEPTION, /**< Exception thrown */
-		SHORTCUT   /**< Shortcut action not executed */
+		COMMAND,   /**< Command error */
+		STATUSBAR, /**< Statusbar error */
+		WINDOW,    /**< Window errors */
+		TABS,      /**< Tab errors */
+		POPUP      /**< Popup errors */
 	} error_type_e;
 
 	/**

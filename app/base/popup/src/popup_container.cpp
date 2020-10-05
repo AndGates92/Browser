@@ -310,7 +310,7 @@ std::shared_ptr<popup_base::PopupBase> popup_container::PopupContainer::getCurre
 
 }
 
-const std::map<unsigned int, std::shared_ptr<popup_base::PopupBase>> popup_container::PopupContainer::getWidgetMap() const {
+const std::map<unsigned int, std::shared_ptr<popup_base::PopupBase>> & popup_container::PopupContainer::getWidgetMap() const {
 	return this->popupWidgets;
 }
 

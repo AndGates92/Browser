@@ -31,7 +31,7 @@
 		"Help" : "This command searches content in a tab"
 	},
 
-	"SearchTab" : {
+	"EditSearchTab" : {
 		"Name" : "edit search tab",
 		"State" : "EDIT_SEARCH",
 		"Shortcut" : "S",
@@ -48,7 +48,7 @@
 	},
 
 	"FindNext" : {
-		"Name" : "find downward in the page",
+		"Name" : "find downward",
 		"State" : "FIND_DOWN",
 		"Shortcut" : "n",
 		"LongCmd" : "find-down",
@@ -56,7 +56,7 @@
 	},
 
 	"FindPrevious" : {
-		"Name" : "find upward in the page",
+		"Name" : "find upward",
 		"State" : "FIND_UP",
 		"Shortcut" : "N",
 		"LongCmd" : "find-up",

@@ -111,7 +111,7 @@ void main_window_core::MainWindowCore::updateUserInput(const main_window_shared_
 			this->userText.clear();
 			break;
 		default:
-			QEXCEPTION_ACTION(throw,  "Unknown action " << action);
+			QEXCEPTION_ACTION(throw, "Unknown action " << action);
 			break;
 	}
 }

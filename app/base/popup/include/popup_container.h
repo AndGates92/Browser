@@ -107,6 +107,15 @@ namespace popup_container {
 			virtual int getPadding() const override;
 
 			/**
+			 * @brief Function: virtual std::shared_ptr<popup_base::PopupBase> getCurrentWidget() const final
+			 *
+			 * \return widget shown in the container
+			 *
+			 * This function returns the widget shown in the container
+			 */
+			virtual std::shared_ptr<popup_base::PopupBase> getCurrentWidget() const final;
+
+			/**
 			 * @brief Define methods to get smart pointer from this
 			 *
 			 */
@@ -228,20 +237,11 @@ namespace popup_container {
 			void updateLayout();
 
 			/**
-			 * @brief Function: virtual std::shared_ptr<popup_base::PopupBase> getCurrentWidget() const final
-			 *
-			 * \return widget shown in the container
-			 *
-			 * This function returns the widget shown in the container
-			 */
-			virtual std::shared_ptr<popup_base::PopupBase> getCurrentWidget() const final;
-
-			/**
-			 * @brief Function: std::map<unsigned int, std::shared_ptr<popup_base::PopupBase>> getWidgetMap() const
+			 * @brief Function: std::map<unsigned int, std::shared_ptr<popup_base::PopupBase>> & getWidgetMap() const
 			 *
 			 * This function returns the widget map in the container
 			 */
-			const std::map<unsigned int, std::shared_ptr<popup_base::PopupBase>> getWidgetMap() const;
+			const std::map<unsigned int, std::shared_ptr<popup_base::PopupBase>> & getWidgetMap() const;
 
 		private:
 

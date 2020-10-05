@@ -11,7 +11,7 @@
 // Required by qInfo
 #include <QtCore/QtDebug>
 
-#include "base_test.h"
+#include "command_test.h"
 
 /** @defgroup LaunchAppGroup Launch App Group
  *  Launch app functions and classes
@@ -27,17 +27,18 @@ namespace launch_app {
 	 * @brief LaunchApp class
 	 *
 	 */
-	class LaunchApp : public base_test::BaseTest {
+	class LaunchApp : public command_test::CommandTest {
 
 		public:
 			/**
-			 * @brief Function: explicit LaunchApp(const std::shared_ptr<base_suite::BaseSuite> & testSuite)
+			 * @brief Function: explicit LaunchApp(const std::shared_ptr<base_suite::BaseSuite> & testSuite, const bool useShortcuts)
 			 *
 			 * \param testSuite: test suite
+			 * \param useShortcut: test uses shortcuts to send commands
 			 *
 			 * Launch app constructor
 			 */
-			explicit LaunchApp(const std::shared_ptr<base_suite::BaseSuite> & testSuite);
+			explicit LaunchApp(const std::shared_ptr<base_suite::BaseSuite> & testSuite, const bool useShortcuts);
 
 			/**
 			 * @brief Function: virtual ~LaunchApp()

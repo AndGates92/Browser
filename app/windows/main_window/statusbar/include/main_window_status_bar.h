@@ -53,13 +53,76 @@ namespace main_window_status_bar {
 			virtual ~MainWindowStatusBar();
 
 			/**
-			 * Function: void showSearchResult(const bool showWidget)
+			 * Function: void showSearchResult(const bool & showWidget)
 			 *
 			 * \param showWidget: boolean indicating whether to show the search result or not
 			 *
 			 * This function shows or hides the search result label
 			 */
 			void showSearchResult(const bool & showWidget);
+
+			/**
+			 * Function: const QString getContentPathText() const
+			 *
+			 * \return text of the label
+			 *
+			 * This function returns the text in the search result label
+			 */
+			const QString getSearchResultText() const;
+
+			/**
+			 * Function: bool getLoadBarVisibility() const
+			 *
+			 * \returns the boolean value of the visibility attribute of the load bar
+			 *
+			 * This function returns the visibility attribute of the load bar as a boolean
+			 */
+			bool getLoadBarVisibility() const;
+
+			/**
+			 * Function: int getProgressValue() const
+			 *
+			 * \returns the value of the progress
+			 *
+			 * This function returns the value of the progress bar
+			 */
+			int getProgressValue() const;
+
+			/**
+			 * Function: int getVScroll() const
+			 *
+			 * \returns the vertical scroll percentage
+			 *
+			 * This function returns the vertical scroll percentage
+			 */
+			int getVScroll() const;
+
+			/**
+			 * Function: const QString getInfoText() const
+			 *
+			 * \return text of the label
+			 *
+			 * This function returns the text in the info label
+			 */
+			const QString getInfoText() const;
+
+			/**
+			 * Function: const QString getUserInputText() const
+			 *
+			 * \return text of the label
+			 *
+			 * This function returns the text in the user input label
+			 */
+			const QString getUserInputText() const;
+
+			/**
+			 * Function: const QString getContentPathText() const
+			 *
+			 * \return text of the label
+			 *
+			 * This function returns the text in the content path label
+			 */
+			const QString getContentPathText() const;
 
 			/**
 			 * Function: void setContentPathText(const QString & text)

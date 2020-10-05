@@ -11,9 +11,6 @@
 #include <QtCore/QLoggingCategory>
 #include <QtWidgets/QWidget>
 
-#include "main_window_base.h"
-#include "main_window_ctrl.h"
-#include "main_window_ctrl_tab.h"
 #include "main_window.h"
 
 /** @defgroup MainWindowWrapperGroup Main Window Wrapper Doxygen Group
@@ -29,7 +26,7 @@ namespace main_window_wrapper {
 	 * @brief MainWindowWrapper class
 	 *
 	 */
-	class MainWindowWrapper final {
+	class MainWindowWrapper {
 
 		public:
 			/**

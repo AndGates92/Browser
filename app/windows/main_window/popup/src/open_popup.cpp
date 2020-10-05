@@ -199,7 +199,7 @@ void open_popup::OpenPopup::fillPopup() {
 	// Use hide and not setVisible(false) because function hide also does not show it in the layout
 	this->fileView->hide();
 
-	this->pathChanged(this->pathToOpen->text());
+	this->pathChanged(this->getTypedPath());
 }
 
 void open_popup::OpenPopup::connectSignals() {
@@ -234,7 +234,7 @@ void open_popup::OpenPopup::postProcessTypeAction() {
 }
 
 void open_popup::OpenPopup::apply() {
-	QINFO_PRINT(global_enums::qinfo_level_e::ZERO, openPopupOpen,  "Open file: " << this->pathToOpen->text());
+	QINFO_PRINT(global_enums::qinfo_level_e::ZERO, openPopupOpen,  "Open file: " << this->getTypedPath());
 	this->close();
 	this->openPath();
 }

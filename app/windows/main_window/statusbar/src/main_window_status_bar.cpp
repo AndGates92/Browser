@@ -75,6 +75,17 @@ namespace main_window_status_bar {
 		 */
 		static constexpr int maxScrollValue = 100;
 
+		/**
+		 * @brief string to print when cursor is at the top of the page
+		 *
+		 */
+		static const QString topScroll = "top";
+
+		/**
+		 * @brief string to print when cursor is at the bottom of the page
+		 *
+		 */
+		static const QString bottomScroll = "bot";
 	}
 
 }
@@ -237,11 +248,12 @@ void main_window_status_bar::MainWindowStatusBar::setVScroll(const int & vScroll
 	QString vScrollText = QString();
 	// Keep 3 characters for all scroll positions
 	if (this->isValidScrollValue(vScroll) == true) {
-		if (vScroll == main_window_status_bar::minScrollValue) {
-			vScrollText.append("top");
-		} else if (vScroll == main_window_status_bar::maxScrollValue) {
-			vScrollText.append("bot");
+		if ((vScroll == main_window_status_bar::minScrollValue) && (main_window_status_bar::topScroll.isEmpty() == false)) {
+			vScrollText.append(main_window_status_bar::topScroll);
+		} else if ((vScroll == main_window_status_bar::maxScrollValue) && (main_window_status_bar::bottomScroll.isEmpty() == false)) {
+			vScrollText.append(main_window_status_bar::bottomScroll);
 		} else {
+			// arg(value, field width, base, fill character)
 			vScrollText.append(QString("%1").arg(vScroll, 2, 10, QChar('0')));
 			vScrollText.append("%");
 		}
@@ -250,25 +262,52 @@ void main_window_status_bar::MainWindowStatusBar::setVScroll(const int & vScroll
 	this->scroll->setText(vScrollText);
 }
 
+int main_window_status_bar::MainWindowStatusBar::getVScroll() const {
+	QString vScrollText(this->scroll->text());
+	int topCompare = QString::compare(vScrollText, main_window_status_bar::topScroll);
+	int bottomCompare = QString::compare(vScrollText, main_window_status_bar::bottomScroll);
+
+	int value = 0;
+
+	if (topCompare == 0) {
+		value = main_window_status_bar::minScrollValue;
+	} else if (bottomCompare == 0) {
+		value = main_window_status_bar::maxScrollValue;
+	} else {
+		vScrollText.resize(vScrollText.size() - 1);
+		bool success = false;
+		value = vScrollText.toInt(&success, 10);
+		QEXCEPTION_ACTION_COND((success == false), throw, "Conversion of " << vScrollText << " to integer failed");
+	}
+
+	return value;
+}
+
 void main_window_status_bar::MainWindowStatusBar::setProgressValue(const int & value) {
 	this->loadBar->setValue(value);
 }
+BASE_GETTER(main_window_status_bar::MainWindowStatusBar::getProgressValue, int, this->loadBar->value())
+BASE_GETTER(main_window_status_bar::MainWindowStatusBar::getLoadBarVisibility, bool, this->loadBar->isVisible())
 
 void main_window_status_bar::MainWindowStatusBar::setInfoText(const QString & text) {
 	this->info->setText(text);
 }
+CONST_GETTER(main_window_status_bar::MainWindowStatusBar::getInfoText, QString, this->info->text())
 
 void main_window_status_bar::MainWindowStatusBar::setUserInputText(const QString & text) {
 	this->userInput->setText(text);
 }
+CONST_GETTER(main_window_status_bar::MainWindowStatusBar::getUserInputText, QString, this->userInput->text())
 
 void main_window_status_bar::MainWindowStatusBar::setContentPathText(const QString & text) {
 	this->contentPath->setText(text);
 }
+CONST_GETTER(main_window_status_bar::MainWindowStatusBar::getContentPathText, QString, this->contentPath->text())
 
 void main_window_status_bar::MainWindowStatusBar::setSearchResultText(const QString & text) {
 	this->searchResult->setText(text);
 }
+CONST_GETTER(main_window_status_bar::MainWindowStatusBar::getSearchResultText, QString, this->searchResult->text())
 
 void main_window_status_bar::MainWindowStatusBar::showSearchResult(const bool & showWidget) {
 	const bool isTextEmpty = this->searchResult->text().isEmpty();

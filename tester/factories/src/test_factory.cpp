@@ -13,7 +13,7 @@
 #include "logging_macros.h"
 #include "function_macros.h"
 #include "test_factory.h"
-#include "sanity_suite.h"
+#include "command_suite.h"
 
 Q_LOGGING_CATEGORY(testFactoryOverall, "testFactory.overall", MSG_TYPE_LEVEL)
 
@@ -30,5 +30,5 @@ test_factory::TestFactory::~TestFactory() {
 }
 
 void test_factory::TestFactory::populate() {
-	sanity_suite::SanitySuite::create<sanity_suite::SanitySuite>(this->shared_from_this());
+	command_suite::CommandSuite::create<command_suite::CommandSuite>(this->shared_from_this());
 }
