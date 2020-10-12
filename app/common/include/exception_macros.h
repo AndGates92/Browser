@@ -27,7 +27,7 @@
  */
 #define QEXCEPTION_ACTION_COND(CONDITION, ACTION, ...)\
 	if (CONDITION) { \
-		QEXCEPTION_ACTION(ACTION, __VA_ARGS__); \
+		QEXCEPTION_ACTION_INTERNAL(ACTION, #CONDITION, __VA_ARGS__); \
 	}
 
 /**
@@ -36,12 +36,24 @@
  * \param ACTION    : action on exception
  * \param ...       : variable number of arguments to provide to infoMsg
  *
- * Execute action on an exception
+ * Execute action on an exception with an empty condition
  */
 #define QEXCEPTION_ACTION(ACTION, ...)\
-	QString str = QString(); \
-	QTextStream(&str) << "[" << logging_functions::getDateTime() << "] Exception caught on file " << __FILE__ << " at line " << __LINE__ << ": " << __VA_ARGS__; \
-	ACTION browser_exception::BrowserException(str);
+	QEXCEPTION_ACTION_INTERNAL(ACTION, "", __VA_ARGS__);
+
+/**
+ * @brief QEXCEPTION_ACTION_INTERNAL(ACTION, ...)
+ *
+ * \param ACTION    : action on exception
+ * \param CONDITION : condition to execute action on exception
+ * \param ...       : variable number of arguments to provide to infoMsg
+ *
+ * Execute action on an exception
+ */
+#define QEXCEPTION_ACTION_INTERNAL(ACTION, CONDITION, ...)\
+	QString msg = QString(); \
+	QTextStream(&msg) << __VA_ARGS__; \
+	ACTION browser_exception::BrowserException(logging_functions::getDateTime(), __LINE__, __FILE__, CONDITION, msg);
 
 /** @} */ // End of ExceptionMacrosGroup group
 

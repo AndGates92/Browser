@@ -132,7 +132,7 @@ namespace error_data {
 			 *
 			 * \return file where the error was triggered
 			 *
-			 * This function returns the filename where the error occurred 
+			 * This function returns the filename where the error occurred
 			 */
 			const std::string & getFilename() const;
 

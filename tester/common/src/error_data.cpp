@@ -102,7 +102,9 @@ const std::string error_data::ErrorData::print() const {
 	errorInfo = errorInfo + " Test [ " + this->getTest()->getName() + " ]";
 	errorInfo = errorInfo + " Line " + std::to_string(this->lineNumber);
 	errorInfo = errorInfo + " in file " + this->filename + ":";
-	errorInfo = errorInfo + " Condition " + this->condition;
+	if (this->condition.empty() == false) {
+		errorInfo = errorInfo + " Condition " + this->condition;
+	}
 	errorInfo = errorInfo + " Error Message " + this->message;
 
 	return errorInfo;

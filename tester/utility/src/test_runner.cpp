@@ -69,9 +69,23 @@ void test_runner::TestRunner::addTestFromSuiteToTestList(const std::shared_ptr<b
 
 void test_runner::TestRunner::run() {
 	for (const auto & test : this->testList) {
-		test->run();
-		test_enums::test_status_e status = test->getStatus();
-		if (status == test_enums::test_status_e::FAIL) {
+		try {
+				test->run();
+				test_enums::test_status_e status = test->getStatus();
+				if (status == test_enums::test_status_e::FAIL) {
+					this->failedTests.push_back(test);
+				}
+		} catch (const browser_exception::BrowserException & bexc) {
+			test->addExceptionThrown(bexc.getLine(), bexc.getFilename().toStdString(), bexc.getCondition().toStdString(), bexc.getMessage().toStdString());
+			this->failedTests.push_back(test);
+		} catch (const QUnhandledException & unhandledexc) {
+			const std::string condition = std::string();
+			const std::string message("Got unhandled exception");
+			test->addExceptionThrown(__LINE__, __FILE__, condition, message);
+			this->failedTests.push_back(test);
+		} catch (const std::exception & exc) {
+			const std::string condition = std::string();
+			test->addExceptionThrown(__LINE__, __FILE__, condition, exc.what());
 			this->failedTests.push_back(test);
 		}
 	}

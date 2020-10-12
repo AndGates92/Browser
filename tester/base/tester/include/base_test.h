@@ -40,6 +40,10 @@ namespace base_suite {
 	class BaseSuite;
 }
 
+namespace test_runner {
+	class TestRunner;
+}
+
 namespace base_test {
 
 	/**
@@ -48,6 +52,7 @@ namespace base_test {
 	 */
 	class BaseTest : public std::enable_shared_from_this<base_test::BaseTest>, public printable_object::PrintableObject, public base_element_creation::BaseElementCreation {
 		friend base_suite::BaseSuite;
+		friend test_runner::TestRunner;
 
 		public:
 
@@ -232,6 +237,19 @@ namespace base_test {
 			 * This function adds an item to the expected error multi map
 			 */
 			void addAssertionFailure(const int & line, const std::string & filename, const std::string & condition, const test_enums::error_type_e & type, const std::string & errorMessage);
+
+			/**
+			 * @brief Function: void addExceptionThrown(const int & line, const std::string & filename, const std::string & condition, const std::string & errorMessage);
+			 *
+			 * \param line: line number of the error
+			 * \param filename: filename where the error occurred
+			 * \param condition: condition that failed
+			 * \param errorMessage: message of the error
+			 *
+			 * This function adds an item to the expected error multi map of type exception and call the wrap-up function if the window is visible
+			 */
+			void addExceptionThrown(const int & line, const std::string & filename, const std::string & condition, const std::string & errorMessage);
+
 			/**
 			 * @brief Function: const std::string print() const override
 			 *

@@ -39,13 +39,17 @@ namespace browser_exception {
 		public:
 
 			/**
-			 * @brief Function: explicit BrowserException(const QString & msg)
+			 * @brief Function: explicit BrowserException(const QString exceptionTimestamp, const int & exceptionLine, const QString & exceptionFile, const QString & exceptionCondition, const QString & exceptionMsg)
 			 *
-			 * \param msg: message of the exception
+			 * \param exceptionTimestamp: timestamp when the exception was created
+			 * \param exceptionLine: line where the exception was triggered
+			 * \param exceptionFile: file in which the exception was triggered
+			 * \param exceptionCondition: condition that triggered the exception
+			 * \param exceptionMsg: message of the exception
 			 *
 			 * Browser exception constructor
 			 */
-			explicit BrowserException(const QString & msg);
+			explicit BrowserException(const QString exceptionTimestamp, const int & exceptionLine, const QString & exceptionFile, const QString & exceptionCondition, const QString & exceptionMsg);
 
 			/**
 			 * @brief Function: virtual ~BrowserException()
@@ -77,7 +81,80 @@ namespace browser_exception {
 			 */
 			QString print() const;
 
+			/**
+			 * @brief Function: const QString & getTimestamp() const
+			 *
+			 * \return exception timestamp
+			 *
+			 * This function returns the timestamp when the exception was triggered
+			 */
+			const QString & getTimestamp() const;
+
+			/**
+			 * @brief Function: const int & getLine() const
+			 *
+			 * \return the line where the exception occurred
+			 *
+			 * This function returns the line where the exception occurred
+			 */
+			const int & getLine() const;
+
+			/**
+			 * @brief Function: const QString & getFilename() const
+			 *
+			 * \return file where the exception was triggered
+			 *
+			 * This function returns the filename where the exception occurred
+			 */
+			const QString & getFilename() const;
+
+			/**
+			 * @brief Function: const QString & getCondition() const
+			 *
+			 * \return condition triggering the exception
+			 *
+			 * This function returns the condition that triggered the exception
+			 */
+			const QString & getCondition() const;
+
+			/**
+			 * @brief Function: const QString & getMessage() const
+			 *
+			 * \return exception message
+			 *
+			 * This function returns the exception message
+			 */
+			const QString & getMessage() const;
+
 		private:
+			/**
+			 * @brief timestamp of the exception
+			 *
+			 */
+			QString timestamp;
+
+			/**
+			 * @brief line of the exception
+			 *
+			 */
+			int line;
+
+			/**
+			 * @brief filename where the exception triggered
+			 *
+			 */
+			QString filename;
+
+			/**
+			 * @brief condition that caused the exception
+			 *
+			 */
+			QString condition;
+
+			/**
+			 * @brief message of the exception
+			 *
+			 */
 			QString message;
 
 	};

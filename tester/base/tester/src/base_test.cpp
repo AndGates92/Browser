@@ -173,6 +173,15 @@ void base_test::BaseTest::addAssertionFailure(const int & line, const std::strin
 	this->addError(this->errorMap, type, data);
 }
 
+void base_test::BaseTest::addExceptionThrown(const int & line, const std::string & filename, const std::string & condition, const std::string & errorMessage) {
+	const test_enums::error_type_e type = test_enums::error_type_e::EXCEPTION;
+	this->addAssertionFailure(line, filename, condition, type, errorMessage);
+
+	if (((this->state != test_enums::test_state_e::SETTING_UP) || (this->state != test_enums::test_state_e::RUNNING)) && (this->window->getWindow()->isVisible() == true)) {
+		this->wrapup();
+	}
+}
+
 void base_test::BaseTest::addError(test_error_container_t & errors, const test_enums::error_type_e & type, const error_data::ErrorData & data) {
 	errors.insert(std::pair<test_enums::error_type_e, error_data::ErrorData>(type, data));
 }
