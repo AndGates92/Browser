@@ -8,13 +8,20 @@ TIMESTAMP = ${shell date "+${DATE_FORMAT} ${TIME_FORMAT}"}
 # Makefile variables
 VERBOSE =
 VERBOSE_ECHO = @
+COMPILE_TYPE ?= Debug
+COMPILE_TYPE_VALID_VALUES = Release Debug
 
-# tester suffix
-TESTER_SUFFIX = _tester
+ifneq ($(COMPILE_TYPE), $(filter $(COMPILE_TYPE), $(COMPILE_TYPE_VALID_VALUES)))
+  $(error Compile type $(COMPILE_TYPE) is not valid. Valid values are $(COMPILE_TYPE_VALID_VALUES))
+endif
 
+# Shell commands
 RM = rm -rf
 MKDIR = mkdir -p
 MV = mv
+
+# tester suffix
+TESTER_SUFFIX = _tester
 
 # Project name
 PROJ_NAME ?= browser
@@ -93,26 +100,33 @@ COV_FILES = gcov
 # PIC (Position Independent Code) is required by Qt
 # C++14 standard
 # -rdyanmic: ELF linked adds all symbols to the dynamic symbol table
-CFLAGS = -g -Wnon-virtual-dtor -Wall -Wconversion -fPIC -Werror -Wextra -Wpedantic -std=c++17 -rdynamic -Og
+CFLAGS = -Wnon-virtual-dtor -Wall -Wconversion -fPIC -Werror -Wextra -Wpedantic -std=c++17 -rdynamic
+ifeq ($(COMPILE_TYPE), Debug)
+  CFLAGS += -Og -g3
+else
+  ifeq ($(COMPILE_TYPE), Release)
+    CFLAGS += -O3
+  endif
+endif
 
 ifeq ($(SANITIZER), 1)
-ASANFLAGS = -fsanitize-address-use-after-scope -fsanitize=leak -fsanitize=undefined -fsanitize=address -fno-omit-frame-pointer
+  ASANFLAGS = -fsanitize-address-use-after-scope -fsanitize=leak -fsanitize=undefined -fsanitize=address -fno-omit-frame-pointer
 else
-ASANFLAGS =
+  ASANFLAGS =
 endif
 
 ifeq ($(COVERAGE), 1)
-COVFLAGS = -ftest-coverage -fprofile-arcs -fprofile-abs-path
-COVLIBS = gcov
+  COVFLAGS = -ftest-coverage -fprofile-arcs -fprofile-abs-path
+  COVLIBS = gcov
 else
-COVFLAGS =
-COVLIBS =
+  COVFLAGS =
+  COVLIBS =
 endif
 
 ifeq ($(PROFILER), 1)
-PROFILERFLAGS = -pg
+  PROFILERFLAGS = -pg
 else
-PROFILERFLAGS =
+  PROFILERFLAGS =
 endif
 
 ifeq ($(APP_MAIN), $(TESTER_MAIN))
@@ -383,7 +397,7 @@ debug :
 	$(VERBOSE_ECHO)echo "[${TIMESTAMP}] --> Coverage directory: $(COVERAGE_DIR)"
 	$(VERBOSE_ECHO)echo "[${TIMESTAMP}] --> Profiling directory: $(PROFILE_DIR)"
 
-clean_byprod :
+clean_byproducts :
 	$(VERBOSE_ECHO)echo "[${TIMESTAMP}] Remove object files: $(OBJS)"
 	rm -rf $(OBJ_DIR)
 	$(VERBOSE_ECHO)echo "[${TIMESTAMP}] Remove moc object files: $(MOC_OBJS)"
@@ -392,25 +406,33 @@ clean_byprod :
 	rm -rf $(MOC_SRC_DIR)
 	$(VERBOSE_ECHO)echo "[${TIMESTAMP}] Remove dependencies directory: $(DEP_DIR)"
 	rm -rf $(DEP_DIR)
-	$(VERBOSE_ECHO)echo "[${TIMESTAMP}] Remove doxygen documentation directory: $(DOX_DOC_DIR)"
-	rm -rf $(DOX_DOC_DIR)
 	$(VERBOSE_ECHO)echo "[${TIMESTAMP}] Clean by-product completed"
 
-clean_prog :
-	$(VERBOSE_ECHO)echo "[${TIMESTAMP}] Remove binary directory: $(BIN_DIR)"
-	$(RM) $(BIN_DIR)
+clean_logs :
 	$(VERBOSE_ECHO)echo "[${TIMESTAMP}] Remove log directory: $(LOG_DIR)"
 	$(RM) $(LOG_DIR)
+	$(VERBOSE_ECHO)echo "[${TIMESTAMP}] Clean log completed"
+
+clean_outputs :
 	$(VERBOSE_ECHO)echo "[${TIMESTAMP}] Remove coverage directory: $(COVERAGE_DIR)"
 	$(RM) $(COVERAGE_DIR)
 	$(VERBOSE_ECHO)echo "[${TIMESTAMP}] Remove profile directory: $(PROFILE_DIR)"
 	$(RM) $(PROFILE_DIR)
 	$(RM) $(PROFILE_DATA)
-	$(VERBOSE_ECHO)echo "[${TIMESTAMP}] Clean program completed"
+	$(VERBOSE_ECHO)echo "[${TIMESTAMP}] Remove doxygen documentation directory: $(DOX_DOC_DIR)"
+	rm -rf $(DOX_DOC_DIR)
+	$(VERBOSE_ECHO)echo "[${TIMESTAMP}] Clean outputs completed"
+
+clean_binaries :
+	$(VERBOSE_ECHO)echo "[${TIMESTAMP}] Remove binary directory: $(BIN_DIR)"
+	$(RM) $(BIN_DIR)
+	$(VERBOSE_ECHO)echo "[${TIMESTAMP}] Clean binaries completed"
 
 clean :
-	make clean_prog
-	make clean_byprod
+	make clean_logs
+	make clean_outputs
+	make clean_binaries
+	make clean_byproducts
 
 doc :
 	$(MKDIR) $(DOX_DOC_DIR)
@@ -451,7 +473,7 @@ profiling:
 	$(MV) *$(ANNSRC_EXT) $(PROFILE_DIR)
 
 # phony target to avoid conflicts with a possible file with the same name
-.PHONY: all,clean,depend,$(TESTER_EXE),$(APP_EXE),debug,doc,memleak,coverage,profiling
+.PHONY: all,clean,clean_logs,clean_outputs,clean_byproducts,clean_binaries,,depend,$(TESTER_EXE),$(APP_EXE),debug,doc,memleak,coverage,profiling
 
 # Prevent intermediate files from being deleted
 .SECONDARY: $(MOC_SRCS) $(MOC_OBJS) $(OBJS)
