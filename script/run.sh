@@ -214,7 +214,7 @@ configure_qt_paths() {
 	fill_qt_paths
 	success=$?
 
-	while [ "${success}" = "0" ]; do
+	while [ ${success} -eq 0 ]; do
 		echotimestamp " Unable to find all Qt paths (${QTBASEDIR}/lib, ${QTBASEDIR}/include and ${QTBASEDIR}/bin)"
 		choose_qtbasedir
 		fill_qt_paths
@@ -245,13 +245,12 @@ choose_compile_type() {
 
 check_compile_type() {
 	valid_compile_type=0;
-	case "${reply}" in
+	case "${COMPILETYPE}" in
 		Debug|Release)
-			COMPILETYPE=${reply}
 			valid_compile_type=1
 			;;
 		?*)
-			echotimestamp " Reply ${reply} is not valid. Valid replies are:${valid_compile_types}"
+			echotimestamp " Reply ${COMPILETYPE} is not valid. Valid replies are:${valid_compile_types}"
 			valid_compile_type=0
 			;;
 	esac
@@ -262,7 +261,7 @@ configure_compilation() {
 	check_compile_type
 	success=$?
 
-	if [ "${success}" = "0" ]; then
+	if [ ${success} -eq 0 ]; then
 		echotimestamp " Compilation type ${COMPILETYPE} is not supported"
 		choose_compile_type
 	fi
@@ -317,7 +316,7 @@ configure_clean_operations() {
 	set_clean_target
 	success=$?
 
-	while [ "${success}" = "0" ]; do
+	while [ ${success} -eq 0 ]; do
 		echotimestamp " Clean level ${clean} is not supported"
 		choose_clean_level
 		set_clean_target
@@ -342,7 +341,7 @@ do
 			compile=1
 			next_arg=$2
 			case "${next_arg}" in
-				"" | ^-*)
+				"" | -*)
 					COMPILETYPE=Debug
 					;;
 				?*)
@@ -388,7 +387,7 @@ do
 		--clean|-c)
 			next_arg=$2
 			case "${next_arg}" in
-				"" | ^-*)
+				"" | -*)
 					clean=all
 					;;
 				?*)
