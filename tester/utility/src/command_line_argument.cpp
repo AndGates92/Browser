@@ -76,7 +76,7 @@ command_line_argument::CommandLineArgument & command_line_argument::CommandLineA
 
 }
 
-command_line_argument::CommandLineArgument::CommandLineArgument(command_line_argument::CommandLineArgument && rhs) : json_data::JsonData(rhs), key(std::exchange(rhs.key, std::string())), name(std::exchange(rhs.name, std::string())), shortCmd(std::exchange(rhs.shortCmd, std::string())), longCmd(std::exchange(rhs.longCmd, std::string())), defaultValue(std::exchange(rhs.defaultValue, std::string())), numberOfArguments(std::exchange(rhs.numberOfArguments, -1)), help(std::exchange(rhs.help, std::string())) {
+command_line_argument::CommandLineArgument::CommandLineArgument(command_line_argument::CommandLineArgument && rhs) : json_data::JsonData(std::move(rhs)), key(std::exchange(rhs.key, std::string())), name(std::exchange(rhs.name, std::string())), shortCmd(std::exchange(rhs.shortCmd, std::string())), longCmd(std::exchange(rhs.longCmd, std::string())), defaultValue(std::exchange(rhs.defaultValue, std::string())), numberOfArguments(std::exchange(rhs.numberOfArguments, -1)), help(std::exchange(rhs.help, std::string())) {
 
 	QINFO_PRINT(global_enums::qinfo_level_e::ZERO, commandLineArgumentOverall,  "Move constructor main window JSON data");
 }
@@ -87,7 +87,7 @@ command_line_argument::CommandLineArgument & command_line_argument::CommandLineA
 
 	// If rhs points to the same address as this, then return this
 	if (&rhs != this) {
-		json_data::JsonData::operator=(rhs);
+		json_data::JsonData::operator=(std::move(rhs));
 		this->key = std::exchange(rhs.key, std::string());
 		this->name = std::exchange(rhs.name, std::string());
 		this->shortCmd = std::exchange(rhs.shortCmd, std::string());

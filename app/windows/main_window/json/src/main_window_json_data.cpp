@@ -74,7 +74,7 @@ main_window_json_data::MainWindowJsonData & main_window_json_data::MainWindowJso
 
 }
 
-main_window_json_data::MainWindowJsonData::MainWindowJsonData(main_window_json_data::MainWindowJsonData && rhs) : json_data::JsonData(rhs), key(std::exchange(rhs.key, std::string())), name(std::exchange(rhs.name, std::string())), state(std::exchange(rhs.state, main_window_shared_types::state_e::IDLE)), shortcut(std::exchange(rhs.shortcut, (int)Qt::Key_unknown)), longCmd(std::exchange(rhs.longCmd, std::string())), help(std::exchange(rhs.help, std::string())) {
+main_window_json_data::MainWindowJsonData::MainWindowJsonData(main_window_json_data::MainWindowJsonData && rhs) : json_data::JsonData(std::move(rhs)), key(std::exchange(rhs.key, std::string())), name(std::exchange(rhs.name, std::string())), state(std::exchange(rhs.state, main_window_shared_types::state_e::IDLE)), shortcut(std::exchange(rhs.shortcut, (int)Qt::Key_unknown)), longCmd(std::exchange(rhs.longCmd, std::string())), help(std::exchange(rhs.help, std::string())) {
 
 	QINFO_PRINT(global_enums::qinfo_level_e::ZERO, mainWindowJsonDataOverall,  "Move constructor main window JSON data");
 }
@@ -85,7 +85,7 @@ main_window_json_data::MainWindowJsonData & main_window_json_data::MainWindowJso
 
 	// If rhs points to the same address as this, then return this
 	if (&rhs != this) {
-		json_data::JsonData::operator=(rhs);
+		json_data::JsonData::operator=(std::move(rhs));
 		this->key = std::exchange(rhs.key, std::string());
 		this->name = std::exchange(rhs.name, std::string());
 		this->state = std::exchange(rhs.state, main_window_shared_types::state_e::IDLE);

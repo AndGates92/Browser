@@ -41,7 +41,7 @@ main_window_web_engine_settings::MainWindowWebEngineSettings & main_window_web_e
 	return *this;
 }
 
-main_window_web_engine_settings::MainWindowWebEngineSettings::MainWindowWebEngineSettings(main_window_web_engine_settings::MainWindowWebEngineSettings && rhs) :  web_engine_settings::WebEngineSettings(rhs) {
+main_window_web_engine_settings::MainWindowWebEngineSettings::MainWindowWebEngineSettings(main_window_web_engine_settings::MainWindowWebEngineSettings && rhs) :  web_engine_settings::WebEngineSettings(std::move(rhs)) {
 
 	QINFO_PRINT(global_enums::qinfo_level_e::ZERO, mainWindowWebEngineSettingsOverall,  "Move constructor web engine settings");
 }
@@ -52,7 +52,7 @@ main_window_web_engine_settings::MainWindowWebEngineSettings & main_window_web_e
 
 	// If rhs doesn't point to the same address as this, then execute move
 	if (&rhs != this) {
-		this->web_engine_settings::WebEngineSettings::operator=(rhs);
+		this->web_engine_settings::WebEngineSettings::operator=(std::move(rhs));
 	}
 
 	return *this;
