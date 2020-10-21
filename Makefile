@@ -9,7 +9,7 @@ TIMESTAMP = ${shell date "+${DATE_FORMAT} ${TIME_FORMAT}"}
 VERBOSE =
 VERBOSE_ECHO = @
 COMPILE_TYPE ?= Debug
-COMPILE_TYPE_VALID_VALUES = Release Debug
+COMPILE_TYPE_VALID_VALUES = Release Debug Compare
 
 ifneq ($(COMPILE_TYPE), $(filter $(COMPILE_TYPE), $(COMPILE_TYPE_VALID_VALUES)))
   $(error Compile type $(COMPILE_TYPE) is not valid. Valid values are $(COMPILE_TYPE_VALID_VALUES))
@@ -101,11 +101,16 @@ COV_FILES = gcov
 # C++14 standard
 # -rdyanmic: ELF linked adds all symbols to the dynamic symbol table
 CFLAGS = -Wnon-virtual-dtor -Wall -Wconversion -fPIC -Werror -Wextra -Wpedantic -std=c++17 -rdynamic
+CDEBUGFLAGS += -Og -g3
 ifeq ($(COMPILE_TYPE), Debug)
-  CFLAGS += -Og -g3
+  CFLAGS += $(CDEBUGFLAGS)
 else
   ifeq ($(COMPILE_TYPE), Release)
     CFLAGS += -O3
+  else
+    ifeq ($(COMPILE_TYPE), Compare)
+      export GCC_COMPARE_DEBUG = "$(CDEBUGFLAGS) -fcompare-debug-not-overriden"
+    endif
   endif
 endif
 

@@ -57,6 +57,7 @@ ITEMSYMBOL="-->"
 
 valid_compile_types="
 	(Debug to compile in debug mode without enabling compile optimizations)
+	(Compare to run compilation a second time to compare the executable with and without debug options)
 	(Release to compile in release mode enabling compile optimizations)"
 
 valid_clean_levels="
@@ -231,7 +232,7 @@ choose_compile_type() {
 	while [ ${valid_answer} -eq 0 ]; do
 		read reply
 		case "${reply}" in
-			Debug|Release)
+			Debug|Release|Compare)
 				COMPILETYPE=${reply}
 				valid_answer=1
 				;;
@@ -246,7 +247,7 @@ choose_compile_type() {
 check_compile_type() {
 	valid_compile_type=0;
 	case "${COMPILETYPE}" in
-		Debug|Release)
+		Debug|Release|Compare)
 			valid_compile_type=1
 			;;
 		?*)
