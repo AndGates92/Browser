@@ -14,6 +14,7 @@
 #include <QtCore/QLoggingCategory>
 
 #include "enums.h"
+#include "browser_settings.h"
 
 /** @defgroup LoggerGroup Logger Doxygen Group
  *  Logger functions and classes
@@ -33,6 +34,24 @@ namespace logger {
 			 * This function returns the default logger context
 			 */
 			static logger::Context getDefaultContext();
+
+			/**
+			 * @brief Function: void setLogFilename(const std::string & value)
+			 *
+			 * \param value: the name of the file to log messages into
+			 *
+			 * This function sets the name of the file to log messages into
+			 */
+			void setLogFilename(const std::string & value);
+
+			/**
+			 * @brief Function: const std::string & getLogFilename() const
+			 *
+			 * \return the name of the file to log messages into
+			 *
+			 * This function returns the name of the file to log messages into
+			 */
+			const std::string & getLogFilename() const;
 
 			/**
 			 * @brief Function: void setName(const std::string & value)
@@ -116,18 +135,19 @@ namespace logger {
 			const logger::info_level_e & getInfoVerbosity() const;
 
 			/**
-			 * @brief Function: explicit Context(const std::string contextName, const logger::msg_type_e contextType, const logger::info_level_e contextInfoVerbosity)
+			 * @brief Function: explicit Context(const std::string contextName, const logger::msg_type_e contextType, const logger::info_level_e contextInfoVerbosity, const std::string ologfilename = browser_settings::BrowserSettings::getLogFilePath())
 			 *
 			 * \param contextName: name of the context
 			 * \param contextType: minimum message type accepted
 			 * \param contextInfoVerbosity: minimum verbosity level of information messages
+			 * \param ologfilename: filename of the file where messages will be printed
 			 *
 			 * Logger context constructor
 			 */
-			explicit Context(const std::string contextName, const logger::msg_type_e contextType, const logger::info_level_e contextInfoVerbosity);
+			explicit Context(const std::string contextName, const logger::msg_type_e contextType, const logger::info_level_e contextInfoVerbosity, const std::string ologfilename = browser_settings::BrowserSettings::getLogFilePath());
 
 			/**
-			 * @brief Function: explicit Context(const std::string contextName, const std::string contextFile, const int contextLine, const std::string contextFunction, const logger::msg_type_e contextType, const logger::info_level_e contextInfoVerbosity)
+			 * @brief Function: explicit Context(const std::string contextName, const std::string contextFile, const int contextLine, const std::string contextFunction, const logger::msg_type_e contextType, const logger::info_level_e contextInfoVerbosity, const std::string ologfilename = browser_settings::BrowserSettings::getLogFilePath())
 			 *
 			 * \param contextName: name of the context
 			 * \param contextFile: file of the context
@@ -135,10 +155,11 @@ namespace logger {
 			 * \param contextFunction: function of the context
 			 * \param contextType: minimum message type accepted
 			 * \param contextInfoVerbosity: minimum verbosity level of information messages
+			 * \param ologfilename: filename of the file where messages will be printed
 			 *
 			 * Logger context constructor
 			 */
-			explicit Context(const std::string contextName, const std::string contextFile, const int contextLine, const std::string contextFunction, const logger::msg_type_e contextType, const logger::info_level_e contextInfoVerbosity);
+			explicit Context(const std::string contextName, const std::string contextFile, const int contextLine, const std::string contextFunction, const logger::msg_type_e contextType, const logger::info_level_e contextInfoVerbosity, const std::string ologfilename = browser_settings::BrowserSettings::getLogFilePath());
 
 			/**
 			 * @brief Function: virtual ~Context()
@@ -173,6 +194,12 @@ namespace logger {
 			 *
 			 */
 			std::string function;
+
+			/**
+			 * @brief filename to log into
+			 *
+			 */
+			std::string logFilename;
 
 			/**
 			 * @brief minimum message type printed by the context

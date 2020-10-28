@@ -9,14 +9,11 @@
  */
 
 #include "global_enums.h"
-//#include "macros.h"
 
 /** @defgroup SingletonGroup Singleton Group
  *  Singleton functions and classes
  *  @{
  */
-//EXPORT_CONTEXT(singletonOverall)
-
 namespace singleton {
 
 	/**

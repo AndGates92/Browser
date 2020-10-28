@@ -8,13 +8,12 @@
  * @brief Command line parser header file
  */
 
-#include <string>
 #include <list>
-#include <map>
 
 #include "constructor_macros.h"
 #include "printable_object.h"
 #include "command_line_argument.h"
+#include "types.h"
 #include "json_action.h"
 
 /** @defgroup CommandLineParserGroup Command Line Parser Group
@@ -32,20 +31,15 @@ namespace command_line_parser {
 
 		public:
 			/**
-			 * @brief action data type
-			 *
-			 */
-			typedef std::map<std::string, std::string> argument_map_t;
-
-			/**
-			 * @brief Function: explicit CommandLineParser(int & argc, char** argv)
+			 * @brief Function: explicit CommandLineParser(int & argc, char** argv, const std::string & jsonFile)
 			 *
 			 * \param argc: number of arguments
 			 * \param argv: value of arguments
+			 * \param jsonFile: JSON filename
 			 *
 			 * Command Line Parser constructor
 			 */
-			explicit CommandLineParser(int & argc, char** argv);
+			explicit CommandLineParser(int & argc, char** argv, const std::string & jsonFile);
 
 			/**
 			 * @brief Function: virtual ~CommandLineParser()
@@ -53,6 +47,16 @@ namespace command_line_parser {
 			 * Command Line Parser destructor
 			 */
 			virtual ~CommandLineParser();
+
+			/**
+			 * @brief Function: void initialize(int & argc, char** argv)
+			 *
+			 * \param argc: number of arguments
+			 * \param argv: value of arguments
+			 *
+			 * This function initializes the command line parser if no already done in the constructor
+			 */
+			void initialize(int & argc, char** argv);
 
 			/**
 			 * @brief Function: const int & getArgc() const
@@ -73,13 +77,45 @@ namespace command_line_parser {
 			char ** getArgv();
 
 			/**
-			 * @brief Function: const argument_map_t & getDecodedArguments() const
+			 * @brief Function: void addArguments(const command_line::argument_map_t & arguments, const bool enableOverride = false)
+			 *
+			 * \param arguments: arguments to add or override
+			 * \param enableOverride: if the decoded argument map already contains some keys, they will be overridden
+			 *
+			 * This function merges the map of arguments provided as argument with the map locally stored.
+			 */
+			void addArguments(const command_line::argument_map_t & arguments, const bool enableOverride = false);
+
+			/**
+			 * @brief Function: void addArgument(const std::string & key, const std::string & value)
+			 *
+			 * \param key: key to add
+			 * \param value: new value of key provided as argument
+			 *
+			 * This function adds a key and its value to the argument map.
+			 * It will throw an exception if the key is already in the map before adding it.
+			 */
+			void addArgument(const std::string & key, const std::string & value);
+
+			/**
+			 * @brief Function: void overrideArgumentValue(const std::string & key, const std::string & value)
+			 *
+			 * \param key: key whose value has to be changed
+			 * \param value: new value of key provided as argument
+			 *
+			 * This function changes the value of an argument.
+			 * It will throw an exception if the key is not found.
+			 */
+			void overrideArgumentValue(const std::string & key, const std::string & value);
+
+			/**
+			 * @brief Function: const command_line::argument_map_t & getDecodedArguments() const
 			 *
 			 * \return decoded arguments
 			 *
 			 * This function returns the decoded arguments
 			 */
-			const argument_map_t & getDecodedArguments() const;
+			const command_line::argument_map_t & getDecodedArguments() const;
 
 			/**
 			 * @brief Function: const std::string print() const override
@@ -101,6 +137,8 @@ namespace command_line_parser {
 			 */
 			virtual void addItemToActionData(std::unique_ptr<command_line_argument::CommandLineArgument> & data, const std::string & key, const std::string & item) override;
 
+		protected:
+
 		private:
 			/**
 			 * @brief number of arguments provided in the command line to launch the application
@@ -118,7 +156,7 @@ namespace command_line_parser {
 			 * @brief decoded command line arguments
 			 *
 			 */
-			argument_map_t decodedArguments;
+			command_line::argument_map_t decodedArguments;
 
 			/**
 			 * @brief Function: void extractArguments()

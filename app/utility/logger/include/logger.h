@@ -16,6 +16,7 @@
 #include "logging.h"
 #include "config.h"
 #include "context.h"
+#include "browser_settings.h"
 
 /** @defgroup LoggerGroup Logger Doxygen Group
  *  Logger functions and classes
@@ -34,48 +35,61 @@ namespace logger {
 			typedef std::function<const logger::Context &(void)> context_function_t;
 
 			/**
-			 * @brief Function: explicit Logger(const logger::msg_type_e loggerType, const std::string contextFile, const int line, const std::string function, const logger::Context loggerContext, const logger::info_level_e loggerVerbosity, const std::string ologfilename = logger::Config::getInstance()->getDefaultOutputFile())
+			 * @brief Function: explicit Logger(const logger::msg_type_e loggerType, const std::string contextFile, const int line, const std::string function, const logger::Context loggerContext, const logger::info_level_e loggerInfoVerbosity, const std::string ologfilename = browser_settings::BrowserSettings::getLogFilePath())
 			 *
 			 * \param loggerType: message type associated with the logger
 			 * \param contextFile: filename of the context
 			 * \param line: line of the context
 			 * \param function: function of the context
 			 * \param loggerContext: context to get data from
-			 * \param loggerVerbosity: verbosity level of information messages
+			 * \param loggerInfoVerbosity: verbosity level of information messages
 			 * \param ologfilename: filename of the file where messages will be printed
 			 *
 			 * Logger constructor with context
 			 */
-			explicit Logger(const logger::msg_type_e loggerType, const std::string contextFile, const int line, const std::string function, const logger::Context loggerContext, const logger::info_level_e loggerVerbosity, const std::string ologfilename = logger::Config::getInstance()->getDefaultOutputFile());
+			explicit Logger(const logger::msg_type_e loggerType, const std::string contextFile, const int line, const std::string function, const logger::Context loggerContext, const logger::info_level_e loggerInfoVerbosity, const std::string ologfilename = browser_settings::BrowserSettings::getLogFilePath());
 
 			/**
-			 * @brief Function: explicit Logger(const logger::msg_type_e loggerType, const std::string contextFile, const int line, const std::string function, context_function_t loggerContextConstRef, const logger::info_level_e loggerVerbosity, const std::string ologfilename = logger::Config::getInstance()->getDefaultOutputFile())
+			 * @brief Function: explicit Logger(const logger::msg_type_e loggerType, const std::string contextFile, const int line, const std::string function, context_function_t loggerContextConstRef, const logger::info_level_e loggerInfoVerbosity, const std::string ologfilename = browser_settings::BrowserSettings::getLogFilePath())
 			 *
 			 * \param loggerType: message type associated with the logger
 			 * \param contextFile: filename of the context
 			 * \param line: line of the context
 			 * \param function: function of the context
 			 * \param loggerContextConstRef: pointer to a function that returns a constant reference to the context
-			 * \param loggerVerbosity: verbosity level of information messages
+			 * \param loggerInfoVerbosity: verbosity level of information messages
 			 * \param ologfilename: filename of the file where messages will be printed
 			 *
 			 * Logger constructor with context
 			 */
-			explicit Logger(const logger::msg_type_e loggerType, const std::string contextFile, const int line, const std::string function, context_function_t loggerContextConstRef, const logger::info_level_e loggerVerbosity, const std::string ologfilename = logger::Config::getInstance()->getDefaultOutputFile());
+			explicit Logger(const logger::msg_type_e loggerType, const std::string contextFile, const int line, const std::string function, context_function_t loggerContextConstRef, const logger::info_level_e loggerInfoVerbosity, const std::string ologfilename = browser_settings::BrowserSettings::getLogFilePath());
 
 			/**
-			 * @brief Function: explicit Logger(const logger::msg_type_e loggerType, const std::string contextFile, const int line, const std::string function, const logger::info_level_e loggerVerbosity = logger::Config::getInstance()->getDefaultVerbosity(), const std::string ologfilename = logger::Config::getInstance()->getDefaultOutputFile())
+			 * @brief Function: explicit Logger(const logger::msg_type_e loggerType, const std::string contextFile, const int line, const std::string function, const logger::info_level_e loggerInfoVerbosity, const std::string ologfilename = browser_settings::BrowserSettings::getLogFilePath())
 			 *
 			 * \param loggerType: message type associated with the logger
 			 * \param contextFile: filename of the context
 			 * \param line: line of the context
 			 * \param function: function of the context
-			 * \param loggerVerbosity: verbosity level of information messages
+			 * \param loggerInfoVerbosity: verbosity level of information messages
 			 * \param ologfilename: filename of the file where messages will be printed
 			 *
 			 * Logger constructor
 			 */
-			explicit Logger(const logger::msg_type_e loggerType, const std::string contextFile, const int line, const std::string function, const logger::info_level_e loggerVerbosity = logger::Config::getInstance()->getDefaultVerbosity(), const std::string ologfilename = logger::Config::getInstance()->getDefaultOutputFile());
+			explicit Logger(const logger::msg_type_e loggerType, const std::string contextFile, const int line, const std::string function, const logger::info_level_e loggerInfoVerbosity, const std::string ologfilename = browser_settings::BrowserSettings::getLogFilePath());
+
+			/**
+			 * @brief Function: explicit Logger(const logger::msg_type_e loggerType, const std::string contextFile, const int line, const std::string function, const std::string ologfilename = browser_settings::BrowserSettings::getLogFilePath())
+			 *
+			 * \param loggerType: message type associated with the logger
+			 * \param contextFile: filename of the context
+			 * \param line: line of the context
+			 * \param function: function of the context
+			 * \param ologfilename: filename of the file where messages will be printed
+			 *
+			 * Logger constructor
+			 */
+			explicit Logger(const logger::msg_type_e loggerType, const std::string contextFile, const int line, const std::string function, const std::string ologfilename = browser_settings::BrowserSettings::getLogFilePath());
 
 			/**
 			 * @brief Function: virtual ~Logger()
@@ -123,6 +137,15 @@ namespace logger {
 			 * This function initialize the log
 			 */
 			void initializeLogging(context_function_t otherLoggerContextConstRef);
+
+			/**
+			 * @brief Function: const std::string & getLogFilename() const
+			 *
+			 * \return the name of the file to log messages into
+			 *
+			 * This function returns the name of the file to log messages into
+			 */
+			const std::string & getLogFilename() const;
 
 			/**
 			 * @brief Function: bool isLogAllowed() const
@@ -200,12 +223,6 @@ namespace logger {
 			logger::Context context;
 
 			/**
-			 * @brief output file name
-			 *
-			 */
-			std::string ofilename;
-
-			/**
 			 * @brief Output stream ofile
 			 *
 			 */
@@ -215,7 +232,7 @@ namespace logger {
 			 * @brief verbosity of info messages
 			 *
 			 */
-			logger::info_level_e verbosity;
+			logger::info_level_e infoVerbosity;
 
 			/**
 			 * @brief type of messages

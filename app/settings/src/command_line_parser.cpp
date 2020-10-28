@@ -16,45 +16,53 @@
 
 LOGGING_CONTEXT(commandLineParserOverall, commandLineParser.overall, TYPE_LEVEL, INFO_VERBOSITY)
 
-namespace command_line_parser {
-
-	namespace {
-		/**
-		 * @brief Path towards JSON file storing informations about commands and shortcuts
-		 *
-		 */
-		static const std::string testerJsonPath("json/");
-
-		/**
-		 * @brief Filename storing informations about commands and shortcuts
-		 *
-		 */
-		static const std::string testerJsonName("tester_arguments.json");
-
-		/**
-		 * @brief Full path towards JSON file storing informations about commands and shortcuts
-		 *
-		 */
-		static const std::string testerJsonFullPath(testerJsonPath + testerJsonName);
-	}
-
-}
-
-command_line_parser::CommandLineParser::CommandLineParser(int & argc, char** argv) : json_action::JsonAction<command_line_argument::CommandLineArgument>(QString::fromStdString(command_line_parser::testerJsonFullPath)), argc(argc), argv(argv), decodedArguments(command_line_parser::CommandLineParser::argument_map_t()) {
+command_line_parser::CommandLineParser::CommandLineParser(int & argc, char** argv, const std::string & jsonFile) : json_action::JsonAction<command_line_argument::CommandLineArgument>(QString::fromStdString(jsonFile)), argc(argc), argv(argv), decodedArguments(command_line::argument_map_t()) {
+	EXCEPTION_ACTION_COND((jsonFile.empty() == true), throw, "JSON file name cannot be empty");
+	EXCEPTION_ACTION_COND(((this->argc == 0) && (this->argv != nullptr)), throw, "The list of arguments (argv) must be null if the number of arguments (argc) is " << this->argc << ". Argv is set to " << this->argv << " instead.");
+	EXCEPTION_ACTION_COND(((this->argc != 0) && (this->argv == nullptr)), throw, "The number of arguments (argc) must be 0 if the list of arguments (argv) is null. Number of arguments is set to " << this->argc);
+	EXCEPTION_ACTION_COND((this->argc < 0), throw, "Number of arguments (argc) must be greater or equal than 0. Argc is set to " << this->argc);
 	LOG_INFO(logger::info_level_e::ZERO, commandLineParserOverall,  "Creating command line parser\n" << *this);
 
 	this->populateDefaultDecodedArguments();
 	this->populateActionData();
-
-	this->extractArguments();
-
+	if ((this->argc != 0) && (this->argv != nullptr)) {
+		this->extractArguments();
+	}
 }
 
 command_line_parser::CommandLineParser::~CommandLineParser() {
 	LOG_INFO(logger::info_level_e::ZERO, commandLineParserOverall,  "Command line parser destructor");
 }
 
-CONST_GETTER(command_line_parser::CommandLineParser::getDecodedArguments, command_line_parser::CommandLineParser::argument_map_t &, this->decodedArguments)
+void command_line_parser::CommandLineParser::addArguments(const command_line::argument_map_t & arguments, const bool enableOverride) {
+	this->decodedArguments.merge(const_cast<command_line::argument_map_t &>(arguments));
+	const int remainingArguments = static_cast<int>(arguments.size());
+	if (enableOverride == true) {
+		std::for_each(arguments.cbegin(), arguments.cend(), [&] (const auto & element) {
+			this->overrideArgumentValue(element.first, element.second);
+		});
+	} else {
+		EXCEPTION_ACTION_COND((remainingArguments != 0), throw, "Expected override flag is set to " << std::boolalpha << enableOverride << " however there are " << remainingArguments << " elements after merging in the map passed as argument to function " << __func__);
+	}
+}
+
+
+void command_line_parser::CommandLineParser::addArgument(const std::string & key, const std::string & value) {
+	const auto & currentValue = this->decodedArguments.find(key);
+	EXCEPTION_ACTION_COND((currentValue != this->decodedArguments.cend()), throw, "Unable to add key " << key << " because it was found in the command line argument map with value " << currentValue->second);
+	LOG_INFO(logger::info_level_e::ZERO, commandLineParserOverall,  "Adding key " << key << " set to " << value);
+	this->decodedArguments.insert({key, value});
+}
+
+void command_line_parser::CommandLineParser::overrideArgumentValue(const std::string & key, const std::string & value) {
+	const auto & currentValue = this->decodedArguments.find(key);
+	EXCEPTION_ACTION_COND((currentValue == this->decodedArguments.cend()), throw, "Unable to find key " << key << " in command line argument map");
+	LOG_INFO(logger::info_level_e::ZERO, commandLineParserOverall,  "Changing value of key " << key << " from " << currentValue->second << " to " << value);
+	// Use insert_or_assign instead of operator[]
+	this->decodedArguments.insert_or_assign(key, value);
+}
+
+CONST_GETTER(command_line_parser::CommandLineParser::getDecodedArguments, command_line::argument_map_t &, this->decodedArguments)
 CONST_GETTER(command_line_parser::CommandLineParser::getArgc, int &, this->argc)
 
 char ** command_line_parser::CommandLineParser::getArgv() {
@@ -73,9 +81,20 @@ const std::string command_line_parser::CommandLineParser::print() const {
 	return commandLineInfo;
 }
 
+void command_line_parser::CommandLineParser::initialize(int & argc, char** argv) {
+	if ((this->argc == 0) && (this->argv == nullptr)) {
+		this->argc = argc;
+		this->argv = argv;
+		this->extractArguments();
+	}
+}
+
 void command_line_parser::CommandLineParser::extractArguments() {
 	// Start counter at 1 because the first argument is the name of the program
 	int counter = 1;
+
+	EXCEPTION_ACTION_COND(((this->argc == 0) || (this->argv == nullptr)), throw, "Cannot call " << __func__ << " when argc is " << this->argc << " and argv is " << this->argv << ". argc must be greater than 0 and argv must be not null");
+
 	while (counter < this->argc) {
 		const std::string option(this->argv[counter]);
 
@@ -99,7 +118,7 @@ void command_line_parser::CommandLineParser::extractArguments() {
 			value = std::to_string(1);
 		} else {
 
-			EXCEPTION_ACTION_COND(((counter + numberOfArguments) >= this->argc), throw, "Argument " << option << " expects " << numberOfArguments << " arguments (range within the command line from " << counter << " to " << (counter + numberOfArguments) << " but the number of provided arguments is " << this->argc);
+			EXCEPTION_ACTION_COND(((counter + numberOfArguments) >= this->argc), throw, "Argument " << option << " expects " << numberOfArguments << " argument(s) (range within the command line from " << counter << " to " << (counter + numberOfArguments) << " but the number of provided arguments is " << this->argc);
 			for (int arg = 0; arg < numberOfArguments; arg++) {
 				counter++;
 				std::string value(this->argv[counter]);

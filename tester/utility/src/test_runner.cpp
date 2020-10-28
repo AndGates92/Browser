@@ -9,18 +9,47 @@
 // Qt libraries
 #include <QtCore/QUnhandledException>
 
+#include "exception_macros.h"
 #include "global_enums.h"
 #include "macros.h"
 #include "test_factory.h"
 #include "base_suite.h"
 #include "test_runner.h"
-#include "exception_macros.h"
+#include "browser_settings.h"
 
 LOGGING_CONTEXT(testRunnerOverall, testRunner.overall, TYPE_LEVEL, INFO_VERBOSITY)
 LOGGING_CONTEXT(testRunnerResult, testRunner.result, TYPE_LEVEL, INFO_VERBOSITY)
 
-test_runner::TestRunner::TestRunner(int & argc, char** argv) : factory(new test_factory::TestFactory(argc, argv)), parser(new command_line_parser::CommandLineParser(argc, argv)), testList(test_runner::TestRunner::test_list_container_t()), failedTests(test_runner::TestRunner::test_list_container_t()) {
+namespace test_runner {
+
+	namespace {
+		/**
+		 * @brief Path towards JSON file storing informations about commands and shortcuts
+		 *
+		 */
+		static const std::string testerJsonPath("json/");
+
+		/**
+		 * @brief Filename storing informations about commands and shortcuts
+		 *
+		 */
+		static const std::string testerJsonName("tester_arguments.json");
+
+		/**
+		 * @brief Full path towards JSON file storing informations about commands and shortcuts
+		 *
+		 */
+		static const std::string testerJsonFullPath(testerJsonPath + testerJsonName);
+	}
+
+}
+
+test_runner::TestRunner::TestRunner(int & argc, char** argv) : factory(new test_factory::TestFactory(argc, argv)), testList(test_runner::TestRunner::test_list_container_t()), failedTests(test_runner::TestRunner::test_list_container_t()) {
 	LOG_INFO(logger::info_level_e::ZERO, testRunnerOverall,  "Creating test runner");
+
+	std::unique_ptr<command_line_parser::CommandLineParser> runnerArgumentParser = std::make_unique<command_line_parser::CommandLineParser>(argc, argv, test_runner::testerJsonFullPath);
+	const command_line::argument_map_t & runnerArgumentMap = runnerArgumentParser->getDecodedArguments();
+	browser_settings::BrowserSettings::getInstance()->addArguments(runnerArgumentMap);
 
 	this->factory->populate();
 	this->fillTestList();
@@ -32,14 +61,14 @@ test_runner::TestRunner::~TestRunner() {
 
 void test_runner::TestRunner::fillTestList() {
 
-	const command_line_parser::CommandLineParser::argument_map_t & argumentMap = this->parser->getDecodedArguments();
+	const command_line::argument_map_t & settingsMap = browser_settings::BrowserSettings::getInstance()->getSettingsMap();
 
-	const auto & suiteArgument = argumentMap.find("Suite");
-	EXCEPTION_ACTION_COND((suiteArgument == argumentMap.cend()), throw, "Unable to find key suite in command line argument map");
+	const auto & suiteArgument = settingsMap.find("Suite");
+	EXCEPTION_ACTION_COND((suiteArgument == settingsMap.cend()), throw, "Unable to find key suite in command line argument map");
 	const std::string & suiteName = suiteArgument->second;
 
-	const auto & testArgument = argumentMap.find("Test");
-	EXCEPTION_ACTION_COND((testArgument == argumentMap.cend()), throw, "Unable to find key test in command line argument map");
+	const auto & testArgument = settingsMap.find("Test");
+	EXCEPTION_ACTION_COND((testArgument == settingsMap.cend()), throw, "Unable to find key test in command line argument map");
 	const std::string & testName = testArgument->second;
 
 	if (suiteName.compare("all") == 0) {

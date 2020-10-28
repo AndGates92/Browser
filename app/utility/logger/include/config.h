@@ -52,15 +52,6 @@ namespace logger {
 			const std::string & getDefaultContextName() const;
 
 			/**
-			 * @brief Function: static const std::string & getDefaultOutputFile() const
-			 *
-			 * \return the default output file
-			 *
-			 * This function returns the default output file
-			 */
-			const std::string & getDefaultOutputFile() const;
-
-			/**
 			 * @brief Function: explicit Config()
 			 *
 			 * Logger config constructor
@@ -95,12 +86,6 @@ namespace logger {
 			 *
 			 */
 			std::string defaultContextName;
-
-			/**
-			 * @brief default output file
-			 *
-			 */
-			std::string defaultOutputFile;
 
 	};
 

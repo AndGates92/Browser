@@ -1,0 +1,11 @@
+{
+	"Log" : {
+		"Name" : "log",
+		"ShortCmd" : "l",
+		"LongCmd" : "log",
+		"DefaultValue" : "stdout",
+		"NumberArguments" : 1,
+		"Help" : "Log filename"
+	}
+
+}

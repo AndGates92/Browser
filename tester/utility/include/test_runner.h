@@ -96,12 +96,6 @@ namespace test_runner {
 			std::shared_ptr<test_factory::TestFactory> factory;
 
 			/**
-			 * @brief command line parser
-			 *
-			 */
-			std::unique_ptr<command_line_parser::CommandLineParser> parser;
-
-			/**
 			 * @brief list of tests to run
 			 *
 			 */

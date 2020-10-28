@@ -19,11 +19,11 @@ LOGGING_CONTEXT(browserExceptionOverall, browserException.overall, TYPE_LEVEL, I
 LOGGING_CONTEXT(browserExceptionPrint, browserException.print, TYPE_LEVEL, INFO_VERBOSITY)
 
 browser_exception::BrowserException::BrowserException(const std::string exceptionTimestamp, const int & exceptionLine, const std::string & exceptionFile, const std::string & exceptionCondition, const std::string & exceptionMsg) : timestamp(exceptionTimestamp), line(exceptionLine), filename(exceptionFile), condition(exceptionCondition), message(exceptionMsg) {
-	LOG_INFO(logger::info_level_e::ZERO, browserExceptionOverall, "Browser exception is being created with message " << this->message);
+	//LOG_INFO(logger::info_level_e::ZERO, browserExceptionOverall, "Browser exception is being created with message " << this->message);
 }
 
 browser_exception::BrowserException::~BrowserException() {
-	LOG_INFO(logger::info_level_e::ZERO, browserExceptionOverall, "Destroy browser exception with message " << this->message);
+	//LOG_INFO(logger::info_level_e::ZERO, browserExceptionOverall, "Destroy browser exception with message " << this->message);
 }
 
 void browser_exception::BrowserException::raise() const {
@@ -36,7 +36,7 @@ browser_exception::BrowserException * browser_exception::BrowserException::clone
 }
 
 std::string browser_exception::BrowserException::print() const {
-	LOG_INFO(logger::info_level_e::ZERO, browserExceptionPrint, "Print exception message: " << this->message);
+	//LOG_INFO(logger::info_level_e::ZERO, browserExceptionPrint, "Print exception message: " << this->message);
 	std::stringstream msgStream;
 	msgStream << "[" << this->timestamp << "] Exception caught on file " << this->filename << " at line " << this->line;
 	if (this->condition.empty() == false) {

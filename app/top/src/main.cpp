@@ -12,12 +12,12 @@
 #include "macros.h"
 #include "browser_exception.h"
 #include "logging.h"
-#include "logger.h"
-#include "graphics.h"
+#include "init.h"
 
 /** @addtogroup MainGroup
  *  @{
  */
+
 /** 
  * @brief Function: int main (int argc, char * argv[])
  *
@@ -34,11 +34,17 @@ int main (int argc, char* argv[]) {
 		logging::set_default_category();
 		qInstallMessageHandler(logging::handler);
 
-		LOG_INFO(logger::info_level_e::ZERO, ,  "Starting browser");
-		LOG_INFO(logger::info_level_e::ZERO, ,  "Built on " << __DATE__ << " at " << __TIME__);
-		LOG_INFO(logger::info_level_e::ZERO, ,  "QT version " << QT_VERSION_STR);
+		browser_settings::BrowserSettings::setLogPath(argc, argv);
+	{
+		logger::Logger infoLogger(logger::msg_type_e::INFO, __FILE__, __LINE__, __func__, logger::info_level_e::ZERO);
+		infoLogger.initializeLogging();
+		infoLogger << "Test print";
+	}
+		LOG_INFO(logger::info_level_e::ZERO, , "Starting browser");
+		LOG_INFO(logger::info_level_e::ZERO, , "Built on " << __DATE__ << " at " << __TIME__);
+		LOG_INFO(logger::info_level_e::ZERO, , "QT version " << QT_VERSION_STR);
 
-		graphics::init_graphics(argc, argv);
+		init::initializeBrowser(argc, argv);
 	} catch (const browser_exception::BrowserException & bexc) {
 		std::string bexcMsg(bexc.print());
 		browser_exception::printException(bexcMsg);

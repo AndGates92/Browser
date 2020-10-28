@@ -63,7 +63,7 @@ namespace logging {
 		 * @brief Global variable logfile
 		 *
 		 */
-		QFile logfile(QT_STRINGIFY(LOGFILE));
+		QFile logfile(QT_STRINGIFY(QT_LOGFILE));
 
 		/**
 		 * @brief mutex to handle concurrent access to logfile

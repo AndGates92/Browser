@@ -16,15 +16,19 @@
 // Categories
 LOGGING_CONTEXT(loggerOverall, logger.overall, TYPE_LEVEL, INFO_VERBOSITY)
 
-logger::Logger::Logger(const logger::msg_type_e loggerType, const std::string contextFile, const int line, const std::string function, logger::Logger::context_function_t loggerContextConstRef, const logger::info_level_e loggerVerbosity, const std::string ologfilename) : logger::Logger(loggerType, contextFile, line, function, loggerContextConstRef(), loggerVerbosity, ologfilename) {
+logger::Logger::Logger(const logger::msg_type_e loggerType, const std::string contextFile, const int line, const std::string function, logger::Logger::context_function_t loggerContextConstRef, const logger::info_level_e loggerInfoVerbosity, const std::string ologfilename) : logger::Logger(loggerType, contextFile, line, function, loggerContextConstRef(), loggerInfoVerbosity, ologfilename) {
 
 }
 
-logger::Logger::Logger(const logger::msg_type_e loggerType, const std::string contextFile, const int line, const std::string function, const logger::Context loggerContext, const logger::info_level_e loggerVerbosity, const std::string ologfilename) : logger::Logger(loggerType, contextFile, line, function, loggerVerbosity, ologfilename) {
+logger::Logger::Logger(const logger::msg_type_e loggerType, const std::string contextFile, const int line, const std::string function, const logger::Context loggerContext, const logger::info_level_e loggerInfoVerbosity, const std::string ologfilename) : logger::Logger(loggerType, contextFile, line, function, loggerInfoVerbosity, ologfilename) {
 	this->initializeLogging(loggerContext);
 }
 
-logger::Logger::Logger(const logger::msg_type_e loggerType, const std::string contextFile, const int line, const std::string function, const logger::info_level_e loggerVerbosity, const std::string ologfilename) : context(logger::Config::getInstance()->getDefaultContextName(), contextFile, line, function, logger::Config::getInstance()->getDefaultType(), logger::Config::getInstance()->getDefaultVerbosity()), ofilename(ologfilename), ofile(ologfilename, logger::Logger::openMode), verbosity(loggerVerbosity), type(loggerType), state(logger::state_e::CONSTRUCTED) {
+logger::Logger::Logger(const logger::msg_type_e loggerType, const std::string contextFile, const int line, const std::string function, const logger::info_level_e loggerInfoVerbosity, const std::string ologfilename) : context(logger::Config::getInstance()->getDefaultContextName(), contextFile, line, function, logger::Config::getInstance()->getDefaultType(), logger::Config::getInstance()->getDefaultVerbosity()), ofile(ologfilename, logger::Logger::openMode), infoVerbosity(loggerInfoVerbosity), type(loggerType), state(logger::state_e::CONSTRUCTED) {
+
+}
+
+logger::Logger::Logger(const logger::msg_type_e loggerType, const std::string contextFile, const int line, const std::string function, const std::string ologfilename) : logger::Logger(loggerType, contextFile, line, function, logger::Config::getInstance()->getDefaultVerbosity(), ologfilename) {
 
 }
 
@@ -44,6 +48,12 @@ void logger::Logger::copyContextData(const logger::Context & otherContext) {
 	this->context.setName(otherContext.getName());
 	this->context.setType(otherContext.getType());
 	this->context.setInfoVerbosity(otherContext.getInfoVerbosity());
+	const std::string & currentCtxtLogFilename = this->context.getLogFilename();
+	// Copy log filename from context only if no filename was passed to the logger at the time of construction
+	if ((currentCtxtLogFilename.empty() == true) || (currentCtxtLogFilename.compare(browser_settings::BrowserSettings::getLogFilePath()) == 0)) {
+		this->context.setLogFilename(otherContext.getLogFilename());
+	}
+	EXCEPTION_ACTION_COND((this->getLogFilename().empty() == true), throw, "Log filename was set to an empty string");
 	this->setState(logger::state_e::INITIALIZED);
 }
 
@@ -97,14 +107,15 @@ void logger::Logger::endLogging() {
 
 void logger::Logger::openOFile() {
 	if (this->ofile.is_open() == false) {
-		if (this->ofilename.empty() == true) {
-			this->ofile.open(logger::Config::getInstance()->getDefaultOutputFile(), logger::Logger::openMode);
-			this->ofilename = logger::Config::getInstance()->getDefaultOutputFile();
+		EXCEPTION_ACTION_COND((this->getLogFilename().empty() == true), throw, "Unable to open file with empty name");
+		if (this->getLogFilename().empty() == true) {
+			this->ofile.open(browser_settings::BrowserSettings::getLogFilePath(), logger::Logger::openMode);
+			this->context.setLogFilename(browser_settings::BrowserSettings::getLogFilePath());
 		} else {
-			this->ofile.open(this->ofilename, logger::Logger::openMode);
+			this->ofile.open(this->getLogFilename(), logger::Logger::openMode);
 		}
 		if ((this->ofile.rdstate() & std::ostream::failbit) != 0) {
-			EXCEPTION_ACTION(throw, "Unable to open file " << this->ofilename);
+			EXCEPTION_ACTION(throw, "Unable to open file " << this->getLogFilename());
 		}
 	}
 }
@@ -123,7 +134,7 @@ bool logger::Logger::isLogAllowed() const {
 		// For info messages, verbosity also must be checked
 		if (this->type == logger::msg_type_e::INFO) {
 			// if verbosity of the context is higher than the requested verbosity
-			allowed &= (this->verbosity <= this->context.getInfoVerbosity());
+			allowed &= (this->infoVerbosity <= this->context.getInfoVerbosity());
 		}
 	}
 	return allowed;
@@ -165,3 +176,5 @@ bool logger::Logger::setState(const logger::state_e nextState) {
 	}
 	return success;
 }
+
+CONST_GETTER(logger::Logger::getLogFilename, std::string &, this->context.getLogFilename())
