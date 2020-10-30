@@ -6,10 +6,7 @@
  * @brief Command suite functions
  */
 
-// Qt libraries
-#include <QtCore/QLoggingCategory>
-
-#include "logging_macros.h"
+#include "macros.h"
 #include "command_suite.h"
 #include "launch_app.h"
 #include "open_tab.h"
@@ -20,7 +17,7 @@
 #include "history_tab.h"
 #include "open_file.h"
 
-Q_LOGGING_CATEGORY(commandSuiteOverall, "commandSuite.overall", MSG_TYPE_LEVEL)
+LOGGING_CONTEXT(commandSuiteOverall, commandSuite.overall, TYPE_LEVEL, INFO_VERBOSITY)
 
 command_suite::CommandSuite::CommandSuite(const std::shared_ptr<base_factory::BaseFactory> & testFactory, const base_suite::BaseSuite::tests_container_t & testList) : base_suite::BaseSuite(testFactory, "Command suite", testList) {
 
@@ -28,7 +25,7 @@ command_suite::CommandSuite::CommandSuite(const std::shared_ptr<base_factory::Ba
 
 command_suite::CommandSuite::~CommandSuite() {
 
-	QINFO_PRINT(global_enums::qinfo_level_e::ZERO, commandSuiteOverall,  "Command suite destructor");
+	LOG_INFO(logger::info_level_e::ZERO, commandSuiteOverall,  "Command suite destructor");
 
 }
 

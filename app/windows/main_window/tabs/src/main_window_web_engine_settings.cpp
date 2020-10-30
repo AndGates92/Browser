@@ -7,29 +7,28 @@
  */
 
 // Qt libraries
-#include <QtCore/QLoggingCategory>
 #include <QtGui/QKeyEvent>
 
-#include "logging_macros.h"
+#include "macros.h"
 #include "main_window_web_engine_settings.h"
 
 // Categories
-Q_LOGGING_CATEGORY(mainWindowWebEngineSettingsOverall, "mainWindowWebEngineSettings.overall", MSG_TYPE_LEVEL)
+LOGGING_CONTEXT(mainWindowWebEngineSettingsOverall, mainWindowWebEngineSettings.overall, TYPE_LEVEL, INFO_VERBOSITY)
 
 main_window_web_engine_settings::MainWindowWebEngineSettings::MainWindowWebEngineSettings(QWebEngineSettings * newSettings): web_engine_settings::WebEngineSettings(newSettings) {
-	QINFO_PRINT(global_enums::qinfo_level_e::ZERO, mainWindowWebEngineSettingsOverall,  "Web engine settings constructor");
+	LOG_INFO(logger::info_level_e::ZERO, mainWindowWebEngineSettingsOverall,  "Web engine settings constructor");
 
 }
 
 main_window_web_engine_settings::MainWindowWebEngineSettings::MainWindowWebEngineSettings(const main_window_web_engine_settings::MainWindowWebEngineSettings & rhs) : web_engine_settings::WebEngineSettings(rhs) {
 
-	QINFO_PRINT(global_enums::qinfo_level_e::ZERO, mainWindowWebEngineSettingsOverall,  "Copy constructor web engine settings");
+	LOG_INFO(logger::info_level_e::ZERO, mainWindowWebEngineSettingsOverall,  "Copy constructor web engine settings");
 
 }
 
 main_window_web_engine_settings::MainWindowWebEngineSettings & main_window_web_engine_settings::MainWindowWebEngineSettings::operator=(const main_window_web_engine_settings::MainWindowWebEngineSettings & rhs) {
 
-	QINFO_PRINT(global_enums::qinfo_level_e::ZERO, mainWindowWebEngineSettingsOverall,  "Copy assignment operator for web engine settings");
+	LOG_INFO(logger::info_level_e::ZERO, mainWindowWebEngineSettingsOverall,  "Copy assignment operator for web engine settings");
 
 	// If rhs points to the same address as this, then return this
 	if (&rhs == this) {
@@ -43,12 +42,12 @@ main_window_web_engine_settings::MainWindowWebEngineSettings & main_window_web_e
 
 main_window_web_engine_settings::MainWindowWebEngineSettings::MainWindowWebEngineSettings(main_window_web_engine_settings::MainWindowWebEngineSettings && rhs) :  web_engine_settings::WebEngineSettings(std::move(rhs)) {
 
-	QINFO_PRINT(global_enums::qinfo_level_e::ZERO, mainWindowWebEngineSettingsOverall,  "Move constructor web engine settings");
+	LOG_INFO(logger::info_level_e::ZERO, mainWindowWebEngineSettingsOverall,  "Move constructor web engine settings");
 }
 
 main_window_web_engine_settings::MainWindowWebEngineSettings & main_window_web_engine_settings::MainWindowWebEngineSettings::operator=(main_window_web_engine_settings::MainWindowWebEngineSettings && rhs) {
 
-	QINFO_PRINT(global_enums::qinfo_level_e::ZERO, mainWindowWebEngineSettingsOverall,  "Move assignment operator for web engine settings");
+	LOG_INFO(logger::info_level_e::ZERO, mainWindowWebEngineSettingsOverall,  "Move assignment operator for web engine settings");
 
 	// If rhs doesn't point to the same address as this, then execute move
 	if (&rhs != this) {
@@ -59,6 +58,6 @@ main_window_web_engine_settings::MainWindowWebEngineSettings & main_window_web_e
 }
 
 main_window_web_engine_settings::MainWindowWebEngineSettings::~MainWindowWebEngineSettings() {
-	QINFO_PRINT(global_enums::qinfo_level_e::ZERO, mainWindowWebEngineSettingsOverall,  "Web engine settings destructor");
+	LOG_INFO(logger::info_level_e::ZERO, mainWindowWebEngineSettingsOverall,  "Web engine settings destructor");
 
 }

@@ -24,10 +24,6 @@
  *  @{
  */
 
-Q_DECLARE_LOGGING_CATEGORY(mainWindowOverall)
-Q_DECLARE_LOGGING_CATEGORY(mainWindowCenterWindow)
-Q_DECLARE_LOGGING_CATEGORY(mainWindowTabs)
-
 namespace main_window {
 
 	/**

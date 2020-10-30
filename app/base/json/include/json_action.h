@@ -13,13 +13,14 @@
 #include <memory>
 #include <utility>
 
-#include <QtCore/QLoggingCategory>
+// Qt libraries
 #include <QtWidgets/QWidget>
 
 #include "qt_types_to_stl.h"
+#include "qt_operator.h"
 #include "global_enums.h"
 #include "function_macros.h"
-#include "logging_macros.h"
+#include "macros.h"
 #include "constructor_macros.h"
 #include "json_data.h"
 #include "json_parser.h"
@@ -29,7 +30,7 @@
  *  @{
  */
 
-Q_DECLARE_LOGGING_CATEGORY(jsonActionOverall)
+EXPORT_CONTEXT(jsonActionOverall)
 
 namespace json_action {
 
@@ -160,12 +161,12 @@ namespace json_action {
 
 template<class Data>
 json_action::JsonAction<Data>::JsonAction(QString jsonFileName) : commands(json_parser::JsonParser(jsonFileName, QIODevice::ReadOnly)), actionData(json_action::JsonAction<Data>::action_data_t()), sourceFileName(jsonFileName), invalidData(nullptr) {
-	QINFO_PRINT(global_enums::qinfo_level_e::ZERO, jsonActionOverall,  "Json Action classe constructor");
+	LOG_INFO(logger::info_level_e::ZERO, jsonActionOverall,  "Json Action classe constructor");
 }
 
 template<class Data>
 json_action::JsonAction<Data>::~JsonAction() {
-	QINFO_PRINT(global_enums::qinfo_level_e::ZERO, jsonActionOverall,  "Json Action class destructor");
+	LOG_INFO(logger::info_level_e::ZERO, jsonActionOverall,  "Json Action class destructor");
 }
 
 template<class Data>
@@ -197,13 +198,13 @@ typename json_action::JsonAction<Data>::template enableFunction<FuncRet> json_ac
 			// - second is true if the insertion is successful, false otherwise
 			const auto [it, success] = this->actionData.insert(std::move(dataPair));
 
-			QEXCEPTION_ACTION_COND((success == false), throw, "Insertion of element " << *newData << " failed.");
+			EXCEPTION_ACTION_COND((success == false), throw, "Insertion of element " << *newData << " failed.");
 
 		});
 	};
 
 	for (const auto & data : this->actionData)
-		QINFO_PRINT(global_enums::qinfo_level_e::ZERO, jsonActionOverall,  "Data for key " << QString::fromStdString(data.first) << " is " << *(data.second));
+		LOG_INFO(logger::info_level_e::ZERO, jsonActionOverall,  "Data for key " << data.first << " is " << *(data.second));
 
 }
 
@@ -226,7 +227,7 @@ typename json_action::JsonAction<Data>::template enableFunction<FuncRet> json_ac
 		return foundData->second;
 	}
 
-	QINFO_PRINT(global_enums::qinfo_level_e::ZERO, jsonActionOverall,  "Unable to find matching value for field " << QString::fromStdString(name));
+	LOG_INFO(logger::info_level_e::ZERO, jsonActionOverall,  "Unable to find matching value for field " << name);
 
 	return this->invalidData;
 }

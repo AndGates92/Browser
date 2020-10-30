@@ -7,9 +7,6 @@
  * @date 17th September 2020
  * @brief Test runner header file
  */
-// Qt libraries
-// Required by qInfo
-#include <QtCore/QtDebug>
 
 #include <list>
 
@@ -22,9 +19,6 @@
  *  Test runner functions and classes
  *  @{
  */
-
-Q_DECLARE_LOGGING_CATEGORY(testRunnerOverall)
-Q_DECLARE_LOGGING_CATEGORY(testRunnerResult)
 
 namespace test_factory {
 	class TestFactory;

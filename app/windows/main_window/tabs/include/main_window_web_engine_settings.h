@@ -8,12 +8,6 @@
  * @brief Web Engine Settings header file
 */
 
-// Qt libraries
-// Required by qInfo
-#include <QtCore/QtDebug>
-
-#include <QtCore/QLoggingCategory>
-
 #include "web_engine_settings.h"
 #include "global_enums.h"
 
@@ -21,8 +15,6 @@
  *  Web Engine Settings functions and classes
  *  @{
  */
-
-Q_DECLARE_LOGGING_CATEGORY(mainWindowWebEngineSettingsOverall)
 
 namespace main_window_web_engine_settings {
 

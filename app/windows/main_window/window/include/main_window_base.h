@@ -19,8 +19,6 @@
  *  @{
  */
 
-Q_DECLARE_LOGGING_CATEGORY(mainWindowBaseOverall)
-
 namespace main_window_base {
 
 	/**

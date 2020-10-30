@@ -9,9 +9,6 @@
 #include <string>
 
 // Qt libraries
-// Required by qInfo
-#include <QtCore/QtDebug>
-
 #include <QtCore/QObject>
 #include <QtCore/QDir>
 #include <QtCore/QFile>
@@ -21,14 +18,14 @@
 #include <QtWidgets/QVBoxLayout>
 #include <QtWidgets/QApplication>
 
-#include "logging_macros.h"
+#include "macros.h"
 #include "global_enums.h"
 #include "label_popup.h"
 #include "exception_macros.h"
 
 
 // Categories
-Q_LOGGING_CATEGORY(labelPopupOverall, "labelPopup.overall", MSG_TYPE_LEVEL)
+LOGGING_CONTEXT(labelPopupOverall, labelPopup.overall, TYPE_LEVEL, INFO_VERBOSITY)
 
 namespace label_popup {
 
@@ -86,7 +83,7 @@ namespace label_popup {
 
 label_popup::LabelPopup::LabelPopup(QWidget * parent, Qt::WindowFlags flags) : main_window_popup_base::MainWindowPopupBase(parent, true, label_popup::padding, flags) {
 
-	QINFO_PRINT(global_enums::qinfo_level_e::ZERO, labelPopupOverall,  "Creating label popup");
+	LOG_INFO(logger::info_level_e::ZERO, labelPopupOverall,  "Creating label popup");
 
 	// Create widgets to put in the window
 	this->fillPopup();
@@ -108,7 +105,7 @@ label_popup::LabelPopup::LabelPopup(QWidget * parent, Qt::WindowFlags flags) : m
 }
 
 label_popup::LabelPopup::~LabelPopup() {
-	QINFO_PRINT(global_enums::qinfo_level_e::ZERO, labelPopupOverall,  "Destructor of label popup class");
+	LOG_INFO(logger::info_level_e::ZERO, labelPopupOverall,  "Destructor of label popup class");
 }
 
 void label_popup::LabelPopup::popupLayout() {
@@ -145,7 +142,7 @@ void label_popup::LabelPopup::popupLayout() {
 		layout->addWidget(this->label.get(), 0, Qt::AlignTop);
 
 	} catch (const std::bad_cast & badCastE) {
-		QEXCEPTION_ACTION(throw, badCastE.what());
+		EXCEPTION_ACTION(throw, badCastE.what());
 	}
 
 }
@@ -164,7 +161,7 @@ void label_popup::LabelPopup::fillPopup() {
 }
 
 void label_popup::LabelPopup::connectSignals() {
-	QINFO_PRINT(global_enums::qinfo_level_e::ZERO, labelPopupOverall,  "Connect signals");
+	LOG_INFO(logger::info_level_e::ZERO, labelPopupOverall,  "Connect signals");
 
 	connect(this->timer.get(), &QTimer::timeout, [this] () {
 		this->close();

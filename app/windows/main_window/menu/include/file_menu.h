@@ -23,13 +23,6 @@
  *  @{
  */
 
-Q_DECLARE_LOGGING_CATEGORY(fileMenuOverall)
-Q_DECLARE_LOGGING_CATEGORY(fileMenuOpenAction)
-Q_DECLARE_LOGGING_CATEGORY(fileMenuOpenTabAction)
-Q_DECLARE_LOGGING_CATEGORY(fileMenuSaveAction)
-Q_DECLARE_LOGGING_CATEGORY(fileMenuPrintAction)
-Q_DECLARE_LOGGING_CATEGORY(fileMenuExitAction)
-
 namespace file_menu {
 
 	/**

@@ -10,7 +10,6 @@
 
 #include <string>
 
-#include <QtCore/QLoggingCategory>
 #include "action.h"
 #include "key_sequence.h"
 #include "constructor_macros.h"
@@ -21,8 +20,6 @@
  *  Open Content functions and classes
  *  @{
  */
-
-Q_DECLARE_LOGGING_CATEGORY(openContentOverall)
 
 namespace open_content {
 

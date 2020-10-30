@@ -11,15 +11,10 @@
 #include <memory>
 
 // Qt libraries
-// Required by qInfo
-#include <QtCore/QtDebug>
-
-#include <QtCore/QLoggingCategory>
-
 #include <QtWidgets/QTabWidget>
 #include <QtGui/QIcon>
 
-#include "logging_macros.h"
+#include "macros.h"
 #include "global_enums.h"
 #include "tab_bar.h"
 #include "tab.h"
@@ -29,12 +24,6 @@
  *  Tab Widget functions and classes
  *  @{
  */
-
-Q_DECLARE_LOGGING_CATEGORY(tabWidgetOverall)
-Q_DECLARE_LOGGING_CATEGORY(tabWidgetSize)
-Q_DECLARE_LOGGING_CATEGORY(tabWidgetSearch)
-Q_DECLARE_LOGGING_CATEGORY(tabWidgetVisibility)
-Q_DECLARE_LOGGING_CATEGORY(tabWidgetTabs)
 
 namespace tab_widget {
 

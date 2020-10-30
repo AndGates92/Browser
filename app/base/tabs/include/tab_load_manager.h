@@ -9,11 +9,6 @@
 */
 
 // Qt libraries
-// Required by qInfo
-#include <QtCore/QtDebug>
-
-#include <QtCore/QLoggingCategory>
-
 #include <QtWidgets/QWidget>
 
 #include "global_enums.h"
@@ -24,9 +19,6 @@
  *  Tab Load Manager functions and classes
  *  @{
  */
-
-Q_DECLARE_LOGGING_CATEGORY(tabLoadManagerOverall)
-Q_DECLARE_LOGGING_CATEGORY(tabLoadManagerStatus)
 
 namespace tab {
 	class Tab;

@@ -8,8 +8,6 @@
  * @brief Main Window Shared Types header file
 */
 
-#include <QtCore/QtDebug>
-
 #include "type_print_macros.h"
 
 /** @defgroup MainWindowSharedTypesGroup Main Window Shared Types Doxygen Group

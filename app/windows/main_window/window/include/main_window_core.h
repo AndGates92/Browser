@@ -25,9 +25,6 @@
  *  @{
  */
 
-Q_DECLARE_LOGGING_CATEGORY(mainWindowCoreOverall)
-Q_DECLARE_LOGGING_CATEGORY(mainWindowCoreUserInput)
-
 namespace main_window_core {
 
 	/**

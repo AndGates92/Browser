@@ -10,7 +10,7 @@
 
 #include <list>
 
-#include <QtCore/QLoggingCategory>
+// Qt libraries
 #include <QtWidgets/QWidget>
 
 #include "main_window_shared_types.h"
@@ -25,9 +25,6 @@
  *  Main Window tab widget functions and classes
  *  @{
  */
-
-Q_DECLARE_LOGGING_CATEGORY(mainWindowTabWidgetOverall)
-Q_DECLARE_LOGGING_CATEGORY(mainWindowTabWidgetTabs)
 
 namespace main_window_tab_widget {
 

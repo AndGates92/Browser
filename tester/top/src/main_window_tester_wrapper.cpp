@@ -7,28 +7,26 @@
  */
 
 #include <iostream>
-// Qt libraries
-#include <QtCore/QtGlobal>
 
 #include "main_window_tester_wrapper.h"
 
 // Categories
-Q_LOGGING_CATEGORY(mainWindowTesterWrapperOverall, "mainWindowTesterWrapper.overall", MSG_TYPE_LEVEL)
+LOGGING_CONTEXT(mainWindowTesterWrapperOverall, mainWindowTesterWrapper.overall, TYPE_LEVEL, INFO_VERBOSITY)
 
 main_window_tester_wrapper::MainWindowTesterWrapper::MainWindowTesterWrapper(QWidget * parent, Qt::WindowFlags flags) : main_window_wrapper::MainWindowWrapper(parent, flags) {
 
-	QINFO_PRINT(global_enums::qinfo_level_e::ZERO, mainWindowTesterWrapperOverall,  "Main window tester wrapper constructor");
+	LOG_INFO(logger::info_level_e::ZERO, mainWindowTesterWrapperOverall,  "Main window tester wrapper constructor");
 
 }
 
 main_window_tester_wrapper::MainWindowTesterWrapper::MainWindowTesterWrapper(main_window_tester_wrapper::MainWindowTesterWrapper && rhs) : main_window_wrapper::MainWindowWrapper(std::move(rhs)) {
-	QINFO_PRINT(global_enums::qinfo_level_e::ZERO, mainWindowTesterWrapperOverall,  "Move constructor main window tester wrapper");
+	LOG_INFO(logger::info_level_e::ZERO, mainWindowTesterWrapperOverall,  "Move constructor main window tester wrapper");
 
 }
 
 main_window_tester_wrapper::MainWindowTesterWrapper & main_window_tester_wrapper::MainWindowTesterWrapper::operator=(main_window_tester_wrapper::MainWindowTesterWrapper && rhs) {
 
-	QINFO_PRINT(global_enums::qinfo_level_e::ZERO, mainWindowTesterWrapperOverall,  "Move assignment operator for main window tester wrapper");
+	LOG_INFO(logger::info_level_e::ZERO, mainWindowTesterWrapperOverall,  "Move assignment operator for main window tester wrapper");
 
 	main_window_wrapper::MainWindowWrapper::operator=(std::move(rhs));
 
@@ -36,7 +34,7 @@ main_window_tester_wrapper::MainWindowTesterWrapper & main_window_tester_wrapper
 }
 
 main_window_tester_wrapper::MainWindowTesterWrapper::~MainWindowTesterWrapper() {
-	QINFO_PRINT(global_enums::qinfo_level_e::ZERO, mainWindowTesterWrapperOverall,  "Main window tester wrapper destructor");
+	LOG_INFO(logger::info_level_e::ZERO, mainWindowTesterWrapperOverall,  "Main window tester wrapper destructor");
 }
 
 CONST_GETTER(main_window_tester_wrapper::MainWindowTesterWrapper::getPopupContainer, std::shared_ptr<main_window_popup_container::MainWindowPopupContainer> &, this->getWindowCore()->popup)

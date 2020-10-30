@@ -10,8 +10,6 @@
 
 #include <set>
 
-#include <QtCore/QLoggingCategory>
-
 #include "global_classes.h"
 #include "printable_object.h"
 
@@ -19,8 +17,6 @@
  *  Json data functions and classes
  *  @{
  */
-
-Q_DECLARE_LOGGING_CATEGORY(jsonDataOverall)
 
 namespace json_data {
 
@@ -177,7 +173,6 @@ namespace json_data {
 			 *
 			 */
 			parameter_t parameters;
-
 
 	};
 

@@ -11,12 +11,9 @@
 #include <memory>
 
 // Qt libraries
-// Required by qInfo
-#include <QtCore/QtDebug>
-
 #include <QtCore/QObject>
 
-#include "logging_macros.h"
+#include "macros.h"
 #include "global_enums.h"
 #include "find_button_window.h"
 #include "menu.h"
@@ -27,15 +24,6 @@
  *  Edit Menu functions and classes
  *  @{
  */
-
-Q_DECLARE_LOGGING_CATEGORY(editMenuOverall)
-Q_DECLARE_LOGGING_CATEGORY(editMenuUndoAction)
-Q_DECLARE_LOGGING_CATEGORY(editMenuRedoAction)
-Q_DECLARE_LOGGING_CATEGORY(editMenuCutAction)
-Q_DECLARE_LOGGING_CATEGORY(editMenuCopyAction)
-Q_DECLARE_LOGGING_CATEGORY(editMenuPasteAction)
-Q_DECLARE_LOGGING_CATEGORY(editMenuSelectAllAction)
-Q_DECLARE_LOGGING_CATEGORY(editMenuFindAction)
 
 namespace edit_menu {
 

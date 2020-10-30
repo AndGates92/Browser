@@ -10,21 +10,15 @@
 
 #include <memory>
 
-// Qt libraries
-// Required by qInfo
-#include <QtCore/QtDebug>
-
-#include <QtCore/QLoggingCategory>
-
 #include "global_enums.h"
-#include "logging_macros.h"
+#include "macros.h"
 
 /** @defgroup InheritedEnableSharedFromThisGroup Inherited Enable Shared From This Doxygen Group
  *  Inherited Enable Shared From This functions and classes
  *  @{
  */
 
-Q_DECLARE_LOGGING_CATEGORY(inheritedEnableSharedFromThisOverall)
+EXPORT_CONTEXT(inheritedEnableSharedFromThisOverall)
 
 namespace inherited_enable_shared_from_this {
 
@@ -74,13 +68,13 @@ namespace inherited_enable_shared_from_this {
 
 template<typename derivedType, typename baseType>
 inherited_enable_shared_from_this::InheritedEnableSharedFromThis<derivedType, baseType>::InheritedEnableSharedFromThis() {
-	QINFO_PRINT(global_enums::qinfo_level_e::ZERO, inheritedEnableSharedFromThisOverall,  "InheritedEnableSharedFromThis constructor");
+	LOG_INFO(logger::info_level_e::ZERO, inheritedEnableSharedFromThisOverall,  "InheritedEnableSharedFromThis constructor");
 
 }
 
 template<typename derivedType, typename baseType>
 inherited_enable_shared_from_this::InheritedEnableSharedFromThis<derivedType, baseType>::~InheritedEnableSharedFromThis() {
-	QINFO_PRINT(global_enums::qinfo_level_e::ZERO, inheritedEnableSharedFromThisOverall,  "InheritedEnableSharedFromThis destructor");
+	LOG_INFO(logger::info_level_e::ZERO, inheritedEnableSharedFromThisOverall,  "InheritedEnableSharedFromThis destructor");
 
 }
 

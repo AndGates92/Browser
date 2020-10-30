@@ -10,18 +10,18 @@
 #include <QtCore/QLoggingCategory>
 #include <QtGui/QKeyEvent>
 
-#include "logging_macros.h"
+#include "macros.h"
 #include "main_window_tab_load_manager.h"
 
 // Categories
-Q_LOGGING_CATEGORY(mainWindowTabLoadManagerOverall, "mainWindowTabLoadManager.overall", MSG_TYPE_LEVEL)
+LOGGING_CONTEXT(mainWindowTabLoadManagerOverall, mainWindowTabLoadManager.overall, TYPE_LEVEL, INFO_VERBOSITY)
 
 main_window_tab_load_manager::MainWindowTabLoadManager::MainWindowTabLoadManager(QWidget * parent): tab_load_manager::TabLoadManager(parent) {
-	QINFO_PRINT(global_enums::qinfo_level_e::ZERO, mainWindowTabLoadManagerOverall,  "MainWindowTabLoadManager constructor");
+	LOG_INFO(logger::info_level_e::ZERO, mainWindowTabLoadManagerOverall,  "MainWindowTabLoadManager constructor");
 
 }
 
 main_window_tab_load_manager::MainWindowTabLoadManager::~MainWindowTabLoadManager() {
-	QINFO_PRINT(global_enums::qinfo_level_e::ZERO, mainWindowTabLoadManagerOverall,  "MainWindowTabLoadManager destructor");
+	LOG_INFO(logger::info_level_e::ZERO, mainWindowTabLoadManagerOverall,  "MainWindowTabLoadManager destructor");
 
 }

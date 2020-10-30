@@ -6,20 +6,20 @@
  * @brief Command menu model functions
  */
 
-#include "logging_macros.h"
+#include "macros.h"
 #include "command_menu_model.h"
 
 // Categories
-Q_LOGGING_CATEGORY(commandMenuModelOverall, "commandMenuModel.overall", MSG_TYPE_LEVEL)
-Q_LOGGING_CATEGORY(commandMenuModelSettings, "commandMenuModel.settings", MSG_TYPE_LEVEL)
+LOGGING_CONTEXT(commandMenuModelOverall, commandMenuModel.overall, TYPE_LEVEL, INFO_VERBOSITY)
+LOGGING_CONTEXT(commandMenuModelSettings, commandMenuModel.settings, TYPE_LEVEL, INFO_VERBOSITY)
 
 command_menu_model::CommandMenuModel::CommandMenuModel(QObject * parent) : QAbstractItemModel(parent) {
 
-	QINFO_PRINT(global_enums::qinfo_level_e::ZERO, commandMenuModelOverall,  "Create command menu model");
+	LOG_INFO(logger::info_level_e::ZERO, commandMenuModelOverall,  "Create command menu model");
 }
 
 command_menu_model::CommandMenuModel::~CommandMenuModel() {
-	QINFO_PRINT(global_enums::qinfo_level_e::ZERO, commandMenuModelOverall,  "Destoy command menu model");
+	LOG_INFO(logger::info_level_e::ZERO, commandMenuModelOverall,  "Destoy command menu model");
 
 }
 

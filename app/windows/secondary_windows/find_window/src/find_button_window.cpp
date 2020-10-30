@@ -9,22 +9,19 @@
 #include <string>
 
 // Qt libraries
-// Required by qInfo
-#include <QtCore/QtDebug>
-
 #include <QtWidgets/QVBoxLayout>
 #include <QtWidgets/QHBoxLayout>
 #include <QtWidgets/QLayoutItem>
 
-#include "logging_macros.h"
+#include "macros.h"
 #include "find_button_window.h"
 #include "exception_macros.h"
 #include "secondary_window_utility.h"
 
 // Categories
-Q_LOGGING_CATEGORY(findButtonWindowOverall, "findButtonWindow.overall", MSG_TYPE_LEVEL)
-Q_LOGGING_CATEGORY(findButtonWindowCancel, "findButtonWindow.cancel_button", MSG_TYPE_LEVEL)
-Q_LOGGING_CATEGORY(findButtonWindowFind, "findButtonWindow.find_button", MSG_TYPE_LEVEL)
+LOGGING_CONTEXT(findButtonWindowOverall, findButtonWindow.overall, TYPE_LEVEL, INFO_VERBOSITY)
+LOGGING_CONTEXT(findButtonWindowCancel, findButtonWindow.cancel_button, TYPE_LEVEL, INFO_VERBOSITY)
+LOGGING_CONTEXT(findButtonWindowFind, findButtonWindow.find_button, TYPE_LEVEL, INFO_VERBOSITY)
 
 namespace find_button_window {
 
@@ -52,7 +49,7 @@ namespace find_button_window {
 
 find_button_window::FindButtonWindow::FindButtonWindow(QWidget * parent, Qt::WindowFlags flags) : QWidget(parent, flags) {
 
-	QINFO_PRINT(global_enums::qinfo_level_e::ZERO, findButtonWindowOverall,  "Creating find button window");
+	LOG_INFO(logger::info_level_e::ZERO, findButtonWindowOverall,  "Creating find button window");
 
 	// Set modal because no other windows should be active
 	this->setWindowModality(Qt::ApplicationModal);
@@ -77,11 +74,11 @@ find_button_window::FindButtonWindow::FindButtonWindow(QWidget * parent, Qt::Win
 }
 
 find_button_window::FindButtonWindow::~FindButtonWindow() {
-	QINFO_PRINT(global_enums::qinfo_level_e::ZERO, findButtonWindowOverall,  "Destructor of FindButtonWindow class");
+	LOG_INFO(logger::info_level_e::ZERO, findButtonWindowOverall,  "Destructor of FindButtonWindow class");
 }
 
 void find_button_window::FindButtonWindow::cancel() {
-	QINFO_PRINT(global_enums::qinfo_level_e::ZERO, findButtonWindowCancel,  "Closing dialog as Cancel button has been clicked");
+	LOG_INFO(logger::info_level_e::ZERO, findButtonWindowCancel,  "Closing dialog as Cancel button has been clicked");
 	if (this->textToFind->hasFocus() == true) {
 		this->setFocus();
 	} else {
@@ -101,7 +98,7 @@ void find_button_window::FindButtonWindow::apply() {
 	const bool & matchFullWord = this->settingsBox->isMatchFullWordSearch();
 
 	const find_settings::FindSettings settings(textToFind, direction, caseSensitive, matchFullWord);
-	QINFO_PRINT(global_enums::qinfo_level_e::ZERO, findButtonWindowFind,  "Settings:" << settings);
+	LOG_INFO(logger::info_level_e::ZERO, findButtonWindowFind,  "Settings:" << settings);
 
 	emit find(settings);
 
@@ -158,7 +155,7 @@ void find_button_window::FindButtonWindow::windowLayout() {
 		layout->addLayout(lastRow);
 
 	} catch (const std::bad_cast & badCastE) {
-		QEXCEPTION_ACTION(throw, badCastE.what());
+		EXCEPTION_ACTION(throw, badCastE.what());
 	}
 }
 
@@ -183,7 +180,7 @@ void find_button_window::FindButtonWindow::fillWindow() {
 }
 
 void find_button_window::FindButtonWindow::connectSignals() {
-	QINFO_PRINT(global_enums::qinfo_level_e::ZERO, findButtonWindowOverall,  "Connect signals");
+	LOG_INFO(logger::info_level_e::ZERO, findButtonWindowOverall,  "Connect signals");
 
 	connect(this->findAction.get(), &action::Action::triggered, this, &find_button_window::FindButtonWindow::apply);
 	connect(this->findButton.get(), &QPushButton::pressed, this, &find_button_window::FindButtonWindow::apply);

@@ -9,11 +9,6 @@
 */
 
 // Qt libraries
-// Required by qInfo
-#include <QtCore/QtDebug>
-
-#include <QtCore/QLoggingCategory>
-
 #include <QtWidgets/QWidget>
 
 #include "global_enums.h"
@@ -24,8 +19,6 @@
  *  Main Window Tab Scroll Manager functions and classes
  *  @{
  */
-
-Q_DECLARE_LOGGING_CATEGORY(mainWindowTabScrollManagerOverall)
 
 namespace main_window_tab {
 	class MainWindowTab;

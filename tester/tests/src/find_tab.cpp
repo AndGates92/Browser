@@ -6,22 +6,19 @@
  * @brief Find tab test functions
  */
 
-// Qt libraries
-#include <QtCore/QLoggingCategory>
-
 #include <QtTest/QTest>
 #include <QtGui/QKeySequence>
 
 #include "global_enums.h"
-#include "logging_macros.h"
+#include "macros.h"
 #include "qt_operator.h"
 #include "stl_helper.h"
 #include "main_window_constants.h"
 #include "find_tab.h"
 #include "base_suite.h"
 
-Q_LOGGING_CATEGORY(findTabOverall, "findTab.overall", MSG_TYPE_LEVEL)
-Q_LOGGING_CATEGORY(findTabTest, "findTab.test", MSG_TYPE_LEVEL)
+LOGGING_CONTEXT(findTabOverall, findTab.overall, TYPE_LEVEL, INFO_VERBOSITY)
+LOGGING_CONTEXT(findTabTest, findTab.test, TYPE_LEVEL, INFO_VERBOSITY)
 
 namespace find_tab {
 
@@ -67,13 +64,11 @@ namespace find_tab {
 }
 
 find_tab::FindTab::FindTab(const std::shared_ptr<base_suite::BaseSuite> & testSuite, const bool useShortcuts) : command_test::CommandTest(testSuite, "Find tab", find_tab::jsonFileFullPath, useShortcuts) {
-
-	QINFO_PRINT(global_enums::qinfo_level_e::ZERO, findTabOverall,  "Creating test " << QString::fromStdString(this->getName()) << " in suite " << QString::fromStdString(this->getSuite()->getName()));
-
+	LOG_INFO(logger::info_level_e::ZERO, findTabOverall,  "Creating test " << this->getName() << " in suite " << this->getSuite()->getName());
 }
 
 find_tab::FindTab::~FindTab() {
-	QINFO_PRINT(global_enums::qinfo_level_e::ZERO, findTabOverall,  "Test " << QString::fromStdString(this->getName()) << " destructor");
+	LOG_INFO(logger::info_level_e::ZERO, findTabOverall,  "Test " << this->getName() << " destructor");
 }
 
 std::vector<std::string> find_tab::FindTab::extractDataFromSearchResult(const std::regex & numberRegex, const int & expectedNumberOfMatches) {
@@ -174,14 +169,14 @@ std::vector<int> find_tab::FindTab::checkMatchPosition(const std::string & comma
 
 void find_tab::FindTab::testBody() {
 
-	QINFO_PRINT(global_enums::qinfo_level_e::ZERO, findTabTest,  "Starting test " << QString::fromStdString(this->getName()) << " in suite " << QString::fromStdString(this->getSuite()->getName()));
+	LOG_INFO(logger::info_level_e::ZERO, findTabTest,  "Starting test " << this->getName() << " in suite " << this->getSuite()->getName());
 
 	const std::string https(global_constants::https.toStdString());
 	const std::string www(global_constants::www.toStdString());
 
 	// Create 1 tabs
 	const std::string search("test");
-	QINFO_PRINT(global_enums::qinfo_level_e::ZERO, findTabTest, "Open new tab searching " << search);
+	LOG_INFO(logger::info_level_e::ZERO, findTabTest, "Open new tab searching " << search);
 	this->openNewTab(search);
 	const std::string authorityUrl0 = www + main_window_constants::defaultSearchEngine.arg(QString::fromStdString(search)).toStdString();
 	const std::string url0 = https + authorityUrl0;
@@ -199,7 +194,7 @@ void find_tab::FindTab::testBody() {
 		// Do initial search to start value of vertical scrolling and mach position
 		// Search instances of the search in the opened webpage
 		const std::string findCommandName("find");
-		QINFO_PRINT(global_enums::qinfo_level_e::ZERO, findTabTest, "Find " << search << " in tab");
+		LOG_INFO(logger::info_level_e::ZERO, findTabTest, "Find " << search << " in tab");
 		this->executeCommand(findCommandName, search);
 #if QT_VERSION >= QT_VERSION_CHECK(5, 14, 0)
 		// Get the total number of matches and initial match number

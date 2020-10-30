@@ -8,8 +8,6 @@
  * @brief Main Window JSON action class header file
 */
 
-#include <QtCore/QLoggingCategory>
-
 #include "constructor_macros.h"
 #include "main_window_json_data.h"
 #include "json_action.h"
@@ -18,8 +16,6 @@
  *  Main Window JSON action functions and classes
  *  @{
  */
-
-Q_DECLARE_LOGGING_CATEGORY(mainWindowJsonActionOverall)
 
 namespace main_window_json_action {
 

@@ -11,22 +11,19 @@
 // Qt libraries
 #include <QtWidgets/QApplication>
 
-// Required by qInfo
-#include <QtCore/QtDebug>
-
-#include "logging_macros.h"
+#include "macros.h"
 #include "global_enums.h"
 #include "main_window_wrapper.h"
 #include "graphics.h"
-
+#include "logger.h"
 
 // Categories
-Q_LOGGING_CATEGORY(graphicsOverall, "graphics.overall", MSG_TYPE_LEVEL)
+LOGGING_CONTEXT(graphicsOverall, graphics.overall, TYPE_LEVEL, INFO_VERBOSITY)
 
 void graphics::init_graphics(int & argc, char** argv) {
 	QApplication app(argc, argv);
 
-	QINFO_PRINT(global_enums::qinfo_level_e::ZERO, graphicsOverall,  "Create Application");
+	LOG_INFO(logger::info_level_e::ZERO, graphicsOverall,  "Create Application");
 
 	std::unique_ptr<main_window_wrapper::MainWindowWrapper> window = std::make_unique<main_window_wrapper::MainWindowWrapper>(Q_NULLPTR, Qt::Window);
 	window->show();

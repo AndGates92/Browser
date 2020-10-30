@@ -7,9 +7,6 @@
  * @date 13th October 2020
  * @brief Open file header file
  */
-// Qt libraries
-// Required by qInfo
-#include <QtCore/QtDebug>
 
 #include "command_test.h"
 
@@ -17,9 +14,6 @@
  *  Open file functions and classes
  *  @{
  */
-
-Q_DECLARE_LOGGING_CATEGORY(openFileOverall)
-Q_DECLARE_LOGGING_CATEGORY(openFileTest)
 
 namespace open_file {
 

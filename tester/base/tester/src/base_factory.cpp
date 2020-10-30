@@ -6,25 +6,22 @@
  * @brief Base factory functions
  */
 
-// Qt libraries
-#include <QtCore/QLoggingCategory>
-
 #include "global_enums.h"
-#include "logging_macros.h"
+#include "macros.h"
 #include "function_macros.h"
 #include "base_factory.h"
 
-Q_LOGGING_CATEGORY(baseFactoryOverall, "baseFactory.overall", MSG_TYPE_LEVEL)
+LOGGING_CONTEXT(baseFactoryOverall, baseFactory.overall, TYPE_LEVEL, INFO_VERBOSITY)
 
 base_factory::BaseFactory::BaseFactory(int & argc, char** argv, const base_factory::BaseFactory::suite_container_t & testSuites) : argc(argc), argv(argv), suites(testSuites) {
-	QINFO_PRINT(global_enums::qinfo_level_e::ZERO, baseFactoryOverall,  "Creating base factory with initial content " << *this);
+	LOG_INFO(logger::info_level_e::ZERO, baseFactoryOverall,  "Creating base factory with initial content " << *this);
 	for (const auto & suite : this->suites) {
 		suite->populate();
 	}
 }
 
 base_factory::BaseFactory::~BaseFactory() {
-	QINFO_PRINT(global_enums::qinfo_level_e::ZERO, baseFactoryOverall,  "Base factory destructor");
+	LOG_INFO(logger::info_level_e::ZERO, baseFactoryOverall,  "Base factory destructor");
 }
 
 int & base_factory::BaseFactory::getArgc() {

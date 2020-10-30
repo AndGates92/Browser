@@ -7,24 +7,23 @@
  */
 
 // Qt libraries
-#include <QtCore/QLoggingCategory>
 #include <QtGui/QKeyEvent>
 
-#include "logging_macros.h"
+#include "macros.h"
 #include "function_macros.h"
 #include "main_window_tab.h"
 #include "main_window_tab_scroll_manager.h"
 
 // Categories
-Q_LOGGING_CATEGORY(mainWindowTabScrollManagerOverall, "mainWindowTabScrollManager.overall", MSG_TYPE_LEVEL)
+LOGGING_CONTEXT(mainWindowTabScrollManagerOverall, mainWindowTabScrollManager.overall, TYPE_LEVEL, INFO_VERBOSITY)
 
 main_window_tab_scroll_manager::MainWindowTabScrollManager::MainWindowTabScrollManager(QWidget * parent, std::weak_ptr<main_window_tab::MainWindowTab> browserTab, const std::shared_ptr<tab_bar::TabBar> & tabBar): tab_scroll_manager::TabScrollManager(parent, browserTab, tabBar) {
-	QINFO_PRINT(global_enums::qinfo_level_e::ZERO, mainWindowTabScrollManagerOverall,  "MainWindowTabScrollManager constructor");
+	LOG_INFO(logger::info_level_e::ZERO, mainWindowTabScrollManagerOverall,  "MainWindowTabScrollManager constructor");
 
 }
 
 main_window_tab_scroll_manager::MainWindowTabScrollManager::~MainWindowTabScrollManager() {
-	QINFO_PRINT(global_enums::qinfo_level_e::ZERO, mainWindowTabScrollManagerOverall,  "MainWindowTabScrollManager destructor");
+	LOG_INFO(logger::info_level_e::ZERO, mainWindowTabScrollManagerOverall,  "MainWindowTabScrollManager destructor");
 
 }
 

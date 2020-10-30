@@ -8,10 +8,6 @@
  * @brief Test factory header file
  */
 
-// Qt libraries
-// Required by qInfo
-#include <QtCore/QtDebug>
-
 #include "constructor_macros.h"
 #include "base_factory.h"
 
@@ -19,8 +15,6 @@
  *  Test factory functions and classes
  *  @{
  */
-
-Q_DECLARE_LOGGING_CATEGORY(testFactoryOverall)
 
 namespace test_factory {
 

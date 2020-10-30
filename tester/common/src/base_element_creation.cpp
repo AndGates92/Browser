@@ -6,24 +6,21 @@
  * @brief Base element creation functions
  */
 
-// Qt libraries
-#include <QtCore/QLoggingCategory>
-
 #include "global_enums.h"
-#include "logging_macros.h"
+#include "macros.h"
 
 #include "base_element_creation.h"
 
-Q_LOGGING_CATEGORY(baseElementCreationOverall, "baseElementCreation.overall", MSG_TYPE_LEVEL)
+LOGGING_CONTEXT(baseElementCreationOverall, baseElementCreation.overall, TYPE_LEVEL, INFO_VERBOSITY)
 
 base_element_creation::BaseElementCreation::BaseElementCreation() {
 
-	QINFO_PRINT(global_enums::qinfo_level_e::ZERO, baseElementCreationOverall,  "Base element creation constructor");
+	LOG_INFO(logger::info_level_e::ZERO, baseElementCreationOverall,  "Base element creation constructor");
 
 }
 
 base_element_creation::BaseElementCreation::~BaseElementCreation() {
 
-	QINFO_PRINT(global_enums::qinfo_level_e::ZERO, baseElementCreationOverall,  "Base element creation destructor");
+	LOG_INFO(logger::info_level_e::ZERO, baseElementCreationOverall,  "Base element creation destructor");
 
 }

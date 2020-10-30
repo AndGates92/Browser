@@ -6,35 +6,32 @@
  * @brief Error data functions
  */
 
-// Qt libraries
-#include <QtCore/QLoggingCategory>
-
 #include "global_enums.h"
-#include "logging_macros.h"
+#include "macros.h"
 #include "function_macros.h"
 #include "error_data.h"
 #include "base_test.h"
 
 // Categories
-Q_LOGGING_CATEGORY(errorDataOverall, "errorData.overall", MSG_TYPE_LEVEL)
+LOGGING_CONTEXT(errorDataOverall, errorData.overall, TYPE_LEVEL, INFO_VERBOSITY)
 
 error_data::ErrorData::ErrorData(const std::weak_ptr<base_test::BaseTest> & errorTest, const std::string & errorFilename, const int & errorLineNumber, const std::string & errorCondition, const std::string & errorMessage) : test(errorTest), lineNumber(errorLineNumber), filename(errorFilename), condition(errorCondition), message(errorMessage) {
-	QINFO_PRINT(global_enums::qinfo_level_e::ZERO, errorDataOverall,  "Error data constructor");
+	LOG_INFO(logger::info_level_e::ZERO, errorDataOverall,  "Error data constructor");
 }
 
 error_data::ErrorData::~ErrorData() {
-	QINFO_PRINT(global_enums::qinfo_level_e::ZERO, errorDataOverall,  "Error data destructor");
+	LOG_INFO(logger::info_level_e::ZERO, errorDataOverall,  "Error data destructor");
 }
 
 error_data::ErrorData::ErrorData(const error_data::ErrorData & rhs) : test(rhs.getTest()), lineNumber(rhs.lineNumber), filename(rhs.filename), condition(rhs.condition), message(rhs.message) {
 
-	QINFO_PRINT(global_enums::qinfo_level_e::ZERO, errorDataOverall,  "Copy constructor error data");
+	LOG_INFO(logger::info_level_e::ZERO, errorDataOverall,  "Copy constructor error data");
 
 }
 
 error_data::ErrorData & error_data::ErrorData::operator=(const error_data::ErrorData & rhs) {
 
-	QINFO_PRINT(global_enums::qinfo_level_e::ZERO, errorDataOverall,  "Copy assignment operator for error data");
+	LOG_INFO(logger::info_level_e::ZERO, errorDataOverall,  "Copy assignment operator for error data");
 
 	// If rhs points to the same address as this, then return this
 	if (&rhs == this) {
@@ -66,12 +63,12 @@ error_data::ErrorData & error_data::ErrorData::operator=(const error_data::Error
 
 error_data::ErrorData::ErrorData(error_data::ErrorData && rhs) : test(std::exchange(rhs.test, std::weak_ptr<base_test::BaseTest>())), lineNumber(std::exchange(rhs.lineNumber, -1)), filename(std::exchange(rhs.filename, std::string())), condition(std::exchange(rhs.condition, std::string())), message(std::exchange(rhs.message, std::string())) {
 
-	QINFO_PRINT(global_enums::qinfo_level_e::ZERO, errorDataOverall,  "Move constructor error data");
+	LOG_INFO(logger::info_level_e::ZERO, errorDataOverall,  "Move constructor error data");
 }
 
 error_data::ErrorData & error_data::ErrorData::operator=(error_data::ErrorData && rhs) {
 
-	QINFO_PRINT(global_enums::qinfo_level_e::ZERO, errorDataOverall,  "Move assignment operator for error data");
+	LOG_INFO(logger::info_level_e::ZERO, errorDataOverall,  "Move assignment operator for error data");
 
 	// If rhs points to the same address as this, then return this
 	if (&rhs != this) {
@@ -91,7 +88,7 @@ CONST_GETTER(error_data::ErrorData::getCondition, std::string &, this->condition
 CONST_GETTER(error_data::ErrorData::getMessage, std::string &, this->message)
 
 const std::shared_ptr<base_test::BaseTest> error_data::ErrorData::getTest() const {
-	QEXCEPTION_ACTION_COND((this->test.expired() == true), throw,  "Unable to get test as it has already expired");
+	EXCEPTION_ACTION_COND((this->test.expired() == true), throw,  "Unable to get test as it has already expired");
 	const std::shared_ptr<base_test::BaseTest> testSharedPtr = this->test.lock();
 	return testSharedPtr;
 }

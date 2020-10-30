@@ -7,27 +7,27 @@
  */
 
 // Qt libraries
-#include <QtCore/QLoggingCategory>
+#include <QtCore/QUnhandledException>
 
 #include "global_enums.h"
-#include "logging_macros.h"
+#include "macros.h"
 #include "test_factory.h"
 #include "base_suite.h"
 #include "test_runner.h"
 #include "exception_macros.h"
 
-Q_LOGGING_CATEGORY(testRunnerOverall, "testRunner.overall", MSG_TYPE_LEVEL)
-Q_LOGGING_CATEGORY(testRunnerResult, "testRunner.result", MSG_TYPE_LEVEL)
+LOGGING_CONTEXT(testRunnerOverall, testRunner.overall, TYPE_LEVEL, INFO_VERBOSITY)
+LOGGING_CONTEXT(testRunnerResult, testRunner.result, TYPE_LEVEL, INFO_VERBOSITY)
 
 test_runner::TestRunner::TestRunner(int & argc, char** argv) : factory(new test_factory::TestFactory(argc, argv)), parser(new command_line_parser::CommandLineParser(argc, argv)), testList(test_runner::TestRunner::test_list_container_t()), failedTests(test_runner::TestRunner::test_list_container_t()) {
-	QINFO_PRINT(global_enums::qinfo_level_e::ZERO, testRunnerOverall,  "Creating test runner");
+	LOG_INFO(logger::info_level_e::ZERO, testRunnerOverall,  "Creating test runner");
 
 	this->factory->populate();
 	this->fillTestList();
 }
 
 test_runner::TestRunner::~TestRunner() {
-	QINFO_PRINT(global_enums::qinfo_level_e::ZERO, testRunnerOverall,  "Test runner destructor");
+	LOG_INFO(logger::info_level_e::ZERO, testRunnerOverall,  "Test runner destructor");
 }
 
 void test_runner::TestRunner::fillTestList() {
@@ -35,11 +35,11 @@ void test_runner::TestRunner::fillTestList() {
 	const command_line_parser::CommandLineParser::argument_map_t & argumentMap = this->parser->getDecodedArguments();
 
 	const auto & suiteArgument = argumentMap.find("Suite");
-	QEXCEPTION_ACTION_COND((suiteArgument == argumentMap.cend()), throw, "Unable to find key suite in command line argument map");
+	EXCEPTION_ACTION_COND((suiteArgument == argumentMap.cend()), throw, "Unable to find key suite in command line argument map");
 	const std::string & suiteName = suiteArgument->second;
 
 	const auto & testArgument = argumentMap.find("Test");
-	QEXCEPTION_ACTION_COND((testArgument == argumentMap.cend()), throw, "Unable to find key test in command line argument map");
+	EXCEPTION_ACTION_COND((testArgument == argumentMap.cend()), throw, "Unable to find key test in command line argument map");
 	const std::string & testName = testArgument->second;
 
 	if (suiteName.compare("all") == 0) {
@@ -76,7 +76,7 @@ void test_runner::TestRunner::run() {
 					this->failedTests.push_back(test);
 				}
 		} catch (const browser_exception::BrowserException & bexc) {
-			test->addExceptionThrown(bexc.getLine(), bexc.getFilename().toStdString(), bexc.getCondition().toStdString(), bexc.getMessage().toStdString());
+			test->addExceptionThrown(bexc.getLine(), bexc.getFilename(), bexc.getCondition(), bexc.getMessage());
 			this->failedTests.push_back(test);
 		} catch (const QUnhandledException & unhandledexc) {
 			const std::string condition = std::string();
@@ -92,24 +92,24 @@ void test_runner::TestRunner::run() {
 }
 
 void test_runner::TestRunner::printResults() const {
-	QINFO_PRINT(global_enums::qinfo_level_e::ZERO, testRunnerResult,  "Runner results");
-	QINFO_PRINT(global_enums::qinfo_level_e::ZERO, testRunnerResult,  "Statistics:");
-	QINFO_PRINT(global_enums::qinfo_level_e::ZERO, testRunnerResult,  "- test run: " << this->testList.size());
-	QINFO_PRINT(global_enums::qinfo_level_e::ZERO, testRunnerResult,  "- test failed: " << this->failedTests.size());
+	LOG_INFO(logger::info_level_e::ZERO, testRunnerResult,  "Runner results");
+	LOG_INFO(logger::info_level_e::ZERO, testRunnerResult,  "Statistics:");
+	LOG_INFO(logger::info_level_e::ZERO, testRunnerResult,  "- test run: " << this->testList.size());
+	LOG_INFO(logger::info_level_e::ZERO, testRunnerResult,  "- test failed: " << this->failedTests.size());
 	for (const auto & test : this->failedTests) {
 		const base_test::BaseTest::test_error_container_t & errorMap = test->getErrorMap();
 		if (errorMap.empty() == false) {
-			QINFO_PRINT(global_enums::qinfo_level_e::ZERO, testRunnerResult,  "Test errors:");
+			LOG_INFO(logger::info_level_e::ZERO, testRunnerResult,  "Test errors:");
 			for (const auto & e : errorMap) {
-				QINFO_PRINT(global_enums::qinfo_level_e::ZERO, testRunnerResult,  "- type " << e.first << " error data " << e.second);
+				LOG_INFO(logger::info_level_e::ZERO, testRunnerResult,  "- type " << e.first << " error data " << e.second);
 			}
 		}
 
 		const base_test::BaseTest::test_error_container_t & expectedErrors = test->getExpectedErrors();
 		if (expectedErrors.empty() == false) {
-			QINFO_PRINT(global_enums::qinfo_level_e::ZERO, testRunnerResult,  "Test expected errors:");
+			LOG_INFO(logger::info_level_e::ZERO, testRunnerResult,  "Test expected errors:");
 			for (const auto & e : expectedErrors) {
-				QINFO_PRINT(global_enums::qinfo_level_e::ZERO, testRunnerResult,  "- type " << e.first << " error data " << e.second);
+				LOG_INFO(logger::info_level_e::ZERO, testRunnerResult,  "- type " << e.first << " error data " << e.second);
 			}
 		}
 	}

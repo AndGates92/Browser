@@ -7,9 +7,8 @@
  */
 
 // Qt libraries
-#include <QtCore/QLoggingCategory>
 
 #include "inherited_enable_shared_from_this.h"
 
 // Categories
-Q_LOGGING_CATEGORY(inheritedEnableSharedFromThisOverall, "inheritedEnableSharedFromThis.overall", MSG_TYPE_LEVEL)
+LOGGING_CONTEXT(inheritedEnableSharedFromThisOverall, inheritedEnableSharedFromThis.overall, TYPE_LEVEL, INFO_VERBOSITY)

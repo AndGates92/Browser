@@ -7,12 +7,9 @@
  */
 
 // Qt libraries
-#include <QtCore/QtGlobal>
 #include <QtGui/QKeyEvent>
 
-// Required by qInfo
-#include <QtCore/QtDebug>
-
+#include "cpp_operator.h"
 #include "key_sequence.h"
 #include "main_window_constants.h"
 #include "main_window_shared_functions.h"
@@ -20,11 +17,11 @@
 #include "main_window_ctrl_tab.h"
 
 // Categories
-Q_LOGGING_CATEGORY(mainWindowCtrlTabOverall, "mainWindowCtrlTab.overall", MSG_TYPE_LEVEL)
-Q_LOGGING_CATEGORY(mainWindowCtrlTabUserInput, "mainWindowCtrlTab.userInput", MSG_TYPE_LEVEL)
-Q_LOGGING_CATEGORY(mainWindowCtrlTabSearch, "mainWindowCtrlTab.search", MSG_TYPE_LEVEL)
-Q_LOGGING_CATEGORY(mainWindowCtrlTabTabs, "mainWindowCtrlTab.tabs", MSG_TYPE_LEVEL)
-Q_LOGGING_CATEGORY(mainWindowCtrlTabUrl, "mainWindowCtrlTab.url", MSG_TYPE_LEVEL)
+LOGGING_CONTEXT(mainWindowCtrlTabOverall, mainWindowCtrlTab.overall, TYPE_LEVEL, INFO_VERBOSITY)
+LOGGING_CONTEXT(mainWindowCtrlTabUserInput, mainWindowCtrlTab.userInput, TYPE_LEVEL, INFO_VERBOSITY)
+LOGGING_CONTEXT(mainWindowCtrlTabSearch, mainWindowCtrlTab.search, TYPE_LEVEL, INFO_VERBOSITY)
+LOGGING_CONTEXT(mainWindowCtrlTabTabs, mainWindowCtrlTab.tabs, TYPE_LEVEL, INFO_VERBOSITY)
+LOGGING_CONTEXT(mainWindowCtrlTabUrl, mainWindowCtrlTab.url, TYPE_LEVEL, INFO_VERBOSITY)
 
 namespace main_window_ctrl_tab {
 
@@ -67,12 +64,12 @@ main_window_ctrl_tab::MainWindowCtrlTab::~MainWindowCtrlTab() {
 }
 
 void main_window_ctrl_tab::MainWindowCtrlTab::createExtraShortcuts() {
-	QINFO_PRINT(global_enums::qinfo_level_e::ZERO, mainWindowCtrlTabOverall,  "Create shortcuts");
+	LOG_INFO(logger::info_level_e::ZERO, mainWindowCtrlTabOverall,  "Create shortcuts");
 
 }
 
 void main_window_ctrl_tab::MainWindowCtrlTab::connectExtraSignals() {
-	QINFO_PRINT(global_enums::qinfo_level_e::ZERO, mainWindowCtrlTabOverall,  "Connect signals");
+	LOG_INFO(logger::info_level_e::ZERO, mainWindowCtrlTabOverall,  "Connect signals");
 
 	// open tab action (from fileMenu)
 	connect(this->core->topMenuBar->getFileMenu()->openTabAction.get(), &QAction::triggered, this, &main_window_ctrl_tab::MainWindowCtrlTab::setUpOpenNewTab);
@@ -115,7 +112,7 @@ void main_window_ctrl_tab::MainWindowCtrlTab::connectExtraSignals() {
 // Start definition of set up slots
 //************************************************************************************
 void main_window_ctrl_tab::MainWindowCtrlTab::setUpOpenNewTab() {
-	QINFO_PRINT(global_enums::qinfo_level_e::ZERO, mainWindowCtrlTabSearch,  "Open new tab");
+	LOG_INFO(logger::info_level_e::ZERO, mainWindowCtrlTabSearch,  "Open new tab");
 	const main_window_shared_types::state_e requestedWindowState = main_window_shared_types::state_e::OPEN_TAB;
 	this->changeWindowState(requestedWindowState, main_window_shared_types::state_postprocessing_e::POSTPROCESS);
 }
@@ -128,7 +125,7 @@ void main_window_ctrl_tab::MainWindowCtrlTab::setUpOpenNewTab() {
 // Start definition of actions
 //************************************************************************************
 void main_window_ctrl_tab::MainWindowCtrlTab::closeTab(const int & index) {
-	QINFO_PRINT(global_enums::qinfo_level_e::ZERO, mainWindowCtrlTabTabs,  "Close tab " << index);
+	LOG_INFO(logger::info_level_e::ZERO, mainWindowCtrlTabTabs,  "Close tab " << index);
 	this->core->tabs->removeTab(index);
 }
 
@@ -139,7 +136,7 @@ void main_window_ctrl_tab::MainWindowCtrlTab::addNewTabAndSearch(const QString &
 
 int main_window_ctrl_tab::MainWindowCtrlTab::addNewTab(const main_window_shared_types::page_type_e & type, const void * data) {
 
-	QINFO_PRINT(global_enums::qinfo_level_e::ZERO, mainWindowCtrlTabTabs,  "Open tab of type " << type);
+	LOG_INFO(logger::info_level_e::ZERO, mainWindowCtrlTabTabs,  "Open tab of type " << type);
 
 	const int tabCount = this->core->getTabCount();
 	if (tabCount > 0) {
@@ -153,13 +150,13 @@ int main_window_ctrl_tab::MainWindowCtrlTab::addNewTab(const main_window_shared_
 	// Connect signals from tab the cursor is pointing to
 	this->connectTab(tabIndex);
 
-	QEXCEPTION_ACTION_COND((tabIndex < 0), throw, "It cannot be negative");
+	EXCEPTION_ACTION_COND((tabIndex < 0), throw, "It cannot be negative");
 
 	return tabIndex;
 }
 
 void main_window_ctrl_tab::MainWindowCtrlTab::searchTab(const int & index, const QString & search) {
-	QINFO_PRINT(global_enums::qinfo_level_e::ZERO, mainWindowCtrlTabSearch,  "User input " << search << " in tab " << index);
+	LOG_INFO(logger::info_level_e::ZERO, mainWindowCtrlTabSearch,  "User input " << search << " in tab " << index);
 	main_window_shared_types::page_type_e type = this->core->tabs->getPageType(index);
 
 	if (type == main_window_shared_types::page_type_e::UNKNOWN) {
@@ -168,7 +165,7 @@ void main_window_ctrl_tab::MainWindowCtrlTab::searchTab(const int & index, const
 		} else if ((main_window_shared_functions::isUrl(search) == true) || (main_window_shared_functions::isText(search) == true)) {
 			type = main_window_shared_types::page_type_e::WEB_CONTENT;
 		} else {
-			QEXCEPTION_ACTION(throw, "Unable to associate a  page type to search " << search);
+			EXCEPTION_ACTION(throw, "Unable to associate a  page type to search " << search);
 		}
 	}
 	this->core->tabs->changeTabContent(index, type, search, nullptr);
@@ -177,24 +174,24 @@ void main_window_ctrl_tab::MainWindowCtrlTab::searchTab(const int & index, const
 void main_window_ctrl_tab::MainWindowCtrlTab::searchCurrentTab(const QString & search) {
 	const int tabIndex = this->core->getCurrentTabIndex();
 	const int tabCount = this->core->getTabCount();
-	QEXCEPTION_ACTION_COND(((tabIndex < 0) || (tabCount <= 0)), throw, "Unable to perform search of " << search << " in tab " << tabIndex << ". Note that a negative tab index may be caused by the fact that there are no tabs opened in the browser - current count of opened tabs is " << tabCount);
+	EXCEPTION_ACTION_COND(((tabIndex < 0) || (tabCount <= 0)), throw, "Unable to perform search of " << search << " in tab " << tabIndex << ". Note that a negative tab index may be caused by the fact that there are no tabs opened in the browser - current count of opened tabs is " << tabCount);
 
 	const main_window_shared_types::state_e & windowState = this->core->getMainWindowState();
 
 	switch (windowState) {
 		case main_window_shared_types::state_e::NEW_SEARCH:
 		case main_window_shared_types::state_e::EDIT_SEARCH:
-			QINFO_PRINT(global_enums::qinfo_level_e::ZERO, mainWindowCtrlTabTabs,  "Search " << search << " in tab " << tabIndex);
+			LOG_INFO(logger::info_level_e::ZERO, mainWindowCtrlTabTabs,  "Search " << search << " in tab " << tabIndex);
 			this->searchTab(tabIndex, search);
 			break;
 		case main_window_shared_types::state_e::FIND:
 		case main_window_shared_types::state_e::FIND_DOWN:
 		case main_window_shared_types::state_e::FIND_UP:
-			QINFO_PRINT(global_enums::qinfo_level_e::ZERO, mainWindowCtrlTabTabs,  "Find: " << this->findSettings);
+			LOG_INFO(logger::info_level_e::ZERO, mainWindowCtrlTabTabs,  "Find: " << this->findSettings);
 			this->core->tabs->findInTab(tabIndex, this->findSettings);
 			break;
 		default:
-			QEXCEPTION_ACTION(throw,  "Undefined action to execute when in state " << windowState);
+			EXCEPTION_ACTION(throw,  "Undefined action to execute when in state " << windowState);
 			break;
 	}
 }
@@ -217,7 +214,7 @@ void main_window_ctrl_tab::MainWindowCtrlTab::extractContentPath(const int & ind
 		const main_window_shared_types::page_type_e tabType = this->core->tabs->getPageType(index);
 		const QString tabSrc = this->core->tabs->getPageSource(index);
 
-		QINFO_PRINT(global_enums::qinfo_level_e::ZERO, mainWindowCtrlTabUrl, "Set contentPathText for tab at index " << index << " of type " << tabType << " and source " << tabSrc);
+		LOG_INFO(logger::info_level_e::ZERO, mainWindowCtrlTabUrl, "Set contentPathText for tab at index " << index << " of type " << tabType << " and source " << tabSrc);
 		this->createContentPathTextFromSource(tabType, tabSrc);
 
 	} else {
@@ -232,7 +229,7 @@ void main_window_ctrl_tab::MainWindowCtrlTab::reloadTab(const int & tabIndex) {
 
 void main_window_ctrl_tab::MainWindowCtrlTab::moveTab(const int & tabIndex) {
 	const int tabIndexCurrent = this->core->tabs->currentIndex();
-	QINFO_PRINT(global_enums::qinfo_level_e::ZERO, mainWindowCtrlTabTabs,  "Move tab " << tabIndexCurrent << " to " << tabIndex);
+	LOG_INFO(logger::info_level_e::ZERO, mainWindowCtrlTabTabs,  "Move tab " << tabIndexCurrent << " to " << tabIndex);
 	this->core->tabs->moveTab(tabIndexCurrent, tabIndex);
 }
 
@@ -241,7 +238,7 @@ void main_window_ctrl_tab::MainWindowCtrlTab::moveCursor(const int & tabIndex) {
 	const int currentTabIndex = this->core->getCurrentTabIndex();
 	this->disconnectTab(currentTabIndex);
 
-	QINFO_PRINT(global_enums::qinfo_level_e::ZERO, mainWindowCtrlTabTabs,  "Move cursor to tab " << tabIndex);
+	LOG_INFO(logger::info_level_e::ZERO, mainWindowCtrlTabTabs,  "Move cursor to tab " << tabIndex);
 	this->core->tabs->setCurrentIndex(tabIndex);
 	// Connect signals from tab the cursor is pointing to
 	this->connectTab(tabIndex);
@@ -249,7 +246,7 @@ void main_window_ctrl_tab::MainWindowCtrlTab::moveCursor(const int & tabIndex) {
 
 void main_window_ctrl_tab::MainWindowCtrlTab::connectTab(const int & tabIndex) {
 	const main_window_shared_types::page_type_e tabType = this->core->tabs->getPageType(tabIndex);
-	QINFO_PRINT(global_enums::qinfo_level_e::ZERO, mainWindowCtrlTabTabs,  "Connect signals from " << tabType << " object of tab " << tabIndex << " to progress bar slots");
+	LOG_INFO(logger::info_level_e::ZERO, mainWindowCtrlTabTabs,  "Connect signals from " << tabType << " object of tab " << tabIndex << " to progress bar slots");
 
 	std::shared_ptr<main_window_tab::MainWindowTab> tab = this->core->tabs->widget(tabIndex);
 
@@ -266,7 +263,7 @@ void main_window_ctrl_tab::MainWindowCtrlTab::connectTab(const int & tabIndex) {
 
 void main_window_ctrl_tab::MainWindowCtrlTab::disconnectTab(const int & tabIndex) {
 	const main_window_shared_types::page_type_e tabType = this->core->tabs->getPageType(tabIndex);
-	QINFO_PRINT(global_enums::qinfo_level_e::ZERO, mainWindowCtrlTabTabs,  "Disconnect connect signals from " << tabType << " object of tab " << tabIndex << " to progress bar slots");
+	LOG_INFO(logger::info_level_e::ZERO, mainWindowCtrlTabTabs,  "Disconnect connect signals from " << tabType << " object of tab " << tabIndex << " to progress bar slots");
 
 	const std::shared_ptr<main_window_tab::MainWindowTab> tab = this->core->tabs->widget(tabIndex);
 
@@ -298,7 +295,7 @@ void main_window_ctrl_tab::MainWindowCtrlTab::executeActionOnOffset(const int & 
 			sign = global_enums::sign_e::MINUS;
 		}
 	} else {
-		QEXCEPTION_ACTION(throw,  "Requested to execute tab action in invalid window state " << windowState);
+		EXCEPTION_ACTION(throw,  "Requested to execute tab action in invalid window state " << windowState);
 	}
 
 	Q_ASSERT_X(((sign == global_enums::sign_e::MINUS) || (sign == global_enums::sign_e::PLUS)), "sign check to execute movement on offset", "sign input must be either global_enums::sign_e::MINUS or global_enums::sign_e::PLUS");
@@ -333,12 +330,12 @@ void main_window_ctrl_tab::MainWindowCtrlTab::executeActionOnTab(const int & ind
 				this->reloadTab(tabIndex);
 				break;
 			default:
-				QEXCEPTION_ACTION(throw,  "Undefined action to execute when in state " << windowState);
+				EXCEPTION_ACTION(throw,  "Undefined action to execute when in state " << windowState);
 				break;
 		}
 	} else {
 		const int maxTabRange = tabCount;
-		QWARNING_PRINT(mainWindowCtrlTabTabs, "Tab " << tabIndex << " doesn't exists. Valid range of tab is the integer number between 1 and " << maxTabRange);
+		LOG_WARNING(mainWindowCtrlTabTabs, "Tab " << tabIndex << " doesn't exists. Valid range of tab is the integer number between 1 and " << maxTabRange);
 	}
 }
 
@@ -361,11 +358,11 @@ void main_window_ctrl_tab::MainWindowCtrlTab::executeTabAction(const int & userI
 			} else if (offsetType == global_enums::offset_type_e::ABSOLUTE) {
 				this->executeActionOnTab(userInput);
 			} else {
-				QEXCEPTION_ACTION(throw,  "Undefined direction of movement of tabs. Currently set to " << offsetType);
+				EXCEPTION_ACTION(throw,  "Undefined direction of movement of tabs. Currently set to " << offsetType);
 			}
 			break;
 		default:
-			QEXCEPTION_ACTION(throw,  "Undefined tab action when in state " << windowState);
+			EXCEPTION_ACTION(throw,  "Undefined tab action when in state " << windowState);
 			break;
 	}
 
@@ -380,10 +377,10 @@ void main_window_ctrl_tab::MainWindowCtrlTab::processTabIndex(const QString & us
 		// Convert string un a number in base 10
 		const int userInputInt = userInputStr.toInt(&conversionSuccessful, 10);
 		if (conversionSuccessful == true) {
-			QINFO_PRINT(global_enums::qinfo_level_e::ZERO, mainWindowCtrlTabUserInput,  "user input succesfully converted to integer: string " << userInputStr << " integer " << userInputInt);
+			LOG_INFO(logger::info_level_e::ZERO, mainWindowCtrlTabUserInput,  "user input succesfully converted to integer: string " << userInputStr << " integer " << userInputInt);
 			this->executeTabAction(userInputInt);
 		} else {
-			QWARNING_PRINT(mainWindowCtrlTabTabs, "tab index " << userInputStr << " is not made up by numbers only");
+			LOG_WARNING(mainWindowCtrlTabTabs, "tab index " << userInputStr << " is not made up by numbers only");
 		}
 	}
 }
@@ -398,7 +395,7 @@ void main_window_ctrl_tab::MainWindowCtrlTab::actionOnReleasedKey(const main_win
 	if (event->type() == QEvent::KeyRelease) {
 
 		// Retrieve main window controller state
-		QINFO_PRINT(global_enums::qinfo_level_e::ZERO, mainWindowCtrlTabUserInput,  "State " << windowState << " key " << keySeq.toString());
+		LOG_INFO(logger::info_level_e::ZERO, mainWindowCtrlTabUserInput,  "State " << windowState << " key " << keySeq.toString());
 
 		switch (releasedKey) {
 			case Qt::Key_Escape:
@@ -489,7 +486,7 @@ void main_window_ctrl_tab::MainWindowCtrlTab::prepareAction(const main_window_sh
 			if ((pressedKey >= Qt::Key_0) && (pressedKey <= Qt::Key_9)) {
 				this->printUserInput(main_window_shared_types::text_action_e::APPEND, event->text());
 			} else {
-				QWARNING_PRINT(mainWindowCtrlTabUserInput, "Pressed key " << event->text() << ". Only numbers are accepted when executing actions like closing windows or moving in the tab bar");
+				LOG_WARNING(mainWindowCtrlTabUserInput, "Pressed key " << event->text() << ". Only numbers are accepted when executing actions like closing windows or moving in the tab bar");
 			}
 			break;
 		case main_window_shared_types::state_e::MOVE_TAB:
@@ -508,18 +505,18 @@ void main_window_ctrl_tab::MainWindowCtrlTab::prepareAction(const main_window_sh
 					this->core->setOffsetType(global_enums::offset_type_e::LEFT);
 					this->printUserInput(main_window_shared_types::text_action_e::CLEAR);
 				} else {
-					QWARNING_PRINT(mainWindowCtrlTabUserInput, "Pressed key " << event->text() << ". Only numbers and + and - signs are accepted when executing actions like move tabs in the tab bar");
+					LOG_WARNING(mainWindowCtrlTabUserInput, "Pressed key " << event->text() << ". Only numbers and + and - signs are accepted when executing actions like move tabs in the tab bar");
 				}
 			} else {
 				if ((pressedKey >= Qt::Key_0) && (pressedKey <= Qt::Key_9)) {
 					this->printUserInput(main_window_shared_types::text_action_e::APPEND, event->text());
 				} else {
-					QWARNING_PRINT(mainWindowCtrlTabUserInput, "Pressed key " << event->text() << ". Only numbers accepted when executing actions like move tabs in the tab bar");
+					LOG_WARNING(mainWindowCtrlTabUserInput, "Pressed key " << event->text() << ". Only numbers accepted when executing actions like move tabs in the tab bar");
 				}
 			}
 			break;
 		default:
-			QINFO_PRINT(global_enums::qinfo_level_e::ZERO, mainWindowCtrlTabUserInput,  "Window in state " << windowState << " Key pressed is " << event->text() << "(ID " << pressedKey << ")");
+			LOG_INFO(logger::info_level_e::ZERO, mainWindowCtrlTabUserInput,  "Window in state " << windowState << " Key pressed is " << event->text() << "(ID " << pressedKey << ")");
 			break;
 	}
 
@@ -539,7 +536,7 @@ void main_window_ctrl_tab::MainWindowCtrlTab::convertToAbsTabIndex(const int & o
 				distance = 1;
 				break;
 			default:
-				QEXCEPTION_ACTION(throw,  "Unable to compute distance when in state " << windowState);
+				EXCEPTION_ACTION(throw,  "Unable to compute distance when in state " << windowState);
 				break;
 		}
 	} else {
@@ -547,7 +544,7 @@ void main_window_ctrl_tab::MainWindowCtrlTab::convertToAbsTabIndex(const int & o
 	}
 
 	const int tabCount = this->core->getTabCount();
-	QEXCEPTION_ACTION_COND((tabCount <= 0), throw,  "Current number of opened tabs is " << tabCount << ". It is not possible to execute actin related to state " << windowState);
+	EXCEPTION_ACTION_COND((tabCount <= 0), throw,  "Current number of opened tabs is " << tabCount << ". It is not possible to execute actin related to state " << windowState);
 	const int signInt = static_cast<int>(sign);
 
 	int tabIndexDst = 0;
@@ -558,7 +555,7 @@ void main_window_ctrl_tab::MainWindowCtrlTab::convertToAbsTabIndex(const int & o
 	}
 	if (offset > tabCount) {
 		int maxTabRange = tabCount - 1;
-		QWARNING_PRINT(mainWindowCtrlTabTabs, "Offset " << offset << " is bigger than the number of tabs " << tabCount << ". Bringing tab index withing the valid range of tab (between 0 and " << maxTabRange);
+		LOG_WARNING(mainWindowCtrlTabTabs, "Offset " << offset << " is bigger than the number of tabs " << tabCount << ". Bringing tab index withing the valid range of tab (between 0 and " << maxTabRange);
 	}
 	while (tabIndexDst < 0) {
 		tabIndexDst +=  tabCount;
@@ -567,7 +564,7 @@ void main_window_ctrl_tab::MainWindowCtrlTab::convertToAbsTabIndex(const int & o
 	// Keep tabIndex values within valid range (0 and (tabCount -1))
 	const int tabIndex = tabIndexDst % tabCount;
 
-	QINFO_PRINT(global_enums::qinfo_level_e::ZERO, mainWindowCtrlTabTabs,  "Convert tab relative offset " << (signInt*offset) << " to absolute offset " << tabIndex);
+	LOG_INFO(logger::info_level_e::ZERO, mainWindowCtrlTabTabs,  "Convert tab relative offset " << (signInt*offset) << " to absolute offset " << tabIndex);
 
 	switch (windowState) {
 		case main_window_shared_types::state_e::MOVE_RIGHT:
@@ -578,14 +575,14 @@ void main_window_ctrl_tab::MainWindowCtrlTab::convertToAbsTabIndex(const int & o
 			this->moveTab(tabIndex);
 			break;
 		default:
-			QEXCEPTION_ACTION(throw,  "Undefined action when in state " << windowState);
+			EXCEPTION_ACTION(throw,  "Undefined action when in state " << windowState);
 			break;
 	}
 }
 
 void main_window_ctrl_tab::MainWindowCtrlTab::postprocessWindowStateChange(const main_window_shared_types::state_e & previousState) {
 	const main_window_shared_types::state_e windowState = this->core->getMainWindowState();
-	QINFO_PRINT(global_enums::qinfo_level_e::ZERO, mainWindowCtrlTabTabs,  "Current state " << windowState << " previousState " << previousState);
+	LOG_INFO(logger::info_level_e::ZERO, mainWindowCtrlTabTabs,  "Current state " << windowState << " previousState " << previousState);
 
 	const int tabCount = this->core->getTabCount();
 	std::shared_ptr<main_window_tab::MainWindowTab> tab = nullptr;
@@ -625,7 +622,7 @@ void main_window_ctrl_tab::MainWindowCtrlTab::postprocessWindowStateChange(const
 			this->setFocus();
 			break;
 		case main_window_shared_types::state_e::EDIT_SEARCH:
-			QEXCEPTION_ACTION_COND((tab == nullptr), throw,  "Postprocessing state " << windowState << ": Unable to edit string used for previous search as pointer to tab is " << tab.get());
+			EXCEPTION_ACTION_COND((tab == nullptr), throw,  "Postprocessing state " << windowState << ": Unable to edit string used for previous search as pointer to tab is " << tab.get());
 			this->printUserInput(main_window_shared_types::text_action_e::SET, searchText);
 			this->setAllShortcutEnabledProperty(false);
 			this->setFocus();
@@ -702,7 +699,7 @@ bool main_window_ctrl_tab::MainWindowCtrlTab::isValidWindowState(const main_wind
 			isValid = false;
 			break;
 		default:
-			QEXCEPTION_ACTION(throw, "Unable to determine whether transaction from " << windowState << " to " << requestedWindowState << " is valid");
+			EXCEPTION_ACTION(throw, "Unable to determine whether transaction from " << windowState << " to " << requestedWindowState << " is valid");
 			break;
 	}
 
@@ -737,7 +734,7 @@ void main_window_ctrl_tab::MainWindowCtrlTab::historyBoundaryHit(const global_en
 	if ((position == global_enums::element_position_e::BEGINNING) || (position == global_enums::element_position_e::END)) {
 		std::shared_ptr<main_window_popup_container::MainWindowPopupContainer> container = this->core->popup;
 		bool success = container->showWarningPopup();
-		QEXCEPTION_ACTION_COND((success == false), throw, "Unable to show Warning popup");
+		EXCEPTION_ACTION_COND((success == false), throw, "Unable to show Warning popup");
 
 		std::shared_ptr<label_popup::LabelPopup> labelPopup = container->getWarningPopup();
 		QString positionText = QString("unknown position");
@@ -758,7 +755,7 @@ void main_window_ctrl_tab::MainWindowCtrlTab::processSearchReturnValue(const boo
 	if (found == false) {
 		std::shared_ptr<main_window_popup_container::MainWindowPopupContainer> container = this->core->popup;
 		bool success = container->showWarningPopup();
-		QEXCEPTION_ACTION_COND((success == false), throw, "Unable to show Warning popup");
+		EXCEPTION_ACTION_COND((success == false), throw, "Unable to show Warning popup");
 
 		std::shared_ptr<label_popup::LabelPopup> labelPopup = container->getWarningPopup();
 		QString popupText = QString();
@@ -789,7 +786,7 @@ void main_window_ctrl_tab::MainWindowCtrlTab::createContentPathTextFromSource(co
 			text = QString("Unknown tab type");
 			break;
 		default:
-			QEXCEPTION_ACTION(throw, "Unable to create string from " << source << " to print in the content path widget " << " because tab type " << type << " is not recognised");
+			EXCEPTION_ACTION(throw, "Unable to create string from " << source << " to print in the content path widget " << " because tab type " << type << " is not recognised");
 			break;
 	}
 
@@ -801,7 +798,7 @@ void main_window_ctrl_tab::MainWindowCtrlTab::createOpenPrompt() {
 	bool success = container->showOpenFilePopup();
 	container->setFocus();
 
-	QEXCEPTION_ACTION_COND((success == false), throw, "Unable to show OpenFile popup");
+	EXCEPTION_ACTION_COND((success == false), throw, "Unable to show OpenFile popup");
 }
 
 void main_window_ctrl_tab::MainWindowCtrlTab::setUpSearchFromMenu(const find_settings::FindSettings & settings) {

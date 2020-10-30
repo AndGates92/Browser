@@ -6,14 +6,11 @@
  * @brief Command test functions
  */
 
-// Qt libraries
-#include <QtCore/QLoggingCategory>
-
 #include <QtTest/QTest>
 
 #include "global_enums.h"
 #include "global_constants.h"
-#include "logging_macros.h"
+#include "macros.h"
 #include "qt_operator.h"
 #include "stl_helper.h"
 #include "main_window_constants.h"
@@ -21,24 +18,24 @@
 #include "command_test.h"
 #include "base_suite.h"
 
-Q_LOGGING_CATEGORY(commandTestOverall, "commandTest.overall", MSG_TYPE_LEVEL)
-Q_LOGGING_CATEGORY(commandTestTest, "commandTest.test", MSG_TYPE_LEVEL)
+LOGGING_CONTEXT(commandTestOverall, commandTest.overall, TYPE_LEVEL, INFO_VERBOSITY)
+LOGGING_CONTEXT(commandTestTest, commandTest.test, TYPE_LEVEL, INFO_VERBOSITY)
 
 command_test::CommandTest::CommandTest(const std::shared_ptr<base_suite::BaseSuite> & testSuite, const std::string & testName, const std::string & jsonFileName, const bool useShortcuts) : base_test::BaseTest(testSuite, (testName + " using " + (useShortcuts ? "shortcuts" : "full commands"))), main_window_json_action::MainWindowJsonAction(QString::fromStdString(jsonFileName)), sendCommandsThroughShortcuts(useShortcuts) {
 
-	QINFO_PRINT(global_enums::qinfo_level_e::ZERO, commandTestOverall,  "Creating test " << this->getName() << " in suite " << this->getSuite()->getName());
+	LOG_INFO(logger::info_level_e::ZERO, commandTestOverall,  "Creating test " << this->getName() << " in suite " << this->getSuite()->getName());
 
 }
 
 command_test::CommandTest::~CommandTest() {
-	QINFO_PRINT(global_enums::qinfo_level_e::ZERO, commandTestOverall,  "Test " << QString::fromStdString(this->getName()) << " destructor");
+	LOG_INFO(logger::info_level_e::ZERO, commandTestOverall,  "Test " << this->getName() << " destructor");
 }
 
 BASE_GETTER(command_test::CommandTest::commandSentThroughShortcuts, bool, this->sendCommandsThroughShortcuts)
 
 void command_test::CommandTest::writeTextToStatusBar(const std::string & textToWrite, const std::string & expectedText, const main_window_shared_types::state_e & expectedState, const bool execute, const bool sendShortcut) {
 
-	QINFO_PRINT(global_enums::qinfo_level_e::ZERO, commandTestTest,  "Write " << textToWrite << " to statusbar");
+	LOG_INFO(logger::info_level_e::ZERO, commandTestTest,  "Write " << textToWrite << " to statusbar");
 
 	const std::unique_ptr<main_window_ctrl_wrapper::MainWindowCtrlWrapper> & windowCtrl =  this->windowWrapper->getWindowCtrl();
 	const std::shared_ptr<main_window_core::MainWindowCore> & windowCore = this->windowWrapper->getWindowCore();
@@ -99,7 +96,7 @@ void command_test::CommandTest::writeCommandToStatusBar(const std::string & comm
 	const std::string commandToSend(this->commandNameToTypedText(commandName));
 	const std::string commandExpectedText(this->commandNameToShownText(commandName, (this->commandSentThroughShortcuts() == false)));
 
-	QINFO_PRINT(global_enums::qinfo_level_e::ZERO, commandTestTest, "Type command " << commandName << " - text sent to statusbar: " << commandToSend);
+	LOG_INFO(logger::info_level_e::ZERO, commandTestTest, "Type command " << commandName << " - text sent to statusbar: " << commandToSend);
 	this->writeTextToStatusBar(commandToSend, commandExpectedText, expectedState, execute, this->sendCommandsThroughShortcuts);
 }
 
@@ -144,7 +141,7 @@ void command_test::CommandTest::makeSearchInTab(const std::string & commandName,
 		} else if (main_window_shared_functions::isText(QString::fromStdString(search)) == true) {
 			expectedAuthority = www + main_window_constants::defaultSearchEngine.arg(QString::fromStdString(search)).toStdString();
 		} else {
-			QEXCEPTION_ACTION(throw, "Unable to deduce type of search " << search);
+			EXCEPTION_ACTION(throw, "Unable to deduce type of search " << search);
 		}
 
 		const QUrl & tabUrl = currentTab->getPage()->url();
@@ -221,7 +218,7 @@ void command_test::CommandTest::executeCommand(const std::string & commandName, 
 		const std::string argumentExpectedText = commandExpectedName + " " + argument;
 		const main_window_shared_types::state_e argumentExpectedState = commandState;
 
-		QINFO_PRINT(global_enums::qinfo_level_e::ZERO, commandTestTest, "Give argument " << argument << " to command " << commandName);
+		LOG_INFO(logger::info_level_e::ZERO, commandTestTest, "Give argument " << argument << " to command " << commandName);
 		this->writeTextToStatusBar(argument, argumentExpectedText, argumentExpectedState, true, false);
 	}
 

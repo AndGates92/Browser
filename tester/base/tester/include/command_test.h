@@ -7,9 +7,6 @@
  * @date 08th October 2020
  * @brief Command test header file
  */
-// Qt libraries
-// Required by qInfo
-#include <QtCore/QtDebug>
 
 #include "main_window_json_action.h"
 #include "base_test.h"
@@ -18,9 +15,6 @@
  *  Command test functions and classes
  *  @{
  */
-
-Q_DECLARE_LOGGING_CATEGORY(commandTestOverall)
-Q_DECLARE_LOGGING_CATEGORY(commandTestTest)
 
 namespace command_test {
 

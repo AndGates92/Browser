@@ -8,12 +8,6 @@
  * @brief Tab History header file
 */
 
-// Qt libraries
-// Required by qInfo
-#include <QtCore/QtDebug>
-
-#include <QtCore/QLoggingCategory>
-
 #include "tab_history.h"
 #include "global_enums.h"
 
@@ -21,8 +15,6 @@
  *  Tab History functions and classes
  *  @{
  */
-
-Q_DECLARE_LOGGING_CATEGORY(mainWindowTabHistoryOverall)
 
 namespace main_window_tab {
 	class MainWindowTab;

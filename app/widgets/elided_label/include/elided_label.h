@@ -8,7 +8,7 @@
  * @brief Elided label class header file
 */
 
-#include <QtCore/QLoggingCategory>
+// Qt libraries
 #include <QtCore/QPoint>
 #include <QtGui/QResizeEvent>
 #include <QtWidgets/QWidget>
@@ -20,10 +20,6 @@
  *  Elided label functions and classes
  *  @{
  */
-
-Q_DECLARE_LOGGING_CATEGORY(elidedLabelOverall)
-Q_DECLARE_LOGGING_CATEGORY(elidedLabelElision)
-Q_DECLARE_LOGGING_CATEGORY(elidedLabelPaint)
 
 namespace elided_label {
 

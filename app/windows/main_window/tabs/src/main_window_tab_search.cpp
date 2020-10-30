@@ -7,27 +7,26 @@
  */
 
 // Qt libraries
-#include <QtCore/QLoggingCategory>
 #include <QtGui/QKeyEvent>
 
-#include "logging_macros.h"
+#include "macros.h"
 #include "main_window_tab_search.h"
 #include "main_window_web_engine_view.h"
 #include "main_window_tab.h"
 #include "exception_macros.h"
 
 // Categories
-Q_LOGGING_CATEGORY(mainWindowTabSearchOverall, "mainWindowTabSearch.overall", MSG_TYPE_LEVEL)
-Q_LOGGING_CATEGORY(mainWindowTabSearchFind, "mainWindowTabSearch.find", MSG_TYPE_LEVEL)
+LOGGING_CONTEXT(mainWindowTabSearchOverall, mainWindowTabSearch.overall, TYPE_LEVEL, INFO_VERBOSITY)
+LOGGING_CONTEXT(mainWindowTabSearchFind, mainWindowTabSearch.find, TYPE_LEVEL, INFO_VERBOSITY)
 
 main_window_tab_search::MainWindowTabSearch::MainWindowTabSearch(QWidget * parent, std::weak_ptr<main_window_tab::MainWindowTab> attachedTab): tab_search::TabSearch(parent, attachedTab) {
-	QINFO_PRINT(global_enums::qinfo_level_e::ZERO, mainWindowTabSearchOverall,  "Main window tab search constructor");
+	LOG_INFO(logger::info_level_e::ZERO, mainWindowTabSearchOverall,  "Main window tab search constructor");
 
 	this->connectSignals();
 }
 
 main_window_tab_search::MainWindowTabSearch::~MainWindowTabSearch() {
-	QINFO_PRINT(global_enums::qinfo_level_e::ZERO, mainWindowTabSearchOverall,  "Main window tab search destructor");
+	LOG_INFO(logger::info_level_e::ZERO, mainWindowTabSearchOverall,  "Main window tab search destructor");
 
 }
 
@@ -49,7 +48,7 @@ void main_window_tab_search::MainWindowTabSearch::postProcessSearch(const QWebEn
 	const int & numberOfMatches = result.numberOfMatches();
 
 	const QString text = this->settings.getText();
-	QINFO_PRINT(global_enums::qinfo_level_e::ZERO, mainWindowTabSearchFind,  "Searching text " << text << " in the current tab - Match " << activeMatch << " out of " << numberOfMatches);
+	LOG_INFO(logger::info_level_e::ZERO, mainWindowTabSearchFind,  "Searching text " << text << " in the current tab - Match " << activeMatch << " out of " << numberOfMatches);
 
 	const main_window_tab_search::search_data_s & data { activeMatch, numberOfMatches };
 	emit searchResultChanged(data);
@@ -59,7 +58,7 @@ void main_window_tab_search::MainWindowTabSearch::postProcessSearch(const QWebEn
 void main_window_tab_search::MainWindowTabSearch::setCallback() {
 
 	this->callback = [=] (bool found) {
-		QINFO_PRINT(global_enums::qinfo_level_e::ZERO, mainWindowTabSearchFind,  "Searching text in the current tab - Found: " << found);
+		LOG_INFO(logger::info_level_e::ZERO, mainWindowTabSearchFind,  "Searching text in the current tab - Found: " << found);
 		emit this->findTextFinished(found);
 	};
 

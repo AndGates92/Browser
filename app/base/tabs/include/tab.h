@@ -9,11 +9,6 @@
 */
 
 // Qt libraries
-// Required by qInfo
-#include <QtCore/QtDebug>
-
-#include <QtCore/QLoggingCategory>
-
 #include <QtWidgets/QWidget>
 
 #include "global_enums.h"
@@ -27,9 +22,6 @@
  *  Tab functions and classes
  *  @{
  */
-
-Q_DECLARE_LOGGING_CATEGORY(tabOverall)
-Q_DECLARE_LOGGING_CATEGORY(tabSize)
 
 namespace tab_bar {
 	class TabBar;

@@ -10,20 +10,15 @@
 
 #include <memory>
 
-#include <QtCore/QLoggingCategory>
-
 #include "constructor_macros.h"
 #include "smart_ptr_macros.h"
 #include "overlayed_widget.h"
 #include "popup_base.h"
 
-
 /** @defgroup PopupContainerGroup Popup Container Doxygen Group
  *  Pop up container functions and classes
  *  @{
  */
-
-Q_DECLARE_LOGGING_CATEGORY(popupContainerOverall)
 
 namespace popup_container {
 

@@ -9,9 +9,6 @@
 #include <string>
 
 // Qt libraries
-// Required by qInfo
-#include <QtCore/QtDebug>
-
 #include <QtCore/QObject>
 #include <QtCore/QDir>
 #include <QtCore/QFile>
@@ -21,17 +18,17 @@
 #include <QtWidgets/QVBoxLayout>
 #include <QtWidgets/QApplication>
 
-#include "logging_macros.h"
+#include "cpp_operator.h"
+#include "macros.h"
 #include "global_enums.h"
 #include "open_popup.h"
 #include "exception_macros.h"
 
-
 // Categories
-Q_LOGGING_CATEGORY(openPopupOverall, "openPopup.overall", MSG_TYPE_LEVEL)
-Q_LOGGING_CATEGORY(openPopupOpen, "openPopup.open", MSG_TYPE_LEVEL)
-Q_LOGGING_CATEGORY(openPopupBrowse, "openPopup.browse", MSG_TYPE_LEVEL)
-Q_LOGGING_CATEGORY(openPopupCancel, "openPopup.cancel", MSG_TYPE_LEVEL)
+LOGGING_CONTEXT(openPopupOverall, openPopup.overall, TYPE_LEVEL, INFO_VERBOSITY)
+LOGGING_CONTEXT(openPopupOpen, openPopup.open, TYPE_LEVEL, INFO_VERBOSITY)
+LOGGING_CONTEXT(openPopupBrowse, openPopup.browse, TYPE_LEVEL, INFO_VERBOSITY)
+LOGGING_CONTEXT(openPopupCancel, openPopup.cancel, TYPE_LEVEL, INFO_VERBOSITY)
 
 namespace open_popup {
 
@@ -84,7 +81,7 @@ namespace open_popup {
 
 open_popup::OpenPopup::OpenPopup(QWidget * parent, Qt::WindowFlags flags) : main_window_popup_base::MainWindowPopupBase(parent, true, open_popup::padding, flags), open_content::OpenContent(this) {
 
-	QINFO_PRINT(global_enums::qinfo_level_e::ZERO, openPopupOverall,  "Creating open popup");
+	LOG_INFO(logger::info_level_e::ZERO, openPopupOverall,  "Creating open popup");
 
 	// Create widgets to put in the window
 	this->fillPopup();
@@ -140,7 +137,7 @@ open_popup::OpenPopup::OpenPopup(QWidget * parent, Qt::WindowFlags flags) : main
 }
 
 open_popup::OpenPopup::~OpenPopup() {
-	QINFO_PRINT(global_enums::qinfo_level_e::ZERO, openPopupOverall,  "Destructor of open popup class");
+	LOG_INFO(logger::info_level_e::ZERO, openPopupOverall,  "Destructor of open popup class");
 }
 
 void open_popup::OpenPopup::popupLayout() {
@@ -183,7 +180,7 @@ void open_popup::OpenPopup::popupLayout() {
 		layout->addWidget(this->fileView.get());
 
 	} catch (const std::bad_cast & badCastE) {
-		QEXCEPTION_ACTION(throw, badCastE.what());
+		EXCEPTION_ACTION(throw, badCastE.what());
 	}
 
 }
@@ -203,7 +200,7 @@ void open_popup::OpenPopup::fillPopup() {
 }
 
 void open_popup::OpenPopup::connectSignals() {
-	QINFO_PRINT(global_enums::qinfo_level_e::ZERO, openPopupOverall,  "Connect signals");
+	LOG_INFO(logger::info_level_e::ZERO, openPopupOverall,  "Connect signals");
 
 	connect(this->applyAction.get(), &action::Action::triggered, this, &open_popup::OpenPopup::apply);
 	connect(this->cancelAction.get(), &action::Action::triggered, this, &open_popup::OpenPopup::cancel);
@@ -234,13 +231,13 @@ void open_popup::OpenPopup::postProcessTypeAction() {
 }
 
 void open_popup::OpenPopup::apply() {
-	QINFO_PRINT(global_enums::qinfo_level_e::ZERO, openPopupOpen,  "Open file: " << this->getTypedPath());
+	LOG_INFO(logger::info_level_e::ZERO, openPopupOpen,  "Open file: " << this->getTypedPath());
 	this->close();
 	this->openPath();
 }
 
 void open_popup::OpenPopup::browse() {
-	QINFO_PRINT(global_enums::qinfo_level_e::ZERO, openPopupBrowse,  "Browsing files - selected MIME are: " << this->fileModel->nameFilters());
+	LOG_INFO(logger::info_level_e::ZERO, openPopupBrowse,  "Browsing files - selected MIME are: " << this->fileModel->nameFilters());
 	const bool isFileViewVisible = this->fileView->isVisible();
 
 	if (isFileViewVisible == true) {
@@ -254,7 +251,7 @@ void open_popup::OpenPopup::browse() {
 }
 
 void open_popup::OpenPopup::cancel() {
-	QINFO_PRINT(global_enums::qinfo_level_e::ZERO, openPopupCancel,  "Closing popup as Cancel button has been clicked");
+	LOG_INFO(logger::info_level_e::ZERO, openPopupCancel,  "Closing popup as Cancel button has been clicked");
 	if (this->pathToOpen->hasFocus() == true) {
 		this->setFocus();
 		this->insertLabel->setEnabled(true);

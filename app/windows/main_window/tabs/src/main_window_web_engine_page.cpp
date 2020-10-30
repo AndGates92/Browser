@@ -7,19 +7,19 @@
  */
 
 // Qt libraries
-#include <QtCore/QLoggingCategory>
 #include <QtGui/QKeyEvent>
 
-#include "logging_macros.h"
+#include "cpp_operator.h"
+#include "macros.h"
 #include "function_macros.h"
 #include "global_functions.h"
 #include "main_window_web_engine_page.h"
 
 // Categories
-Q_LOGGING_CATEGORY(mainWindowWebEnginePageOverall, "mainWindowWebEnginePage.overall", MSG_TYPE_LEVEL)
+LOGGING_CONTEXT(mainWindowWebEnginePageOverall, mainWindowWebEnginePage.overall, TYPE_LEVEL, INFO_VERBOSITY)
 
 main_window_web_engine_page::MainWindowWebEnginePage::MainWindowWebEnginePage(QWidget * parent, const main_window_shared_types::page_type_e & type, const QString & src, main_window_web_engine_profile::MainWindowWebEngineProfile * profile, const void * data): web_engine_page::WebEnginePage(parent, profile), pageData(main_window_page_data::MainWindowPageData::makePageData(type, src.toStdString(), data)) {
-	QINFO_PRINT(global_enums::qinfo_level_e::ZERO, mainWindowWebEnginePageOverall,  "Web engine page constructor");
+	LOG_INFO(logger::info_level_e::ZERO, mainWindowWebEnginePageOverall,  "Web engine page constructor");
 
 	this->setBody();
 	if (src != QString()) {
@@ -44,7 +44,7 @@ void main_window_web_engine_page::MainWindowWebEnginePage::setBody() {
 		case main_window_shared_types::page_type_e::WEB_CONTENT:
 		{
 			const QUrl url(this->getSource(), QUrl::StrictMode);
-			QEXCEPTION_ACTION_COND((url.isValid() == false), throw,  "URL is not valid. The following error has been identified: " << url.errorString());
+			EXCEPTION_ACTION_COND((url.isValid() == false), throw,  "URL is not valid. The following error has been identified: " << url.errorString());
 			this->setUrl(url);
 			break;
 		}
@@ -54,13 +54,13 @@ void main_window_web_engine_page::MainWindowWebEnginePage::setBody() {
 		case main_window_shared_types::page_type_e::UNKNOWN:
 			break;
 		default:
-			QEXCEPTION_ACTION(throw, "Unable to set body for this page as type " << type << " is not recognised");
+			EXCEPTION_ACTION(throw, "Unable to set body for this page as type " << type << " is not recognised");
 			break;
 	}
 }
 
 main_window_web_engine_page::MainWindowWebEnginePage::~MainWindowWebEnginePage() {
-	QINFO_PRINT(global_enums::qinfo_level_e::ZERO, mainWindowWebEnginePageOverall,  "Web engine page destructor");
+	LOG_INFO(logger::info_level_e::ZERO, mainWindowWebEnginePageOverall,  "Web engine page destructor");
 }
 
 CONST_GETTER(main_window_web_engine_page::MainWindowWebEnginePage::getType, main_window_shared_types::page_type_e &, this->pageData->type)
@@ -78,7 +78,7 @@ void main_window_web_engine_page::MainWindowWebEnginePage::reload() {
 			this->setContent(this->getTextFileBody());
 			break;
 		default:
-			QEXCEPTION_ACTION(throw, "Unable to reload page as type " << type << " is not recognised");
+			EXCEPTION_ACTION(throw, "Unable to reload page as type " << type << " is not recognised");
 			break;
 	}
 }
@@ -91,7 +91,7 @@ QByteArray main_window_web_engine_page::MainWindowWebEnginePage::getTextFileBody
 
 	if (source.isEmpty() == false) {
 		main_window_shared_types::page_type_e type = this->getType();
-		QEXCEPTION_ACTION_COND((type != main_window_shared_types::page_type_e::TEXT), throw,  "Unable to get body of text file for tab of type " << type);
+		EXCEPTION_ACTION_COND((type != main_window_shared_types::page_type_e::TEXT), throw,  "Unable to get body of text file for tab of type " << type);
 		// Convert QString to std::string
 		std::string filename = source.toStdString();
 		const QString fileContent(QString::fromStdString(global_functions::readFile(filename.c_str())));

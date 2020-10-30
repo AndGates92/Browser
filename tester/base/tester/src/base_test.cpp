@@ -7,7 +7,6 @@
  */
 
 // Qt libraries
-#include <QtCore/QLoggingCategory>
 #include <QtWidgets/QApplication>
 
 #include <thread>
@@ -15,16 +14,16 @@
 #include <QtTest/QTest>
 
 #include "global_enums.h"
-#include "logging_macros.h"
+#include "macros.h"
 #include "qt_operator.h"
 #include "function_macros.h"
 #include "base_test.h"
 #include "base_factory.h"
 #include "base_suite.h"
 
-Q_LOGGING_CATEGORY(baseTestOverall, "baseTest.overall", MSG_TYPE_LEVEL)
-Q_LOGGING_CATEGORY(baseTestTest, "baseTest.test", MSG_TYPE_LEVEL)
-Q_LOGGING_CATEGORY(baseTestApp, "baseTest.app", MSG_TYPE_LEVEL)
+LOGGING_CONTEXT(baseTestOverall, baseTest.overall, TYPE_LEVEL, INFO_VERBOSITY)
+LOGGING_CONTEXT(baseTestTest, baseTest.test, TYPE_LEVEL, INFO_VERBOSITY)
+LOGGING_CONTEXT(baseTestApp, baseTest.app, TYPE_LEVEL, INFO_VERBOSITY)
 
 bool base_test::TestPtrCompare::operator() (const std::shared_ptr<base_test::BaseTest> & rhs, const std::shared_ptr<base_test::BaseTest> & lhs) const {
 	bool isSame = ((*rhs) == (*lhs));
@@ -35,7 +34,7 @@ base_test::BaseTest::BaseTest(const std::shared_ptr<base_suite::BaseSuite> & tes
 
 	this->checkCreation();
 
-	QINFO_PRINT(global_enums::qinfo_level_e::ZERO, baseTestOverall,  "Creating test " << QString::fromStdString(this->name) << " in suite " << QString::fromStdString(this->getSuite()->getName()));
+	LOG_INFO(logger::info_level_e::ZERO, baseTestOverall,  "Creating test " << this->name << " in suite " << this->getSuite()->getName());
 }
 
 base_test::BaseTest::BaseTest(const std::shared_ptr<base_factory::BaseFactory> & factory, const std::string & suiteName, const std::string & testName) : windowWrapper(nullptr), name(testName), errorMap(base_test::BaseTest::test_error_container_t()), expectedErrors(base_test::BaseTest::test_error_container_t()), state(test_enums::test_state_e::INSTATIATED), status(test_enums::test_status_e::NOT_RUN) {
@@ -47,11 +46,11 @@ base_test::BaseTest::BaseTest(const std::shared_ptr<base_factory::BaseFactory> &
 
 	this->checkCreation();
 
-	QINFO_PRINT(global_enums::qinfo_level_e::ZERO, baseTestOverall,  "Creating test " << QString::fromStdString(this->name) << " in suite " << QString::fromStdString(suiteSharedPtr->getName()));
+	LOG_INFO(logger::info_level_e::ZERO, baseTestOverall,  "Creating test " << this->name << " in suite " << suiteSharedPtr->getName());
 }
 
 base_test::BaseTest::~BaseTest() {
-	QINFO_PRINT(global_enums::qinfo_level_e::ZERO, baseTestOverall,  "Test " << QString::fromStdString(this->name) << " destructor");
+	LOG_INFO(logger::info_level_e::ZERO, baseTestOverall,  "Test " << this->name << " destructor");
 }
 
 bool base_test::BaseTest::operator== (const base_test::BaseTest & otherTest) const {
@@ -66,9 +65,9 @@ bool base_test::BaseTest::operator== (const base_test::BaseTest & otherTest) con
 
 void base_test::BaseTest::checkCreation() const {
 	// Check creation
-	QEXCEPTION_ACTION_COND((this->name.empty() == true), throw, "Cannot create test with no name");
-	QEXCEPTION_ACTION_COND((this->suite.expired() == true), throw, "Cannot create test " << QString::fromStdString(this->name) << " belonging to no suite");
-	QEXCEPTION_ACTION_COND((this->getSuite() == nullptr), throw, "Cannot create test " << QString::fromStdString(this->name) << " as it belongs to a null suite");
+	EXCEPTION_ACTION_COND((this->name.empty() == true), throw, "Cannot create test with no name");
+	EXCEPTION_ACTION_COND((this->suite.expired() == true), throw, "Cannot create test " << this->name << " belonging to no suite");
+	EXCEPTION_ACTION_COND((this->getSuite() == nullptr), throw, "Cannot create test " << this->name << " as it belongs to a null suite");
 }
 
 void base_test::BaseTest::postProcessCreation() {
@@ -77,7 +76,7 @@ void base_test::BaseTest::postProcessCreation() {
 }
 
 bool base_test::BaseTest::setup() {
-	QINFO_PRINT(global_enums::qinfo_level_e::ZERO, baseTestTest,  "Setting up test " << QString::fromStdString(this->name));
+	LOG_INFO(logger::info_level_e::ZERO, baseTestTest,  "Setting up test " << this->name);
 	this->status = test_enums::test_status_e::NOT_RUN;
 	// Wait for window to become visible
 	while ((this->windowWrapper == nullptr) || (this->getWindow()->isVisible() == false)) {
@@ -102,7 +101,7 @@ void base_test::BaseTest::wrapup() {
 		QApplication::processEvents(QEventLoop::AllEvents);
 
 		const std::string command(":quit");
-		QINFO_PRINT(global_enums::qinfo_level_e::ZERO, baseTestTest, "Type " << command);
+		LOG_INFO(logger::info_level_e::ZERO, baseTestTest, "Type " << command);
 
 		QTest::keyClicks(windowCtrl.get(), QString::fromStdString(command));
 		QApplication::processEvents(QEventLoop::AllEvents);
@@ -118,13 +117,13 @@ void base_test::BaseTest::wrapup() {
 		this->status = test_enums::test_status_e::FAIL;
 	}
 
-	QINFO_PRINT(global_enums::qinfo_level_e::ZERO, baseTestTest,  "Wrapping up test " << QString::fromStdString(this->name) << " status " << this->status);
+	LOG_INFO(logger::info_level_e::ZERO, baseTestTest,  "Wrapping up test " << this->name << " status " << this->status);
 
 }
 
 void base_test::BaseTest::test() {
 
-	QINFO_PRINT(global_enums::qinfo_level_e::ZERO, baseTestTest,  "Start test " << QString::fromStdString(this->getName()));
+	LOG_INFO(logger::info_level_e::ZERO, baseTestTest,  "Start test " << this->getName());
 	this->setState(test_enums::test_state_e::SETTING_UP);
 	bool setupSuccessful = this->setup();
 	this->setState(test_enums::test_state_e::RUNNING);
@@ -134,7 +133,7 @@ void base_test::BaseTest::test() {
 	this->setState(test_enums::test_state_e::WRAPPING_UP);
 	this->wrapup();
 	this->setState(test_enums::test_state_e::FINISHED);
-	QINFO_PRINT(global_enums::qinfo_level_e::ZERO, baseTestTest,  "End test " << QString::fromStdString(this->getName()));
+	LOG_INFO(logger::info_level_e::ZERO, baseTestTest,  "End test " << this->getName());
 
 }
 
@@ -155,7 +154,7 @@ bool base_test::BaseTest::errorMatch() const {
 }
 
 const std::string & base_test::BaseTest::getName() const {
-	QEXCEPTION_ACTION_COND((this->name.empty() == true), throw, "Test cannot have an empty name");
+	EXCEPTION_ACTION_COND((this->name.empty() == true), throw, "Test cannot have an empty name");
 	return this->name;
 }
 
@@ -164,24 +163,24 @@ CONST_SETTER(base_test::BaseTest::setName, std::string &, this->name)
 const std::shared_ptr<base_factory::BaseFactory> & base_test::BaseTest::getFactory() const {
 	const std::shared_ptr<base_suite::BaseSuite> testSuite = this->getSuite();
 	const std::shared_ptr<base_factory::BaseFactory> & testFactory = testSuite->getFactory();
-	QEXCEPTION_ACTION_COND((testFactory == nullptr), throw, "Factory is a nullptr - test " << QString::fromStdString(this->name) << " must have a factory linked to it");
+	EXCEPTION_ACTION_COND((testFactory == nullptr), throw, "Factory is a nullptr - test " << this->name << " must have a factory linked to it");
 
 	return testFactory;
 }
 
 const std::shared_ptr<base_suite::BaseSuite> base_test::BaseTest::getSuite() const {
-	QEXCEPTION_ACTION_COND((this->suite.expired() == true), throw,  "Unable to get test suite bar for test " << QString::fromStdString(this->name) << " as it has already expired");
+	EXCEPTION_ACTION_COND((this->suite.expired() == true), throw,  "Unable to get test suite bar for test " << this->name << " as it has already expired");
 	const std::shared_ptr<base_suite::BaseSuite> testSuite = this->suite.lock();
-	QEXCEPTION_ACTION_COND((testSuite == nullptr), throw, "Test suite is a nullptr - test " << QString::fromStdString(this->name) << " must belong to suite");
+	EXCEPTION_ACTION_COND((testSuite == nullptr), throw, "Test suite is a nullptr - test " << this->name << " must belong to suite");
 
 	return testSuite;
 }
 
 const std::unique_ptr<main_window::MainWindow> & base_test::BaseTest::getWindow() const {
 
-	QEXCEPTION_ACTION_COND((this->windowWrapper == nullptr), throw, "Window wrapper is a nullptr - test " << QString::fromStdString(this->name) << " must have a non null pointer to a window wrapper");
+	EXCEPTION_ACTION_COND((this->windowWrapper == nullptr), throw, "Window wrapper is a nullptr - test " << this->name << " must have a non null pointer to a window wrapper");
 	const std::unique_ptr<main_window::MainWindow> & window = this->windowWrapper->getWindow();
-	QEXCEPTION_ACTION_COND((window == nullptr), throw, "Window is a nullptr - test " << QString::fromStdString(this->name) << " must have a non null pointer to a window");
+	EXCEPTION_ACTION_COND((window == nullptr), throw, "Window is a nullptr - test " << this->name << " must have a non null pointer to a window");
 	return window;
 }
 
@@ -266,12 +265,12 @@ bool base_test::BaseTest::searchError(const base_test::BaseTest::test_error_cont
 void base_test::BaseTest::run() {
 
 	// Check that everything is ok before kicking off the test
-	QEXCEPTION_ACTION_COND(((this->getSuite() == nullptr) || (this->suite.expired() == true)), throw, "Cannot run test " << QString::fromStdString(this->name) << " belonging to no suite");
-	QEXCEPTION_ACTION_COND((this->getSuite()->findTest(this->getName()) == nullptr), throw, "Unable to find test " << QString::fromStdString(this->name) << " in suite " << QString::fromStdString(this->getSuite()->getName()));
+	EXCEPTION_ACTION_COND(((this->getSuite() == nullptr) || (this->suite.expired() == true)), throw, "Cannot run test " << this->name << " belonging to no suite");
+	EXCEPTION_ACTION_COND((this->getSuite()->findTest(this->getName()) == nullptr), throw, "Unable to find test " << this->name << " in suite " << this->getSuite()->getName());
 	const test_enums::test_state_e expectedState = test_enums::test_state_e::CREATED;
-	QEXCEPTION_ACTION_COND((this->getState() != expectedState), throw, "Test " << QString::fromStdString(this->name) << " is expected to be in state " << expectedState << " whereas it is in state " << this->getState());
+	EXCEPTION_ACTION_COND((this->getState() != expectedState), throw, "Test " << this->name << " is expected to be in state " << expectedState << " whereas it is in state " << this->getState());
 
-	QINFO_PRINT(global_enums::qinfo_level_e::ZERO, baseTestOverall,  "Running test " << QString::fromStdString(this->name) << " in suite " << QString::fromStdString(this->getSuite()->getName()));
+	LOG_INFO(logger::info_level_e::ZERO, baseTestOverall,  "Running test " << this->name << " in suite " << this->getSuite()->getName());
 
 	const std::shared_ptr<base_factory::BaseFactory> & factory = this->getFactory();
 	QApplication app(factory->getArgc(), factory->getArgv());

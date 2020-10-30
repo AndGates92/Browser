@@ -21,11 +21,6 @@
  *  @{
  */
 
-Q_DECLARE_LOGGING_CATEGORY(openButtonWindowOverall)
-Q_DECLARE_LOGGING_CATEGORY(openButtonWindowOpen)
-Q_DECLARE_LOGGING_CATEGORY(openButtonWindowBrowse)
-Q_DECLARE_LOGGING_CATEGORY(openButtonWindowCancel)
-
 namespace open_button_window {
 
 	/**

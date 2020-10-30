@@ -2,18 +2,47 @@
 #define TYPE_PRINT_MACROS_H
 /**
  * @copyright
- * @file logging_macros.h
+ * @file type_print_macros.h
  * @author Andrea Gianarda
  * @date 17th of September 2019
  * @brief Type Print Macros file
 */
 
+#include <QtCore/QtDebug>
 #include "global_qfunctions.h"
 
 /** @defgroup TypePrintMacrosGroup Type Print Macros Doxygen Group
  *  Type Print Macros
  *  @{
  */
+
+/**
+ * @brief STRING_OVERLOAD_PRINT_OP(TYPE)
+ *
+ * \param TYPE : type to have operator << overloaded for
+ *
+ * Creates function overloading operator << for a type Type.
+ */
+#define STRING_OVERLOAD_PRINT_OP(TYPE) \
+	std::string & operator<< (std::string & str, const TYPE & value) { \
+		str = str + value; \
+		return str; \
+	}
+
+/**
+ * @brief OSTREAM_OVERLOAD_PRINT_OP(TYPE)
+ *
+ * \param TYPE : type to have operator << overloaded for
+ *
+ * Creates function overloading operator << for a type Type.
+ */
+#define OSTREAM_OVERLOAD_PRINT_OP(TYPE) \
+	std::ostream & operator<< (std::ostream & os, const TYPE & value) { \
+		std::string str = std::string(); \
+		str << value; \
+		os << str; \
+		return os; \
+	}
 
 /**
  * @brief QDEBUG_OVERLOAD_PRINT_OP(TYPE)
@@ -114,10 +143,12 @@
 #define OVERLOAD_OPERATORS_CUSTOM_TYPE(TYPE) \
 	STRING_OVERLOAD_PLUS_OP(TYPE) \
 	CHAR_OVERLOAD_PLUS_OP(TYPE) \
+	QSTRING_OVERLOAD_PLUS_OP(TYPE) \
+	OSTREAM_OVERLOAD_PRINT_OP(TYPE) \
+	STRING_OVERLOAD_PRINT_OP(TYPE) \
 	QDEBUG_OVERLOAD_PRINT_OP(TYPE) \
 	QSTRING_OVERLOAD_PRINT_OP(TYPE) \
-	QTEXTSTREAM_OVERLOAD_PRINT_OP(TYPE) \
-	QSTRING_OVERLOAD_PLUS_OP(TYPE)
+	QTEXTSTREAM_OVERLOAD_PRINT_OP(TYPE)
 
 /**
  * @brief OVERLOAD_OPERATORS_CUSTOM_TYPE_FUNCTION_PROTOTYPE(TYPE, ALIAS)
@@ -132,6 +163,8 @@
 	QDebug & operator<< (QDebug & os, const ALIAS & value); \
 	QTextStream & operator<< (QTextStream & str, const ALIAS & value); \
 	QString & operator<< (QString & str, const ALIAS & value); \
+	std::ostream & operator<< (std::ostream & str, const ALIAS & value); \
+	std::string & operator<< (std::string & str, const ALIAS & value); \
 	const QString operator+ (const QString & str, const ALIAS & value); \
 	const std::string operator+ (const std::string & str, const ALIAS & value); \
 	const std::string operator+ (const char * cStr, const ALIAS & value);
@@ -152,7 +185,7 @@
 		LIST.cbegin(), \
 		LIST.cend(), \
 		[&](const TYPE & el) { \
-			QINFO_PRINT(VERBOSITY, CATEGORY,  "[ List " << NAME << " ] Element " << el.qprint()); \
+			LOG_INFO(VERBOSITY, CATEGORY,  "[ List " << NAME << " ] Element " << el.qprint()); \
 		} \
 	);
 

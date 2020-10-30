@@ -6,21 +6,18 @@
  * @brief Move tab functions
  */
 
-// Qt libraries
-#include <QtCore/QLoggingCategory>
-
 #include <QtTest/QTest>
 #include <QtGui/QKeySequence>
 
 #include "global_enums.h"
-#include "logging_macros.h"
+#include "macros.h"
 #include "qt_operator.h"
 #include "stl_helper.h"
 #include "move_tab.h"
 #include "base_suite.h"
 
-Q_LOGGING_CATEGORY(moveTabOverall, "moveTab.overall", MSG_TYPE_LEVEL)
-Q_LOGGING_CATEGORY(moveTabTest, "moveTab.test", MSG_TYPE_LEVEL)
+LOGGING_CONTEXT(moveTabOverall, moveTab.overall, TYPE_LEVEL, INFO_VERBOSITY)
+LOGGING_CONTEXT(moveTabTest, moveTab.test, TYPE_LEVEL, INFO_VERBOSITY)
 
 namespace move_tab {
 
@@ -49,18 +46,16 @@ namespace move_tab {
 }
 
 move_tab::MoveTab::MoveTab(const std::shared_ptr<base_suite::BaseSuite> & testSuite, const bool useShortcuts) : command_test::CommandTest(testSuite, "Move tab", move_tab::jsonFileFullPath, useShortcuts) {
-
-	QINFO_PRINT(global_enums::qinfo_level_e::ZERO, moveTabOverall,  "Creating test " << QString::fromStdString(this->getName()) << " in suite " << QString::fromStdString(this->getSuite()->getName()));
-
+	LOG_INFO(logger::info_level_e::ZERO, moveTabOverall,  "Creating test " << this->getName() << " in suite " << this->getSuite()->getName());
 }
 
 move_tab::MoveTab::~MoveTab() {
-	QINFO_PRINT(global_enums::qinfo_level_e::ZERO, moveTabOverall,  "Test " << QString::fromStdString(this->getName()) << " destructor");
+	LOG_INFO(logger::info_level_e::ZERO, moveTabOverall,  "Test " << this->getName() << " destructor");
 }
 
 void move_tab::MoveTab::testBody() {
 
-	QINFO_PRINT(global_enums::qinfo_level_e::ZERO, moveTabTest,  "Starting test " << QString::fromStdString(this->getName()) << " in suite " << QString::fromStdString(this->getSuite()->getName()));
+	LOG_INFO(logger::info_level_e::ZERO, moveTabTest,  "Starting test " << this->getName() << " in suite " << this->getSuite()->getName());
 
 	const std::shared_ptr<main_window_core::MainWindowCore> & windowCore = this->windowWrapper->getWindowCore();
 
@@ -69,12 +64,12 @@ void move_tab::MoveTab::testBody() {
 
 	// Create 2 tabs
 	const std::string website0("website0.com");
-	QINFO_PRINT(global_enums::qinfo_level_e::ZERO, moveTabTest, "Open new tab with website " << website0);
+	LOG_INFO(logger::info_level_e::ZERO, moveTabTest, "Open new tab with website " << website0);
 	this->openNewTab(website0);
 	const std::string url0 = https + www + website0;
 
 	const std::string website1("website1.com");
-	QINFO_PRINT(global_enums::qinfo_level_e::ZERO, moveTabTest, "Open new tab with website " << website1);
+	LOG_INFO(logger::info_level_e::ZERO, moveTabTest, "Open new tab with website " << website1);
 	this->openNewTab(website1);
 	const std::string url1 = https + www + website1;
 

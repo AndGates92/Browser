@@ -11,11 +11,6 @@
 #include <memory>
 
 // Qt libraries
-// Required by qInfo
-#include <QtCore/QtDebug>
-
-#include <QtCore/QLoggingCategory>
-
 #include <QtWebEngineWidgets/QWebEngineView>
 
 #include "global_enums.h"
@@ -26,8 +21,6 @@
  *  Web Engine View functions and classes
  *  @{
  */
-
-Q_DECLARE_LOGGING_CATEGORY(webEngineViewOverall)
 
 namespace tab {
 	class Tab;

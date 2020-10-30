@@ -9,7 +9,7 @@
  * @brief Command Menu Model file
 */
 
-#include <QtCore/QLoggingCategory>
+// Qt libraries
 #include <QtCore/QAbstractItemModel>
 #include <QtCore/QModelIndex>
 #include <QtCore/QVariant>
@@ -20,9 +20,6 @@
  *  Command Menu Model functions and classes
  *  @{
  */
-
-Q_DECLARE_LOGGING_CATEGORY(commandMenuModelOverall)
-Q_DECLARE_LOGGING_CATEGORY(commandMenuModelSettings)
 
 namespace command_menu_model {
 	/**

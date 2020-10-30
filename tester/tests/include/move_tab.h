@@ -7,9 +7,6 @@
  * @date 14th October 2020
  * @brief Move tab header file
  */
-// Qt libraries
-// Required by qInfo
-#include <QtCore/QtDebug>
 
 #include "command_test.h"
 
@@ -17,9 +14,6 @@
  *  Move tab functions and classes
  *  @{
  */
-
-Q_DECLARE_LOGGING_CATEGORY(moveTabOverall)
-Q_DECLARE_LOGGING_CATEGORY(moveTabTest)
 
 namespace move_tab {
 

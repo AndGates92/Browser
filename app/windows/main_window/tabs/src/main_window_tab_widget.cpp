@@ -6,29 +6,24 @@
  * @brief Main Window Tab Widget functions
  */
 
-// Qt libraries
-#include <QtCore/QtGlobal>
-
-// Required by qInfo
-#include <QtCore/QtDebug>
-
-#include "main_window_web_engine_page.h"
-#include "main_window_tab_widget.h"
+#include "cpp_operator.h"
 #include "main_window_shared_functions.h"
 #include "main_window_constants.h"
 #include "type_print_macros.h"
 #include "exception_macros.h"
+#include "main_window_web_engine_page.h"
+#include "main_window_tab_widget.h"
 
 // Categories
-Q_LOGGING_CATEGORY(mainWindowTabWidgetOverall, "mainWindowTabWidget.overall", MSG_TYPE_LEVEL)
-Q_LOGGING_CATEGORY(mainWindowTabWidgetTabs, "mainWindowTabWidget.tabs", MSG_TYPE_LEVEL)
+LOGGING_CONTEXT(mainWindowTabWidgetOverall, mainWindowTabWidget.overall, TYPE_LEVEL, INFO_VERBOSITY)
+LOGGING_CONTEXT(mainWindowTabWidgetTabs, mainWindowTabWidget.tabs, TYPE_LEVEL, INFO_VERBOSITY)
 
 main_window_tab_widget::MainWindowTabWidget::MainWindowTabWidget(QWidget * parent): tab_widget::TabWidget(parent) {
-	QINFO_PRINT(global_enums::qinfo_level_e::ZERO, mainWindowTabWidgetOverall,  "Main Window Tab widget constructor");
+	LOG_INFO(logger::info_level_e::ZERO, mainWindowTabWidgetOverall,  "Main Window Tab widget constructor");
 }
 
 main_window_tab_widget::MainWindowTabWidget::~MainWindowTabWidget() {
-	QINFO_PRINT(global_enums::qinfo_level_e::ZERO, mainWindowTabWidgetOverall,  "Main Window Tab widget destructor");
+	LOG_INFO(logger::info_level_e::ZERO, mainWindowTabWidgetOverall,  "Main Window Tab widget destructor");
 
 	const int idx = 0;
 
@@ -39,12 +34,12 @@ main_window_tab_widget::MainWindowTabWidget::~MainWindowTabWidget() {
 
 		Q_ASSERT_X(((type == main_window_shared_types::page_type_e::TEXT) || (type == main_window_shared_types::page_type_e::WEB_CONTENT)), "Invalid tab type", "Unable to delete provided tab as type is not recognized");
 		this->removeTab(idx);
-		QINFO_PRINT(global_enums::qinfo_level_e::ZERO, mainWindowTabWidgetOverall,  "Removing tab type " << type);
+		LOG_INFO(logger::info_level_e::ZERO, mainWindowTabWidgetOverall,  "Removing tab type " << type);
 	}
 }
 
 void main_window_tab_widget::MainWindowTabWidget::removeTab(const int & index) {
-	QINFO_PRINT(global_enums::qinfo_level_e::ZERO, mainWindowTabWidgetTabs,  "Close tab " << index);
+	LOG_INFO(logger::info_level_e::ZERO, mainWindowTabWidgetTabs,  "Close tab " << index);
 	this->disconnectTab(this->currentIndex());
 	tab_widget::TabWidget::removeTab(index);
 	const int currIndex = this->currentIndex();
@@ -54,7 +49,7 @@ void main_window_tab_widget::MainWindowTabWidget::removeTab(const int & index) {
 
 void main_window_tab_widget::MainWindowTabWidget::moveTab(const int & indexFrom, const int & indexTo) {
 	if (indexFrom != indexTo) {
-		QINFO_PRINT(global_enums::qinfo_level_e::ZERO, mainWindowTabWidgetTabs, "Move tab from " << indexFrom << " to " << indexTo);
+		LOG_INFO(logger::info_level_e::ZERO, mainWindowTabWidgetTabs, "Move tab from " << indexFrom << " to " << indexTo);
 		this->disconnectTab(this->currentIndex());
 		this->bar->moveTab(indexFrom, indexTo);
 		this->connectTab(this->currentIndex());
@@ -88,7 +83,7 @@ void main_window_tab_widget::MainWindowTabWidget::disconnectTab(const int & inde
 
 			emit this->tabNearlyDisconnected(index);
 		} catch (const std::bad_cast & badCastE) {
-			QEXCEPTION_ACTION(throw, badCastE.what());
+			EXCEPTION_ACTION(throw, badCastE.what());
 		}
 	}
 }
@@ -130,7 +125,7 @@ std::shared_ptr<main_window_web_engine_page::MainWindowWebEnginePage> main_windo
 
 	const int tabCount = this->count();
 
-	QEXCEPTION_ACTION_COND(((index < 0) || (index >= tabCount)), throw,  "Unable to retrieve tab type as index must be larger or equal to 0 and smaller than the number of tabs " << tabCount << ". Got " << index << ".");
+	EXCEPTION_ACTION_COND(((index < 0) || (index >= tabCount)), throw,  "Unable to retrieve tab type as index must be larger or equal to 0 and smaller than the number of tabs " << tabCount << ". Got " << index << ".");
 
 	std::shared_ptr<main_window_web_engine_page::MainWindowWebEnginePage> page = nullptr;
 
@@ -146,7 +141,7 @@ const std::shared_ptr<main_window_page_data::MainWindowPageData> main_window_tab
 
 	const int tabCount = this->count();
 
-	QEXCEPTION_ACTION_COND(((index < 0) || (index >= tabCount)), throw,  "Unable to retrieve tab type as index must be larger or equal to 0 and smaller than the number of tabs " << tabCount << ". Got " << index << ".");
+	EXCEPTION_ACTION_COND(((index < 0) || (index >= tabCount)), throw,  "Unable to retrieve tab type as index must be larger or equal to 0 and smaller than the number of tabs " << tabCount << ". Got " << index << ".");
 
 	std::shared_ptr<main_window_page_data::MainWindowPageData> pageData = nullptr;
 	const std::shared_ptr<main_window_web_engine_page::MainWindowWebEnginePage> page = this->getPage(index);
@@ -190,8 +185,8 @@ void main_window_tab_widget::MainWindowTabWidget::changePageData(const int & ind
 
 	const std::shared_ptr<main_window_page_data::MainWindowPageData> currentData = this->getPageData(index);
 	std::shared_ptr<main_window_page_data::MainWindowPageData> newData = main_window_page_data::MainWindowPageData::makePageData(type, source.toStdString(), data);
-	QINFO_PRINT(global_enums::qinfo_level_e::ZERO, mainWindowTabWidgetTabs, "Current data of tab at index " << index << " is " << *(currentData.get()));
-	QINFO_PRINT(global_enums::qinfo_level_e::ZERO, mainWindowTabWidgetTabs, "New data of tab at index " << index << " is " << *(newData.get()));
+	LOG_INFO(logger::info_level_e::ZERO, mainWindowTabWidgetTabs, "Current data of tab at index " << index << " is " << *(currentData.get()));
+	LOG_INFO(logger::info_level_e::ZERO, mainWindowTabWidgetTabs, "New data of tab at index " << index << " is " << *(newData.get()));
 
 	if (currentData != newData) {
 		this->setPageData(index, newData);
@@ -207,7 +202,7 @@ int main_window_tab_widget::MainWindowTabWidget::insertTab(const int & index, co
 	std::shared_ptr<main_window_tab::MainWindowTab> tab = std::make_shared<main_window_tab::MainWindowTab>(this, search);
 	tab->configure(this->tabBar(), type, source, data);
 
-	QINFO_PRINT(global_enums::qinfo_level_e::ZERO, mainWindowTabWidgetTabs,  "Insert tab of type " << type << " with source " << source << " at position " << index);
+	LOG_INFO(logger::info_level_e::ZERO, mainWindowTabWidgetTabs,  "Insert tab of type " << type << " with source " << source << " at position " << index);
 
 	const QString label = QString();
 	const int currIndex = tab_widget::TabWidget::insertTab(index, tab, label, icon);
@@ -216,7 +211,6 @@ int main_window_tab_widget::MainWindowTabWidget::insertTab(const int & index, co
 
 	// Move to the newly opened tab
 		this->setCurrentIndex(currIndex);
-
 
 	return currIndex;
 }
@@ -245,11 +239,10 @@ void main_window_tab_widget::MainWindowTabWidget::scrollTab(const int & index, c
 			tab->scrollRight();
 			break;
 		default:
-			QEXCEPTION_ACTION(throw, "Unable to scroll in direction " << direction);
+			EXCEPTION_ACTION(throw, "Unable to scroll in direction " << direction);
 			break;
 	}
 }
-
 
 void main_window_tab_widget::MainWindowTabWidget::goToHistoryItem(const int & index, const main_window_shared_types::navigation_type_e & direction) {
 	const std::shared_ptr<main_window_tab::MainWindowTab> tab = this->widget(index, true);
@@ -257,7 +250,7 @@ void main_window_tab_widget::MainWindowTabWidget::goToHistoryItem(const int & in
 	switch (direction) {
 		case main_window_shared_types::navigation_type_e::UNDEFINED:
 		{
-			QEXCEPTION_ACTION(throw, "Unable to go to history item for direction " << direction);
+			EXCEPTION_ACTION(throw, "Unable to go to history item for direction " << direction);
 			break;
 		}
 		case main_window_shared_types::navigation_type_e::NEXT:
@@ -267,7 +260,7 @@ void main_window_tab_widget::MainWindowTabWidget::goToHistoryItem(const int & in
 			tab->historyPrev();
 			break;
 		default:
-			QEXCEPTION_ACTION(throw,  "Undefined direction of history item " << direction);
+			EXCEPTION_ACTION(throw,  "Undefined direction of history item " << direction);
 			break;
 	}
 }
@@ -286,7 +279,7 @@ QString main_window_tab_widget::MainWindowTabWidget::createSource(const main_win
 			source = userInput;
 			break;
 		default:
-			QEXCEPTION_ACTION(throw, "Unable to create source string for tab from user input " << userInput << " because tab type " << type << " is not recognised");
+			EXCEPTION_ACTION(throw, "Unable to create source string for tab from user input " << userInput << " because tab type " << type << " is not recognised");
 			break;
 	}
 
@@ -307,7 +300,7 @@ QString main_window_tab_widget::MainWindowTabWidget::createLabel(const main_wind
 			label = QString(main_window_constants::filePrefix) + userInput;
 			break;
 		default:
-			QEXCEPTION_ACTION(throw, "Unable to create label for tab from user input " << userInput << " because tab type " << type << " is not recognised");
+			EXCEPTION_ACTION(throw, "Unable to create label for tab from user input " << userInput << " because tab type " << type << " is not recognised");
 			break;
 	}
 
@@ -393,7 +386,7 @@ void main_window_tab_widget::MainWindowTabWidget::setTabTitle(const int & index,
 }
 
 void main_window_tab_widget::MainWindowTabWidget::openFileInCurrentTab(const QString & filepath, const void * data) {
-	QINFO_PRINT(global_enums::qinfo_level_e::ZERO, mainWindowTabWidgetTabs,  "Print content of file " << filepath << " in tab");
+	LOG_INFO(logger::info_level_e::ZERO, mainWindowTabWidgetTabs,  "Print content of file " << filepath << " in tab");
 
 	const main_window_shared_types::page_type_e desiredTabType = main_window_shared_types::page_type_e::TEXT;
 
@@ -409,12 +402,12 @@ void main_window_tab_widget::MainWindowTabWidget::openFileInCurrentTab(const QSt
 	if (tabCount == 0) {
 		index = this->addTab(desiredTabType, data);
 		tabCount = this->count();
-		QEXCEPTION_ACTION_COND((index >= tabCount), throw,  "Current tab index " << index << " must be larger than the number of tabs " << tabCount);
+		EXCEPTION_ACTION_COND((index >= tabCount), throw,  "Current tab index " << index << " must be larger than the number of tabs " << tabCount);
 	}
 
 	this->changeTabContent(index, desiredTabType, filepath, data);
 
-	QINFO_PRINT(global_enums::qinfo_level_e::ZERO, mainWindowTabWidgetTabs, "Current tab index is " << index << " and the tab widget has " << tabCount << " tabs");
+	LOG_INFO(logger::info_level_e::ZERO, mainWindowTabWidgetTabs, "Current tab index is " << index << " and the tab widget has " << tabCount << " tabs");
 
 	// Enable events after updating tabs
 	this->setUpdatesEnabled(true);
@@ -440,10 +433,10 @@ QString main_window_tab_widget::MainWindowTabWidget::searchToUrl(const QString &
 	} else if (main_window_shared_functions::isText(search) == true) {
 		url = global_constants::https + global_constants::www + main_window_constants::defaultSearchEngine.arg(search);
 	} else {
-		QEXCEPTION_ACTION(throw, "Unable to associate a  page type to search " << search);
+		EXCEPTION_ACTION(throw, "Unable to associate a  page type to search " << search);
 	}
 
-	QINFO_PRINT(global_enums::qinfo_level_e::ZERO, mainWindowTabWidgetTabs, "Converting search " << search << " to the following URL " << url);
+	LOG_INFO(logger::info_level_e::ZERO, mainWindowTabWidgetTabs, "Converting search " << search << " to the following URL " << url);
 
 	return url;
 }

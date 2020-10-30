@@ -6,43 +6,37 @@
  * @brief Main Window JSON Data functions
  */
 
-// Qt libraries
-#include <QtCore/QtGlobal>
-
-// Required by qInfo
-#include <QtCore/QtDebug>
-
 #include "qt_operator.h"
 #include "main_window_json_data.h"
 #include "global_constants.h"
-#include "logging_macros.h"
+#include "macros.h"
 #include "function_macros.h"
 #include "exception_macros.h"
 
 // Categories
-Q_LOGGING_CATEGORY(mainWindowJsonDataOverall, "mainWindowJsonData.overall", MSG_TYPE_LEVEL)
+LOGGING_CONTEXT(mainWindowJsonDataOverall, mainWindowJsonData.overall, TYPE_LEVEL, INFO_VERBOSITY)
 
 std::shared_ptr<main_window_json_data::MainWindowJsonData> main_window_json_data::MainWindowJsonData::makeJsonData(const std::string & jsonKey, const std::string & nameKeyValue, const main_window_shared_types::state_e & stateKeyValue, const int & shortcutKeyValue, const std::string & longCmdKeyValue, const std::string & helpKeyValue) {
 	std::shared_ptr<main_window_json_data::MainWindowJsonData> newData = std::make_shared<main_window_json_data::MainWindowJsonData>(jsonKey, nameKeyValue, stateKeyValue, shortcutKeyValue, longCmdKeyValue, helpKeyValue);
-	QINFO_PRINT(global_enums::qinfo_level_e::ZERO, mainWindowJsonDataOverall,  "Creating JSON data: " << *newData);
+	LOG_INFO(logger::info_level_e::ZERO, mainWindowJsonDataOverall,  "Creating JSON data: " << *newData);
 	return newData;
 }
 
 main_window_json_data::MainWindowJsonData::MainWindowJsonData(const std::string & jsonKey, const std::string & nameKeyValue, const main_window_shared_types::state_e & stateKeyValue, const int & shortcutKeyValue, const std::string & longCmdKeyValue, const std::string & helpKeyValue) : json_data::JsonData(main_window_json_data::MainWindowJsonData::parameter_t(main_window_json_data::keyNames.cbegin(), main_window_json_data::keyNames.cend())), key(jsonKey), name(nameKeyValue), state(stateKeyValue), shortcut(shortcutKeyValue), longCmd(longCmdKeyValue), help(helpKeyValue) {
 
-	QINFO_PRINT(global_enums::qinfo_level_e::ZERO, mainWindowJsonDataOverall,  "Main window JSON Data constructor. Data " << *this);
+	LOG_INFO(logger::info_level_e::ZERO, mainWindowJsonDataOverall,  "Main window JSON Data constructor. Data " << *this);
 
 }
 
 main_window_json_data::MainWindowJsonData::MainWindowJsonData(const main_window_json_data::MainWindowJsonData & rhs) : json_data::JsonData(rhs), key(rhs.key), name(rhs.name), state(rhs.state), shortcut(rhs.shortcut), longCmd(rhs.longCmd), help(rhs.help) {
 
-	QINFO_PRINT(global_enums::qinfo_level_e::ZERO, mainWindowJsonDataOverall,  "Copy constructor main window JSON data");
+	LOG_INFO(logger::info_level_e::ZERO, mainWindowJsonDataOverall,  "Copy constructor main window JSON data");
 
 }
 
 main_window_json_data::MainWindowJsonData & main_window_json_data::MainWindowJsonData::operator=(const main_window_json_data::MainWindowJsonData & rhs) {
 
-	QINFO_PRINT(global_enums::qinfo_level_e::ZERO, mainWindowJsonDataOverall,  "Copy assignment operator for main window JSON data");
+	LOG_INFO(logger::info_level_e::ZERO, mainWindowJsonDataOverall,  "Copy assignment operator for main window JSON data");
 
 	// If rhs points to the same address as this, then return this
 	if (&rhs == this) {
@@ -76,12 +70,12 @@ main_window_json_data::MainWindowJsonData & main_window_json_data::MainWindowJso
 
 main_window_json_data::MainWindowJsonData::MainWindowJsonData(main_window_json_data::MainWindowJsonData && rhs) : json_data::JsonData(std::move(rhs)), key(std::exchange(rhs.key, std::string())), name(std::exchange(rhs.name, std::string())), state(std::exchange(rhs.state, main_window_shared_types::state_e::IDLE)), shortcut(std::exchange(rhs.shortcut, (int)Qt::Key_unknown)), longCmd(std::exchange(rhs.longCmd, std::string())), help(std::exchange(rhs.help, std::string())) {
 
-	QINFO_PRINT(global_enums::qinfo_level_e::ZERO, mainWindowJsonDataOverall,  "Move constructor main window JSON data");
+	LOG_INFO(logger::info_level_e::ZERO, mainWindowJsonDataOverall,  "Move constructor main window JSON data");
 }
 
 main_window_json_data::MainWindowJsonData & main_window_json_data::MainWindowJsonData::operator=(main_window_json_data::MainWindowJsonData && rhs) {
 
-	QINFO_PRINT(global_enums::qinfo_level_e::ZERO, mainWindowJsonDataOverall,  "Move assignment operator for main window JSON data");
+	LOG_INFO(logger::info_level_e::ZERO, mainWindowJsonDataOverall,  "Move assignment operator for main window JSON data");
 
 	// If rhs points to the same address as this, then return this
 	if (&rhs != this) {
@@ -99,7 +93,7 @@ main_window_json_data::MainWindowJsonData & main_window_json_data::MainWindowJso
 
 main_window_json_data::MainWindowJsonData::~MainWindowJsonData() {
 
-	QINFO_PRINT(global_enums::qinfo_level_e::ZERO, mainWindowJsonDataOverall,  "JSON Data structure destructor. Data " << *this);
+	LOG_INFO(logger::info_level_e::ZERO, mainWindowJsonDataOverall,  "JSON Data structure destructor. Data " << *this);
 
 }
 
@@ -131,7 +125,7 @@ CONST_GETTER(main_window_json_data::MainWindowJsonData::getLongCmd, std::string 
 CONST_GETTER(main_window_json_data::MainWindowJsonData::getHelp, std::string &, this->help)
 
 void main_window_json_data::MainWindowJsonData::setValueFromMemberName(const std::string & name, const void * value) {
-	QEXCEPTION_ACTION_COND((this->getParameters().find(name) == this->getParameters().end()), throw, "Parameter " << name << " has not been found among the action parameters. In order to add it, please call void main_window_json_data::MainWindowJsonData::addParameter(const std::string & name)");
+	EXCEPTION_ACTION_COND((this->getParameters().find(name) == this->getParameters().end()), throw, "Parameter " << name << " has not been found among the action parameters. In order to add it, please call void main_window_json_data::MainWindowJsonData::addParameter(const std::string & name)");
 
 	if (name.compare("Key") == 0) {
 		const std::string * const strPtr(static_cast<const std::string *>(value));
@@ -152,12 +146,12 @@ void main_window_json_data::MainWindowJsonData::setValueFromMemberName(const std
 		const std::string * const strPtr(static_cast<const std::string *>(value));
 		this->help = *strPtr;
 	} else {
-		QEXCEPTION_ACTION(throw, "Cannot find class member associated with parameter " << name << ".");
+		EXCEPTION_ACTION(throw, "Cannot find class member associated with parameter " << name << ".");
 	}
 }
 
 const void * main_window_json_data::MainWindowJsonData::getValueFromMemberName(const std::string & name) const {
-	QEXCEPTION_ACTION_COND((this->getParameters().find(name) == this->getParameters().cend()), throw, "Parameter " << name << " has not been found among the action parameters. In order to add it, please call void main_window_json_data::MainWindowJsonData::addParameter(const std::string & name)");
+	EXCEPTION_ACTION_COND((this->getParameters().find(name) == this->getParameters().cend()), throw, "Parameter " << name << " has not been found among the action parameters. In order to add it, please call void main_window_json_data::MainWindowJsonData::addParameter(const std::string & name)");
 
 	const void * value = nullptr;
 
@@ -174,14 +168,14 @@ const void * main_window_json_data::MainWindowJsonData::getValueFromMemberName(c
 	} else if (name.compare("Help") == 0) {
 		value = &(this->help);
 	} else {
-		QEXCEPTION_ACTION(throw, "Cannot find class member associated with parameter " << name << ".");
+		EXCEPTION_ACTION(throw, "Cannot find class member associated with parameter " << name << ".");
 	}
 
 	return value;
 }
 
 bool main_window_json_data::MainWindowJsonData::isSameFieldValue(const std::string & name, const void * value) const {
-	QEXCEPTION_ACTION_COND((this->getParameters().find(name) == this->getParameters().cend()), throw, "Parameter " << name << " has not been found among the action parameters. In order to add it, please call void main_window_json_data::MainWindowJsonData::addParameter(const std::string & name)");
+	EXCEPTION_ACTION_COND((this->getParameters().find(name) == this->getParameters().cend()), throw, "Parameter " << name << " has not been found among the action parameters. In order to add it, please call void main_window_json_data::MainWindowJsonData::addParameter(const std::string & name)");
 
 	bool isSame = false;
 
@@ -204,7 +198,7 @@ bool main_window_json_data::MainWindowJsonData::isSameFieldValue(const std::stri
 		const std::string * const strPtr(static_cast<const std::string *>(value));
 		isSame = (this->help.compare(*strPtr) == 0);
 	} else {
-		QEXCEPTION_ACTION(throw, "Cannot find class member associated with parameter " << name << ".");
+		EXCEPTION_ACTION(throw, "Cannot find class member associated with parameter " << name << ".");
 	}
 
 	return isSame;

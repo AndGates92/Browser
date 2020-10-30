@@ -7,18 +7,17 @@
  */
 
 // Qt libraries
-#include <QtCore/QLoggingCategory>
 #include <QtGui/QKeyEvent>
 
-#include "logging_macros.h"
+#include "macros.h"
 #include "function_macros.h"
 #include "web_engine_view.h"
 
 // Categories
-Q_LOGGING_CATEGORY(webEngineViewOverall, "webEngineView.overall", MSG_TYPE_LEVEL)
+LOGGING_CONTEXT(webEngineViewOverall, webEngineView.overall, TYPE_LEVEL, INFO_VERBOSITY)
 
 web_engine_view::WebEngineView::WebEngineView(QWidget * parent): QWebEngineView(parent) {
-	QINFO_PRINT(global_enums::qinfo_level_e::ZERO, webEngineViewOverall,  "Web engine view constructor");
+	LOG_INFO(logger::info_level_e::ZERO, webEngineViewOverall,  "Web engine view constructor");
 
 	// Use deleteLater to schedule a destruction event in the event loop
 	std::shared_ptr<web_engine_page::WebEnginePage> newPage = std::shared_ptr<web_engine_page::WebEnginePage>(new web_engine_page::WebEnginePage(parent, web_engine_profile::WebEngineProfile::defaultProfile()), [] (web_engine_page::WebEnginePage * p) {
@@ -28,7 +27,7 @@ web_engine_view::WebEngineView::WebEngineView(QWidget * parent): QWebEngineView(
 }
 
 web_engine_view::WebEngineView::~WebEngineView() {
-	QINFO_PRINT(global_enums::qinfo_level_e::ZERO, webEngineViewOverall,  "Web engine view destructor");
+	LOG_INFO(logger::info_level_e::ZERO, webEngineViewOverall,  "Web engine view destructor");
 }
 
 void web_engine_view::WebEngineView::updatePage(const std::shared_ptr<web_engine_page::WebEnginePage> & newPage) {

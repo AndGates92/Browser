@@ -10,15 +10,15 @@
 #include <QtCore/QLoggingCategory>
 #include <QtGui/QKeyEvent>
 
-#include "logging_macros.h"
+#include "macros.h"
 #include "function_macros.h"
 #include "main_window_tab.h"
 
 // Categories
-Q_LOGGING_CATEGORY(mainWindowTabOverall, "mainWindowTab.overall", MSG_TYPE_LEVEL)
+LOGGING_CONTEXT(mainWindowTabOverall, mainWindowTab.overall, TYPE_LEVEL, INFO_VERBOSITY)
 
 main_window_tab::MainWindowTab::MainWindowTab(QWidget * parent, const QString & search): tab::Tab(parent), searchText(search) {
-	QINFO_PRINT(global_enums::qinfo_level_e::ZERO, mainWindowTabOverall,  "MainWindowTab constructor");
+	LOG_INFO(logger::info_level_e::ZERO, mainWindowTabOverall,  "MainWindowTab constructor");
 
 }
 
@@ -39,7 +39,7 @@ void main_window_tab::MainWindowTab::configure(const std::shared_ptr<tab_bar::Ta
 }
 
 main_window_tab::MainWindowTab::~MainWindowTab() {
-	QINFO_PRINT(global_enums::qinfo_level_e::ZERO, mainWindowTabOverall,  "MainWindowTab destructor");
+	LOG_INFO(logger::info_level_e::ZERO, mainWindowTabOverall,  "MainWindowTab destructor");
 
 }
 
@@ -81,7 +81,7 @@ void main_window_tab::MainWindowTab::connectSignals() {
 	const std::shared_ptr<main_window_web_engine_page::MainWindowWebEnginePage> page = view->page();
 	const main_window_shared_types::page_type_e tabType = page->getType();
 	const std::shared_ptr<main_window_tab_load_manager::MainWindowTabLoadManager> loadManager = this->getLoadManager();
-	QINFO_PRINT(global_enums::qinfo_level_e::ZERO, mainWindowTabOverall,  "Connect signals from page of type " << tabType << " to load manager");
+	LOG_INFO(logger::info_level_e::ZERO, mainWindowTabOverall,  "Connect signals from page of type " << tabType << " to load manager");
 	connect(page.get(), &main_window_web_engine_page::MainWindowWebEnginePage::loadStarted, loadManager.get(), &main_window_tab_load_manager::MainWindowTabLoadManager::startLoading);
 	connect(page.get(), &main_window_web_engine_page::MainWindowWebEnginePage::loadProgress, loadManager.get(), &main_window_tab_load_manager::MainWindowTabLoadManager::setProgress);
 

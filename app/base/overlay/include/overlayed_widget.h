@@ -10,7 +10,7 @@
 
 #include <memory>
 
-#include <QtCore/QLoggingCategory>
+// Qt libraries
 #include <QtWidgets/QWidget>
 
 #include "constructor_macros.h"
@@ -19,8 +19,6 @@
  *  Overlayed widget functions and classes
  *  @{
  */
-
-Q_DECLARE_LOGGING_CATEGORY(overlayedWidgetOverall)
 
 namespace overlayed_widget {
 

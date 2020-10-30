@@ -7,16 +7,15 @@
 */
 
 // Qt libraries
-#include <QtCore/QtGlobal>
 #include <QtGui/QResizeEvent>
 
 #include "main_window_popup_container.h"
 #include "exception_macros.h"
-#include "logging_macros.h"
+#include "macros.h"
 #include "global_enums.h"
 
 // Categories
-Q_LOGGING_CATEGORY(mainWindowPopupContainerOverall, "mainWindowPopupContainer.overall", MSG_TYPE_LEVEL)
+LOGGING_CONTEXT(mainWindowPopupContainerOverall, mainWindowPopupContainer.overall, TYPE_LEVEL, INFO_VERBOSITY)
 
 namespace main_window_popup_container {
 
@@ -41,7 +40,7 @@ namespace main_window_popup_container {
 
 main_window_popup_container::MainWindowPopupContainer::MainWindowPopupContainer(QWidget * parent, Qt::WindowFlags flags) : popup_container::PopupContainer(parent, flags) {
 
-	QINFO_PRINT(global_enums::qinfo_level_e::ZERO, mainWindowPopupContainerOverall,  "Main window popup container constructor");
+	LOG_INFO(logger::info_level_e::ZERO, mainWindowPopupContainerOverall,  "Main window popup container constructor");
 
 	this->addOpenPopup();
 	this->addWarningPopup();
@@ -63,7 +62,7 @@ main_window_popup_container::MainWindowPopupContainer::MainWindowPopupContainer(
 }
 
 main_window_popup_container::MainWindowPopupContainer::~MainWindowPopupContainer() {
-	QINFO_PRINT(global_enums::qinfo_level_e::ZERO, mainWindowPopupContainerOverall,  "Main window popup container destructor");
+	LOG_INFO(logger::info_level_e::ZERO, mainWindowPopupContainerOverall,  "Main window popup container destructor");
 }
 
 bool main_window_popup_container::MainWindowPopupContainer::showWarningPopup() {

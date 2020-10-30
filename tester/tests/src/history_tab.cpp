@@ -6,22 +6,19 @@
  * @brief History tab test functions
  */
 
-// Qt libraries
-#include <QtCore/QLoggingCategory>
-
 #include <QtTest/QTest>
 #include <QtGui/QKeySequence>
 
 #include "global_enums.h"
-#include "logging_macros.h"
+#include "macros.h"
 #include "qt_operator.h"
 #include "stl_helper.h"
 #include "main_window_constants.h"
 #include "history_tab.h"
 #include "base_suite.h"
 
-Q_LOGGING_CATEGORY(historyTabOverall, "historyTab.overall", MSG_TYPE_LEVEL)
-Q_LOGGING_CATEGORY(historyTabTest, "historyTab.test", MSG_TYPE_LEVEL)
+LOGGING_CONTEXT(historyTabOverall, historyTab.overall, TYPE_LEVEL, INFO_VERBOSITY)
+LOGGING_CONTEXT(historyTabTest, historyTab.test, TYPE_LEVEL, INFO_VERBOSITY)
 
 namespace history_tab {
 
@@ -50,25 +47,23 @@ namespace history_tab {
 }
 
 history_tab::HistoryTab::HistoryTab(const std::shared_ptr<base_suite::BaseSuite> & testSuite, const bool useShortcuts) : command_test::CommandTest(testSuite, "History tab", history_tab::jsonFileFullPath, useShortcuts) {
-
-	QINFO_PRINT(global_enums::qinfo_level_e::ZERO, historyTabOverall,  "Creating test " << QString::fromStdString(this->getName()) << " in suite " << QString::fromStdString(this->getSuite()->getName()));
-
+	LOG_INFO(logger::info_level_e::ZERO, historyTabOverall,  "Creating test " << this->getName() << " in suite " << this->getSuite()->getName());
 }
 
 history_tab::HistoryTab::~HistoryTab() {
-	QINFO_PRINT(global_enums::qinfo_level_e::ZERO, historyTabOverall,  "Test " << QString::fromStdString(this->getName()) << " destructor");
+	LOG_INFO(logger::info_level_e::ZERO, historyTabOverall,  "Test " << this->getName() << " destructor");
 }
 
 void history_tab::HistoryTab::testBody() {
 
-	QINFO_PRINT(global_enums::qinfo_level_e::ZERO, historyTabTest,  "Starting test " << QString::fromStdString(this->getName()) << " in suite " << QString::fromStdString(this->getSuite()->getName()));
+	LOG_INFO(logger::info_level_e::ZERO, historyTabTest,  "Starting test " << this->getName() << " in suite " << this->getSuite()->getName());
 
 	const std::string https(global_constants::https.toStdString());
 	const std::string www(global_constants::www.toStdString());
 
 	// Create 1 tabs and make 2 searches
 	const std::string search0("test0");
-	QINFO_PRINT(global_enums::qinfo_level_e::ZERO, historyTabTest, "Open new tab searching " << search0);
+	LOG_INFO(logger::info_level_e::ZERO, historyTabTest, "Open new tab searching " << search0);
 	this->openNewTab(search0);
 	const std::string authorityUrl0 = www + main_window_constants::defaultSearchEngine.arg(QString::fromStdString(search0)).toStdString();
 	const std::string url0 = https + authorityUrl0;
@@ -79,7 +74,7 @@ void history_tab::HistoryTab::testBody() {
 
 		const std::string searchCommandName("search tab");
 		const std::string search1("test1");
-		QINFO_PRINT(global_enums::qinfo_level_e::ZERO, historyTabTest, "Search in tab " << search1);
+		LOG_INFO(logger::info_level_e::ZERO, historyTabTest, "Search in tab " << search1);
 		this->makeSearchInTab(searchCommandName, search1);
 		const std::string authorityUrl1 = www + main_window_constants::defaultSearchEngine.arg(QString::fromStdString(search1)).toStdString();
 		const std::string url1 = https + authorityUrl1;

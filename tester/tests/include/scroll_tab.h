@@ -7,9 +7,6 @@
  * @date 15th October 2020
  * @brief Scroll tab header file
  */
-// Qt libraries
-// Required by qInfo
-#include <QtCore/QtDebug>
 
 #include "command_test.h"
 
@@ -17,9 +14,6 @@
  *  Scroll tab functions and classes
  *  @{
  */
-
-Q_DECLARE_LOGGING_CATEGORY(scrollTabOverall)
-Q_DECLARE_LOGGING_CATEGORY(scrollTabTest)
 
 namespace scroll_tab {
 

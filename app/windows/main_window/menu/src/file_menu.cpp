@@ -7,26 +7,23 @@
  */
 
 // Qt libraries
-// Required by qInfo
-#include <QtCore/QtDebug>
-
 #include <QtCore/QObject>
 
-#include "logging_macros.h"
+#include "macros.h"
 #include "global_enums.h"
 #include "file_menu.h"
 
 // Categories
-Q_LOGGING_CATEGORY(fileMenuOverall, "fileMenu.overall", MSG_TYPE_LEVEL)
-Q_LOGGING_CATEGORY(fileMenuOpenAction, "fileMenu.openAction", MSG_TYPE_LEVEL)
-Q_LOGGING_CATEGORY(fileMenuOpenTabAction, "fileMenu.openTabAction", MSG_TYPE_LEVEL)
-Q_LOGGING_CATEGORY(fileMenuSaveAction, "fileMenu.saveAction", MSG_TYPE_LEVEL)
-Q_LOGGING_CATEGORY(fileMenuPrintAction, "fileMenu.printAction", MSG_TYPE_LEVEL)
-Q_LOGGING_CATEGORY(fileMenuExitAction, "fileMenu.exitAction", MSG_TYPE_LEVEL)
+LOGGING_CONTEXT(fileMenuOverall, fileMenu.overall, TYPE_LEVEL, INFO_VERBOSITY)
+LOGGING_CONTEXT(fileMenuOpenAction, fileMenu.openAction, TYPE_LEVEL, INFO_VERBOSITY)
+LOGGING_CONTEXT(fileMenuOpenTabAction, fileMenu.openTabAction, TYPE_LEVEL, INFO_VERBOSITY)
+LOGGING_CONTEXT(fileMenuSaveAction, fileMenu.saveAction, TYPE_LEVEL, INFO_VERBOSITY)
+LOGGING_CONTEXT(fileMenuPrintAction, fileMenu.printAction, TYPE_LEVEL, INFO_VERBOSITY)
+LOGGING_CONTEXT(fileMenuExitAction, fileMenu.exitAction, TYPE_LEVEL, INFO_VERBOSITY)
 
 file_menu::FileMenu::FileMenu(QWidget * parent, std::weak_ptr<QMenuBar> menuBar, const char* menuName, const key_sequence::KeySequence & key) : menu::Menu(parent,menuBar,menuName,key), openWindow(Q_NULLPTR) {
 
-	QINFO_PRINT(global_enums::qinfo_level_e::ZERO, fileMenuOverall,  "Creating file menu");
+	LOG_INFO(logger::info_level_e::ZERO, fileMenuOverall,  "Creating file menu");
 	this->createActions();
 	this->createMenu();
 
@@ -34,7 +31,7 @@ file_menu::FileMenu::FileMenu(QWidget * parent, std::weak_ptr<QMenuBar> menuBar,
 
 file_menu::FileMenu::~FileMenu() {
 
-	QINFO_PRINT(global_enums::qinfo_level_e::ZERO, fileMenuOverall,  "file menu destructor");
+	LOG_INFO(logger::info_level_e::ZERO, fileMenuOverall,  "file menu destructor");
 
 }
 
@@ -69,7 +66,7 @@ void file_menu::FileMenu::createMenu() {
 }
 
 void file_menu::FileMenu::open() {
-	QINFO_PRINT(global_enums::qinfo_level_e::ZERO, fileMenuOpenAction,  "Open slot: connect signal from open window to slot seding signal to the main window");
+	LOG_INFO(logger::info_level_e::ZERO, fileMenuOpenAction,  "Open slot: connect signal from open window to slot seding signal to the main window");
 
 	this->openWindow.reset(new open_button_window::OpenButtonWindow(this->parentWidget(), Qt::Window));
 	connect(this->openWindow.get(), &open_button_window::OpenButtonWindow::fileRead, this, &file_menu::FileMenu::updateCenterWindow);
@@ -78,16 +75,16 @@ void file_menu::FileMenu::open() {
 }
 
 void file_menu::FileMenu::save() {
-	QINFO_PRINT(global_enums::qinfo_level_e::ZERO, fileMenuSaveAction,  "Save slot: saving web page to disk");
+	LOG_INFO(logger::info_level_e::ZERO, fileMenuSaveAction,  "Save slot: saving web page to disk");
 
 }
 
 void file_menu::FileMenu::print() {
-	QINFO_PRINT(global_enums::qinfo_level_e::ZERO, fileMenuPrintAction,  "Print slot: printing web page");
+	LOG_INFO(logger::info_level_e::ZERO, fileMenuPrintAction,  "Print slot: printing web page");
 
 }
 
 void file_menu::FileMenu::updateCenterWindow(const QString & contentSource, const void * data) const {
-	QINFO_PRINT(global_enums::qinfo_level_e::ZERO, fileMenuOpenAction,  "Send signal to main window to update the center window");
+	LOG_INFO(logger::info_level_e::ZERO, fileMenuOpenAction,  "Send signal to main window to update the center window");
 	emit this->updateCenterWindowSignal(contentSource, data);
 }

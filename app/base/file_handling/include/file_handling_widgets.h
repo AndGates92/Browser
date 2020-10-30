@@ -11,7 +11,7 @@
 #include <string>
 #include <memory>
 
-#include <QtCore/QLoggingCategory>
+// Qt libraries
 #include <QtCore/QDir>
 #include <QtWidgets/QLineEdit>
 #include <QtWidgets/QAction>
@@ -27,8 +27,6 @@
  *  File Handling Widgets functions and classes
  *  @{
  */
-
-Q_DECLARE_LOGGING_CATEGORY(fileHandlingWidgetsOverall)
 
 namespace file_handling_widgets {
 

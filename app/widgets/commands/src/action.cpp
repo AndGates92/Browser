@@ -7,34 +7,31 @@
  */
 
 // Qt libraries
-// Required by qInfo
-#include <QtCore/QtDebug>
-
 #include <QtGui/QKeySequence>
 
-#include "logging_macros.h"
+#include "cpp_operator.h"
+#include "macros.h"
 #include "global_enums.h"
 #include "action.h"
 
-
 // Categories
-Q_LOGGING_CATEGORY(actionOverall, "action.overall", MSG_TYPE_LEVEL)
-Q_LOGGING_CATEGORY(actionShortcut, "action.shortcut", MSG_TYPE_LEVEL)
+LOGGING_CONTEXT(actionOverall, action.overall, TYPE_LEVEL, INFO_VERBOSITY)
+LOGGING_CONTEXT(actionShortcut, action.shortcut, TYPE_LEVEL, INFO_VERBOSITY)
 
 action::Action::Action(QObject * parent, const QString & text, const QIcon & icon) : QAction(icon, text, parent), printable_object::PrintableObject() {
 
-	QINFO_PRINT(global_enums::qinfo_level_e::ZERO, actionOverall,  "Creating action");
+	LOG_INFO(logger::info_level_e::ZERO, actionOverall,  "Creating action");
 
 }
 
 action::Action::~Action() {
-	QINFO_PRINT(global_enums::qinfo_level_e::ZERO, actionOverall,  "Destructor of action class");
+	LOG_INFO(logger::info_level_e::ZERO, actionOverall,  "Destructor of action class");
 
 }
 
 void action::Action::setShortcut(const key_sequence::KeySequence & key) {
 
-	QINFO_PRINT(global_enums::qinfo_level_e::ZERO, actionShortcut,  "Setting primary shortcut: " << key.toString());
+	LOG_INFO(logger::info_level_e::ZERO, actionShortcut,  "Setting primary shortcut: " << key.toString());
 	QAction::setShortcut(key.toQKeySequence());
 
 }
@@ -44,7 +41,7 @@ void action::Action::setShortcuts(const std::list<key_sequence::KeySequence> & k
 	QList<QKeySequence> keyList = QList<QKeySequence>();
 
 	for (std::list<key_sequence::KeySequence>::const_iterator key = keys.cbegin(); key != keys.cend(); key++) {
-		QINFO_PRINT(global_enums::qinfo_level_e::ZERO, actionShortcut,  "Appending shortcut " << key->toString());
+		LOG_INFO(logger::info_level_e::ZERO, actionShortcut,  "Appending shortcut " << key->toString());
 		keyList.append(key->toQKeySequence());
 	}
 
@@ -56,12 +53,11 @@ key_sequence::KeySequence action::Action::shortcut() const {
 
 	QKeySequence primaryQKey(QAction::shortcut());
 	key_sequence::KeySequence primaryKey(primaryQKey);
-	QINFO_PRINT(global_enums::qinfo_level_e::ZERO, actionShortcut,  "Setting primary shortcut: " << primaryKey.toString());
+	LOG_INFO(logger::info_level_e::ZERO, actionShortcut,  "Setting primary shortcut: " << primaryKey.toString());
 
 	return primaryKey;
 
 }
-
 
 std::list<key_sequence::KeySequence> action::Action::shortcuts() const {
 
@@ -71,7 +67,7 @@ std::list<key_sequence::KeySequence> action::Action::shortcuts() const {
 
 	for (QList<QKeySequence>::const_iterator qKey = keyQList.cbegin(); qKey != keyQList.cend(); qKey++) {
 		key_sequence::KeySequence key(*qKey);
-		QINFO_PRINT(global_enums::qinfo_level_e::ZERO, actionShortcut,  "Appending shortcut " << key.toString());
+		LOG_INFO(logger::info_level_e::ZERO, actionShortcut,  "Appending shortcut " << key.toString());
 		keyList.push_back(key);
 	}
 
@@ -81,7 +77,7 @@ std::list<key_sequence::KeySequence> action::Action::shortcuts() const {
 
 const std::string action::Action::print() const {
 
-	QEXCEPTION_ACTION_COND((this->text().isEmpty() == true), throw,  "Action text cannot be empty when getting text using method " << __func__);
+	EXCEPTION_ACTION_COND((this->text().isEmpty() == true), throw,  "Action text cannot be empty when getting text using method " << __func__);
 
 	std::string actionText(this->text().toStdString());
 	if (this->shortcut().isEmpty() == false) {

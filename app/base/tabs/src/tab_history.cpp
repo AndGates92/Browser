@@ -7,22 +7,21 @@
  */
 
 // Qt libraries
-#include <QtCore/QLoggingCategory>
 #include <QtGui/QKeyEvent>
 
-#include "logging_macros.h"
+#include "macros.h"
 #include "tab_history.h"
 
 // Categories
-Q_LOGGING_CATEGORY(tabHistoryOverall, "tabHistory.overall", MSG_TYPE_LEVEL)
+LOGGING_CONTEXT(tabHistoryOverall, tabHistory.overall, TYPE_LEVEL, INFO_VERBOSITY)
 
 tab_history::TabHistory::TabHistory(QWidget * parent, std::weak_ptr<tab::Tab> browserTab, QWebEngineHistory * newHistory): tab_component_widget::TabComponentWidget<tab_shared_types::stepping_e>(parent, browserTab), history(newHistory) {
-	QINFO_PRINT(global_enums::qinfo_level_e::ZERO, tabHistoryOverall,  "Tab history constructor");
+	LOG_INFO(logger::info_level_e::ZERO, tabHistoryOverall,  "Tab history constructor");
 
 }
 
 tab_history::TabHistory::~TabHistory() {
-	QINFO_PRINT(global_enums::qinfo_level_e::ZERO, tabHistoryOverall,  "Tab history destructor");
+	LOG_INFO(logger::info_level_e::ZERO, tabHistoryOverall,  "Tab history destructor");
 
 }
 
@@ -59,7 +58,7 @@ void tab_history::TabHistory::execute(const tab_shared_types::stepping_e & step)
 			this->forward();
 			break;
 		default:
-			QINFO_PRINT(global_enums::qinfo_level_e::ZERO, tabHistoryOverall,  "Unable to step across items of the history list with direcion set to " << step);
+			LOG_INFO(logger::info_level_e::ZERO, tabHistoryOverall,  "Unable to step across items of the history list with direcion set to " << step);
 			break;
 	}
 }

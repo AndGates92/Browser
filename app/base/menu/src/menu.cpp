@@ -6,31 +6,28 @@
  * @brief Top Menu functions
  */
 
-// Qt libraries
-// Required by qInfo
-#include <QtCore/QtDebug>
-
-#include "logging_macros.h"
+#include "macros.h"
 #include "global_enums.h"
+#include "cpp_operator.h"
 
 #include "menu.h"
 
 // Categories
-Q_LOGGING_CATEGORY(menuOverall, "menu.overall", MSG_TYPE_LEVEL)
+LOGGING_CONTEXT(menuOverall, menu.overall, TYPE_LEVEL, INFO_VERBOSITY)
 
 menu::Menu::Menu(QWidget * parent, std::weak_ptr<QMenuBar> menuBar, const char* menuName, const key_sequence::KeySequence & key) : QWidget(parent), printable_object::PrintableObject(), menuBar(menuBar), menuName(menuName), key(key) {
 
-	QINFO_PRINT(global_enums::qinfo_level_e::ZERO, menuOverall, "Create menu:  " << *this);
+	LOG_INFO(logger::info_level_e::ZERO, menuOverall, "Create menu:  " << *this);
 	this->createMenu();
 	this->createShortcuts();
 }
 
 menu::Menu::~Menu() {
-	QINFO_PRINT(global_enums::qinfo_level_e::ZERO, menuOverall,  "menu destructor");
+	LOG_INFO(logger::info_level_e::ZERO, menuOverall,  "menu destructor");
 }
 
 void menu::Menu::createMenu() {
-	QEXCEPTION_ACTION_COND((this->menuBar.expired() == true), throw,  "Unable to get menu bar for menu " << menuName << " as it has already expired");
+	EXCEPTION_ACTION_COND((this->menuBar.expired() == true), throw,  "Unable to get menu bar for menu " << menuName << " as it has already expired");
 	std::shared_ptr<QMenuBar> bar = this->menuBar.lock();
 	if (bar != Q_NULLPTR) {
 		this->winMenu.reset(bar->addMenu(QWidget::tr(menuName)));
@@ -48,12 +45,12 @@ void menu::Menu::createShortcuts() {
 }
 
 void menu::Menu::expand() {
-	QEXCEPTION_ACTION_COND((this->menuBar.expired() == true), throw,  "Unable to get menu bar for menu " << this->menuName << " as it has already expired");
+	EXCEPTION_ACTION_COND((this->menuBar.expired() == true), throw,  "Unable to get menu bar for menu " << this->menuName << " as it has already expired");
 	std::shared_ptr<QMenuBar> bar = this->menuBar.lock();
 	if (bar != Q_NULLPTR) {
 		// menu is expanded only if menu bar is visible
 		if (bar->isVisible()) {
-			QINFO_PRINT(global_enums::qinfo_level_e::ZERO, menuOverall, "Expand menu " << this->menuName << " because shortcut key " << this->key.toString() << " has been pressed");
+			LOG_INFO(logger::info_level_e::ZERO, menuOverall, "Expand menu " << this->menuName << " because shortcut key " << this->key.toString() << " has been pressed");
 			this->winMenu->exec();
 			this->setFocus();
 		}

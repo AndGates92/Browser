@@ -7,9 +7,6 @@
  * @date 17th September 2020
  * @brief Command line parser header file
  */
-// Qt libraries
-// Required by qInfo
-#include <QtCore/QtDebug>
 
 #include <string>
 #include <list>
@@ -24,8 +21,6 @@
  *  Command line parser functions and classes
  *  @{
  */
-
-Q_DECLARE_LOGGING_CATEGORY(commandLineParserOverall)
 
 namespace command_line_parser {
 

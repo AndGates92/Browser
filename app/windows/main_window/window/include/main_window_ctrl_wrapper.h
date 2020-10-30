@@ -25,8 +25,6 @@
  *  @{
  */
 
-Q_DECLARE_LOGGING_CATEGORY(mainWindowCtrlWrapperOverall)
-
 namespace main_window {
 	class MainWindow;
 }

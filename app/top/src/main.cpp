@@ -6,14 +6,13 @@
  * @brief Main function of the program
  */
 
-#include <QtCore/QtDebug>
-#include <QtCore/QtGlobal>
 #include <QtCore/QtMessageHandler>
 #include <QtCore/QUnhandledException>
 
-#include "logging_macros.h"
+#include "macros.h"
 #include "browser_exception.h"
 #include "logging.h"
+#include "logger.h"
 #include "graphics.h"
 
 /** @addtogroup MainGroup
@@ -35,13 +34,13 @@ int main (int argc, char* argv[]) {
 		logging::set_default_category();
 		qInstallMessageHandler(logging::handler);
 
-		QINFO_PRINT(global_enums::qinfo_level_e::ZERO, ,  "Starting browser");
-		QINFO_PRINT(global_enums::qinfo_level_e::ZERO, ,  "Built on " << __DATE__ << " at " << __TIME__);
-		QINFO_PRINT(global_enums::qinfo_level_e::ZERO, ,  "QT version " << QT_VERSION_STR);
+		LOG_INFO(logger::info_level_e::ZERO, ,  "Starting browser");
+		LOG_INFO(logger::info_level_e::ZERO, ,  "Built on " << __DATE__ << " at " << __TIME__);
+		LOG_INFO(logger::info_level_e::ZERO, ,  "QT version " << QT_VERSION_STR);
 
 		graphics::init_graphics(argc, argv);
 	} catch (const browser_exception::BrowserException & bexc) {
-		QString bexcMsg(bexc.print());
+		std::string bexcMsg(bexc.print());
 		browser_exception::printException(bexcMsg);
 		return EXIT_FAILURE;
 	} catch (const QUnhandledException & unhandledexc) {

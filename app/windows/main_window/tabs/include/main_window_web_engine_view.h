@@ -9,10 +9,6 @@
 */
 
 // Qt libraries
-// Required by qInfo
-#include <QtCore/QtDebug>
-#include <QtCore/QLoggingCategory>
-
 #include <QtWidgets/QAction>
 
 #include "web_engine_view.h"
@@ -25,8 +21,6 @@
  *  Main Window Web Engine View functions and classes
  *  @{
  */
-
-Q_DECLARE_LOGGING_CATEGORY(mainWindowWebEngineViewOverall)
 
 namespace main_window_tab {
 	class MainWindowTab;

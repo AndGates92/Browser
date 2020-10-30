@@ -8,18 +8,15 @@
  * @brief Popup container layout class header file
  */
 
-#include <QtCore/QLoggingCategory>
+// Qt libraries
 #include <QtWidgets/QStackedLayout>
 
 #include "constructor_macros.h"
-
 
 /** @defgroup PopupContainerLayoutGroup Popup Container Layout Doxygen Group
  *  Pop up container layout functions and classes
  *  @{
  */
-
-Q_DECLARE_LOGGING_CATEGORY(popupContainerLayoutOverall)
 
 namespace popup_container_layout {
 

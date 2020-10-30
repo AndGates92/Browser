@@ -8,14 +8,21 @@
  * @brief Printable Object header file
 */
 
-#include <QtCore/QLoggingCategory>
+#include <string>
+#include <iostream>
+
+// Qt libraries
+#include <QtCore/QString>
+#include <QtCore/QTextStream>
 
 /** @defgroup PrintableObjectGroup Printable Object Doxygen Group
  *  Printable object functions and classes
  *  @{
  */
 
-Q_DECLARE_LOGGING_CATEGORY(printableObjectOverall)
+namespace logger {
+	class Logger;
+}
 
 namespace printable_object {
 
@@ -57,6 +64,16 @@ namespace printable_object {
 			friend QTextStream & operator<<(QTextStream & str, const printable_object::PrintableObject & object);
 
 			/**
+			 * @brief Function: friend std::ostream operator<<(std::ostream os, const printable_object::PrintableObject & object)
+			 *
+			 * \param os: output stream to append the object to
+			 * \param object: object to print
+			 *
+			 * object operator << overloading with std::string
+			 */
+			friend std::ostream & operator<<(std::ostream & os, const printable_object::PrintableObject & object);
+
+			/**
 			 * @brief Function: friend std::string operator<<(std::string str, const printable_object::PrintableObject & object)
 			 *
 			 * \param str: string to append the object to
@@ -75,6 +92,26 @@ namespace printable_object {
 			 * object operator + overloading with std::string
 			 */
 			friend std::string operator+(std::string str, const printable_object::PrintableObject & object);
+
+			/**
+			 * @brief Function: friend logger::Logger & operator<< (logger::Logger & log, const printable_object::PrintableObject & object)
+			 *
+			 * \param log: logger to append the object to
+			 * \param object: object to print
+			 *
+			 * object operator << overloading with logger::Logger
+			 */
+			friend logger::Logger & operator<< (logger::Logger & log, const printable_object::PrintableObject & object);
+
+			/**
+			 * @brief Function: friend logger::Logger & operator+ (logger::Logger & log, const printable_object::PrintableObject & object)
+			 *
+			 * \param log: logger to append the object to
+			 * \param object: object to print
+			 *
+			 * object operator + overloading with logger::Logger
+			 */
+			friend logger::Logger & operator+ (logger::Logger & log, const printable_object::PrintableObject & object);
 
 		protected:
 			/**

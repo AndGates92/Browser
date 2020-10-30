@@ -10,7 +10,7 @@
 
 #include <string>
 
-#include <QtCore/QtDebug>
+// Qt libraries
 #include <QtCore/QMetaEnum>
 
 #include "exception_macros.h"
@@ -19,8 +19,6 @@
  *  Global Qt Functions
  *  @{
  */
-
-Q_DECLARE_LOGGING_CATEGORY(readFileOverall)
 
 namespace global_qfunctions {
 
@@ -67,7 +65,7 @@ QString global_qfunctions::qEnumToQString(const qenum value, const bool printEnu
 	else {
 		std::string valueStr(valueCStr);
 
-		QEXCEPTION_ACTION_COND((valueStr.empty() == true), throw,  "Convertion of enumerator " << metaEnum.scope() << "::" << metaEnum.name() << " to string return a null std::string");
+		EXCEPTION_ACTION_COND((valueStr.empty() == true), throw,  "Convertion of enumerator " << metaEnum.scope() << "::" << metaEnum.name() << " to string return a null std::string");
 
 		if (printEnumKeyOnly == false) {
 			fullValueStr.append(metaEnum.scope());
@@ -98,6 +96,5 @@ qenum global_qfunctions::qStringToQEnum(const QString & str) {
 
 	return valEnum;
 }
-
 
 #endif // GLOBAL_QFUNCTIONS_H

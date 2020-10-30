@@ -10,8 +10,6 @@
 
 #include <memory>
 
-#include <QtCore/QLoggingCategory>
-
 #include "main_window_shared_types.h"
 #include "printable_object.h"
 
@@ -19,9 +17,6 @@
  *  Main Window page data functions and classes
  *  @{
  */
-
-Q_DECLARE_LOGGING_CATEGORY(mainWindowPageDataOverall)
-Q_DECLARE_LOGGING_CATEGORY(mainWindowPageDataPrint)
 
 namespace main_window_web_engine_page {
 	class MainWindowWebEnginePage;

@@ -9,23 +9,22 @@
 #include <QtWidgets/QMessageBox>
 
 // Qt libraries
-#include <QtCore/QLoggingCategory>
 #include <QtGui/QKeyEvent>
 
-#include "logging_macros.h"
+#include "macros.h"
 #include "tab_search.h"
 #include "exception_macros.h"
 
 // Categories
-Q_LOGGING_CATEGORY(tabSearchOverall, "tabSearch.overall", MSG_TYPE_LEVEL)
-Q_LOGGING_CATEGORY(tabSearchFind, "tabSearch.find", MSG_TYPE_LEVEL)
+LOGGING_CONTEXT(tabSearchOverall, tabSearch.overall, TYPE_LEVEL, INFO_VERBOSITY)
+LOGGING_CONTEXT(tabSearchFind, tabSearch.find, TYPE_LEVEL, INFO_VERBOSITY)
 
 tab_search::TabSearch::TabSearch(QWidget * parent, std::weak_ptr<tab::Tab> attachedTab): tab_component_widget::TabComponentWidget<find_settings::FindSettings>(parent, attachedTab), settings(QString(), global_enums::offset_type_e::IDLE, false, false), callback(nullptr) {
-	QINFO_PRINT(global_enums::qinfo_level_e::ZERO, tabSearchOverall,  "Tab search constructor");
+	LOG_INFO(logger::info_level_e::ZERO, tabSearchOverall,  "Tab search constructor");
 }
 
 tab_search::TabSearch::~TabSearch() {
-	QINFO_PRINT(global_enums::qinfo_level_e::ZERO, tabSearchOverall,  "Tab search destructor");
+	LOG_INFO(logger::info_level_e::ZERO, tabSearchOverall,  "Tab search destructor");
 
 }
 
@@ -48,7 +47,7 @@ void tab_search::TabSearch::search() {
 			const bool caseSensitive = this->settings.getCaseSensitive();
 			const global_enums::offset_type_e direction = this->settings.getDirection();
 
-			QEXCEPTION_ACTION_COND(((direction != global_enums::offset_type_e::DOWN) && (direction != global_enums::offset_type_e::UP)), throw, "Unable to perform search with direction set to " << direction);
+			EXCEPTION_ACTION_COND(((direction != global_enums::offset_type_e::DOWN) && (direction != global_enums::offset_type_e::UP)), throw, "Unable to perform search with direction set to " << direction);
 
 			// No flag set by default
 			// Available search flags are:
@@ -74,7 +73,7 @@ void tab_search::TabSearch::search() {
 				}
 			);
 		} catch (const std::bad_cast & badCastE) {
-			QEXCEPTION_ACTION(throw, badCastE.what());
+			EXCEPTION_ACTION(throw, badCastE.what());
 		}
 
 	} else {

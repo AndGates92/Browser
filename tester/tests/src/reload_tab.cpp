@@ -6,22 +6,19 @@
  * @brief Reload tab test functions
  */
 
-// Qt libraries
-#include <QtCore/QLoggingCategory>
-
 #include <QtTest/QTest>
 #include <QtGui/QKeySequence>
 
 #include "global_enums.h"
-#include "logging_macros.h"
+#include "macros.h"
 #include "qt_operator.h"
 #include "stl_helper.h"
 #include "main_window_constants.h"
 #include "reload_tab.h"
 #include "base_suite.h"
 
-Q_LOGGING_CATEGORY(reloadTabOverall, "reloadTab.overall", MSG_TYPE_LEVEL)
-Q_LOGGING_CATEGORY(reloadTabTest, "reloadTab.test", MSG_TYPE_LEVEL)
+LOGGING_CONTEXT(reloadTabOverall, reloadTab.overall, TYPE_LEVEL, INFO_VERBOSITY)
+LOGGING_CONTEXT(reloadTabTest, reloadTab.test, TYPE_LEVEL, INFO_VERBOSITY)
 
 namespace reload_tab {
 
@@ -50,25 +47,23 @@ namespace reload_tab {
 }
 
 reload_tab::ReloadTab::ReloadTab(const std::shared_ptr<base_suite::BaseSuite> & testSuite, const bool useShortcuts) : command_test::CommandTest(testSuite, "Reload tab", reload_tab::jsonFileFullPath, useShortcuts) {
-
-	QINFO_PRINT(global_enums::qinfo_level_e::ZERO, reloadTabOverall,  "Creating test " << QString::fromStdString(this->getName()) << " in suite " << QString::fromStdString(this->getSuite()->getName()));
-
+	LOG_INFO(logger::info_level_e::ZERO, reloadTabOverall,  "Creating test " << this->getName() << " in suite " << this->getSuite()->getName());
 }
 
 reload_tab::ReloadTab::~ReloadTab() {
-	QINFO_PRINT(global_enums::qinfo_level_e::ZERO, reloadTabOverall,  "Test " << QString::fromStdString(this->getName()) << " destructor");
+	LOG_INFO(logger::info_level_e::ZERO, reloadTabOverall,  "Test " << this->getName() << " destructor");
 }
 
 void reload_tab::ReloadTab::testBody() {
 
-	QINFO_PRINT(global_enums::qinfo_level_e::ZERO, reloadTabTest,  "Starting test " << QString::fromStdString(this->getName()) << " in suite " << QString::fromStdString(this->getSuite()->getName()));
+	LOG_INFO(logger::info_level_e::ZERO, reloadTabTest,  "Starting test " << this->getName() << " in suite " << this->getSuite()->getName());
 
 	const std::string https(global_constants::https.toStdString());
 	const std::string www(global_constants::www.toStdString());
 
 	// Create 1 tabs
 	const std::string search("test");
-	QINFO_PRINT(global_enums::qinfo_level_e::ZERO, reloadTabTest, "Open new tab searching " << search);
+	LOG_INFO(logger::info_level_e::ZERO, reloadTabTest, "Open new tab searching " << search);
 	this->openNewTab(search);
 	const std::string authorityUrl0 = www + main_window_constants::defaultSearchEngine.arg(QString::fromStdString(search)).toStdString();
 	const std::string url0 = https + authorityUrl0;

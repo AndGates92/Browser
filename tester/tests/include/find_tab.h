@@ -11,19 +11,12 @@
 #include <regex>
 #include <vector>
 
-// Qt libraries
-// Required by qInfo
-#include <QtCore/QtDebug>
-
 #include "command_test.h"
 
 /** @defgroup FindTabGroup Find Tab Group
  *  Find tab functions and classes
  *  @{
  */
-
-Q_DECLARE_LOGGING_CATEGORY(findTabOverall)
-Q_DECLARE_LOGGING_CATEGORY(findTabTest)
 
 namespace find_tab {
 

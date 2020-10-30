@@ -27,8 +27,6 @@
  *  @{
  */
 
-Q_DECLARE_LOGGING_CATEGORY(findButtonWindowSettingsOverall)
-
 namespace find_button_window_settings {
 
 	/**

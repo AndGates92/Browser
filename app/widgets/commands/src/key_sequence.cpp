@@ -6,20 +6,17 @@
  * @brief Key Sequence functions
  */
 
-// Qt libraries
-#include <QtCore/QLoggingCategory>
-
-#include "key_info.h"
-#include "key_sequence.h"
+#include "cpp_operator.h"
 #include "exception_macros.h"
 #include "function_macros.h"
 #include "global_enums.h"
-#include "logging_macros.h"
+#include "macros.h"
+#include "key_info.h"
+#include "key_sequence.h"
 
 // Categories
-Q_LOGGING_CATEGORY(keySequenceOverall, "keySequence.overall", MSG_TYPE_LEVEL)
-Q_LOGGING_CATEGORY(keySequenceString, "keySequence.string", MSG_TYPE_LEVEL)
-
+LOGGING_CONTEXT(keySequenceOverall, keySequence.overall, TYPE_LEVEL, INFO_VERBOSITY)
+LOGGING_CONTEXT(keySequenceString, keySequence.string, TYPE_LEVEL, INFO_VERBOSITY)
 
 namespace key_sequence {
 
@@ -39,9 +36,8 @@ namespace key_sequence {
 
 }
 
-
 key_sequence::KeySequence::KeySequence(const QString & keyStr, QKeySequence::SequenceFormat format) {
-	QINFO_PRINT(global_enums::qinfo_level_e::ZERO, keySequenceOverall,  "Key Sequence constructor: key " << keyStr);
+	LOG_INFO(logger::info_level_e::ZERO, keySequenceOverall,  "Key Sequence constructor: key " << keyStr);
 
 	// Split key sequence string into individual key sequences
 	#if QT_VERSION >= QT_VERSION_CHECK(5, 14, 0)
@@ -52,7 +48,7 @@ key_sequence::KeySequence::KeySequence(const QString & keyStr, QKeySequence::Seq
 
 	for (QStringList::const_iterator cIter = keySeqList.cbegin(); cIter != keySeqList.cend(); cIter++) {
 		QKeySequence keySeq(*cIter, format);
-		QINFO_PRINT(global_enums::qinfo_level_e::ZERO, keySequenceOverall,  "Adding " << (*cIter) << " to key sequence vector");
+		LOG_INFO(logger::info_level_e::ZERO, keySequenceOverall,  "Adding " << (*cIter) << " to key sequence vector");
 		this->keySeqVec.append(keySeq);
 	}
 
@@ -60,7 +56,7 @@ key_sequence::KeySequence::KeySequence(const QString & keyStr, QKeySequence::Seq
 }
 
 key_sequence::KeySequence::KeySequence(int key0, int key1, int key2, int key3) {
-	QINFO_PRINT(global_enums::qinfo_level_e::ZERO, keySequenceOverall,  "Key Sequence constructor: key0 0x" << QString("%1").arg(key0, 0, 16) << " key1 0x" << QString("%1").arg(key1, 0, 16) << " key2 0x" << QString("%1").arg(key2, 0, 16) << " key3 0x" << QString("%1").arg(key3, 0, 16));
+	LOG_INFO(logger::info_level_e::ZERO, keySequenceOverall,  "Key Sequence constructor: key0 0x" << QString("%1").arg(key0, 0, 16) << " key1 0x" << QString("%1").arg(key1, 0, 16) << " key2 0x" << QString("%1").arg(key2, 0, 16) << " key3 0x" << QString("%1").arg(key3, 0, 16));
 	this->addKey(key0);
 	this->addKey(key1);
 	this->addKey(key2);
@@ -74,7 +70,7 @@ key_sequence::KeySequence::KeySequence(const QKeySequence & qKeySeq) {
 
 	for (unsigned int idx = 0; idx < thisSize; idx++) {
 		int key = qKeySeq[idx];
-		QINFO_PRINT(global_enums::qinfo_level_e::ZERO, keySequenceOverall,  "Key Sequence constructor. Keys are 0x" << QString("%1").arg(key, 0, 16));
+		LOG_INFO(logger::info_level_e::ZERO, keySequenceOverall,  "Key Sequence constructor. Keys are 0x" << QString("%1").arg(key, 0, 16));
 		this->keySeqVec.append(key);
 	}
 
@@ -82,7 +78,7 @@ key_sequence::KeySequence::KeySequence(const QKeySequence & qKeySeq) {
 }
 
 key_sequence::KeySequence::KeySequence(const QKeySequence::StandardKey stdKey) {
-	QINFO_PRINT(global_enums::qinfo_level_e::ZERO, keySequenceOverall,  "Key Sequence constructor: key " << stdKey);
+	LOG_INFO(logger::info_level_e::ZERO, keySequenceOverall,  "Key Sequence constructor: key " << stdKey);
 	const QKeySequence qKeySeq(stdKey);
 	// There is only 1 key in the key sequence, therefore accessing it at index 0
 	const int key = qKeySeq[0];
@@ -93,13 +89,13 @@ key_sequence::KeySequence::KeySequence(const QKeySequence::StandardKey stdKey) {
 
 key_sequence::KeySequence::KeySequence(const key_sequence::KeySequence & rhs) : keySeqVec(rhs.keySeqVec) {
 
-	QINFO_PRINT(global_enums::qinfo_level_e::ZERO, keySequenceOverall,  "Copy constructor key sequence");
+	LOG_INFO(logger::info_level_e::ZERO, keySequenceOverall,  "Copy constructor key sequence");
 
 }
 
 key_sequence::KeySequence & key_sequence::KeySequence::operator=(const key_sequence::KeySequence & rhs) {
 
-	QINFO_PRINT(global_enums::qinfo_level_e::ZERO, keySequenceOverall,  "Copy assignment operator for key sequence");
+	LOG_INFO(logger::info_level_e::ZERO, keySequenceOverall,  "Copy assignment operator for key sequence");
 
 	// If rhs points to the same address as this, then return this
 	if (&rhs == this) {
@@ -115,31 +111,31 @@ key_sequence::KeySequence & key_sequence::KeySequence::operator=(const key_seque
 
 key_sequence::KeySequence::KeySequence(key_sequence::KeySequence && rhs) : keySeqVec(std::exchange(rhs.keySeqVec, QVector<QKeySequence>())) {
 
-	QINFO_PRINT(global_enums::qinfo_level_e::ZERO, keySequenceOverall,  "Move constructor key sequence");
+	LOG_INFO(logger::info_level_e::ZERO, keySequenceOverall,  "Move constructor key sequence");
 
-	QEXCEPTION_ACTION_COND((rhs.keySeqVec.capacity() != 0), throw,  "Released all memory used by vector but capacity is still non-zero - actual capacity " << rhs.keySeqVec.capacity());
+	EXCEPTION_ACTION_COND((rhs.keySeqVec.capacity() != 0), throw,  "Released all memory used by vector but capacity is still non-zero - actual capacity " << rhs.keySeqVec.capacity());
 }
 
 key_sequence::KeySequence & key_sequence::KeySequence::operator=(key_sequence::KeySequence && rhs) {
 
-	QINFO_PRINT(global_enums::qinfo_level_e::ZERO, keySequenceOverall,  "Move assignment operator for key sequence");
+	LOG_INFO(logger::info_level_e::ZERO, keySequenceOverall,  "Move assignment operator for key sequence");
 
 	if (&rhs != this) {
 		this->keySeqVec = std::exchange(rhs.keySeqVec, QVector<QKeySequence>());
-		QEXCEPTION_ACTION_COND((rhs.keySeqVec.capacity() != 0), throw,  "Released all memory used by vector but capacity is still non-zero - actual capacity " << rhs.keySeqVec.capacity());
+		EXCEPTION_ACTION_COND((rhs.keySeqVec.capacity() != 0), throw,  "Released all memory used by vector but capacity is still non-zero - actual capacity " << rhs.keySeqVec.capacity());
 	}
 
 	return *this;
 }
 
 key_sequence::KeySequence::~KeySequence() {
-	QINFO_PRINT(global_enums::qinfo_level_e::ZERO, keySequenceOverall,  "Destructor of KeySequence class");
+	LOG_INFO(logger::info_level_e::ZERO, keySequenceOverall,  "Destructor of KeySequence class");
 
 }
 
 void key_sequence::KeySequence::addKey(int key, QKeySequence::SequenceFormat format) {
 	if (key != Qt::Key_unknown) {
-		QINFO_PRINT(global_enums::qinfo_level_e::ZERO, keySequenceOverall,  "Adding 0x" << QString("%1").arg(int(key), 0, 16) << " to key sequence vector");
+		LOG_INFO(logger::info_level_e::ZERO, keySequenceOverall,  "Adding 0x" << QString("%1").arg(int(key), 0, 16) << " to key sequence vector");
 		const QKeySequence keySeq(key, format);
 		this->keySeqVec.append(keySeq);
 	}
@@ -168,11 +164,11 @@ int key_sequence::KeySequence::getIntKey(const unsigned int & index) const {
 
 void key_sequence::KeySequence::checkRules() const {
 	unsigned int numEl = this->count();
-	QEXCEPTION_ACTION_COND((numEl > key_sequence::maxCount), throw,  "Vector has " << numEl << " elements which is larger than the allowed maximum number " << key_sequence::maxCount);
+	EXCEPTION_ACTION_COND((numEl > key_sequence::maxCount), throw,  "Vector has " << numEl << " elements which is larger than the allowed maximum number " << key_sequence::maxCount);
 
 	for (QVector<QKeySequence>::const_iterator cIter = this->keySeqVec.cbegin(); cIter != this->keySeqVec.cend(); cIter++) {
 		unsigned int numKeyCode = cIter->count();
-		QEXCEPTION_ACTION_COND((numKeyCode > key_sequence::maxKeyCodesInEl), throw,  "Element has " << numKeyCode << " key codes which is larger than the allowed maximum number " << key_sequence::maxKeyCodesInEl);
+		EXCEPTION_ACTION_COND((numKeyCode > key_sequence::maxKeyCodesInEl), throw,  "Element has " << numKeyCode << " key codes which is larger than the allowed maximum number " << key_sequence::maxKeyCodesInEl);
 	}
 }
 
@@ -191,7 +187,6 @@ QKeySequence key_sequence::KeySequence::toQKeySequence() const {
 
 bool key_sequence::KeySequence::isEmpty() const {
 	const bool emptyVector = keySeqVec.empty();
-
 
 
 	bool unknownKeyAtHead = true;
@@ -224,7 +219,7 @@ QString key_sequence::KeySequence::toString(QKeySequence::SequenceFormat format)
 		// - if the sequence is only a special character then print string from the lookup table
 		// - if the sequence contains also a non-special character then call QKeySequence method toString
 		key_info::KeyInfo seqInfo(*cIter);
-		QINFO_PRINT(global_enums::qinfo_level_e::ZERO, keySequenceString,  "Processing key " << seqInfo.toString(format));
+		LOG_INFO(logger::info_level_e::ZERO, keySequenceString,  "Processing key " << seqInfo.toString(format));
 		keySeqList.append(seqInfo.toString(format));
 	}
 

@@ -7,29 +7,29 @@
 */
 
 // Qt libraries
-#include <QtCore/QtGlobal>
 #include <QtGui/QPainter>
 
-#include "elided_label.h"
+#include "cpp_operator.h"
 #include "function_macros.h"
-#include "logging_macros.h"
+#include "macros.h"
 #include "global_enums.h"
+#include "elided_label.h"
 
 // Categories
-Q_LOGGING_CATEGORY(elidedLabelOverall, "elidedLabel.overall", MSG_TYPE_LEVEL)
-Q_LOGGING_CATEGORY(elidedLabelElision, "elidedLabel.elision", MSG_TYPE_LEVEL)
-Q_LOGGING_CATEGORY(elidedLabelPaint, "elidedLabel.paint", MSG_TYPE_LEVEL)
+LOGGING_CONTEXT(elidedLabelOverall, elidedLabel.overall, TYPE_LEVEL, INFO_VERBOSITY)
+LOGGING_CONTEXT(elidedLabelElision, elidedLabel.elision, TYPE_LEVEL, INFO_VERBOSITY)
+LOGGING_CONTEXT(elidedLabelPaint, elidedLabel.paint, TYPE_LEVEL, INFO_VERBOSITY)
 
 elided_label::ElidedLabel::ElidedLabel(QWidget * parent, Qt::WindowFlags flags, const QString & textLabel, const QPoint & labelOrigin, const Qt::TextElideMode & textElisionMode) : QLabel(textLabel, parent, flags), elisionMode(textElisionMode), origin(labelOrigin) {
 
-	QINFO_PRINT(global_enums::qinfo_level_e::ZERO, elidedLabelOverall,  "Elided label constructor for text " << this->text() << " origin " << this->origin << " elision mode " << this->elisionMode);
+	LOG_INFO(logger::info_level_e::ZERO, elidedLabelOverall,  "Elided label constructor for text " << this->text() << " origin " << this->origin << " elision mode " << this->elisionMode);
 
 	this->setSizePolicy(QSizePolicy::Preferred, QSizePolicy::Minimum);
 	this->updateElidedText(this->geometry().width());
 }
 
 elided_label::ElidedLabel::~ElidedLabel() {
-	QINFO_PRINT(global_enums::qinfo_level_e::ZERO, elidedLabelOverall,  "Elided label destructor");
+	LOG_INFO(logger::info_level_e::ZERO, elidedLabelOverall,  "Elided label destructor");
 }
 
 void elided_label::ElidedLabel::setText(const QString & text) {
@@ -42,12 +42,12 @@ void elided_label::ElidedLabel::setText(const QString & text) {
 void elided_label::ElidedLabel::updateElidedText(const int & width) {
 	// If no elision or text is null, then set elision text to null
 	if ((this->elisionMode == Qt::ElideNone) || (this->text() == QString())) {
-		QINFO_PRINT(global_enums::qinfo_level_e::ZERO, elidedLabelElision,  "Elided text is set to null");
+		LOG_INFO(logger::info_level_e::ZERO, elidedLabelElision,  "Elided text is set to null");
 		this->elisionText = QString();
 	} else {
 		this->elisionText = this->fontMetrics().elidedText(this->text(), this->elisionMode, width, Qt::TextShowMnemonic);
 	}
-	QINFO_PRINT(global_enums::qinfo_level_e::ZERO, elidedLabelElision,  "Elided text is set to " << this->elisionText);
+	LOG_INFO(logger::info_level_e::ZERO, elidedLabelElision,  "Elided text is set to " << this->elisionText);
 }
 
 void elided_label::ElidedLabel::resizeEvent(QResizeEvent * event) {
@@ -58,16 +58,16 @@ void elided_label::ElidedLabel::resizeEvent(QResizeEvent * event) {
 }
 
 void elided_label::ElidedLabel::paintEvent(QPaintEvent * event) {
-	QINFO_PRINT(global_enums::qinfo_level_e::ZERO, elidedLabelPaint,  "Paint text " << this->text() << " elision mode " << this->elisionMode);
+	LOG_INFO(logger::info_level_e::ZERO, elidedLabelPaint,  "Paint text " << this->text() << " elision mode " << this->elisionMode);
 	if (this->elisionMode == Qt::ElideNone) {
 		QLabel::paintEvent(event);
 	} else {
 		event->accept();
 		QPainter textPainter(this);
 		const QRect dimensions = this->geometry();
-		QINFO_PRINT(global_enums::qinfo_level_e::ZERO, elidedLabelPaint, "Drawing elided text " << this->elisionText);
-		QINFO_PRINT(global_enums::qinfo_level_e::ZERO, elidedLabelPaint, "Origin " << this->origin);
-		QINFO_PRINT(global_enums::qinfo_level_e::ZERO, elidedLabelPaint, "Dimensions width " << dimensions.width() << " height " << dimensions.height());
+		LOG_INFO(logger::info_level_e::ZERO, elidedLabelPaint, "Drawing elided text " << this->elisionText);
+		LOG_INFO(logger::info_level_e::ZERO, elidedLabelPaint, "Origin " << this->origin);
+		LOG_INFO(logger::info_level_e::ZERO, elidedLabelPaint, "Dimensions width " << dimensions.width() << " height " << dimensions.height());
 		textPainter.drawText(this->origin.x(), this->origin.y(), dimensions.width(), dimensions.height(), this->alignment(), this->elisionText);
 	}
 

@@ -7,21 +7,19 @@
  */
 
 #include <iostream>
-// Qt libraries
-#include <QtCore/QtGlobal>
 
 #include "menu_bar.h"
 #include "global_enums.h"
-#include "logging_macros.h"
+#include "macros.h"
 
-Q_LOGGING_CATEGORY(menuBarOverall, "menuBar.overall", MSG_TYPE_LEVEL)
+LOGGING_CONTEXT(menuBarOverall, menuBar.overall, TYPE_LEVEL, INFO_VERBOSITY)
 
 menu_bar::MenuBar::MenuBar(QWidget * parent) : QMenuBar(parent) {
-	QINFO_PRINT(global_enums::qinfo_level_e::ZERO, menuBarOverall,  "Menu bar constructor");
+	LOG_INFO(logger::info_level_e::ZERO, menuBarOverall,  "Menu bar constructor");
 
 }
 
 menu_bar::MenuBar::~MenuBar() {
-	QINFO_PRINT(global_enums::qinfo_level_e::ZERO, menuBarOverall,  "Menu bar desstructor");
+	LOG_INFO(logger::info_level_e::ZERO, menuBarOverall,  "Menu bar desstructor");
 
 }

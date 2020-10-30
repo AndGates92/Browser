@@ -8,10 +8,6 @@
  * @brief Base suite header file
  */
 
-// Qt libraries
-// Required by qInfo
-#include <QtCore/QtDebug>
-
 #include <memory>
 #include <set>
 
@@ -24,8 +20,6 @@
  *  Base suite functions and classes
  *  @{
  */
-
-Q_DECLARE_LOGGING_CATEGORY(baseSuiteOverall)
 
 namespace base_factory {
 	class BaseFactory;

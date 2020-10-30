@@ -6,16 +6,14 @@
  * @brief Tab Scroll Manager functions
  */
 
-// Qt libraries
-#include <QtCore/QLoggingCategory>
-
-#include "logging_macros.h"
+#include "cpp_operator.h"
+#include "macros.h"
 #include "function_macros.h"
 #include "tab_scroll_manager.h"
 #include "exception_macros.h"
 
 // Categories
-Q_LOGGING_CATEGORY(tabScrollManagerOverall, "tabScrollManager.overall", MSG_TYPE_LEVEL)
+LOGGING_CONTEXT(tabScrollManagerOverall, tabScrollManager.overall, TYPE_LEVEL, INFO_VERBOSITY)
 
 namespace tab_scroll_manager {
 
@@ -48,11 +46,11 @@ namespace tab_scroll_manager {
 }
 
 tab_scroll_manager::TabScrollManager::TabScrollManager(QWidget * parent, std::weak_ptr<tab::Tab> browserTab, const std::shared_ptr<tab_bar::TabBar> & tabBar): tab_component_widget::TabComponentWidget<tab_shared_types::direction_e>(parent, browserTab), horizontalScroll(0), verticalScroll(0), scrollPosition(QPointF(0.0, 0.0)), contentsSize(QSizeF(0.0, 0.0)), bar(tabBar) {
-	QINFO_PRINT(global_enums::qinfo_level_e::ZERO, tabScrollManagerOverall,  "TabScrollManager constructor");
+	LOG_INFO(logger::info_level_e::ZERO, tabScrollManagerOverall,  "TabScrollManager constructor");
 }
 
 tab_scroll_manager::TabScrollManager::~TabScrollManager() {
-	QINFO_PRINT(global_enums::qinfo_level_e::ZERO, tabScrollManagerOverall,  "TabScrollManager destructor");
+	LOG_INFO(logger::info_level_e::ZERO, tabScrollManagerOverall,  "TabScrollManager destructor");
 }
 
 CONST_GETTER(tab_scroll_manager::TabScrollManager::getContentsSize, QSizeF &, this->contentsSize)
@@ -117,7 +115,7 @@ const int & tab_scroll_manager::TabScrollManager::getHorizontalScrollPercentage(
 }
 
 void tab_scroll_manager::TabScrollManager::checkScrollValue(const int & scroll, const QString & direction) const {
-	QEXCEPTION_ACTION_COND(((scroll < tab_scroll_manager::minScrollPercentage) || (scroll > tab_scroll_manager::maxScrollPercentage)), throw,  "Invalid value of " << direction << " scroll: " << scroll << ". Valid range is between " << tab_scroll_manager::minScrollPercentage << " and " << tab_scroll_manager::maxScrollPercentage);
+	EXCEPTION_ACTION_COND(((scroll < tab_scroll_manager::minScrollPercentage) || (scroll > tab_scroll_manager::maxScrollPercentage)), throw,  "Invalid value of " << direction << " scroll: " << scroll << ". Valid range is between " << tab_scroll_manager::minScrollPercentage << " and " << tab_scroll_manager::maxScrollPercentage);
 }
 
 void tab_scroll_manager::TabScrollManager::execute(const tab_shared_types::direction_e & direction) {

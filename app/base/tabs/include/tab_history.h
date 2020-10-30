@@ -9,11 +9,6 @@
 */
 
 // Qt libraries
-// Required by qInfo
-#include <QtCore/QtDebug>
-
-#include <QtCore/QLoggingCategory>
-
 #include <QtWebEngineWidgets/QWebEngineHistory>
 
 #include "global_enums.h"
@@ -24,8 +19,6 @@
  *  Tab History functions and classes
  *  @{
  */
-
-Q_DECLARE_LOGGING_CATEGORY(tabHistoryOverall)
 
 namespace tab {
 	class Tab;

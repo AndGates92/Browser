@@ -8,18 +8,12 @@
  * @brief Base element creation header file
  */
 
-// Qt libraries
-// Required by qInfo
-#include <QtCore/QtDebug>
-
 #include <memory>
 
 /** @defgroup BaseElementCreationGroup Base Element Creation Group
  *  Base element creation functions and classes
  *  @{
  */
-
-Q_DECLARE_LOGGING_CATEGORY(baseElementCreationOverall)
 
 namespace base_element_creation {
 

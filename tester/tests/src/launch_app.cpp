@@ -6,20 +6,17 @@
  * @brief Launch app functions
  */
 
-// Qt libraries
-#include <QtCore/QLoggingCategory>
-
 #include <QtTest/QTest>
 
 #include "global_enums.h"
-#include "logging_macros.h"
+#include "macros.h"
 #include "qt_operator.h"
 #include "stl_helper.h"
 #include "launch_app.h"
 #include "base_suite.h"
 
-Q_LOGGING_CATEGORY(launchAppOverall, "launchApp.overall", MSG_TYPE_LEVEL)
-Q_LOGGING_CATEGORY(launchAppTest, "launchApp.test", MSG_TYPE_LEVEL)
+LOGGING_CONTEXT(launchAppOverall, launchApp.overall, TYPE_LEVEL, INFO_VERBOSITY)
+LOGGING_CONTEXT(launchAppTest, launchApp.test, TYPE_LEVEL, INFO_VERBOSITY)
 
 namespace launch_app {
 
@@ -48,18 +45,16 @@ namespace launch_app {
 }
 
 launch_app::LaunchApp::LaunchApp(const std::shared_ptr<base_suite::BaseSuite> & testSuite, const bool useShortcuts) : command_test::CommandTest(testSuite, "Launch app and exit", launch_app::jsonFileFullPath, useShortcuts) {
-
-	QINFO_PRINT(global_enums::qinfo_level_e::ZERO, launchAppOverall,  "Creating test " << QString::fromStdString(this->getName()) << " in suite " << QString::fromStdString(this->getSuite()->getName()));
-
+	LOG_INFO(logger::info_level_e::ZERO, launchAppOverall,  "Creating test " << this->getName() << " in suite " << this->getSuite()->getName());
 }
 
 launch_app::LaunchApp::~LaunchApp() {
-	QINFO_PRINT(global_enums::qinfo_level_e::ZERO, launchAppOverall,  "Test " << QString::fromStdString(this->getName()) << " destructor");
+	LOG_INFO(logger::info_level_e::ZERO, launchAppOverall,  "Test " << this->getName() << " destructor");
 }
 
 void launch_app::LaunchApp::testBody() {
 
-	QINFO_PRINT(global_enums::qinfo_level_e::ZERO, launchAppTest,  "Starting test " << QString::fromStdString(this->getName()) << " in suite " << QString::fromStdString(this->getSuite()->getName()));
+	LOG_INFO(logger::info_level_e::ZERO, launchAppTest,  "Starting test " << this->getName() << " in suite " << this->getSuite()->getName());
 
 	const std::string quitCommandName("quit browser");
 	this->executeCommand(quitCommandName, std::string());

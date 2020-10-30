@@ -7,24 +7,23 @@
  */
 
 // Qt libraries
-#include <QtCore/QLoggingCategory>
 #include <QtGui/QKeyEvent>
 
-#include "logging_macros.h"
+#include "macros.h"
 #include "function_macros.h"
 #include "tab_load_manager.h"
 
 // Categories
-Q_LOGGING_CATEGORY(tabLoadManagerOverall, "tabLoadManager.overall", MSG_TYPE_LEVEL)
-Q_LOGGING_CATEGORY(tabLoadManagerStatus, "tabLoadManager.status", MSG_TYPE_LEVEL)
+LOGGING_CONTEXT(tabLoadManagerOverall, tabLoadManager.overall, TYPE_LEVEL, INFO_VERBOSITY)
+LOGGING_CONTEXT(tabLoadManagerStatus, tabLoadManager.status, TYPE_LEVEL, INFO_VERBOSITY)
 
 tab_load_manager::TabLoadManager::TabLoadManager(QWidget * parent): QWidget(parent), status(tab_shared_types::load_status_e::IDLE), progress(0) {
-	QINFO_PRINT(global_enums::qinfo_level_e::ZERO, tabLoadManagerOverall,  "TabLoadManager constructor");
+	LOG_INFO(logger::info_level_e::ZERO, tabLoadManagerOverall,  "TabLoadManager constructor");
 
 }
 
 tab_load_manager::TabLoadManager::~TabLoadManager() {
-	QINFO_PRINT(global_enums::qinfo_level_e::ZERO, tabLoadManagerOverall,  "TabLoadManager destructor");
+	LOG_INFO(logger::info_level_e::ZERO, tabLoadManagerOverall,  "TabLoadManager destructor");
 
 }
 
@@ -50,7 +49,7 @@ void tab_load_manager::TabLoadManager::endLoading(const bool & success) {
 
 void tab_load_manager::TabLoadManager::setStatus(const tab_shared_types::load_status_e & value) {
 	if (this->status != value) {
-		QINFO_PRINT(global_enums::qinfo_level_e::ZERO, tabLoadManagerStatus,  "tab load status changed from " << this->status << " to " << value);
+		LOG_INFO(logger::info_level_e::ZERO, tabLoadManagerStatus,  "tab load status changed from " << this->status << " to " << value);
 		this->status = value;
 		emit statusChanged(this->status);
 	}

@@ -11,8 +11,10 @@
 #include <algorithm>
 #include <string>
 #include <list>
+#include <map>
 
 #include <QtCore/QStringList>
+#include <QtCore/QMap>
 
 /** @defgroup QtTypesToStlGroup Qt Types To STL Doxygen Group
  *  Qt Types To STL

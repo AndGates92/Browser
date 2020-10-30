@@ -20,11 +20,6 @@
  *  @{
  */
 
-Q_DECLARE_LOGGING_CATEGORY(openPopupOverall)
-Q_DECLARE_LOGGING_CATEGORY(openPopupOpen)
-Q_DECLARE_LOGGING_CATEGORY(openPopupBrowse)
-Q_DECLARE_LOGGING_CATEGORY(openPopupCancel)
-
 namespace open_popup {
 
 	/**

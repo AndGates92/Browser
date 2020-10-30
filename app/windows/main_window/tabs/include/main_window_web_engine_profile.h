@@ -8,12 +8,6 @@
  * @brief Web Engine Profile header file
 */
 
-// Qt libraries
-// Required by qInfo
-#include <QtCore/QtDebug>
-
-#include <QtCore/QLoggingCategory>
-
 #include "web_engine_profile.h"
 #include "global_enums.h"
 #include "constructor_macros.h"
@@ -22,8 +16,6 @@
  *  Web Engine Profile functions and classes
  *  @{
  */
-
-Q_DECLARE_LOGGING_CATEGORY(mainWindowWebEngineProfileOverall)
 
 namespace main_window_web_engine_profile {
 

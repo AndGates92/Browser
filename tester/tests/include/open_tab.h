@@ -7,9 +7,6 @@
  * @date 05th October 2020
  * @brief Open tab header file
  */
-// Qt libraries
-// Required by qInfo
-#include <QtCore/QtDebug>
 
 #include "command_test.h"
 
@@ -17,9 +14,6 @@
  *  Open tab functions and classes
  *  @{
  */
-
-Q_DECLARE_LOGGING_CATEGORY(openTabOverall)
-Q_DECLARE_LOGGING_CATEGORY(openTabTest)
 
 namespace open_tab {
 

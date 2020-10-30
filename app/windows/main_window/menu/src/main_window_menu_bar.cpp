@@ -7,18 +7,16 @@
  */
 
 #include <iostream>
-// Qt libraries
-#include <QtCore/QtGlobal>
 
 #include "main_window_menu_bar.h"
 #include "global_enums.h"
 #include "function_macros.h"
-#include "logging_macros.h"
+#include "macros.h"
 
-Q_LOGGING_CATEGORY(mainWindowMenuBarOverall, "menuBar.overall", MSG_TYPE_LEVEL)
+LOGGING_CONTEXT(mainWindowMenuBarOverall, menuBar.overall, TYPE_LEVEL, INFO_VERBOSITY)
 
 main_window_menu_bar::MainWindowMenuBar::MainWindowMenuBar(QWidget * parent) : menu_bar::MenuBar(parent), fileMenu(Q_NULLPTR), editMenu(Q_NULLPTR) {
-	QINFO_PRINT(global_enums::qinfo_level_e::ZERO, mainWindowMenuBarOverall,  "Main window menu bar constructor");
+	LOG_INFO(logger::info_level_e::ZERO, mainWindowMenuBarOverall,  "Main window menu bar constructor");
 }
 
 void main_window_menu_bar::MainWindowMenuBar::createMenus() {
@@ -27,7 +25,7 @@ void main_window_menu_bar::MainWindowMenuBar::createMenus() {
 }
 
 main_window_menu_bar::MainWindowMenuBar::~MainWindowMenuBar() {
-	QINFO_PRINT(global_enums::qinfo_level_e::ZERO, mainWindowMenuBarOverall,  "Main window menu bar destructor");
+	LOG_INFO(logger::info_level_e::ZERO, mainWindowMenuBarOverall,  "Main window menu bar destructor");
 }
 
 CONST_GETTER(main_window_menu_bar::MainWindowMenuBar::getFileMenu, std::unique_ptr<file_menu::FileMenu> &, this->fileMenu)

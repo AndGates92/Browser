@@ -10,7 +10,7 @@
 
 #include <memory>
 
-#include <QtCore/QLoggingCategory>
+// Qt libraries
 #include <QtWidgets/QWidget>
 
 #include "elided_label.h"
@@ -21,8 +21,6 @@
  *  Main Window statusbar functions and classes
  *  @{
  */
-
-Q_DECLARE_LOGGING_CATEGORY(mainWindowStatusBarOverall)
 
 namespace main_window_status_bar {
 

@@ -8,7 +8,7 @@
  * @brief Progress bar class header file
 */
 
-#include <QtCore/QLoggingCategory>
+// Qt libraries
 #include <QtWidgets/QProgressBar>
 
 #include "constructor_macros.h"
@@ -17,8 +17,6 @@
  *  Progress bar functions and classes
  *  @{
  */
-
-Q_DECLARE_LOGGING_CATEGORY(progressBarOverall)
 
 namespace progress_bar {
 

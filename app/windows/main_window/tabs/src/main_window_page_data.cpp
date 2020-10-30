@@ -6,21 +6,15 @@
  * @brief Main Window Page Data functions
  */
 
-// Qt libraries
-#include <QtCore/QtGlobal>
-
-// Required by qInfo
-#include <QtCore/QtDebug>
-
 #include "main_window_page_data.h"
 #include "global_enums.h"
-#include "logging_macros.h"
+#include "macros.h"
 #include "function_macros.h"
 #include "exception_macros.h"
 
 // Categories
-Q_LOGGING_CATEGORY(mainWindowPageDataOverall, "mainWindowPageData.overall", MSG_TYPE_LEVEL)
-Q_LOGGING_CATEGORY(mainWindowPageDataPrint, "mainWindowPageData.print", MSG_TYPE_LEVEL)
+LOGGING_CONTEXT(mainWindowPageDataOverall, mainWindowPageData.overall, TYPE_LEVEL, INFO_VERBOSITY)
+LOGGING_CONTEXT(mainWindowPageDataPrint, mainWindowPageData.print, TYPE_LEVEL, INFO_VERBOSITY)
 
 namespace main_window_page_data {
 	bool operator==(const main_window_page_data::MainWindowPageData & lhs, const main_window_page_data::MainWindowPageData & rhs) {
@@ -41,24 +35,24 @@ namespace main_window_page_data {
 
 std::shared_ptr<main_window_page_data::MainWindowPageData> main_window_page_data::MainWindowPageData::makePageData(const main_window_shared_types::page_type_e & type, const std::string & src, const void * data) {
 	std::shared_ptr<main_window_page_data::MainWindowPageData> newData = std::make_shared<main_window_page_data::MainWindowPageData>(type, src, data);
-	QINFO_PRINT(global_enums::qinfo_level_e::ZERO, mainWindowPageDataOverall,  "Creating page data: " << newData.get());
+	LOG_INFO(logger::info_level_e::ZERO, mainWindowPageDataOverall,  "Creating page data: " << newData.get());
 	return newData;
 }
 
 main_window_page_data::MainWindowPageData::MainWindowPageData(const main_window_shared_types::page_type_e & pageType, const std::string & src, const void * pageData): printable_object::PrintableObject(), type(pageType), source(src), data(pageData) {
-	QINFO_PRINT(global_enums::qinfo_level_e::ZERO, mainWindowPageDataOverall,  "Page Data structure constructor. Data " << *this);
+	LOG_INFO(logger::info_level_e::ZERO, mainWindowPageDataOverall,  "Page Data structure constructor. Data " << *this);
 
 }
 
 main_window_page_data::MainWindowPageData::MainWindowPageData(const main_window_page_data::MainWindowPageData & rhs) : type(rhs.type), data(rhs.data) {
 
-	QINFO_PRINT(global_enums::qinfo_level_e::ZERO, mainWindowPageDataOverall,  "Copy constructor main window page data");
+	LOG_INFO(logger::info_level_e::ZERO, mainWindowPageDataOverall,  "Copy constructor main window page data");
 
 }
 
 main_window_page_data::MainWindowPageData & main_window_page_data::MainWindowPageData::operator=(const main_window_page_data::MainWindowPageData & rhs) {
 
-	QINFO_PRINT(global_enums::qinfo_level_e::ZERO, mainWindowPageDataOverall,  "Copy assignment operator for main window page data");
+	LOG_INFO(logger::info_level_e::ZERO, mainWindowPageDataOverall,  "Copy assignment operator for main window page data");
 
 	// If rhs points to the same address as this, then return this
 	if (&rhs == this) {
@@ -82,12 +76,12 @@ main_window_page_data::MainWindowPageData & main_window_page_data::MainWindowPag
 
 main_window_page_data::MainWindowPageData::MainWindowPageData(main_window_page_data::MainWindowPageData && rhs) : type(std::exchange(rhs.type, main_window_shared_types::page_type_e::UNKNOWN)), data(std::exchange(rhs.data, nullptr)) {
 
-	QINFO_PRINT(global_enums::qinfo_level_e::ZERO, mainWindowPageDataOverall,  "Move constructor main window page data");
+	LOG_INFO(logger::info_level_e::ZERO, mainWindowPageDataOverall,  "Move constructor main window page data");
 }
 
 main_window_page_data::MainWindowPageData & main_window_page_data::MainWindowPageData::operator=(main_window_page_data::MainWindowPageData && rhs) {
 
-	QINFO_PRINT(global_enums::qinfo_level_e::ZERO, mainWindowPageDataOverall,  "Move assignment operator for main window page data");
+	LOG_INFO(logger::info_level_e::ZERO, mainWindowPageDataOverall,  "Move assignment operator for main window page data");
 
 	// If rhs points to the same address as this, then return this
 	if (&rhs != this) {
@@ -100,7 +94,7 @@ main_window_page_data::MainWindowPageData & main_window_page_data::MainWindowPag
 }
 
 main_window_page_data::MainWindowPageData::~MainWindowPageData() {
-	QINFO_PRINT(global_enums::qinfo_level_e::ZERO, mainWindowPageDataOverall,  "Destructor of main window page data class");
+	LOG_INFO(logger::info_level_e::ZERO, mainWindowPageDataOverall,  "Destructor of main window page data class");
 }
 
 const std::string main_window_page_data::MainWindowPageData::print() const {
@@ -115,12 +109,12 @@ const std::string main_window_page_data::MainWindowPageData::print() const {
 
 	try {
 		if (thisData != nullptr) {
-			QEXCEPTION_ACTION(throw, "Unexpected non-null pointer for type " << this->type);
+			EXCEPTION_ACTION(throw, "Unexpected non-null pointer for type " << this->type);
 		} else {
-			QINFO_PRINT(global_enums::qinfo_level_e::ZERO, mainWindowPageDataPrint,  "Data pointer is null therefore no available extra data for type " << this->type);
+			LOG_INFO(logger::info_level_e::ZERO, mainWindowPageDataPrint,  "Data pointer is null therefore no available extra data for type " << this->type);
 		}
 	} catch (const std::bad_cast & badCastE) {
-		QEXCEPTION_ACTION(throw, badCastE.what());
+		EXCEPTION_ACTION(throw, badCastE.what());
 	}
 
 	return structInfo;

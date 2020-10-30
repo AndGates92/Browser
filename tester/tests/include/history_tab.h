@@ -7,9 +7,6 @@
  * @date 23th October 2020
  * @brief History tab test header file
  */
-// Qt libraries
-// Required by qInfo
-#include <QtCore/QtDebug>
 
 #include "command_test.h"
 
@@ -17,9 +14,6 @@
  *  History tab functions and classes
  *  @{
  */
-
-Q_DECLARE_LOGGING_CATEGORY(historyTabOverall)
-Q_DECLARE_LOGGING_CATEGORY(historyTabTest)
 
 namespace history_tab {
 

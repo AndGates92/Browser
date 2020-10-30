@@ -6,13 +6,10 @@
  * @brief Tab Component Widget functions
  */
 
-// Qt libraries
-#include <QtCore/QLoggingCategory>
-
-#include "logging_macros.h"
+#include "macros.h"
 #include "function_macros.h"
 #include "tab_component_widget.h"
 #include "exception_macros.h"
 
 // Categories
-Q_LOGGING_CATEGORY(tabComponentWidgetOverall, "tabComponentWidget.overall", MSG_TYPE_LEVEL)
+LOGGING_CONTEXT(tabComponentWidgetOverall, tabComponentWidget.overall, TYPE_LEVEL, INFO_VERBOSITY)

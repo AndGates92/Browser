@@ -8,14 +8,14 @@
 
 #include <mutex>
 
-#include <QtCore/QMessageLogContext>
-#include <QtCore/QTextStream>
-#include <QtCore/QString>
+// Qt libraries
 #include <QtCore/QtGlobal>
+#include <QtCore/QTextStream>
 
 // Get pointer to default category
 #include <QtCore/QLoggingCategory>
 
+#include "cpp_operator.h"
 #include "logging_functions.h"
 #include "exception_macros.h"
 #include "logging_macros.h"
@@ -47,6 +47,14 @@
 			Category->setEnabled(MsgLevel, false); \
 		} \
 	}
+
+/**
+ * @brief Qt log filename
+ *
+ */
+#if !defined(QT_LOGFILE)
+	#define QT_LOGFILE browser.qt.log
+#endif
 
 namespace logging {
 
@@ -117,7 +125,7 @@ void logging::handler(QtMsgType type, const QMessageLogContext & context, const 
 	}
 
 	bool success = logfile.open(QIODevice::Append | QIODevice::WriteOnly | QIODevice::Text);
-	QEXCEPTION_ACTION_COND((!success), throw, "Unable to open file " << logfile.fileName());
+	EXCEPTION_ACTION_COND((!success), throw, "Unable to open file " << logfile.fileName());
 
 	QTextStream ologfile(&logfile);
 

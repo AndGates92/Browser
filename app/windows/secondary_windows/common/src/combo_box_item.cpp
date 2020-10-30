@@ -10,27 +10,27 @@
 #include <QtCore/QLoggingCategory>
 #include <QtCore/QVariant>
 
-#include "logging_macros.h"
+#include "macros.h"
 #include "function_macros.h"
 #include "combo_box_item.h"
 
 // Categories
-Q_LOGGING_CATEGORY(comboBoxItemOverall, "comboBoxItem.overall", MSG_TYPE_LEVEL)
+LOGGING_CONTEXT(comboBoxItemOverall, comboBoxItem.overall, TYPE_LEVEL, INFO_VERBOSITY)
 
 combo_box_item::ComboBoxItem::ComboBoxItem(const QIcon itemIcon, const QVariant itemUserData, std::unique_ptr<action::Action> & itemAction) : icon(itemIcon), userData(itemUserData), action(std::move(itemAction)) {
-	QEXCEPTION_ACTION_COND((this->action == nullptr), throw,  "Action must not be null");
-	QEXCEPTION_ACTION_COND((this->action->print().empty() == true), throw,  "Action text cannot be empty");
-	QINFO_PRINT(global_enums::qinfo_level_e::ZERO, comboBoxItemOverall,  "combo box item constructor with action " << this->action.get());
+	EXCEPTION_ACTION_COND((this->action == nullptr), throw,  "Action must not be null");
+	EXCEPTION_ACTION_COND((this->action->print().empty() == true), throw,  "Action text cannot be empty");
+	LOG_INFO(logger::info_level_e::ZERO, comboBoxItemOverall,  "combo box item constructor with action " << this->action.get());
 
 }
 
 combo_box_item::ComboBoxItem::ComboBoxItem(combo_box_item::ComboBoxItem && rhs) : icon(std::exchange(rhs.icon, QIcon())), userData(std::exchange(rhs.userData, QVariant())), action(std::exchange(rhs.action, Q_NULLPTR)) {
-	QINFO_PRINT(global_enums::qinfo_level_e::ZERO, comboBoxItemOverall,  "Combo box item move constructor with action " << this->action.get());
+	LOG_INFO(logger::info_level_e::ZERO, comboBoxItemOverall,  "Combo box item move constructor with action " << this->action.get());
 }
 
 combo_box_item::ComboBoxItem & combo_box_item::ComboBoxItem::operator=(combo_box_item::ComboBoxItem && rhs) {
 
-	QINFO_PRINT(global_enums::qinfo_level_e::ZERO, comboBoxItemOverall,  "Move assignment operator for combo box item with action " << rhs.action.get());
+	LOG_INFO(logger::info_level_e::ZERO, comboBoxItemOverall,  "Move assignment operator for combo box item with action " << rhs.action.get());
 
 	if (&rhs != this) {
 		this->icon = std::exchange(rhs.icon, QIcon());

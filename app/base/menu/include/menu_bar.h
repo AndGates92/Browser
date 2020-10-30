@@ -8,7 +8,7 @@
  * @brief Menu bar class header file
 */
 
-#include <QtCore/QLoggingCategory>
+// Qt libraries
 #include <QtWidgets/QMenuBar>
 
 #include "constructor_macros.h"
@@ -17,8 +17,6 @@
  *  Menu bar functions and classes
  *  @{
  */
-
-Q_DECLARE_LOGGING_CATEGORY(menuBarOverall)
 
 namespace menu_bar {
 

@@ -7,12 +7,8 @@
  */
 
 // Qt libraries
-#include <QtCore/QtGlobal>
 #include <QtCore/QFile>
 #include <QtCore/QUrl>
-
-// Required by qInfo
-#include <QtCore/QtDebug>
 
 #include "global_constants.h"
 #include "main_window_shared_functions.h"

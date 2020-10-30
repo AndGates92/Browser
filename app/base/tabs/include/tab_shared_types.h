@@ -8,8 +8,6 @@
  * @brief Tab Shared Types file
 */
 
-#include <QtCore/QtDebug>
-
 #include "type_print_macros.h"
 
 /** @defgroup TabSharedTypesGroup Tab Shared Types Doxygen Group

@@ -8,10 +8,6 @@
  * @brief Error Data header file
 */
 
-// Qt libraries
-// Required by qInfo
-#include <QtCore/QtDebug>
-
 #include <memory>
 #include <string>
 
@@ -21,8 +17,6 @@
  *  Error Data functions and classes
  *  @{
  */
-
-Q_DECLARE_LOGGING_CATEGORY(errorDataOverall)
 
 namespace base_test {
 	class BaseTest;

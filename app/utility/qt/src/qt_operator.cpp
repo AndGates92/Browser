@@ -6,8 +6,6 @@
  * @brief Qt operator functions
  */
 
-#include <QtCore/QtDebug>
-
 #include "qt_operator.h"
 
 QTextStream & operator<<(QTextStream & stream, const std::string str) {
@@ -15,7 +13,10 @@ QTextStream & operator<<(QTextStream & stream, const std::string str) {
 	return stream;
 }
 
-QDebug & operator<<(QDebug & os, const std::string str) {
-	os << QString::fromStdString(str);
-	return os;
+QDebug & operator<<(QDebug & stream, const std::string str) {
+	QString qStr = QString();
+	QTextStream textStream(&qStr);
+	textStream << str;
+	stream << textStream.string();
+	return stream;
 }

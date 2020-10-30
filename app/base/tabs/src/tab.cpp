@@ -7,22 +7,22 @@
  */
 
 // Qt libraries
-#include <QtCore/QLoggingCategory>
 #include <QtGui/QKeyEvent>
 
+#include "cpp_operator.h"
 #include "function_macros.h"
-#include "logging_macros.h"
+#include "macros.h"
 #include "tab.h"
 #include "tab_search.h"
 #include "tab_scroll_manager.h"
 #include "tab_history.h"
 
 // Categories
-Q_LOGGING_CATEGORY(tabOverall, "tab.overall", MSG_TYPE_LEVEL)
-Q_LOGGING_CATEGORY(tabSize, "tab.size", MSG_TYPE_LEVEL)
+LOGGING_CONTEXT(tabOverall, tab.overall, TYPE_LEVEL, INFO_VERBOSITY)
+LOGGING_CONTEXT(tabSize, tab.size, TYPE_LEVEL, INFO_VERBOSITY)
 
 tab::Tab::Tab(QWidget * parent): QWidget(parent), view(Q_NULLPTR), loadManager(Q_NULLPTR), search(Q_NULLPTR), history(Q_NULLPTR), settings(Q_NULLPTR), scrollManager(Q_NULLPTR) {
-	QINFO_PRINT(global_enums::qinfo_level_e::ZERO, tabOverall,  "Tab constructor");
+	LOG_INFO(logger::info_level_e::ZERO, tabOverall,  "Tab constructor");
 }
 
 void tab::Tab::configure(std::shared_ptr<tab_bar::TabBar> tabBar) {
@@ -46,7 +46,7 @@ void tab::Tab::configure(std::shared_ptr<tab_bar::TabBar> tabBar) {
 }
 
 tab::Tab::~Tab() {
-	QINFO_PRINT(global_enums::qinfo_level_e::ZERO, tabOverall,  "Tab destructor");
+	LOG_INFO(logger::info_level_e::ZERO, tabOverall,  "Tab destructor");
 }
 
 void tab::Tab::setLoadManager(const std::shared_ptr<tab_load_manager::TabLoadManager> & value) {
@@ -118,7 +118,7 @@ CONST_REF_SETTER(tab::Tab::setSettings, std::shared_ptr<web_engine_settings::Web
 void tab::Tab::resize(const QSize size) {
 	// Resize view
 	if (this->view != Q_NULLPTR) {
-		QINFO_PRINT(global_enums::qinfo_level_e::ZERO, tabSize,  "Resize view to" << size);
+		LOG_INFO(logger::info_level_e::ZERO, tabSize,  "Resize view to" << size);
 		this->view->resize(size);
 	}
 	QWidget::resize(size);

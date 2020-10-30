@@ -10,6 +10,7 @@
 
 #include <string>
 
+#include <QtCore/QtDebug>
 #include <QtCore/QTextStream>
 
 /** @defgroup QtOperatorGroup Qt Operator Group
@@ -18,7 +19,7 @@
  */
 
 /**
- * @brief Function: QTextStream & operator<<(QTextStream & str, const std::string str)
+ * @brief Function: QTextStream & operator<<(QTextStream & stream, const std::string str)
  *
  * \param stream: stream to append the string to
  * \param str: string to print
@@ -28,14 +29,14 @@
 QTextStream & operator<<(QTextStream & stream, const std::string str);
 
 /**
- * @brief Function: QDebug & operator<<(QDebug & os, const std::string str)
+ * @brief Function: QDebug & operator<<(QDebug & stream, const std::string str)
  *
- * \param os: output stream to append the string to
+ * \param stream: output stream to append the string to
  * \param str: string to print
  *
  * operator << overloading with QDebug
  */
-QDebug & operator<<(QDebug & os, const std::string str);
+QDebug & operator<<(QDebug & stream, const std::string str);
 
 /** @} */ // End of QtOperator group
 

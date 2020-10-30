@@ -21,8 +21,6 @@
  *  @{
  */
 
-Q_DECLARE_LOGGING_CATEGORY(findSettingsOverall)
-
 namespace main_window_ctrl_tab {
 	class MainWindowCtrlTab;
 }

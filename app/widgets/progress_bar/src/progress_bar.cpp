@@ -6,16 +6,13 @@
  * @brief Progress bar functions
 */
 
-// Qt libraries
-#include <QtCore/QtGlobal>
-
 #include "progress_bar.h"
 #include "exception_macros.h"
-#include "logging_macros.h"
+#include "macros.h"
 #include "global_enums.h"
 
 // Categories
-Q_LOGGING_CATEGORY(progressBarOverall, "progressBar.overall", MSG_TYPE_LEVEL)
+LOGGING_CONTEXT(progressBarOverall, progressBar.overall, TYPE_LEVEL, INFO_VERBOSITY)
 
 namespace progress_bar {
 
@@ -53,9 +50,8 @@ namespace progress_bar {
 
 }
 
-
 progress_bar::ProgressBar::ProgressBar(QWidget * parent) : QProgressBar(parent) {
-	QINFO_PRINT(global_enums::qinfo_level_e::ZERO, progressBarOverall,  "Progress bar constructor");
+	LOG_INFO(logger::info_level_e::ZERO, progressBarOverall,  "Progress bar constructor");
 
 	this->setAlignment(progress_bar::progressAlignment);
 
@@ -92,7 +88,7 @@ int progress_bar::ProgressBar::getMinimumValue() {
 }
 
 progress_bar::ProgressBar::~ProgressBar() {
-	QINFO_PRINT(global_enums::qinfo_level_e::ZERO, progressBarOverall,  "Progress bar destructor");
+	LOG_INFO(logger::info_level_e::ZERO, progressBarOverall,  "Progress bar destructor");
 }
 
 void progress_bar::ProgressBar::startLoading() {
@@ -112,7 +108,7 @@ void progress_bar::ProgressBar::setValue(const int & value) {
 
 void progress_bar::ProgressBar::endLoading(const bool & success) {
 
-	QEXCEPTION_ACTION_COND((!success), throw,  "Operation didn't complete succesfully");
+	EXCEPTION_ACTION_COND((!success), throw,  "Operation didn't complete succesfully");
 
 	// Hide progress bar after operation completes
 	this->setVisible(false);

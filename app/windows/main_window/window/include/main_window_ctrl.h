@@ -24,10 +24,6 @@
  *  @{
  */
 
-Q_DECLARE_LOGGING_CATEGORY(mainWindowCtrlOverall)
-Q_DECLARE_LOGGING_CATEGORY(mainWindowCtrlUserInput)
-Q_DECLARE_LOGGING_CATEGORY(mainWindowCtrlSearch)
-
 namespace main_window_ctrl {
 
 	/**

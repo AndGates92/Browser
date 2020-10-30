@@ -16,18 +16,18 @@
 #include "edit_menu.h"
 
 // Categories
-Q_LOGGING_CATEGORY(editMenuOverall, "editMenu.overall", MSG_TYPE_LEVEL)
-Q_LOGGING_CATEGORY(editMenuUndoAction, "editMenu.undoAction", MSG_TYPE_LEVEL)
-Q_LOGGING_CATEGORY(editMenuRedoAction, "editMenu.redoAction", MSG_TYPE_LEVEL)
-Q_LOGGING_CATEGORY(editMenuCutAction, "editMenu.cutAction", MSG_TYPE_LEVEL)
-Q_LOGGING_CATEGORY(editMenuCopyAction, "editMenu.copyAction", MSG_TYPE_LEVEL)
-Q_LOGGING_CATEGORY(editMenuPasteAction, "editMenu.pasteAction", MSG_TYPE_LEVEL)
-Q_LOGGING_CATEGORY(editMenuSelectAllAction, "editMenu.selectAllAction", MSG_TYPE_LEVEL)
-Q_LOGGING_CATEGORY(editMenuFindAction, "editMenu.findAction", MSG_TYPE_LEVEL)
+LOGGING_CONTEXT(editMenuOverall, editMenu.overall, TYPE_LEVEL, INFO_VERBOSITY)
+LOGGING_CONTEXT(editMenuUndoAction, editMenu.undoAction, TYPE_LEVEL, INFO_VERBOSITY)
+LOGGING_CONTEXT(editMenuRedoAction, editMenu.redoAction, TYPE_LEVEL, INFO_VERBOSITY)
+LOGGING_CONTEXT(editMenuCutAction, editMenu.cutAction, TYPE_LEVEL, INFO_VERBOSITY)
+LOGGING_CONTEXT(editMenuCopyAction, editMenu.copyAction, TYPE_LEVEL, INFO_VERBOSITY)
+LOGGING_CONTEXT(editMenuPasteAction, editMenu.pasteAction, TYPE_LEVEL, INFO_VERBOSITY)
+LOGGING_CONTEXT(editMenuSelectAllAction, editMenu.selectAllAction, TYPE_LEVEL, INFO_VERBOSITY)
+LOGGING_CONTEXT(editMenuFindAction, editMenu.findAction, TYPE_LEVEL, INFO_VERBOSITY)
 
 edit_menu::EditMenu::EditMenu(QWidget * parent, std::weak_ptr<QMenuBar> menuBar, const char* menuName, const key_sequence::KeySequence & key) : menu::Menu(parent,menuBar,menuName,key), findWindow(Q_NULLPTR) {
 
-	QINFO_PRINT(global_enums::qinfo_level_e::ZERO, editMenuOverall,  "edit menu constructor");
+	LOG_INFO(logger::info_level_e::ZERO, editMenuOverall,  "edit menu constructor");
 
 	this->createActions();
 	this->createMenu();
@@ -36,7 +36,7 @@ edit_menu::EditMenu::EditMenu(QWidget * parent, std::weak_ptr<QMenuBar> menuBar,
 
 edit_menu::EditMenu::~EditMenu() {
 
-	QINFO_PRINT(global_enums::qinfo_level_e::ZERO, editMenuOverall,  "edit menu destructor");
+	LOG_INFO(logger::info_level_e::ZERO, editMenuOverall,  "edit menu destructor");
 
 }
 
@@ -83,31 +83,31 @@ void edit_menu::EditMenu::createMenu() {
 }
 
 void edit_menu::EditMenu::undo() {
-	QINFO_PRINT(global_enums::qinfo_level_e::ZERO, editMenuUndoAction,  "undo slot");
+	LOG_INFO(logger::info_level_e::ZERO, editMenuUndoAction,  "undo slot");
 }
 
 void edit_menu::EditMenu::redo() {
-	QINFO_PRINT(global_enums::qinfo_level_e::ZERO, editMenuRedoAction,  "redo slot");
+	LOG_INFO(logger::info_level_e::ZERO, editMenuRedoAction,  "redo slot");
 }
 
 void edit_menu::EditMenu::cut() {
-	QINFO_PRINT(global_enums::qinfo_level_e::ZERO, editMenuCutAction,  "cut slot");
+	LOG_INFO(logger::info_level_e::ZERO, editMenuCutAction,  "cut slot");
 }
 
 void edit_menu::EditMenu::copy() {
-	QINFO_PRINT(global_enums::qinfo_level_e::ZERO, editMenuCopyAction,  "copy slot");
+	LOG_INFO(logger::info_level_e::ZERO, editMenuCopyAction,  "copy slot");
 }
 
 void edit_menu::EditMenu::paste() {
-	QINFO_PRINT(global_enums::qinfo_level_e::ZERO, editMenuPasteAction,  "paste slot");
+	LOG_INFO(logger::info_level_e::ZERO, editMenuPasteAction,  "paste slot");
 }
 
 void edit_menu::EditMenu::selectAll() {
-	QINFO_PRINT(global_enums::qinfo_level_e::ZERO, editMenuSelectAllAction,  "select all slot");
+	LOG_INFO(logger::info_level_e::ZERO, editMenuSelectAllAction,  "select all slot");
 }
 
 void edit_menu::EditMenu::find() {
-	QINFO_PRINT(global_enums::qinfo_level_e::ZERO, editMenuFindAction,  "setting up find functionality: creating window and connecting signals and slots");
+	LOG_INFO(logger::info_level_e::ZERO, editMenuFindAction,  "setting up find functionality: creating window and connecting signals and slots");
 
 	this->findWindow.reset(new find_button_window::FindButtonWindow(this->parentWidget(), Qt::Window));
 	connect(this->findWindow.get(), &find_button_window::FindButtonWindow::find, this, &edit_menu::EditMenu::doSearch);
@@ -116,6 +116,6 @@ void edit_menu::EditMenu::find() {
 }
 
 void edit_menu::EditMenu::doSearch(const find_settings::FindSettings settings) const {
-	QINFO_PRINT(global_enums::qinfo_level_e::ZERO, editMenuFindAction,  "Search settings " << settings);
+	LOG_INFO(logger::info_level_e::ZERO, editMenuFindAction,  "Search settings " << settings);
 	emit this->triggerSearch(settings);
 }

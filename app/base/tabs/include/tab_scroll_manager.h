@@ -11,10 +11,6 @@
 #include <memory>
 
 // Qt libraries
-// Required by qInfo
-#include <QtCore/QtDebug>
-
-#include <QtCore/QLoggingCategory>
 #include <QtWidgets/QTabBar>
 
 #include "global_enums.h"
@@ -27,8 +23,6 @@
  *  Tab Scroll Manager functions and classes
  *  @{
  */
-
-Q_DECLARE_LOGGING_CATEGORY(tabScrollManagerOverall)
 
 namespace tab_bar {
 	class TabBar;
@@ -175,7 +169,6 @@ namespace tab_scroll_manager {
 			 * This function sets the position of the scrolling
 			 */
 			void updateScrollPosition(const QPointF & value);
-
 
 		private:
 			/**

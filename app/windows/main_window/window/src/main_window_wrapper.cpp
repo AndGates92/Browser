@@ -7,28 +7,26 @@
  */
 
 #include <iostream>
-// Qt libraries
-#include <QtCore/QtGlobal>
 
 #include "main_window_wrapper.h"
 
 // Categories
-Q_LOGGING_CATEGORY(mainWindowWrapperOverall, "mainWindowWrapper.overall", MSG_TYPE_LEVEL)
+LOGGING_CONTEXT(mainWindowWrapperOverall, mainWindowWrapper.overall, TYPE_LEVEL, INFO_VERBOSITY)
 
 main_window_wrapper::MainWindowWrapper::MainWindowWrapper(QWidget * parent, Qt::WindowFlags flags) : window(new main_window::MainWindow(parent, flags)) {
 
-	QINFO_PRINT(global_enums::qinfo_level_e::ZERO, mainWindowWrapperOverall,  "Main window wrapper constructor");
+	LOG_INFO(logger::info_level_e::ZERO, mainWindowWrapperOverall,  "Main window wrapper constructor");
 
 }
 
 main_window_wrapper::MainWindowWrapper::MainWindowWrapper(main_window_wrapper::MainWindowWrapper && rhs) : window(std::exchange(rhs.window, Q_NULLPTR)) {
-	QINFO_PRINT(global_enums::qinfo_level_e::ZERO, mainWindowWrapperOverall,  "Move constructor main window wrapper");
+	LOG_INFO(logger::info_level_e::ZERO, mainWindowWrapperOverall,  "Move constructor main window wrapper");
 
 }
 
 main_window_wrapper::MainWindowWrapper & main_window_wrapper::MainWindowWrapper::operator=(main_window_wrapper::MainWindowWrapper && rhs) {
 
-	QINFO_PRINT(global_enums::qinfo_level_e::ZERO, mainWindowWrapperOverall,  "Move assignment operator for main window wrapper");
+	LOG_INFO(logger::info_level_e::ZERO, mainWindowWrapperOverall,  "Move assignment operator for main window wrapper");
 
 	if (&rhs != this) {
 		this->window = std::move(rhs.window);
@@ -39,11 +37,11 @@ main_window_wrapper::MainWindowWrapper & main_window_wrapper::MainWindowWrapper:
 }
 
 main_window_wrapper::MainWindowWrapper::~MainWindowWrapper() {
-	QINFO_PRINT(global_enums::qinfo_level_e::ZERO, mainWindowWrapperOverall,  "Main window wrapper destructor");
+	LOG_INFO(logger::info_level_e::ZERO, mainWindowWrapperOverall,  "Main window wrapper destructor");
 }
 
 void main_window_wrapper::MainWindowWrapper::show() {
-	QINFO_PRINT(global_enums::qinfo_level_e::ZERO, mainWindowWrapperOverall,  "Show main window");
+	LOG_INFO(logger::info_level_e::ZERO, mainWindowWrapperOverall,  "Show main window");
 	this->window->show();
 }
 

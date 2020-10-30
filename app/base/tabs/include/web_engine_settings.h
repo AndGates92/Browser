@@ -9,11 +9,6 @@
 */
 
 // Qt libraries
-// Required by qInfo
-#include <QtCore/QtDebug>
-
-#include <QtCore/QLoggingCategory>
-
 #include <QtWebEngineWidgets/QWebEngineSettings>
 
 #include "global_enums.h"
@@ -22,8 +17,6 @@
  *  Web Engine Settings functions and classes
  *  @{
  */
-
-Q_DECLARE_LOGGING_CATEGORY(webEngineSettingsOverall)
 
 namespace web_engine_settings {
 

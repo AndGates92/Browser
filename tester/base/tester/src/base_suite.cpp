@@ -6,16 +6,13 @@
  * @brief Test suite functions
  */
 
-// Qt libraries
-#include <QtCore/QLoggingCategory>
-
 #include "global_enums.h"
-#include "logging_macros.h"
+#include "macros.h"
 #include "function_macros.h"
 #include "base_suite.h"
 #include "base_factory.h"
 
-Q_LOGGING_CATEGORY(baseSuiteOverall, "baseSuite.overall", MSG_TYPE_LEVEL)
+LOGGING_CONTEXT(baseSuiteOverall, baseSuite.overall, TYPE_LEVEL, INFO_VERBOSITY)
 
 bool base_suite::SuitePtrCompare::operator() (const std::shared_ptr<base_suite::BaseSuite> & rhs, const std::shared_ptr<base_suite::BaseSuite> & lhs) const {
 	bool isSame = ((*rhs) == (*lhs));
@@ -24,27 +21,27 @@ bool base_suite::SuitePtrCompare::operator() (const std::shared_ptr<base_suite::
 
 base_suite::BaseSuite::BaseSuite(const std::shared_ptr<base_factory::BaseFactory> & testFactory, const std::string & suiteName, const base_suite::BaseSuite::tests_container_t & testList) : factory(testFactory), name(suiteName), tests(testList) {
 
-	QEXCEPTION_ACTION_COND((this->name.empty() == true), throw, "Cannot create test suite with no name");
-	QINFO_PRINT(global_enums::qinfo_level_e::ZERO, baseSuiteOverall,  "Creating " << *this);
+	EXCEPTION_ACTION_COND((this->name.empty() == true), throw, "Cannot create test suite with no name");
+	LOG_INFO(logger::info_level_e::ZERO, baseSuiteOverall,  "Creating " << *this);
 
 }
 
 base_suite::BaseSuite::~BaseSuite() {
 
-	QINFO_PRINT(global_enums::qinfo_level_e::ZERO, baseSuiteOverall,  "Test suite destructor");
+	LOG_INFO(logger::info_level_e::ZERO, baseSuiteOverall,  "Test suite destructor");
 
 }
 
 const std::shared_ptr<base_factory::BaseFactory> base_suite::BaseSuite::getFactory() const {
-	QEXCEPTION_ACTION_COND((this->factory.expired() == true), throw,  "Unable to get factory bar for test " << QString::fromStdString(this->name) << " as it has already expired");
+	EXCEPTION_ACTION_COND((this->factory.expired() == true), throw,  "Unable to get factory bar for test " << this->name << " as it has already expired");
 	std::shared_ptr<base_factory::BaseFactory> testFactory = this->factory.lock();
-	QEXCEPTION_ACTION_COND((testFactory == nullptr), throw, "Factory is a nullptr - suite " << QString::fromStdString(this->name) << " must have a factory linked to it");
+	EXCEPTION_ACTION_COND((testFactory == nullptr), throw, "Factory is a nullptr - suite " << this->name << " must have a factory linked to it");
 
 	return testFactory;
 }
 
 const std::string & base_suite::BaseSuite::getName() const {
-	QEXCEPTION_ACTION_COND((this->name.empty() == true), throw, "Suite cannot have an empty name");
+	EXCEPTION_ACTION_COND((this->name.empty() == true), throw, "Suite cannot have an empty name");
 	return this->name;
 }
 

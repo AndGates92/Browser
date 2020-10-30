@@ -7,30 +7,29 @@
  */
 
 #include <iostream>
-// Qt libraries
-#include <QtCore/QtGlobal>
 
-#include "main_window_core.h"
+#include "cpp_operator.h"
 #include "exception_macros.h"
 #include "global_qfunctions.h"
 #include "function_macros.h"
+#include "main_window_core.h"
 
 // Categories
-Q_LOGGING_CATEGORY(mainWindowCoreOverall, "mainWindowCore.overall", MSG_TYPE_LEVEL)
-Q_LOGGING_CATEGORY(mainWindowCoreUserInput, "mainWindowCore.userInput", MSG_TYPE_LEVEL)
+LOGGING_CONTEXT(mainWindowCoreOverall, mainWindowCore.overall, TYPE_LEVEL, INFO_VERBOSITY)
+LOGGING_CONTEXT(mainWindowCoreUserInput, mainWindowCore.userInput, TYPE_LEVEL, INFO_VERBOSITY)
 
 main_window_core::MainWindowCore::MainWindowCore(QWidget * parent) : mainWidget(new QWidget(parent)), tabs(new main_window_tab_widget::MainWindowTabWidget(parent)), topMenuBar(new main_window_menu_bar::MainWindowMenuBar(parent)), popup(new main_window_popup_container::MainWindowPopupContainer(parent)), bottomStatusBar(new main_window_status_bar::MainWindowStatusBar(parent)), cmdMenu(new command_menu::CommandMenu(parent)), mainWindowState(main_window_shared_types::state_e::IDLE), offsetType(global_enums::offset_type_e::IDLE), userText(QString()) {
-	QINFO_PRINT(global_enums::qinfo_level_e::ZERO, mainWindowCoreOverall,  "Main window core constructor");
+	LOG_INFO(logger::info_level_e::ZERO, mainWindowCoreOverall,  "Main window core constructor");
 	this->topMenuBar->createMenus();
 }
 
 main_window_core::MainWindowCore::MainWindowCore(main_window_core::MainWindowCore && rhs) :  mainWidget(std::exchange(rhs.mainWidget, Q_NULLPTR)), tabs(std::exchange(rhs.tabs, Q_NULLPTR)), topMenuBar(std::exchange(rhs.topMenuBar, Q_NULLPTR)), popup(std::exchange(rhs.popup, Q_NULLPTR)), bottomStatusBar(std::exchange(rhs.bottomStatusBar, Q_NULLPTR)), cmdMenu(std::exchange(rhs.cmdMenu, Q_NULLPTR)), mainWindowState(std::exchange(rhs.mainWindowState, main_window_shared_types::state_e::IDLE)), offsetType(std::exchange(rhs.offsetType, global_enums::offset_type_e::IDLE)), userText(std::exchange(rhs.userText, QString())) {
-	QINFO_PRINT(global_enums::qinfo_level_e::ZERO, mainWindowCoreOverall,  "Move constructor main window core");
+	LOG_INFO(logger::info_level_e::ZERO, mainWindowCoreOverall,  "Move constructor main window core");
 }
 
 main_window_core::MainWindowCore & main_window_core::MainWindowCore::operator=(main_window_core::MainWindowCore && rhs) {
 
-	QINFO_PRINT(global_enums::qinfo_level_e::ZERO, mainWindowCoreOverall,  "Move assignment operator for main window core");
+	LOG_INFO(logger::info_level_e::ZERO, mainWindowCoreOverall,  "Move assignment operator for main window core");
 
 	if (&rhs != this) {
 		this->mainWidget = std::move(rhs.mainWidget);
@@ -60,7 +59,7 @@ main_window_core::MainWindowCore & main_window_core::MainWindowCore::operator=(m
 }
 
 main_window_core::MainWindowCore::~MainWindowCore() {
-	QINFO_PRINT(global_enums::qinfo_level_e::ZERO, mainWindowCoreOverall,  "Main window core destructor");
+	LOG_INFO(logger::info_level_e::ZERO, mainWindowCoreOverall,  "Main window core destructor");
 
 	// Reset pointers
 	this->cmdMenu.reset();
@@ -86,7 +85,7 @@ const QString main_window_core::MainWindowCore::getActionName() const {
 	actionNameText = actionNameText.toLower();
 	actionNameText = actionNameText.replace(QChar('_'), QChar(' '), Qt::CaseInsensitive);
 
-	QINFO_PRINT(global_enums::qinfo_level_e::ZERO, mainWindowCoreUserInput,  "State " << this->mainWindowState << " action text " << actionNameText);
+	LOG_INFO(logger::info_level_e::ZERO, mainWindowCoreUserInput,  "State " << this->mainWindowState << " action text " << actionNameText);
 
 	return actionNameText;
 }
@@ -111,7 +110,7 @@ void main_window_core::MainWindowCore::updateUserInput(const main_window_shared_
 			this->userText.clear();
 			break;
 		default:
-			QEXCEPTION_ACTION(throw, "Unknown action " << action);
+			EXCEPTION_ACTION(throw, "Unknown action " << action);
 			break;
 	}
 }

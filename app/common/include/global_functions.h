@@ -12,15 +12,13 @@
 #include <string>
 #include <list>
 
-#include "logging_macros.h"
+#include "macros.h"
 #include "exception_macros.h"
 
 /** @defgroup GlobalFunctionsGroup Global Functions Doxygen Group
  *  Global Functions
  *  @{
  */
-
-Q_DECLARE_LOGGING_CATEGORY(readFileOverall)
 
 namespace global_functions {
 
@@ -69,7 +67,7 @@ void global_functions::moveListElements(std::list<type> & l, const int & from, c
 		const int lSize = l.size();
 
 		auto fromIter = l.begin();
-		QEXCEPTION_ACTION_COND((lSize < from), throw,  "Trying to access element at position " << from << " of a list that has " << lSize << " elements");
+		EXCEPTION_ACTION_COND((lSize < from), throw,  "Trying to access element at position " << from << " of a list that has " << lSize << " elements");
 		std::advance(fromIter, from);
 
 		auto toAdjustedIter = l.begin();
@@ -83,7 +81,7 @@ void global_functions::moveListElements(std::list<type> & l, const int & from, c
 		// Result: cCopy a b
 		const int adjustment = (from < to) ? 1 : 0;
 		const int toAdjusted = to + adjustment;
-		QEXCEPTION_ACTION_COND((lSize < toAdjusted), throw,  "Trying to move element at position " << from << " to position " << to << " of a list that has " << lSize << " elements");
+		EXCEPTION_ACTION_COND((lSize < toAdjusted), throw,  "Trying to move element at position " << from << " to position " << to << " of a list that has " << lSize << " elements");
 		if (toAdjusted == lSize) {
 			toAdjustedIter = l.end();
 		} else {

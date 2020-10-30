@@ -7,9 +7,6 @@
  * @date 17th September 2020
  * @brief Command line argument header file
  */
-// Qt libraries
-// Required by qInfo
-#include <QtCore/QtDebug>
 
 #include <memory>
 #include <string>
@@ -21,8 +18,6 @@
  *  Command line argument functions and classes
  *  @{
  */
-
-Q_DECLARE_LOGGING_CATEGORY(commandLineArgumentOverall)
 
 namespace command_line_parser {
 	class CommandLineParser;

@@ -18,8 +18,6 @@
  *  @{
  */
 
-Q_DECLARE_LOGGING_CATEGORY(mainWindowWrapperOverall)
-
 namespace main_window_wrapper {
 
 	/**

@@ -6,9 +6,6 @@
  * @brief Json Action class functions
  */
 
-// Qt libraries
-#include <QtCore/QtGlobal>
-
 #include "json_action.h"
 
-Q_LOGGING_CATEGORY(jsonActionOverall, "jsonAction.overall", MSG_TYPE_LEVEL)
+LOGGING_CONTEXT(jsonActionOverall, jsonAction.overall, TYPE_LEVEL, INFO_VERBOSITY)

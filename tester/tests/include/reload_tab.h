@@ -7,9 +7,6 @@
  * @date 05th October 2020
  * @brief Reload tab header file
  */
-// Qt libraries
-// Required by qInfo
-#include <QtCore/QtDebug>
 
 #include "command_test.h"
 
@@ -17,9 +14,6 @@
  *  Reload tab functions and classes
  *  @{
  */
-
-Q_DECLARE_LOGGING_CATEGORY(reloadTabOverall)
-Q_DECLARE_LOGGING_CATEGORY(reloadTabTest)
 
 namespace reload_tab {
 

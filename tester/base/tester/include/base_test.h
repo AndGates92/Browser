@@ -7,9 +7,6 @@
  * @date 24th August 2020
  * @brief Base test header file
  */
-// Qt libraries
-// Required by qInfo
-#include <QtCore/QtDebug>
 
 #include <memory>
 #include <map>
@@ -26,10 +23,6 @@
  *  Base test functions and classes
  *  @{
  */
-
-Q_DECLARE_LOGGING_CATEGORY(baseTestOverall)
-Q_DECLARE_LOGGING_CATEGORY(baseTestTest)
-Q_DECLARE_LOGGING_CATEGORY(baseTestApp)
 
 namespace base_factory {
 	class BaseFactory;

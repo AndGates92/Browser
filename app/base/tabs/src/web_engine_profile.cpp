@@ -7,15 +7,14 @@
  */
 
 // Qt libraries
-#include <QtCore/QLoggingCategory>
 #include <QtGui/QKeyEvent>
 
-#include "logging_macros.h"
+#include "macros.h"
 #include "web_engine_profile.h"
 #include "exception_macros.h"
 
 // Categories
-Q_LOGGING_CATEGORY(webEngineProfileOverall, "webEngineProfile.overall", MSG_TYPE_LEVEL)
+LOGGING_CONTEXT(webEngineProfileOverall, webEngineProfile.overall, TYPE_LEVEL, INFO_VERBOSITY)
 
 web_engine_profile::WebEngineProfile * web_engine_profile::WebEngineProfile::defaultProfile() {
 
@@ -23,7 +22,7 @@ web_engine_profile::WebEngineProfile * web_engine_profile::WebEngineProfile::def
 		web_engine_profile::WebEngineProfile * profile = dynamic_cast<web_engine_profile::WebEngineProfile *>(QWebEngineProfile::defaultProfile());
 		return profile;
 	} catch (const std::bad_cast & badCastE) {
-		QEXCEPTION_ACTION(throw, badCastE.what());
+		EXCEPTION_ACTION(throw, badCastE.what());
 	}
 
 	return Q_NULLPTR;
@@ -31,11 +30,11 @@ web_engine_profile::WebEngineProfile * web_engine_profile::WebEngineProfile::def
 }
 
 web_engine_profile::WebEngineProfile::WebEngineProfile(QObject * parent, const QString & storageName): QWebEngineProfile(storageName, parent) {
-	QINFO_PRINT(global_enums::qinfo_level_e::ZERO, webEngineProfileOverall,  "Web engine profile constructor");
+	LOG_INFO(logger::info_level_e::ZERO, webEngineProfileOverall,  "Web engine profile constructor");
 
 }
 
 web_engine_profile::WebEngineProfile::~WebEngineProfile() {
-	QINFO_PRINT(global_enums::qinfo_level_e::ZERO, webEngineProfileOverall,  "Web engine profile destructor");
+	LOG_INFO(logger::info_level_e::ZERO, webEngineProfileOverall,  "Web engine profile destructor");
 
 }

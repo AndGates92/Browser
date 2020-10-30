@@ -9,20 +9,17 @@
 #include <string>
 
 // Qt libraries
-// Required by qInfo
-#include <QtCore/QtDebug>
-
 #include <QtWidgets/QVBoxLayout>
 #include <QtWidgets/QHBoxLayout>
 #include <QtWidgets/QLayoutItem>
 
-#include "logging_macros.h"
+#include "macros.h"
 #include "exception_macros.h"
 #include "secondary_window_utility.h"
 #include "find_button_window_settings.h"
 
 // Categories
-Q_LOGGING_CATEGORY(findButtonWindowSettingsOverall, "findButtonWindowSettings.overall", MSG_TYPE_LEVEL)
+LOGGING_CONTEXT(findButtonWindowSettingsOverall, findButtonWindowSettings.overall, TYPE_LEVEL, INFO_VERBOSITY)
 
 namespace find_button_window_settings {
 
@@ -50,7 +47,7 @@ namespace find_button_window_settings {
 
 find_button_window_settings::FindButtonWindowSettings::FindButtonWindowSettings(QWidget * parent) : QGroupBox("Settings", parent) {
 
-	QINFO_PRINT(global_enums::qinfo_level_e::ZERO, findButtonWindowSettingsOverall,  "Creating find button window settings");
+	LOG_INFO(logger::info_level_e::ZERO, findButtonWindowSettingsOverall,  "Creating find button window settings");
 
 	// Create action
 	this->createActions();
@@ -73,7 +70,7 @@ find_button_window_settings::FindButtonWindowSettings::FindButtonWindowSettings(
 }
 
 find_button_window_settings::FindButtonWindowSettings::~FindButtonWindowSettings() {
-	QINFO_PRINT(global_enums::qinfo_level_e::ZERO, findButtonWindowSettingsOverall,  "Destructor of FindButtonWindowSettings class");
+	LOG_INFO(logger::info_level_e::ZERO, findButtonWindowSettingsOverall,  "Destructor of FindButtonWindowSettings class");
 }
 
 void find_button_window_settings::FindButtonWindowSettings::widgetLayout() {
@@ -124,7 +121,7 @@ void find_button_window_settings::FindButtonWindowSettings::widgetLayout() {
 		layout->addWidget(this->matchFullWordOnlyBox.get(), find_button_window_settings::defaultStretch, Qt::AlignLeft);
 
 	} catch (const std::bad_cast & badCastE) {
-		QEXCEPTION_ACTION(throw, badCastE.what());
+		EXCEPTION_ACTION(throw, badCastE.what());
 	}
 }
 
@@ -147,7 +144,7 @@ void find_button_window_settings::FindButtonWindowSettings::fillWidget() {
 }
 
 void find_button_window_settings::FindButtonWindowSettings::connectSignals() {
-	QINFO_PRINT(global_enums::qinfo_level_e::ZERO, findButtonWindowSettingsOverall,  "Connect signals");
+	LOG_INFO(logger::info_level_e::ZERO, findButtonWindowSettingsOverall,  "Connect signals");
 
 }
 
@@ -178,7 +175,7 @@ bool find_button_window_settings::FindButtonWindowSettings::isMatchFullWordSearc
 
 global_enums::offset_type_e find_button_window_settings::FindButtonWindowSettings::getSearchDirection() const {
 	const int index = this->findDirectionDropDown->currentIndex();
-	QEXCEPTION_ACTION_COND((index == -1), throw, "Current index " << index << " is invalid to get the direction of search");
+	EXCEPTION_ACTION_COND((index == -1), throw, "Current index " << index << " is invalid to get the direction of search");
 	const QString text = this->findDirectionDropDown->itemText(index);
 	const auto & itemIt = std::find_if(this->directionItems.cbegin(), this->directionItems.cend(), [&] (const combo_box_find::ComboBoxFind & item) {
 		return (item.getText().compare(text.toStdString()) == 0);

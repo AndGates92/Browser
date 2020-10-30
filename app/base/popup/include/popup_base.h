@@ -10,7 +10,7 @@
 
 #include <memory>
 
-#include <QtCore/QLoggingCategory>
+// Qt libraries
 #include <QtWidgets/QWidget>
 #include <QtWidgets/QAction>
 #include <QtWidgets/QLabel>
@@ -24,8 +24,6 @@
  *  Popup base functions and classes
  *  @{
  */
-
-Q_DECLARE_LOGGING_CATEGORY(popupBaseOverall)
 
 namespace popup_base {
 

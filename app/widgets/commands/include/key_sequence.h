@@ -8,17 +8,15 @@
  * @brief Key Sequence header file
 */
 
-#include <QtCore/QLoggingCategory>
+// Qt libraries
 #include <QtGui/QKeySequence>
 #include <QtCore/QString>
+#include <QtCore/QVector>
 
 /** @defgroup KeySequenceGroup Key Sequence Doxygen Group
  *  Key Sequence functions and classes
  *  @{
  */
-
-Q_DECLARE_LOGGING_CATEGORY(keySequenceOverall)
-Q_DECLARE_LOGGING_CATEGORY(keySequenceString)
 
 namespace key_sequence {
 

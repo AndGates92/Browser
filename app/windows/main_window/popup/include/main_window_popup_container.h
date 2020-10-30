@@ -24,8 +24,6 @@
  *  @{
  */
 
-Q_DECLARE_LOGGING_CATEGORY(mainWindowPopupContainerOverall)
-
 namespace main_window_popup_container {
 
 	Q_NAMESPACE
@@ -153,14 +151,14 @@ namespace main_window_popup_container {
 template<class PopupClass>
 std::shared_ptr<PopupClass> main_window_popup_container::MainWindowPopupContainer::getPopup(const unsigned int index) const {
 	std::shared_ptr<popup_properties::PopupProperties> widget = std::dynamic_pointer_cast<popup_properties::PopupProperties>(this->getWidget(index));
-	QEXCEPTION_ACTION_COND((widget == nullptr), throw, "Unable to find widget " << index);
+	EXCEPTION_ACTION_COND((widget == nullptr), throw, "Unable to find widget " << index);
 	std::shared_ptr<PopupClass> popup = nullptr;
 
 	if (widget != Q_NULLPTR) {
 		try {
 			popup = std::dynamic_pointer_cast<PopupClass>(widget);
 		} catch (const std::bad_cast & badCastE) {
-			QEXCEPTION_ACTION(throw, badCastE.what());
+			EXCEPTION_ACTION(throw, badCastE.what());
 		}
 	}
 

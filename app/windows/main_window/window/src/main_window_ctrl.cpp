@@ -7,20 +7,17 @@
  */
 
 // Qt libraries
-#include <QtCore/QtGlobal>
 #include <QtGui/QKeyEvent>
 
-// Required by qInfo
-#include <QtCore/QtDebug>
-
+#include "cpp_operator.h"
+#include "exception_macros.h"
 #include "key_sequence.h"
 #include "main_window_ctrl.h"
-#include "exception_macros.h"
 
 // Categories
-Q_LOGGING_CATEGORY(mainWindowCtrlOverall, "mainWindowCtrl.overall", MSG_TYPE_LEVEL)
-Q_LOGGING_CATEGORY(mainWindowCtrlUserInput, "mainWindowCtrl.userInput", MSG_TYPE_LEVEL)
-Q_LOGGING_CATEGORY(mainWindowCtrlSearch, "mainWindowCtrl.search", MSG_TYPE_LEVEL)
+LOGGING_CONTEXT(mainWindowCtrlOverall, mainWindowCtrl.overall, TYPE_LEVEL, INFO_VERBOSITY)
+LOGGING_CONTEXT(mainWindowCtrlUserInput, mainWindowCtrl.userInput, TYPE_LEVEL, INFO_VERBOSITY)
+LOGGING_CONTEXT(mainWindowCtrlSearch, mainWindowCtrl.search, TYPE_LEVEL, INFO_VERBOSITY)
 
 namespace main_window_ctrl {
 
@@ -64,13 +61,13 @@ main_window_ctrl::MainWindowCtrl::~MainWindowCtrl() {
 }
 
 void main_window_ctrl::MainWindowCtrl::createExtraShortcuts() {
-	QINFO_PRINT(global_enums::qinfo_level_e::ZERO, mainWindowCtrlOverall,  "Create shortcuts");
+	LOG_INFO(logger::info_level_e::ZERO, mainWindowCtrlOverall,  "Create shortcuts");
 
 }
 
 void main_window_ctrl::MainWindowCtrl::connectExtraSignals() {
 
-	QINFO_PRINT(global_enums::qinfo_level_e::ZERO, mainWindowCtrlOverall,  "Connect signals");
+	LOG_INFO(logger::info_level_e::ZERO, mainWindowCtrlOverall,  "Connect signals");
 
 	connect(this->core->topMenuBar->getFileMenu()->exitAction.get(), &QAction::triggered, this, &main_window_ctrl::MainWindowCtrl::closeWindow);
 	connect(this->core->popup.get(), &main_window_popup_container::MainWindowPopupContainer::closeContainer,  [this] () {
@@ -89,7 +86,7 @@ void main_window_ctrl::MainWindowCtrl::actionOnReleasedKey(const main_window_sha
 	if (event->type() == QEvent::KeyRelease) {
 
 		// Retrieve main window controller state
-		QINFO_PRINT(global_enums::qinfo_level_e::ZERO, mainWindowCtrlUserInput,  "State " << windowState << " key " << keySeq.toString());
+		LOG_INFO(logger::info_level_e::ZERO, mainWindowCtrlUserInput,  "State " << windowState << " key " << keySeq.toString());
 
 		switch (releasedKey) {
 			default:
@@ -113,7 +110,7 @@ void main_window_ctrl::MainWindowCtrl::executeAction(const main_window_shared_ty
 			this->executeCommand(userTypedText, main_window_shared_types::state_postprocessing_e::ACTION);
 			break;
 		default:
-			QINFO_PRINT(global_enums::qinfo_level_e::ZERO, mainWindowCtrlUserInput,  "User typed text " << userTypedText);
+			LOG_INFO(logger::info_level_e::ZERO, mainWindowCtrlUserInput,  "User typed text " << userTypedText);
 			break;
 	}
 }
@@ -139,7 +136,7 @@ void main_window_ctrl::MainWindowCtrl::prepareAction(const main_window_shared_ty
 			this->printUserInput(main_window_shared_types::text_action_e::CLEAR);
 			break;
 		default:
-			QINFO_PRINT(global_enums::qinfo_level_e::ZERO, mainWindowCtrlUserInput,  "Window in state " << windowState << " Key pressed is " << event->text() << "(ID " << pressedKey << ")");
+			LOG_INFO(logger::info_level_e::ZERO, mainWindowCtrlUserInput,  "Window in state " << windowState << " Key pressed is " << event->text() << "(ID " << pressedKey << ")");
 			break;
 	}
 }
@@ -150,14 +147,14 @@ void main_window_ctrl::MainWindowCtrl::toggleShowMenubar() {
 }
 
 void main_window_ctrl::MainWindowCtrl::closeWindow() {
-	QINFO_PRINT(global_enums::qinfo_level_e::ZERO, mainWindowCtrlOverall,  "Close slot: exiting from the browser");
+	LOG_INFO(logger::info_level_e::ZERO, mainWindowCtrlOverall,  "Close slot: exiting from the browser");
 	emit this->closeWindowSignal();
 }
 
 void main_window_ctrl::MainWindowCtrl::postprocessWindowStateChange(const main_window_shared_types::state_e & previousState) {
 	const main_window_shared_types::state_e windowState = this->core->getMainWindowState();
 
-	QINFO_PRINT(global_enums::qinfo_level_e::ZERO, mainWindowCtrlOverall,  "Previous windowState " << previousState << " and current windowState " << windowState );
+	LOG_INFO(logger::info_level_e::ZERO, mainWindowCtrlOverall,  "Previous windowState " << previousState << " and current windowState " << windowState );
 
 	switch (windowState) {
 		case main_window_shared_types::state_e::IDLE:
@@ -176,7 +173,7 @@ void main_window_ctrl::MainWindowCtrl::postprocessWindowStateChange(const main_w
 			this->setFocus();
 			break;
 		default: 
-			QEXCEPTION_ACTION(throw, "Unable to postprocess transaction to " << windowState << " is valid as state " << windowState << " doesn't have a defined postprocess action");
+			EXCEPTION_ACTION(throw, "Unable to postprocess transaction to " << windowState << " is valid as state " << windowState << " doesn't have a defined postprocess action");
 			break;
 	}
 }
@@ -197,7 +194,7 @@ bool main_window_ctrl::MainWindowCtrl::isValidWindowState(const main_window_shar
 			isValid = (windowState == main_window_shared_types::state_e::IDLE);
 			break;
 		default: 
-			QEXCEPTION_ACTION(throw, "Unable to determine whether transaction from " << windowState << " to " << requestedWindowState << " is valid");
+			EXCEPTION_ACTION(throw, "Unable to determine whether transaction from " << windowState << " to " << requestedWindowState << " is valid");
 			break;
 	}
 

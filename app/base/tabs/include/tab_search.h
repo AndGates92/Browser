@@ -9,11 +9,6 @@
 */
 
 // Qt libraries
-// Required by qInfo
-#include <QtCore/QtDebug>
-
-#include <QtCore/QLoggingCategory>
-
 #include <QtCore/QString>
 #include <QtWebEngineWidgets/QWebEnginePage>
 
@@ -26,9 +21,6 @@
  *  Tab Search functions and classes
  *  @{
  */
-
-Q_DECLARE_LOGGING_CATEGORY(tabSearchOverall)
-Q_DECLARE_LOGGING_CATEGORY(tabSearchFind)
 
 namespace tab {
 	class Tab;

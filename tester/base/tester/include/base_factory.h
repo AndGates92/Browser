@@ -8,10 +8,6 @@
  * @brief Base factory header file
  */
 
-// Qt libraries
-// Required by qInfo
-#include <QtCore/QtDebug>
-
 #include <memory>
 #include <set>
 
@@ -24,8 +20,6 @@
  *  Base factory functions and classes
  *  @{
  */
-
-Q_DECLARE_LOGGING_CATEGORY(baseFactoryOverall)
 
 namespace base_test {
 	class BaseTest;

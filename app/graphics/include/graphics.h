@@ -8,10 +8,6 @@
  * @brief Graphics header file
 */
 
-#include <QtCore/QLoggingCategory>
-
-Q_DECLARE_LOGGING_CATEGORY(graphicsOverall)
-
 /** @defgroup GraphicsGroup Graphics Doxygen Group
  *  Graphics functions and classes
  *  @{

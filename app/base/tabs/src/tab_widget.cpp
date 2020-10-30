@@ -7,20 +7,20 @@
  */
 
 // Qt libraries
-#include <QtCore/QLoggingCategory>
 #include <QtGui/QResizeEvent>
 #include <QtGui/QKeyEvent>
 
+#include "cpp_operator.h"
 #include "function_macros.h"
 #include "exception_macros.h"
 #include "tab_widget.h"
 
 // Categories
-Q_LOGGING_CATEGORY(tabWidgetOverall, "tabWidget.overall", MSG_TYPE_LEVEL)
-Q_LOGGING_CATEGORY(tabWidgetSize, "tabWidget.size", MSG_TYPE_LEVEL)
-Q_LOGGING_CATEGORY(tabWidgetSearch, "tabWidget.search", MSG_TYPE_LEVEL)
-Q_LOGGING_CATEGORY(tabWidgetVisibility, "tabWidget.visibility", MSG_TYPE_LEVEL)
-Q_LOGGING_CATEGORY(tabWidgetTabs, "tabWidget.tabs", MSG_TYPE_LEVEL)
+LOGGING_CONTEXT(tabWidgetOverall, tabWidget.overall, TYPE_LEVEL, INFO_VERBOSITY)
+LOGGING_CONTEXT(tabWidgetSize, tabWidget.size, TYPE_LEVEL, INFO_VERBOSITY)
+LOGGING_CONTEXT(tabWidgetSearch, tabWidget.search, TYPE_LEVEL, INFO_VERBOSITY)
+LOGGING_CONTEXT(tabWidgetVisibility, tabWidget.visibility, TYPE_LEVEL, INFO_VERBOSITY)
+LOGGING_CONTEXT(tabWidgetTabs, tabWidget.tabs, TYPE_LEVEL, INFO_VERBOSITY)
 
 namespace tab_widget {
 
@@ -41,7 +41,7 @@ namespace tab_widget {
 }
 
 tab_widget::TabWidget::TabWidget(QWidget * parent): QTabWidget(parent) {
-	QINFO_PRINT(global_enums::qinfo_level_e::ZERO, tabWidgetOverall,  "Tab widget constructor");
+	LOG_INFO(logger::info_level_e::ZERO, tabWidgetOverall,  "Tab widget constructor");
 	this->setMovable(true);
 	this->setMinimumHeight(tab_widget::minHeight);
 	this->setMinimumWidth(tab_widget::minWidth);
@@ -56,7 +56,7 @@ tab_widget::TabWidget::TabWidget(QWidget * parent): QTabWidget(parent) {
 }
 
 tab_widget::TabWidget::~TabWidget() {
-	QINFO_PRINT(global_enums::qinfo_level_e::ZERO, tabWidgetOverall,  "Tab widget destructor");
+	LOG_INFO(logger::info_level_e::ZERO, tabWidgetOverall,  "Tab widget destructor");
 }
 
 void tab_widget::TabWidget::setTabBar(std::shared_ptr<tab_bar::TabBar> newTabBar) {
@@ -68,7 +68,7 @@ CONST_GETTER(tab_widget::TabWidget::tabBar, std::shared_ptr<tab_bar::TabBar> &, 
 void tab_widget::TabWidget::resizeEvent(QResizeEvent * event) {
 	QSize previousSize(event->oldSize());
 	QSize newSize(event->size());
-	QINFO_PRINT(global_enums::qinfo_level_e::ZERO, tabWidgetSize,  "Tab widget resize from " << previousSize << " to " << newSize);
+	LOG_INFO(logger::info_level_e::ZERO, tabWidgetSize,  "Tab widget resize from " << previousSize << " to " << newSize);
 	int widgetWidth = this->size().width();
 	this->bar->setWidth(widgetWidth);
 
@@ -90,14 +90,14 @@ void tab_widget::TabWidget::keyPressEvent(QKeyEvent * event) {
 		userText = "No text provided";
 	}
 
-	QINFO_PRINT(global_enums::qinfo_level_e::ZERO, tabWidgetSearch,  "User typed text " << userText << " to search");
+	LOG_INFO(logger::info_level_e::ZERO, tabWidgetSearch,  "User typed text " << userText << " to search");
 
 	QTabWidget::keyPressEvent(event);
 
 }
 
 int tab_widget::TabWidget::addTab(const std::shared_ptr<tab::Tab> & newTab, const QString & label, const QIcon & icon) {
-	QINFO_PRINT(global_enums::qinfo_level_e::ZERO, tabWidgetTabs,  "Open tab with label " << label);
+	LOG_INFO(logger::info_level_e::ZERO, tabWidgetTabs,  "Open tab with label " << label);
 
 	const int index = this->count();
 
@@ -107,11 +107,11 @@ int tab_widget::TabWidget::addTab(const std::shared_ptr<tab::Tab> & newTab, cons
 }
 
 int tab_widget::TabWidget::insertTab(const int & index, const std::shared_ptr<tab::Tab> & newTab, const QString & label, const QIcon & icon) {
-	QINFO_PRINT(global_enums::qinfo_level_e::ZERO, tabWidgetTabs,  "Insert tab with label " << label << " at position " << index);
+	LOG_INFO(logger::info_level_e::ZERO, tabWidgetTabs,  "Insert tab with label " << label << " at position " << index);
 
 	int tabIndex = -1;
 
-	QEXCEPTION_ACTION_COND((index > this->count()), throw,  "Unable to add tab at index " << index << ". Valid range for argument index is 0 to " << this->count());
+	EXCEPTION_ACTION_COND((index > this->count()), throw,  "Unable to add tab at index " << index << ". Valid range for argument index is 0 to " << this->count());
 
 	// Inserting tab into the vector before inserting to the QTabWidget because it will trigger an update of the status bar
 	std::vector<std::shared_ptr<tab::Tab>>::const_iterator tabsBegin = this->tabs.cbegin();
@@ -123,7 +123,7 @@ int tab_widget::TabWidget::insertTab(const int & index, const std::shared_ptr<ta
 		tabIndex = QTabWidget::insertTab(index, newTab.get(), label);
 	}
 
-	QEXCEPTION_ACTION_COND((this->tabs.size() != static_cast<std::vector<std::shared_ptr<tab::Tab>>::size_type>(this->count())), throw,  "Number of tabs is not synchronized between QTabWidget and TabWidget. Number of tabs in QTabWidget is " << this->count() << ". Number of tabs in TabWidget is " << this->tabs.size());
+	EXCEPTION_ACTION_COND((this->tabs.size() != static_cast<std::vector<std::shared_ptr<tab::Tab>>::size_type>(this->count())), throw,  "Number of tabs is not synchronized between QTabWidget and TabWidget. Number of tabs in QTabWidget is " << this->count() << ". Number of tabs in TabWidget is " << this->tabs.size());
 
 	this->setVisibleAttribute();
 
@@ -131,7 +131,7 @@ int tab_widget::TabWidget::insertTab(const int & index, const std::shared_ptr<ta
 }
 
 void tab_widget::TabWidget::removeTab(const int & index) {
-	QINFO_PRINT(global_enums::qinfo_level_e::ZERO, tabWidgetTabs,  "Close tab " << index);
+	LOG_INFO(logger::info_level_e::ZERO, tabWidgetTabs,  "Close tab " << index);
 	QTabWidget::removeTab(index);
 	this->setVisibleAttribute();
 }
@@ -144,7 +144,7 @@ void tab_widget::TabWidget::setVisibleAttribute() {
 	} else {
 		visibleFlag = true;
 	}
-	QINFO_PRINT(global_enums::qinfo_level_e::ZERO, tabWidgetVisibility,  "Set visibility of tab widget to " << visibleFlag);
+	LOG_INFO(logger::info_level_e::ZERO, tabWidgetVisibility,  "Set visibility of tab widget to " << visibleFlag);
 	this->setVisible(visibleFlag);
 }
 
@@ -153,10 +153,10 @@ std::shared_ptr<tab::Tab> tab_widget::TabWidget::widget(const int & index, const
 	try {
 		requestedWidget = this->tabs.at(index);
 	} catch (std::out_of_range const & outOfRangeE) {
-		QEXCEPTION_ACTION(throw, outOfRangeE.what());
+		EXCEPTION_ACTION(throw, outOfRangeE.what());
 	}
 
-	QEXCEPTION_ACTION_COND(((checkError == true) && (requestedWidget == nullptr)), throw,  "Unable to get widget for the tab at index " << index);
+	EXCEPTION_ACTION_COND(((checkError == true) && (requestedWidget == nullptr)), throw,  "Unable to get widget for the tab at index " << index);
 
 	return requestedWidget;
 }

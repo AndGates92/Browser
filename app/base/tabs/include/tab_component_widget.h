@@ -12,15 +12,10 @@
 #include <list>
 
 // Qt libraries
-// Required by qInfo
-#include <QtCore/QtDebug>
-
-#include <QtCore/QLoggingCategory>
-
 #include <QtWidgets/QWidget>
 
 #include "global_enums.h"
-#include "logging_macros.h"
+#include "macros.h"
 #include "function_macros.h"
 #include "tab_shared_types.h"
 #include "constructor_macros.h"
@@ -31,12 +26,12 @@
  *  @{
  */
 
+EXPORT_CONTEXT(tabComponentWidgetOverall)
+
 namespace tab {
 	class Tab;
 }
 
-
-Q_DECLARE_LOGGING_CATEGORY(tabComponentWidgetOverall)
 
 namespace tab_component_widget {
 
@@ -153,7 +148,7 @@ namespace tab_component_widget {
 
 template<typename type>
 tab_component_widget::TabComponentWidget<type>::TabComponentWidget(QWidget * parent, std::weak_ptr<tab::Tab> attachedTab): QWidget(parent) {
-	QINFO_PRINT(global_enums::qinfo_level_e::ZERO, tabComponentWidgetOverall,  "TabComponentWidget constructor");
+	LOG_INFO(logger::info_level_e::ZERO, tabComponentWidgetOverall,  "TabComponentWidget constructor");
 
 	this->browserTab.reset();
 
@@ -165,7 +160,7 @@ tab_component_widget::TabComponentWidget<type>::TabComponentWidget(QWidget * par
 
 template<typename type>
 tab_component_widget::TabComponentWidget<type>::~TabComponentWidget() {
-	QINFO_PRINT(global_enums::qinfo_level_e::ZERO, tabComponentWidgetOverall,  "TabComponentWidget destructor");
+	LOG_INFO(logger::info_level_e::ZERO, tabComponentWidgetOverall,  "TabComponentWidget destructor");
 }
 
 template<typename type>
@@ -174,7 +169,7 @@ void tab_component_widget::TabComponentWidget<type>::setTab(std::weak_ptr<QWidge
 		std::weak_ptr<tab::Tab> thisTab = std::static_pointer_cast<tab::Tab>(newTab.lock());
 		this->setTab(thisTab);
 	} catch (const std::bad_cast & badCastE) {
-		QEXCEPTION_ACTION(throw, badCastE.what());
+		EXCEPTION_ACTION(throw, badCastE.what());
 	}
 }
 

@@ -11,12 +11,17 @@
 #include <unordered_map>
 #include <functional>
 
-#include <QtCore/QLoggingCategory>
+// Qt libraries
 #include <QtGui/QKeySequence>
 #include <QtCore/QString>
 
+/** @defgroup KeyInfoGroup Key Info Doxygen Group
+ *  Key Info functions and classes
+ *  @{
+ */
+
 /**
- * @brief QINFO_PRINT(KEY, STR)
+ * @brief ADD_KEY_TO_MAP(KEY, STR)
  *
  * \param KEY  : key name
  * \param STR  : string to be printed when the key is pressed
@@ -25,14 +30,6 @@
  */
 #define ADD_KEY_TO_MAP(KEY, STR)\
 	{ Qt::Key_##KEY, #STR }
-
-/** @defgroup KeyInfoGroup Key Info Doxygen Group
- *  Key Info functions and classes
- *  @{
- */
-
-Q_DECLARE_LOGGING_CATEGORY(keyInfoOverall)
-Q_DECLARE_LOGGING_CATEGORY(keyInfoString)
 
 namespace key_info {
 

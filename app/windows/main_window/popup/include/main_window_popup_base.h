@@ -20,8 +20,6 @@
  *  @{
  */
 
-Q_DECLARE_LOGGING_CATEGORY(mainWindowPopupBaseOverall)
-
 namespace main_window_popup_base {
 
 	/**

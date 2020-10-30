@@ -7,29 +7,28 @@
  */
 
 // Qt libraries
-#include <QtCore/QtGlobal>
 #include <QtWidgets/QShortcut>
 
 #include "qt_operator.h"
 #include "global_enums.h"
 #include "global_functions.h"
 #include "global_qfunctions.h"
-#include "logging_macros.h"
+#include "macros.h"
 #include "main_window_shared_types.h"
 #include "main_window_json_action.h"
 #include "key_sequence.h"
 
-Q_LOGGING_CATEGORY(mainWindowJsonActionOverall, "mainWindowJsonAction.overall", MSG_TYPE_LEVEL)
+LOGGING_CONTEXT(mainWindowJsonActionOverall, mainWindowJsonAction.overall, TYPE_LEVEL, INFO_VERBOSITY)
 
 main_window_json_action::MainWindowJsonAction::MainWindowJsonAction(const QString & jsonFileName) : json_action::JsonAction<main_window_json_data::MainWindowJsonData>(jsonFileName) {
-	QINFO_PRINT(global_enums::qinfo_level_e::ZERO, mainWindowJsonActionOverall,  "Main window json action classe constructor");
+	LOG_INFO(logger::info_level_e::ZERO, mainWindowJsonActionOverall,  "Main window json action classe constructor");
 
 	this->populateActionData();
 
 }
 
 main_window_json_action::MainWindowJsonAction::~MainWindowJsonAction() {
-	QINFO_PRINT(global_enums::qinfo_level_e::ZERO, mainWindowJsonActionOverall,  "Main window json action class destructor");
+	LOG_INFO(logger::info_level_e::ZERO, mainWindowJsonActionOverall,  "Main window json action class destructor");
 }
 
 // TODO handle shortcuts with multiple keys
@@ -61,7 +60,7 @@ std::string main_window_json_action::MainWindowJsonAction::getShortcutKey(const 
 			// If string contains only 1 backslash
 			keyName.append("Key_Slash");
 		} else {
-			QEXCEPTION_ACTION(throw,  "Value in JSON file " << value << " is not alphanumeric and lowercase ");
+			EXCEPTION_ACTION(throw,  "Value in JSON file " << value << " is not alphanumeric and lowercase ");
 		}
 	}
 
@@ -94,7 +93,7 @@ void main_window_json_action::MainWindowJsonAction::addItemToActionData(std::uni
 
 	if (key.compare("State") == 0) {
 		state = global_qfunctions::qStringToQEnum<main_window_shared_types::state_e>(QString::fromStdString(item));
-		QEXCEPTION_ACTION_COND(((int)state == -1), throw, "Unable to match state enumerator for state " << QString::fromStdString(item));
+		EXCEPTION_ACTION_COND(((int)state == -1), throw, "Unable to match state enumerator for state " << item);
 		valuePtr = &state;
 	} else if (key.compare("Shortcut") == 0) {
 		// Get key

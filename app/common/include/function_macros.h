@@ -187,7 +187,7 @@ ARGTYPE * FNAME() const { \
 		ARGTYPE * ptr = dynamic_cast<ARGTYPE *>(VAR); \
 		return ptr; \
 	} catch (const std::bad_cast & badCastE) { \
-		QEXCEPTION_ACTION(throw, badCastE.what()); \
+		EXCEPTION_ACTION(throw, badCastE.what()); \
 	} \
 	return nullptr; \
 }
@@ -260,7 +260,7 @@ std::shared_ptr<ARGTYPE> FNAME() const { \
 		std::shared_ptr<ARGTYPE> ptr(dynamic_cast<ARGTYPE *>(VAR)); \
 		return ptr; \
 	} catch (const std::bad_cast & badCastE) { \
-		QEXCEPTION_ACTION(throw, badCastE.what()); \
+		EXCEPTION_ACTION(throw, badCastE.what()); \
 	} \
 	return nullptr; \
 }
@@ -280,7 +280,7 @@ std::shared_ptr<ARGTYPE> FNAME() const { \
 		std::shared_ptr<ARGTYPE> ptr = std::dynamic_pointer_cast<ARGTYPE>(VAR); \
 		return ptr; \
 	} catch (const std::bad_cast & badCastE) { \
-		QEXCEPTION_ACTION(throw, badCastE.what()); \
+		EXCEPTION_ACTION(throw, badCastE.what()); \
 	} \
 	return nullptr; \
 }

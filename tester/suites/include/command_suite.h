@@ -8,10 +8,6 @@
  * @brief Command suite header file
  */
 
-// Qt libraries
-// Required by qInfo
-#include <QtCore/QtDebug>
-
 #include <memory>
 
 #include "constructor_macros.h"
@@ -22,8 +18,6 @@
  *  Command suite functions and classes
  *  @{
  */
-
-Q_DECLARE_LOGGING_CATEGORY(commandSuiteOverall)
 
 namespace command_suite {
 

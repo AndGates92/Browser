@@ -7,9 +7,6 @@
  * @date 30th August 2020
  * @brief Launch app header file
  */
-// Qt libraries
-// Required by qInfo
-#include <QtCore/QtDebug>
 
 #include "command_test.h"
 
@@ -17,9 +14,6 @@
  *  Launch app functions and classes
  *  @{
  */
-
-Q_DECLARE_LOGGING_CATEGORY(launchAppOverall)
-Q_DECLARE_LOGGING_CATEGORY(launchAppTest)
 
 namespace launch_app {
 

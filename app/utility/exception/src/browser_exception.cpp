@@ -6,27 +6,24 @@
  * @brief Browser exception functions
  */
 
-// Qt libraries
-#include <QtCore/QtGlobal>
-
-// Required by qInfo
-#include <QtCore/QtDebug>
+#include <iostream>
 
 #include "function_macros.h"
-#include "logging_macros.h"
+#include "macros.h"
 #include "global_enums.h"
+#include "qt_operator.h"
 #include "browser_exception.h"
 
 // Categories
-Q_LOGGING_CATEGORY(browserExceptionOverall, "browserException.overall", MSG_TYPE_LEVEL)
-Q_LOGGING_CATEGORY(browserExceptionPrint, "browserException.print", MSG_TYPE_LEVEL)
+LOGGING_CONTEXT(browserExceptionOverall, browserException.overall, TYPE_LEVEL, INFO_VERBOSITY)
+LOGGING_CONTEXT(browserExceptionPrint, browserException.print, TYPE_LEVEL, INFO_VERBOSITY)
 
-browser_exception::BrowserException::BrowserException(const QString exceptionTimestamp, const int & exceptionLine, const QString & exceptionFile, const QString & exceptionCondition, const QString & exceptionMsg) : timestamp(exceptionTimestamp), line(exceptionLine), filename(exceptionFile), condition(exceptionCondition), message(exceptionMsg) {
-	QINFO_PRINT(global_enums::qinfo_level_e::ZERO, browserExceptionOverall, "Browser exception is being created with message " << this->message);
+browser_exception::BrowserException::BrowserException(const std::string exceptionTimestamp, const int & exceptionLine, const std::string & exceptionFile, const std::string & exceptionCondition, const std::string & exceptionMsg) : timestamp(exceptionTimestamp), line(exceptionLine), filename(exceptionFile), condition(exceptionCondition), message(exceptionMsg) {
+	LOG_INFO(logger::info_level_e::ZERO, browserExceptionOverall, "Browser exception is being created with message " << this->message);
 }
 
 browser_exception::BrowserException::~BrowserException() {
-	QINFO_PRINT(global_enums::qinfo_level_e::ZERO, browserExceptionOverall, "Destroy browser exception with message " << this->message);
+	LOG_INFO(logger::info_level_e::ZERO, browserExceptionOverall, "Destroy browser exception with message " << this->message);
 }
 
 void browser_exception::BrowserException::raise() const {
@@ -38,30 +35,29 @@ browser_exception::BrowserException * browser_exception::BrowserException::clone
 	return clonedException;
 }
 
-QString browser_exception::BrowserException::print() const {
-	QINFO_PRINT(global_enums::qinfo_level_e::ZERO, browserExceptionPrint, "Print exception message: " << this->message);
-	QString str = QString();
-	QTextStream(&str) << "[" << this->timestamp << "] Exception caught on file " << this->filename << " at line " << this->line;
-	if (this->condition.isEmpty() == false) {
-		QTextStream(&str) << " for condition" << this->condition;
+std::string browser_exception::BrowserException::print() const {
+	LOG_INFO(logger::info_level_e::ZERO, browserExceptionPrint, "Print exception message: " << this->message);
+	std::stringstream msgStream;
+	msgStream << "[" << this->timestamp << "] Exception caught on file " << this->filename << " at line " << this->line;
+	if (this->condition.empty() == false) {
+		msgStream << " for condition" << this->condition;
 	}
-	QTextStream(&str) << " : " << this->message;
-	return str;
+	msgStream << ": " << this->message;
+	return msgStream.str();
 }
 
-void browser_exception::printException(QString message) {
-	QTextStream errStream(stderr);
-	// Qt::endl write a carriage return and flushed the stream
-	errStream << "Exception caught: " << message;
-	#if QT_VERSION >= QT_VERSION_CHECK(5, 15, 0)
-	errStream << Qt::endl;
-	#else
-	errStream << endl;
-	#endif
+const char * browser_exception::BrowserException::what() const noexcept {
+	return this->print().c_str();
 }
 
 CONST_GETTER(browser_exception::BrowserException::getLine, int &, this->line)
-CONST_GETTER(browser_exception::BrowserException::getFilename, QString &, this->filename)
-CONST_GETTER(browser_exception::BrowserException::getCondition, QString &, this->condition)
-CONST_GETTER(browser_exception::BrowserException::getTimestamp, QString &, this->timestamp)
-CONST_GETTER(browser_exception::BrowserException::getMessage, QString &, this->message)
+CONST_GETTER(browser_exception::BrowserException::getFilename, std::string &, this->filename)
+CONST_GETTER(browser_exception::BrowserException::getCondition, std::string &, this->condition)
+CONST_GETTER(browser_exception::BrowserException::getTimestamp, std::string &, this->timestamp)
+CONST_GETTER(browser_exception::BrowserException::getMessage, std::string &, this->message)
+
+void browser_exception::printException(std::string message) {
+	std::cerr << "Exception caught: " << message;
+	// std::endl write a carriage return and flushed the stream
+	std::cerr << std::endl;
+}

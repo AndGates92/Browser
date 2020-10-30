@@ -8,9 +8,7 @@
  * @brief JSON Parser header file
 */
 
-#include <QtCore/QtDebug>
-#include <QtCore/QLoggingCategory>
-
+// Qt libraries
 #include <QtCore/QString>
 
 #include "json_wrapper.h"
@@ -19,10 +17,6 @@
  *  JSON Parser control functions and classes
  *  @{
  */
-
-Q_DECLARE_LOGGING_CATEGORY(jsonParserOverall)
-Q_DECLARE_LOGGING_CATEGORY(jsonParserFileContent)
-Q_DECLARE_LOGGING_CATEGORY(jsonParserValue)
 
 namespace json_parser {
 

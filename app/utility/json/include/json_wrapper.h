@@ -8,8 +8,7 @@
  * @brief JSON Wrapper header file
 */
 
-#include <QtCore/QtDebug>
-#include <QtCore/QLoggingCategory>
+// Qt libraries
 #include <QtCore/QJsonValue>
 
 #include <QtCore/QString>
@@ -21,10 +20,6 @@
  *  JSON Wrapper control functions and classes
  *  @{
  */
-
-Q_DECLARE_LOGGING_CATEGORY(jsonWrapperOverall)
-Q_DECLARE_LOGGING_CATEGORY(jsonWrapperFile)
-Q_DECLARE_LOGGING_CATEGORY(jsonWrapperFileContent)
 
 namespace json_wrapper {
 

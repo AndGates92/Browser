@@ -8,38 +8,35 @@
  * @brief Browser exception functions
  */
 
-#include <QtCore/QLoggingCategory>
-#include <QtCore/QException>
+#include <sstream>
+#include <exception>
 
 /** @defgroup BrowserExceptionGroup Browser Exception Doxygen Group
  *  Browser Exception functions and classes
  *  @{
  */
 
-Q_DECLARE_LOGGING_CATEGORY(browserExceptionOverall)
-Q_DECLARE_LOGGING_CATEGORY(browserExceptionPrint)
-
 namespace browser_exception {
 
 	/**
-	 * @brief Function: void printException(QString message)
+	 * @brief Function: void printException(std::string message)
 	 *
 	 * \param message: message of the exception
 	 *
 	 * Print message on stderr
 	 */
-	void printException(QString message);
+	void printException(std::string message);
 
 	/**
 	 * @brief BrowserException class
 	 *
 	 */
-	class BrowserException final : public QException {
+	class BrowserException final : public std::exception {
 
 		public:
 
 			/**
-			 * @brief Function: explicit BrowserException(const QString exceptionTimestamp, const int & exceptionLine, const QString & exceptionFile, const QString & exceptionCondition, const QString & exceptionMsg)
+			 * @brief Function: explicit BrowserException(const std::string exceptionTimestamp, const int & exceptionLine, const std::string & exceptionFile, const std::string & exceptionCondition, const std::string & exceptionMsg)
 			 *
 			 * \param exceptionTimestamp: timestamp when the exception was created
 			 * \param exceptionLine: line where the exception was triggered
@@ -49,7 +46,7 @@ namespace browser_exception {
 			 *
 			 * Browser exception constructor
 			 */
-			explicit BrowserException(const QString exceptionTimestamp, const int & exceptionLine, const QString & exceptionFile, const QString & exceptionCondition, const QString & exceptionMsg);
+			explicit BrowserException(const std::string exceptionTimestamp, const int & exceptionLine, const std::string & exceptionFile, const std::string & exceptionCondition, const std::string & exceptionMsg);
 
 			/**
 			 * @brief Function: virtual ~BrowserException()
@@ -59,36 +56,47 @@ namespace browser_exception {
 			virtual ~BrowserException();
 
 			/**
-			 * @brief Function: void raise() const override
+			 * @brief Function: void raise() const
 			 *
 			 * Raise exception
 			 */
-			void raise() const override;
+			void raise() const;
 
 			/**
-			 * @brief Function: browser_exception::BrowserException * clone() const override
+			 * @brief Function: browser_exception::BrowserException * clone() const
 			 *
 			 * \return a deep copy of the exception
 			 *
 			 * Clone exception
 			 */
-			browser_exception::BrowserException * clone() const override;
+			browser_exception::BrowserException * clone() const;
 
 			/**
-			 * @brief Function: QString print() const
+			 * @brief Function: virtual const char * what() const noexcept override
+			 *
+			 * \return print the exception message
 			 *
 			 * Print message
 			 */
-			QString print() const;
+			virtual const char * what() const noexcept override;
 
 			/**
-			 * @brief Function: const QString & getTimestamp() const
+			 * @brief Function: std::string print() const
+			 *
+			 * \return print the exception message
+			 *
+			 * Print message
+			 */
+			std::string print() const;
+
+			/**
+			 * @brief Function: const std::string & getTimestamp() const
 			 *
 			 * \return exception timestamp
 			 *
 			 * This function returns the timestamp when the exception was triggered
 			 */
-			const QString & getTimestamp() const;
+			const std::string & getTimestamp() const;
 
 			/**
 			 * @brief Function: const int & getLine() const
@@ -100,38 +108,38 @@ namespace browser_exception {
 			const int & getLine() const;
 
 			/**
-			 * @brief Function: const QString & getFilename() const
+			 * @brief Function: const std::string & getFilename() const
 			 *
 			 * \return file where the exception was triggered
 			 *
 			 * This function returns the filename where the exception occurred
 			 */
-			const QString & getFilename() const;
+			const std::string & getFilename() const;
 
 			/**
-			 * @brief Function: const QString & getCondition() const
+			 * @brief Function: const std::string & getCondition() const
 			 *
 			 * \return condition triggering the exception
 			 *
 			 * This function returns the condition that triggered the exception
 			 */
-			const QString & getCondition() const;
+			const std::string & getCondition() const;
 
 			/**
-			 * @brief Function: const QString & getMessage() const
+			 * @brief Function: const std::string & getMessage() const
 			 *
 			 * \return exception message
 			 *
 			 * This function returns the exception message
 			 */
-			const QString & getMessage() const;
+			const std::string & getMessage() const;
 
 		private:
 			/**
 			 * @brief timestamp of the exception
 			 *
 			 */
-			QString timestamp;
+			std::string timestamp;
 
 			/**
 			 * @brief line of the exception
@@ -143,19 +151,19 @@ namespace browser_exception {
 			 * @brief filename where the exception triggered
 			 *
 			 */
-			QString filename;
+			std::string filename;
 
 			/**
 			 * @brief condition that caused the exception
 			 *
 			 */
-			QString condition;
+			std::string condition;
 
 			/**
 			 * @brief message of the exception
 			 *
 			 */
-			QString message;
+			std::string message;
 
 	};
 

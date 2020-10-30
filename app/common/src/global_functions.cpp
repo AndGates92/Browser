@@ -12,11 +12,11 @@
 
 #include "global_functions.h"
 
-Q_LOGGING_CATEGORY(readFileOverall, "readFile.overall", MSG_TYPE_LEVEL)
+LOGGING_CONTEXT(readFileOverall, readFile.overall, TYPE_LEVEL, INFO_VERBOSITY)
 
 std::string global_functions::readFile(const std::string & filename) {
 
-	QEXCEPTION_ACTION_COND((filename.empty() == true), throw, "Provided an empty filename therefore it is not possible to open it and read its content");
+	EXCEPTION_ACTION_COND((filename.empty() == true), throw, "Provided an empty filename therefore it is not possible to open it and read its content");
 	std::ifstream ifile;
 
 	// Sets exception mask - i.e. for which state flags an exception is thrown
@@ -43,14 +43,14 @@ std::string global_functions::readFile(const std::string & filename) {
 			content.append(line);
 			charCount += line.length();
 			const double percentageCount = (static_cast<double>(charCount) * 100.0) / static_cast<double>(fileLength);
-			QINFO_PRINT(global_enums::qinfo_level_e::ZERO, readFileOverall,  "Character counted " << charCount << " out of " << fileLength << " that is " << percentageCount << "%");
+			LOG_INFO(logger::info_level_e::ZERO, readFileOverall,  "Character counted " << charCount << " out of " << fileLength << " that is " << percentageCount << "%");
 		}
 	} catch (const std::ifstream::failure & e) {
 		if (ifile.is_open()) {
 			ifile.close();
 		}
 		if (ifile.eof()) {
-			QINFO_PRINT(global_enums::qinfo_level_e::ZERO, readFileOverall,  "Finished reading content from file " << filename.c_str());
+			LOG_INFO(logger::info_level_e::ZERO, readFileOverall,  "Finished reading content from file " << filename.c_str());
 		} else {
 			// Convert std::error_code print to std::string so that it can be printed
 			const std::error_code errorCode(e.code());
@@ -58,7 +58,7 @@ std::string global_functions::readFile(const std::string & filename) {
 			// flush() method returns a non-const reference to std::ostream
 			errorCodeOut.flush() << errorCode;
 			const std::string errorCodeStr(errorCodeOut.str());
-			QEXCEPTION_ACTION(throw, "Unable to open or read content from file " << filename.c_str() << ".\nMessage: " << e.what() << ".\nError code: " << errorCodeStr.c_str());
+			EXCEPTION_ACTION(throw, "Unable to open or read content from file " << filename.c_str() << ".\nMessage: " << e.what() << ".\nError code: " << errorCodeStr.c_str());
 		}
 	}
 

@@ -9,26 +9,23 @@
 #include <string>
 
 // Qt libraries
-// Required by qInfo
-#include <QtCore/QtDebug>
-
 #include <QtCore/QObject>
 #include <QtCore/QFile>
 #include <QtWidgets/QVBoxLayout>
 #include <QtWidgets/QLayoutItem>
 
-#include "logging_macros.h"
+#include "cpp_operator.h"
+#include "macros.h"
 #include "global_enums.h"
+#include "exception_macros.h"
 #include "open_button_window.h"
 #include "secondary_window_utility.h"
-#include "exception_macros.h"
-
 
 // Categories
-Q_LOGGING_CATEGORY(openButtonWindowOverall, "openButtonWindow.overall", MSG_TYPE_LEVEL)
-Q_LOGGING_CATEGORY(openButtonWindowOpen, "openButtonWindow.open_button", MSG_TYPE_LEVEL)
-Q_LOGGING_CATEGORY(openButtonWindowBrowse, "openButtonWindow.browse_button", MSG_TYPE_LEVEL)
-Q_LOGGING_CATEGORY(openButtonWindowCancel, "openButtonWindow.cancel_button", MSG_TYPE_LEVEL)
+LOGGING_CONTEXT(openButtonWindowOverall, openButtonWindow.overall, TYPE_LEVEL, INFO_VERBOSITY)
+LOGGING_CONTEXT(openButtonWindowOpen, openButtonWindow.open_button, TYPE_LEVEL, INFO_VERBOSITY)
+LOGGING_CONTEXT(openButtonWindowBrowse, openButtonWindow.browse_button, TYPE_LEVEL, INFO_VERBOSITY)
+LOGGING_CONTEXT(openButtonWindowCancel, openButtonWindow.cancel_button, TYPE_LEVEL, INFO_VERBOSITY)
 
 namespace open_button_window {
 
@@ -56,7 +53,7 @@ namespace open_button_window {
 
 open_button_window::OpenButtonWindow::OpenButtonWindow(QWidget * parent, Qt::WindowFlags flags) : QWidget(parent, flags), open_content::OpenContent(this) {
 
-	QINFO_PRINT(global_enums::qinfo_level_e::ZERO, openButtonWindowOverall,  "Creating open button window");
+	LOG_INFO(logger::info_level_e::ZERO, openButtonWindowOverall,  "Creating open button window");
 
 	// Set modal because no other windows should be active
 	this->setWindowModality(Qt::ApplicationModal);
@@ -78,11 +75,11 @@ open_button_window::OpenButtonWindow::OpenButtonWindow(QWidget * parent, Qt::Win
 }
 
 open_button_window::OpenButtonWindow::~OpenButtonWindow() {
-	QINFO_PRINT(global_enums::qinfo_level_e::ZERO, openButtonWindowOverall,  "Destructor of OpenButtonWindow class");
+	LOG_INFO(logger::info_level_e::ZERO, openButtonWindowOverall,  "Destructor of OpenButtonWindow class");
 }
 
 void open_button_window::OpenButtonWindow::browse() {
-	QINFO_PRINT(global_enums::qinfo_level_e::ZERO, openButtonWindowBrowse,  "Browsing files - selected MIME are: " << this->fileModel->nameFilters());
+	LOG_INFO(logger::info_level_e::ZERO, openButtonWindowBrowse,  "Browsing files - selected MIME are: " << this->fileModel->nameFilters());
 	const bool isFileViewVisible = this->fileView->isVisible();
 
 	if (isFileViewVisible == true) {
@@ -97,7 +94,7 @@ void open_button_window::OpenButtonWindow::browse() {
 }
 
 void open_button_window::OpenButtonWindow::cancel() {
-	QINFO_PRINT(global_enums::qinfo_level_e::ZERO, openButtonWindowCancel,  "Closing dialog as Cancel button has been clicked");
+	LOG_INFO(logger::info_level_e::ZERO, openButtonWindowCancel,  "Closing dialog as Cancel button has been clicked");
 	if (this->pathToOpen->hasFocus() == true) {
 		this->setFocus();
 	} else {
@@ -110,7 +107,7 @@ void open_button_window::OpenButtonWindow::close() {
 }
 
 void open_button_window::OpenButtonWindow::apply() {
-	QINFO_PRINT(global_enums::qinfo_level_e::ZERO, openButtonWindowOpen,  "Open file: " << this->pathToOpen->text());
+	LOG_INFO(logger::info_level_e::ZERO, openButtonWindowOpen,  "Open file: " << this->pathToOpen->text());
 	this->openPath();
 }
 
@@ -179,7 +176,7 @@ void open_button_window::OpenButtonWindow::windowLayout() {
 		layout->addLayout(lastRow);
 
 	} catch (const std::bad_cast & badCastE) {
-		QEXCEPTION_ACTION(throw, badCastE.what());
+		EXCEPTION_ACTION(throw, badCastE.what());
 	}
 }
 
@@ -198,7 +195,7 @@ void open_button_window::OpenButtonWindow::fillWindow() {
 }
 
 void open_button_window::OpenButtonWindow::connectSignals() {
-	QINFO_PRINT(global_enums::qinfo_level_e::ZERO, openButtonWindowOverall,  "Connect signals");
+	LOG_INFO(logger::info_level_e::ZERO, openButtonWindowOverall,  "Connect signals");
 
 	connect(this->applyAction.get(), &action::Action::triggered, this, &open_button_window::OpenButtonWindow::apply);
 	connect(this->openButton.get(), &QPushButton::pressed, this, &open_button_window::OpenButtonWindow::apply);

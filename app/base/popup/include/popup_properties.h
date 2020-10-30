@@ -8,7 +8,7 @@
  * @brief Popup properties class header file
 */
 
-#include <QtCore/QLoggingCategory>
+// Qt libraries
 #include <QtWidgets/QWidget>
 
 #include "constructor_macros.h"
@@ -17,8 +17,6 @@
  *  Popup properties functions and classes
  *  @{
  */
-
-Q_DECLARE_LOGGING_CATEGORY(popupPropertiesOverall)
 
 namespace popup_properties {
 

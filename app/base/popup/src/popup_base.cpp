@@ -7,25 +7,24 @@
 */
 
 // Qt libraries
-#include <QtCore/QtGlobal>
 #include <QtGui/QFont>
 
 #include "popup_base.h"
 #include "key_sequence.h"
-#include "logging_macros.h"
+#include "macros.h"
 #include "global_enums.h"
 
 // Categories
-Q_LOGGING_CATEGORY(popupBaseOverall, "PopupBase.overall", MSG_TYPE_LEVEL)
+LOGGING_CONTEXT(popupBaseOverall, PopupBase.overall, TYPE_LEVEL, INFO_VERBOSITY)
 
 popup_base::PopupBase::PopupBase(QWidget * parent, const bool & centerWidget, const int & widgetPadding, Qt::WindowFlags flags) : QWidget(parent, flags), popup_properties::PopupProperties(centerWidget, widgetPadding) {
 
-	QINFO_PRINT(global_enums::qinfo_level_e::ZERO, popupBaseOverall,  "Popup base constructor");
+	LOG_INFO(logger::info_level_e::ZERO, popupBaseOverall,  "Popup base constructor");
 
 }
 
 popup_base::PopupBase::~PopupBase() {
-	QINFO_PRINT(global_enums::qinfo_level_e::ZERO, popupBaseOverall,  "Popup base destructor");
+	LOG_INFO(logger::info_level_e::ZERO, popupBaseOverall,  "Popup base destructor");
 
 }
 

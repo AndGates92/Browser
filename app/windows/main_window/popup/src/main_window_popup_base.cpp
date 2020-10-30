@@ -6,23 +6,20 @@
  * @brief Main Window popup base functions
 */
 
-// Qt libraries
-#include <QtCore/QtGlobal>
-
 #include "main_window_popup_base.h"
-#include "logging_macros.h"
+#include "macros.h"
 #include "global_enums.h"
 
 // Categories
-Q_LOGGING_CATEGORY(mainWindowPopupBaseOverall, "mainWindowPopupBase.overall", MSG_TYPE_LEVEL)
+LOGGING_CONTEXT(mainWindowPopupBaseOverall, mainWindowPopupBase.overall, TYPE_LEVEL, INFO_VERBOSITY)
 
 main_window_popup_base::MainWindowPopupBase::MainWindowPopupBase(QWidget * parent, const bool & centerWidget, const int & widgetPadding, Qt::WindowFlags flags) : popup_base::PopupBase(parent, centerWidget, widgetPadding, flags) {
 
-	QINFO_PRINT(global_enums::qinfo_level_e::ZERO, mainWindowPopupBaseOverall,  "Main window popup base constructor");
+	LOG_INFO(logger::info_level_e::ZERO, mainWindowPopupBaseOverall,  "Main window popup base constructor");
 
 }
 
 main_window_popup_base::MainWindowPopupBase::~MainWindowPopupBase() {
-	QINFO_PRINT(global_enums::qinfo_level_e::ZERO, mainWindowPopupBaseOverall,  "Main window popup base destructor");
+	LOG_INFO(logger::info_level_e::ZERO, mainWindowPopupBaseOverall,  "Main window popup base destructor");
 
 }

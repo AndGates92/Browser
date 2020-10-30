@@ -10,8 +10,8 @@
 
 #include <memory>
 
+// Qt libraries
 #include <QtCore/QLoggingCategory>
-#include <QtCore/QtDebug>
 #include <QtCore/QVariant>
 #include <QtGui/QIcon>
 
@@ -23,8 +23,6 @@
  *  Combo Box Find header functions and class
  *  @{
  */
-
-Q_DECLARE_LOGGING_CATEGORY(comboBoxFindOverall)
 
 namespace combo_box_find {
 

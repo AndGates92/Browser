@@ -9,19 +9,17 @@
 #include <string>
 
 // Qt libraries
-// Required by qInfo
-#include <QtCore/QtDebug>
-
 #include <QtCore/QObject>
 
-#include "logging_macros.h"
+#include "macros.h"
 #include "global_enums.h"
+#include "exception_macros.h"
+#include "cpp_operator.h"
 #include "file_handling_widgets.h"
 #include "secondary_window_utility.h"
-#include "exception_macros.h"
 
 // Categories
-Q_LOGGING_CATEGORY(fileHandlingWidgetsOverall, "fileHandlingWidgets.overall", MSG_TYPE_LEVEL)
+LOGGING_CONTEXT(fileHandlingWidgetsOverall, fileHandlingWidgets.overall, TYPE_LEVEL, INFO_VERBOSITY)
 
 file_handling_widgets::FileHandlingWidgets::FileHandlingWidgets(QWidget *widgetParent) :
 	pathToOpen(Q_NULLPTR),
@@ -33,7 +31,7 @@ file_handling_widgets::FileHandlingWidgets::FileHandlingWidgets(QWidget *widgetP
 	fileView(Q_NULLPTR)
 {
 
-	QINFO_PRINT(global_enums::qinfo_level_e::ZERO, fileHandlingWidgetsOverall,  "Creating FileHandlingWidgets class");
+	LOG_INFO(logger::info_level_e::ZERO, fileHandlingWidgetsOverall,  "Creating FileHandlingWidgets class");
 
 	this->applyAction = std::move(secondary_window_utility::createAction(widgetParent, std::string(), std::string(), key_sequence::KeySequence(Qt::Key_unknown)));
 	this->browseAction = std::move(secondary_window_utility::createAction(widgetParent, "Browse", "Browse files", key_sequence::KeySequence(Qt::Key_B)));
@@ -50,7 +48,7 @@ file_handling_widgets::FileHandlingWidgets::FileHandlingWidgets(QWidget *widgetP
 }
 
 file_handling_widgets::FileHandlingWidgets::~FileHandlingWidgets() {
-	QINFO_PRINT(global_enums::qinfo_level_e::ZERO, fileHandlingWidgetsOverall,  "Destructor of FileHandlingWidgets class");
+	LOG_INFO(logger::info_level_e::ZERO, fileHandlingWidgetsOverall,  "Destructor of FileHandlingWidgets class");
 }
 
 const QString file_handling_widgets::FileHandlingWidgets::getPathFromModelIndex(const std::unique_ptr<QFileSystemModel> & model, const QModelIndex & index) {
@@ -68,11 +66,11 @@ const QString file_handling_widgets::FileHandlingWidgets::getPathFromModelIndex(
 void file_handling_widgets::FileHandlingWidgets::fileViewClickAction(const QModelIndex & index) {
 	const QString path(this->getPathFromModelIndex(this->fileModel, index));
 
-	QINFO_PRINT(global_enums::qinfo_level_e::ZERO, fileHandlingWidgetsOverall,  "Selected " << path);
+	LOG_INFO(logger::info_level_e::ZERO, fileHandlingWidgetsOverall,  "Selected " << path);
 
 	const QFileInfo pathInfo(path);
 
-	QINFO_PRINT(global_enums::qinfo_level_e::ZERO, fileHandlingWidgetsOverall,  "Selected following path " << path << " (absolute path: " << pathInfo.absoluteFilePath() << ") type: directory -> " << pathInfo.isDir() << " file -> " << pathInfo.isFile());
+	LOG_INFO(logger::info_level_e::ZERO, fileHandlingWidgetsOverall,  "Selected following path " << path << " (absolute path: " << pathInfo.absoluteFilePath() << ") type: directory -> " << pathInfo.isDir() << " file -> " << pathInfo.isFile());
 
 	// Print path
 	this->pathToOpen->setText(pathInfo.absoluteFilePath());
@@ -83,7 +81,7 @@ void file_handling_widgets::FileHandlingWidgets::fileViewDoubleClickAction(const
 
 	const QFileInfo pathInfo(path);
 
-	QINFO_PRINT(global_enums::qinfo_level_e::ZERO, fileHandlingWidgetsOverall,  "Selected following path " << path << " (absolute path: " << pathInfo.absoluteFilePath() << ") type: directory -> " << pathInfo.isDir() << " file -> " << pathInfo.isFile());
+	LOG_INFO(logger::info_level_e::ZERO, fileHandlingWidgetsOverall,  "Selected following path " << path << " (absolute path: " << pathInfo.absoluteFilePath() << ") type: directory -> " << pathInfo.isDir() << " file -> " << pathInfo.isFile());
 
 	if (pathInfo.isDir() == true) {
 		this->fileModel->setRootPath(pathInfo.absoluteFilePath());
@@ -98,7 +96,7 @@ void file_handling_widgets::FileHandlingWidgets::fileViewDoubleClickAction(const
 }
 
 void file_handling_widgets::FileHandlingWidgets::directoryLoadedAction(const QString & path) {
-	QINFO_PRINT(global_enums::qinfo_level_e::ZERO, fileHandlingWidgetsOverall,  "Finished loading " << path);
+	LOG_INFO(logger::info_level_e::ZERO, fileHandlingWidgetsOverall,  "Finished loading " << path);
 	// Sort column 0 (i.e. names) in ascending order
 	this->fileModel->sort(0, Qt::AscendingOrder);
 }

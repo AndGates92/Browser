@@ -6,17 +6,14 @@
  * @brief Popup container menu functions
  */
 
-// Qt libraries
-#include <QtCore/QtGlobal>
-
 #include "popup_container.h"
 #include "popup_container_layout.h"
 #include "exception_macros.h"
-#include "logging_macros.h"
+#include "macros.h"
 #include "global_enums.h"
 
 // Categories
-Q_LOGGING_CATEGORY(popupContainerOverall, "popupContainer.overall", MSG_TYPE_LEVEL)
+LOGGING_CONTEXT(popupContainerOverall, popupContainer.overall, TYPE_LEVEL, INFO_VERBOSITY)
 
 namespace popup_container {
 	namespace {
@@ -30,14 +27,14 @@ namespace popup_container {
 
 popup_container::PopupContainer::PopupContainer(QWidget * parent, Qt::WindowFlags flags) : overlayed_widget::OverlayedWidget(parent, flags), popupWidgets(std::map<unsigned int, std::shared_ptr<popup_base::PopupBase>>()) {
 
-	QINFO_PRINT(global_enums::qinfo_level_e::ZERO, popupContainerOverall,  "Popup container constructor");
+	LOG_INFO(logger::info_level_e::ZERO, popupContainerOverall,  "Popup container constructor");
 
 	this->popupLayout();
 
 }
 
 popup_container::PopupContainer::~PopupContainer() {
-	QINFO_PRINT(global_enums::qinfo_level_e::ZERO, popupContainerOverall,  "Popup container destructor");
+	LOG_INFO(logger::info_level_e::ZERO, popupContainerOverall,  "Popup container destructor");
 }
 
 void popup_container::PopupContainer::popupLayout() {
@@ -60,7 +57,7 @@ void popup_container::PopupContainer::popupLayout() {
 			containerLayout->removeWidget(w);
 		}
 	} catch (const std::bad_cast & badCastE) {
-		QEXCEPTION_ACTION(throw, badCastE.what());
+		EXCEPTION_ACTION(throw, badCastE.what());
 	}
 
 	for (std::map<unsigned int, std::shared_ptr<popup_base::PopupBase>>::const_iterator it = this->popupWidgets.cbegin(); it != this->popupWidgets.cend(); it++) {
@@ -85,7 +82,7 @@ bool popup_container::PopupContainer::addWidget(const unsigned int & index, cons
 	std::map<unsigned int, std::shared_ptr<popup_base::PopupBase>>::const_iterator el(insertReturn.first);
 	bool  success(insertReturn.second);
 	if (success == true) {
-		QINFO_PRINT(global_enums::qinfo_level_e::ZERO, popupContainerOverall,  "Widget " << widget.get() << " has been successfully added to the widget map at index " << index);
+		LOG_INFO(logger::info_level_e::ZERO, popupContainerOverall,  "Widget " << widget.get() << " has been successfully added to the widget map at index " << index);
 		this->addWidgetToLayout(index, widget);
 
 		// Connect close popup to close container on order to move the main window to IDLE state and re-enabke shortcuts
@@ -93,9 +90,8 @@ bool popup_container::PopupContainer::addWidget(const unsigned int & index, cons
 			emit this->closeContainer();
 		});
 
-
 	} else {
-		QINFO_PRINT(global_enums::qinfo_level_e::ZERO, popupContainerOverall,  "Widget " << widget.get() << " has not been successfully added to the widget map at index " << index << " as it was already filled with widget " << el->second.get());
+		LOG_INFO(logger::info_level_e::ZERO, popupContainerOverall,  "Widget " << widget.get() << " has not been successfully added to the widget map at index " << index << " as it was already filled with widget " << el->second.get());
 	}
 
 	return success;
@@ -106,7 +102,7 @@ void popup_container::PopupContainer::addWidgetToLayout(const unsigned int & ind
 		popup_container_layout::PopupContainerLayout * containerLayout = dynamic_cast<popup_container_layout::PopupContainerLayout *>(this->layout());
 		containerLayout->insertWidget(index, widget.get());
 	} catch (const std::bad_cast & badCastE) {
-		QEXCEPTION_ACTION(throw, badCastE.what());
+		EXCEPTION_ACTION(throw, badCastE.what());
 	}
 }
 
@@ -143,19 +139,19 @@ unsigned int popup_container::PopupContainer::appendWidget(const std::shared_ptr
 			// It should handle the case where the value is in the range of values not representable by a single int (i.e. 32768 to 65535)
 			const long int currKey = static_cast<long int>(it->first);
 			const unsigned int range = static_cast<unsigned int>(std::abs(currKey - prevKey));
-			QEXCEPTION_ACTION_COND((currKey < 0), throw, "value of key after conversion is negative. Converted key: " << currKey << " Expected key value: " << it->first);
+			EXCEPTION_ACTION_COND((currKey < 0), throw, "value of key after conversion is negative. Converted key: " << currKey << " Expected key value: " << it->first);
 			// Search free index if range is larger than 0
 			index = this->searchFreeIndex(static_cast<unsigned int>(prevKey), range);
 			// Keep record of previous key
 			prevKey = static_cast<long int>(it->first);
 		}
 
-		QEXCEPTION_ACTION_COND((prevKey < 0), throw, "value of key after conversion is negative. Converted key: " << prevKey << " Expected key value: " << it->first);
+		EXCEPTION_ACTION_COND((prevKey < 0), throw, "value of key after conversion is negative. Converted key: " << prevKey << " Expected key value: " << it->first);
 
 		// If an index has been found (searchFreeIndex doesn't return popup_container::undefinedIndex)
 		if (index != popup_container::undefinedIndex) {
 			uIndex = static_cast<unsigned int>(index);
-			QEXCEPTION_ACTION_COND((index < 0), throw, "value of key after conversion is negative. Converted key: " << index);
+			EXCEPTION_ACTION_COND((index < 0), throw, "value of key after conversion is negative. Converted key: " << index);
 			break;
 		}
 
@@ -165,7 +161,7 @@ unsigned int popup_container::PopupContainer::appendWidget(const std::shared_ptr
 		uIndex = maxKey + 1;
 	}
 	bool success = this->addWidget(uIndex, widget);
-	QEXCEPTION_ACTION_COND((success == false), throw, "Unable to add widget " << widget.get() << " at index " << uIndex);
+	EXCEPTION_ACTION_COND((success == false), throw, "Unable to add widget " << widget.get() << " at index " << uIndex);
 
 	return uIndex;
 }
@@ -175,7 +171,7 @@ bool popup_container::PopupContainer::replaceWidget(const unsigned int & index, 
 	this->removeWidget(index);
 
 	bool success = this->addWidget(index, widget);
-	QEXCEPTION_ACTION_COND((success == false), throw, "Unable to replace widget at index " << index << " with " << widget.get());
+	EXCEPTION_ACTION_COND((success == false), throw, "Unable to replace widget at index " << index << " with " << widget.get());
 	return success;
 
 }
@@ -222,7 +218,7 @@ bool popup_container::PopupContainer::chooseWidgetToShow(const unsigned int & in
 			containerLayout->setCurrentIndex(index);
 			emit this->updateGeometryRequest(this->shared_from_this());
 		} catch (const std::bad_cast & badCastE) {
-			QEXCEPTION_ACTION(throw, badCastE.what());
+			EXCEPTION_ACTION(throw, badCastE.what());
 		}
 	}
 
@@ -249,7 +245,7 @@ std::shared_ptr<popup_base::PopupBase> popup_container::PopupContainer::getWidge
 	std::shared_ptr<popup_base::PopupBase> widget = nullptr;
 	if (found == false) {
 		// Print a warning if widget is not found
-		QWARNING_PRINT(popupContainerOverall, "Unable to find widget at index " << index);
+		LOG_WARNING(popupContainerOverall, "Unable to find widget at index " << index);
 		widget = nullptr;
 	} else {
 		widget = it->second;
@@ -264,7 +260,7 @@ void popup_container::PopupContainer::deleteWidgetFromLayout(const std::shared_p
 		popup_container_layout::PopupContainerLayout * containerLayout = dynamic_cast<popup_container_layout::PopupContainerLayout *>(this->layout());
 		containerLayout->removeWidget(widget.get());
 	} catch (const std::bad_cast & badCastE) {
-		QEXCEPTION_ACTION(throw, badCastE.what());
+		EXCEPTION_ACTION(throw, badCastE.what());
 	}
 }
 
@@ -305,7 +301,7 @@ std::shared_ptr<popup_base::PopupBase> popup_container::PopupContainer::getCurre
 		const std::shared_ptr<popup_base::PopupBase> widget = this->getWidget(idx);
 		return widget;
 	} catch (const std::bad_cast & badCastE) {
-		QEXCEPTION_ACTION(throw, badCastE.what());
+		EXCEPTION_ACTION(throw, badCastE.what());
 	}
 
 }

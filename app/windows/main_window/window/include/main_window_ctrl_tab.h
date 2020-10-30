@@ -25,12 +25,6 @@
  *  @{
  */
 
-Q_DECLARE_LOGGING_CATEGORY(mainWindowCtrlTabOverall)
-Q_DECLARE_LOGGING_CATEGORY(mainWindowCtrlTabUserInput)
-Q_DECLARE_LOGGING_CATEGORY(mainWindowCtrlTabSearch)
-Q_DECLARE_LOGGING_CATEGORY(mainWindowCtrlTabTabs)
-Q_DECLARE_LOGGING_CATEGORY(mainWindowCtrlTabUrl)
-
 namespace main_window_ctrl_tab {
 
 	namespace {

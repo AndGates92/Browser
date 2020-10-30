@@ -7,16 +7,16 @@
 */
 
 // Qt libraries
-#include <QtCore/QtGlobal>
 #include <QtWidgets/QHBoxLayout>
 
-#include "main_window_status_bar.h"
+#include "cpp_operator.h"
 #include "function_macros.h"
-#include "logging_macros.h"
+#include "macros.h"
 #include "global_enums.h"
+#include "main_window_status_bar.h"
 
 // Categories
-Q_LOGGING_CATEGORY(mainWindowStatusBarOverall, "mainWindowStatusBar.overall", MSG_TYPE_LEVEL)
+LOGGING_CONTEXT(mainWindowStatusBarOverall, mainWindowStatusBar.overall, TYPE_LEVEL, INFO_VERBOSITY)
 
 namespace main_window_status_bar {
 
@@ -92,7 +92,7 @@ namespace main_window_status_bar {
 
 main_window_status_bar::MainWindowStatusBar::MainWindowStatusBar(QWidget * parent, Qt::WindowFlags flags) : QWidget(parent, flags), userInput(Q_NULLPTR), contentPath(Q_NULLPTR), scroll(Q_NULLPTR), info(Q_NULLPTR), searchResult(Q_NULLPTR), loadBar(Q_NULLPTR) {
 
-	QINFO_PRINT(global_enums::qinfo_level_e::ZERO, mainWindowStatusBarOverall,  "Main window status bar constructor");
+	LOG_INFO(logger::info_level_e::ZERO, mainWindowStatusBarOverall,  "Main window status bar constructor");
 
 	this->userInput = std::move(this->newWindowLabel());
 	this->contentPath = std::move(this->newWindowLabel());
@@ -137,7 +137,7 @@ main_window_status_bar::MainWindowStatusBar::MainWindowStatusBar(QWidget * paren
 }
 
 main_window_status_bar::MainWindowStatusBar::~MainWindowStatusBar() {
-	QINFO_PRINT(global_enums::qinfo_level_e::ZERO, mainWindowStatusBarOverall,  "Main window status bar destructor");
+	LOG_INFO(logger::info_level_e::ZERO, mainWindowStatusBarOverall,  "Main window status bar destructor");
 
 }
 
@@ -277,7 +277,7 @@ int main_window_status_bar::MainWindowStatusBar::getVScroll() const {
 		vScrollText.resize(vScrollText.size() - 1);
 		bool success = false;
 		value = vScrollText.toInt(&success, 10);
-		QEXCEPTION_ACTION_COND((success == false), throw, "Conversion of " << vScrollText << " to integer failed");
+		EXCEPTION_ACTION_COND((success == false), throw, "Conversion of " << vScrollText << " to integer failed");
 	}
 
 	return value;

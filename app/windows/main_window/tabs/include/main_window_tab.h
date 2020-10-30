@@ -9,11 +9,6 @@
 */
 
 // Qt libraries
-// Required by qInfo
-#include <QtCore/QtDebug>
-
-#include <QtCore/QLoggingCategory>
-
 #include <QtWidgets/QWidget>
 
 #include "tab.h"
@@ -35,8 +30,6 @@
 namespace main_window_tab_widget {
 	class MainWindowTabWidget;
 }
-
-Q_DECLARE_LOGGING_CATEGORY(mainWindowTabOverall)
 
 namespace main_window_tab {
 

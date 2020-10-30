@@ -21,8 +21,6 @@
  *  @{
  */
 
-Q_DECLARE_LOGGING_CATEGORY(labelPopupOverall)
-
 namespace label_popup {
 
 	/**

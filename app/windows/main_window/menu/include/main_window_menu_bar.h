@@ -23,8 +23,6 @@
  *  @{
  */
 
-Q_DECLARE_LOGGING_CATEGORY(mainWindowMenuBarOverall)
-
 namespace main_window_menu_bar {
 
 	/**

@@ -9,10 +9,8 @@
 */
 
 // Qt libraries
-// Required by qInfo
-#include <QtCore/QtDebug>
+#include <QtCore/QtGlobal>
 
-#include <QtCore/QLoggingCategory>
 #if QT_VERSION >= QT_VERSION_CHECK(5, 14, 0)
 #include <QtWebEngineCore/QWebEngineFindTextResult>
 #endif
@@ -26,9 +24,6 @@
  *  Main Window Tab Search functions and classes
  *  @{
  */
-
-Q_DECLARE_LOGGING_CATEGORY(mainWindowTabSearchOverall)
-Q_DECLARE_LOGGING_CATEGORY(mainWindowTabSearchFind)
 
 namespace main_window_tab {
 	class MainWindowTab;

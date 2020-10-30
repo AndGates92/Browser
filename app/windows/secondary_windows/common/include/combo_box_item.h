@@ -10,8 +10,8 @@
 
 #include <memory>
 
+// Qt libraries
 #include <QtCore/QLoggingCategory>
-#include <QtCore/QtDebug>
 #include <QtCore/QVariant>
 #include <QtGui/QIcon>
 
@@ -22,8 +22,6 @@
  *  Combo Box Item header functions and class
  *  @{
  */
-
-Q_DECLARE_LOGGING_CATEGORY(comboBoxItemOverall)
 
 namespace combo_box_item {
 

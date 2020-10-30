@@ -9,9 +9,9 @@
  * @brief Command Menu file
 */
 
+// Qt libraries
 #include <QtWidgets/QAbstractItemView>
 #include <QtWidgets/QWidget>
-#include <QtCore/QLoggingCategory>
 #include <QtCore/QRect>
 #include <QtCore/QModelIndex>
 #include <QtGui/QRegion>
@@ -25,14 +25,6 @@
  *  Command Menu functions and classes
  *  @{
  */
-
-Q_DECLARE_LOGGING_CATEGORY(commandMenuOverall)
-Q_DECLARE_LOGGING_CATEGORY(commandMenuSettings)
-Q_DECLARE_LOGGING_CATEGORY(commandMenuHashTable)
-Q_DECLARE_LOGGING_CATEGORY(commandMenuViewport)
-Q_DECLARE_LOGGING_CATEGORY(commandMenuCursor)
-Q_DECLARE_LOGGING_CATEGORY(commandMenuScrollBar)
-Q_DECLARE_LOGGING_CATEGORY(commandMenuSelection)
 
 namespace command_menu {
 

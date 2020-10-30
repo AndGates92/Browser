@@ -7,30 +7,26 @@
  */
 
 // Qt libraries
-#include <QtCore/QtGlobal>
 #include <QtWidgets/QVBoxLayout>
 #include <QtWidgets/QStatusBar>
 #include <QtWidgets/QTabBar>
 #include <QtWidgets/QSizePolicy>
 #include <QtGui/QKeyEvent>
-
-// Required by qInfo
-#include <QtCore/QtDebug>
-
 #include <QtCore/QObject>
 
+#include "cpp_operator.h"
 #include "main_window_menu_bar.h"
 #include "main_window_status_bar.h"
 #include "main_window_tab_widget.h"
 #include "command_menu.h"
-#include "logging_macros.h"
+#include "macros.h"
 #include "global_enums.h"
 #include "main_window.h"
 
 // Categories
-Q_LOGGING_CATEGORY(mainWindowOverall, "mainWindow.overall", MSG_TYPE_LEVEL)
-Q_LOGGING_CATEGORY(mainWindowCenterWindow, "mainWindow.centerWindow", MSG_TYPE_LEVEL)
-Q_LOGGING_CATEGORY(mainWindowTabs, "mainWindow.tabs", MSG_TYPE_LEVEL)
+LOGGING_CONTEXT(mainWindowOverall, mainWindow.overall, TYPE_LEVEL, INFO_VERBOSITY)
+LOGGING_CONTEXT(mainWindowCenterWindow, mainWindow.centerWindow, TYPE_LEVEL, INFO_VERBOSITY)
+LOGGING_CONTEXT(mainWindowTabs, mainWindow.tabs, TYPE_LEVEL, INFO_VERBOSITY)
 
 namespace main_window {
 
@@ -71,7 +67,7 @@ namespace main_window {
 
 main_window::MainWindow::MainWindow(QWidget * parent, Qt::WindowFlags flags) : QMainWindow(parent, flags), main_window_base::MainWindowBase(std::shared_ptr<main_window_core::MainWindowCore>(new main_window_core::MainWindowCore(this))), overlayedWidgets(std::list<std::shared_ptr<overlayed_widget::OverlayedWidget>>()) {
 
-	QINFO_PRINT(global_enums::qinfo_level_e::ZERO, mainWindowOverall,  "Main window constructor");
+	LOG_INFO(logger::info_level_e::ZERO, mainWindowOverall,  "Main window constructor");
 
 	this->setEnabled(true);
 
@@ -110,13 +106,13 @@ main_window::MainWindow::MainWindow(QWidget * parent, Qt::WindowFlags flags) : Q
 }
 
 main_window::MainWindow::~MainWindow() {
-	QINFO_PRINT(global_enums::qinfo_level_e::ZERO, mainWindowOverall,  "Main window destructor");
+	LOG_INFO(logger::info_level_e::ZERO, mainWindowOverall,  "Main window destructor");
 
 	const QList<QShortcut *> shortcuts = this->findChildren<QShortcut *>(QString(), Qt::FindDirectChildrenOnly);
 
 	for (QShortcut * shortcut : shortcuts) {
 		if (shortcut != Q_NULLPTR) {
-			QINFO_PRINT(global_enums::qinfo_level_e::ZERO, mainWindowCtrlOverall,  "Delete shortcut associated with key " << shortcut->key());
+			LOG_INFO(logger::info_level_e::ZERO, mainWindowOverall,  "Delete shortcut associated with key " << shortcut->key());
 			delete shortcut;
 		}
 	}
@@ -142,7 +138,7 @@ void main_window::MainWindow::customizeMainWidget() {
 }
 
 void main_window::MainWindow::fillMainWindow() {
-	QINFO_PRINT(global_enums::qinfo_level_e::ZERO, mainWindowOverall,  "Fill main window");
+	LOG_INFO(logger::info_level_e::ZERO, mainWindowOverall,  "Fill main window");
 
 	// Customize MainWidget
 	// Tabs
@@ -169,7 +165,7 @@ void main_window::MainWindow::fillMainWindow() {
 }
 
 void main_window::MainWindow::customizeTabs() {
-	QINFO_PRINT(global_enums::qinfo_level_e::ZERO, mainWindowOverall,  "Customize tabs");
+	LOG_INFO(logger::info_level_e::ZERO, mainWindowOverall,  "Customize tabs");
 
 	// Disable widget resizing
 	this->core->tabs->setSizePolicy(QSizePolicy::Ignored, QSizePolicy::Ignored);
@@ -188,20 +184,20 @@ void main_window::MainWindow::customizeTabs() {
 }
 
 void main_window::MainWindow::customizeTopMenuBar() {
-	QINFO_PRINT(global_enums::qinfo_level_e::ZERO, mainWindowOverall,  "Customize top menu bar");
+	LOG_INFO(logger::info_level_e::ZERO, mainWindowOverall,  "Customize top menu bar");
 
 	// set menu bar of the main window
 	this->setMenuBar(this->core->topMenuBar.get());
 }
 
 void main_window::MainWindow::customizeBottomStatusBar() {
-	QINFO_PRINT(global_enums::qinfo_level_e::ZERO, mainWindowOverall,  "Customize top menu bar");
+	LOG_INFO(logger::info_level_e::ZERO, mainWindowOverall,  "Customize top menu bar");
 
 }
 
 void main_window::MainWindow::mainWindowLayout() {
 
-	QINFO_PRINT(global_enums::qinfo_level_e::ZERO, mainWindowOverall,  "Define layout");
+	LOG_INFO(logger::info_level_e::ZERO, mainWindowOverall,  "Define layout");
 
 	// Layout
 	// -------------------------------------------------
@@ -229,7 +225,7 @@ void main_window::MainWindow::mainWindowLayout() {
 }
 
 void main_window::MainWindow::connectSignals() {
-	QINFO_PRINT(global_enums::qinfo_level_e::ZERO, mainWindowOverall,  "Connect signals");
+	LOG_INFO(logger::info_level_e::ZERO, mainWindowOverall,  "Connect signals");
 
 	// Close window
 	connect(this->ctrl->winctrl.get(), &main_window_ctrl::MainWindowCtrl::closeWindowSignal, this, &main_window::MainWindow::closeWindow);
@@ -240,7 +236,7 @@ void main_window::MainWindow::connectSignals() {
 }
 
 void main_window::MainWindow::createCtrl() {
-	QINFO_PRINT(global_enums::qinfo_level_e::ZERO, mainWindowOverall,  "Create controller");
+	LOG_INFO(logger::info_level_e::ZERO, mainWindowOverall,  "Create controller");
 
 	// main window control object
 	this->ctrl = std::make_unique<main_window_ctrl_wrapper::MainWindowCtrlWrapper>(this, this->core);
@@ -250,13 +246,13 @@ void main_window::MainWindow::createCtrl() {
 }
 
 void main_window::MainWindow::closeWindow() {
-	QINFO_PRINT(global_enums::qinfo_level_e::ZERO, mainWindowOverall,  "Close main window");
+	LOG_INFO(logger::info_level_e::ZERO, mainWindowOverall,  "Close main window");
 	const bool success = this->close();
 	Q_ASSERT_X(success, "main window close success check", "Main window close request was not handled properly");
 }
 
 void main_window::MainWindow::resizeEvent(QResizeEvent *event) {
-	QINFO_PRINT(global_enums::qinfo_level_e::ZERO, mainWindowOverall,  "Resizing window from size " << event->oldSize() << " to size " << event->size());
+	LOG_INFO(logger::info_level_e::ZERO, mainWindowOverall,  "Resizing window from size " << event->oldSize() << " to size " << event->size());
 
 	for (const std::shared_ptr<overlayed_widget::OverlayedWidget> & widget : this->overlayedWidgets) {
 		this->updateWidgetGeometry(widget);
@@ -337,10 +333,10 @@ void main_window::MainWindow::updateWidgetGeometry(const std::shared_ptr<overlay
 
 	const int widgetTop = windowHeight - distanceYFromBottom;
 
-	QEXCEPTION_ACTION_COND((widgetHeight <= 0), throw, "Widget height " << widgetHeight << " is not within the valid range (width > 0)");
-	QEXCEPTION_ACTION_COND((widgetTop < 0), throw, "Widget top coordinate " << widgetTop << " is not within the valid range (coordinate >= 0)");
-	QEXCEPTION_ACTION_COND((widgetWidth <= 0), throw, "Widget width " << widgetWidth << " is not within the valid range (width > 0)");
-	QEXCEPTION_ACTION_COND((widgetLeft < 0), throw, "Widget left coordinate " << widgetLeft << " is not within the valid range (coordinate >= 0)");
+	EXCEPTION_ACTION_COND((widgetHeight <= 0), throw, "Widget height " << widgetHeight << " is not within the valid range (width > 0)");
+	EXCEPTION_ACTION_COND((widgetTop < 0), throw, "Widget top coordinate " << widgetTop << " is not within the valid range (coordinate >= 0)");
+	EXCEPTION_ACTION_COND((widgetWidth <= 0), throw, "Widget width " << widgetWidth << " is not within the valid range (width > 0)");
+	EXCEPTION_ACTION_COND((widgetLeft < 0), throw, "Widget left coordinate " << widgetLeft << " is not within the valid range (coordinate >= 0)");
 
 	QPoint topLeftCorner(widgetLeft, widgetTop);
 	QSize widgetSize(widgetWidth, widgetHeight);

@@ -10,7 +10,7 @@
 
 #include <list>
 
-#include <QtCore/QLoggingCategory>
+// Qt libraries
 #include <QtWidgets/QWidget>
 #include <QtWidgets/QAction>
 
@@ -23,8 +23,6 @@
  *  Action menu functions and classes
  *  @{
  */
-
-Q_DECLARE_LOGGING_CATEGORY(actionOverall)
 
 namespace action {
 

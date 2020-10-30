@@ -6,37 +6,31 @@
  * @brief JSON Data functions
  */
 
-// Qt libraries
-#include <QtCore/QtGlobal>
-
-// Required by qInfo
-#include <QtCore/QtDebug>
-
 #include "global_constants.h"
-#include "logging_macros.h"
+#include "macros.h"
 #include "function_macros.h"
 #include "exception_macros.h"
 #include "constructor_macros.h"
 #include "json_data.h"
 
 // Categories
-Q_LOGGING_CATEGORY(jsonDataOverall, "jsonData.overall", MSG_TYPE_LEVEL)
+LOGGING_CONTEXT(jsonDataOverall, jsonData.overall, TYPE_LEVEL, INFO_VERBOSITY)
 
 json_data::JsonData::JsonData(const json_data::JsonData::parameter_t & jsonParameters) : printable_object::PrintableObject(), parameters(jsonParameters) {
 
-	QINFO_PRINT(global_enums::qinfo_level_e::ZERO, jsonDataOverall,  "JSON Data constructor. Data " << *this);
+	LOG_INFO(logger::info_level_e::ZERO, jsonDataOverall,  "JSON Data constructor. Data " << *this);
 
 }
 
 json_data::JsonData::JsonData(const json_data::JsonData & rhs): parameters(rhs.parameters) {
 
-	QINFO_PRINT(global_enums::qinfo_level_e::ZERO, jsonDataOverall,  "Copy constructor JSON data");
+	LOG_INFO(logger::info_level_e::ZERO, jsonDataOverall,  "Copy constructor JSON data");
 
 }
 
 json_data::JsonData & json_data::JsonData::operator=(const json_data::JsonData & rhs) {
 
-	QINFO_PRINT(global_enums::qinfo_level_e::ZERO, jsonDataOverall,  "Copy assignment operator for JSON data");
+	LOG_INFO(logger::info_level_e::ZERO, jsonDataOverall,  "Copy assignment operator for JSON data");
 
 	// If rhs points to the same address as this, then return this
 	if (&rhs == this) {
@@ -52,12 +46,12 @@ json_data::JsonData & json_data::JsonData::operator=(const json_data::JsonData &
 }
 
 json_data::JsonData::JsonData(json_data::JsonData && rhs): parameters(std::exchange(rhs.parameters, json_data::JsonData::parameter_t())) {
-	QINFO_PRINT(global_enums::qinfo_level_e::ZERO, jsonDataOverall,  "Move constructor JSON data");
+	LOG_INFO(logger::info_level_e::ZERO, jsonDataOverall,  "Move constructor JSON data");
 }
 
 json_data::JsonData & json_data::JsonData::operator=(json_data::JsonData && rhs) {
 
-	QINFO_PRINT(global_enums::qinfo_level_e::ZERO, jsonDataOverall,  "Move assignment operator for JSON data");
+	LOG_INFO(logger::info_level_e::ZERO, jsonDataOverall,  "Move assignment operator for JSON data");
 
 	// If rhs points to the same address as this, then return this
 	if (&rhs != this) {
@@ -69,7 +63,7 @@ json_data::JsonData & json_data::JsonData::operator=(json_data::JsonData && rhs)
 
 json_data::JsonData::~JsonData() {
 
-	QINFO_PRINT(global_enums::qinfo_level_e::ZERO, jsonDataOverall,  "JSON Data structure destructor. Data " << *this);
+	LOG_INFO(logger::info_level_e::ZERO, jsonDataOverall,  "JSON Data structure destructor. Data " << *this);
 
 }
 

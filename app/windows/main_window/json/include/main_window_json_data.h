@@ -11,8 +11,6 @@
 #include <memory>
 #include <vector>
 
-#include <QtCore/QLoggingCategory>
-
 #include "key_sequence.h"
 #include "main_window_shared_types.h"
 #include "json_data.h"
@@ -21,8 +19,6 @@
  *  Main Window json data functions and classes
  *  @{
  */
-
-Q_DECLARE_LOGGING_CATEGORY(mainWindowJsonDataOverall)
 
 namespace main_window_json_action {
 	class MainWindowJsonAction;

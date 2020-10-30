@@ -7,27 +7,25 @@
 */
 
 // Qt libraries
-#include <QtCore/QtGlobal>
 #include <QtGui/QPainter>
-
 #include <QtWidgets/QStyle>
 #include <QtWidgets/QStyleOption>
 
 #include "overlayed_widget.h"
-#include "logging_macros.h"
+#include "macros.h"
 #include "global_enums.h"
 
 // Categories
-Q_LOGGING_CATEGORY(overlayedWidgetOverall, "overlayedWidget.overall", MSG_TYPE_LEVEL)
+LOGGING_CONTEXT(overlayedWidgetOverall, overlayedWidget.overall, TYPE_LEVEL, INFO_VERBOSITY)
 
 overlayed_widget::OverlayedWidget::OverlayedWidget(QWidget * parent, Qt::WindowFlags flags) : QWidget(parent, flags) {
 
-	QINFO_PRINT(global_enums::qinfo_level_e::ZERO, overlayedWidgetOverall,  "Overlayed widget constructor");
+	LOG_INFO(logger::info_level_e::ZERO, overlayedWidgetOverall,  "Overlayed widget constructor");
 
 }
 
 overlayed_widget::OverlayedWidget::~OverlayedWidget() {
-	QINFO_PRINT(global_enums::qinfo_level_e::ZERO, overlayedWidgetOverall,  "Overlayed widget destructor");
+	LOG_INFO(logger::info_level_e::ZERO, overlayedWidgetOverall,  "Overlayed widget destructor");
 }
 
 void overlayed_widget::OverlayedWidget::paintEvent(QPaintEvent * event) {
@@ -53,6 +51,5 @@ void overlayed_widget::OverlayedWidget::setGeometry(const QRect & rect) {
 			widget->updateGeometry();
 		}
 	}
-
 
 }

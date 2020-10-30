@@ -7,22 +7,21 @@
  */
 
 // Qt libraries
-#include <QtCore/QLoggingCategory>
 #include <QtGui/QKeyEvent>
 
-#include "logging_macros.h"
+#include "macros.h"
 #include "function_macros.h"
 #include "web_engine_page.h"
 
 // Categories
-Q_LOGGING_CATEGORY(webEnginePageOverall, "webEnginePage.overall", MSG_TYPE_LEVEL)
+LOGGING_CONTEXT(webEnginePageOverall, webEnginePage.overall, TYPE_LEVEL, INFO_VERBOSITY)
 
 web_engine_page::WebEnginePage::WebEnginePage(QWidget * parent, web_engine_profile::WebEngineProfile * profile): QWebEnginePage(profile, parent) {
-	QINFO_PRINT(global_enums::qinfo_level_e::ZERO, webEnginePageOverall,  "Web engine page constructor");
+	LOG_INFO(logger::info_level_e::ZERO, webEnginePageOverall,  "Web engine page constructor");
 }
 
 web_engine_page::WebEnginePage::~WebEnginePage() {
-	QINFO_PRINT(global_enums::qinfo_level_e::ZERO, webEnginePageOverall,  "Web engine page destructor");
+	LOG_INFO(logger::info_level_e::ZERO, webEnginePageOverall,  "Web engine page destructor");
 }
 
 CASTED_PTR_GETTER(web_engine_page::WebEnginePage::profile, web_engine_profile::WebEngineProfile, QWebEnginePage::profile())

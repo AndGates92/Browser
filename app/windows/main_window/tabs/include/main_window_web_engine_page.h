@@ -8,12 +8,6 @@
  * @brief Main Window Web Engine Page header file
 */
 
-// Qt libraries
-// Required by qInfo
-#include <QtCore/QtDebug>
-
-#include <QtCore/QLoggingCategory>
-
 #include "web_engine_page.h"
 #include "main_window_page_data.h"
 #include "main_window_shared_types.h"
@@ -25,8 +19,6 @@
  *  Web Engine Page functions and classes
  *  @{
  */
-
-Q_DECLARE_LOGGING_CATEGORY(mainWindowWebEnginePageOverall)
 
 namespace main_window_tab {
 	class MainWindowTab;

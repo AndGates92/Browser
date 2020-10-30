@@ -8,7 +8,6 @@
  * @brief Main Window Tester wrapper class header file
 */
 
-#include <QtCore/QLoggingCategory>
 #include <QtWidgets/QWidget>
 
 #include "main_window_wrapper.h"
@@ -17,8 +16,6 @@
  *  Main Window Tester wrapper functions and classes
  *  @{
  */
-
-Q_DECLARE_LOGGING_CATEGORY(mainWindowTesterWrapperOverall)
 
 namespace main_window_tester_wrapper {
 

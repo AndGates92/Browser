@@ -6,16 +6,14 @@
  * @brief Key Info functions
  */
 
-// Qt libraries
-#include <QtCore/QLoggingCategory>
-
+#include "cpp_operator.h"
 #include "global_enums.h"
-#include "logging_macros.h"
+#include "macros.h"
 #include "key_info.h"
 
 // Categories
-Q_LOGGING_CATEGORY(keyInfoOverall, "keyInfo.overall", MSG_TYPE_LEVEL)
-Q_LOGGING_CATEGORY(keyInfoString, "keyInfo.string", MSG_TYPE_LEVEL)
+LOGGING_CONTEXT(keyInfoOverall, keyInfo.overall, TYPE_LEVEL, INFO_VERBOSITY)
+LOGGING_CONTEXT(keyInfoString, keyInfo.string, TYPE_LEVEL, INFO_VERBOSITY)
 
 namespace key_info {
 
@@ -144,19 +142,19 @@ key_info::KeyInfo::KeyInfo(const QKeySequence & keySeq) {
 	this->key = Qt::Key(keyInt & ~(Qt::KeyboardModifierMask));
 	this->modifier = Qt::KeyboardModifier(keyInt & Qt::KeyboardModifierMask);
 
-	QINFO_PRINT(global_enums::qinfo_level_e::ZERO, keyInfoOverall,  "Key Info constructor (key " << this->key << " (0x" << QString("%1").arg(int(this->key), 0, 16) << "), modifier " << this->modifierToString(this->modifier) << " (0x" << QString("%1").arg(this->modifier, 0, 16) << "))");
+	LOG_INFO(logger::info_level_e::ZERO, keyInfoOverall,  "Key Info constructor (key " << this->key << " (0x" << QString("%1").arg(int(this->key), 0, 16) << "), modifier " << this->modifierToString(this->modifier) << " (0x" << QString("%1").arg(this->modifier, 0, 16) << "))");
 
 }
 
 key_info::KeyInfo::KeyInfo(const key_info::KeyInfo & rhs) : key(rhs.key), modifier(rhs.modifier) {
 
-	QINFO_PRINT(global_enums::qinfo_level_e::ZERO, keyInfoOverall,  "Copy constructor key info");
+	LOG_INFO(logger::info_level_e::ZERO, keyInfoOverall,  "Copy constructor key info");
 
 }
 
 key_info::KeyInfo & key_info::KeyInfo::operator=(const key_info::KeyInfo & rhs) {
 
-	QINFO_PRINT(global_enums::qinfo_level_e::ZERO, keyInfoOverall,  "Copy assignment operator for key info");
+	LOG_INFO(logger::info_level_e::ZERO, keyInfoOverall,  "Copy assignment operator for key info");
 
 	// If rhs points to the same address as this, then return this
 	if (&rhs == this) {
@@ -176,13 +174,13 @@ key_info::KeyInfo & key_info::KeyInfo::operator=(const key_info::KeyInfo & rhs) 
 
 key_info::KeyInfo::KeyInfo(key_info::KeyInfo && rhs) : key(std::exchange(rhs.key, Qt::Key_unknown)), modifier(std::exchange(rhs.modifier, Qt::NoModifier)) {
 
-	QINFO_PRINT(global_enums::qinfo_level_e::ZERO, keyInfoOverall,  "Move constructor key info");
+	LOG_INFO(logger::info_level_e::ZERO, keyInfoOverall,  "Move constructor key info");
 
 }
 
 key_info::KeyInfo & key_info::KeyInfo::operator=(key_info::KeyInfo && rhs) {
 
-	QINFO_PRINT(global_enums::qinfo_level_e::ZERO, keyInfoOverall,  "Move assignment operator for key info");
+	LOG_INFO(logger::info_level_e::ZERO, keyInfoOverall,  "Move assignment operator for key info");
 
 	if (&rhs != this) {
 		this->key = std::exchange(rhs.key, Qt::Key_unknown);
@@ -193,7 +191,7 @@ key_info::KeyInfo & key_info::KeyInfo::operator=(key_info::KeyInfo && rhs) {
 }
 
 key_info::KeyInfo::~KeyInfo() {
-	QINFO_PRINT(global_enums::qinfo_level_e::ZERO, keyInfoOverall,  "Destructor of KeyInfo class");
+	LOG_INFO(logger::info_level_e::ZERO, keyInfoOverall,  "Destructor of KeyInfo class");
 
 }
 
@@ -233,7 +231,7 @@ QString key_info::KeyInfo::toString(QKeySequence::SequenceFormat format) const {
 		keySeqStr.append(" " + commentStr);
 	}
 
-	QINFO_PRINT(global_enums::qinfo_level_e::ZERO, keyInfoString,  "Key sequence (key " << this->key << " (0x" << QString("%1").arg(int(this->key), 0, 16) << "), modifier " << this->modifierToString(this->modifier) << " (0x" << QString("%1").arg(this->modifier, 0, 16) << ")) to " << keySeqStr);
+	LOG_INFO(logger::info_level_e::ZERO, keyInfoString,  "Key sequence (key " << this->key << " (0x" << QString("%1").arg(int(this->key), 0, 16) << "), modifier " << this->modifierToString(this->modifier) << " (0x" << QString("%1").arg(this->modifier, 0, 16) << ")) to " << keySeqStr);
 
 	return keySeqStr;
 

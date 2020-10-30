@@ -12,16 +12,16 @@
 #include <QtWidgets/QMenu>
 #include <QtWebEngineWidgets/QWebEngineHistory>
 
-#include "logging_macros.h"
+#include "macros.h"
 #include "function_macros.h"
 #include "exception_macros.h"
 #include "main_window_web_engine_view.h"
 
 // Categories
-Q_LOGGING_CATEGORY(mainWindowWebEngineViewOverall, "mainWindowWebEngineView.overall", MSG_TYPE_LEVEL)
+LOGGING_CONTEXT(mainWindowWebEngineViewOverall, mainWindowWebEngineView.overall, TYPE_LEVEL, INFO_VERBOSITY)
 
 main_window_web_engine_view::MainWindowWebEngineView::MainWindowWebEngineView(QWidget * parent, const main_window_shared_types::page_type_e & type, const QString & src, const void * data): web_engine_view::WebEngineView(parent) {
-	QINFO_PRINT(global_enums::qinfo_level_e::ZERO, mainWindowWebEngineViewOverall,  "Web engine view constructor");
+	LOG_INFO(logger::info_level_e::ZERO, mainWindowWebEngineViewOverall,  "Web engine view constructor");
 
 	// Use deleteLater to schedule a destruction event in the event loop
 	std::shared_ptr<main_window_web_engine_page::MainWindowWebEnginePage> newPage = std::shared_ptr<main_window_web_engine_page::MainWindowWebEnginePage>(new main_window_web_engine_page::MainWindowWebEnginePage(parent, type, src, main_window_web_engine_profile::MainWindowWebEngineProfile::defaultProfile(), data), [] (main_window_web_engine_page::MainWindowWebEnginePage * p) {
@@ -33,7 +33,7 @@ main_window_web_engine_view::MainWindowWebEngineView::MainWindowWebEngineView(QW
 }
 
 main_window_web_engine_view::MainWindowWebEngineView::~MainWindowWebEngineView() {
-	QINFO_PRINT(global_enums::qinfo_level_e::ZERO, mainWindowWebEngineViewOverall,  "Web engine view destructor");
+	LOG_INFO(logger::info_level_e::ZERO, mainWindowWebEngineViewOverall,  "Web engine view destructor");
 }
 
 CASTED_SHARED_PTR_GETTER(main_window_web_engine_view::MainWindowWebEngineView::page, main_window_web_engine_page::MainWindowWebEnginePage, web_engine_view::WebEngineView::page())

@@ -10,7 +10,7 @@
 
 #include <memory>
 
-#include <QtCore/QLoggingCategory>
+// Qt libraries
 #include <QtWidgets/QMenu>
 #include <QtWidgets/QWidget>
 #include <QtWidgets/QMenuBar>
@@ -24,8 +24,6 @@
  *  Menu functions and classes
  *  @{
  */
-
-Q_DECLARE_LOGGING_CATEGORY(menuOverall)
 
 namespace menu {
 

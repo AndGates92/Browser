@@ -9,11 +9,6 @@
 */
 
 // Qt libraries
-// Required by qInfo
-#include <QtCore/QtDebug>
-
-#include <QtCore/QLoggingCategory>
-
 #include <QtWebEngineWidgets/QWebEnginePage>
 
 #include "web_engine_profile.h"
@@ -24,8 +19,6 @@
  *  Web Engine Page functions and classes
  *  @{
  */
-
-Q_DECLARE_LOGGING_CATEGORY(webEnginePageOverall)
 
 namespace tab {
 	class Tab;

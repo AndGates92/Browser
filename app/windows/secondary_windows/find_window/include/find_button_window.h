@@ -28,10 +28,6 @@
  *  @{
  */
 
-Q_DECLARE_LOGGING_CATEGORY(findButtonWindowOverall)
-Q_DECLARE_LOGGING_CATEGORY(findButtonWindowCancel)
-Q_DECLARE_LOGGING_CATEGORY(findButtonWindowFind)
-
 namespace find_button_window {
 
 	/**
