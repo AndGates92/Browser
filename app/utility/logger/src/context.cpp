@@ -16,7 +16,7 @@
 #include "context.h"
 
 logger::Context logger::Context::getDefaultContext() {
-	logger::Context context(logger::Config::getDefaultContextName(), std::string(), 0, std::string(), logger::Config::getDefaultType(), logger::Config::getDefaultVerbosity());
+	logger::Context context(logger::Config::getInstance()->getDefaultContextName(), std::string(), 0, std::string(), logger::Config::getInstance()->getDefaultType(), logger::Config::getInstance()->getDefaultVerbosity());
 
 	return context;
 }

@@ -24,7 +24,7 @@ logger::Logger::Logger(const logger::msg_type_e loggerType, const std::string co
 	this->initializeLogging(loggerContext);
 }
 
-logger::Logger::Logger(const logger::msg_type_e loggerType, const std::string contextFile, const int line, const std::string function, const logger::info_level_e loggerVerbosity, const std::string ologfilename) : context(logger::Config::getDefaultContextName(), contextFile, line, function, logger::Config::getDefaultType(), logger::Config::getDefaultVerbosity()), ofilename(ologfilename), ofile(ologfilename, logger::Logger::openMode), verbosity(loggerVerbosity), type(loggerType), state(logger::state_e::CONSTRUCTED) {
+logger::Logger::Logger(const logger::msg_type_e loggerType, const std::string contextFile, const int line, const std::string function, const logger::info_level_e loggerVerbosity, const std::string ologfilename) : context(logger::Config::getInstance()->getDefaultContextName(), contextFile, line, function, logger::Config::getInstance()->getDefaultType(), logger::Config::getInstance()->getDefaultVerbosity()), ofilename(ologfilename), ofile(ologfilename, logger::Logger::openMode), verbosity(loggerVerbosity), type(loggerType), state(logger::state_e::CONSTRUCTED) {
 
 }
 
@@ -98,8 +98,8 @@ void logger::Logger::endLogging() {
 void logger::Logger::openOFile() {
 	if (this->ofile.is_open() == false) {
 		if (this->ofilename.empty() == true) {
-			this->ofile.open(logger::Config::getDefaultOutputFile(), logger::Logger::openMode);
-			this->ofilename = logger::Config::getDefaultOutputFile();
+			this->ofile.open(logger::Config::getInstance()->getDefaultOutputFile(), logger::Logger::openMode);
+			this->ofilename = logger::Config::getInstance()->getDefaultOutputFile();
 		} else {
 			this->ofile.open(this->ofilename, logger::Logger::openMode);
 		}

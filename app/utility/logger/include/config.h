@@ -12,6 +12,7 @@
 #include <memory>
 
 #include "enums.h"
+#include "singleton.h"
 
 /** @defgroup LoggerGroup Logger Doxygen Group
  *  Logger functions and classes
@@ -20,44 +21,44 @@
 
 namespace logger {
 
-	class Config {
+	class Config : public singleton::Singleton<logger::Config> {
 
 		public:
 			/**
-			 * @brief Function: static const logger::info_level_e & getDefaultVerbosity()
+			 * @brief Function: static const logger::info_level_e & getDefaultVerbosity() const
 			 *
 			 * \return the default verbosity of info messages
 			 *
 			 * This function returns the default verbosity of info messages
 			 */
-			static const logger::info_level_e & getDefaultVerbosity();
+			const logger::info_level_e & getDefaultVerbosity() const;
 
 			/**
-			 * @brief Function: static const logger::msg_type_e & getDefaultType()
+			 * @brief Function: static const logger::msg_type_e & getDefaultType() const
 			 *
 			 * \return the default type of message
 			 *
 			 * This function returns the default message type
 			 */
-			static const logger::msg_type_e & getDefaultType();
+			const logger::msg_type_e & getDefaultType() const;
 
 			/**
-			 * @brief Function: static const std::string & getDefaultContextName()
+			 * @brief Function: static const std::string & getDefaultContextName() const
 			 *
 			 * \return the default context name
 			 *
 			 * This function returns the default context name
 			 */
-			static const std::string & getDefaultContextName();
+			const std::string & getDefaultContextName() const;
 
 			/**
-			 * @brief Function: static const std::string & getDefaultOutputFile()
+			 * @brief Function: static const std::string & getDefaultOutputFile() const
 			 *
 			 * \return the default output file
 			 *
 			 * This function returns the default output file
 			 */
-			static const std::string & getDefaultOutputFile();
+			const std::string & getDefaultOutputFile() const;
 
 			/**
 			 * @brief Function: explicit Config()
@@ -76,29 +77,30 @@ namespace logger {
 		protected:
 
 		private:
+
 			/**
 			 * @brief default type of prints
 			 *
 			 */
-			static logger::msg_type_e defaultType;
+			logger::msg_type_e defaultType;
 
 			/**
 			 * @brief default verbosity
 			 *
 			 */
-			static logger::info_level_e defaultVerbosity;
+			logger::info_level_e defaultVerbosity;
 
 			/**
 			 * @brief default context name
 			 *
 			 */
-			static std::string defaultContextName;
+			std::string defaultContextName;
 
 			/**
 			 * @brief default output file
 			 *
 			 */
-			static std::string defaultOutputFile;
+			std::string defaultOutputFile;
 
 	};
 

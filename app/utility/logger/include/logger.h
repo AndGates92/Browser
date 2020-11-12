@@ -13,8 +13,6 @@
 #include <mutex>
 #include <fstream>
 
-// TODO: Delete
-#include "qt_operator.h"
 #include "logging.h"
 #include "config.h"
 #include "context.h"
@@ -36,7 +34,7 @@ namespace logger {
 			typedef std::function<const logger::Context &(void)> context_function_t;
 
 			/**
-			 * @brief Function: explicit Logger(const logger::msg_type_e loggerType, const std::string contextFile, const int line, const std::string function, const logger::Context loggerContext, const logger::info_level_e loggerVerbosity = logger::Config::getDefaultVerbosity(), const std::string ologfilename = logger::Config::getDefaultOutputFile())
+			 * @brief Function: explicit Logger(const logger::msg_type_e loggerType, const std::string contextFile, const int line, const std::string function, const logger::Context loggerContext, const logger::info_level_e loggerVerbosity, const std::string ologfilename = logger::Config::getInstance()->getDefaultOutputFile())
 			 *
 			 * \param loggerType: message type associated with the logger
 			 * \param contextFile: filename of the context
@@ -48,10 +46,10 @@ namespace logger {
 			 *
 			 * Logger constructor with context
 			 */
-			explicit Logger(const logger::msg_type_e loggerType, const std::string contextFile, const int line, const std::string function, const logger::Context loggerContext, const logger::info_level_e loggerVerbosity, const std::string ologfilename = logger::Config::getDefaultOutputFile());
+			explicit Logger(const logger::msg_type_e loggerType, const std::string contextFile, const int line, const std::string function, const logger::Context loggerContext, const logger::info_level_e loggerVerbosity, const std::string ologfilename = logger::Config::getInstance()->getDefaultOutputFile());
 
 			/**
-			 * @brief Function: explicit Logger(const logger::msg_type_e loggerType, const std::string contextFile, const int line, const std::string function, context_function_t loggerContextConstRef, const logger::info_level_e loggerVerbosity = logger::Config::getDefaultVerbosity(), const std::string ologfilename = logger::Config::getDefaultOutputFile())
+			 * @brief Function: explicit Logger(const logger::msg_type_e loggerType, const std::string contextFile, const int line, const std::string function, context_function_t loggerContextConstRef, const logger::info_level_e loggerVerbosity, const std::string ologfilename = logger::Config::getInstance()->getDefaultOutputFile())
 			 *
 			 * \param loggerType: message type associated with the logger
 			 * \param contextFile: filename of the context
@@ -63,10 +61,10 @@ namespace logger {
 			 *
 			 * Logger constructor with context
 			 */
-			explicit Logger(const logger::msg_type_e loggerType, const std::string contextFile, const int line, const std::string function, context_function_t loggerContextConstRef, const logger::info_level_e loggerVerbosity, const std::string ologfilename = logger::Config::getDefaultOutputFile());
+			explicit Logger(const logger::msg_type_e loggerType, const std::string contextFile, const int line, const std::string function, context_function_t loggerContextConstRef, const logger::info_level_e loggerVerbosity, const std::string ologfilename = logger::Config::getInstance()->getDefaultOutputFile());
 
 			/**
-			 * @brief Function: explicit Logger(const logger::msg_type_e loggerType, const std::string contextFile, const int line, const std::string function, const logger::info_level_e loggerVerbosity = logger::Config::getDefaultVerbosity(), const std::string ologfilename = logger::Config::getDefaultOutputFile())
+			 * @brief Function: explicit Logger(const logger::msg_type_e loggerType, const std::string contextFile, const int line, const std::string function, const logger::info_level_e loggerVerbosity = logger::Config::getInstance()->getDefaultVerbosity(), const std::string ologfilename = logger::Config::getInstance()->getDefaultOutputFile())
 			 *
 			 * \param loggerType: message type associated with the logger
 			 * \param contextFile: filename of the context
@@ -77,7 +75,7 @@ namespace logger {
 			 *
 			 * Logger constructor
 			 */
-			explicit Logger(const logger::msg_type_e loggerType, const std::string contextFile, const int line, const std::string function, const logger::info_level_e loggerVerbosity = logger::Config::getDefaultVerbosity(), const std::string ologfilename = logger::Config::getDefaultOutputFile());
+			explicit Logger(const logger::msg_type_e loggerType, const std::string contextFile, const int line, const std::string function, const logger::info_level_e loggerVerbosity = logger::Config::getInstance()->getDefaultVerbosity(), const std::string ologfilename = logger::Config::getInstance()->getDefaultOutputFile());
 
 			/**
 			 * @brief Function: virtual ~Logger()

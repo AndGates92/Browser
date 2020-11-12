@@ -29,6 +29,8 @@ namespace base_element_creation {
 			 *
 			 * \param args: constructor arguments
 			 *
+			 * \return the created object
+			 *
 			 * This function creates an object with a variable number of argumnets
 			 */
 			template<typename derivedType, typename ... ConstructorArgs>
