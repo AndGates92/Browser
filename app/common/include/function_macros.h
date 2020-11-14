@@ -8,8 +8,8 @@
  * @brief Function Macros file
 */
 
-/** @defgroup FunctionMacrosGroup Function Macros Doxygen Group
- *  Function Macros
+/** @defgroup CommonGroup Common Macros and Functions Doxygen Group
+ *  Common Macros and Functions
  *  @{
  */
 
@@ -285,6 +285,6 @@ std::shared_ptr<ARGTYPE> FNAME() const { \
 	return nullptr; \
 }
 
-/** @} */ // End of FunctionMacrosGroup group
+/** @} */ // End of CommonGroup group
 
 #endif // FUNCTION_MACROS_H

@@ -15,18 +15,18 @@
 
 LOGGING_CONTEXT(mainWindowMenuBarOverall, menuBar.overall, TYPE_LEVEL, INFO_VERBOSITY)
 
-main_window::MenuBar::MenuBar(QWidget * parent) : menu::MenuBar(parent), fileMenu(Q_NULLPTR), editMenu(Q_NULLPTR) {
-	LOG_INFO(logger::info_level_e::ZERO, mainWindowMenuBarOverall,  "Main window menu bar constructor");
+app::main_window::menu::MenuBar::MenuBar(QWidget * parent) : app::base::menu::MenuBar(parent), fileMenu(Q_NULLPTR), editMenu(Q_NULLPTR) {
+	LOG_INFO(app::logger::info_level_e::ZERO, mainWindowMenuBarOverall,  "Main window menu bar constructor");
 }
 
-void main_window::MenuBar::createMenus() {
-	this->fileMenu = std::make_unique<file_menu::FileMenu>(this, this->weak_from_this(), "File", key_sequence::KeySequence(Qt::Key_F));
-	this->editMenu = std::make_unique<edit_menu::EditMenu>(this, this->weak_from_this(), "Edit", key_sequence::KeySequence(Qt::Key_E));
+void app::main_window::menu::MenuBar::createMenus() {
+	this->fileMenu = std::make_unique<app::main_window::menu::FileMenu>(this, this->weak_from_this(), "File", app::key_sequence::KeySequence(Qt::Key_F));
+	this->editMenu = std::make_unique<app::main_window::menu::EditMenu>(this, this->weak_from_this(), "Edit", app::key_sequence::KeySequence(Qt::Key_E));
 }
 
-main_window::MenuBar::~MenuBar() {
-	LOG_INFO(logger::info_level_e::ZERO, mainWindowMenuBarOverall,  "Main window menu bar destructor");
+app::main_window::menu::MenuBar::~MenuBar() {
+	LOG_INFO(app::logger::info_level_e::ZERO, mainWindowMenuBarOverall,  "Main window menu bar destructor");
 }
 
-CONST_GETTER(main_window::MenuBar::getFileMenu, std::unique_ptr<file_menu::FileMenu> &, this->fileMenu)
-CONST_GETTER(main_window::MenuBar::getEditMenu, std::unique_ptr<edit_menu::EditMenu> &, this->editMenu)
+CONST_GETTER(app::main_window::menu::MenuBar::getFileMenu, std::unique_ptr<app::main_window::menu::FileMenu> &, this->fileMenu)
+CONST_GETTER(app::main_window::menu::MenuBar::getEditMenu, std::unique_ptr<app::main_window::menu::EditMenu> &, this->editMenu)

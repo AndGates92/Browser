@@ -18,7 +18,7 @@
 
 #include "common/include/global_enums.h"
 #include "common/include/constructor_macros.h"
-#include "windows/base/include/action_interface.h"
+#include "base/window/include/action_interface.h"
 #include "windows/secondary_windows/find_window/include/window_settings.h"
 #include "widgets/commands/include/action.h"
 #include "windows/common/include/find_settings.h"
@@ -27,14 +27,15 @@
  *  Find Window functions and classes
  *  @{
  */
+namespace app {
 
-namespace find_window {
+	namespace find_window {
 
 	/**
 	 * @brief Window class
 	 *
 	 */
-	class Window final : public QWidget, public window::ActionInterface {
+	class Window final : public QWidget, public app::base::window::ActionInterface {
 
 		Q_OBJECT
 
@@ -75,13 +76,13 @@ namespace find_window {
 
 		signals:
 			/**
-			 * @brief Function: void find(const find_settings::FindSettings settings) const
+			 * @brief Function: void find(const app::windows::shared::FindSettings settings) const
 			 *
 			 * \param settings: search settings
 			 *
 			 * This function is the signal to trigger a find in the page
 			 */
-			void find(const find_settings::FindSettings settings) const;
+			void find(const app::windows::shared::FindSettings settings) const;
 
 		private:
 			/**
@@ -132,19 +133,19 @@ namespace find_window {
 			 * @brief find action
 			 *
 			 */
-			std::unique_ptr<action::Action> findAction;
+			std::unique_ptr<app::action::Action> findAction;
 
 			/**
 			 * @brief cancel action
 			 *
 			 */
-			std::unique_ptr<action::Action> cancelAction;
+			std::unique_ptr<app::action::Action> cancelAction;
 
 			/**
 			 * @brief insert action
 			 *
 			 */
-			std::unique_ptr<action::Action> typeAction;
+			std::unique_ptr<app::action::Action> typeAction;
 
 			/**
 			 * @brief text to find in the page
@@ -168,7 +169,7 @@ namespace find_window {
 			 * @brief search settings box
 			 *
 			 */
-			std::unique_ptr<find_window::WindowSettings> settingsBox;
+			std::unique_ptr<app::find_window::Settings> settingsBox;
 
 			// Move and copy constructor
 			/**
@@ -177,7 +178,10 @@ namespace find_window {
 			 */
 			DISABLE_COPY_MOVE(Window)
 
-	};
+		};
+
+	}
+
 }
 /** @} */ // End of FindWindowGroup group
 

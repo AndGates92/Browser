@@ -10,12 +10,16 @@
 
 #include "utility/logger/include/enums.h"
 
-namespace logger {
+namespace app {
 
-	OVERLOAD_OPERATORS_CUSTOM_TYPE(logger::info_level_e)
+	namespace logger {
 
-	OVERLOAD_OPERATORS_CUSTOM_TYPE(logger::msg_type_e)
+		OVERLOAD_OPERATORS_CUSTOM_TYPE(app::logger::info_level_e)
 
-	OVERLOAD_OPERATORS_CUSTOM_TYPE(logger::state_e)
+		OVERLOAD_OPERATORS_CUSTOM_TYPE(app::logger::msg_type_e)
+
+		OVERLOAD_OPERATORS_CUSTOM_TYPE(app::logger::state_e)
+
+	}
 
 }

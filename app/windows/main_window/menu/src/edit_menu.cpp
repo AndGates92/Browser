@@ -25,22 +25,22 @@ LOGGING_CONTEXT(editMenuPasteAction, editMenu.pasteAction, TYPE_LEVEL, INFO_VERB
 LOGGING_CONTEXT(editMenuSelectAllAction, editMenu.selectAllAction, TYPE_LEVEL, INFO_VERBOSITY)
 LOGGING_CONTEXT(editMenuFindAction, editMenu.findAction, TYPE_LEVEL, INFO_VERBOSITY)
 
-edit_menu::EditMenu::EditMenu(QWidget * parent, std::weak_ptr<QMenuBar> menuBar, const char* menuName, const key_sequence::KeySequence & key) : menu::Menu(parent,menuBar,menuName,key), findWindow(Q_NULLPTR) {
+app::main_window::menu::EditMenu::EditMenu(QWidget * parent, std::weak_ptr<QMenuBar> menuBar, const char* menuName, const app::key_sequence::KeySequence & key) : app::base::menu::Menu(parent,menuBar,menuName,key), findWindow(Q_NULLPTR) {
 
-	LOG_INFO(logger::info_level_e::ZERO, editMenuOverall,  "edit menu constructor");
+	LOG_INFO(app::logger::info_level_e::ZERO, editMenuOverall,  "edit menu constructor");
 
 	this->createActions();
 	this->createMenu();
 
 }
 
-edit_menu::EditMenu::~EditMenu() {
+app::main_window::menu::EditMenu::~EditMenu() {
 
-	LOG_INFO(logger::info_level_e::ZERO, editMenuOverall,  "edit menu destructor");
+	LOG_INFO(app::logger::info_level_e::ZERO, editMenuOverall,  "edit menu destructor");
 
 }
 
-void edit_menu::EditMenu::createActions() {
+void app::main_window::menu::EditMenu::createActions() {
 
 	this->undoAction = std::make_unique<QAction>(tr("Undo"), this);
 	this->undoAction->setStatusTip(tr("Undo previous action"));
@@ -72,7 +72,7 @@ void edit_menu::EditMenu::createActions() {
 
 }
 
-void edit_menu::EditMenu::createMenu() {
+void app::main_window::menu::EditMenu::createMenu() {
 	this->winMenu->addAction(undoAction.get());
 	this->winMenu->addAction(redoAction.get());
 	this->winMenu->addAction(cutAction.get());
@@ -82,40 +82,40 @@ void edit_menu::EditMenu::createMenu() {
 	this->winMenu->addAction(findAction.get());
 }
 
-void edit_menu::EditMenu::undo() {
-	LOG_INFO(logger::info_level_e::ZERO, editMenuUndoAction,  "undo slot");
+void app::main_window::menu::EditMenu::undo() {
+	LOG_INFO(app::logger::info_level_e::ZERO, editMenuUndoAction,  "undo slot");
 }
 
-void edit_menu::EditMenu::redo() {
-	LOG_INFO(logger::info_level_e::ZERO, editMenuRedoAction,  "redo slot");
+void app::main_window::menu::EditMenu::redo() {
+	LOG_INFO(app::logger::info_level_e::ZERO, editMenuRedoAction,  "redo slot");
 }
 
-void edit_menu::EditMenu::cut() {
-	LOG_INFO(logger::info_level_e::ZERO, editMenuCutAction,  "cut slot");
+void app::main_window::menu::EditMenu::cut() {
+	LOG_INFO(app::logger::info_level_e::ZERO, editMenuCutAction,  "cut slot");
 }
 
-void edit_menu::EditMenu::copy() {
-	LOG_INFO(logger::info_level_e::ZERO, editMenuCopyAction,  "copy slot");
+void app::main_window::menu::EditMenu::copy() {
+	LOG_INFO(app::logger::info_level_e::ZERO, editMenuCopyAction,  "copy slot");
 }
 
-void edit_menu::EditMenu::paste() {
-	LOG_INFO(logger::info_level_e::ZERO, editMenuPasteAction,  "paste slot");
+void app::main_window::menu::EditMenu::paste() {
+	LOG_INFO(app::logger::info_level_e::ZERO, editMenuPasteAction,  "paste slot");
 }
 
-void edit_menu::EditMenu::selectAll() {
-	LOG_INFO(logger::info_level_e::ZERO, editMenuSelectAllAction,  "select all slot");
+void app::main_window::menu::EditMenu::selectAll() {
+	LOG_INFO(app::logger::info_level_e::ZERO, editMenuSelectAllAction,  "select all slot");
 }
 
-void edit_menu::EditMenu::find() {
-	LOG_INFO(logger::info_level_e::ZERO, editMenuFindAction,  "setting up find functionality: creating window and connecting signals and slots");
+void app::main_window::menu::EditMenu::find() {
+	LOG_INFO(app::logger::info_level_e::ZERO, editMenuFindAction,  "setting up find functionality: creating window and connecting signals and slots");
 
-	this->findWindow.reset(new find_window::Window(this->parentWidget(), Qt::Window));
-	connect(this->findWindow.get(), &find_window::Window::find, this, &edit_menu::EditMenu::doSearch);
+	this->findWindow.reset(new app::find_window::Window(this->parentWidget(), Qt::Window));
+	connect(this->findWindow.get(), &app::find_window::Window::find, this, &app::main_window::menu::EditMenu::doSearch);
 	this->findWindow->show();
 	this->findWindow->setFocus();
 }
 
-void edit_menu::EditMenu::doSearch(const find_settings::FindSettings settings) const {
-	LOG_INFO(logger::info_level_e::ZERO, editMenuFindAction,  "Search settings " << settings);
+void app::main_window::menu::EditMenu::doSearch(const app::windows::shared::FindSettings settings) const {
+	LOG_INFO(app::logger::info_level_e::ZERO, editMenuFindAction,  "Search settings " << settings);
 	emit this->triggerSearch(settings);
 }

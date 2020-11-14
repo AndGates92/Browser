@@ -15,7 +15,7 @@
 #include "utility/exception/include/browser_exception.h"
 #include "utility/log/include/logging.h"
 #include "utility/include/test_runner.h"
-#include "settings/include/browser_settings.h"
+#include "settings/include/global.h"
 
 /** @addtogroup TesterGroup
  *  @{
@@ -34,29 +34,29 @@
 int main (int argc, char* argv[]) {
 
 	try {
-		logging::set_default_category();
-		qInstallMessageHandler(logging::handler);
+		app::logging::set_default_category();
+		qInstallMessageHandler(app::logging::handler);
 
-		browser_settings::BrowserSettings::setLogPath(argc, argv);
+		app::settings::Global::setLogPath(argc, argv);
 
-		LOG_INFO(logger::info_level_e::ZERO, , "Starting browser tester");
-		LOG_INFO(logger::info_level_e::ZERO, , "Built on " << __DATE__ << " at " << __TIME__);
-		LOG_INFO(logger::info_level_e::ZERO, , "QT version " << QT_VERSION_STR);
+		LOG_INFO(app::logger::info_level_e::ZERO, , "Starting browser tester");
+		LOG_INFO(app::logger::info_level_e::ZERO, , "Built on " << __DATE__ << " at " << __TIME__);
+		LOG_INFO(app::logger::info_level_e::ZERO, , "QT version " << QT_VERSION_STR);
 
-		init::initializeSettings(argc, argv);
-		std::unique_ptr<test_runner::TestRunner> runner = std::make_unique<test_runner::TestRunner>(argc, argv);
+		app::init::initializeSettings(argc, argv);
+		std::unique_ptr<tester::utility::TestRunner> runner = std::make_unique<tester::utility::TestRunner>(argc, argv);
 		runner->run();
 		runner->printResults();
 
-	} catch (const browser_exception::BrowserException & bexc) {
+	} catch (const app::browser_exception::BrowserException & bexc) {
 		std::string bexcMsg(bexc.print());
-		browser_exception::printException(bexcMsg);
+		app::browser_exception::printException(bexcMsg);
 		return EXIT_FAILURE;
 	} catch (const QUnhandledException & unhandledexc) {
-		browser_exception::printException("Got unhandled exception");
+		app::browser_exception::printException("Got unhandled exception");
 		return EXIT_FAILURE;
 	} catch (const std::exception & exc) {
-		browser_exception::printException(exc.what());
+		app::browser_exception::printException(exc.what());
 		return EXIT_FAILURE;
 	}
 

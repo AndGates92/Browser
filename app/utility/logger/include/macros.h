@@ -41,7 +41,7 @@
  * Export context
  */
 #define EXPORT_CONTEXT(CONTEXT) \
-	extern const logger::Context & CONTEXT();
+	extern const app::logger::Context & CONTEXT();
 
 /**
  * @brief LOGGING_CONTEXT(CONTEXT, NAME, MINIMUM_TYPE, MINIMUM_INFO)
@@ -54,8 +54,8 @@
  * Declare context
  */
 #define LOGGING_CONTEXT(CONTEXT, NAME, MINIMUM_TYPE, MINIMUM_INFO) \
-	const logger::Context & CONTEXT() { \
-		static const logger::Context context(STRINGIFY(NAME), logger::msg_type_e::MINIMUM_TYPE, logger::info_level_e::INFO_VERBOSITY); \
+	const app::logger::Context & CONTEXT() { \
+		static const app::logger::Context context(STRINGIFY(NAME), app::logger::msg_type_e::MINIMUM_TYPE, app::logger::info_level_e::INFO_VERBOSITY); \
 		return context; \
 	}
 
@@ -70,7 +70,7 @@
  */
 #define LOG_INFO(VERBOSITY, CONTEXT, ...)\
 	{ \
-		logger::Logger infoLogger(logger::msg_type_e::INFO, __FILE__, __LINE__, __func__, VERBOSITY); \
+		app::logger::Logger infoLogger(app::logger::msg_type_e::INFO, __FILE__, __LINE__, __func__, VERBOSITY); \
 		infoLogger.initializeLogging(CONTEXT); \
 		infoLogger << __VA_ARGS__; \
 	}
@@ -85,7 +85,7 @@
  */
 #define LOG_WARNING(CONTEXT, ...)\
 	{ \
-		logger::Logger warningLogger(logger::msg_type_e::WARNING, __FILE__, __LINE__, __func__); \
+		app::logger::Logger warningLogger(app::logger::msg_type_e::WARNING, __FILE__, __LINE__, __func__); \
 		warningLogger.initializeLogging(CONTEXT); \
 		warningLogger << __VA_ARGS__; \
 	}
@@ -100,7 +100,7 @@
  */
 #define LOG_ERROR(CONTEXT, ...)\
 	{ \
-		logger::Logger errorLogger(logger::msg_type_e::ERROR, __FILE__, __LINE__, __func__); \
+		app::logger::Logger errorLogger(app::logger::msg_type_e::ERROR, __FILE__, __LINE__, __func__); \
 		errorLogger.initializeLogging(CONTEXT); \
 		errorLogger << __VA_ARGS__; \
 	}
@@ -115,7 +115,7 @@
  */
 #define LOG_FATAL(CONTEXT, ...)\
 	{ \
-		logger::Logger fatalLogger(logger::msg_type_e::FATAL, __FILE__, __LINE__, __func__); \
+		app::logger::Logger fatalLogger(app::logger::msg_type_e::FATAL, __FILE__, __LINE__, __func__); \
 		fatalLogger.initializeLogging(CONTEXT); \
 		fatalLogger << __VA_ARGS__; \
 	}

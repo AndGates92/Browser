@@ -9,61 +9,65 @@
  */
 
 #include "common/include/constructor_macros.h"
-#include "base/tester/include/base_factory.h"
+#include "base/tester/include/factory.h"
 
-/** @defgroup TestFactoryGroup Test Factory Group
- *  Test factory functions and classes
+/** @defgroup FactoryGroup Factory Doxygen Group
+ *  Factory functions and classes
  *  @{
  */
 
-namespace test_factory {
+namespace tester {
 
-	/**
-	 * @brief TestFactory class
-	 *
-	 */
-	class TestFactory : public base_factory::BaseFactory {
+	namespace factory {
 
-		public:
-			/**
-			 * @brief Function: explicit TestFactory(int & argc, char** argv, const base_factory::BaseFactory::suite_container_t & testSuites = base_factory::BaseFactory::suite_container_t())
-			 *
-			 * \param argc: number of arguments
-			 * \param argv: value of arguments
-			 * \param testSuites: initial collection of test suites
-			 *
-			 * Test factory constructor
-			 */
-			explicit TestFactory(int & argc, char** argv, const base_factory::BaseFactory::suite_container_t & testSuites = base_factory::BaseFactory::suite_container_t());
+		/**
+		 * @brief TestFactory class
+		 *
+		 */
+		class TestFactory : public tester::base::Factory {
 
-			/**
-			 * @brief Function: virtual ~TestFactory()
-			 *
-			 * Test factory destructor
-			 */
-			virtual ~TestFactory();
+			public:
+				/**
+				 * @brief Function: explicit TestFactory(int & argc, char** argv, const tester::base::Factory::suite_container_t & testSuites = tester::base::Factory::suite_container_t())
+				 *
+				 * \param argc: number of arguments
+				 * \param argv: value of arguments
+				 * \param testSuites: initial collection of test suites
+				 *
+				 * Test factory constructor
+				 */
+				explicit TestFactory(int & argc, char** argv, const tester::base::Factory::suite_container_t & testSuites = tester::base::Factory::suite_container_t());
 
-			/**
-			 * @brief Function: virtual void populate() override
-			 *
-			 * This function populates the suite
-			 */
-			virtual void populate() override;
+				/**
+				 * @brief Function: virtual ~TestFactory()
+				 *
+				 * Test factory destructor
+				 */
+				virtual ~TestFactory();
 
-		protected:
+				/**
+				 * @brief Function: virtual void populate() override
+				 *
+				 * This function populates the suite
+				 */
+				virtual void populate() override;
 
-		private:
+			protected:
 
-			// Move and copy constructor
-			/**
-			 * @brief Disable move and copy constructors and operator= overloading for class TestFactory
-			 *
-			 */
-			DISABLE_COPY_MOVE(TestFactory)
+			private:
 
-	};
+				// Move and copy constructor
+				/**
+				 * @brief Disable move and copy constructors and operator= overloading for class TestFactory
+				 *
+				 */
+				DISABLE_COPY_MOVE(TestFactory)
+
+		};
+
+	}
 
 }
-/** @} */ // End of TestFactoryGroup group
+/** @} */ // End of FactoryGroup group
 
 #endif // TEST_FACTORY_H

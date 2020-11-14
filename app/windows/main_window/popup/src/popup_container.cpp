@@ -17,32 +17,40 @@
 // Categories
 LOGGING_CONTEXT(mainWindowPopupContainerOverall, mainWindowPopupContainer.overall, TYPE_LEVEL, INFO_VERBOSITY)
 
-namespace main_window {
+namespace app {
 
-	Q_NAMESPACE
+	namespace main_window {
 
-	/**
-	 * @brief postprocessing action after state change
-	 *
-	 */
-	typedef enum class popup_widget_list {
-		OPEN_FILE,       /**< Open file popup */
-		WARNING          /**< Warning popup */
-	} popup_widget_e;
+		namespace popup {
 
-	/**
-	 * @brief Overload operators to ease print of the state of the main window controller
-	 *
-	 */
-	OVERLOAD_OPERATORS_CUSTOM_TYPE_FUNCTION_PROTOTYPE(popup_widget_list, main_window::popup_widget_e)
+//			Q_NAMESPACE
 
-	OVERLOAD_OPERATORS_CUSTOM_TYPE(main_window::popup_widget_e)
+			/**
+			 * @brief postprocessing action after state change
+			 *
+			 */
+//			typedef enum class widget_list {
+//				OPEN_FILE,       /**< Open file popup */
+//				WARNING          /**< Warning popup */
+//			} widget_e;
+
+			/**
+			 * @brief Overload operators to ease print of the state of the main window controller
+			 *
+			 */
+//			OVERLOAD_OPERATORS_CUSTOM_TYPE_FUNCTION_PROTOTYPE(widget_list, app::main_window::popup::widget_e)
+
+			OVERLOAD_OPERATORS_CUSTOM_TYPE(app::main_window::popup::widget_e)
+
+		}
+
+	}
 
 }
 
-main_window::PopupContainer::PopupContainer(QWidget * parent, Qt::WindowFlags flags) : popup_container::PopupContainer(parent, flags) {
+app::main_window::popup::PopupContainer::PopupContainer(QWidget * parent, Qt::WindowFlags flags) : app::base::popup::PopupContainer(parent, flags) {
 
-	LOG_INFO(logger::info_level_e::ZERO, mainWindowPopupContainerOverall,  "Main window popup container constructor");
+	LOG_INFO(app::logger::info_level_e::ZERO, mainWindowPopupContainerOverall,  "Main window popup container constructor");
 
 	this->addOpenPopup();
 	this->addWarningPopup();
@@ -63,47 +71,47 @@ main_window::PopupContainer::PopupContainer(QWidget * parent, Qt::WindowFlags fl
 	);
 }
 
-main_window::PopupContainer::~PopupContainer() {
-	LOG_INFO(logger::info_level_e::ZERO, mainWindowPopupContainerOverall,  "Main window popup container destructor");
+app::main_window::popup::PopupContainer::~PopupContainer() {
+	LOG_INFO(app::logger::info_level_e::ZERO, mainWindowPopupContainerOverall,  "Main window popup container destructor");
 }
 
-bool main_window::PopupContainer::showWarningPopup() {
-	const main_window::popup_widget_e index = main_window::popup_widget_e::WARNING;
-	return this->showPopup<label_popup::LabelPopup>((unsigned int)index);
+bool app::main_window::popup::PopupContainer::showWarningPopup() {
+	const app::main_window::popup::widget_e index = app::main_window::popup::widget_e::WARNING;
+	return this->showPopup<app::main_window::popup::LabelPopup>((unsigned int)index);
 }
 
-bool main_window::PopupContainer::showOpenFilePopup() {
-	const main_window::popup_widget_e index = main_window::popup_widget_e::OPEN_FILE;
-	return this->showPopup<open_popup::OpenPopup>((unsigned int)index);
+bool app::main_window::popup::PopupContainer::showOpenFilePopup() {
+	const app::main_window::popup::widget_e index = app::main_window::popup::widget_e::OPEN_FILE;
+	return this->showPopup<app::main_window::popup::OpenPopup>((unsigned int)index);
 }
 
-std::shared_ptr<label_popup::LabelPopup> main_window::PopupContainer::getWarningPopup() const {
-	const main_window::popup_widget_e index = main_window::popup_widget_e::WARNING;
-	return this->getPopup<label_popup::LabelPopup>((unsigned int)index);
+std::shared_ptr<app::main_window::popup::LabelPopup> app::main_window::popup::PopupContainer::getWarningPopup() const {
+	const app::main_window::popup::widget_e index = app::main_window::popup::widget_e::WARNING;
+	return this->getPopup<app::main_window::popup::LabelPopup>((unsigned int)index);
 }
 
-std::shared_ptr<open_popup::OpenPopup> main_window::PopupContainer::getOpenFilePopup() const {
-	const main_window::popup_widget_e index = main_window::popup_widget_e::OPEN_FILE;
-	return this->getPopup<open_popup::OpenPopup>((unsigned int)index);
+std::shared_ptr<app::main_window::popup::OpenPopup> app::main_window::popup::PopupContainer::getOpenFilePopup() const {
+	const app::main_window::popup::widget_e index = app::main_window::popup::widget_e::OPEN_FILE;
+	return this->getPopup<app::main_window::popup::OpenPopup>((unsigned int)index);
 }
 
-void main_window::PopupContainer::connectSignals() {
-	connect(this->getOpenFilePopup().get(), &open_popup::OpenPopup::sizeChanged,  [this] () {
+void app::main_window::popup::PopupContainer::connectSignals() {
+	connect(this->getOpenFilePopup().get(), &app::main_window::popup::OpenPopup::sizeChanged,  [this] () {
 		emit this->updateGeometryRequest(this->shared_from_this());
 	});
 }
 
-void main_window::PopupContainer::addOpenPopup() {
-	std::shared_ptr<open_popup::OpenPopup> popup = std::make_shared<open_popup::OpenPopup>(this);
-	this->addWidget((unsigned int)main_window::popup_widget_e::OPEN_FILE, popup);
+void app::main_window::popup::PopupContainer::addOpenPopup() {
+	std::shared_ptr<app::main_window::popup::OpenPopup> popup = std::make_shared<app::main_window::popup::OpenPopup>(this);
+	this->addWidget((unsigned int)app::main_window::popup::widget_e::OPEN_FILE, popup);
 }
 
-void main_window::PopupContainer::addWarningPopup() {
-	std::shared_ptr<label_popup::LabelPopup> popup = std::make_shared<label_popup::LabelPopup>(this);
+void app::main_window::popup::PopupContainer::addWarningPopup() {
+	std::shared_ptr<app::main_window::popup::LabelPopup> popup = std::make_shared<app::main_window::popup::LabelPopup>(this);
 	popup->setStyleSheet(
 		"QLabel {"
 			"color: orange;"
 		"}"
 	);
-	this->addWidget((unsigned int)main_window::popup_widget_e::WARNING, popup);
+	this->addWidget((unsigned int)app::main_window::popup::widget_e::WARNING, popup);
 }

@@ -1,5 +1,5 @@
-#ifndef SCROLL_TAB_H
-#define SCROLL_TAB_H
+#ifndef SCROLL_TAB_TEST_H
+#define SCROLL_TAB_TEST_H
 /**
  * @copyright
  * @file scroll_tab.h
@@ -10,51 +10,54 @@
 
 #include "base/tester/include/command_test.h"
 
-/** @defgroup ScrollTabGroup Scroll Tab Group
- *  Scroll tab functions and classes
+/** @defgroup TesterTestGroup Test Doxygen Group
+ *  Test functions and classes
  *  @{
  */
+namespace tester {
 
-namespace scroll_tab {
+	namespace test {
 
-	/**
-	 * @brief ScrollTab class
-	 *
-	 */
-	class ScrollTab : public command_test::CommandTest {
+		/**
+		 * @brief ScrollTab class
+		 *
+		 */
+		class ScrollTab : public tester::base::CommandTest {
 
-		public:
-			/**
-			 * @brief Function: explicit ScrollTab(const std::shared_ptr<base_suite::BaseSuite> & testSuite, const bool useShortcuts)
-			 *
-			 * \param testSuite: test suite
-			 * \param useShortcut: test uses shortcuts to send commands
-			 *
-			 * Scroll tab constructor
-			 */
-			explicit ScrollTab(const std::shared_ptr<base_suite::BaseSuite> & testSuite, const bool useShortcuts);
+			public:
+				/**
+				 * @brief Function: explicit ScrollTab(const std::shared_ptr<tester::base::Suite> & testSuite, const bool useShortcuts)
+				 *
+				 * \param testSuite: test suite
+				 * \param useShortcut: test uses shortcuts to send commands
+				 *
+				 * Scroll tab constructor
+				 */
+				explicit ScrollTab(const std::shared_ptr<tester::base::Suite> & testSuite, const bool useShortcuts);
 
-			/**
-			 * @brief Function: virtual ~ScrollTab()
-			 *
-			 * Scroll tab destructor
-			 */
-			virtual ~ScrollTab();
+				/**
+				 * @brief Function: virtual ~ScrollTab()
+				 *
+				 * Scroll tab destructor
+				 */
+				virtual ~ScrollTab();
 
-		protected:
+			protected:
 
-			/**
-			 * @brief Function: virtual void testBody() override
-			 *
-			 * This function contains the body of the test
-			 */
-			virtual void testBody() override;
+				/**
+				 * @brief Function: virtual void testBody() override
+				 *
+				 * This function contains the body of the test
+				 */
+				virtual void testBody() override;
 
-		private:
+			private:
 
-	};
+		};
+
+	}
 
 }
-/** @} */ // End of ScrollTabGroup group
+/** @} */ // End of TesterTestGroup group
 
-#endif // SCROLL_TAB_H
+#endif // SCROLL_TAB_TEST_H

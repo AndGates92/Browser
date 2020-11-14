@@ -12,59 +12,63 @@
 
 #include "common/include/constructor_macros.h"
 #include "utility/log/include/printable_object.h"
-#include "base/tester/include/base_suite.h"
+#include "base/tester/include/suite.h"
 
-/** @defgroup CommandSuiteGroup Command suite Group
- *  Command suite functions and classes
+/** @defgroup SuiteGroup Suite Doxygen Group
+ *  Suite functions and classes
  *  @{
  */
 
-namespace command_suite {
+namespace tester {
 
-	/**
-	 * @brief CommandSuite class
-	 *
-	 */
-	class CommandSuite : public base_suite::BaseSuite {
+	namespace suite {
 
-		public:
-			/**
-			 * @brief Function: explicit CommandSuite(const std::shared_ptr<base_factory::BaseFactory> & testFactory, const base_suite::BaseSuite::tests_container_t & testList = base_suite::BaseSuite::tests_container_t())
-			 *
-			 * \param testFactory: test factory
-			 * \param testList: initial collection of tests
-			 *
-			 * Command suite constructor
-			 */
-			explicit CommandSuite(const std::shared_ptr<base_factory::BaseFactory> & testFactory, const base_suite::BaseSuite::tests_container_t & testList = base_suite::BaseSuite::tests_container_t());
+		/**
+		 * @brief CommandSuite class
+		 *
+		 */
+		class CommandSuite : public tester::base::Suite {
 
-			/**
-			 * @brief Function: virtual ~CommandSuite()
-			 *
-			 * Command suite destructor
-			 */
-			virtual ~CommandSuite();
+			public:
+				/**
+				 * @brief Function: explicit CommandSuite(const std::shared_ptr<tester::base::Factory> & testFactory, const tester::base::Suite::tests_container_t & testList = tester::base::Suite::tests_container_t())
+				 *
+				 * \param testFactory: test factory
+				 * \param testList: initial collection of tests
+				 *
+				 * Command suite constructor
+				 */
+				explicit CommandSuite(const std::shared_ptr<tester::base::Factory> & testFactory, const tester::base::Suite::tests_container_t & testList = tester::base::Suite::tests_container_t());
 
-			/**
-			 * @brief Function: virtual void populate() override
-			 *
-			 * This function populates the suite
-			 */
-			virtual void populate() override;
+				/**
+				 * @brief Function: virtual ~CommandSuite()
+				 *
+				 * Command suite destructor
+				 */
+				virtual ~CommandSuite();
 
-		protected:
+				/**
+				 * @brief Function: virtual void populate() override
+				 *
+				 * This function populates the suite
+				 */
+				virtual void populate() override;
 
-		private:
-			// Move and copy constructor
-			/**
-			 * @brief Disable move and copy constructors and operator= overloading for class CommandSuite
-			 *
-			 */
-			DISABLE_COPY_MOVE(CommandSuite)
+			protected:
 
-	};
+			private:
+				// Move and copy constructor
+				/**
+				 * @brief Disable move and copy constructors and operator= overloading for class CommandSuite
+				 *
+				 */
+				DISABLE_COPY_MOVE(CommandSuite)
+
+		};
+
+	}
 
 }
-/** @} */ // End of CommandSuiteGroup group
+/** @} */ // End of SuiteGroup group
 
 #endif // COMMAND_SUITE_H

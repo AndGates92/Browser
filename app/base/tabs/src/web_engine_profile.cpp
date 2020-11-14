@@ -16,10 +16,10 @@
 // Categories
 LOGGING_CONTEXT(webEngineProfileOverall, webEngineProfile.overall, TYPE_LEVEL, INFO_VERBOSITY)
 
-web_engine_profile::WebEngineProfile * web_engine_profile::WebEngineProfile::defaultProfile() {
+app::base::tab::WebEngineProfile * app::base::tab::WebEngineProfile::defaultProfile() {
 
 	try {
-		web_engine_profile::WebEngineProfile * profile = dynamic_cast<web_engine_profile::WebEngineProfile *>(QWebEngineProfile::defaultProfile());
+		app::base::tab::WebEngineProfile * profile = dynamic_cast<app::base::tab::WebEngineProfile *>(QWebEngineProfile::defaultProfile());
 		return profile;
 	} catch (const std::bad_cast & badCastE) {
 		EXCEPTION_ACTION(throw, badCastE.what());
@@ -29,12 +29,12 @@ web_engine_profile::WebEngineProfile * web_engine_profile::WebEngineProfile::def
 
 }
 
-web_engine_profile::WebEngineProfile::WebEngineProfile(QObject * parent, const QString & storageName): QWebEngineProfile(storageName, parent) {
-	LOG_INFO(logger::info_level_e::ZERO, webEngineProfileOverall,  "Web engine profile constructor");
+app::base::tab::WebEngineProfile::WebEngineProfile(QObject * parent, const QString & storageName): QWebEngineProfile(storageName, parent) {
+	LOG_INFO(app::logger::info_level_e::ZERO, webEngineProfileOverall,  "Web engine profile constructor");
 
 }
 
-web_engine_profile::WebEngineProfile::~WebEngineProfile() {
-	LOG_INFO(logger::info_level_e::ZERO, webEngineProfileOverall,  "Web engine profile destructor");
+app::base::tab::WebEngineProfile::~WebEngineProfile() {
+	LOG_INFO(app::logger::info_level_e::ZERO, webEngineProfileOverall,  "Web engine profile destructor");
 
 }

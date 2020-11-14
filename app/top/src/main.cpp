@@ -31,25 +31,25 @@
 int main (int argc, char* argv[]) {
 
 	try {
-		logging::set_default_category();
-		qInstallMessageHandler(logging::handler);
+		app::logging::set_default_category();
+		qInstallMessageHandler(app::logging::handler);
 
-		settings::BrowserSettings::setLogPath(argc, argv);
+		app::settings::Global::setLogPath(argc, argv);
 
-		LOG_INFO(logger::info_level_e::ZERO, , "Starting browser");
-		LOG_INFO(logger::info_level_e::ZERO, , "Built on " << __DATE__ << " at " << __TIME__);
-		LOG_INFO(logger::info_level_e::ZERO, , "QT version " << QT_VERSION_STR);
+		LOG_INFO(app::logger::info_level_e::ZERO, , "Starting browser");
+		LOG_INFO(app::logger::info_level_e::ZERO, , "Built on " << __DATE__ << " at " << __TIME__);
+		LOG_INFO(app::logger::info_level_e::ZERO, , "QT version " << QT_VERSION_STR);
 
-		init::initializeBrowser(argc, argv);
-	} catch (const browser_exception::BrowserException & bexc) {
+		app::init::initializeBrowser(argc, argv);
+	} catch (const app::browser_exception::BrowserException & bexc) {
 		std::string bexcMsg(bexc.print());
-		browser_exception::printException(bexcMsg);
+		app::browser_exception::printException(bexcMsg);
 		return EXIT_FAILURE;
 	} catch (const QUnhandledException & unhandledexc) {
-		browser_exception::printException("Got unhandled exception");
+		app::browser_exception::printException("Got unhandled exception");
 		return EXIT_FAILURE;
 	} catch (const std::exception & exc) {
-		browser_exception::printException(exc.what());
+		app::browser_exception::printException(exc.what());
 		return EXIT_FAILURE;
 	}
 

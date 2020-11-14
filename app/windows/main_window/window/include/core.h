@@ -24,216 +24,223 @@
  *  Main Window functions and class
  *  @{
  */
+namespace app {
 
-namespace main_window {
+	namespace main_window {
 
-	/**
-	 * @brief Core class
-	 *
-	 */
-	class Core final {
-
-		public:
+		namespace window {
 
 			/**
-			 * @brief Function: explicit Core()
-			 *
-			 * \param parent: parent widget
-			 *
-			 * Main window core constructor
-			 */
-			explicit Core(QWidget * parent);
-
-			// Move constructor
-			/**
-			 * @brief Function: Core(main_window::Core && rhs)
-			 *
-			 * \param rhs: class to move
-			 *
-			 * Core move constructor
-			 */
-			explicit Core(main_window::Core && rhs);
-
-			// Move assignment operators
-			/**
-			 * @brief Function: Core & operator=(main_window::Core && rhs)
-			 *
-			 * \param rhs: class to move
-			 *
-			 * Core move assignment operator
-			 */
-			Core & operator=(main_window::Core && rhs);
-
-			/**
-			 * @brief Function: virtual ~Core()
-			 *
-			 * Main window core destructor
-			 */
-			virtual ~Core();
-
-			// Getters
-			// Control members
-			/**
-			 * Function: const main_window::state_e & getMainWindowState() const
-			 *
-			 * \return the state of the main window
-			 *
-			 * This function returns the state of the main window
-			 */
-			const main_window::state_e & getMainWindowState() const;
-
-			/**
-			 * Function: const global_enums::offset_type_e & getOffsetType() const
-			 *
-			 * \return the type of value of movements in tab bar
-			 *
-			 * This function returns the type of value of movements in the tab bar
-			 */
-			const global_enums::offset_type_e & getOffsetType() const;
-
-			/**
-			 * Function: const QString & getUserText() const
-			 *
-			 * \return the text typed by the user
-			 *
-			 * This function returns the text typed by the user
-			 */
-			const QString & getUserText() const;
-
-			/**
-			 * @brief Function: int getTabCount() const
-			 *
-			 * \return the number of tabs in the window
-			 *
-			 * This function returns the number of openend tabs
-			 */
-			int getTabCount() const;
-
-			/**
-			 * @brief Function: const QString getActionName() const
-			 *
-			 * \return string with the text to display as action
-			 *
-			 * Get action name to display in the userInputText label
-			 */
-			const QString getActionName() const;
-
-			/**
-			 * @brief Function: int getCurrentTabIndex() const
-			 *
-			 * \return the index of the current tab
-			 *
-			 * This function returns the index of the current tab
-			 */
-			int getCurrentTabIndex() const;
-
-			// Setters
-			/**
-			 * Function: main_window::state_e setMainWindowState(const main_window::state_e & value)
-			 *
-			 * \param value: state of the main window
-			 *
-			 * This function returns the state of the main window
-			 */
-			void setMainWindowState(const main_window::state_e & value);
-
-			/**
-			 * Function: void setOffsetType(const global_enums::offset_type_e & value)
-			 *
-			 * \param value: type of value of movements in tab bar
-			 *
-			 * This function returns the type of value of movements in the tab bar
-			 */
-			void setOffsetType(const global_enums::offset_type_e & value);
-
-			/**
-			 * @brief Function: void updateUserInput(const main_window::text_action_e & action, const QString & text = QString())
-			 *
-			 * \param action: action to execute - valid values are: SET, APPEND and CLEAR
-			 * \param text: text to append to userText
-			 *
-			 * This function updates the user input string
-			 */
-			void updateUserInput(const main_window::text_action_e & action, const QString & text = QString());
-
-			// main widget
-			/**
-			 * @brief main widget
+			 * @brief Core class
 			 *
 			 */
-			std::unique_ptr<QWidget> mainWidget;
+			class Core final {
 
-			/**
-			 * @brief Tabs of browser
-			 *
-			 */
-			std::unique_ptr<main_window::TabWidget> tabs;
+				public:
 
-			/**
-			 * @brief Top menu bar of browser
-			 *
-			 */
-			std::shared_ptr<main_window::MenuBar> topMenuBar;
+					/**
+					 * @brief Function: explicit Core()
+					 *
+					 * \param parent: parent widget
+					 *
+					 * Main window core constructor
+					 */
+					explicit Core(QWidget * parent);
 
-			/**
-			 * @brief Prompt widget of the main window
-			 *
-			 */
-			std::shared_ptr<main_window::PopupContainer> popup;
+					// Move constructor
+					/**
+					 * @brief Function: Core(app::main_window::window::Core && rhs)
+					 *
+					 * \param rhs: class to move
+					 *
+					 * Core move constructor
+					 */
+					explicit Core(app::main_window::window::Core && rhs);
 
-			/**
-			 * @brief Bottom menu bar of browser
-			 *
-			 */
-			std::unique_ptr<main_window::StatusBar> bottomStatusBar;
+					// Move assignment operators
+					/**
+					 * @brief Function: Core & operator=(app::main_window::window::Core && rhs)
+					 *
+					 * \param rhs: class to move
+					 *
+					 * Core move assignment operator
+					 */
+					Core & operator=(app::main_window::window::Core && rhs);
 
-			/**
-			 * @brief Command menu 
-			 *
-			 */
-			std::unique_ptr<command_menu::CommandMenu> cmdMenu;
+					/**
+					 * @brief Function: virtual ~Core()
+					 *
+					 * Main window core destructor
+					 */
+					virtual ~Core();
 
-		private:
+					// Getters
+					// Control members
+					/**
+					 * Function: const app::main_window::state_e & getMainWindowState() const
+					 *
+					 * \return the state of the main window
+					 *
+					 * This function returns the state of the main window
+					 */
+					const app::main_window::state_e & getMainWindowState() const;
 
-			/**
-			 * @brief Function: Core(const main_window::Core & rhs)
-			 *
-			 * \param rhs: class to copy
-			 *
-			 * Core copy constructor
-			 */
-			explicit Core(const main_window::Core & rhs) = delete;
+					/**
+					 * Function: const app::shared::offset_type_e & getOffsetType() const
+					 *
+					 * \return the type of value of movements in tab bar
+					 *
+					 * This function returns the type of value of movements in the tab bar
+					 */
+					const app::shared::offset_type_e & getOffsetType() const;
 
-			/**
-			 * @brief Function: Core & operator=(const main_window::Core & rhs)
-			 *
-			 * \param rhs: class to copy
-			 *
-			 * Core copy assignment operator
-			 */
-			Core & operator=(const main_window::Core & rhs) = delete;
+					/**
+					 * Function: const QString & getUserText() const
+					 *
+					 * \return the text typed by the user
+					 *
+					 * This function returns the text typed by the user
+					 */
+					const QString & getUserText() const;
+
+					/**
+					 * @brief Function: int getTabCount() const
+					 *
+					 * \return the number of tabs in the window
+					 *
+					 * This function returns the number of openend tabs
+					 */
+					int getTabCount() const;
+
+					/**
+					 * @brief Function: const QString getActionName() const
+					 *
+					 * \return string with the text to display as action
+					 *
+					 * Get action name to display in the userInputText label
+					 */
+					const QString getActionName() const;
+
+					/**
+					 * @brief Function: int getCurrentTabIndex() const
+					 *
+					 * \return the index of the current tab
+					 *
+					 * This function returns the index of the current tab
+					 */
+					int getCurrentTabIndex() const;
+
+					// Setters
+					/**
+					 * Function: app::main_window::state_e setMainWindowState(const app::main_window::state_e & value)
+					 *
+					 * \param value: state of the main window
+					 *
+					 * This function returns the state of the main window
+					 */
+					void setMainWindowState(const app::main_window::state_e & value);
+
+					/**
+					 * Function: void setOffsetType(const app::shared::offset_type_e & value)
+					 *
+					 * \param value: type of value of movements in tab bar
+					 *
+					 * This function returns the type of value of movements in the tab bar
+					 */
+					void setOffsetType(const app::shared::offset_type_e & value);
+
+					/**
+					 * @brief Function: void updateUserInput(const app::main_window::text_action_e & action, const QString & text = QString())
+					 *
+					 * \param action: action to execute - valid values are: SET, APPEND and CLEAR
+					 * \param text: text to append to userText
+					 *
+					 * This function updates the user input string
+					 */
+					void updateUserInput(const app::main_window::text_action_e & action, const QString & text = QString());
+
+					// main widget
+					/**
+					 * @brief main widget
+					 *
+					 */
+					std::unique_ptr<QWidget> mainWidget;
+
+					/**
+					 * @brief Tabs of browser
+					 *
+					 */
+					std::unique_ptr<app::main_window::tab::TabWidget> tabs;
+
+					/**
+					 * @brief Top menu bar of browser
+					 *
+					 */
+					std::shared_ptr<app::main_window::menu::MenuBar> topMenuBar;
+
+					/**
+					 * @brief Prompt widget of the main window
+					 *
+					 */
+					std::shared_ptr<app::main_window::popup::PopupContainer> popup;
+
+					/**
+					 * @brief Bottom menu bar of browser
+					 *
+					 */
+					std::unique_ptr<app::main_window::status_bar::StatusBar> bottomStatusBar;
+
+					/**
+					 * @brief Command menu 
+					 *
+					 */
+					std::unique_ptr<app::command_menu::CommandMenu> cmdMenu;
+
+				private:
+
+					/**
+					 * @brief Function: Core(const app::main_window::window::Core & rhs)
+					 *
+					 * \param rhs: class to copy
+					 *
+					 * Core copy constructor
+					 */
+					explicit Core(const app::main_window::window::Core & rhs) = delete;
+
+					/**
+					 * @brief Function: Core & operator=(const app::main_window::window::Core & rhs)
+					 *
+					 * \param rhs: class to copy
+					 *
+					 * Core copy assignment operator
+					 */
+					Core & operator=(const app::main_window::window::Core & rhs) = delete;
 
 
-			// Control members
-			/**
-			 * @brief state of the main window
-			 *
-			 */
-			main_window::state_e mainWindowState;
+					// Control members
+					/**
+					 * @brief state of the main window
+					 *
+					 */
+					app::main_window::state_e mainWindowState;
 
-			/**
-			 * @brief type of value of movements in tab bar
-			 *
-			 */
-			global_enums::offset_type_e offsetType;
+					/**
+					 * @brief type of value of movements in tab bar
+					 *
+					 */
+					app::shared::offset_type_e offsetType;
 
-			/**
-			 * @brief Text typed by the user
-			 *
-			 */
-			QString userText;
+					/**
+					 * @brief Text typed by the user
+					 *
+					 */
+					QString userText;
 
-	};
+			};
+
+		}
+
+	}
 
 }
 /** @} */ // End of MainWindowGroup group

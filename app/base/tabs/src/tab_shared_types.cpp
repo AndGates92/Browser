@@ -13,16 +13,19 @@
 #include "common/include/type_print_macros.h"
 #include "base/tabs/include/tab_shared_types.h"
 
-namespace tab_shared_types {
+namespace app {
+	namespace base {
+		namespace tab {
 
-	// Overload << operator for offset_type_e
-	OVERLOAD_OPERATORS_CUSTOM_TYPE(tab_shared_types::load_status_e)
+			// Overload << operator for offset_type_e
+			OVERLOAD_OPERATORS_CUSTOM_TYPE(app::base::tab::load_status_e)
 
-	// Overload << operator for direction_e
-	OVERLOAD_OPERATORS_CUSTOM_TYPE(tab_shared_types::direction_e)
+			// Overload << operator for direction_e
+			OVERLOAD_OPERATORS_CUSTOM_TYPE(app::base::tab::direction_e)
 
-	// Overload << operator for direction_e
-	OVERLOAD_OPERATORS_CUSTOM_TYPE(tab_shared_types::stepping_e)
+			// Overload << operator for direction_e
+			OVERLOAD_OPERATORS_CUSTOM_TYPE(app::base::tab::stepping_e)
 
+		}
+	}
 }
-

@@ -8,7 +8,7 @@
 
 #include "utility/stl/include/stl_helper.h"
 
-const std::string stl_helper::findAndReplaceString(std::string text, const std::string & searchString, const std::string & replacingString) {
+const std::string app::utility::findAndReplaceString(std::string text, const std::string & searchString, const std::string & replacingString) {
 
 	if (searchString.empty() == false) {
 		std::size_t position = 0;

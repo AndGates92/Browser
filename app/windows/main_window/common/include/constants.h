@@ -14,19 +14,23 @@
  *  MainWindow Constants
  *  @{
  */
-namespace main_window {
+namespace app {
 
-	/**
-	 * @brief default serch engine is duckduckgo
-	 *
-	 */
-	static const QString defaultSearchEngine("duckduckgo.com/?q=%1");
+	namespace main_window {
 
-	/**
-	 * @brief file prefix in status bar label
-	 *
-	 */
-	const QString filePrefix("file:");
+		/**
+		 * @brief default serch engine is duckduckgo
+		 *
+		 */
+		static const QString defaultSearchEngine("duckduckgo.com/?q=%1");
+
+		/**
+		 * @brief file prefix in status bar label
+		 *
+		 */
+		const QString filePrefix("file:");
+
+	}
 
 }
 

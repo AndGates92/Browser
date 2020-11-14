@@ -19,31 +19,43 @@ LOGGING_CONTEXT(mainWindowCtrlOverall, mainWindowCtrl.overall, TYPE_LEVEL, INFO_
 LOGGING_CONTEXT(mainWindowCtrlUserInput, mainWindowCtrl.userInput, TYPE_LEVEL, INFO_VERBOSITY)
 LOGGING_CONTEXT(mainWindowCtrlSearch, mainWindowCtrl.search, TYPE_LEVEL, INFO_VERBOSITY)
 
-namespace main_window {
+namespace app {
 
-	namespace {
-		/**
-		 * @brief Path towards JSON file storing informations about commands and shortcuts
-		 *
-		 */
-		static const QString commandFilePath("json/");
+	namespace main_window {
 
-		/**
-		 * @brief Filename storing informations about commands and shortcuts
-		 *
-		 */
-		static const QString commandFileName("global_commands.json");
+		namespace window {
 
-		/**
-		 * @brief Full path towards JSON file storing informations about commands and shortcuts
-		 *
-		 */
-		static const QString commandFileFullPath(commandFilePath + commandFileName);
+			namespace ctrl {
+
+				namespace {
+					/**
+					 * @brief Path towards JSON file storing informations about commands and shortcuts
+					 *
+					 */
+					static const QString commandFilePath("json/");
+
+					/**
+					 * @brief Filename storing informations about commands and shortcuts
+					 *
+					 */
+					static const QString commandFileName("global_commands.json");
+
+					/**
+					 * @brief Full path towards JSON file storing informations about commands and shortcuts
+					 *
+					 */
+					static const QString commandFileFullPath(commandFilePath + commandFileName);
+				}
+
+			}
+
+		}
+
 	}
 
 }
 
-main_window::Ctrl::Ctrl(QWidget * parent, const std::shared_ptr<main_window::Core> & core) : main_window::CtrlBase(parent, core, main_window::commandFileFullPath) {
+app::main_window::window::Ctrl::Ctrl(QWidget * parent, const std::shared_ptr<app::main_window::window::Core> & core) : app::main_window::window::CtrlBase(parent, core, app::main_window::window::ctrl::commandFileFullPath) {
 
 	// Shortcuts
 	this->createExtraShortcuts();
@@ -56,37 +68,37 @@ main_window::Ctrl::Ctrl(QWidget * parent, const std::shared_ptr<main_window::Cor
 	this->updateInfo(tabIndex);
 }
 
-main_window::Ctrl::~Ctrl() {
+app::main_window::window::Ctrl::~Ctrl() {
 
 }
 
-void main_window::Ctrl::createExtraShortcuts() {
-	LOG_INFO(logger::info_level_e::ZERO, mainWindowCtrlOverall,  "Create shortcuts");
+void app::main_window::window::Ctrl::createExtraShortcuts() {
+	LOG_INFO(app::logger::info_level_e::ZERO, mainWindowCtrlOverall,  "Create shortcuts");
 
 }
 
-void main_window::Ctrl::connectExtraSignals() {
+void app::main_window::window::Ctrl::connectExtraSignals() {
 
-	LOG_INFO(logger::info_level_e::ZERO, mainWindowCtrlOverall,  "Connect signals");
+	LOG_INFO(app::logger::info_level_e::ZERO, mainWindowCtrlOverall,  "Connect signals");
 
-	connect(this->core->topMenuBar->getFileMenu()->exitAction.get(), &QAction::triggered, this, &main_window::Ctrl::closeWindow);
-	connect(this->core->popup.get(), &main_window::PopupContainer::closeContainer,  [this] () {
-		this->changeWindowState(main_window::state_e::IDLE, main_window::state_postprocessing_e::POSTPROCESS);
+	connect(this->core->topMenuBar->getFileMenu()->exitAction.get(), &QAction::triggered, this, &app::main_window::window::Ctrl::closeWindow);
+	connect(this->core->popup.get(), &app::main_window::popup::PopupContainer::closeContainer,  [this] () {
+		this->changeWindowState(app::main_window::state_e::IDLE, app::main_window::state_postprocessing_e::POSTPROCESS);
 	});
 
 }
 
-void main_window::Ctrl::actionOnReleasedKey(const main_window::state_e & windowState, QKeyEvent * event) {
+void app::main_window::window::Ctrl::actionOnReleasedKey(const app::main_window::state_e & windowState, QKeyEvent * event) {
 
 	const int releasedKey = event->key();
 	const Qt::KeyboardModifiers keyModifiers = event->modifiers();
 
-	const key_sequence::KeySequence keySeq(releasedKey | keyModifiers);
+	const app::key_sequence::KeySequence keySeq(releasedKey | keyModifiers);
 
 	if (event->type() == QEvent::KeyRelease) {
 
 		// Retrieve main window controller state
-		LOG_INFO(logger::info_level_e::ZERO, mainWindowCtrlUserInput,  "State " << windowState << " key " << keySeq.toString());
+		LOG_INFO(app::logger::info_level_e::ZERO, mainWindowCtrlUserInput,  "State " << windowState << " key " << keySeq.toString());
 
 		switch (releasedKey) {
 			default:
@@ -95,80 +107,80 @@ void main_window::Ctrl::actionOnReleasedKey(const main_window::state_e & windowS
 	}
 }
 
-void main_window::Ctrl::executeAction(const main_window::state_e & windowState) {
+void app::main_window::window::Ctrl::executeAction(const app::main_window::state_e & windowState) {
 	const QString userTypedText = this->core->getUserText();
 	switch (windowState) {
-		case main_window::state_e::QUIT:
+		case app::main_window::state_e::QUIT:
 			this->closeWindow();
 			break;
-		case main_window::state_e::TOGGLE_MENUBAR:
+		case app::main_window::state_e::TOGGLE_MENUBAR:
 			this->toggleShowMenubar();
-			this->changeWindowState(main_window::state_e::IDLE, main_window::state_postprocessing_e::POSTPROCESS);
+			this->changeWindowState(app::main_window::state_e::IDLE, app::main_window::state_postprocessing_e::POSTPROCESS);
 			break;
-		case main_window::state_e::COMMAND:
+		case app::main_window::state_e::COMMAND:
 			// Cannot use userTypesText because it has been updated by the printUserInput function
-			this->executeCommand(userTypedText, main_window::state_postprocessing_e::ACTION);
+			this->executeCommand(userTypedText, app::main_window::state_postprocessing_e::ACTION);
 			break;
 		default:
-			LOG_INFO(logger::info_level_e::ZERO, mainWindowCtrlUserInput,  "User typed text " << userTypedText);
+			LOG_INFO(app::logger::info_level_e::ZERO, mainWindowCtrlUserInput,  "User typed text " << userTypedText);
 			break;
 	}
 }
 
-void main_window::Ctrl::prepareAction(const main_window::state_e & windowState, QKeyEvent * event) {
+void app::main_window::window::Ctrl::prepareAction(const app::main_window::state_e & windowState, QKeyEvent * event) {
 
 	const int pressedKey = event->key();
 
 	switch (windowState) {
-		case main_window::state_e::COMMAND:
+		case app::main_window::state_e::COMMAND:
 			if (pressedKey == Qt::Key_Space) {
-				this->executeCommand(this->core->getUserText(), main_window::state_postprocessing_e::NONE);
+				this->executeCommand(this->core->getUserText(), app::main_window::state_postprocessing_e::NONE);
 			} else if ((pressedKey >= Qt::Key_Space) && (pressedKey <= Qt::Key_ydiaeresis)) {
-				this->printUserInput(main_window::text_action_e::APPEND, event->text());
+				this->printUserInput(app::main_window::text_action_e::APPEND, event->text());
 			}
 			break;
-		case main_window::state_e::IDLE:
+		case app::main_window::state_e::IDLE:
 			if (pressedKey == Qt::Key_Colon) {
-				const main_window::state_e requestedWindowState = main_window::state_e::COMMAND;
-				this->changeWindowState(requestedWindowState, main_window::state_postprocessing_e::POSTPROCESS, static_cast<Qt::Key>(pressedKey));
+				const app::main_window::state_e requestedWindowState = app::main_window::state_e::COMMAND;
+				this->changeWindowState(requestedWindowState, app::main_window::state_postprocessing_e::POSTPROCESS, static_cast<Qt::Key>(pressedKey));
 				this->setAllShortcutEnabledProperty(false);
 			}
-			this->printUserInput(main_window::text_action_e::CLEAR);
+			this->printUserInput(app::main_window::text_action_e::CLEAR);
 			break;
 		default:
-			LOG_INFO(logger::info_level_e::ZERO, mainWindowCtrlUserInput,  "Window in state " << windowState << " Key pressed is " << event->text() << "(ID " << pressedKey << ")");
+			LOG_INFO(app::logger::info_level_e::ZERO, mainWindowCtrlUserInput,  "Window in state " << windowState << " Key pressed is " << event->text() << "(ID " << pressedKey << ")");
 			break;
 	}
 }
 
-void main_window::Ctrl::toggleShowMenubar() {
+void app::main_window::window::Ctrl::toggleShowMenubar() {
 	const bool menubarVisible = this->core->topMenuBar->isVisible();
 	this->core->topMenuBar->setVisible(!menubarVisible);
 }
 
-void main_window::Ctrl::closeWindow() {
-	LOG_INFO(logger::info_level_e::ZERO, mainWindowCtrlOverall,  "Close slot: exiting from the browser");
+void app::main_window::window::Ctrl::closeWindow() {
+	LOG_INFO(app::logger::info_level_e::ZERO, mainWindowCtrlOverall,  "Close slot: exiting from the browser");
 	emit this->closeWindowSignal();
 }
 
-void main_window::Ctrl::postprocessWindowStateChange(const main_window::state_e & previousState) {
-	const main_window::state_e windowState = this->core->getMainWindowState();
+void app::main_window::window::Ctrl::postprocessWindowStateChange(const app::main_window::state_e & previousState) {
+	const app::main_window::state_e windowState = this->core->getMainWindowState();
 
-	LOG_INFO(logger::info_level_e::ZERO, mainWindowCtrlOverall,  "Previous windowState " << previousState << " and current windowState " << windowState );
+	LOG_INFO(app::logger::info_level_e::ZERO, mainWindowCtrlOverall,  "Previous windowState " << previousState << " and current windowState " << windowState );
 
 	switch (windowState) {
-		case main_window::state_e::IDLE:
+		case app::main_window::state_e::IDLE:
 			this->setAllShortcutEnabledProperty(true);
-			this->printUserInput(main_window::text_action_e::CLEAR);
+			this->printUserInput(app::main_window::text_action_e::CLEAR);
 			break;
-		case main_window::state_e::QUIT:
+		case app::main_window::state_e::QUIT:
 			this->closeWindow();
 			break;
-		case main_window::state_e::TOGGLE_MENUBAR:
+		case app::main_window::state_e::TOGGLE_MENUBAR:
 			this->toggleShowMenubar();
-			this->changeWindowState(main_window::state_e::IDLE, main_window::state_postprocessing_e::POSTPROCESS);
+			this->changeWindowState(app::main_window::state_e::IDLE, app::main_window::state_postprocessing_e::POSTPROCESS);
 			break;
-		case main_window::state_e::COMMAND:
+		case app::main_window::state_e::COMMAND:
 			this->setAllShortcutEnabledProperty(false);
 			this->setFocus();
 			break;
@@ -178,20 +190,20 @@ void main_window::Ctrl::postprocessWindowStateChange(const main_window::state_e 
 	}
 }
 
-bool main_window::Ctrl::isValidWindowState(const main_window::state_e & requestedWindowState) {
+bool app::main_window::window::Ctrl::isValidWindowState(const app::main_window::state_e & requestedWindowState) {
 	bool isValid = false;
-	const main_window::state_e windowState = this->core->getMainWindowState();
+	const app::main_window::state_e windowState = this->core->getMainWindowState();
 
 	switch (requestedWindowState) {
-		case main_window::state_e::IDLE:
+		case app::main_window::state_e::IDLE:
 			// It is always possible to go to the idle state
 			isValid = true;
 			break;
-		case main_window::state_e::QUIT:
-		case main_window::state_e::COMMAND:
-		case main_window::state_e::TOGGLE_MENUBAR:
+		case app::main_window::state_e::QUIT:
+		case app::main_window::state_e::COMMAND:
+		case app::main_window::state_e::TOGGLE_MENUBAR:
 			// It is only possible to start a new command if in the idle state
-			isValid = (windowState == main_window::state_e::IDLE);
+			isValid = (windowState == app::main_window::state_e::IDLE);
 			break;
 		default: 
 			EXCEPTION_ACTION(throw, "Unable to determine whether transaction from " << windowState << " to " << requestedWindowState << " is valid");

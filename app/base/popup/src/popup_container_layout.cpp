@@ -15,17 +15,17 @@
 // Categories
 LOGGING_CONTEXT(popupContainerLayoutOverall, popupContainerLayout.overall, TYPE_LEVEL, INFO_VERBOSITY)
 
-popup_container_layout::PopupContainerLayout::PopupContainerLayout(QWidget * parent) : QStackedLayout(parent) {
+app::base::popup::PopupContainerLayout::PopupContainerLayout(QWidget * parent) : QStackedLayout(parent) {
 
-	LOG_INFO(logger::info_level_e::ZERO, popupContainerLayoutOverall,  "Popup container layout constructor");
+	LOG_INFO(app::logger::info_level_e::ZERO, popupContainerLayoutOverall,  "Popup container layout constructor");
 
 }
 
-popup_container_layout::PopupContainerLayout::~PopupContainerLayout() {
-	LOG_INFO(logger::info_level_e::ZERO, popupContainerLayoutOverall,  "Popup container layout destructor");
+app::base::popup::PopupContainerLayout::~PopupContainerLayout() {
+	LOG_INFO(app::logger::info_level_e::ZERO, popupContainerLayoutOverall,  "Popup container layout destructor");
 }
 
-QSize popup_container_layout::PopupContainerLayout::sizeHint() const {
+QSize app::base::popup::PopupContainerLayout::sizeHint() const {
 
 	QWidget * widget = this->currentWidget();
 

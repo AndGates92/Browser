@@ -20,30 +20,33 @@
  *  Qt Types To STL
  *  @{
  */
+namespace app {
 
-namespace qt_types_to_stl {
+	namespace utility {
 
-	/**
-	 * @brief Function: const std::list<std::string> qStringListToStdList(const QStringList & qtList)
-	 *
-	 * \param qtList: string list to convert to an list of std::string
-	 *
-	 * \return: list of std::string
-	 *
-	 * This function converts a QStringList to a list of std::string
-	 */
-	const std::list<std::string> qStringListToStdList(const QStringList & qtList);
+		/**
+		 * @brief Function: const std::list<std::string> qStringListToStdList(const QStringList & qtList)
+		 *
+		 * \param qtList: string list to convert to an list of std::string
+		 *
+		 * \return: list of std::string
+		 *
+		 * This function converts a QStringList to a list of std::string
+		 */
+		const std::list<std::string> qStringListToStdList(const QStringList & qtList);
 
-	/**
-	 * @brief Function: const std::map<std::string, std::string> qMapOfqStringToStdMapofStdStrings(const QMap<QString, QString> & qtMap)
-	 *
-	 * \param qtList: string list to convert to an list of std::string
-	 *
-	 * \return: list of std::string
-	 *
-	 * This function converts a QStringList to a list of std::string
-	 */
-	const std::map<std::string, std::string> qMapOfqStringToStdMapofStdStrings(const QMap<QString, QString> & qtMap);
+		/**
+		 * @brief Function: const std::map<std::string, std::string> qMapOfqStringToStdMapofStdStrings(const QMap<QString, QString> & qtMap)
+		 *
+		 * \param qtList: string list to convert to an list of std::string
+		 *
+		 * \return: list of std::string
+		 *
+		 * This function converts a QStringList to a list of std::string
+		 */
+		const std::map<std::string, std::string> qMapOfqStringToStdMapofStdStrings(const QMap<QString, QString> & qtMap);
+
+	}
 
 }
 /** @} */ // End of QtTypesToStlGroup group

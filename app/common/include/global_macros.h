@@ -8,8 +8,8 @@
  * @brief Global Macros file
 */
 
-/** @defgroup GlobalMacrosGroup Global Macros Doxygen Group
- *  Global Macros
+/** @defgroup CommonGroup Common Macros and Functions Doxygen Group
+ *  Common Macros and Functions
  *  @{
  */
 
@@ -56,6 +56,6 @@
 #define STRINGIFY2(VALUE)\
 	#VALUE
 
-/** @} */ // End of GlobalMacrosGroup group
+/** @} */ // End of CommonGroup group
 
 #endif // GLOBAL_MACROS_H

@@ -15,43 +15,46 @@
 
 #include "common/include/exception_macros.h"
 
-/** @defgroup GlobalQFunctionsGroup Global Qt Functions Doxygen Group
- *  Global Qt Functions
+/** @defgroup CommonGroup Common Macros and Functions Doxygen Group
+ *  Common Macros and Functions
  *  @{
  */
+namespace app {
 
-namespace global_qfunctions {
+	namespace shared {
 
-	/**
-	 * @brief Function: QString qEnumToQString(const qenum value, const bool printEnumKeyOnly = false)
-	 *
-	 * \param value: enumerator to be converted to a string
-	 * \param printEnumKeyOnly: boolean to choose whether the namespace and enumerator type name are printed. True means print only enumator key and false means print key as well as scope and type name
-	 *
-	 * \return enumerator converted to a QString
-	 *
-	 * This function converts an enumerator registered with the Qt Meta-Object system to a QString
-	 */
-	template<typename qenum>
-	QString qEnumToQString(const qenum value, const bool printEnumKeyOnly = false);
+		/**
+		 * @brief Function: QString qEnumToQString(const qenum value, const bool printEnumKeyOnly = false)
+		 *
+		 * \param value: enumerator to be converted to a string
+		 * \param printEnumKeyOnly: boolean to choose whether the namespace and enumerator type name are printed. True means print only enumator key and false means print key as well as scope and type name
+		 *
+		 * \return enumerator converted to a QString
+		 *
+		 * This function converts an enumerator registered with the Qt Meta-Object system to a QString
+		 */
+		template<typename qenum>
+		QString qEnumToQString(const qenum value, const bool printEnumKeyOnly = false);
 
-	/**
-	 * @brief Function: qenum qStringToQEnum(const QString & str)
-	 *
-	 * \param str: string to search in the enum range
-	 *
-	 * \return the enum found or -1 if not found
-	 *
-	 * This function finds the enumerator corresponding to the string
-	 */
-	template<typename qenum>
-	qenum qStringToQEnum(const QString & str);
+		/**
+		 * @brief Function: qenum qStringToQEnum(const QString & str)
+		 *
+		 * \param str: string to search in the enum range
+		 *
+		 * \return the enum found or -1 if not found
+		 *
+		 * This function finds the enumerator corresponding to the string
+		 */
+		template<typename qenum>
+		qenum qStringToQEnum(const QString & str);
+
+	}
 
 }
-/** @} */ // End of GlobalQFunctionsGroup group
+/** @} */ // End of CommonGroup group
 
 template<typename qenum>
-QString global_qfunctions::qEnumToQString(const qenum value, const bool printEnumKeyOnly) {
+QString app::shared::qEnumToQString(const qenum value, const bool printEnumKeyOnly) {
 
 	QMetaEnum metaEnum(QMetaEnum::fromType<qenum>());
 	// Convert enumeration value to std::string
@@ -81,7 +84,7 @@ QString global_qfunctions::qEnumToQString(const qenum value, const bool printEnu
 }
 
 template<typename qenum>
-qenum global_qfunctions::qStringToQEnum(const QString & str) {
+qenum app::shared::qStringToQEnum(const QString & str) {
 
 	QMetaEnum metaEnum(QMetaEnum::fromType<qenum>());
 	int val = -1;

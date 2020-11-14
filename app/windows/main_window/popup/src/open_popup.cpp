@@ -30,58 +30,71 @@ LOGGING_CONTEXT(openPopupOpen, openPopup.open, TYPE_LEVEL, INFO_VERBOSITY)
 LOGGING_CONTEXT(openPopupBrowse, openPopup.browse, TYPE_LEVEL, INFO_VERBOSITY)
 LOGGING_CONTEXT(openPopupCancel, openPopup.cancel, TYPE_LEVEL, INFO_VERBOSITY)
 
-namespace open_popup {
 
-	namespace {
+namespace app {
 
-		/**
-		 * @brief popup menu padding
-		 *
-		 */
-		static constexpr int padding = 15;
+	namespace main_window {
 
-		/**
-		 * @brief Spacing between widgets
-		 *
-		 */
-		static constexpr int widgetSpacing = 2;
+		namespace popup {
 
-		/**
-		 * @brief Spacing between widgets
-		 *
-		 */
-		static constexpr int widgetLabelSpacing = 10;
+			namespace open_popup {
 
-		/**
-		 * @brief Top margin of the layout
-		 *
-		 */
-		static constexpr int topMargin = 10;
+				namespace {
 
-		/**
-		 * @brief Bottom margin of the layout
-		 *
-		 */
-		static constexpr int bottomMargin = 10;
+					/**
+					 * @brief popup menu padding
+					 *
+					 */
+					static constexpr int padding = 15;
 
-		/**
-		 * @brief Left margin of the layout
-		 *
-		 */
-		static constexpr int leftMargin = 10;
+					/**
+					 * @brief Spacing between widgets
+					 *
+					 */
+					static constexpr int widgetSpacing = 2;
 
-		/**
-		 * @brief Right margin of the layout
-		 *
-		 */
-		static constexpr int rightMargin = 10;
+					/**
+					 * @brief Spacing between widgets
+					 *
+					 */
+					static constexpr int widgetLabelSpacing = 10;
+
+					/**
+					 * @brief Top margin of the layout
+					 *
+					 */
+					static constexpr int topMargin = 10;
+
+					/**
+					 * @brief Bottom margin of the layout
+					 *
+					 */
+					static constexpr int bottomMargin = 10;
+
+					/**
+					 * @brief Left margin of the layout
+					 *
+					 */
+					static constexpr int leftMargin = 10;
+
+					/**
+					 * @brief Right margin of the layout
+					 *
+					 */
+					static constexpr int rightMargin = 10;
+				}
+
+			}
+
+		}
+
 	}
 
 }
 
-open_popup::OpenPopup::OpenPopup(QWidget * parent, Qt::WindowFlags flags) : main_window::PopupBase(parent, true, open_popup::padding, flags), window::OpenContent(this) {
+app::main_window::popup::OpenPopup::OpenPopup(QWidget * parent, Qt::WindowFlags flags) : app::main_window::popup::PopupBase(parent, true, app::main_window::popup::open_popup::padding, flags), app::base::window::OpenContent(this) {
 
-	LOG_INFO(logger::info_level_e::ZERO, openPopupOverall,  "Creating open popup");
+	LOG_INFO(app::logger::info_level_e::ZERO, openPopupOverall,  "Creating open popup");
 
 	// Create widgets to put in the window
 	this->fillPopup();
@@ -136,17 +149,17 @@ open_popup::OpenPopup::OpenPopup(QWidget * parent, Qt::WindowFlags flags) : main
 	);
 }
 
-open_popup::OpenPopup::~OpenPopup() {
-	LOG_INFO(logger::info_level_e::ZERO, openPopupOverall,  "Destructor of open popup class");
+app::main_window::popup::OpenPopup::~OpenPopup() {
+	LOG_INFO(app::logger::info_level_e::ZERO, openPopupOverall,  "Destructor of open popup class");
 }
 
-void open_popup::OpenPopup::popupLayout() {
+void app::main_window::popup::OpenPopup::popupLayout() {
 
 	if (this->layout() == Q_NULLPTR) {
 		// Layout
 		QVBoxLayout * layout = new QVBoxLayout(this);
-		layout->setSpacing(open_popup::widgetSpacing);
-		layout->setContentsMargins(open_popup::leftMargin, open_popup::topMargin, open_popup::rightMargin, open_popup::bottomMargin);
+		layout->setSpacing(app::main_window::popup::open_popup::widgetSpacing);
+		layout->setContentsMargins(app::main_window::popup::open_popup::leftMargin, app::main_window::popup::open_popup::topMargin, app::main_window::popup::open_popup::rightMargin, app::main_window::popup::open_popup::bottomMargin);
 
 		this->setLayout(layout);
 	}
@@ -171,12 +184,12 @@ void open_popup::OpenPopup::popupLayout() {
 		}
 
 		layout->addWidget(this->pathToOpen.get());
-		layout->addSpacing(open_popup::widgetLabelSpacing);
+		layout->addSpacing(app::main_window::popup::open_popup::widgetLabelSpacing);
 		layout->addWidget(this->openLabel.get());
 		layout->addWidget(this->insertLabel.get());
 		layout->addWidget(this->browseLabel.get());
 		layout->addWidget(this->cancelLabel.get());
-		layout->addSpacing(open_popup::widgetLabelSpacing);
+		layout->addSpacing(app::main_window::popup::open_popup::widgetLabelSpacing);
 		layout->addWidget(this->fileView.get());
 
 	} catch (const std::bad_cast & badCastE) {
@@ -185,7 +198,7 @@ void open_popup::OpenPopup::popupLayout() {
 
 }
 
-void open_popup::OpenPopup::fillPopup() {
+void app::main_window::popup::OpenPopup::fillPopup() {
 
 	this->openLabel = std::move(this->actionToLabel(this, this->applyAction));
 	this->browseLabel = std::move(this->actionToLabel(this, this->browseAction));
@@ -199,15 +212,15 @@ void open_popup::OpenPopup::fillPopup() {
 	this->pathChanged(this->getTypedPath());
 }
 
-void open_popup::OpenPopup::connectSignals() {
-	LOG_INFO(logger::info_level_e::ZERO, openPopupOverall,  "Connect signals");
+void app::main_window::popup::OpenPopup::connectSignals() {
+	LOG_INFO(app::logger::info_level_e::ZERO, openPopupOverall,  "Connect signals");
 
-	connect(this->applyAction.get(), &action::Action::triggered, this, &open_popup::OpenPopup::apply);
-	connect(this->cancelAction.get(), &action::Action::triggered, this, &open_popup::OpenPopup::cancel);
-	connect(this->browseAction.get(), &action::Action::triggered, this, &open_popup::OpenPopup::browse);
-	connect(this->typeAction.get(), &action::Action::triggered, this, &open_popup::OpenPopup::postProcessTypeAction);
+	connect(this->applyAction.get(), &app::action::Action::triggered, this, &app::main_window::popup::OpenPopup::apply);
+	connect(this->cancelAction.get(), &app::action::Action::triggered, this, &app::main_window::popup::OpenPopup::cancel);
+	connect(this->browseAction.get(), &app::action::Action::triggered, this, &app::main_window::popup::OpenPopup::browse);
+	connect(this->typeAction.get(), &app::action::Action::triggered, this, &app::main_window::popup::OpenPopup::postProcessTypeAction);
 
-	connect(this->pathToOpen.get(), &QLineEdit::textChanged, this, &open_popup::OpenPopup::pathChanged);
+	connect(this->pathToOpen.get(), &QLineEdit::textChanged, this, &app::main_window::popup::OpenPopup::pathChanged);
 
 	// Need to use lambda function as fileViewClickAction is not a slot
 	connect(this->fileView.get(), &QTreeView::clicked, [this] (const QModelIndex & index) {
@@ -225,19 +238,19 @@ void open_popup::OpenPopup::connectSignals() {
 
 }
 
-void open_popup::OpenPopup::postProcessTypeAction() {
+void app::main_window::popup::OpenPopup::postProcessTypeAction() {
 	this->insertLabel->setEnabled(false);
 	this->typeAction->setEnabled(false);
 }
 
-void open_popup::OpenPopup::apply() {
-	LOG_INFO(logger::info_level_e::ZERO, openPopupOpen,  "Open file: " << this->getTypedPath());
+void app::main_window::popup::OpenPopup::apply() {
+	LOG_INFO(app::logger::info_level_e::ZERO, openPopupOpen,  "Open file: " << this->getTypedPath());
 	this->close();
 	this->openPath();
 }
 
-void open_popup::OpenPopup::browse() {
-	LOG_INFO(logger::info_level_e::ZERO, openPopupBrowse,  "Browsing files - selected MIME are: " << this->fileModel->nameFilters());
+void app::main_window::popup::OpenPopup::browse() {
+	LOG_INFO(app::logger::info_level_e::ZERO, openPopupBrowse,  "Browsing files - selected MIME are: " << this->fileModel->nameFilters());
 	const bool isFileViewVisible = this->fileView->isVisible();
 
 	if (isFileViewVisible == true) {
@@ -250,8 +263,8 @@ void open_popup::OpenPopup::browse() {
 
 }
 
-void open_popup::OpenPopup::cancel() {
-	LOG_INFO(logger::info_level_e::ZERO, openPopupCancel,  "Closing popup as Cancel button has been clicked");
+void app::main_window::popup::OpenPopup::cancel() {
+	LOG_INFO(app::logger::info_level_e::ZERO, openPopupCancel,  "Closing popup as Cancel button has been clicked");
 	if (this->pathToOpen->hasFocus() == true) {
 		this->setFocus();
 		this->insertLabel->setEnabled(true);
@@ -261,7 +274,7 @@ void open_popup::OpenPopup::cancel() {
 	}
 }
 
-void open_popup::OpenPopup::close() {
+void app::main_window::popup::OpenPopup::close() {
 
 	// Make popup container invisible
 	QWidget * parent(this->parentWidget());
@@ -275,20 +288,20 @@ void open_popup::OpenPopup::close() {
 	this->window()->setFocus();
 }
 
-void open_popup::OpenPopup::openItem(const QString & path) {
+void app::main_window::popup::OpenPopup::openItem(const QString & path) {
 	emit this->fileRead(path, nullptr);
 }
 
-void open_popup::OpenPopup::activatePopup() {
+void app::main_window::popup::OpenPopup::activatePopup() {
 	this->setFocus(Qt::PopupFocusReason);
 }
 
-void open_popup::OpenPopup::keyPressEvent(QKeyEvent * event) {
+void app::main_window::popup::OpenPopup::keyPressEvent(QKeyEvent * event) {
 
 	const int pressedKey = event->key();
 	const Qt::KeyboardModifiers keyModifiers = event->modifiers();
 
-	const key_sequence::KeySequence keySeq(pressedKey | keyModifiers);
+	const app::key_sequence::KeySequence keySeq(pressedKey | keyModifiers);
 
 	if (event->type() == QEvent::KeyPress) {
 
@@ -304,7 +317,7 @@ void open_popup::OpenPopup::keyPressEvent(QKeyEvent * event) {
 
 }
 
-QSize open_popup::OpenPopup::sizeHint() const {
+QSize app::main_window::popup::OpenPopup::sizeHint() const {
 
 	// Width of the widget is the one of its geometry
 	const int width = this->geometry().width();
@@ -315,7 +328,7 @@ QSize open_popup::OpenPopup::sizeHint() const {
 	return hint;
 }
 
-void open_popup::OpenPopup::pathChanged(const QString & path) {
+void app::main_window::popup::OpenPopup::pathChanged(const QString & path) {
 	const QFileInfo pathInfo(path);
 	this->openLabel->setEnabled(pathInfo.exists());
 	this->applyAction->setEnabled(pathInfo.exists());

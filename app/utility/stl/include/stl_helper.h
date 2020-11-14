@@ -15,21 +15,24 @@
  *  Stl Helper
  *  @{
  */
+namespace app {
 
-namespace stl_helper {
+	namespace utility {
 
-	/**
-	 * @brief Function: const std::string findAndReplaceString(std::string text, const std::string & searchString, const std::string & replacingString)
-	 *
-	 * \param text: text to search and replace strings
-	 * \param searchString: content to be searched and replaced
-	 * \param replacingString: string that replaces the found content in the text
-	 *
-	 * \return: modified string
-	 *
-	 * This function searches and replaces content in a std::string
-	 */
-	const std::string findAndReplaceString(std::string text, const std::string & searchString, const std::string & replacingString);
+		/**
+		 * @brief Function: const std::string findAndReplaceString(std::string text, const std::string & searchString, const std::string & replacingString)
+		 *
+		 * \param text: text to search and replace strings
+		 * \param searchString: content to be searched and replaced
+		 * \param replacingString: string that replaces the found content in the text
+		 *
+		 * \return: modified string
+		 *
+		 * This function searches and replaces content in a std::string
+		 */
+		const std::string findAndReplaceString(std::string text, const std::string & searchString, const std::string & replacingString);
+
+	}
 
 }
 /** @} */ // End of StlHelperGroup group

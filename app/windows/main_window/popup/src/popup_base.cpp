@@ -13,13 +13,13 @@
 // Categories
 LOGGING_CONTEXT(mainWindowPopupBaseOverall, mainWindowPopupBase.overall, TYPE_LEVEL, INFO_VERBOSITY)
 
-main_window::PopupBase::PopupBase(QWidget * parent, const bool & centerWidget, const int & widgetPadding, Qt::WindowFlags flags) : popup_base::PopupBase(parent, centerWidget, widgetPadding, flags) {
+app::main_window::popup::PopupBase::PopupBase(QWidget * parent, const bool & centerWidget, const int & widgetPadding, Qt::WindowFlags flags) : app::base::popup::PopupBase(parent, centerWidget, widgetPadding, flags) {
 
-	LOG_INFO(logger::info_level_e::ZERO, mainWindowPopupBaseOverall,  "Main window popup base constructor");
+	LOG_INFO(app::logger::info_level_e::ZERO, mainWindowPopupBaseOverall,  "Main window popup base constructor");
 
 }
 
-main_window::PopupBase::~PopupBase() {
-	LOG_INFO(logger::info_level_e::ZERO, mainWindowPopupBaseOverall,  "Main window popup base destructor");
+app::main_window::popup::PopupBase::~PopupBase() {
+	LOG_INFO(app::logger::info_level_e::ZERO, mainWindowPopupBaseOverall,  "Main window popup base destructor");
 
 }

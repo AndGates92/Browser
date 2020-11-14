@@ -19,75 +19,79 @@
  *  @{
  */
 
-namespace logger {
+namespace app {
 
-	class Config : public singleton::Singleton<logger::Config> {
+	namespace logger {
 
-		public:
-			/**
-			 * @brief Function: static const logger::info_level_e & getDefaultVerbosity() const
-			 *
-			 * \return the default verbosity of info messages
-			 *
-			 * This function returns the default verbosity of info messages
-			 */
-			const logger::info_level_e & getDefaultVerbosity() const;
+		class Config : public app::utility::Singleton<app::logger::Config> {
 
-			/**
-			 * @brief Function: static const logger::msg_type_e & getDefaultType() const
-			 *
-			 * \return the default type of message
-			 *
-			 * This function returns the default message type
-			 */
-			const logger::msg_type_e & getDefaultType() const;
+			public:
+				/**
+				 * @brief Function: static const app::logger::info_level_e & getDefaultVerbosity() const
+				 *
+				 * \return the default verbosity of info messages
+				 *
+				 * This function returns the default verbosity of info messages
+				 */
+				const app::logger::info_level_e & getDefaultVerbosity() const;
 
-			/**
-			 * @brief Function: static const std::string & getDefaultContextName() const
-			 *
-			 * \return the default context name
-			 *
-			 * This function returns the default context name
-			 */
-			const std::string & getDefaultContextName() const;
+				/**
+				 * @brief Function: static const app::logger::msg_type_e & getDefaultType() const
+				 *
+				 * \return the default type of message
+				 *
+				 * This function returns the default message type
+				 */
+				const app::logger::msg_type_e & getDefaultType() const;
 
-			/**
-			 * @brief Function: explicit Config()
-			 *
-			 * Logger config constructor
-			 */
-			explicit Config();
+				/**
+				 * @brief Function: static const std::string & getDefaultContextName() const
+				 *
+				 * \return the default context name
+				 *
+				 * This function returns the default context name
+				 */
+				const std::string & getDefaultContextName() const;
 
-			/**
-			 * @brief Function: virtual ~Config()
-			 *
-			 * Logger config destructor
-			 */
-			virtual ~Config();
+				/**
+				 * @brief Function: explicit Config()
+				 *
+				 * Logger config constructor
+				 */
+				explicit Config();
 
-		protected:
+				/**
+				 * @brief Function: virtual ~Config()
+				 *
+				 * Logger config destructor
+				 */
+				virtual ~Config();
 
-		private:
+			protected:
 
-			/**
-			 * @brief default type of prints
-			 *
-			 */
-			logger::msg_type_e defaultType;
+			private:
 
-			/**
-			 * @brief default verbosity
-			 *
-			 */
-			logger::info_level_e defaultVerbosity;
+				/**
+				 * @brief default type of prints
+				 *
+				 */
+				app::logger::msg_type_e defaultType;
 
-			/**
-			 * @brief default context name
-			 *
-			 */
-			std::string defaultContextName;
+				/**
+				 * @brief default verbosity
+				 *
+				 */
+				app::logger::info_level_e defaultVerbosity;
 
-	};
+				/**
+				 * @brief default context name
+				 *
+				 */
+				std::string defaultContextName;
+
+		};
+
+	}
 
 }
 /** @} */ // End of LoggerGroup group

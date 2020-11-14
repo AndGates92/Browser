@@ -13,55 +13,63 @@
 #include "common/include/global_enums.h"
 #include "utility/logger/include/macros.h"
 #include "factories/include/test_factory.h"
-#include "base/tester/include/base_suite.h"
+#include "base/tester/include/suite.h"
 #include "utility/include/test_runner.h"
-#include "settings/include/browser_settings.h"
+#include "settings/include/global.h"
 
 LOGGING_CONTEXT(testRunnerOverall, testRunner.overall, TYPE_LEVEL, INFO_VERBOSITY)
 LOGGING_CONTEXT(testRunnerResult, testRunner.result, TYPE_LEVEL, INFO_VERBOSITY)
 
-namespace test_runner {
+namespace tester {
 
-	namespace {
-		/**
-		 * @brief Path towards JSON file storing informations about commands and shortcuts
-		 *
-		 */
-		static const std::string testerJsonPath("json/");
+	namespace utility {
 
-		/**
-		 * @brief Filename storing informations about commands and shortcuts
-		 *
-		 */
-		static const std::string testerJsonName("tester_arguments.json");
+		namespace test_runner {
 
-		/**
-		 * @brief Full path towards JSON file storing informations about commands and shortcuts
-		 *
-		 */
-		static const std::string testerJsonFullPath(testerJsonPath + testerJsonName);
+			namespace {
+				/**
+				 * @brief Path towards JSON file storing informations about commands and shortcuts
+				 *
+				 */
+				static const std::string jsonPath("json/");
+
+				/**
+				 * @brief Filename storing informations about commands and shortcuts
+				 *
+				 */
+				static const std::string jsonName("tester_arguments.json");
+
+				/**
+				 * @brief Full path towards JSON file storing informations about commands and shortcuts
+				 *
+				 */
+				static const std::string jsonFullPath(jsonPath + jsonName);
+			}
+
+		}
+
 	}
 
 }
 
-test_runner::TestRunner::TestRunner(int & argc, char** argv) : factory(new test_factory::TestFactory(argc, argv)), testList(test_runner::TestRunner::test_list_container_t()), failedTests(test_runner::TestRunner::test_list_container_t()) {
-	LOG_INFO(logger::info_level_e::ZERO, testRunnerOverall,  "Creating test runner");
+tester::utility::TestRunner::TestRunner(int & argc, char** argv) : factory(new tester::factory::TestFactory(argc, argv)), testList(tester::utility::TestRunner::test_list_container_t()), failedTests(tester::utility::TestRunner::test_list_container_t()) {
+	LOG_INFO(app::logger::info_level_e::ZERO, testRunnerOverall,  "Creating test runner");
 
-	std::unique_ptr<command_line_parser::CommandLineParser> runnerArgumentParser = std::make_unique<command_line_parser::CommandLineParser>(argc, argv, test_runner::testerJsonFullPath);
-	const command_line::argument_map_t & runnerArgumentMap = runnerArgumentParser->getDecodedArguments();
-	browser_settings::BrowserSettings::getInstance()->addArguments(runnerArgumentMap);
+	std::unique_ptr<app::command_line::Parser> runnerArgumentParser = std::make_unique<app::command_line::Parser>(argc, argv, tester::utility::test_runner::jsonFullPath);
+	const app::command_line::argument_map_t & runnerArgumentMap = runnerArgumentParser->getDecodedArguments();
+	app::settings::Global::getInstance()->addArguments(runnerArgumentMap);
 
 	this->factory->populate();
 	this->fillTestList();
 }
 
-test_runner::TestRunner::~TestRunner() {
-	LOG_INFO(logger::info_level_e::ZERO, testRunnerOverall,  "Test runner destructor");
+tester::utility::TestRunner::~TestRunner() {
+	LOG_INFO(app::logger::info_level_e::ZERO, testRunnerOverall,  "Test runner destructor");
 }
 
-void test_runner::TestRunner::fillTestList() {
+void tester::utility::TestRunner::fillTestList() {
 
-	const command_line::argument_map_t & settingsMap = browser_settings::BrowserSettings::getInstance()->getSettingsMap();
+	const app::command_line::argument_map_t & settingsMap = app::settings::Global::getInstance()->getSettingsMap();
 
 	const auto & suiteArgument = settingsMap.find("Suite");
 	EXCEPTION_ACTION_COND((suiteArgument == settingsMap.cend()), throw, "Unable to find key suite in command line argument map");
@@ -72,39 +80,39 @@ void test_runner::TestRunner::fillTestList() {
 	const std::string & testName = testArgument->second;
 
 	if (suiteName.compare("all") == 0) {
-		const base_factory::BaseFactory::suite_container_t & suites = this->factory->getSuites();
+		const tester::base::Factory::suite_container_t & suites = this->factory->getSuites();
 		for (const auto & suite : suites) {
 			this->addTestFromSuiteToTestList(suite, testName);
 		}
 	} else {
-		const std::shared_ptr<base_suite::BaseSuite> & suite = this->factory->findSuite(suiteName);
+		const std::shared_ptr<tester::base::Suite> & suite = this->factory->findSuite(suiteName);
 		this->addTestFromSuiteToTestList(suite, testName);
 	}
 }
 
-void test_runner::TestRunner::addTestFromSuiteToTestList(const std::shared_ptr<base_suite::BaseSuite> & suite, const std::string & testName) {
+void tester::utility::TestRunner::addTestFromSuiteToTestList(const std::shared_ptr<tester::base::Suite> & suite, const std::string & testName) {
 	if (testName.compare("all") == 0) {
-		const base_suite::BaseSuite::tests_container_t & tests = suite->getTests();
+		const tester::base::Suite::tests_container_t & tests = suite->getTests();
 		for (const auto & test : tests) {
 			this->testList.push_back(test);
 		}
 	} else {
-		const std::shared_ptr<base_test::BaseTest> & test = suite->findTest(testName);
+		const std::shared_ptr<tester::base::Test> & test = suite->findTest(testName);
 		if (test != nullptr) {
 			this->testList.push_back(test);
 		}
 	}
 }
 
-void test_runner::TestRunner::run() {
+void tester::utility::TestRunner::run() {
 	for (const auto & test : this->testList) {
 		try {
 				test->run();
-				test_enums::test_status_e status = test->getStatus();
-				if (status == test_enums::test_status_e::FAIL) {
+				tester::shared::test_status_e status = test->getStatus();
+				if (status == tester::shared::test_status_e::FAIL) {
 					this->failedTests.push_back(test);
 				}
-		} catch (const browser_exception::BrowserException & bexc) {
+		} catch (const app::browser_exception::BrowserException & bexc) {
 			test->addExceptionThrown(bexc.getLine(), bexc.getFilename(), bexc.getCondition(), bexc.getMessage());
 			this->failedTests.push_back(test);
 		} catch (const QUnhandledException & unhandledexc) {
@@ -120,31 +128,31 @@ void test_runner::TestRunner::run() {
 	}
 }
 
-void test_runner::TestRunner::printResults() const {
-	LOG_INFO(logger::info_level_e::ZERO, testRunnerResult,  "Runner results");
-	LOG_INFO(logger::info_level_e::ZERO, testRunnerResult,  "Statistics:");
-	LOG_INFO(logger::info_level_e::ZERO, testRunnerResult,  "- test run: " << this->testList.size());
-	LOG_INFO(logger::info_level_e::ZERO, testRunnerResult,  "- test failed: " << this->failedTests.size());
+void tester::utility::TestRunner::printResults() const {
+	LOG_INFO(app::logger::info_level_e::ZERO, testRunnerResult,  "Runner results");
+	LOG_INFO(app::logger::info_level_e::ZERO, testRunnerResult,  "Statistics:");
+	LOG_INFO(app::logger::info_level_e::ZERO, testRunnerResult,  "- test run: " << this->testList.size());
+	LOG_INFO(app::logger::info_level_e::ZERO, testRunnerResult,  "- test failed: " << this->failedTests.size());
 	for (const auto & test : this->failedTests) {
-		const base_test::BaseTest::test_error_container_t & errorMap = test->getErrorMap();
+		const tester::base::Test::test_error_container_t & errorMap = test->getErrorMap();
 		if (errorMap.empty() == false) {
-			LOG_INFO(logger::info_level_e::ZERO, testRunnerResult,  "Test errors:");
+			LOG_INFO(app::logger::info_level_e::ZERO, testRunnerResult,  "Test errors:");
 			for (const auto & e : errorMap) {
-				LOG_INFO(logger::info_level_e::ZERO, testRunnerResult,  "- type " << e.first << " error data " << e.second);
+				LOG_INFO(app::logger::info_level_e::ZERO, testRunnerResult,  "- type " << e.first << " error data " << e.second);
 			}
 		}
 
-		const base_test::BaseTest::test_error_container_t & expectedErrors = test->getExpectedErrors();
+		const tester::base::Test::test_error_container_t & expectedErrors = test->getExpectedErrors();
 		if (expectedErrors.empty() == false) {
-			LOG_INFO(logger::info_level_e::ZERO, testRunnerResult,  "Test expected errors:");
+			LOG_INFO(app::logger::info_level_e::ZERO, testRunnerResult,  "Test expected errors:");
 			for (const auto & e : expectedErrors) {
-				LOG_INFO(logger::info_level_e::ZERO, testRunnerResult,  "- type " << e.first << " error data " << e.second);
+				LOG_INFO(app::logger::info_level_e::ZERO, testRunnerResult,  "- type " << e.first << " error data " << e.second);
 			}
 		}
 	}
 }
 
-const std::string test_runner::TestRunner::print() const {
+const std::string tester::utility::TestRunner::print() const {
 	std::string runnerInfo;
 
 	if (this->testList.empty() == false) {

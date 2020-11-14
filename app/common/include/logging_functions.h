@@ -10,23 +10,26 @@
 
 #include <QtCore/Qt>
 
-/** @defgroup LoggingFunctionsGroup Logging Functions Doxygen Group
- *  Logging Functions
+/** @defgroup CommonGroup Common Macros and Functions Doxygen Group
+ *  Common Macros and Functions
  *  @{
  */
+namespace app {
 
-namespace logging_functions {
+	namespace shared {
 
-	/**
-	 * @brief Function: QString getDateTime()
-	 *
-	 * \return date and time as a QString
-	 *
-	 * This function returns the current date and time as a QString
-	 */
-	QString getDateTime();
+		/**
+		 * @brief Function: QString getDateTime()
+		 *
+		 * \return date and time as a QString
+		 *
+		 * This function returns the current date and time as a QString
+		 */
+		QString getDateTime();
+
+	}
 
 }
-/** @} */ // End of LoggingFunctionsGroup group
+/** @} */ // End of CommonGroup group
 
 #endif // LOGGING_FUNCTIONS_H

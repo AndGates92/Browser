@@ -35,102 +35,107 @@
 
 EXPORT_CONTEXT(secondaryWindowUtilityOverall)
 
-namespace secondary_window {
+namespace app {
 
-	/**
-	 * @brief Function: std::unique_ptr<action::Action> createAction(QObject * parent, const std::string & text, const std::string & tip, const key_sequence::KeySequence & shortcut)
-	 *
-	 * \param parent: parent object
-	 * \param text: descriptive text of the action
-	 * \param tip: action status tip
-	 * \param shortcut: shortcut linked to the action
-	 *
-	 * This function creates a new action
-	 */
-	std::unique_ptr<action::Action> createAction(QObject * parent, const std::string & text, const std::string & tip, const key_sequence::KeySequence & shortcut);
+	namespace secondary_window {
 
-	/**
-	 * @brief Function: std::shared_ptr<QLineEdit> createLineEdit(QWidget * parent, const std::string & text, const std::unique_ptr<action::Action> & focusAction)
-	 *
-	 * \param parent: parent widget
-	 * \param text: text to show on the line edit
-	 * \param focusAction: action that sets the focus to the line edit
-	 *
-	 * This function creates a new QLineEdit
-	 */
-	std::shared_ptr<QLineEdit> createLineEdit(QWidget * parent, const std::string & text, const std::unique_ptr<action::Action> & focusAction);
+		/**
+		 * @brief Function: std::unique_ptr<app::action::Action> createAction(QObject * parent, const std::string & text, const std::string & tip, const app::key_sequence::KeySequence & shortcut)
+		 *
+		 * \param parent: parent object
+		 * \param text: descriptive text of the action
+		 * \param tip: action status tip
+		 * \param shortcut: shortcut linked to the action
+		 *
+		 * This function creates a new action
+		 */
+		std::unique_ptr<app::action::Action> createAction(QObject * parent, const std::string & text, const std::string & tip, const app::key_sequence::KeySequence & shortcut);
 
-	/**
-	 * @brief Function: std::unique_ptr<QFileSystemModel> createFileModel(QWidget * parent, const QStringList & filters, const QDir & directory)
-	 *
-	 * \param parent: parent widget
-	 * \param filters: file dialog filters
-	 * \param directory: current dialog directory
-	 *
-	 * This function creates a new QFileSystemModel
-	 */
-	std::unique_ptr<QFileSystemModel> createFileModel(QWidget * parent, const QStringList & filters, const QDir & directory);
+		/**
+		 * @brief Function: std::shared_ptr<QLineEdit> createLineEdit(QWidget * parent, const std::string & text, const std::unique_ptr<app::action::Action> & focusAction)
+		 *
+		 * \param parent: parent widget
+		 * \param text: text to show on the line edit
+		 * \param focusAction: action that sets the focus to the line edit
+		 *
+		 * This function creates a new QLineEdit
+		 */
+		std::shared_ptr<QLineEdit> createLineEdit(QWidget * parent, const std::string & text, const std::unique_ptr<app::action::Action> & focusAction);
 
-	/**
-	 * @brief Function: std::unique_ptr<QTreeView> createFileView(std::unique_ptr<QFileSystemModel> & model, QWidget *parent, const QStringList & filters, const QDir & directory)
-	 *
-	 * \param model: model of the fileview
-	 * \param parent: parent widget
-	 * \param filters: file dialog filters
-	 * \param directory: current dialog directory
-	 *
-	 * This function creates a new QTreeView to display the content of the model. If the pointer to the model is null, this method will construct one based on the informations provided
-	 */
-	std::unique_ptr<QTreeView> createFileView(std::unique_ptr<QFileSystemModel> & model, QWidget *parent, const QStringList & filters = QStringList(), const QDir & directory = QDir::currentPath());
+		/**
+		 * @brief Function: std::unique_ptr<QFileSystemModel> createFileModel(QWidget * parent, const QStringList & filters, const QDir & directory)
+		 *
+		 * \param parent: parent widget
+		 * \param filters: file dialog filters
+		 * \param directory: current dialog directory
+		 *
+		 * This function creates a new QFileSystemModel
+		 */
+		std::unique_ptr<QFileSystemModel> createFileModel(QWidget * parent, const QStringList & filters, const QDir & directory);
 
-	/**
-	 * @brief Function: std::unique_ptr<QPushButton> createPushButton(QWidget *parent, const std::unique_ptr<action::Action> & actionPtr)
-	 *
-	 * \param parent: parent widget
-	 * \param actionPtr: action to link to the push button
-	 *
-	 * This function creates a new QPushButton
-	 */
-	std::unique_ptr<QPushButton> createPushButton(QWidget *parent, const std::unique_ptr<action::Action> & actionPtr);
+		/**
+		 * @brief Function: std::unique_ptr<QTreeView> createFileView(std::unique_ptr<QFileSystemModel> & model, QWidget *parent, const QStringList & filters, const QDir & directory)
+		 *
+		 * \param model: model of the fileview
+		 * \param parent: parent widget
+		 * \param filters: file dialog filters
+		 * \param directory: current dialog directory
+		 *
+		 * This function creates a new QTreeView to display the content of the model. If the pointer to the model is null, this method will construct one based on the informations provided
+		 */
+		std::unique_ptr<QTreeView> createFileView(std::unique_ptr<QFileSystemModel> & model, QWidget *parent, const QStringList & filters = QStringList(), const QDir & directory = QDir::currentPath());
 
-	/**
-	 * @brief Function: std::shared_ptr<QComboBox> createComboBox(QWidget *parent, const std::list<BoxItem> & items)
-	 *
-	 * \param parent: parent widget
-	 * \param items: items of the comboBox
-	 *
-	 * This function creates a new QComboBox
-	 */
-	template<class BoxItem, typename std::enable_if<std::is_base_of<combo_box_item::ComboBoxItem, BoxItem>::value, void>::type* = nullptr>
-	std::shared_ptr<QComboBox> createComboBox(QWidget *parent, const std::list<BoxItem> & items);
+		/**
+		 * @brief Function: std::unique_ptr<QPushButton> createPushButton(QWidget *parent, const std::unique_ptr<app::action::Action> & actionPtr)
+		 *
+		 * \param parent: parent widget
+		 * \param actionPtr: action to link to the push button
+		 *
+		 * This function creates a new QPushButton
+		 */
+		std::unique_ptr<QPushButton> createPushButton(QWidget *parent, const std::unique_ptr<app::action::Action> & actionPtr);
 
-	/**
-	 * @brief Function: std::unique_ptr<QGroupBox> createGroupBox(QWidget *parent, const std::string title)
-	 *
-	 * \param parent: parent widget
-	 * \param title: title of the group box
-	 *
-	 * This function creates a new QGroupBox
-	 */
-	std::unique_ptr<QGroupBox> createGroupBox(QWidget *parent, const std::string title);
+		/**
+		 * @brief Function: std::shared_ptr<QComboBox> createComboBox(QWidget *parent, const std::list<BoxItem> & items)
+		 *
+		 * \param parent: parent widget
+		 * \param items: items of the comboBox
+		 *
+		 * This function creates a new QComboBox
+		 */
+		template<class BoxItem, typename std::enable_if<std::is_base_of<app::combo_box_item::ComboBoxItem, BoxItem>::value, void>::type* = nullptr>
+		std::shared_ptr<QComboBox> createComboBox(QWidget *parent, const std::list<BoxItem> & items);
 
-	/**
-	 * @brief Function: std::unique_ptr<QCheckBox> createCheckBox(QWidget *parent, const std::unique_ptr<action::Action> & toggleAction)
-	 *
-	 * \param parent: parent widget
-	 * \param toggleAction: action that toggles the check in the check box
-	 *
-	 * This function creates a new QCheckBox
-	 */
-	std::unique_ptr<QCheckBox> createCheckBox(QWidget *parent, const std::unique_ptr<action::Action> & toggleAction);
+		/**
+		 * @brief Function: std::unique_ptr<QGroupBox> createGroupBox(QWidget *parent, const std::string title)
+		 *
+		 * \param parent: parent widget
+		 * \param title: title of the group box
+		 *
+		 * This function creates a new QGroupBox
+		 */
+		std::unique_ptr<QGroupBox> createGroupBox(QWidget *parent, const std::string title);
+
+		/**
+		 * @brief Function: std::unique_ptr<QCheckBox> createCheckBox(QWidget *parent, const std::unique_ptr<app::action::Action> & toggleAction)
+		 *
+		 * \param parent: parent widget
+		 * \param toggleAction: action that toggles the check in the check box
+		 *
+		 * This function creates a new QCheckBox
+		 */
+		std::unique_ptr<QCheckBox> createCheckBox(QWidget *parent, const std::unique_ptr<app::action::Action> & toggleAction);
+
+	}
+
 }
 /** @} */ // End of SecondaryWindowUtilityGroup group
 
-// Enable this function only if the template class BoxItem inherits combo_box_item::ComboBoxItem
-template<class BoxItem, typename std::enable_if<std::is_base_of<combo_box_item::ComboBoxItem, BoxItem>::value, void>::type* = nullptr>
-std::shared_ptr<QComboBox> secondary_window::createComboBox(QWidget *parent, const std::list<BoxItem> & items) {
+// Enable this function only if the template class BoxItem inherits app::combo_box_item::ComboBoxItem
+template<class BoxItem, typename std::enable_if<std::is_base_of<app::combo_box_item::ComboBoxItem, BoxItem>::value, void>::type* = nullptr>
+std::shared_ptr<QComboBox> app::secondary_window::createComboBox(QWidget *parent, const std::list<BoxItem> & items) {
 
-	LOG_INFO(logger::info_level_e::ZERO, secondaryWindowUtilityOverall,  "Creating Combo Box object");
+	LOG_INFO(app::logger::info_level_e::ZERO, secondaryWindowUtilityOverall,  "Creating Combo Box object");
 
 	std::shared_ptr<QComboBox> comboBox = std::make_shared<QComboBox>(parent);
 	comboBox->setFrame(false);
@@ -143,12 +148,12 @@ std::shared_ptr<QComboBox> secondary_window::createComboBox(QWidget *parent, con
 	comboBox->setFixedHeight(comboBox->fontMetrics().height() + 2 * comboBoxVSpacing);
 
 	for (auto item = items.cbegin(); item != items.cend(); item++) {
-		LOG_INFO(logger::info_level_e::ZERO, secondaryWindowUtilityOverall,  "Adding item " << item->getText() << " to Combo Box");
+		LOG_INFO(app::logger::info_level_e::ZERO, secondaryWindowUtilityOverall,  "Adding item " << item->getText() << " to Combo Box");
 		comboBox->addItem(item->getIcon(), QComboBox::tr(item->getText().c_str()), item->getUserData());
 		if (item->getAction() != nullptr) {
-			comboBox->addAction(const_cast<action::Action *>(item->getAction().get()));
+			comboBox->addAction(const_cast<app::action::Action *>(item->getAction().get()));
 
-			QObject::connect(item->getAction().get(), &action::Action::triggered, comboBox.get(), [comboBox, item]() {
+			QObject::connect(item->getAction().get(), &app::action::Action::triggered, comboBox.get(), [comboBox, item]() {
 				comboBox->setCurrentText(QString::fromStdString(item->getText()));
 			});
 		}

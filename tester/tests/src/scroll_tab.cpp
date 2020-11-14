@@ -12,74 +12,81 @@
 #include "common/include/global_enums.h"
 #include "utility/logger/include/macros.h"
 #include "utility/qt/include/qt_operator.h"
-#include "utility/stl/include/stl_helper.h"
 #include "windows/main_window/common/include/constants.h"
 #include "tests/include/scroll_tab.h"
-#include "base/tester/include/base_suite.h"
+#include "base/tester/include/suite.h"
 
 LOGGING_CONTEXT(scrollTabOverall, scrollTab.overall, TYPE_LEVEL, INFO_VERBOSITY)
 LOGGING_CONTEXT(scrollTabTest, scrollTab.test, TYPE_LEVEL, INFO_VERBOSITY)
 
-namespace scroll_tab {
+namespace tester {
 
-	namespace {
+	namespace test {
 
-		/**
-		 * @brief Path towards JSON file storing informations about commands and shortcuts
-		 *
-		 */
-		static const std::string jsonFilePath("json/");
+		namespace scroll_tab {
 
-		/**
-		 * @brief Filename storing informations about commands and shortcuts
-		 *
-		 */
-		static const std::string jsonFileName("tab_commands.json");
+			namespace {
 
-		/**
-		 * @brief Full path towards JSON file storing informations about commands and shortcuts
-		 *
-		 */
-		static const std::string jsonFileFullPath(jsonFilePath + jsonFileName);
+				/**
+				 * @brief Path towards JSON file storing informations about commands and shortcuts
+				 *
+				 */
+				static const std::string jsonFilePath("json/");
+
+				/**
+				 * @brief Filename storing informations about commands and shortcuts
+				 *
+				 */
+				static const std::string jsonFileName("tab_commands.json");
+
+				/**
+				 * @brief Full path towards JSON file storing informations about commands and shortcuts
+				 *
+				 */
+				static const std::string jsonFileFullPath(jsonFilePath + jsonFileName);
+
+			}
+
+		}
 
 	}
 
 }
 
-scroll_tab::ScrollTab::ScrollTab(const std::shared_ptr<base_suite::BaseSuite> & testSuite, const bool useShortcuts) : command_test::CommandTest(testSuite, "Scroll tab", scroll_tab::jsonFileFullPath, useShortcuts) {
-	LOG_INFO(logger::info_level_e::ZERO, scrollTabOverall,  "Creating test " << this->getName() << " in suite " << this->getSuite()->getName());
+tester::test::ScrollTab::ScrollTab(const std::shared_ptr<tester::base::Suite> & testSuite, const bool useShortcuts) : tester::base::CommandTest(testSuite, "Scroll tab", tester::test::scroll_tab::jsonFileFullPath, useShortcuts) {
+	LOG_INFO(app::logger::info_level_e::ZERO, scrollTabOverall,  "Creating test " << this->getName() << " in suite " << this->getSuite()->getName());
 }
 
-scroll_tab::ScrollTab::~ScrollTab() {
-	LOG_INFO(logger::info_level_e::ZERO, scrollTabOverall,  "Test " << this->getName() << " destructor");
+tester::test::ScrollTab::~ScrollTab() {
+	LOG_INFO(app::logger::info_level_e::ZERO, scrollTabOverall,  "Test " << this->getName() << " destructor");
 }
 
-void scroll_tab::ScrollTab::testBody() {
+void tester::test::ScrollTab::testBody() {
 
-	LOG_INFO(logger::info_level_e::ZERO, scrollTabTest,  "Starting test " << this->getName() << " in suite " << this->getSuite()->getName());
+	LOG_INFO(app::logger::info_level_e::ZERO, scrollTabTest,  "Starting test " << this->getName() << " in suite " << this->getSuite()->getName());
 
-	const std::shared_ptr<main_window::Core> & windowCore = this->windowWrapper->getWindowCore();
+	const std::shared_ptr<app::main_window::window::Core> & windowCore = this->windowWrapper->getWindowCore();
 
-	const std::string https(global_constants::https.toStdString());
-	const std::string www(global_constants::www.toStdString());
+	const std::string https(app::shared::https.toStdString());
+	const std::string www(app::shared::www.toStdString());
 
 	const std::string search("test");
-	LOG_INFO(logger::info_level_e::ZERO, scrollTabTest, "Open new tab searching " << search);
+	LOG_INFO(app::logger::info_level_e::ZERO, scrollTabTest, "Open new tab searching " << search);
 	this->openNewTab(search);
-	const std::string url = https + www + main_window::defaultSearchEngine.arg(QString::fromStdString(search)).toStdString();
+	const std::string url = https + www + app::main_window::defaultSearchEngine.arg(QString::fromStdString(search)).toStdString();
 
-	const std::shared_ptr<main_window::Tab> currentTab = this->windowWrapper->getCurrentTab();
-	ASSERT((currentTab != nullptr), test_enums::error_type_e::TABS, "Current tab pointer is null event though it should have website " + url + " open.");
+	const std::shared_ptr<app::main_window::tab::Tab> currentTab = this->windowWrapper->getCurrentTab();
+	ASSERT((currentTab != nullptr), tester::shared::error_type_e::TABS, "Current tab pointer is null event though it should have website " + url + " open.");
 
 	if (currentTab != nullptr) {
 		const int initialScrollPercentage = 0;
 		const int minScrollPercentage = 0;
 		const int maxScrollPercentage = 100;
 		const int & verticalInitialScrollPercentage = currentTab->getVerticalScrollPercentage();
-		ASSERT((verticalInitialScrollPercentage == initialScrollPercentage), test_enums::error_type_e::TABS, "Current position of the vertical scrollbar is " + std::to_string(verticalInitialScrollPercentage) + " whereas it is expected to be " + std::to_string(initialScrollPercentage) + " because a tab was just opened.");
+		ASSERT((verticalInitialScrollPercentage == initialScrollPercentage), tester::shared::error_type_e::TABS, "Current position of the vertical scrollbar is " + std::to_string(verticalInitialScrollPercentage) + " whereas it is expected to be " + std::to_string(initialScrollPercentage) + " because a tab was just opened.");
 
 		const int initialVScroll = windowCore->bottomStatusBar->getVScroll();
-		ASSERT((verticalInitialScrollPercentage == initialVScroll), test_enums::error_type_e::STATUSBAR, "Current value of vertical scrolling in the status bar is " + std::to_string(initialVScroll) + " whereas the position of the scrollbar is " + std::to_string(verticalInitialScrollPercentage));
+		ASSERT((verticalInitialScrollPercentage == initialVScroll), tester::shared::error_type_e::STATUSBAR, "Current value of vertical scrolling in the status bar is " + std::to_string(initialVScroll) + " whereas the position of the scrollbar is " + std::to_string(verticalInitialScrollPercentage));
 
 		// Test scroll up on a newly opened page
 		// No change should be triggered as page scrolling is already at the top
@@ -87,10 +94,10 @@ void scroll_tab::ScrollTab::testBody() {
 		this->executeCommand(scrollUpCommandName, std::string());
 
 		const int & verticalScrollPercentageAfterScrollUp = currentTab->getVerticalScrollPercentage();
-		ASSERT((verticalScrollPercentageAfterScrollUp == verticalInitialScrollPercentage), test_enums::error_type_e::TABS, "Current position of the vertical scrollbar is " + std::to_string(verticalScrollPercentageAfterScrollUp) + " whereas it is expected to be " + std::to_string(verticalInitialScrollPercentage) + " because command " + scrollUpCommandName + " has been executed just after the tab was opened hence the scroll position shouldn't have changed.");
+		ASSERT((verticalScrollPercentageAfterScrollUp == verticalInitialScrollPercentage), tester::shared::error_type_e::TABS, "Current position of the vertical scrollbar is " + std::to_string(verticalScrollPercentageAfterScrollUp) + " whereas it is expected to be " + std::to_string(verticalInitialScrollPercentage) + " because command " + scrollUpCommandName + " has been executed just after the tab was opened hence the scroll position shouldn't have changed.");
 
 		const int vScrollAfterScrollUp = windowCore->bottomStatusBar->getVScroll();
-		ASSERT((vScrollAfterScrollUp == initialVScroll), test_enums::error_type_e::STATUSBAR, "Current value of the vertical scrolling in the status bar is " + std::to_string(vScrollAfterScrollUp) + " whereas its position should have not changed and stayed " + std::to_string(initialVScroll) + " because command " + scrollUpCommandName + " has been executed just after the tab was opened hence the scroll position shouldn't have changed.");
+		ASSERT((vScrollAfterScrollUp == initialVScroll), tester::shared::error_type_e::STATUSBAR, "Current value of the vertical scrolling in the status bar is " + std::to_string(vScrollAfterScrollUp) + " whereas its position should have not changed and stayed " + std::to_string(initialVScroll) + " because command " + scrollUpCommandName + " has been executed just after the tab was opened hence the scroll position shouldn't have changed.");
 
 		// Test scroll down followed by scroll up
 		// No change should be triggered as the two actions cancel each other
@@ -98,18 +105,18 @@ void scroll_tab::ScrollTab::testBody() {
 		this->executeCommand(scrollDownCommandName, std::string());
 
 		const int & verticalScrollPercentageAfterScrollDown = currentTab->getVerticalScrollPercentage();
-		ASSERT((verticalScrollPercentageAfterScrollDown > verticalScrollPercentageAfterScrollUp), test_enums::error_type_e::TABS, "Current position of the vertical scrollbar is " + std::to_string(verticalScrollPercentageAfterScrollDown) + " whereas it is expected to be greater than " + std::to_string(verticalScrollPercentageAfterScrollUp) + " because command " + scrollDownCommandName + " has been executed.");
+		ASSERT((verticalScrollPercentageAfterScrollDown > verticalScrollPercentageAfterScrollUp), tester::shared::error_type_e::TABS, "Current position of the vertical scrollbar is " + std::to_string(verticalScrollPercentageAfterScrollDown) + " whereas it is expected to be greater than " + std::to_string(verticalScrollPercentageAfterScrollUp) + " because command " + scrollDownCommandName + " has been executed.");
 
 		const int vScrollAfterScrollDown = windowCore->bottomStatusBar->getVScroll();
-		ASSERT((vScrollAfterScrollDown == verticalScrollPercentageAfterScrollDown), test_enums::error_type_e::STATUSBAR, "Current value of the vertical scrolling in the status bar is " + std::to_string(vScrollAfterScrollDown) + " and its position should match the value of the tab scroll manager " + std::to_string(verticalScrollPercentageAfterScrollDown) + " after command " + scrollDownCommandName + " has been executed.");
+		ASSERT((vScrollAfterScrollDown == verticalScrollPercentageAfterScrollDown), tester::shared::error_type_e::STATUSBAR, "Current value of the vertical scrolling in the status bar is " + std::to_string(vScrollAfterScrollDown) + " and its position should match the value of the tab scroll manager " + std::to_string(verticalScrollPercentageAfterScrollDown) + " after command " + scrollDownCommandName + " has been executed.");
 
 		this->executeCommand(scrollUpCommandName, std::string());
 
 		const int & verticalScrollPercentageAfterSecondScrollUp = currentTab->getVerticalScrollPercentage();
-		ASSERT((verticalScrollPercentageAfterSecondScrollUp == verticalScrollPercentageAfterScrollUp), test_enums::error_type_e::TABS, "Current position of the vertical scrollbar is " + std::to_string(verticalScrollPercentageAfterSecondScrollUp) + " whereas it is expected to be " + std::to_string(verticalScrollPercentageAfterScrollUp) + " because command " + scrollUpCommandName + " has been executed after command " + scrollDownCommandName + " hence the scrollbar should return to the initial position.");
+		ASSERT((verticalScrollPercentageAfterSecondScrollUp == verticalScrollPercentageAfterScrollUp), tester::shared::error_type_e::TABS, "Current position of the vertical scrollbar is " + std::to_string(verticalScrollPercentageAfterSecondScrollUp) + " whereas it is expected to be " + std::to_string(verticalScrollPercentageAfterScrollUp) + " because command " + scrollUpCommandName + " has been executed after command " + scrollDownCommandName + " hence the scrollbar should return to the initial position.");
 
 		const int vScrollAfterSecondScrollUp = windowCore->bottomStatusBar->getVScroll();
-		ASSERT((vScrollAfterSecondScrollUp == verticalScrollPercentageAfterSecondScrollUp), test_enums::error_type_e::STATUSBAR, "Current value of the vertical scrolling in the status bar is " + std::to_string(vScrollAfterSecondScrollUp) + " whereas its position should have not changed and stayed " + std::to_string(verticalScrollPercentageAfterSecondScrollUp) + " because command " + scrollUpCommandName + " has been executed after command " + scrollDownCommandName + " hence the scrollbar should return to the initial position.");
+		ASSERT((vScrollAfterSecondScrollUp == verticalScrollPercentageAfterSecondScrollUp), tester::shared::error_type_e::STATUSBAR, "Current value of the vertical scrolling in the status bar is " + std::to_string(vScrollAfterSecondScrollUp) + " whereas its position should have not changed and stayed " + std::to_string(verticalScrollPercentageAfterSecondScrollUp) + " because command " + scrollUpCommandName + " has been executed after command " + scrollDownCommandName + " hence the scrollbar should return to the initial position.");
 
 		// Scroll to the bottom of the page
 		// Both scroll value and status bar should be synchronized
@@ -118,16 +125,16 @@ void scroll_tab::ScrollTab::testBody() {
 			this->executeCommand(scrollDownCommandName, std::string());
 
 			const int & currentVerticalScrollDownPercentage = currentTab->getVerticalScrollPercentage();
-			ASSERT((currentVerticalScrollDownPercentage > previousVerticalScrollDownPercentage), test_enums::error_type_e::TABS, "Current position of the vertical scrollbar is " + std::to_string(currentVerticalScrollDownPercentage) + " whereas it is expected to be greater than " + std::to_string(previousVerticalScrollDownPercentage) + " because command " + scrollDownCommandName + " has been executed.");
+			ASSERT((currentVerticalScrollDownPercentage > previousVerticalScrollDownPercentage), tester::shared::error_type_e::TABS, "Current position of the vertical scrollbar is " + std::to_string(currentVerticalScrollDownPercentage) + " whereas it is expected to be greater than " + std::to_string(previousVerticalScrollDownPercentage) + " because command " + scrollDownCommandName + " has been executed.");
 
 			const int vScrollStatusBar = windowCore->bottomStatusBar->getVScroll();
-			ASSERT((vScrollStatusBar == currentVerticalScrollDownPercentage), test_enums::error_type_e::STATUSBAR, "Current value of the vertical scrolling in the status bar is " + std::to_string(vScrollStatusBar) + " and its position should match the value of the tab scroll manager " + std::to_string(currentVerticalScrollDownPercentage) + " after command " + scrollDownCommandName + " has been executed.");
+			ASSERT((vScrollStatusBar == currentVerticalScrollDownPercentage), tester::shared::error_type_e::STATUSBAR, "Current value of the vertical scrolling in the status bar is " + std::to_string(vScrollStatusBar) + " and its position should match the value of the tab scroll manager " + std::to_string(currentVerticalScrollDownPercentage) + " after command " + scrollDownCommandName + " has been executed.");
 
 			previousVerticalScrollDownPercentage = currentVerticalScrollDownPercentage;
 		}
 
 		const int & verticalScrollDownPercentageBottom = currentTab->getVerticalScrollPercentage();
-		ASSERT((verticalScrollDownPercentageBottom == maxScrollPercentage), test_enums::error_type_e::TABS, "Current position of the vertical scrollbar is " + std::to_string(verticalScrollDownPercentageBottom) + " but it should have reached the bottom of the page hence its value should be " + std::to_string(maxScrollPercentage));
+		ASSERT((verticalScrollDownPercentageBottom == maxScrollPercentage), tester::shared::error_type_e::TABS, "Current position of the vertical scrollbar is " + std::to_string(verticalScrollDownPercentageBottom) + " but it should have reached the bottom of the page hence its value should be " + std::to_string(maxScrollPercentage));
 
 		// Scroll to the bottom of the page
 		// Both scroll value and status bar should be synchronized
@@ -136,16 +143,16 @@ void scroll_tab::ScrollTab::testBody() {
 			this->executeCommand(scrollUpCommandName, std::string());
 
 			const int & currentVerticalScrollUpPercentage = currentTab->getVerticalScrollPercentage();
-			ASSERT((currentVerticalScrollUpPercentage > previousVerticalScrollUpPercentage), test_enums::error_type_e::TABS, "Current position of the vertical scrollbar is " + std::to_string(currentVerticalScrollUpPercentage) + " whereas it is expected to be greater than " + std::to_string(previousVerticalScrollUpPercentage) + " because command " + scrollUpCommandName + " has been executed.");
+			ASSERT((currentVerticalScrollUpPercentage > previousVerticalScrollUpPercentage), tester::shared::error_type_e::TABS, "Current position of the vertical scrollbar is " + std::to_string(currentVerticalScrollUpPercentage) + " whereas it is expected to be greater than " + std::to_string(previousVerticalScrollUpPercentage) + " because command " + scrollUpCommandName + " has been executed.");
 
 			const int vScrollStatusBar = windowCore->bottomStatusBar->getVScroll();
-			ASSERT((vScrollStatusBar == currentVerticalScrollUpPercentage), test_enums::error_type_e::STATUSBAR, "Current value of the vertical scrolling in the status bar is " + std::to_string(vScrollStatusBar) + " and its position should match the value of the tab scroll manager " + std::to_string(currentVerticalScrollUpPercentage) + " after command " + scrollUpCommandName + " has been executed.");
+			ASSERT((vScrollStatusBar == currentVerticalScrollUpPercentage), tester::shared::error_type_e::STATUSBAR, "Current value of the vertical scrolling in the status bar is " + std::to_string(vScrollStatusBar) + " and its position should match the value of the tab scroll manager " + std::to_string(currentVerticalScrollUpPercentage) + " after command " + scrollUpCommandName + " has been executed.");
 
 			previousVerticalScrollUpPercentage = currentVerticalScrollUpPercentage;
 		}
 
 		const int & verticalScrollUpPercentageTop = currentTab->getVerticalScrollPercentage();
-		ASSERT((verticalScrollUpPercentageTop == minScrollPercentage), test_enums::error_type_e::TABS, "Current position of the vertical scrollbar is " + std::to_string(verticalScrollUpPercentageTop) + " but it should have reached the top of the page hence its value should be " + std::to_string(minScrollPercentage));
+		ASSERT((verticalScrollUpPercentageTop == minScrollPercentage), tester::shared::error_type_e::TABS, "Current position of the vertical scrollbar is " + std::to_string(verticalScrollUpPercentageTop) + " but it should have reached the top of the page hence its value should be " + std::to_string(minScrollPercentage));
 
 
 	}

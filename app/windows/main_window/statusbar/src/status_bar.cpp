@@ -18,81 +18,91 @@
 // Categories
 LOGGING_CONTEXT(mainWindowStatusBarOverall, mainWindowStatusBar.overall, TYPE_LEVEL, INFO_VERBOSITY)
 
-namespace main_window {
+namespace app {
 
-	namespace {
-		/**
-		 * @brief default origin of text in status bar widget
-		 *
-		 */
-		static const QPoint textOrigin(0,0);
+	namespace main_window {
 
-		/**
-		 * @brief bottom information text height
-		 *
-		 */
-		static constexpr int textHeight = 20;
+		namespace status_bar {
 
-		/**
-		 * @brief horizontal spacing between widgets
-		 *
-		 */
-		static constexpr int horizontalWidgetSpacing = 0;
+			namespace {
 
-		/**
-		 * @brief left margin between widget and window
-		 *
-		 */
-		static constexpr int leftMargin = 0;
+				/**
+				 * @brief default origin of text in status bar widget
+				 *
+				 */
+				static const QPoint textOrigin(0,0);
 
-		/**
-		 * @brief right margin between widget and window
-		 *
-		 */
-		static constexpr int rightMargin = 0;
+				/**
+				 * @brief bottom information text height
+				 *
+				 */
+				static constexpr int textHeight = 20;
 
-		/**
-		 * @brief top margin between widget and window
-		 *
-		 */
-		static constexpr int topMargin = 0;
+				/**
+				 * @brief horizontal spacing between widgets
+				 *
+				 */
+				static constexpr int horizontalWidgetSpacing = 0;
 
-		/**
-		 * @brief bottom margin between widget and window
-		 *
-		 */
-		static constexpr int bottomMargin = 0;
+				/**
+				 * @brief left margin between widget and window
+				 *
+				 */
+				static constexpr int leftMargin = 0;
 
-		/**
-		 * @brief minimum value of scrolling
-		 *
-		 */
-		static constexpr int minScrollValue = 0;
+				/**
+				 * @brief right margin between widget and window
+				 *
+				 */
+				static constexpr int rightMargin = 0;
 
-		/**
-		 * @brief maximum value of scrolling
-		 *
-		 */
-		static constexpr int maxScrollValue = 100;
+				/**
+				 * @brief top margin between widget and window
+				 *
+				 */
+				static constexpr int topMargin = 0;
 
-		/**
-		 * @brief string to print when cursor is at the top of the page
-		 *
-		 */
-		static const QString topScroll = "top";
+				/**
+				 * @brief bottom margin between widget and window
+				 *
+				 */
+				static constexpr int bottomMargin = 0;
 
-		/**
-		 * @brief string to print when cursor is at the bottom of the page
-		 *
-		 */
-		static const QString bottomScroll = "bot";
+				/**
+				 * @brief minimum value of scrolling
+				 *
+				 */
+				static constexpr int minScrollValue = 0;
+
+				/**
+				 * @brief maximum value of scrolling
+				 *
+				 */
+				static constexpr int maxScrollValue = 100;
+
+				/**
+				 * @brief string to print when cursor is at the top of the page
+				 *
+				 */
+				static const QString topScroll = "top";
+
+				/**
+				 * @brief string to print when cursor is at the bottom of the page
+				 *
+				 */
+				static const QString bottomScroll = "bot";
+
+			}
+
+		}
+
 	}
 
 }
 
-main_window::StatusBar::StatusBar(QWidget * parent, Qt::WindowFlags flags) : QWidget(parent, flags), userInput(Q_NULLPTR), contentPath(Q_NULLPTR), scroll(Q_NULLPTR), info(Q_NULLPTR), searchResult(Q_NULLPTR), loadBar(Q_NULLPTR) {
+app::main_window::status_bar::StatusBar::StatusBar(QWidget * parent, Qt::WindowFlags flags) : QWidget(parent, flags), userInput(Q_NULLPTR), contentPath(Q_NULLPTR), scroll(Q_NULLPTR), info(Q_NULLPTR), searchResult(Q_NULLPTR), loadBar(Q_NULLPTR) {
 
-	LOG_INFO(logger::info_level_e::ZERO, mainWindowStatusBarOverall,  "Main window status bar constructor");
+	LOG_INFO(app::logger::info_level_e::ZERO, mainWindowStatusBarOverall,  "Main window status bar constructor");
 
 	this->userInput = std::move(this->newWindowLabel());
 	this->contentPath = std::move(this->newWindowLabel());
@@ -136,16 +146,16 @@ main_window::StatusBar::StatusBar(QWidget * parent, Qt::WindowFlags flags) : QWi
 	this->fillStatusBar();
 }
 
-main_window::StatusBar::~StatusBar() {
-	LOG_INFO(logger::info_level_e::ZERO, mainWindowStatusBarOverall,  "Main window status bar destructor");
+app::main_window::status_bar::StatusBar::~StatusBar() {
+	LOG_INFO(app::logger::info_level_e::ZERO, mainWindowStatusBarOverall,  "Main window status bar destructor");
 
 }
 
-std::unique_ptr<elided_label::ElidedLabel> main_window::StatusBar::newWindowLabel() {
-	std::unique_ptr<elided_label::ElidedLabel> newLabel = std::make_unique<elided_label::ElidedLabel>(this, this->windowFlags(), QString(), main_window::textOrigin, Qt::ElideRight);
+std::unique_ptr<app::elided_label::ElidedLabel> app::main_window::status_bar::StatusBar::newWindowLabel() {
+	std::unique_ptr<app::elided_label::ElidedLabel> newLabel = std::make_unique<app::elided_label::ElidedLabel>(this, this->windowFlags(), QString(), app::main_window::status_bar::textOrigin, Qt::ElideRight);
 	newLabel->setAttribute(Qt::WA_DeleteOnClose);
 	newLabel->setFrameStyle(QFrame::NoFrame | QFrame::Sunken);
-	newLabel->setFixedHeight(main_window::textHeight);
+	newLabel->setFixedHeight(app::main_window::status_bar::textHeight);
 	newLabel->setTextFormat(Qt::PlainText);
 	// Align at the bottom of the widget - this override the default of vertically centered
 	newLabel->setAlignment(Qt::AlignBottom);
@@ -168,8 +178,8 @@ std::unique_ptr<elided_label::ElidedLabel> main_window::StatusBar::newWindowLabe
 	return newLabel;
 }
 
-std::unique_ptr<progress_bar::ProgressBar> main_window::StatusBar::newProgressBar() {
-	std::unique_ptr<progress_bar::ProgressBar> bar = std::make_unique<progress_bar::ProgressBar>(this);
+std::unique_ptr<app::progress_bar::ProgressBar> app::main_window::status_bar::StatusBar::newProgressBar() {
+	std::unique_ptr<app::progress_bar::ProgressBar> bar = std::make_unique<app::progress_bar::ProgressBar>(this);
 
 	// Set style sheet from the parent object because it can be customized based on the parent object properties
 	bar->setStyleSheet(
@@ -200,7 +210,7 @@ std::unique_ptr<progress_bar::ProgressBar> main_window::StatusBar::newProgressBa
 	return bar;
 }
 
-void main_window::StatusBar::fillStatusBar() {
+void app::main_window::status_bar::StatusBar::fillStatusBar() {
 
 	// Layout
 	// ------------------------------------------------------------------------------------
@@ -227,31 +237,31 @@ void main_window::StatusBar::fillStatusBar() {
 	// search result
 	layout->addWidget(this->searchResult.get());
 
-	layout->setSpacing(main_window::horizontalWidgetSpacing);
-	layout->setContentsMargins(main_window::leftMargin, main_window::topMargin, main_window::rightMargin, main_window::bottomMargin);
+	layout->setSpacing(app::main_window::status_bar::horizontalWidgetSpacing);
+	layout->setContentsMargins(app::main_window::status_bar::leftMargin, app::main_window::status_bar::topMargin, app::main_window::status_bar::rightMargin, app::main_window::status_bar::bottomMargin);
 
 	this->setLayout(layout);
 }
 
-QSize main_window::StatusBar::minimumSizeHint() const {
+QSize app::main_window::status_bar::StatusBar::minimumSizeHint() const {
 	int width = QWidget::minimumSizeHint().width();
-	int height = this->fontMetrics().height() + main_window::topMargin + main_window::bottomMargin;
+	int height = this->fontMetrics().height() + app::main_window::status_bar::topMargin + app::main_window::status_bar::bottomMargin;
 
 	return QSize(width,height);
 }
 
-bool main_window::StatusBar::isValidScrollValue(const int & value) const {
-	return  ((value >= main_window::minScrollValue) && (value <= main_window::maxScrollValue));
+bool app::main_window::status_bar::StatusBar::isValidScrollValue(const int & value) const {
+	return  ((value >= app::main_window::status_bar::minScrollValue) && (value <= app::main_window::status_bar::maxScrollValue));
 }
 
-void main_window::StatusBar::setVScroll(const int & vScroll) {
+void app::main_window::status_bar::StatusBar::setVScroll(const int & vScroll) {
 	QString vScrollText = QString();
 	// Keep 3 characters for all scroll positions
 	if (this->isValidScrollValue(vScroll) == true) {
-		if ((vScroll == main_window::minScrollValue) && (main_window::topScroll.isEmpty() == false)) {
-			vScrollText.append(main_window::topScroll);
-		} else if ((vScroll == main_window::maxScrollValue) && (main_window::bottomScroll.isEmpty() == false)) {
-			vScrollText.append(main_window::bottomScroll);
+		if ((vScroll == app::main_window::status_bar::minScrollValue) && (app::main_window::status_bar::topScroll.isEmpty() == false)) {
+			vScrollText.append(app::main_window::status_bar::topScroll);
+		} else if ((vScroll == app::main_window::status_bar::maxScrollValue) && (app::main_window::status_bar::bottomScroll.isEmpty() == false)) {
+			vScrollText.append(app::main_window::status_bar::bottomScroll);
 		} else {
 			// arg(value, field width, base, fill character)
 			vScrollText.append(QString("%1").arg(vScroll, 2, 10, QChar('0')));
@@ -262,17 +272,17 @@ void main_window::StatusBar::setVScroll(const int & vScroll) {
 	this->scroll->setText(vScrollText);
 }
 
-int main_window::StatusBar::getVScroll() const {
+int app::main_window::status_bar::StatusBar::getVScroll() const {
 	QString vScrollText(this->scroll->text());
-	int topCompare = QString::compare(vScrollText, main_window::topScroll);
-	int bottomCompare = QString::compare(vScrollText, main_window::bottomScroll);
+	int topCompare = QString::compare(vScrollText, app::main_window::status_bar::topScroll);
+	int bottomCompare = QString::compare(vScrollText, app::main_window::status_bar::bottomScroll);
 
 	int value = 0;
 
 	if (topCompare == 0) {
-		value = main_window::minScrollValue;
+		value = app::main_window::status_bar::minScrollValue;
 	} else if (bottomCompare == 0) {
-		value = main_window::maxScrollValue;
+		value = app::main_window::status_bar::maxScrollValue;
 	} else {
 		vScrollText.resize(vScrollText.size() - 1);
 		bool success = false;
@@ -283,33 +293,33 @@ int main_window::StatusBar::getVScroll() const {
 	return value;
 }
 
-void main_window::StatusBar::setProgressValue(const int & value) {
+void app::main_window::status_bar::StatusBar::setProgressValue(const int & value) {
 	this->loadBar->setValue(value);
 }
-BASE_GETTER(main_window::StatusBar::getProgressValue, int, this->loadBar->value())
-BASE_GETTER(main_window::StatusBar::getLoadBarVisibility, bool, this->loadBar->isVisible())
+BASE_GETTER(app::main_window::status_bar::StatusBar::getProgressValue, int, this->loadBar->value())
+BASE_GETTER(app::main_window::status_bar::StatusBar::getLoadBarVisibility, bool, this->loadBar->isVisible())
 
-void main_window::StatusBar::setInfoText(const QString & text) {
+void app::main_window::status_bar::StatusBar::setInfoText(const QString & text) {
 	this->info->setText(text);
 }
-CONST_GETTER(main_window::StatusBar::getInfoText, QString, this->info->text())
+CONST_GETTER(app::main_window::status_bar::StatusBar::getInfoText, QString, this->info->text())
 
-void main_window::StatusBar::setUserInputText(const QString & text) {
+void app::main_window::status_bar::StatusBar::setUserInputText(const QString & text) {
 	this->userInput->setText(text);
 }
-CONST_GETTER(main_window::StatusBar::getUserInputText, QString, this->userInput->text())
+CONST_GETTER(app::main_window::status_bar::StatusBar::getUserInputText, QString, this->userInput->text())
 
-void main_window::StatusBar::setContentPathText(const QString & text) {
+void app::main_window::status_bar::StatusBar::setContentPathText(const QString & text) {
 	this->contentPath->setText(text);
 }
-CONST_GETTER(main_window::StatusBar::getContentPathText, QString, this->contentPath->text())
+CONST_GETTER(app::main_window::status_bar::StatusBar::getContentPathText, QString, this->contentPath->text())
 
-void main_window::StatusBar::setSearchResultText(const QString & text) {
+void app::main_window::status_bar::StatusBar::setSearchResultText(const QString & text) {
 	this->searchResult->setText(text);
 }
-CONST_GETTER(main_window::StatusBar::getSearchResultText, QString, this->searchResult->text())
+CONST_GETTER(app::main_window::status_bar::StatusBar::getSearchResultText, QString, this->searchResult->text())
 
-void main_window::StatusBar::showSearchResult(const bool & showWidget) {
+void app::main_window::status_bar::StatusBar::showSearchResult(const bool & showWidget) {
 	const bool isTextEmpty = this->searchResult->text().isEmpty();
 	if ((showWidget == true) && (isTextEmpty == false)) {
 		this->searchResult->show();

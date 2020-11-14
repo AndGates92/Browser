@@ -27,63 +27,82 @@
 // Categories
 LOGGING_CONTEXT(labelPopupOverall, labelPopup.overall, TYPE_LEVEL, INFO_VERBOSITY)
 
-namespace label_popup {
+namespace app {
 
-	namespace {
-		/**
-		 * @brief default origin of text in label popup
-		 *
-		 */
-		static const QPoint textOrigin(0,0);
+	namespace main_window {
 
-		/**
-		 * @brief popup menu padding
-		 *
-		 */
-		static constexpr int padding = 15;
+		namespace popup {
 
-		/**
-		 * @brief Spacing between widgets
-		 *
-		 */
-		static constexpr int widgetSpacing = 2;
+			namespace label_popup {
 
-		/**
-		 * @brief Top margin of the layout
-		 *
-		 */
-		static constexpr int topMargin = 10;
+				namespace {
 
-		/**
-		 * @brief Bottom margin of the layout
-		 *
-		 */
-		static constexpr int bottomMargin = 10;
+					/**
+					 * @brief default origin of text
+					 *
+					 */
+					static const QPoint textOrigin(0,0);
 
-		/**
-		 * @brief Left margin of the layout
-		 *
-		 */
-		static constexpr int leftMargin = 10;
+					/**
+					 * @brief popup menu padding
+					 *
+					 */
+					static constexpr int padding = 15;
 
-		/**
-		 * @brief Right margin of the layout
-		 *
-		 */
-		static constexpr int rightMargin = 10;
+					/**
+					 * @brief Spacing between widgets
+					 *
+					 */
+					static constexpr int widgetSpacing = 2;
 
-		/**
-		 * @brief Duration of the popup in milliseconds
-		 *
-		 */
-		static constexpr std::chrono::seconds duration = std::chrono::seconds(4);
+					/**
+					 * @brief Spacing between widgets
+					 *
+					 */
+					static constexpr int widgetLabelSpacing = 10;
+
+					/**
+					 * @brief Top margin of the layout
+					 *
+					 */
+					static constexpr int topMargin = 10;
+
+					/**
+					 * @brief Bottom margin of the layout
+					 *
+					 */
+					static constexpr int bottomMargin = 10;
+
+					/**
+					 * @brief Left margin of the layout
+					 *
+					 */
+					static constexpr int leftMargin = 10;
+
+					/**
+					 * @brief Right margin of the layout
+					 *
+					 */
+					static constexpr int rightMargin = 10;
+
+					/**
+					 * @brief Duration of the popup in milliseconds
+					 *
+					 */
+					static constexpr std::chrono::seconds duration = std::chrono::seconds(4);
+				}
+
+			}
+
+		}
+
 	}
 
 }
 
-label_popup::LabelPopup::LabelPopup(QWidget * parent, Qt::WindowFlags flags) : main_window::PopupBase(parent, true, label_popup::padding, flags) {
+app::main_window::popup::LabelPopup::LabelPopup(QWidget * parent, Qt::WindowFlags flags) : app::main_window::popup::PopupBase(parent, true, app::main_window::popup::label_popup::padding, flags) {
 
-	LOG_INFO(logger::info_level_e::ZERO, labelPopupOverall,  "Creating label popup");
+	LOG_INFO(app::logger::info_level_e::ZERO, labelPopupOverall,  "Creating label popup");
 
 	// Create widgets to put in the window
 	this->fillPopup();
@@ -104,17 +123,17 @@ label_popup::LabelPopup::LabelPopup(QWidget * parent, Qt::WindowFlags flags) : m
 	);
 }
 
-label_popup::LabelPopup::~LabelPopup() {
-	LOG_INFO(logger::info_level_e::ZERO, labelPopupOverall,  "Destructor of label popup class");
+app::main_window::popup::LabelPopup::~LabelPopup() {
+	LOG_INFO(app::logger::info_level_e::ZERO, labelPopupOverall,  "Destructor of label popup class");
 }
 
-void label_popup::LabelPopup::popupLayout() {
+void app::main_window::popup::LabelPopup::popupLayout() {
 
 	if (this->layout() == Q_NULLPTR) {
 		// Layout
 		QVBoxLayout * layout = new QVBoxLayout(this);
-		layout->setSpacing(label_popup::widgetSpacing);
-		layout->setContentsMargins(label_popup::leftMargin, label_popup::topMargin, label_popup::rightMargin, label_popup::bottomMargin);
+		layout->setSpacing(app::main_window::popup::label_popup::widgetSpacing);
+		layout->setContentsMargins(app::main_window::popup::label_popup::leftMargin, app::main_window::popup::label_popup::topMargin, app::main_window::popup::label_popup::rightMargin, app::main_window::popup::label_popup::bottomMargin);
 
 		this->setLayout(layout);
 	}
@@ -147,9 +166,9 @@ void label_popup::LabelPopup::popupLayout() {
 
 }
 
-void label_popup::LabelPopup::fillPopup() {
+void app::main_window::popup::LabelPopup::fillPopup() {
 
-	this->label = std::make_unique<elided_label::ElidedLabel>(this, this->windowFlags(), QString(), label_popup::textOrigin, Qt::ElideRight);
+	this->label = std::make_unique<app::elided_label::ElidedLabel>(this, this->windowFlags(), QString(), app::main_window::popup::label_popup::textOrigin, Qt::ElideRight);
 	this->label->setTextFormat(Qt::PlainText);
 
 	// font
@@ -160,8 +179,8 @@ void label_popup::LabelPopup::fillPopup() {
 	this->timer = std::make_unique<QTimer>(this);
 }
 
-void label_popup::LabelPopup::connectSignals() {
-	LOG_INFO(logger::info_level_e::ZERO, labelPopupOverall,  "Connect signals");
+void app::main_window::popup::LabelPopup::connectSignals() {
+	LOG_INFO(app::logger::info_level_e::ZERO, labelPopupOverall,  "Connect signals");
 
 	connect(this->timer.get(), &QTimer::timeout, [this] () {
 		this->close();
@@ -169,17 +188,17 @@ void label_popup::LabelPopup::connectSignals() {
 
 }
 
-void label_popup::LabelPopup::setLabelText(const QString & text) {
+void app::main_window::popup::LabelPopup::setLabelText(const QString & text) {
 	this->label->setText(text);
 }
 
-void label_popup::LabelPopup::activatePopup() {
+void app::main_window::popup::LabelPopup::activatePopup() {
 
-	this->timer->start(label_popup::duration);
+	this->timer->start(app::main_window::popup::label_popup::duration);
 
 }
 
-QSize label_popup::LabelPopup::sizeHint() const {
+QSize app::main_window::popup::LabelPopup::sizeHint() const {
 
 	// Width of the widget is the one of its geometry
 	const int width = this->geometry().width();
@@ -190,7 +209,7 @@ QSize label_popup::LabelPopup::sizeHint() const {
 	return hint;
 }
 
-void label_popup::LabelPopup::close() {
+void app::main_window::popup::LabelPopup::close() {
 
 	// Make popup container invisible
 	QWidget * parent(this->parentWidget());

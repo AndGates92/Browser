@@ -21,8 +21,8 @@ LOGGING_CONTEXT(mainWindowCtrlBaseOverall, mainWindowCtrlBase.overall, TYPE_LEVE
 LOGGING_CONTEXT(mainWindowCtrlBaseCheck, mainWindowCtrlBase.check, TYPE_LEVEL, INFO_VERBOSITY)
 LOGGING_CONTEXT(mainWindowCtrlBaseUserInput, mainWindowCtrlBase.userInput, TYPE_LEVEL, INFO_VERBOSITY)
 
-main_window::CtrlBase::CtrlBase(QWidget * parent, const std::shared_ptr<main_window::Core> & core, const QString & jsonFileName) : QWidget(parent), main_window::Base(core), main_window::JsonAction(jsonFileName) {
-	LOG_INFO(logger::info_level_e::ZERO, mainWindowCtrlBaseOverall,  "Main window control base classe constructor");
+app::main_window::window::CtrlBase::CtrlBase(QWidget * parent, const std::shared_ptr<app::main_window::window::Core> & core, const QString & jsonFileName) : QWidget(parent), app::main_window::window::Base(core), app::main_window::json::Action(jsonFileName) {
+	LOG_INFO(app::logger::info_level_e::ZERO, mainWindowCtrlBaseOverall,  "Main window control base classe constructor");
 
 	// Shortcuts
 	this->createShortcuts();
@@ -32,11 +32,11 @@ main_window::CtrlBase::CtrlBase(QWidget * parent, const std::shared_ptr<main_win
 
 }
 
-main_window::CtrlBase::~CtrlBase() {
-	LOG_INFO(logger::info_level_e::ZERO, mainWindowCtrlBaseOverall,  "Main window control base class destructor");
+app::main_window::window::CtrlBase::~CtrlBase() {
+	LOG_INFO(app::logger::info_level_e::ZERO, mainWindowCtrlBaseOverall,  "Main window control base class destructor");
 }
 
-void main_window::CtrlBase::printUserInput(const main_window::text_action_e & action, const QString & text) {
+void app::main_window::window::CtrlBase::printUserInput(const app::main_window::text_action_e & action, const QString & text) {
 
 	QString textPrint = QString();
 	if (text == QString()) {
@@ -45,16 +45,16 @@ void main_window::CtrlBase::printUserInput(const main_window::text_action_e & ac
 		textPrint.append(text);
 	}
 
-	LOG_INFO(logger::info_level_e::ZERO, mainWindowCtrlBaseUserInput,  "Action is " << action << " for user input " << textPrint);
+	LOG_INFO(app::logger::info_level_e::ZERO, mainWindowCtrlBaseUserInput,  "Action is " << action << " for user input " << textPrint);
 
 	this->core->updateUserInput(action, text);
 
-	const main_window::state_e windowState = this->core->getMainWindowState();
+	const app::main_window::state_e windowState = this->core->getMainWindowState();
 
 	QString textLabel = QString();
-	if (windowState != main_window::state_e::IDLE) {
+	if (windowState != app::main_window::state_e::IDLE) {
 		QString userAction = QString();
-		if (windowState != main_window::state_e::COMMAND) {
+		if (windowState != app::main_window::state_e::COMMAND) {
 			// Get action name
 			userAction = this->core->getActionName();
 		}
@@ -66,44 +66,44 @@ void main_window::CtrlBase::printUserInput(const main_window::text_action_e & ac
 
 }
 
-void main_window::CtrlBase::changeWindowStateWrapper(const std::unique_ptr<main_window::JsonData> & commandData, const main_window::state_postprocessing_e & postprocess) {
-	LOG_INFO(logger::info_level_e::ZERO, mainWindowCtrlBaseOverall,  "Command " << commandData->getName() << " (shortcut: " << commandData->getShortcut() << " long command: " << commandData->getLongCmd() << ") - moving to state " << commandData->getState());
+void app::main_window::window::CtrlBase::changeWindowStateWrapper(const std::unique_ptr<app::main_window::json::Data> & commandData, const app::main_window::state_postprocessing_e & postprocess) {
+	LOG_INFO(app::logger::info_level_e::ZERO, mainWindowCtrlBaseOverall,  "Command " << commandData->getName() << " (shortcut: " << commandData->getShortcut() << " long command: " << commandData->getLongCmd() << ") - moving to state " << commandData->getState());
 	this->changeWindowState(commandData->getState(), postprocess);
 }
 
-void main_window::CtrlBase::executeCommand(const QString & userCommand, const main_window::state_postprocessing_e & postprocess) {
-	LOG_INFO(logger::info_level_e::ZERO, mainWindowCtrlBaseOverall,  "Looking for command matching user input: " << userCommand);
+void app::main_window::window::CtrlBase::executeCommand(const QString & userCommand, const app::main_window::state_postprocessing_e & postprocess) {
+	LOG_INFO(app::logger::info_level_e::ZERO, mainWindowCtrlBaseOverall,  "Looking for command matching user input: " << userCommand);
 
 	std::for_each(this->actionData.cbegin(), this->actionData.cend(), [&] (const auto & data) {
-		const std::unique_ptr<main_window::JsonData> & commandData = data.second;
+		const std::unique_ptr<app::main_window::json::Data> & commandData = data.second;
 		const QString refCommand = QString::fromStdString(commandData->getLongCmd());
 
 		// If user command matches the command in the JSON file
 		if (userCommand.compare(refCommand) == 0) {
-			LOG_INFO(logger::info_level_e::ZERO, mainWindowCtrlBaseOverall,  "Found command " << refCommand << " matching user input: " << userCommand);
+			LOG_INFO(app::logger::info_level_e::ZERO, mainWindowCtrlBaseOverall,  "Found command " << refCommand << " matching user input: " << userCommand);
 			this->changeWindowStateWrapper(commandData, postprocess);
 		}
 	});
 
 }
 
-void main_window::CtrlBase::createShortcuts() {
-	LOG_INFO(logger::info_level_e::ZERO, mainWindowCtrlBaseOverall,  "Create shortcuts");
+void app::main_window::window::CtrlBase::createShortcuts() {
+	LOG_INFO(app::logger::info_level_e::ZERO, mainWindowCtrlBaseOverall,  "Create shortcuts");
 
 //	this->createExtraShortcuts();
 }
 
-void main_window::CtrlBase::connectSignals() {
+void app::main_window::window::CtrlBase::connectSignals() {
 
-	LOG_INFO(logger::info_level_e::ZERO, mainWindowCtrlBaseOverall,  "Connect signals");
+	LOG_INFO(app::logger::info_level_e::ZERO, mainWindowCtrlBaseOverall,  "Connect signals");
 
 	std::for_each(this->actionData.cbegin(), this->actionData.cend(), [&] (const auto & data) {
-		const std::unique_ptr<main_window::JsonData> & commandData = data.second;
+		const std::unique_ptr<app::main_window::json::Data> & commandData = data.second;
 		QShortcut * shortcut = new QShortcut(commandData->getShortcut(), this->window());
-		LOG_INFO(logger::info_level_e::ZERO, mainWindowCtrlBaseOverall, "Connecting shortcut for key " << (commandData->getShortcut()) << " to trigger a change of controller state to " << commandData->getState());
+		LOG_INFO(app::logger::info_level_e::ZERO, mainWindowCtrlBaseOverall, "Connecting shortcut for key " << (commandData->getShortcut()) << " to trigger a change of controller state to " << commandData->getState());
 		QMetaObject::Connection connection = connect(shortcut, &QShortcut::activated,
 			[&] () {
-				this->changeWindowStateWrapper(commandData, main_window::state_postprocessing_e::POSTPROCESS);
+				this->changeWindowStateWrapper(commandData, app::main_window::state_postprocessing_e::POSTPROCESS);
 			}
 		);
 
@@ -115,7 +115,7 @@ void main_window::CtrlBase::connectSignals() {
 
 }
 
-void main_window::CtrlBase::updateScroll() {
+void app::main_window::window::CtrlBase::updateScroll() {
 	const int tabCount = this->core->getTabCount();
 
 	int vScroll = -1;
@@ -127,13 +127,13 @@ void main_window::CtrlBase::updateScroll() {
 	this->core->bottomStatusBar->setVScroll(vScroll);
 }
 
-void main_window::CtrlBase::updateInfo(const int & currIndex) {
+void app::main_window::window::CtrlBase::updateInfo(const int & currIndex) {
 	const QString info(this->tabInfoStr(currIndex));
 
 	this->core->bottomStatusBar->setInfoText(info);
 }
 
-QString main_window::CtrlBase::tabInfoStr(const int & currIndex) const {
+QString app::main_window::window::CtrlBase::tabInfoStr(const int & currIndex) const {
 
 	const int tabCount = this->core->getTabCount();
 
@@ -150,28 +150,28 @@ QString main_window::CtrlBase::tabInfoStr(const int & currIndex) const {
 	return tabInfo;
 }
 
-void main_window::CtrlBase::setAllShortcutEnabledProperty(const bool enabled) {
+void app::main_window::window::CtrlBase::setAllShortcutEnabledProperty(const bool enabled) {
 	const QList<QShortcut *> shortcuts = this->window()->findChildren<QShortcut *>(QString(), Qt::FindChildrenRecursively);
 
 	for (QShortcut * shortcut : shortcuts) {
-		key_sequence::KeySequence key(shortcut->key());
+		app::key_sequence::KeySequence key(shortcut->key());
 		// If shortcut key is not defined, then do not do anything
 		if (key.count() > 0) {
-			LOG_INFO(logger::info_level_e::ZERO, mainWindowCtrlBaseUserInput,  "Setting enabled for key " << key.toString() << " to " << enabled);
+			LOG_INFO(app::logger::info_level_e::ZERO, mainWindowCtrlBaseUserInput,  "Setting enabled for key " << key.toString() << " to " << enabled);
 			shortcut->setEnabled(enabled);
 		}
 	}
 }
 
-void main_window::CtrlBase::changeWindowState(const main_window::state_e & nextState, const main_window::state_postprocessing_e postprocess, const Qt::Key key) {
+void app::main_window::window::CtrlBase::changeWindowState(const app::main_window::state_e & nextState, const app::main_window::state_postprocessing_e postprocess, const Qt::Key key) {
 
-	const main_window::state_e windowState = this->core->getMainWindowState();
+	const app::main_window::state_e windowState = this->core->getMainWindowState();
 	const QString userTypedText = this->core->getUserText();
 
 	// Global conditions are:
 	// - it is possible to move to any state from the COMMAND state
 	// - it is possible to move from any state to COMMAND state if the user types Backspace and the user types text is empty
-	const bool globalCondition = (windowState == main_window::state_e::COMMAND) || ((windowState != main_window::state_e::COMMAND) && (nextState == main_window::state_e::COMMAND) && (userTypedText.isEmpty() == true) && (key == Qt::Key_Backspace));
+	const bool globalCondition = (windowState == app::main_window::state_e::COMMAND) || ((windowState != app::main_window::state_e::COMMAND) && (nextState == app::main_window::state_e::COMMAND) && (userTypedText.isEmpty() == true) && (key == Qt::Key_Backspace));
 
 
 	// Do not change state if the window is already in the one requested
@@ -180,11 +180,11 @@ void main_window::CtrlBase::changeWindowState(const main_window::state_e & nextS
 		if (isValid == true) {
 			this->core->setMainWindowState(nextState);
 
-			this->printUserInput(main_window::text_action_e::CLEAR);
+			this->printUserInput(app::main_window::text_action_e::CLEAR);
 
-			if (postprocess == main_window::state_postprocessing_e::POSTPROCESS) {
+			if (postprocess == app::main_window::state_postprocessing_e::POSTPROCESS) {
 				this->postprocessWindowStateChange(windowState);
-			} else if (postprocess == main_window::state_postprocessing_e::ACTION) {
+			} else if (postprocess == app::main_window::state_postprocessing_e::ACTION) {
 				this->executeAction(nextState);
 			}
 			emit windowStateChanged(nextState);
@@ -194,30 +194,30 @@ void main_window::CtrlBase::changeWindowState(const main_window::state_e & nextS
 	}
 }
 
-void main_window::CtrlBase::keyReleaseEvent(QKeyEvent * event) {
+void app::main_window::window::CtrlBase::keyReleaseEvent(QKeyEvent * event) {
 
 	const int releasedKey = event->key();
 	const Qt::KeyboardModifiers keyModifiers = event->modifiers();
 
-	const key_sequence::KeySequence keySeq(releasedKey | keyModifiers);
+	const app::key_sequence::KeySequence keySeq(releasedKey | keyModifiers);
 
 	if (event->type() == QEvent::KeyRelease) {
 
-		const main_window::state_e windowState = this->core->getMainWindowState();
+		const app::main_window::state_e windowState = this->core->getMainWindowState();
 		QString userTypedText = this->core->getUserText();
 
 		// Retrieve main window controller state
-		LOG_INFO(logger::info_level_e::ZERO, mainWindowCtrlBaseUserInput,  "State " << windowState << " key " << keySeq.toString());
+		LOG_INFO(app::logger::info_level_e::ZERO, mainWindowCtrlBaseUserInput,  "State " << windowState << " key " << keySeq.toString());
 
 		switch (releasedKey) {
 			case Qt::Key_Backspace:
-				LOG_INFO(logger::info_level_e::ZERO, mainWindowCtrlBaseUserInput,  "User typed text " << userTypedText);
+				LOG_INFO(app::logger::info_level_e::ZERO, mainWindowCtrlBaseUserInput,  "User typed text " << userTypedText);
 				// If in state TAB MOVE and the core->userText is empty after deleting the last character, set the move value to IDLE
 				if (userTypedText.isEmpty() == true) {
-					if (windowState != main_window::state_e::COMMAND) {
-						if (windowState == main_window::state_e::MOVE_TAB) {
-							this->core->setOffsetType(global_enums::offset_type_e::IDLE);
-							this->printUserInput(main_window::text_action_e::CLEAR);
+					if (windowState != app::main_window::state_e::COMMAND) {
+						if (windowState == app::main_window::state_e::MOVE_TAB) {
+							this->core->setOffsetType(app::shared::offset_type_e::IDLE);
+							this->printUserInput(app::main_window::text_action_e::CLEAR);
 						}
 						this->moveToCommandStateFromNonIdleState(windowState, static_cast<Qt::Key>(releasedKey));
 					}
@@ -226,7 +226,7 @@ void main_window::CtrlBase::keyReleaseEvent(QKeyEvent * event) {
 					const int endString = userTypedText.count() - 1;
 					// Delete last character of the string
 					userTypedText = userTypedText.remove(endString, 1);
-					this->printUserInput(main_window::text_action_e::SET, userTypedText);
+					this->printUserInput(app::main_window::text_action_e::SET, userTypedText);
 				}
 				break;
 			default:
@@ -238,18 +238,18 @@ void main_window::CtrlBase::keyReleaseEvent(QKeyEvent * event) {
 
 
 
-void main_window::CtrlBase::keyPressEvent(QKeyEvent * event) {
+void app::main_window::window::CtrlBase::keyPressEvent(QKeyEvent * event) {
 
 	const int pressedKey = event->key();
 	const Qt::KeyboardModifiers keyModifiers = event->modifiers();
 
-	const key_sequence::KeySequence keySeq(pressedKey | keyModifiers);
+	const app::key_sequence::KeySequence keySeq(pressedKey | keyModifiers);
 
 	if (event->type() == QEvent::KeyPress) {
 
-		const main_window::state_e windowState = this->core->getMainWindowState();
+		const app::main_window::state_e windowState = this->core->getMainWindowState();
 
-		LOG_INFO(logger::info_level_e::ZERO, mainWindowCtrlBaseUserInput,  "State " << windowState << " key " << keySeq.toString());
+		LOG_INFO(app::logger::info_level_e::ZERO, mainWindowCtrlBaseUserInput,  "State " << windowState << " key " << keySeq.toString());
 
 		switch (pressedKey) {
 			case Qt::Key_Enter:
@@ -269,23 +269,23 @@ void main_window::CtrlBase::keyPressEvent(QKeyEvent * event) {
 
 }
 
-void main_window::CtrlBase::moveToCommandStateFromNonIdleState(const main_window::state_e & windowState, const Qt::Key & key) {
+void app::main_window::window::CtrlBase::moveToCommandStateFromNonIdleState(const app::main_window::state_e & windowState, const Qt::Key & key) {
 	// Saving long command for a given state to set it after changing state
-	const main_window::state_e requestedWindowState = main_window::state_e::COMMAND;
-	const std::unique_ptr<main_window::JsonData> & data = this->findDataWithFieldValue("State", &windowState);
+	const app::main_window::state_e requestedWindowState = app::main_window::state_e::COMMAND;
+	const std::unique_ptr<app::main_window::json::Data> & data = this->findDataWithFieldValue("State", &windowState);
 	if (data != this->getInvalidData()) {
 		QString longCmd(QString::fromStdString(data->getLongCmd()));
-		this->changeWindowState(requestedWindowState, main_window::state_postprocessing_e::POSTPROCESS, key);
+		this->changeWindowState(requestedWindowState, app::main_window::state_postprocessing_e::POSTPROCESS, key);
 		// Setting the user input here because it is cleared when changing state
-		this->printUserInput(main_window::text_action_e::SET, longCmd);
+		this->printUserInput(app::main_window::text_action_e::SET, longCmd);
 	}
 }
 
-void main_window::CtrlBase::resetWindowState() {
-	const main_window::state_e requestedWindowState = main_window::state_e::IDLE;
+void app::main_window::window::CtrlBase::resetWindowState() {
+	const app::main_window::state_e requestedWindowState = app::main_window::state_e::IDLE;
 	this->core->setMainWindowState(requestedWindowState);
 
-	this->core->updateUserInput(main_window::text_action_e::CLEAR, QString());
+	this->core->updateUserInput(app::main_window::text_action_e::CLEAR, QString());
 	this->core->bottomStatusBar->setUserInputText(QString());
 	this->core->getUserText();
 

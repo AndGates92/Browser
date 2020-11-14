@@ -20,11 +20,11 @@
 // Categories
 LOGGING_CONTEXT(mainWindowWebEngineViewOverall, mainWindowWebEngineView.overall, TYPE_LEVEL, INFO_VERBOSITY)
 
-main_window::WebEngineView::WebEngineView(QWidget * parent, const main_window::page_type_e & type, const QString & src, const void * data): web_engine_view::WebEngineView(parent) {
-	LOG_INFO(logger::info_level_e::ZERO, mainWindowWebEngineViewOverall,  "Web engine view constructor");
+app::main_window::tab::WebEngineView::WebEngineView(QWidget * parent, const app::main_window::page_type_e & type, const QString & src, const void * data): app::base::tab::WebEngineView(parent) {
+	LOG_INFO(app::logger::info_level_e::ZERO, mainWindowWebEngineViewOverall,  "Web engine view constructor");
 
 	// Use deleteLater to schedule a destruction event in the event loop
-	std::shared_ptr<main_window::WebEnginePage> newPage = std::shared_ptr<main_window::WebEnginePage>(new main_window::WebEnginePage(parent, type, src, main_window::WebEngineProfile::defaultProfile(), data), [] (main_window::WebEnginePage * p) {
+	std::shared_ptr<app::main_window::tab::WebEnginePage> newPage = std::shared_ptr<app::main_window::tab::WebEnginePage>(new app::main_window::tab::WebEnginePage(parent, type, src, app::main_window::tab::WebEngineProfile::defaultProfile(), data), [] (app::main_window::tab::WebEnginePage * p) {
 		p->deleteLater();
 	});
 	this->updatePage(newPage);
@@ -32,32 +32,32 @@ main_window::WebEngineView::WebEngineView(QWidget * parent, const main_window::p
 	this->connectSignals();
 }
 
-main_window::WebEngineView::~WebEngineView() {
-	LOG_INFO(logger::info_level_e::ZERO, mainWindowWebEngineViewOverall,  "Web engine view destructor");
+app::main_window::tab::WebEngineView::~WebEngineView() {
+	LOG_INFO(app::logger::info_level_e::ZERO, mainWindowWebEngineViewOverall,  "Web engine view destructor");
 }
 
-CASTED_SHARED_PTR_GETTER(main_window::WebEngineView::page, main_window::WebEnginePage, web_engine_view::WebEngineView::page())
+CASTED_SHARED_PTR_GETTER(app::main_window::tab::WebEngineView::page, app::main_window::tab::WebEnginePage, app::base::tab::WebEngineView::page())
 
-void main_window::WebEngineView::connectSignals() {
-	connect(this, &main_window::WebEngineView::urlChanged, this, &main_window::WebEngineView::updatePageSource, Qt::UniqueConnection);
+void app::main_window::tab::WebEngineView::connectSignals() {
+	connect(this, &app::main_window::tab::WebEngineView::urlChanged, this, &app::main_window::tab::WebEngineView::updatePageSource, Qt::UniqueConnection);
 }
 
-void main_window::WebEngineView::updatePageSource(const QUrl & url) {
+void app::main_window::tab::WebEngineView::updatePageSource(const QUrl & url) {
 
-	std::shared_ptr<main_window::WebEnginePage> enginePage = this->page();
+	std::shared_ptr<app::main_window::tab::WebEnginePage> enginePage = this->page();
 
 	if (enginePage != nullptr) {
-		const main_window::page_type_e type = enginePage->getType();
+		const app::main_window::page_type_e type = enginePage->getType();
 
 		// Propagate URL only if page is of type WEB_CONTENT - if no URL is set, this function is called with about::black
-		if ((type == main_window::page_type_e::WEB_CONTENT) && (url.isValid())) {
+		if ((type == app::main_window::page_type_e::WEB_CONTENT) && (url.isValid())) {
 			const QString urlStr = url.toDisplayString(QUrl::FullyDecoded);
 			enginePage->setSource(urlStr);
 		}
 	}
 }
 
-bool main_window::WebEngineView::isSameAction(const QAction * lhs, const QAction * rhs) const {
+bool app::main_window::tab::WebEngineView::isSameAction(const QAction * lhs, const QAction * rhs) const {
 	const QList<QKeySequence> keyList1(lhs->shortcuts());
 	const QList<QKeySequence> keyList2(rhs->shortcuts());
 
@@ -83,7 +83,7 @@ bool main_window::WebEngineView::isSameAction(const QAction * lhs, const QAction
 
 }
 
-void main_window::WebEngineView::contextMenuEvent(QContextMenuEvent * event) {
+void app::main_window::tab::WebEngineView::contextMenuEvent(QContextMenuEvent * event) {
 	QMenu * contextMenu(this->page()->createStandardContextMenu());
 
 	contextMenu->setStyleSheet(
@@ -172,7 +172,7 @@ void main_window::WebEngineView::contextMenuEvent(QContextMenuEvent * event) {
 
 }
 
-QAction * main_window::WebEngineView::addActionListToMenu(QMenu * menu, QAction * pos, const QList<QAction *> & actionList) {
+QAction * app::main_window::tab::WebEngineView::addActionListToMenu(QMenu * menu, QAction * pos, const QList<QAction *> & actionList) {
 
 	QAction * action(pos);
 	const QList<QAction *> actions(menu->actions());

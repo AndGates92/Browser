@@ -23,9 +23,9 @@ LOGGING_CONTEXT(graphicsOverall, graphics.overall, TYPE_LEVEL, INFO_VERBOSITY)
 void graphics::init_graphics(int & argc, char** argv) {
 	QApplication app(argc, argv);
 
-	LOG_INFO(logger::info_level_e::ZERO, graphicsOverall,  "Create Application");
+	LOG_INFO(app::logger::info_level_e::ZERO, graphicsOverall,  "Create Application");
 
-	std::unique_ptr<main_window::Wrapper> window = std::make_unique<main_window::Wrapper>(Q_NULLPTR, Qt::Window);
+	std::unique_ptr<app::main_window::window::Wrapper> window = std::make_unique<app::main_window::window::Wrapper>(Q_NULLPTR, Qt::Window);
 	window->show();
 
 	app.exec();

@@ -13,59 +13,67 @@
 
 #include "common/include/constructor_macros.h"
 
-/** @defgroup PopupContainerLayoutGroup Popup Container Layout Doxygen Group
- *  Pop up container layout functions and classes
+/** @defgroup PopupGroup Popup Doxygen Group
+ *  Popup functions and classes
  *  @{
  */
 
-namespace popup_container_layout {
+namespace app {
 
-	/**
-	 * @brief PopupContainerLayout class
-	 *
-	 */
-	class PopupContainerLayout : public QStackedLayout {
+	namespace base {
 
-		public:
-			/**
-			 * @brief Function: explicit PopupContainerLayout(QWidget * parent)
-			 *
-			 * \param parent: parent window
-			 *
-			 * Pop up container layout constructor
-			 */
-			explicit PopupContainerLayout(QWidget * parent);
+		namespace popup {
 
 			/**
-			 * @brief Function: virtual ~PopupContainerLayout()
-			 *
-			 * Pop up container layout destructor
-			 */
-			virtual ~PopupContainerLayout();
-
-		protected:
-
-		private:
-			/**
-			 * @brief Function: virtual QSize sizeHint() const override
-			 *
-			 * \return return recommended size of the widget
-			 *
-			 * Compute recommendend size of the widget
-			 */
-			virtual QSize sizeHint() const override;
-
-			// Move and copy constructor
-			/**
-			 * @brief Disable move and copy constructors and operator= overloading for class PopupContainerLayout
+			 * @brief PopupContainerLayout class
 			 *
 			 */
-			DISABLE_COPY_MOVE(PopupContainerLayout)
+			class PopupContainerLayout : public QStackedLayout {
 
-	};
+				public:
+					/**
+					 * @brief Function: explicit PopupContainerLayout(QWidget * parent)
+					 *
+					 * \param parent: parent window
+					 *
+					 * Pop up container layout constructor
+					 */
+					explicit PopupContainerLayout(QWidget * parent);
+
+					/**
+					 * @brief Function: virtual ~PopupContainerLayout()
+					 *
+					 * Pop up container layout destructor
+					 */
+					virtual ~PopupContainerLayout();
+
+				protected:
+
+				private:
+					/**
+					 * @brief Function: virtual QSize sizeHint() const override
+					 *
+					 * \return return recommended size of the widget
+					 *
+					 * Compute recommendend size of the widget
+					 */
+					virtual QSize sizeHint() const override;
+
+					// Move and copy constructor
+					/**
+					 * @brief Disable move and copy constructors and operator= overloading for class PopupContainerLayout
+					 *
+					 */
+					DISABLE_COPY_MOVE(PopupContainerLayout)
+
+			};
+
+		}
+
+	}
 
 }
 
-/** @} */ // End of PopupContainerLayoutGroup group
+/** @} */ // End of PopupGroup group
 
 #endif // POPUP_CONTAINER_LAYOUT_H

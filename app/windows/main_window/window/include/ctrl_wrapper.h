@@ -24,82 +24,89 @@
  *  Main Window functions and classes
  *  @{
  */
+namespace app {
 
-namespace main_window {
+	namespace main_window {
 
-	class MainWindow;
+		namespace window {
 
-	/**
-	 * @brief CtrlWrapper class
-	 *
-	 */
-	class CtrlWrapper final : public QWidget, public main_window::Base {
-		friend class main_window::MainWindow;
-
-		public:
+			class MainWindow;
 
 			/**
-			 * @brief Function: explicit CtrlWrapper(QWidget * parent, const std::shared_ptr<main_window::Core> & core)
-			 *
-			 * \param core: main window core
-			 * \param parent: parent windget
-			 *
-			 * Main window control constructor
-			 */
-			explicit CtrlWrapper(QWidget * parent, const std::shared_ptr<main_window::Core> & core);
-
-			/**
-			 * @brief Function: virtual ~CtrlWrapper()
-			 *
-			 * Main window control constructor
-			 */
-			virtual ~CtrlWrapper();
-
-			/**
-			 * @brief Function: void keyReleaseEvent(QKeyEvent * event) override
-			 *
-			 * \param event: event coming from keyboard
-			 *
-			 * This function handles event coming from the keyboard
-			 * Re-implement key released event
-			 */
-			void keyReleaseEvent(QKeyEvent * event) override;
-
-			/**
-			 * @brief Function: void keyPressEvent(QKeyEvent * event) override
-			 *
-			 * \param event: event coming from keyboard
-			 *
-			 * This function handles event coming from the keyboard
-			 * Escape is not triggered in keyPressedEvent
-			 * Re-implement key pressed event
-			 */
-			void keyPressEvent(QKeyEvent * event) override;
-
-		protected:
-
-		private:
-
-			/**
-			 * @brief Main window control
+			 * @brief CtrlWrapper class
 			 *
 			 */
-			std::unique_ptr<main_window::Ctrl> winctrl;
+			class CtrlWrapper final : public QWidget, public app::main_window::window::Base {
+				friend class app::main_window::window::MainWindow;
 
-			/**
-			 * @brief main window tab control
-			 *
-			 */
-			std::unique_ptr<main_window::CtrlTab> tabctrl;
+				public:
 
-			// Move and copy constructor
-			/**
-			 * @brief Disable move and copy constructors and operator= overloading for class CtrlWrapper
-			 *
-			 */
-			DISABLE_COPY_MOVE(CtrlWrapper)
+					/**
+					 * @brief Function: explicit CtrlWrapper(QWidget * parent, const std::shared_ptr<app::main_window::window::Core> & core)
+					 *
+					 * \param core: main window core
+					 * \param parent: parent windget
+					 *
+					 * Main window control constructor
+					 */
+					explicit CtrlWrapper(QWidget * parent, const std::shared_ptr<app::main_window::window::Core> & core);
 
-	};
+					/**
+					 * @brief Function: virtual ~CtrlWrapper()
+					 *
+					 * Main window control constructor
+					 */
+					virtual ~CtrlWrapper();
+
+					/**
+					 * @brief Function: void keyReleaseEvent(QKeyEvent * event) override
+					 *
+					 * \param event: event coming from keyboard
+					 *
+					 * This function handles event coming from the keyboard
+					 * Re-implement key released event
+					 */
+					void keyReleaseEvent(QKeyEvent * event) override;
+
+					/**
+					 * @brief Function: void keyPressEvent(QKeyEvent * event) override
+					 *
+					 * \param event: event coming from keyboard
+					 *
+					 * This function handles event coming from the keyboard
+					 * Escape is not triggered in keyPressedEvent
+					 * Re-implement key pressed event
+					 */
+					void keyPressEvent(QKeyEvent * event) override;
+
+				protected:
+
+				private:
+
+					/**
+					 * @brief Main window control
+					 *
+					 */
+					std::unique_ptr<app::main_window::window::Ctrl> winctrl;
+
+					/**
+					 * @brief main window tab control
+					 *
+					 */
+					std::unique_ptr<app::main_window::window::CtrlTab> tabctrl;
+
+					// Move and copy constructor
+					/**
+					 * @brief Disable move and copy constructors and operator= overloading for class CtrlWrapper
+					 *
+					 */
+					DISABLE_COPY_MOVE(CtrlWrapper)
+
+			};
+
+		}
+
+	}
 
 }
 /** @} */ // End of MainWindowGroup group

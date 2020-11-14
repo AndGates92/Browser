@@ -19,25 +19,25 @@
 
 LOGGING_CONTEXT(commandSuiteOverall, commandSuite.overall, TYPE_LEVEL, INFO_VERBOSITY)
 
-command_suite::CommandSuite::CommandSuite(const std::shared_ptr<base_factory::BaseFactory> & testFactory, const base_suite::BaseSuite::tests_container_t & testList) : base_suite::BaseSuite(testFactory, "Command suite", testList) {
+tester::suite::CommandSuite::CommandSuite(const std::shared_ptr<tester::base::Factory> & testFactory, const tester::base::Suite::tests_container_t & testList) : tester::base::Suite(testFactory, "Command suite", testList) {
 
 }
 
-command_suite::CommandSuite::~CommandSuite() {
+tester::suite::CommandSuite::~CommandSuite() {
 
-	LOG_INFO(logger::info_level_e::ZERO, commandSuiteOverall,  "Command suite destructor");
+	LOG_INFO(app::logger::info_level_e::ZERO, commandSuiteOverall,  "Command suite destructor");
 
 }
 
-void command_suite::CommandSuite::populate() {
+void tester::suite::CommandSuite::populate() {
 	for (const bool & shortcut : { false, true } ) {
-		launch_app::LaunchApp::create<launch_app::LaunchApp>(this->shared_from_this(), shortcut);
-		open_tab::OpenTab::create<open_tab::OpenTab>(this->shared_from_this(), shortcut);
-		find_tab::FindTab::create<find_tab::FindTab>(this->shared_from_this(), shortcut);
-		move_tab::MoveTab::create<move_tab::MoveTab>(this->shared_from_this(), shortcut);
-		reload_tab::ReloadTab::create<reload_tab::ReloadTab>(this->shared_from_this(), shortcut);
-		scroll_tab::ScrollTab::create<scroll_tab::ScrollTab>(this->shared_from_this(), shortcut);
-		history_tab::HistoryTab::create<history_tab::HistoryTab>(this->shared_from_this(), shortcut);
-		open_file::OpenFile::create<open_file::OpenFile>(this->shared_from_this(), shortcut);
+		tester::test::LaunchApp::create<tester::test::LaunchApp>(this->shared_from_this(), shortcut);
+		tester::test::OpenTab::create<tester::test::OpenTab>(this->shared_from_this(), shortcut);
+		tester::test::FindTab::create<tester::test::FindTab>(this->shared_from_this(), shortcut);
+		tester::test::MoveTab::create<tester::test::MoveTab>(this->shared_from_this(), shortcut);
+		tester::test::ReloadTab::create<tester::test::ReloadTab>(this->shared_from_this(), shortcut);
+		tester::test::ScrollTab::create<tester::test::ScrollTab>(this->shared_from_this(), shortcut);
+		tester::test::HistoryTab::create<tester::test::HistoryTab>(this->shared_from_this(), shortcut);
+		tester::test::OpenFile::create<tester::test::OpenFile>(this->shared_from_this(), shortcut);
 	}
 }

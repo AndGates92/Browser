@@ -9,7 +9,7 @@
 #include "common/include/exception_macros.h"
 #include "utility/stl/include/qt_types_to_stl.h"
 
-const std::list<std::string> qt_types_to_stl::qStringListToStdList(const QStringList & qtList) {
+const std::list<std::string> app::utility::qStringListToStdList(const QStringList & qtList) {
 
 	std::list<std::string> stlList = std::list<std::string>();
 
@@ -20,7 +20,7 @@ const std::list<std::string> qt_types_to_stl::qStringListToStdList(const QString
 	return stlList;
 }
 
-const std::map<std::string, std::string> qt_types_to_stl::qMapOfqStringToStdMapofStdStrings(const QMap<QString, QString> & qtMap) {
+const std::map<std::string, std::string> app::utility::qMapOfqStringToStdMapofStdStrings(const QMap<QString, QString> & qtMap) {
 
 	std::map<std::string, std::string> stlMap = std::map<std::string, std::string>();
 

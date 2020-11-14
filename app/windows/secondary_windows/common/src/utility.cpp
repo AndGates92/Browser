@@ -17,33 +17,37 @@
 #include "common/include/global_enums.h"
 #include "windows/secondary_windows/common/include/utility.h"
 
-namespace secondary_window {
+namespace app {
 
-	namespace {
+	namespace secondary_window {
 
-		/**
-		 * @brief margin above the text inside the line edit
-		 *
-		 */
-		static constexpr int topLineEditMargin = 2;
+		namespace {
 
-		/**
-		 * @brief margin underneat the text inside the line edit
-		 *
-		 */
-		static constexpr int bottomLineEditMargin = 2;
+			/**
+			 * @brief margin above the text inside the line edit
+			 *
+			 */
+			static constexpr int topLineEditMargin = 2;
 
-		/**
-		 * @brief margin above the text inside the push button
-		 *
-		 */
-		static constexpr int topButtonMargin = 5;
+			/**
+			 * @brief margin underneat the text inside the line edit
+			 *
+			 */
+			static constexpr int bottomLineEditMargin = 2;
 
-		/**
-		 * @brief margin underneat the text inside the push button
-		 *
-		 */
-		static constexpr int bottomButtonMargin = 5;
+			/**
+			 * @brief margin above the text inside the push button
+			 *
+			 */
+			static constexpr int topButtonMargin = 5;
+
+			/**
+			 * @brief margin underneat the text inside the push button
+			 *
+			 */
+			static constexpr int bottomButtonMargin = 5;
+
+		}
 
 	}
 
@@ -52,13 +56,13 @@ namespace secondary_window {
 // Categories
 LOGGING_CONTEXT(secondaryWindowUtilityOverall, secondaryWindowUtility.overall, TYPE_LEVEL, INFO_VERBOSITY)
 
-std::unique_ptr<QFileSystemModel> secondary_window::createFileModel(QWidget *parent, const QStringList & filters, const QDir & directory) {
+std::unique_ptr<QFileSystemModel> app::secondary_window::createFileModel(QWidget *parent, const QStringList & filters, const QDir & directory) {
 
-	LOG_INFO(logger::info_level_e::ZERO, secondaryWindowUtilityOverall,  "Creating File Model widget object starting with directory " << directory.path());
-	LOG_INFO(logger::info_level_e::ZERO, secondaryWindowUtilityOverall,  "File Model filters: ");
+	LOG_INFO(app::logger::info_level_e::ZERO, secondaryWindowUtilityOverall,  "Creating File Model widget object starting with directory " << directory.path());
+	LOG_INFO(app::logger::info_level_e::ZERO, secondaryWindowUtilityOverall,  "File Model filters: ");
 
 	for (QStringList::const_iterator filterIt = filters.cbegin(); filterIt != filters.cend(); filterIt++) {
-		LOG_INFO(logger::info_level_e::ZERO, secondaryWindowUtilityOverall,  "- " << (*filterIt));
+		LOG_INFO(app::logger::info_level_e::ZERO, secondaryWindowUtilityOverall,  "- " << (*filterIt));
 	}
 
 	std::unique_ptr<QFileSystemModel> model = std::make_unique<QFileSystemModel>(parent);
@@ -75,13 +79,13 @@ std::unique_ptr<QFileSystemModel> secondary_window::createFileModel(QWidget *par
 	return model;
 }
 
-std::unique_ptr<QTreeView> secondary_window::createFileView(std::unique_ptr<QFileSystemModel> & model, QWidget *parent, const QStringList & filters, const QDir & directory) {
+std::unique_ptr<QTreeView> app::secondary_window::createFileView(std::unique_ptr<QFileSystemModel> & model, QWidget *parent, const QStringList & filters, const QDir & directory) {
 
 	if (model == Q_NULLPTR) {
-		model = std::move(secondary_window::createFileModel(parent, filters, directory));
+		model = std::move(app::secondary_window::createFileModel(parent, filters, directory));
 	}
 
-	LOG_INFO(logger::info_level_e::ZERO, secondaryWindowUtilityOverall,  "Creating File View widget object starting with directory " << directory.path());
+	LOG_INFO(app::logger::info_level_e::ZERO, secondaryWindowUtilityOverall,  "Creating File View widget object starting with directory " << directory.path());
 
 	std::unique_ptr<QTreeView> tree = std::make_unique<QTreeView>(parent);
 	tree->setModel(model.get());
@@ -93,16 +97,16 @@ std::unique_ptr<QTreeView> secondary_window::createFileView(std::unique_ptr<QFil
 
 }
 
-std::unique_ptr<action::Action> secondary_window::createAction(QObject * parent, const std::string & text, const std::string & tip, const key_sequence::KeySequence & shortcut) {
+std::unique_ptr<app::action::Action> app::secondary_window::createAction(QObject * parent, const std::string & text, const std::string & tip, const app::key_sequence::KeySequence & shortcut) {
 
-	LOG_INFO(logger::info_level_e::ZERO, secondaryWindowUtilityOverall,  "Creating Action object with text " << text << " tip " << tip << " key " << shortcut.toString());
+	LOG_INFO(app::logger::info_level_e::ZERO, secondaryWindowUtilityOverall,  "Creating Action object with text " << text << " tip " << tip << " key " << shortcut.toString());
 
 	QString actionText = QString();
 	if (text.empty() == false) {
 		actionText = QAction::tr(text.c_str());
 	}
 
-	std::unique_ptr<action::Action> newAction = std::make_unique<action::Action>(parent, actionText);
+	std::unique_ptr<app::action::Action> newAction = std::make_unique<app::action::Action>(parent, actionText);
 	if (tip.empty() == false) {
 		newAction->setStatusTip(QAction::tr(tip.c_str()));
 	}
@@ -111,19 +115,19 @@ std::unique_ptr<action::Action> secondary_window::createAction(QObject * parent,
 	return newAction;
 }
 
-std::shared_ptr<QLineEdit> secondary_window::createLineEdit(QWidget * parent, const std::string & text, const std::unique_ptr<action::Action> & focusAction) {
+std::shared_ptr<QLineEdit> app::secondary_window::createLineEdit(QWidget * parent, const std::string & text, const std::unique_ptr<app::action::Action> & focusAction) {
 
-	LOG_INFO(logger::info_level_e::ZERO, secondaryWindowUtilityOverall,  "Creating Line Edit object with text " << text << " action " << *focusAction);
+	LOG_INFO(app::logger::info_level_e::ZERO, secondaryWindowUtilityOverall,  "Creating Line Edit object with text " << text << " action " << *focusAction);
 
 	std::shared_ptr<QLineEdit> lineEdit = std::make_unique<QLineEdit>(parent);
 	if (text.empty() == false) {
 		lineEdit->setPlaceholderText(QLineEdit::tr(text.c_str()));
 	}
 	lineEdit->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Fixed);
-	lineEdit->setFixedHeight(lineEdit->fontMetrics().height() + secondary_window::topLineEditMargin + secondary_window::bottomLineEditMargin);
+	lineEdit->setFixedHeight(lineEdit->fontMetrics().height() + app::secondary_window::topLineEditMargin + app::secondary_window::bottomLineEditMargin);
 	if (focusAction != nullptr) {
-		lineEdit->addAction(const_cast<action::Action *>(focusAction.get()));
-		QObject::connect(focusAction.get(), &action::Action::triggered, lineEdit.get(), [lineEdit] () {
+		lineEdit->addAction(const_cast<app::action::Action *>(focusAction.get()));
+		QObject::connect(focusAction.get(), &app::action::Action::triggered, lineEdit.get(), [lineEdit] () {
 			lineEdit->setFocus();
 		});
 	}
@@ -131,23 +135,23 @@ std::shared_ptr<QLineEdit> secondary_window::createLineEdit(QWidget * parent, co
 	return lineEdit;
 }
 
-std::unique_ptr<QPushButton> secondary_window::createPushButton(QWidget *parent, const std::unique_ptr<action::Action> & actionPtr) {
+std::unique_ptr<QPushButton> app::secondary_window::createPushButton(QWidget *parent, const std::unique_ptr<app::action::Action> & actionPtr) {
 
 	std::string buttonText(actionPtr->print());
 
-	LOG_INFO(logger::info_level_e::ZERO, secondaryWindowUtilityOverall,  "Creating Push Button object with text " << buttonText << " action " << *actionPtr);
+	LOG_INFO(app::logger::info_level_e::ZERO, secondaryWindowUtilityOverall,  "Creating Push Button object with text " << buttonText << " action " << *actionPtr);
 
 	std::unique_ptr<QPushButton> button = std::make_unique<QPushButton>(QPushButton::tr(buttonText.c_str()), parent);
-	button->addAction(const_cast<action::Action *>(actionPtr.get()));
+	button->addAction(const_cast<app::action::Action *>(actionPtr.get()));
 	button->setSizePolicy(QSizePolicy::Fixed, QSizePolicy::Fixed);
-	button->setFixedHeight(button->fontMetrics().height() + secondary_window::topButtonMargin + secondary_window::bottomButtonMargin);
+	button->setFixedHeight(button->fontMetrics().height() + app::secondary_window::topButtonMargin + app::secondary_window::bottomButtonMargin);
 
 	return button;
 }
 
-std::unique_ptr<QGroupBox> secondary_window::createGroupBox(QWidget *parent, const std::string title) {
+std::unique_ptr<QGroupBox> app::secondary_window::createGroupBox(QWidget *parent, const std::string title) {
 
-	LOG_INFO(logger::info_level_e::ZERO, secondaryWindowUtilityOverall,  "Creating Group Box object with title " << title);
+	LOG_INFO(app::logger::info_level_e::ZERO, secondaryWindowUtilityOverall,  "Creating Group Box object with title " << title);
 
 	std::unique_ptr<QGroupBox> groupBox = std::make_unique<QGroupBox>(QString::fromStdString(title), parent);
 	groupBox->setCheckable(false);
@@ -157,19 +161,19 @@ std::unique_ptr<QGroupBox> secondary_window::createGroupBox(QWidget *parent, con
 	return groupBox;
 }
 
-std::unique_ptr<QCheckBox> secondary_window::createCheckBox(QWidget *parent, const std::unique_ptr<action::Action> & toggleAction) {
+std::unique_ptr<QCheckBox> app::secondary_window::createCheckBox(QWidget *parent, const std::unique_ptr<app::action::Action> & toggleAction) {
 
-	LOG_INFO(logger::info_level_e::ZERO, secondaryWindowUtilityOverall,  "Creating Check Box object" << " action " << *toggleAction);
+	LOG_INFO(app::logger::info_level_e::ZERO, secondaryWindowUtilityOverall,  "Creating Check Box object" << " action " << *toggleAction);
 
 	std::unique_ptr<QCheckBox> checkBox = std::make_unique<QCheckBox>(QString(), parent);
 	checkBox->setCheckState(Qt::Unchecked);
 	checkBox->setTristate(false);
 	if (toggleAction != nullptr) {
 		std::string checkBoxText(toggleAction->print());
-		LOG_INFO(logger::info_level_e::ZERO, secondaryWindowUtilityOverall,  "Setting Check Box text to " << checkBoxText);
+		LOG_INFO(app::logger::info_level_e::ZERO, secondaryWindowUtilityOverall,  "Setting Check Box text to " << checkBoxText);
 		checkBox->setText(QCheckBox::tr(checkBoxText.c_str()));
-		checkBox->addAction(const_cast<action::Action *>(toggleAction.get()));
-		QObject::connect(toggleAction.get(), &action::Action::triggered, checkBox.get(), &QCheckBox::toggle);
+		checkBox->addAction(const_cast<app::action::Action *>(toggleAction.get()));
+		QObject::connect(toggleAction.get(), &app::action::Action::triggered, checkBox.get(), &QCheckBox::toggle);
 	}
 
 	return checkBox;

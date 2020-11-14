@@ -10,33 +10,37 @@
 
 #include <string>
 
-/** @defgroup GlobalClassesGroup Global Classes Doxygen Group
- *  Global Classes
+/** @defgroup CommonGroup Common Macros and Functions Doxygen Group
+ *  Common Macros and Functions
  *  @{
  */
 
-namespace global_classes {
+namespace app {
 
-	/**
-	 * @brief StringCompare struct
-	 *
-	 */
-	struct StringCompare {
-		// Struct sets the default access to public
+	namespace shared {
+
 		/**
-		 * @brief Function: bool operator() (const std::string & rhs, const std::string & lhs) const
+		 * @brief StringCompare struct
 		 *
-		 * \param rhs: string to compare
-		 * \param lhs: string to compare
-		 *
-		 * \return: true if the two strings are identical, false otherwise
-		 *
-		 * This function compares two std::string objects
 		 */
-		bool operator() (const std::string & rhs, const std::string & lhs) const;
-	};
+		struct StringCompare {
+			// Struct sets the default access to public
+			/**
+			 * @brief Function: bool operator() (const std::string & rhs, const std::string & lhs) const
+			 *
+			 * \param rhs: string to compare
+			 * \param lhs: string to compare
+			 *
+			 * \return: true if the two strings are identical, false otherwise
+			 *
+			 * This function compares two std::string objects
+			 */
+			bool operator() (const std::string & rhs, const std::string & lhs) const;
+		};
+
+	}
 
 }
-/** @} */ // End of GlobalClassesGroup group
+/** @} */ // End of CommonGroup group
 
 #endif // GLOBAL_CLASSES_H

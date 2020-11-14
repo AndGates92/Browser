@@ -8,6 +8,6 @@
 
 #include "common/include/global_classes.h"
 
-bool global_classes::StringCompare::operator() (const std::string & rhs, const std::string & lhs) const {
+bool app::shared::StringCompare::operator() (const std::string & rhs, const std::string & lhs) const {
 	return (rhs.compare(lhs) < 0);
 }

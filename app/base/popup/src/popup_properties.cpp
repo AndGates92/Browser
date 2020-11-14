@@ -18,21 +18,21 @@
 // Categories
 LOGGING_CONTEXT(popupPropertiesOverall, popupProperties.overall, TYPE_LEVEL, INFO_VERBOSITY)
 
-popup_properties::PopupProperties::PopupProperties(const bool & center, const int & sidePadding) : centered(center), padding(sidePadding) {
+app::base::popup::PopupProperties::PopupProperties(const bool & center, const int & sidePadding) : centered(center), padding(sidePadding) {
 
-	LOG_INFO(logger::info_level_e::ZERO, popupPropertiesOverall,  "Popup properties constructor");
-
-}
-
-popup_properties::PopupProperties::PopupProperties(const popup_properties::PopupProperties & rhs): centered(rhs.centered), padding(rhs.padding) {
-
-	LOG_INFO(logger::info_level_e::ZERO, popupPropertiesOverall,  "Copy constructor of popup properties");
+	LOG_INFO(app::logger::info_level_e::ZERO, popupPropertiesOverall,  "Popup properties constructor");
 
 }
 
-popup_properties::PopupProperties & popup_properties::PopupProperties::operator=(const popup_properties::PopupProperties & rhs) {
+app::base::popup::PopupProperties::PopupProperties(const app::base::popup::PopupProperties & rhs): centered(rhs.centered), padding(rhs.padding) {
 
-	LOG_INFO(logger::info_level_e::ZERO, popupPropertiesOverall,  "Copy assignment operator of popup properties");
+	LOG_INFO(app::logger::info_level_e::ZERO, popupPropertiesOverall,  "Copy constructor of popup properties");
+
+}
+
+app::base::popup::PopupProperties & app::base::popup::PopupProperties::operator=(const app::base::popup::PopupProperties & rhs) {
+
+	LOG_INFO(app::logger::info_level_e::ZERO, popupPropertiesOverall,  "Copy assignment operator of popup properties");
 
 	// If rhs points to the same address as this, then return this
 	if (&rhs == this) {
@@ -49,14 +49,14 @@ popup_properties::PopupProperties & popup_properties::PopupProperties::operator=
 	return *this;
 }
 
-popup_properties::PopupProperties::PopupProperties(popup_properties::PopupProperties && rhs): centered(std::exchange(rhs.centered, false)), padding(std::exchange(rhs.padding, 0)) {
+app::base::popup::PopupProperties::PopupProperties(app::base::popup::PopupProperties && rhs): centered(std::exchange(rhs.centered, false)), padding(std::exchange(rhs.padding, 0)) {
 
-	LOG_INFO(logger::info_level_e::ZERO, popupPropertiesOverall,  "Move constructor of popup properties");
+	LOG_INFO(app::logger::info_level_e::ZERO, popupPropertiesOverall,  "Move constructor of popup properties");
 }
 
-popup_properties::PopupProperties & popup_properties::PopupProperties::operator=(popup_properties::PopupProperties && rhs) {
+app::base::popup::PopupProperties & app::base::popup::PopupProperties::operator=(app::base::popup::PopupProperties && rhs) {
 
-	LOG_INFO(logger::info_level_e::ZERO, popupPropertiesOverall,  "Move assignment operator of popup properties");
+	LOG_INFO(app::logger::info_level_e::ZERO, popupPropertiesOverall,  "Move assignment operator of popup properties");
 
 	// If rhs points to the same address as this, then return this
 	if (&rhs != this) {
@@ -67,23 +67,23 @@ popup_properties::PopupProperties & popup_properties::PopupProperties::operator=
 	return *this;
 }
 
-popup_properties::PopupProperties::~PopupProperties() {
-	LOG_INFO(logger::info_level_e::ZERO, popupPropertiesOverall,  "Popup properties destructor");
+app::base::popup::PopupProperties::~PopupProperties() {
+	LOG_INFO(app::logger::info_level_e::ZERO, popupPropertiesOverall,  "Popup properties destructor");
 }
 
-bool popup_properties::PopupProperties::isCentered() const {
+bool app::base::popup::PopupProperties::isCentered() const {
 	return this->centered;
 }
 
-int popup_properties::PopupProperties::getPadding() const {
+int app::base::popup::PopupProperties::getPadding() const {
 	return this->padding;
 }
 
-void popup_properties::PopupProperties::setPadding(const int & sidePadding) {
+void app::base::popup::PopupProperties::setPadding(const int & sidePadding) {
 	this->padding = sidePadding;
 }
 
-void popup_properties::PopupProperties::setCentered(const bool & center) {
+void app::base::popup::PopupProperties::setCentered(const bool & center) {
 	this->centered = center;
 }
 

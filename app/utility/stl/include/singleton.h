@@ -14,57 +14,61 @@
  *  Singleton functions and classes
  *  @{
  */
-namespace singleton {
+namespace app {
 
-	/**
-	 * @brief Singleton class
-	 *
-	 */
-	template<typename derivedType>
-	class Singleton {
+	namespace utility {
 
-		public:
-			/**
-			 * @brief Function: static derivedType * getInstance()
-			 *
-			 * This function run tasks that follows the object creation
-			 */
-			static derivedType * getInstance();
+		/**
+		 * @brief Singleton class
+		 *
+		 */
+		template<typename derivedType>
+		class Singleton {
 
-			/**
-			 * @brief Function: virtual ~Singleton()
-			 *
-			 * Singleton destructor
-			 */
-			virtual ~Singleton();
+			public:
+				/**
+				 * @brief Function: static derivedType * getInstance()
+				 *
+				 * This function run tasks that follows the object creation
+				 */
+				static derivedType * getInstance();
 
-		protected:
+				/**
+				 * @brief Function: virtual ~Singleton()
+				 *
+				 * Singleton destructor
+				 */
+				virtual ~Singleton();
 
-			/**
-			 * @brief Function: explicit Singleton()
-			 *
-			 * Singleton constructor
-			 */
-			explicit Singleton();
+			protected:
 
-		private:
+				/**
+				 * @brief Function: explicit Singleton()
+				 *
+				 * Singleton constructor
+				 */
+				explicit Singleton();
 
-			/**
-			 * @brief singleton instance
-			 *
-			 */
-			static derivedType * instance;
+			private:
 
-	};
+				/**
+				 * @brief singleton instance
+				 *
+				 */
+				static derivedType * instance;
+
+		};
+
+	}
 
 }
 /** @} */ // End of SingletonGroup group
 
 template<typename derivedType>
-derivedType * singleton::Singleton<derivedType>::instance = nullptr;
+derivedType * app::utility::Singleton<derivedType>::instance = nullptr;
 
 template<typename derivedType>
-derivedType * singleton::Singleton<derivedType>::getInstance() {
+derivedType * app::utility::Singleton<derivedType>::getInstance() {
 	if (instance == nullptr) {
 		instance = new derivedType();
 	}
@@ -73,12 +77,12 @@ derivedType * singleton::Singleton<derivedType>::getInstance() {
 }
 
 template<typename derivedType>
-singleton::Singleton<derivedType>::Singleton() {
+app::utility::Singleton<derivedType>::Singleton() {
 
 }
 
 template<typename derivedType>
-singleton::Singleton<derivedType>::~Singleton() {
+app::utility::Singleton<derivedType>::~Singleton() {
 
 }
 

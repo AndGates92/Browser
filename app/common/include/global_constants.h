@@ -10,32 +10,36 @@
 
 #include <QtCore/QString>
 
-/** @defgroup GlobalConstantsGroup Global Constants Doxygen Group
- *  Global Constants
+/** @defgroup CommonGroup Common Macros and Functions Doxygen Group
+ *  Common Macros and Functions
  *  @{
  */
-namespace global_constants {
+namespace app {
 
-	/**
-	 * @brief QModifier mask
-	 *
-	 */
-	constexpr int qmodifierMask = (int)Qt::NoModifier | (int)Qt::ShiftModifier | (int)Qt::ControlModifier | (int)Qt::AltModifier | (int)Qt::MetaModifier | (int)Qt::KeypadModifier | (int)Qt::GroupSwitchModifier;
+	namespace shared {
 
-	/**
-	 * @brief https string
-	 *
-	 */
-	const QString https("https://");
+		/**
+		 * @brief QModifier mask
+		 *
+		 */
+		constexpr int qmodifierMask = (int)Qt::NoModifier | (int)Qt::ShiftModifier | (int)Qt::ControlModifier | (int)Qt::AltModifier | (int)Qt::MetaModifier | (int)Qt::KeypadModifier | (int)Qt::GroupSwitchModifier;
 
-	/**
-	 * @brief www string
-	 *
-	 */
-	const QString www("www.");
+		/**
+		 * @brief https string
+		 *
+		 */
+		const QString https("https://");
+
+		/**
+		 * @brief www string
+		 *
+		 */
+		const QString www("www.");
+
+	}
 
 }
 
-/** @} */ // End of GlobalConstantsGroup group
+/** @} */ // End of CommonGroup group
 
 #endif // GLOBAL_CONSTANTS_H

@@ -12,37 +12,57 @@
 #include "common/include/exception_macros.h"
 #include "settings/include/command_line_argument.h"
 
+namespace app {
+
+	namespace command_line {
+
+		namespace argument {
+
+			namespace {
+				/**
+				 * @brief default action parameters which are the keys of the JSON file
+				 *
+				 */
+				static const std::vector<std::string> keyNames{"Key", "Name", "ShortCmd", "LongCmd", "DefaultValue", "NumberArguments", "Help"};
+			}
+
+		}
+
+	}
+
+}
+
 // Categories
 LOGGING_CONTEXT(commandLineArgumentOverall, commandLineArgument.overall, TYPE_LEVEL, INFO_VERBOSITY)
 
-std::shared_ptr<command_line::CommandLineArgument> command_line::CommandLineArgument::makeJsonData(const std::string & jsonKey, const std::string & nameKeyValue, const std::string & shortCmdKeyValue, const std::string & longCmdKeyValue, const std::string & defaultValueKeyValue, const int & numberOfArgumentsKeyValue, const std::string & helpKeyValue) {
-	std::shared_ptr<command_line::CommandLineArgument> newData = std::make_shared<command_line::CommandLineArgument>(jsonKey, nameKeyValue, shortCmdKeyValue, longCmdKeyValue, defaultValueKeyValue, numberOfArgumentsKeyValue, helpKeyValue);
-	LOG_INFO(logger::info_level_e::ZERO, commandLineArgumentOverall,  "Creating JSON data: " << *newData);
+std::shared_ptr<app::command_line::Argument> app::command_line::Argument::makeArgument(const std::string & jsonKey, const std::string & nameKeyValue, const std::string & shortCmdKeyValue, const std::string & longCmdKeyValue, const std::string & defaultValueKeyValue, const int & numberOfArgumentsKeyValue, const std::string & helpKeyValue) {
+	std::shared_ptr<app::command_line::Argument> newData = std::make_shared<app::command_line::Argument>(jsonKey, nameKeyValue, shortCmdKeyValue, longCmdKeyValue, defaultValueKeyValue, numberOfArgumentsKeyValue, helpKeyValue);
+	LOG_INFO(app::logger::info_level_e::ZERO, commandLineArgumentOverall,  "Creating JSON data: " << *newData);
 	return newData;
 }
 
-command_line::CommandLineArgument::CommandLineArgument(const std::string & jsonKey, const std::string & nameKeyValue, const std::string & shortCmdKeyValue, const std::string & longCmdKeyValue, const std::string & defaultValueKeyValue, const int & numberOfArgumentsKeyValue, const std::string & helpKeyValue) : json::JsonData(command_line::CommandLineArgument::parameter_t(command_line::keyNames.cbegin(), command_line::keyNames.cend())), key(jsonKey), name(nameKeyValue), shortCmd(shortCmdKeyValue), longCmd(longCmdKeyValue), defaultValue(defaultValueKeyValue), numberOfArguments(numberOfArgumentsKeyValue), help(helpKeyValue) {
+app::command_line::Argument::Argument(const std::string & jsonKey, const std::string & nameKeyValue, const std::string & shortCmdKeyValue, const std::string & longCmdKeyValue, const std::string & defaultValueKeyValue, const int & numberOfArgumentsKeyValue, const std::string & helpKeyValue) : app::base::json::Data(app::command_line::Argument::parameter_t(app::command_line::argument::keyNames.cbegin(), app::command_line::argument::keyNames.cend())), key(jsonKey), name(nameKeyValue), shortCmd(shortCmdKeyValue), longCmd(longCmdKeyValue), defaultValue(defaultValueKeyValue), numberOfArguments(numberOfArgumentsKeyValue), help(helpKeyValue) {
 
-	LOG_INFO(logger::info_level_e::ZERO, commandLineArgumentOverall,  "Main window JSON Data constructor. Data " << *this);
-
-}
-
-command_line::CommandLineArgument::CommandLineArgument(const command_line::CommandLineArgument & rhs) : json::JsonData(rhs), key(rhs.key), name(rhs.name), shortCmd(rhs.shortCmd), longCmd(rhs.longCmd), defaultValue(rhs.defaultValue), numberOfArguments(rhs.numberOfArguments), help(rhs.help) {
-
-	LOG_INFO(logger::info_level_e::ZERO, commandLineArgumentOverall,  "Copy constructor main window JSON data");
+	LOG_INFO(app::logger::info_level_e::ZERO, commandLineArgumentOverall,  "Main window JSON Data constructor. Data " << *this);
 
 }
 
-command_line::CommandLineArgument & command_line::CommandLineArgument::operator=(const command_line::CommandLineArgument & rhs) {
+app::command_line::Argument::Argument(const app::command_line::Argument & rhs) : app::base::json::Data(rhs), key(rhs.key), name(rhs.name), shortCmd(rhs.shortCmd), longCmd(rhs.longCmd), defaultValue(rhs.defaultValue), numberOfArguments(rhs.numberOfArguments), help(rhs.help) {
 
-	LOG_INFO(logger::info_level_e::ZERO, commandLineArgumentOverall,  "Copy assignment operator for main window JSON data");
+	LOG_INFO(app::logger::info_level_e::ZERO, commandLineArgumentOverall,  "Copy constructor main window JSON data");
+
+}
+
+app::command_line::Argument & app::command_line::Argument::operator=(const app::command_line::Argument & rhs) {
+
+	LOG_INFO(app::logger::info_level_e::ZERO, commandLineArgumentOverall,  "Copy assignment operator for main window JSON data");
 
 	// If rhs points to the same address as this, then return this
 	if (&rhs == this) {
 		return *this;
 	}
 
-	json::JsonData::operator=(rhs);
+	app::base::json::Data::operator=(rhs);
 
 	if (this->key.compare(rhs.key) != 0) {
 		this->key = rhs.key;
@@ -70,18 +90,18 @@ command_line::CommandLineArgument & command_line::CommandLineArgument::operator=
 
 }
 
-command_line::CommandLineArgument::CommandLineArgument(command_line::CommandLineArgument && rhs) : json::JsonData(std::move(rhs)), key(std::exchange(rhs.key, std::string())), name(std::exchange(rhs.name, std::string())), shortCmd(std::exchange(rhs.shortCmd, std::string())), longCmd(std::exchange(rhs.longCmd, std::string())), defaultValue(std::exchange(rhs.defaultValue, std::string())), numberOfArguments(std::exchange(rhs.numberOfArguments, -1)), help(std::exchange(rhs.help, std::string())) {
+app::command_line::Argument::Argument(app::command_line::Argument && rhs) : app::base::json::Data(std::move(rhs)), key(std::exchange(rhs.key, std::string())), name(std::exchange(rhs.name, std::string())), shortCmd(std::exchange(rhs.shortCmd, std::string())), longCmd(std::exchange(rhs.longCmd, std::string())), defaultValue(std::exchange(rhs.defaultValue, std::string())), numberOfArguments(std::exchange(rhs.numberOfArguments, -1)), help(std::exchange(rhs.help, std::string())) {
 
-	LOG_INFO(logger::info_level_e::ZERO, commandLineArgumentOverall,  "Move constructor main window JSON data");
+	LOG_INFO(app::logger::info_level_e::ZERO, commandLineArgumentOverall,  "Move constructor main window JSON data");
 }
 
-command_line::CommandLineArgument & command_line::CommandLineArgument::operator=(command_line::CommandLineArgument && rhs) {
+app::command_line::Argument & app::command_line::Argument::operator=(app::command_line::Argument && rhs) {
 
-	LOG_INFO(logger::info_level_e::ZERO, commandLineArgumentOverall,  "Move assignment operator for main window JSON data");
+	LOG_INFO(app::logger::info_level_e::ZERO, commandLineArgumentOverall,  "Move assignment operator for main window JSON data");
 
 	// If rhs points to the same address as this, then return this
 	if (&rhs != this) {
-		json::JsonData::operator=(std::move(rhs));
+		app::base::json::Data::operator=(std::move(rhs));
 		this->key = std::exchange(rhs.key, std::string());
 		this->name = std::exchange(rhs.name, std::string());
 		this->shortCmd = std::exchange(rhs.shortCmd, std::string());
@@ -94,17 +114,17 @@ command_line::CommandLineArgument & command_line::CommandLineArgument::operator=
 	return *this;
 }
 
-command_line::CommandLineArgument::~CommandLineArgument() {
+app::command_line::Argument::~Argument() {
 
-	LOG_INFO(logger::info_level_e::ZERO, commandLineArgumentOverall,  "JSON Data structure destructor. Data " << *this);
+	LOG_INFO(app::logger::info_level_e::ZERO, commandLineArgumentOverall,  "JSON Data structure destructor. Data " << *this);
 
 }
 
-const std::string command_line::CommandLineArgument::print() const {
+const std::string app::command_line::Argument::print() const {
 	std::string structInfo;
 
 	structInfo = "\n";
-	structInfo = structInfo + json::JsonData::print();
+	structInfo = structInfo + app::base::json::Data::print();
 	structInfo = structInfo + "- key in the JSON file: " + this->key + "\n";
 	structInfo = structInfo + "- name of the action: " + this->name + "\n";
 	structInfo = structInfo + "- short command of the action: " + this->shortCmd + "\n";
@@ -116,16 +136,16 @@ const std::string command_line::CommandLineArgument::print() const {
 	return structInfo;
 }
 
-CONST_GETTER(command_line::CommandLineArgument::getKey, std::string &, this->key)
-CONST_GETTER(command_line::CommandLineArgument::getName, std::string &, this->name)
-CONST_GETTER(command_line::CommandLineArgument::getShortCmd, std::string &, this->shortCmd)
-CONST_GETTER(command_line::CommandLineArgument::getLongCmd, std::string &, this->longCmd)
-CONST_GETTER(command_line::CommandLineArgument::getDefaultValue, std::string &, this->defaultValue)
-CONST_GETTER(command_line::CommandLineArgument::getNumberOfArguments, int &, this->numberOfArguments)
-CONST_GETTER(command_line::CommandLineArgument::getHelp, std::string &, this->help)
+CONST_GETTER(app::command_line::Argument::getKey, std::string &, this->key)
+CONST_GETTER(app::command_line::Argument::getName, std::string &, this->name)
+CONST_GETTER(app::command_line::Argument::getShortCmd, std::string &, this->shortCmd)
+CONST_GETTER(app::command_line::Argument::getLongCmd, std::string &, this->longCmd)
+CONST_GETTER(app::command_line::Argument::getDefaultValue, std::string &, this->defaultValue)
+CONST_GETTER(app::command_line::Argument::getNumberOfArguments, int &, this->numberOfArguments)
+CONST_GETTER(app::command_line::Argument::getHelp, std::string &, this->help)
 
-void command_line::CommandLineArgument::setValueFromMemberName(const std::string & name, const void * value) {
-	EXCEPTION_ACTION_COND((this->getParameters().find(name) == this->getParameters().end()), throw, "Parameter " << name << " has not been found among the action parameters. In order to add it, please call void command_line::CommandLineArgument::addParameter(const std::string & name)");
+void app::command_line::Argument::setValueFromMemberName(const std::string & name, const void * value) {
+	EXCEPTION_ACTION_COND((this->getParameters().find(name) == this->getParameters().end()), throw, "Parameter " << name << " has not been found among the action parameters. In order to add it, please call void app::command_line::Argument::addParameter(const std::string & name)");
 
 	if (name.compare("Key") == 0) {
 		const std::string * const strPtr(static_cast<const std::string *>(value));
@@ -153,8 +173,8 @@ void command_line::CommandLineArgument::setValueFromMemberName(const std::string
 	}
 }
 
-const void * command_line::CommandLineArgument::getValueFromMemberName(const std::string & name) const {
-	EXCEPTION_ACTION_COND((this->getParameters().find(name) == this->getParameters().cend()), throw, "Parameter " << name << " has not been found among the action parameters. In order to add it, please call void command_line::CommandLineArgument::addParameter(const std::string & name)");
+const void * app::command_line::Argument::getValueFromMemberName(const std::string & name) const {
+	EXCEPTION_ACTION_COND((this->getParameters().find(name) == this->getParameters().cend()), throw, "Parameter " << name << " has not been found among the action parameters. In order to add it, please call void app::command_line::Argument::addParameter(const std::string & name)");
 
 	const void * value = nullptr;
 
@@ -179,8 +199,8 @@ const void * command_line::CommandLineArgument::getValueFromMemberName(const std
 	return value;
 }
 
-bool command_line::CommandLineArgument::isSameFieldValue(const std::string & name, const void * value) const {
-	EXCEPTION_ACTION_COND((this->getParameters().find(name) == this->getParameters().cend()), throw, "Parameter " << name << " has not been found among the action parameters. In order to add it, please call void command_line::CommandLineArgument::addParameter(const std::string & name)");
+bool app::command_line::Argument::isSameFieldValue(const std::string & name, const void * value) const {
+	EXCEPTION_ACTION_COND((this->getParameters().find(name) == this->getParameters().cend()), throw, "Parameter " << name << " has not been found among the action parameters. In order to add it, please call void app::command_line::Argument::addParameter(const std::string & name)");
 
 	bool isSame = false;
 
@@ -212,9 +232,9 @@ bool command_line::CommandLineArgument::isSameFieldValue(const std::string & nam
 	return isSame;
 }
 
-bool command_line::CommandLineArgument::operator==(const command_line::CommandLineArgument & rhs) {
+bool app::command_line::Argument::operator==(const app::command_line::Argument & rhs) {
 	bool isSame = true;
-	isSame &= this->json::JsonData::operator==(rhs);
+	isSame &= app::base::json::Data::operator==(rhs);
 	isSame &= (this->key.compare(rhs.key) == 0);
 	isSame &= (this->name.compare(rhs.name) == 0);
 	isSame &= (this->shortCmd.compare(rhs.shortCmd) == 0);
@@ -226,7 +246,7 @@ bool command_line::CommandLineArgument::operator==(const command_line::CommandLi
 	return isSame;
 }
 
-bool command_line::CommandLineArgument::operator!=(const command_line::CommandLineArgument & rhs) {
+bool app::command_line::Argument::operator!=(const app::command_line::Argument & rhs) {
 	bool isSame = (*this == rhs);
 	return !isSame;
 }

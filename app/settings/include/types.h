@@ -15,16 +15,19 @@
  *  Colland line functions and classes
  *  @{
  */
+namespace app {
 
-namespace command_line {
+	namespace command_line {
 
-	/**
-	 * @brief argument map type
-	 *
-	 */
-	using argument_map_t = std::map<std::string, std::string>;
+		/**
+		 * @brief argument map type
+		 *
+		 */
+		using argument_map_t = std::map<std::string, std::string>;
+
+	}
 
 }
-/** @} */ // End of CommandLineGroup group
+/** @} */ // End of Group group
 
 #endif // COMMAND_LINE_TYPES_H

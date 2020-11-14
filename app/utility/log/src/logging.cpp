@@ -56,32 +56,36 @@
 	#define QT_LOGFILE browser.qt.log
 #endif
 
-namespace logging {
+namespace app {
 
-	namespace {
-		/**
-		 * @brief Global variable logfile
-		 *
-		 */
-		QFile logfile(QT_STRINGIFY(QT_LOGFILE));
+	namespace logging {
 
-		/**
-		 * @brief mutex to handle concurrent access to logfile
-		 *
-		 */
-		std::mutex logfile_mutex;
+		namespace {
+			/**
+			 * @brief Global variable logfile
+			 *
+			 */
+			QFile logfile(QT_STRINGIFY(QT_LOGFILE));
+
+			/**
+			 * @brief mutex to handle concurrent access to logfile
+			 *
+			 */
+			std::mutex logfile_mutex;
+		}
+
 	}
 
 }
 
-void logging::handler(QtMsgType type, const QMessageLogContext & context, const QString & message) {
+void app::logging::handler(QtMsgType type, const QMessageLogContext & context, const QString & message) {
 
 	logfile_mutex.lock();
 
 	QString info_str("");
 
 	info_str.append("[");
-	info_str.append(logging_functions::getDateTime());
+	info_str.append(app::shared::getDateTime());
 	info_str.append("] ");
 
 	switch(type) {
@@ -142,7 +146,7 @@ void logging::handler(QtMsgType type, const QMessageLogContext & context, const 
 
 }
 
-void logging::set_default_category() {
+void app::logging::set_default_category() {
 	QLoggingCategory * defaultMsgCategory = QLoggingCategory::defaultCategory();
 
 	// Fatal cannot be disabled therefore not trying to enable it here

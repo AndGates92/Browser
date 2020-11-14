@@ -23,33 +23,41 @@ LOGGING_CONTEXT(findButtonWindowOverall, findButtonWindow.overall, TYPE_LEVEL, I
 LOGGING_CONTEXT(findButtonWindowCancel, findButtonWindow.cancel_button, TYPE_LEVEL, INFO_VERBOSITY)
 LOGGING_CONTEXT(findButtonWindowFind, findButtonWindow.find, TYPE_LEVEL, INFO_VERBOSITY)
 
-namespace find_window {
+namespace app {
 
-	namespace {
-		/**
-		 * @brief default layout stretch
-		 *
-		 */
-		static constexpr int defaultStretch = 0;
+	namespace find_window {
 
-		/**
-		 * @brief vertical spacing between widgets
-		 *
-		 */
-		static constexpr int widgetVSpacing = 10;
+		namespace window {
 
-		/**
-		 * @brief horizontal spacing between widgets
-		 *
-		 */
-		static constexpr int widgetHSpacing = 10;
+			namespace {
+				/**
+				 * @brief default layout stretch
+				 *
+				 */
+				static constexpr int defaultStretch = 0;
+
+				/**
+				 * @brief vertical spacing between widgets
+				 *
+				 */
+				static constexpr int widgetVSpacing = 10;
+
+				/**
+				 * @brief horizontal spacing between widgets
+				 *
+				 */
+				static constexpr int widgetHSpacing = 10;
+			}
+
+		}
+
 	}
 
 }
 
-find_window::Window::Window(QWidget * parent, Qt::WindowFlags flags) : QWidget(parent, flags) {
+app::find_window::Window::Window(QWidget * parent, Qt::WindowFlags flags) : QWidget(parent, flags) {
 
-	LOG_INFO(logger::info_level_e::ZERO, findButtonWindowOverall,  "Creating find button window");
+	LOG_INFO(app::logger::info_level_e::ZERO, findButtonWindowOverall,  "Creating find button window");
 
 	// Set modal because no other windows should be active
 	this->setWindowModality(Qt::ApplicationModal);
@@ -73,12 +81,12 @@ find_window::Window::Window(QWidget * parent, Qt::WindowFlags flags) : QWidget(p
 	this->setFixedHeight(this->sizeHint().height());
 }
 
-find_window::Window::~Window() {
-	LOG_INFO(logger::info_level_e::ZERO, findButtonWindowOverall,  "Destructor of Window class");
+app::find_window::Window::~Window() {
+	LOG_INFO(app::logger::info_level_e::ZERO, findButtonWindowOverall,  "Destructor of Window class");
 }
 
-void find_window::Window::cancel() {
-	LOG_INFO(logger::info_level_e::ZERO, findButtonWindowCancel,  "Closing dialog as Cancel button has been clicked");
+void app::find_window::Window::cancel() {
+	LOG_INFO(app::logger::info_level_e::ZERO, findButtonWindowCancel,  "Closing dialog as Cancel button has been clicked");
 	if (this->textToFind->hasFocus() == true) {
 		this->setFocus();
 	} else {
@@ -86,25 +94,25 @@ void find_window::Window::cancel() {
 	}
 }
 
-void find_window::Window::close() {
+void app::find_window::Window::close() {
 	QWidget::close();
 }
 
-void find_window::Window::apply() {
+void app::find_window::Window::apply() {
 
 	const QString & textToFind = this->textToFind->text();
-	const global_enums::offset_type_e direction = this->settingsBox->getSearchDirection();
+	const app::shared::offset_type_e direction = this->settingsBox->getSearchDirection();
 	const bool & caseSensitive = this->settingsBox->isCaseSensitiveSearch();
 	const bool & matchFullWord = this->settingsBox->isMatchFullWordSearch();
 
-	const find_settings::FindSettings settings(textToFind, direction, caseSensitive, matchFullWord);
-	LOG_INFO(logger::info_level_e::ZERO, findButtonWindowFind,  "Settings:" << settings);
+	const app::windows::shared::FindSettings settings(textToFind, direction, caseSensitive, matchFullWord);
+	LOG_INFO(app::logger::info_level_e::ZERO, findButtonWindowFind,  "Settings:" << settings);
 
 	emit find(settings);
 
 }
 
-void find_window::Window::windowLayout() {
+void app::find_window::Window::windowLayout() {
 
 	// Layout
 	// -------------------------------------------------
@@ -118,7 +126,7 @@ void find_window::Window::windowLayout() {
 	if (this->layout() == Q_NULLPTR) {
 		QVBoxLayout * layout = new QVBoxLayout(this);
 //		layout->setSizeConstraint(QLayout::SetFixedSize);
-		layout->setSpacing(find_window::widgetVSpacing);
+		layout->setSpacing(app::find_window::window::widgetVSpacing);
 		this->setLayout(layout);
 	}
 
@@ -144,14 +152,14 @@ void find_window::Window::windowLayout() {
 
 		QHBoxLayout * lastRow = new QHBoxLayout(this);
 		// find button
-		lastRow->addWidget(this->findButton.get(), find_window::defaultStretch, Qt::AlignLeft);
-		lastRow->addSpacing(find_window::widgetHSpacing);
+		lastRow->addWidget(this->findButton.get(), app::find_window::window::defaultStretch, Qt::AlignLeft);
+		lastRow->addSpacing(app::find_window::window::widgetHSpacing);
 		// cancel button
-		lastRow->addWidget(this->cancelButton.get(), find_window::defaultStretch, Qt::AlignRight);
+		lastRow->addWidget(this->cancelButton.get(), app::find_window::window::defaultStretch, Qt::AlignRight);
 
 		// Add layouts to main layout
-		layout->addWidget(this->textToFind.get(), find_window::defaultStretch);
-		layout->addWidget(this->settingsBox.get(), find_window::defaultStretch);
+		layout->addWidget(this->textToFind.get(), app::find_window::window::defaultStretch);
+		layout->addWidget(this->settingsBox.get(), app::find_window::window::defaultStretch);
 		layout->addLayout(lastRow);
 
 	} catch (const std::bad_cast & badCastE) {
@@ -159,36 +167,36 @@ void find_window::Window::windowLayout() {
 	}
 }
 
-void find_window::Window::createActions() {
+void app::find_window::Window::createActions() {
 
-	this->findAction = std::move(secondary_window::createAction(this, "Find", "Find text in the current page", key_sequence::KeySequence(Qt::Key_F)));
-	this->cancelAction = std::move(secondary_window::createAction(this, "Cancel", "Cancel operation", key_sequence::KeySequence(Qt::Key_Escape)));
-	this->typeAction = std::move(secondary_window::createAction(this, "Insert", "Insert", key_sequence::KeySequence(Qt::Key_I)));
+	this->findAction = std::move(app::secondary_window::createAction(this, "Find", "Find text in the current page", app::key_sequence::KeySequence(Qt::Key_F)));
+	this->cancelAction = std::move(app::secondary_window::createAction(this, "Cancel", "Cancel operation", app::key_sequence::KeySequence(Qt::Key_Escape)));
+	this->typeAction = std::move(app::secondary_window::createAction(this, "Insert", "Insert", app::key_sequence::KeySequence(Qt::Key_I)));
 
 }
 
-void find_window::Window::fillWindow() {
+void app::find_window::Window::fillWindow() {
 
-	this->textToFind = secondary_window::createLineEdit(this, "<text to search>", this->typeAction);
+	this->textToFind = app::secondary_window::createLineEdit(this, "<text to search>", this->typeAction);
 	this->textToFind->setText(QString());
 
-	this->findButton = std::move(secondary_window::createPushButton(this, this->findAction));
-	this->cancelButton = std::move(secondary_window::createPushButton(this, this->cancelAction));
+	this->findButton = std::move(app::secondary_window::createPushButton(this, this->findAction));
+	this->cancelButton = std::move(app::secondary_window::createPushButton(this, this->cancelAction));
 
-	this->settingsBox = std::make_unique<find_window::WindowSettings>(this);
+	this->settingsBox = std::make_unique<app::find_window::Settings>(this);
 
 }
 
-void find_window::Window::connectSignals() {
-	LOG_INFO(logger::info_level_e::ZERO, findButtonWindowOverall,  "Connect signals");
+void app::find_window::Window::connectSignals() {
+	LOG_INFO(app::logger::info_level_e::ZERO, findButtonWindowOverall,  "Connect signals");
 
-	connect(this->findAction.get(), &action::Action::triggered, this, &find_window::Window::apply);
-	connect(this->findButton.get(), &QPushButton::pressed, this, &find_window::Window::apply);
-	connect(this->cancelAction.get(), &action::Action::triggered, this, &find_window::Window::cancel);
-	connect(this->cancelButton.get(), &QPushButton::pressed, this, &find_window::Window::cancel);
+	connect(this->findAction.get(), &app::action::Action::triggered, this, &app::find_window::Window::apply);
+	connect(this->findButton.get(), &QPushButton::pressed, this, &app::find_window::Window::apply);
+	connect(this->cancelAction.get(), &app::action::Action::triggered, this, &app::find_window::Window::cancel);
+	connect(this->cancelButton.get(), &QPushButton::pressed, this, &app::find_window::Window::cancel);
 }
 
-QSize find_window::Window::sizeHint() const {
+QSize app::find_window::Window::sizeHint() const {
 
 	int width = 0;
 
@@ -200,7 +208,7 @@ QSize find_window::Window::sizeHint() const {
 	}
 
 	// Adding 4 times the vertical spacing to account for spacing between widgets and top and bottom margins as well as space between 2 rows of widgets
-	int height = this->textToFind->height() + this->settingsBox->height() + this->findButton->height() + 4 * find_window::widgetVSpacing;
+	int height = this->textToFind->height() + this->settingsBox->height() + this->findButton->height() + 4 * app::find_window::window::widgetVSpacing;
 
 	return QSize(width,height);
 }

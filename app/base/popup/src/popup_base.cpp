@@ -17,21 +17,21 @@
 // Categories
 LOGGING_CONTEXT(popupBaseOverall, PopupBase.overall, TYPE_LEVEL, INFO_VERBOSITY)
 
-popup_base::PopupBase::PopupBase(QWidget * parent, const bool & centerWidget, const int & widgetPadding, Qt::WindowFlags flags) : QWidget(parent, flags), popup_properties::PopupProperties(centerWidget, widgetPadding) {
+app::base::popup::PopupBase::PopupBase(QWidget * parent, const bool & centerWidget, const int & widgetPadding, Qt::WindowFlags flags) : QWidget(parent, flags), app::base::popup::PopupProperties(centerWidget, widgetPadding) {
 
-	LOG_INFO(logger::info_level_e::ZERO, popupBaseOverall,  "Popup base constructor");
-
-}
-
-popup_base::PopupBase::~PopupBase() {
-	LOG_INFO(logger::info_level_e::ZERO, popupBaseOverall,  "Popup base destructor");
+	LOG_INFO(app::logger::info_level_e::ZERO, popupBaseOverall,  "Popup base constructor");
 
 }
 
-std::unique_ptr<QLabel> popup_base::PopupBase::actionToLabel(QWidget * parent, const std::unique_ptr<action::Action> & action) const {
+app::base::popup::PopupBase::~PopupBase() {
+	LOG_INFO(app::logger::info_level_e::ZERO, popupBaseOverall,  "Popup base destructor");
+
+}
+
+std::unique_ptr<QLabel> app::base::popup::PopupBase::actionToLabel(QWidget * parent, const std::unique_ptr<app::action::Action> & action) const {
 	std::unique_ptr<QLabel> label = std::make_unique<QLabel>(parent);
 
-	key_sequence::KeySequence actionKey(action->shortcut());
+	app::key_sequence::KeySequence actionKey(action->shortcut());
 	QString actionText(action->text());
 
 	QString labelText = QString();

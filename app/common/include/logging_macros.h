@@ -12,8 +12,8 @@
 #include "common/include/global_enums.h"
 #include "utility/logger/include/logger.h"
 
-/** @defgroup LoggingMacrosGroup Logging Macros Doxygen Group
- *  Logging Macros
+/** @defgroup CommonGroup Common Macros and Functions Doxygen Group
+ *  Common Macros and Functions
  *  @{
  */
 
@@ -57,7 +57,7 @@
  * Print a message to the log file if the chosen verbosity is less or equal to the default verbosity
  */
 #define QINFO_PRINT(VERBOSITY, CATEGORY, ...)\
-	if (VERBOSITY <= global_enums::qinfo_level_e::QINFO_VERBOSITY) { \
+	if (VERBOSITY <= app::shared::qinfo_level_e::QINFO_VERBOSITY) { \
 		QDebug infoMsg(qInfo(CATEGORY)); \
 		infoMsg.noquote(); \
 		infoMsg.nospace(); \
@@ -105,6 +105,6 @@
 #define QFATAL_PRINT(MSG) \
 	qFatal(MSG);
 
-/** @} */ // End of LoggingMacrosGroup group
+/** @} */ // End of CommonGroup group
 
 #endif // LOGGING_MACROS_H

@@ -15,53 +15,57 @@
 #include "utility/logger/include/macros.h"
 #include "common/include/exception_macros.h"
 
-/** @defgroup GlobalFunctionsGroup Global Functions Doxygen Group
- *  Global Functions
+/** @defgroup CommonGroup Common Macros and Functions Doxygen Group
+ *  Common Macros and Functions
  *  @{
  */
 
-namespace global_functions {
+namespace app {
 
-	/**
-	 * @brief Function: void moveListElements(std::list<type> & l, cons int & from, const int & to)
-	 *
-	 * \param l: list whose elements are to be moved
-	 * \param from: position where the element to move is
-	 * \param to: position where the element has to be moved
-	 *
-	 * This function moves an element of the list l from position from to position to
-	 */
-	template<typename type>
-	void moveListElements(std::list<type> & l, const int & from, const int & to);
+	namespace shared {
 
-	/**
-	 * @brief Function: std::vector<std::string> splitStringByDelimiter(const std::string & str, const std::string & delim)
-	 *
-	 * \param str: string to be split
-	 * \param delim: delimiter
-	 *
-	 * \return: vector of sub-string containing the splits
-	 *
-	 * This function splits the string in multiple sub-strings
-	 */
-	std::vector<std::string> splitStringByDelimiter(const std::string & str, const std::string & delim);
+		/**
+		 * @brief Function: void moveListElements(std::list<type> & l, cons int & from, const int & to)
+		 *
+		 * \param l: list whose elements are to be moved
+		 * \param from: position where the element to move is
+		 * \param to: position where the element has to be moved
+		 *
+		 * This function moves an element of the list l from position from to position to
+		 */
+		template<typename type>
+		void moveListElements(std::list<type> & l, const int & from, const int & to);
 
-	/**
-	 * @brief Function: std::string readFile(const std::string & filename)
-	 *
-	 * \param filename: file to read
-	 *
-	 * \return: content of the file
-	 *
-	 * This function reads a file and returns its content
-	 */
-	std::string readFile(const std::string & filename);
+		/**
+		 * @brief Function: std::vector<std::string> splitStringByDelimiter(const std::string & str, const std::string & delim)
+		 *
+		 * \param str: string to be split
+		 * \param delim: delimiter
+		 *
+		 * \return: vector of sub-string containing the splits
+		 *
+		 * This function splits the string in multiple sub-strings
+		 */
+		std::vector<std::string> splitStringByDelimiter(const std::string & str, const std::string & delim);
+
+		/**
+		 * @brief Function: std::string readFile(const std::string & filename)
+		 *
+		 * \param filename: file to read
+		 *
+		 * \return: content of the file
+		 *
+		 * This function reads a file and returns its content
+		 */
+		std::string readFile(const std::string & filename);
+
+	}
 
 }
-/** @} */ // End of GlobalFunctionsGroup group
+/** @} */ // End of CommonGroup group
 
 template<typename type>
-void global_functions::moveListElements(std::list<type> & l, const int & from, const int & to) {
+void app::shared::moveListElements(std::list<type> & l, const int & from, const int & to) {
 
 	if (from != to) {
 		const int lSize = l.size();

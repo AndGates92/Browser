@@ -11,7 +11,7 @@
 
 #include "common/include/logging_functions.h"
 
-QString logging_functions::getDateTime() {
+QString app::shared::getDateTime() {
 	QString datetimeStr = QString();
 
 	QLocale locale(QLocale::AnyLanguage, QLocale::AnyScript, QLocale::AnyCountry);

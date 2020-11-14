@@ -18,49 +18,57 @@
  *  @{
  */
 
-namespace menu {
+namespace app {
 
-	/**
-	 * @brief MenuBar class
-	 *
-	 */
-	class MenuBar : public QMenuBar {
+	namespace base {
 
-		public:
-			/**
-			 * @brief Function: explicit MenuBar(QWidget * parent)
-			 *
-			 * \param parent: pointer to the parent of the menu bar
-			 *
-			 * Constructor of menu bar
-			 */
-			explicit MenuBar(QWidget * parent);
+		namespace menu {
 
 			/**
-			 * @brief Function: virtual ~MenuBar()
-			 *
-			 * Destructor of menu bar
-			 */
-			virtual ~MenuBar();
-
-		protected:
-
-			/**
-			 * @brief Function: virtual void createMenus()
-			 *
-			 * This function creates all menu belonging to the menu bar
-			 */
-			virtual void createMenus() = 0;
-
-		private:
-			// Move and copy constructor
-			/**
-			 * @brief Disable move and copy constructors and operator= overloading for class MenuBar
+			 * @brief MenuBar class
 			 *
 			 */
-			DISABLE_COPY_MOVE(MenuBar)
+			class MenuBar : public QMenuBar {
 
-	};
+				public:
+					/**
+					 * @brief Function: explicit MenuBar(QWidget * parent)
+					 *
+					 * \param parent: pointer to the parent of the menu bar
+					 *
+					 * Constructor of menu bar
+					 */
+					explicit MenuBar(QWidget * parent);
+
+					/**
+					 * @brief Function: virtual ~MenuBar()
+					 *
+					 * Destructor of menu bar
+					 */
+					virtual ~MenuBar();
+
+				protected:
+
+					/**
+					 * @brief Function: virtual void createMenus()
+					 *
+					 * This function creates all menu belonging to the menu bar
+					 */
+					virtual void createMenus() = 0;
+
+				private:
+					// Move and copy constructor
+					/**
+					 * @brief Disable move and copy constructors and operator= overloading for class MenuBar
+					 *
+					 */
+					DISABLE_COPY_MOVE(MenuBar)
+
+			};
+
+		}
+
+	}
 
 }
 /** @} */ // End of Menu group

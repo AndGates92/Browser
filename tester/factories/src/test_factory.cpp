@@ -14,18 +14,18 @@
 
 LOGGING_CONTEXT(testFactoryOverall, testFactory.overall, TYPE_LEVEL, INFO_VERBOSITY)
 
-test_factory::TestFactory::TestFactory(int & argc, char** argv, const base_factory::BaseFactory::suite_container_t & testSuites) : base_factory::BaseFactory(argc, argv, testSuites) {
+tester::factory::TestFactory::TestFactory(int & argc, char** argv, const tester::base::Factory::suite_container_t & testSuites) : tester::base::Factory(argc, argv, testSuites) {
 
-	LOG_INFO(logger::info_level_e::ZERO, testFactoryOverall,  "Test factory constructor");
-
-}
-
-test_factory::TestFactory::~TestFactory() {
-
-	LOG_INFO(logger::info_level_e::ZERO, testFactoryOverall,  "Test factory destructor");
+	LOG_INFO(app::logger::info_level_e::ZERO, testFactoryOverall,  "Test factory constructor");
 
 }
 
-void test_factory::TestFactory::populate() {
-	command_suite::CommandSuite::create<command_suite::CommandSuite>(this->shared_from_this());
+tester::factory::TestFactory::~TestFactory() {
+
+	LOG_INFO(app::logger::info_level_e::ZERO, testFactoryOverall,  "Test factory destructor");
+
+}
+
+void tester::factory::TestFactory::populate() {
+	tester::suite::CommandSuite::create<tester::suite::CommandSuite>(this->shared_from_this());
 }

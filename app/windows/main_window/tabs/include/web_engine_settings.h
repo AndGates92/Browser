@@ -15,75 +15,83 @@
  *  Main Window functions and classes
  *  @{
  */
+namespace app {
 
-namespace main_window {
+	namespace main_window {
 
-	/**
-	 * @brief WebEngineSettings class
-	 *
-	 */
-	class WebEngineSettings final : public web_engine_settings::WebEngineSettings {
-
-		public:
-			/**
-			 * @brief Function: explicit WebEngineSettings(QWebEngineSettings * settings)
-			 *
-			 * \param settings: settings of the settings
-			 *
-			 * Main window web engine settings constructor
-			 */
-			explicit WebEngineSettings(QWebEngineSettings * settings);
-
-			// Move and copy constructor
-			/**
-			 * @brief Function: WebEngineSettings(const main_window::WebEngineSettings & rhs)
-			 *
-			 * \param rhs: class to copy
-			 *
-			 * Main window web engine settings copy constructor
-			 */
-			explicit WebEngineSettings(const main_window::WebEngineSettings & rhs);
+		namespace tab {
 
 			/**
-			 * @brief Function: WebEngineSettings::WebEngineSettings(main_window::WebEngineSettings && rhs)
+			 * @brief WebEngineSettings class
 			 *
-			 * \param rhs: class to move
-			 *
-			 * Main window web engine settings move constructor
 			 */
-			explicit WebEngineSettings(main_window::WebEngineSettings && rhs);
+			class WebEngineSettings final : public app::base::tab::WebEngineSettings {
 
-			// Move and copy assignment operators
-			/**
-			 * @brief Function: main_window::WebEngineSettings & operator=(const main_window::WebEngineSettings & rhs)
-			 *
-			 * \param rhs: class to copy
-			 *
-			 * Main window web engine settings copy assignment operator
-			 */
-			main_window::WebEngineSettings & operator=(const main_window::WebEngineSettings & rhs);
+				public:
+					/**
+					 * @brief Function: explicit WebEngineSettings(QWebEngineSettings * settings)
+					 *
+					 * \param settings: settings of the settings
+					 *
+					 * Main window web engine settings constructor
+					 */
+					explicit WebEngineSettings(QWebEngineSettings * settings);
 
-			/**
-			 * @brief Function: main_window::WebEngineSettings & operator=(main_window::WebEngineSettings && rhs)
-			 *
-			 * \param rhs: class to move
-			 *
-			 * Main window web engine settings move assignment operator
-			 */
-			main_window::WebEngineSettings & operator=(main_window::WebEngineSettings && rhs);
+					// Move and copy constructor
+					/**
+					 * @brief Function: WebEngineSettings(const app::main_window::tab::WebEngineSettings & rhs)
+					 *
+					 * \param rhs: class to copy
+					 *
+					 * Main window web engine settings copy constructor
+					 */
+					explicit WebEngineSettings(const app::main_window::tab::WebEngineSettings & rhs);
 
-			/**
-			 * @brief Function: virtual ~WebEngineSettings()
-			 *
-			 * Main window web engine settings destructor
-			 */
-			virtual ~WebEngineSettings();
+					/**
+					 * @brief Function: WebEngineSettings::WebEngineSettings(app::main_window::tab::WebEngineSettings && rhs)
+					 *
+					 * \param rhs: class to move
+					 *
+					 * Main window web engine settings move constructor
+					 */
+					explicit WebEngineSettings(app::main_window::tab::WebEngineSettings && rhs);
 
-		protected:
+					// Move and copy assignment operators
+					/**
+					 * @brief Function: app::main_window::tab::WebEngineSettings & operator=(const app::main_window::tab::WebEngineSettings & rhs)
+					 *
+					 * \param rhs: class to copy
+					 *
+					 * Main window web engine settings copy assignment operator
+					 */
+					app::main_window::tab::WebEngineSettings & operator=(const app::main_window::tab::WebEngineSettings & rhs);
 
-		private:
+					/**
+					 * @brief Function: app::main_window::tab::WebEngineSettings & operator=(app::main_window::tab::WebEngineSettings && rhs)
+					 *
+					 * \param rhs: class to move
+					 *
+					 * Main window web engine settings move assignment operator
+					 */
+					app::main_window::tab::WebEngineSettings & operator=(app::main_window::tab::WebEngineSettings && rhs);
 
-	};
+					/**
+					 * @brief Function: virtual ~WebEngineSettings()
+					 *
+					 * Main window web engine settings destructor
+					 */
+					virtual ~WebEngineSettings();
+
+				protected:
+
+				private:
+
+			};
+
+		}
+
+	}
+
 }
 /** @} */ // End of MainWindowGroup group
 

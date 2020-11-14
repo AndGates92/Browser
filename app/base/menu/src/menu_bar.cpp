@@ -14,12 +14,12 @@
 
 LOGGING_CONTEXT(menuBarOverall, menuBar.overall, TYPE_LEVEL, INFO_VERBOSITY)
 
-menu::MenuBar::MenuBar(QWidget * parent) : QMenuBar(parent) {
-	LOG_INFO(logger::info_level_e::ZERO, menuBarOverall,  "Menu bar constructor");
+app::base::menu::MenuBar::MenuBar(QWidget * parent) : QMenuBar(parent) {
+	LOG_INFO(app::logger::info_level_e::ZERO, menuBarOverall,  "Menu bar constructor");
 
 }
 
-menu::MenuBar::~MenuBar() {
-	LOG_INFO(logger::info_level_e::ZERO, menuBarOverall,  "Menu bar desstructor");
+app::base::menu::MenuBar::~MenuBar() {
+	LOG_INFO(app::logger::info_level_e::ZERO, menuBarOverall,  "Menu bar desstructor");
 
 }

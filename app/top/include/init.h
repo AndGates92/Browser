@@ -12,37 +12,41 @@
  *  Initialize functions and classes
  *  @{
  */
-namespace init {
+namespace app {
 
-	/**
-	 * @brief Function: void initializeBrowser(int argc, char** argv)
-	 *
-	 * \param argc: number of arguments
-	 * \param argv: value of arguments
-	 *
-	 * This function is a wrapper that call all initialize functions
-	 */
-	void initializeBrowser(int & argc, char** argv);
+	namespace init {
 
-	/**
-	 * @brief Function: void initializeSettings(int argc, char** argv)
-	 *
-	 * \param argc: number of arguments
-	 * \param argv: value of arguments
-	 *
-	 * This function initialize settings
-	 */
-	void initializeSettings(int & argc, char** argv);
+		/**
+		 * @brief Function: void initializeBrowser(int argc, char** argv)
+		 *
+		 * \param argc: number of arguments
+		 * \param argv: value of arguments
+		 *
+		 * This function is a wrapper that call all initialize functions
+		 */
+		void initializeBrowser(int & argc, char** argv);
 
-	/**
-	 * @brief Function: void initializeGraphics(int argc, char** argv)
-	 *
-	 * \param argc: number of arguments
-	 * \param argv: value of arguments
-	 *
-	 * This function initialize graphics
-	 */
-	void initializeGraphics(int & argc, char** argv);
+		/**
+		 * @brief Function: void initializeSettings(int argc, char** argv)
+		 *
+		 * \param argc: number of arguments
+		 * \param argv: value of arguments
+		 *
+		 * This function initialize settings
+		 */
+		void initializeSettings(int & argc, char** argv);
+
+		/**
+		 * @brief Function: void initializeGraphics(int argc, char** argv)
+		 *
+		 * \param argc: number of arguments
+		 * \param argv: value of arguments
+		 *
+		 * This function initialize graphics
+		 */
+		void initializeGraphics(int & argc, char** argv);
+
+	}
 
 }
 /** @} */ // End of InitGroup group

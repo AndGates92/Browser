@@ -13,10 +13,10 @@
 #include "common/include/global_constants.h"
 #include "windows/main_window/common/include/shared_functions.h"
 
-bool main_window::isUrl(const QString & text) {
+bool app::main_window::isUrl(const QString & text) {
 
-	const bool containsWww = text.contains(global_constants::www);
-	const bool containsHttps = text.contains(global_constants::https);
+	const bool containsWww = text.contains(app::shared::www);
+	const bool containsHttps = text.contains(app::shared::https);
 
 	// Check also the number of dots in the argument text.
 	// In fact QUrl considers as valid an URL that is missing the .TLD (example .com)
@@ -24,11 +24,11 @@ bool main_window::isUrl(const QString & text) {
 	QString urlStr = QString();
 
 	if (containsHttps == false) {
-		urlStr += global_constants::https;
+		urlStr += app::shared::https;
 	}
 
 	if (containsWww == false) {
-		urlStr += global_constants::www;
+		urlStr += app::shared::www;
 	}
 
 	urlStr += text;
@@ -40,14 +40,14 @@ bool main_window::isUrl(const QString & text) {
 	return ((url.isValid() == true) && (numberDots > 0));
 }
 
-bool main_window::isFile(const QString & text) {
+bool app::main_window::isFile(const QString & text) {
 	QFile file(text);
 	return file.exists();
 }
 
-bool main_window::isText(const QString & text) {
-	bool validUrl = main_window::isUrl(text);
-	bool validFile = main_window::isFile(text);
+bool app::main_window::isText(const QString & text) {
+	bool validUrl = app::main_window::isUrl(text);
+	bool validFile = app::main_window::isFile(text);
 
 	return ((validUrl == false) && (validFile == false));
 }

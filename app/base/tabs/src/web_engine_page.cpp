@@ -16,12 +16,12 @@
 // Categories
 LOGGING_CONTEXT(webEnginePageOverall, webEnginePage.overall, TYPE_LEVEL, INFO_VERBOSITY)
 
-web_engine_page::WebEnginePage::WebEnginePage(QWidget * parent, web_engine_profile::WebEngineProfile * profile): QWebEnginePage(profile, parent) {
-	LOG_INFO(logger::info_level_e::ZERO, webEnginePageOverall,  "Web engine page constructor");
+app::base::tab::WebEnginePage::WebEnginePage(QWidget * parent, app::base::tab::WebEngineProfile * profile): QWebEnginePage(profile, parent) {
+	LOG_INFO(app::logger::info_level_e::ZERO, webEnginePageOverall,  "Web engine page constructor");
 }
 
-web_engine_page::WebEnginePage::~WebEnginePage() {
-	LOG_INFO(logger::info_level_e::ZERO, webEnginePageOverall,  "Web engine page destructor");
+app::base::tab::WebEnginePage::~WebEnginePage() {
+	LOG_INFO(app::logger::info_level_e::ZERO, webEnginePageOverall,  "Web engine page destructor");
 }
 
-CASTED_PTR_GETTER(web_engine_page::WebEnginePage::profile, web_engine_profile::WebEngineProfile, QWebEnginePage::profile())
+CASTED_PTR_GETTER(app::base::tab::WebEnginePage::profile, app::base::tab::WebEngineProfile, QWebEnginePage::profile())

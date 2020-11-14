@@ -14,40 +14,45 @@
  *  Main Window functions
  *  @{
  */
-namespace main_window {
+namespace app {
 
-	/**
-	 * @brief Function: bool isUrl(const QString & text)
-	 *
-	 * \param text: text to check
-	 *
-	 * \return true if the text is a valid URL, false otherwise
-	 *
-	 * This function check whether input string is a URL
-	 */
-	bool isUrl(const QString & text);
+	namespace main_window {
 
-	/**
-	 * @brief Function: bool isFile(const QString & text)
-	 *
-	 * \param text: text to check
-	 *
-	 * \return true if the text is an existing file, false otherwise
-	 *
-	 * This function check whether input string is a file
-	 */
-	bool isFile(const QString & text);
+		/**
+		 * @brief Function: bool isUrl(const QString & text)
+		 *
+		 * \param text: text to check
+		 *
+		 * \return true if the text is a valid URL, false otherwise
+		 *
+		 * This function check whether input string is a URL
+		 */
+		bool isUrl(const QString & text);
 
-	/**
-	 * @brief Function: bool isText(const QString & text)
-	 *
-	 * \param text: text to check
-	 *
-	 * \return true if the text is a valid text, false otherwise
-	 *
-	 * This function check whether input string is text
-	 */
-	bool isText(const QString & text);
+		/**
+		 * @brief Function: bool isFile(const QString & text)
+		 *
+		 * \param text: text to check
+		 *
+		 * \return true if the text is an existing file, false otherwise
+		 *
+		 * This function check whether input string is a file
+		 */
+		bool isFile(const QString & text);
+
+		/**
+		 * @brief Function: bool isText(const QString & text)
+		 *
+		 * \param text: text to check
+		 *
+		 * \return true if the text is a valid text, false otherwise
+		 *
+		 * This function check whether input string is text
+		 */
+		bool isText(const QString & text);
+
+	}
+
 }
 
 /** @} */ // End of MainWindowGroup group

@@ -1,5 +1,5 @@
-#ifndef LAUNCH_APP_H
-#define LAUNCH_APP_H
+#ifndef LAUNCH_APP_TEST_H
+#define LAUNCH_APP_TEST_H
 /**
  * @copyright
  * @file launch_app.h
@@ -10,51 +10,54 @@
 
 #include "base/tester/include/command_test.h"
 
-/** @defgroup LaunchAppGroup Launch App Group
- *  Launch app functions and classes
+/** @defgroup TesterTestGroup Test Doxygen Group
+ *  Test functions and classes
  *  @{
  */
+namespace tester {
 
-namespace launch_app {
+	namespace test {
 
-	/**
-	 * @brief LaunchApp class
-	 *
-	 */
-	class LaunchApp : public command_test::CommandTest {
+		/**
+		 * @brief LaunchApp class
+		 *
+		 */
+		class LaunchApp : public tester::base::CommandTest {
 
-		public:
-			/**
-			 * @brief Function: explicit LaunchApp(const std::shared_ptr<base_suite::BaseSuite> & testSuite, const bool useShortcuts)
-			 *
-			 * \param testSuite: test suite
-			 * \param useShortcut: test uses shortcuts to send commands
-			 *
-			 * Launch app constructor
-			 */
-			explicit LaunchApp(const std::shared_ptr<base_suite::BaseSuite> & testSuite, const bool useShortcuts);
+			public:
+				/**
+				 * @brief Function: explicit LaunchApp(const std::shared_ptr<tester::base::Suite> & testSuite, const bool useShortcuts)
+				 *
+				 * \param testSuite: test suite
+				 * \param useShortcut: test uses shortcuts to send commands
+				 *
+				 * Launch app constructor
+				 */
+				explicit LaunchApp(const std::shared_ptr<tester::base::Suite> & testSuite, const bool useShortcuts);
 
-			/**
-			 * @brief Function: virtual ~LaunchApp()
-			 *
-			 * Launch app destructor
-			 */
-			virtual ~LaunchApp();
+				/**
+				 * @brief Function: virtual ~LaunchApp()
+				 *
+				 * Launch app destructor
+				 */
+				virtual ~LaunchApp();
 
-		protected:
+			protected:
 
-			/**
-			 * @brief Function: virtual void testBody() override
-			 *
-			 * This function contains the body of the test
-			 */
-			virtual void testBody() override;
+				/**
+				 * @brief Function: virtual void testBody() override
+				 *
+				 * This function contains the body of the test
+				 */
+				virtual void testBody() override;
 
-		private:
+			private:
 
-	};
+		};
+
+	}
 
 }
-/** @} */ // End of LaunchAppGroup group
+/** @} */ // End of TesterTestGroup group
 
-#endif // LAUNCH_APP_H
+#endif // LAUNCH_APP_TEST_H

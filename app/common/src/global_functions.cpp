@@ -14,7 +14,7 @@
 
 LOGGING_CONTEXT(readFileOverall, readFile.overall, TYPE_LEVEL, INFO_VERBOSITY)
 
-std::string global_functions::readFile(const std::string & filename) {
+std::string app::shared::readFile(const std::string & filename) {
 
 	EXCEPTION_ACTION_COND((filename.empty() == true), throw, "Provided an empty filename therefore it is not possible to open it and read its content");
 	std::ifstream ifile;
@@ -43,14 +43,14 @@ std::string global_functions::readFile(const std::string & filename) {
 			content.append(line);
 			charCount += line.length();
 			const double percentageCount = (static_cast<double>(charCount) * 100.0) / static_cast<double>(fileLength);
-			LOG_INFO(logger::info_level_e::ZERO, readFileOverall,  "Character counted " << charCount << " out of " << fileLength << " that is " << percentageCount << "%");
+			LOG_INFO(app::logger::info_level_e::ZERO, readFileOverall,  "Character counted " << charCount << " out of " << fileLength << " that is " << percentageCount << "%");
 		}
 	} catch (const std::ifstream::failure & e) {
 		if (ifile.is_open()) {
 			ifile.close();
 		}
 		if (ifile.eof()) {
-			LOG_INFO(logger::info_level_e::ZERO, readFileOverall,  "Finished reading content from file " << filename.c_str());
+			LOG_INFO(app::logger::info_level_e::ZERO, readFileOverall,  "Finished reading content from file " << filename.c_str());
 		} else {
 			// Convert std::error_code print to std::string so that it can be printed
 			const std::error_code errorCode(e.code());
@@ -65,7 +65,7 @@ std::string global_functions::readFile(const std::string & filename) {
 	return content;
 }
 
-std::vector<std::string> global_functions::splitStringByDelimiter(const std::string & str, const std::string & delim) {
+std::vector<std::string> app::shared::splitStringByDelimiter(const std::string & str, const std::string & delim) {
 
 	std::size_t currentPosition = 0;
 	std::size_t nextPosition = 0;

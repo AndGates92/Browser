@@ -8,8 +8,8 @@
  * @brief Smart Pointer Macros file
 */
 
-/** @defgroup SmartPtrMacrosGroup Smart Pointer Macros Doxygen Group
- *  Smart Pointer Macros
+/** @defgroup CommonGroup Common Macros and Functions Doxygen Group
+ *  Common Macros and Functions
  *  @{
  */
 
@@ -50,6 +50,6 @@
 	INHERITED_SHARED_FROM_THIS(DERIVED, BASE) \
 	INHERITED_WEAK_FROM_THIS(DERIVED)
 
-/** @} */ // End of SmartPtrMacrosGroup group
+/** @} */ // End of CommonGroup group
 
 #endif // SMART_PTR_MACROS_H

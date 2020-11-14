@@ -13,43 +13,43 @@
 #include "common/include/function_macros.h"
 #include "utility/logger/include/macros.h"
 #include "base/tabs/include/tab.h"
-#include "base/tabs/include/tab_search.h"
-#include "base/tabs/include/tab_scroll_manager.h"
-#include "base/tabs/include/tab_history.h"
+#include "base/tabs/include/search.h"
+#include "base/tabs/include/scroll_manager.h"
+#include "base/tabs/include/history.h"
 
 // Categories
 LOGGING_CONTEXT(tabOverall, tab.overall, TYPE_LEVEL, INFO_VERBOSITY)
 LOGGING_CONTEXT(tabSize, tab.size, TYPE_LEVEL, INFO_VERBOSITY)
 
-tab::Tab::Tab(QWidget * parent): QWidget(parent), view(Q_NULLPTR), loadManager(Q_NULLPTR), search(Q_NULLPTR), history(Q_NULLPTR), settings(Q_NULLPTR), scrollManager(Q_NULLPTR) {
-	LOG_INFO(logger::info_level_e::ZERO, tabOverall,  "Tab constructor");
+app::base::tab::Tab::Tab(QWidget * parent): QWidget(parent), view(Q_NULLPTR), loadManager(Q_NULLPTR), search(Q_NULLPTR), history(Q_NULLPTR), settings(Q_NULLPTR), scrollManager(Q_NULLPTR) {
+	LOG_INFO(app::logger::info_level_e::ZERO, tabOverall,  "Tab constructor");
 }
 
-void tab::Tab::configure(std::shared_ptr<tab_bar::TabBar> tabBar) {
-	std::shared_ptr<web_engine_view::WebEngineView> tabView = std::make_shared<web_engine_view::WebEngineView>(this);
+void app::base::tab::Tab::configure(std::shared_ptr<app::base::tab::TabBar> tabBar) {
+	std::shared_ptr<app::base::tab::WebEngineView> tabView = std::make_shared<app::base::tab::WebEngineView>(this);
 	this->setView(tabView);
 
-	std::shared_ptr<tab_load_manager::TabLoadManager> tabLoadManager = std::make_shared<tab_load_manager::TabLoadManager>(this);
+	std::shared_ptr<app::base::tab::LoadManager> tabLoadManager = std::make_shared<app::base::tab::LoadManager>(this);
 	this->setLoadManager(tabLoadManager);
 
-	std::shared_ptr<tab_search::TabSearch> tabSearch = std::make_shared<tab_search::TabSearch>(this, this->weak_from_this());
+	std::shared_ptr<app::base::tab::Search> tabSearch = std::make_shared<app::base::tab::Search>(this, this->weak_from_this());
 	this->setSearch(tabSearch);
 
-	std::shared_ptr<tab_history::TabHistory> tabHistory = std::make_shared<tab_history::TabHistory>(this, this->weak_from_this(), this->getView()->history());
+	std::shared_ptr<app::base::tab::History> tabHistory = std::make_shared<app::base::tab::History>(this, this->weak_from_this(), this->getView()->history());
 	this->setHistory(tabHistory);
 
-	std::shared_ptr<web_engine_settings::WebEngineSettings> tabSettings = std::make_shared<web_engine_settings::WebEngineSettings>(this->getView()->settings());
+	std::shared_ptr<app::base::tab::WebEngineSettings> tabSettings = std::make_shared<app::base::tab::WebEngineSettings>(this->getView()->settings());
 	this->setSettings(tabSettings);
 
-	std::shared_ptr<tab_scroll_manager::TabScrollManager> tabScrollManager = std::make_shared<tab_scroll_manager::TabScrollManager>(this, this->weak_from_this(), tabBar);
+	std::shared_ptr<app::base::tab::ScrollManager> tabScrollManager = std::make_shared<app::base::tab::ScrollManager>(this, this->weak_from_this(), tabBar);
 	this->setScrollManager(tabScrollManager);
 }
 
-tab::Tab::~Tab() {
-	LOG_INFO(logger::info_level_e::ZERO, tabOverall,  "Tab destructor");
+app::base::tab::Tab::~Tab() {
+	LOG_INFO(app::logger::info_level_e::ZERO, tabOverall,  "Tab destructor");
 }
 
-void tab::Tab::setLoadManager(const std::shared_ptr<tab_load_manager::TabLoadManager> & value) {
+void app::base::tab::Tab::setLoadManager(const std::shared_ptr<app::base::tab::LoadManager> & value) {
 	if (this->loadManager != value) {
 		if (this->progressValueConnection) {
 			disconnect(this->progressValueConnection);
@@ -57,21 +57,21 @@ void tab::Tab::setLoadManager(const std::shared_ptr<tab_load_manager::TabLoadMan
 
 		this->loadManager = value;
 
-		this->progressValueConnection = connect(this->loadManager.get(), &tab_load_manager::TabLoadManager::progressChanged, [this] (const int & value) {
+		this->progressValueConnection = connect(this->loadManager.get(), &base::tab::LoadManager::progressChanged, [this] (const int & value) {
 			this->loadProgressChanged(value);
 		});
 	}
 }
 
-BASE_GETTER(tab::Tab::getLoadManager, std::shared_ptr<tab_load_manager::TabLoadManager>, this->loadManager)
+BASE_GETTER(app::base::tab::Tab::getLoadManager, std::shared_ptr<app::base::tab::LoadManager>, this->loadManager)
 
-BASE_GETTER(tab::Tab::getView, std::shared_ptr<web_engine_view::WebEngineView>, this->view)
-CONST_REF_SETTER(tab::Tab::setView, std::shared_ptr<web_engine_view::WebEngineView>, this->view)
+BASE_GETTER(app::base::tab::Tab::getView, std::shared_ptr<app::base::tab::WebEngineView>, this->view)
+CONST_REF_SETTER(app::base::tab::Tab::setView, std::shared_ptr<app::base::tab::WebEngineView>, this->view)
 
-BASE_GETTER(tab::Tab::getSearch, std::shared_ptr<tab_search::TabSearch>, this->search)
-CONST_REF_SETTER(tab::Tab::setSearch, std::shared_ptr<tab_search::TabSearch>, this->search)
+BASE_GETTER(app::base::tab::Tab::getSearch, std::shared_ptr<app::base::tab::Search>, this->search)
+CONST_REF_SETTER(app::base::tab::Tab::setSearch, std::shared_ptr<app::base::tab::Search>, this->search)
 
-void tab::Tab::setHistory(const std::shared_ptr<tab_history::TabHistory> & value) {
+void app::base::tab::Tab::setHistory(const std::shared_ptr<app::base::tab::History> & value) {
 	if (this->history != value) {
 
 		if (this->historyItemChangedConnection) {
@@ -80,15 +80,15 @@ void tab::Tab::setHistory(const std::shared_ptr<tab_history::TabHistory> & value
 
 		this->history = value;
 
-		this->historyItemChangedConnection = connect(this->history.get(), &tab_history::TabHistory::historyItemChanged, [this] (const global_enums::element_position_e & position) {
+		this->historyItemChangedConnection = connect(this->history.get(), &base::tab::History::historyItemChanged, [this] (const app::shared::element_position_e & position) {
 			emit this->historyItemChanged(position);
 		});
 	}
 }
 
-BASE_GETTER(tab::Tab::getHistory, std::shared_ptr<tab_history::TabHistory>, this->history)
+BASE_GETTER(app::base::tab::Tab::getHistory, std::shared_ptr<app::base::tab::History>, this->history)
 
-void tab::Tab::setScrollManager(const std::shared_ptr<tab_scroll_manager::TabScrollManager> & value) {
+void app::base::tab::Tab::setScrollManager(const std::shared_ptr<app::base::tab::ScrollManager> & value) {
 	if (this->scrollManager != value) {
 		if (this->vScrollValueConnection) {
 			disconnect(this->vScrollValueConnection);
@@ -100,76 +100,76 @@ void tab::Tab::setScrollManager(const std::shared_ptr<tab_scroll_manager::TabScr
 
 		this->scrollManager = value;
 
-		this->vScrollValueConnection = connect(this->scrollManager.get(), &tab_scroll_manager::TabScrollManager::verticalScrollChanged, [this] (const int & value) {
+		this->vScrollValueConnection = connect(this->scrollManager.get(), &base::tab::ScrollManager::verticalScrollChanged, [this] (const int & value) {
 			this->verticalScrollChanged(value);
 		});
 
-		this->hScrollValueConnection = connect(this->scrollManager.get(), &tab_scroll_manager::TabScrollManager::horizontalScrollChanged, [this] (const int & value) {
+		this->hScrollValueConnection = connect(this->scrollManager.get(), &base::tab::ScrollManager::horizontalScrollChanged, [this] (const int & value) {
 			this->horizontalScrollChanged(value);
 		});
 	}
 }
 
-BASE_GETTER(tab::Tab::getScrollManager, std::shared_ptr<tab_scroll_manager::TabScrollManager>, this->scrollManager)
+BASE_GETTER(app::base::tab::Tab::getScrollManager, std::shared_ptr<app::base::tab::ScrollManager>, this->scrollManager)
 
-BASE_GETTER(tab::Tab::getSettings, std::shared_ptr<web_engine_settings::WebEngineSettings>, this->settings)
-CONST_REF_SETTER(tab::Tab::setSettings, std::shared_ptr<web_engine_settings::WebEngineSettings>, this->settings)
+BASE_GETTER(app::base::tab::Tab::getSettings, std::shared_ptr<app::base::tab::WebEngineSettings>, this->settings)
+CONST_REF_SETTER(app::base::tab::Tab::setSettings, std::shared_ptr<app::base::tab::WebEngineSettings>, this->settings)
 
-void tab::Tab::resize(const QSize size) {
+void app::base::tab::Tab::resize(const QSize size) {
 	// Resize view
 	if (this->view != Q_NULLPTR) {
-		LOG_INFO(logger::info_level_e::ZERO, tabSize,  "Resize view to" << size);
+		LOG_INFO(app::logger::info_level_e::ZERO, tabSize,  "Resize view to" << size);
 		this->view->resize(size);
 	}
 	QWidget::resize(size);
 }
 
-void tab::Tab::find(const find_settings::FindSettings & settings) const {
+void app::base::tab::Tab::find(const app::windows::shared::FindSettings & settings) const {
 	this->search->execute(settings);
 }
 
-void tab::Tab::historyNext() const {
-	this->history->execute(tab_shared_types::stepping_e::NEXT);
+void app::base::tab::Tab::historyNext() const {
+	this->history->execute(app::base::tab::stepping_e::NEXT);
 }
 
-void tab::Tab::historyPrev() const {
-	this->history->execute(tab_shared_types::stepping_e::PREVIOUS);
+void app::base::tab::Tab::historyPrev() const {
+	this->history->execute(app::base::tab::stepping_e::PREVIOUS);
 }
 
-void tab::Tab::scrollUp() const {
-	this->scrollManager->execute(tab_shared_types::direction_e::UP);
+void app::base::tab::Tab::scrollUp() const {
+	this->scrollManager->execute(app::base::tab::direction_e::UP);
 }
 
-void tab::Tab::scrollDown() const {
-	this->scrollManager->execute(tab_shared_types::direction_e::DOWN);
+void app::base::tab::Tab::scrollDown() const {
+	this->scrollManager->execute(app::base::tab::direction_e::DOWN);
 }
 
-void tab::Tab::scrollLeft() const {
-	this->scrollManager->execute(tab_shared_types::direction_e::LEFT);
+void app::base::tab::Tab::scrollLeft() const {
+	this->scrollManager->execute(app::base::tab::direction_e::LEFT);
 }
 
-void tab::Tab::scrollRight() const {
-	this->scrollManager->execute(tab_shared_types::direction_e::RIGHT);
+void app::base::tab::Tab::scrollRight() const {
+	this->scrollManager->execute(app::base::tab::direction_e::RIGHT);
 }
 
-int tab::Tab::getLoadProgress() const {
+int app::base::tab::Tab::getLoadProgress() const {
 	return this->loadManager->getProgress();
 }
 
-int tab::Tab::getVerticalScroll() const {
+int app::base::tab::Tab::getVerticalScroll() const {
 	return this->scrollManager->getVerticalScrollPercentage();
 }
 
-int tab::Tab::getHorizontalScroll() const {
+int app::base::tab::Tab::getHorizontalScroll() const {
 	return this->scrollManager->getHorizontalScrollPercentage();
 }
 
-tab_shared_types::load_status_e tab::Tab::getLoadStatus() const {
-	const std::shared_ptr<tab_load_manager::TabLoadManager> loadManager = this->getLoadManager();
+app::base::tab::load_status_e app::base::tab::Tab::getLoadStatus() const {
+	const std::shared_ptr<app::base::tab::LoadManager> loadManager = this->getLoadManager();
 	return loadManager->getStatus();
 }
 
-std::shared_ptr<web_engine_page::WebEnginePage> tab::Tab::getPage() const {
-	const std::shared_ptr<web_engine_view::WebEngineView> view = this->getView();
+std::shared_ptr<app::base::tab::WebEnginePage> app::base::tab::Tab::getPage() const {
+	const std::shared_ptr<app::base::tab::WebEngineView> view = this->getView();
 	return view->page();
 }

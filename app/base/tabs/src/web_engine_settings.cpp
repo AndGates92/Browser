@@ -15,23 +15,23 @@
 // Categories
 LOGGING_CONTEXT(webEngineSettingsOverall, webEngineSettings.overall, TYPE_LEVEL, INFO_VERBOSITY)
 
-web_engine_settings::WebEngineSettings::WebEngineSettings(QWebEngineSettings * newSettings): settings(newSettings) {
-	LOG_INFO(logger::info_level_e::ZERO, webEngineSettingsOverall,  "Web engine settings constructor");
+app::base::tab::WebEngineSettings::WebEngineSettings(QWebEngineSettings * newSettings): settings(newSettings) {
+	LOG_INFO(app::logger::info_level_e::ZERO, webEngineSettingsOverall,  "Web engine settings constructor");
 
 	// Hide scrollbars
 	this->settings->setAttribute(QWebEngineSettings::ShowScrollBars, false);
 
 }
 
-web_engine_settings::WebEngineSettings::WebEngineSettings(const web_engine_settings::WebEngineSettings & rhs) : settings(rhs.settings) {
+app::base::tab::WebEngineSettings::WebEngineSettings(const app::base::tab::WebEngineSettings & rhs) : settings(rhs.settings) {
 
-	LOG_INFO(logger::info_level_e::ZERO, webEngineSettingsOverall,  "Copy constructor web engine settings");
+	LOG_INFO(app::logger::info_level_e::ZERO, webEngineSettingsOverall,  "Copy constructor web engine settings");
 
 }
 
-web_engine_settings::WebEngineSettings & web_engine_settings::WebEngineSettings::operator=(const web_engine_settings::WebEngineSettings & rhs) {
+app::base::tab::WebEngineSettings & app::base::tab::WebEngineSettings::operator=(const app::base::tab::WebEngineSettings & rhs) {
 
-	LOG_INFO(logger::info_level_e::ZERO, webEngineSettingsOverall,  "Copy assignment operator for web engine settings");
+	LOG_INFO(app::logger::info_level_e::ZERO, webEngineSettingsOverall,  "Copy assignment operator for web engine settings");
 
 	// If rhs points to the same address as this, then return this
 	if (&rhs == this) {
@@ -45,14 +45,14 @@ web_engine_settings::WebEngineSettings & web_engine_settings::WebEngineSettings:
 	return *this;
 }
 
-web_engine_settings::WebEngineSettings::WebEngineSettings(web_engine_settings::WebEngineSettings && rhs) : settings(std::exchange(rhs.settings, Q_NULLPTR)) {
+app::base::tab::WebEngineSettings::WebEngineSettings(app::base::tab::WebEngineSettings && rhs) : settings(std::exchange(rhs.settings, Q_NULLPTR)) {
 
-	LOG_INFO(logger::info_level_e::ZERO, webEngineSettingsOverall,  "Move constructor web engine settings");
+	LOG_INFO(app::logger::info_level_e::ZERO, webEngineSettingsOverall,  "Move constructor web engine settings");
 }
 
-web_engine_settings::WebEngineSettings & web_engine_settings::WebEngineSettings::operator=(web_engine_settings::WebEngineSettings && rhs) {
+app::base::tab::WebEngineSettings & app::base::tab::WebEngineSettings::operator=(app::base::tab::WebEngineSettings && rhs) {
 
-	LOG_INFO(logger::info_level_e::ZERO, webEngineSettingsOverall,  "Move assignment operator for web engine settings");
+	LOG_INFO(app::logger::info_level_e::ZERO, webEngineSettingsOverall,  "Move assignment operator for web engine settings");
 
 	// If rhs doesn't point to the same address as this, then execute move
 	if (&rhs != this) {
@@ -62,7 +62,7 @@ web_engine_settings::WebEngineSettings & web_engine_settings::WebEngineSettings:
 	return *this;
 }
 
-web_engine_settings::WebEngineSettings::~WebEngineSettings() {
-	LOG_INFO(logger::info_level_e::ZERO, webEngineSettingsOverall,  "Web engine settings destructor");
+app::base::tab::WebEngineSettings::~WebEngineSettings() {
+	LOG_INFO(app::logger::info_level_e::ZERO, webEngineSettingsOverall,  "Web engine settings destructor");
 
 }

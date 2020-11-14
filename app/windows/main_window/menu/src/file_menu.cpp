@@ -21,43 +21,43 @@ LOGGING_CONTEXT(fileMenuSaveAction, fileMenu.saveAction, TYPE_LEVEL, INFO_VERBOS
 LOGGING_CONTEXT(fileMenuPrintAction, fileMenu.printAction, TYPE_LEVEL, INFO_VERBOSITY)
 LOGGING_CONTEXT(fileMenuExitAction, fileMenu.exitAction, TYPE_LEVEL, INFO_VERBOSITY)
 
-file_menu::FileMenu::FileMenu(QWidget * parent, std::weak_ptr<QMenuBar> menuBar, const char* menuName, const key_sequence::KeySequence & key) : menu::Menu(parent,menuBar,menuName,key), openWindow(Q_NULLPTR) {
+app::main_window::menu::FileMenu::FileMenu(QWidget * parent, std::weak_ptr<QMenuBar> menuBar, const char* menuName, const app::key_sequence::KeySequence & key) : app::base::menu::Menu(parent,menuBar,menuName,key), openWindow(Q_NULLPTR) {
 
-	LOG_INFO(logger::info_level_e::ZERO, fileMenuOverall,  "Creating file menu");
+	LOG_INFO(app::logger::info_level_e::ZERO, fileMenuOverall,  "Creating file menu");
 	this->createActions();
 	this->createMenu();
 
 }
 
-file_menu::FileMenu::~FileMenu() {
+app::main_window::menu::FileMenu::~FileMenu() {
 
-	LOG_INFO(logger::info_level_e::ZERO, fileMenuOverall,  "file menu destructor");
+	LOG_INFO(app::logger::info_level_e::ZERO, fileMenuOverall,  "file menu destructor");
 
 }
 
-void file_menu::FileMenu::createActions() {
+void app::main_window::menu::FileMenu::createActions() {
 
 	this->openAction = std::make_unique<QAction>(tr("Open"), this);
 	this->openAction->setStatusTip(tr("Open URL"));
-	connect(this->openAction.get(), &QAction::triggered, this, &file_menu::FileMenu::open);
+	connect(this->openAction.get(), &QAction::triggered, this, &app::main_window::menu::FileMenu::open);
 
 	this->openTabAction = std::make_unique<QAction>(tr("OpenTab"), this);
 	this->openTabAction->setStatusTip(tr("Open Tab"));
 
 	this->saveAction = std::make_unique<QAction>(tr("Save"), this);
 	this->saveAction->setStatusTip(tr("Save"));
-	connect(this->saveAction.get(), &QAction::triggered, this, &file_menu::FileMenu::save);
+	connect(this->saveAction.get(), &QAction::triggered, this, &app::main_window::menu::FileMenu::save);
 
 	this->printAction = std::make_unique<QAction>(tr("Print"), this);
 	this->printAction->setStatusTip(tr("Print"));
-	connect(this->printAction.get(), &QAction::triggered, this, &file_menu::FileMenu::print);
+	connect(this->printAction.get(), &QAction::triggered, this, &app::main_window::menu::FileMenu::print);
 
 	this->exitAction = std::make_unique<QAction>(tr("Exit"), this);
 	this->exitAction->setStatusTip(tr("Exit"));
 
 }
 
-void file_menu::FileMenu::createMenu() {
+void app::main_window::menu::FileMenu::createMenu() {
 	this->winMenu->addAction(openAction.get());
 	this->winMenu->addAction(openTabAction.get());
 	this->winMenu->addAction(saveAction.get());
@@ -65,26 +65,26 @@ void file_menu::FileMenu::createMenu() {
 	this->winMenu->addAction(exitAction.get());
 }
 
-void file_menu::FileMenu::open() {
-	LOG_INFO(logger::info_level_e::ZERO, fileMenuOpenAction,  "Open slot: connect signal from open window to slot seding signal to the main window");
+void app::main_window::menu::FileMenu::open() {
+	LOG_INFO(app::logger::info_level_e::ZERO, fileMenuOpenAction,  "Open slot: connect signal from open window to slot seding signal to the main window");
 
-	this->openWindow.reset(new open_window::Window(this->parentWidget(), Qt::Window));
-	connect(this->openWindow.get(), &open_window::Window::fileRead, this, &file_menu::FileMenu::updateCenterWindow);
+	this->openWindow.reset(new app::open_window::Window(this->parentWidget(), Qt::Window));
+	connect(this->openWindow.get(), &app::open_window::Window::fileRead, this, &app::main_window::menu::FileMenu::updateCenterWindow);
 	this->openWindow->show();
 	this->openWindow->setFocus();
 }
 
-void file_menu::FileMenu::save() {
-	LOG_INFO(logger::info_level_e::ZERO, fileMenuSaveAction,  "Save slot: saving web page to disk");
+void app::main_window::menu::FileMenu::save() {
+	LOG_INFO(app::logger::info_level_e::ZERO, fileMenuSaveAction,  "Save slot: saving web page to disk");
 
 }
 
-void file_menu::FileMenu::print() {
-	LOG_INFO(logger::info_level_e::ZERO, fileMenuPrintAction,  "Print slot: printing web page");
+void app::main_window::menu::FileMenu::print() {
+	LOG_INFO(app::logger::info_level_e::ZERO, fileMenuPrintAction,  "Print slot: printing web page");
 
 }
 
-void file_menu::FileMenu::updateCenterWindow(const QString & contentSource, const void * data) const {
-	LOG_INFO(logger::info_level_e::ZERO, fileMenuOpenAction,  "Send signal to main window to update the center window");
+void app::main_window::menu::FileMenu::updateCenterWindow(const QString & contentSource, const void * data) const {
+	LOG_INFO(app::logger::info_level_e::ZERO, fileMenuOpenAction,  "Send signal to main window to update the center window");
 	emit this->updateCenterWindowSignal(contentSource, data);
 }

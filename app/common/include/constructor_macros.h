@@ -8,8 +8,8 @@
  * @brief Constructor Macros file
 */
 
-/** @defgroup ConstructorMacrosGroup Constructor Macros Doxygen Group
- *  Constructor Macros
+/** @defgroup CommonGroup Common Macros and Functions Doxygen Group
+ *  Common Macros and Functions
  *  @{
  */
 
@@ -46,6 +46,6 @@
 	DISABLE_COPY(CLASS) \
 	DISABLE_MOVE(CLASS)
 
-/** @} */ // End of ConstructorMacrosGroup group
+/** @} */ // End of CommonGroup group
 
 #endif // CONSTRUCTOR_MACROS_H

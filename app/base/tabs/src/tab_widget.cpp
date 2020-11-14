@@ -22,59 +22,65 @@ LOGGING_CONTEXT(tabWidgetSearch, tabWidget.search, TYPE_LEVEL, INFO_VERBOSITY)
 LOGGING_CONTEXT(tabWidgetVisibility, tabWidget.visibility, TYPE_LEVEL, INFO_VERBOSITY)
 LOGGING_CONTEXT(tabWidgetTabs, tabWidget.tabs, TYPE_LEVEL, INFO_VERBOSITY)
 
-namespace tab_widget {
+namespace app {
+	namespace base {
+		namespace tab {
+			namespace tab_widget {
 
-	namespace {
-		/**
-		 * @brief minimum height
-		 *
-		 */
-		static constexpr int minHeight = 200;// px
+				namespace {
+					/**
+					 * @brief minimum height of the tab widget
+					 *
+					 */
+					static constexpr int tabMinHeight = 200;// px
 
-		/**
-		 * @brief minimum width
-		 *
-		 */
-		static constexpr int minWidth = 100;// px
+					/**
+					 * @brief minimum width of the tab widget
+					 *
+					 */
+					static constexpr int tabMinWidth = 100;// px
+				}
+
+			}
+		}
 	}
-
 }
 
-tab_widget::TabWidget::TabWidget(QWidget * parent): QTabWidget(parent) {
-	LOG_INFO(logger::info_level_e::ZERO, tabWidgetOverall,  "Tab widget constructor");
+app::base::tab::TabWidget::TabWidget(QWidget * parent): QTabWidget(parent) {
+	LOG_INFO(app::logger::info_level_e::ZERO, tabWidgetOverall,  "Tab widget constructor");
 	this->setMovable(true);
-	this->setMinimumHeight(tab_widget::minHeight);
-	this->setMinimumWidth(tab_widget::minWidth);
+	this->setMinimumHeight(app::base::tab::tab_widget::tabMinHeight);
+	this->setMinimumWidth(app::base::tab::tab_widget::tabMinWidth);
 
-	this->bar = std::make_shared<tab_bar::TabBar>(this, this->size().width());
+	this->bar = std::make_shared<app::base::tab::TabBar>(this, this->size().width());
 	this->setTabBar(this->bar);
 
 	this->setVisibleAttribute();
 
-	this->tabs = std::vector<std::shared_ptr<tab::Tab>>();
+	this->tabs = std::vector<std::shared_ptr<app::base::tab::Tab>>();
 
 }
 
-tab_widget::TabWidget::~TabWidget() {
-	LOG_INFO(logger::info_level_e::ZERO, tabWidgetOverall,  "Tab widget destructor");
+app::base::tab::TabWidget::~TabWidget() {
+	LOG_INFO(app::logger::info_level_e::ZERO, tabWidgetOverall,  "Tab widget destructor");
 }
 
-void tab_widget::TabWidget::setTabBar(std::shared_ptr<tab_bar::TabBar> newTabBar) {
+void app::base::tab::TabWidget::setTabBar(std::shared_ptr<app::base::tab::TabBar> newTabBar) {
 	QTabWidget::setTabBar(newTabBar.get());
 }
 
-CONST_GETTER(tab_widget::TabWidget::tabBar, std::shared_ptr<tab_bar::TabBar> &, this->bar)
+CONST_GETTER(app::base::tab::TabWidget::tabBar, std::shared_ptr<app::base::tab::TabBar> &, this->bar)
 
-void tab_widget::TabWidget::resizeEvent(QResizeEvent * event) {
+void app::base::tab::TabWidget::resizeEvent(QResizeEvent * event) {
 	QSize previousSize(event->oldSize());
 	QSize newSize(event->size());
-	LOG_INFO(logger::info_level_e::ZERO, tabWidgetSize,  "Tab widget resize from " << previousSize << " to " << newSize);
+	LOG_INFO(app::logger::info_level_e::ZERO, tabWidgetSize,  "Tab widget resize from " << previousSize << " to " << newSize);
 	int widgetWidth = this->size().width();
 	this->bar->setWidth(widgetWidth);
 
 	if (this->count() > 0) {
 		// Resize current tab
-		std::shared_ptr<tab::Tab> currentTab = this->widget(this->currentIndex(), true);
+		std::shared_ptr<app::base::tab::Tab> currentTab = this->widget(this->currentIndex(), true);
 		if (currentTab != Q_NULLPTR) {
 			currentTab->resize(newSize);
 		}
@@ -83,21 +89,21 @@ void tab_widget::TabWidget::resizeEvent(QResizeEvent * event) {
 	QTabWidget::resizeEvent(event);
 }
 
-void tab_widget::TabWidget::keyPressEvent(QKeyEvent * event) {
+void app::base::tab::TabWidget::keyPressEvent(QKeyEvent * event) {
 
 	QString userText(event->text());
 	if (userText.isEmpty()) {
 		userText = "No text provided";
 	}
 
-	LOG_INFO(logger::info_level_e::ZERO, tabWidgetSearch,  "User typed text " << userText << " to search");
+	LOG_INFO(app::logger::info_level_e::ZERO, tabWidgetSearch,  "User typed text " << userText << " to search");
 
 	QTabWidget::keyPressEvent(event);
 
 }
 
-int tab_widget::TabWidget::addTab(const std::shared_ptr<tab::Tab> & newTab, const QString & label, const QIcon & icon) {
-	LOG_INFO(logger::info_level_e::ZERO, tabWidgetTabs,  "Open tab with label " << label);
+int app::base::tab::TabWidget::addTab(const std::shared_ptr<app::base::tab::Tab> & newTab, const QString & label, const QIcon & icon) {
+	LOG_INFO(app::logger::info_level_e::ZERO, tabWidgetTabs,  "Open tab with label " << label);
 
 	const int index = this->count();
 
@@ -106,15 +112,15 @@ int tab_widget::TabWidget::addTab(const std::shared_ptr<tab::Tab> & newTab, cons
 	return tabIndex;
 }
 
-int tab_widget::TabWidget::insertTab(const int & index, const std::shared_ptr<tab::Tab> & newTab, const QString & label, const QIcon & icon) {
-	LOG_INFO(logger::info_level_e::ZERO, tabWidgetTabs,  "Insert tab with label " << label << " at position " << index);
+int app::base::tab::TabWidget::insertTab(const int & index, const std::shared_ptr<app::base::tab::Tab> & newTab, const QString & label, const QIcon & icon) {
+	LOG_INFO(app::logger::info_level_e::ZERO, tabWidgetTabs,  "Insert tab with label " << label << " at position " << index);
 
 	int tabIndex = -1;
 
 	EXCEPTION_ACTION_COND((index > this->count()), throw,  "Unable to add tab at index " << index << ". Valid range for argument index is 0 to " << this->count());
 
 	// Inserting tab into the vector before inserting to the QTabWidget because it will trigger an update of the status bar
-	std::vector<std::shared_ptr<tab::Tab>>::const_iterator tabsBegin = this->tabs.cbegin();
+	std::vector<std::shared_ptr<app::base::tab::Tab>>::const_iterator tabsBegin = this->tabs.cbegin();
 	this->tabs.insert((tabsBegin + index), newTab);
 
 	if (icon.isNull()) {
@@ -123,20 +129,20 @@ int tab_widget::TabWidget::insertTab(const int & index, const std::shared_ptr<ta
 		tabIndex = QTabWidget::insertTab(index, newTab.get(), label);
 	}
 
-	EXCEPTION_ACTION_COND((this->tabs.size() != static_cast<std::vector<std::shared_ptr<tab::Tab>>::size_type>(this->count())), throw,  "Number of tabs is not synchronized between QTabWidget and TabWidget. Number of tabs in QTabWidget is " << this->count() << ". Number of tabs in TabWidget is " << this->tabs.size());
+	EXCEPTION_ACTION_COND((this->tabs.size() != static_cast<std::vector<std::shared_ptr<app::base::tab::Tab>>::size_type>(this->count())), throw,  "Number of tabs is not synchronized between QTabWidget and TabWidget. Number of tabs in QTabWidget is " << this->count() << ". Number of tabs in TabWidget is " << this->tabs.size());
 
 	this->setVisibleAttribute();
 
 	return tabIndex;
 }
 
-void tab_widget::TabWidget::removeTab(const int & index) {
-	LOG_INFO(logger::info_level_e::ZERO, tabWidgetTabs,  "Close tab " << index);
+void app::base::tab::TabWidget::removeTab(const int & index) {
+	LOG_INFO(app::logger::info_level_e::ZERO, tabWidgetTabs,  "Close tab " << index);
 	QTabWidget::removeTab(index);
 	this->setVisibleAttribute();
 }
 
-void tab_widget::TabWidget::setVisibleAttribute() {
+void app::base::tab::TabWidget::setVisibleAttribute() {
 	int tabCount = this->count();
 	bool visibleFlag = false;
 	if (tabCount == 0) {
@@ -144,12 +150,12 @@ void tab_widget::TabWidget::setVisibleAttribute() {
 	} else {
 		visibleFlag = true;
 	}
-	LOG_INFO(logger::info_level_e::ZERO, tabWidgetVisibility,  "Set visibility of tab widget to " << visibleFlag);
+	LOG_INFO(app::logger::info_level_e::ZERO, tabWidgetVisibility,  "Set visibility of tab widget to " << visibleFlag);
 	this->setVisible(visibleFlag);
 }
 
-std::shared_ptr<tab::Tab> tab_widget::TabWidget::widget(const int & index, const bool & checkError) const {
-	std::shared_ptr<tab::Tab> requestedWidget = nullptr;
+std::shared_ptr<app::base::tab::Tab> app::base::tab::TabWidget::widget(const int & index, const bool & checkError) const {
+	std::shared_ptr<app::base::tab::Tab> requestedWidget = nullptr;
 	try {
 		requestedWidget = this->tabs.at(index);
 	} catch (std::out_of_range const & outOfRangeE) {

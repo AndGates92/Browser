@@ -17,62 +17,66 @@
  *  Logging functions and classes
  *  @{
  */
-namespace logging {
+namespace app {
 
-	/**
-	 * @brief Function: void handler(QtMsgType type, const QMessageLogContext & context, const QString & message)
-	 *
-	 * \param type: message type
-	 * \param context: context fo the message (function, file and category)
-	 * \param message: message to be printed
-	 *
-	 * This function initialize graphics
-	 */
-	void handler(QtMsgType type, const QMessageLogContext & context, const QString & message);
+	namespace logging {
 
-	/**
-	 * @brief Function: void set_default_category()
-	 *
-	 * This function enables message types depending on the MSG_TYPE_LEVEL macro
-	 */
-	void set_default_category();
+		/**
+		 * @brief Function: void handler(QtMsgType type, const QMessageLogContext & context, const QString & message)
+		 *
+		 * \param type: message type
+		 * \param context: context fo the message (function, file and category)
+		 * \param message: message to be printed
+		 *
+		 * This function initialize graphics
+		 */
+		void handler(QtMsgType type, const QMessageLogContext & context, const QString & message);
 
-	/**
-	 * @brief Function: void makeMsg(std::string & str, firstType headArg, otherTypes ... otherArgs)
-	 *
-	 * \param str: std::string to be expanded by adding arguments
-	 * \param headArg: argument to concatenate to the string provided as argument
-	 * \param otherArgs: following arguments to concatenate to the string provided as argument
-	 *
-	 * This function creates a message from a template parameter pack
-	 * It is required that the operator+ of std::string is overloaded with all types passed to the template parameter pack
-	 */
-	template <typename firstType, typename... otherTypes>
-	void makeMsg(std::string & str, firstType headArg, otherTypes ... otherArgs);
+		/**
+		 * @brief Function: void set_default_category()
+		 *
+		 * This function enables message types depending on the MSG_TYPE_LEVEL macro
+		 */
+		void set_default_category();
 
-	/**
-	 * @brief Function: void makeMsg(std::string & str, lastType arg)
-	 *
-	 * \param str: std::string to be expanded by adding arguments
-	 * \param arg: argument to concatenate to the string provided as argument
-	 *
-	 * This function creates a message from a template parameter pack
-	 * It is required that the operator+ of std::string is overloaded with all types passed to the template parameter pack
-	 */
-	template <typename lastType>
-	void makeMsg(std::string & str, lastType arg);
+		/**
+		 * @brief Function: void makeMsg(std::string & str, firstType headArg, otherTypes ... otherArgs)
+		 *
+		 * \param str: std::string to be expanded by adding arguments
+		 * \param headArg: argument to concatenate to the string provided as argument
+		 * \param otherArgs: following arguments to concatenate to the string provided as argument
+		 *
+		 * This function creates a message from a template parameter pack
+		 * It is required that the operator+ of std::string is overloaded with all types passed to the template parameter pack
+		 */
+		template <typename firstType, typename... otherTypes>
+		void makeMsg(std::string & str, firstType headArg, otherTypes ... otherArgs);
+
+		/**
+		 * @brief Function: void makeMsg(std::string & str, lastType arg)
+		 *
+		 * \param str: std::string to be expanded by adding arguments
+		 * \param arg: argument to concatenate to the string provided as argument
+		 *
+		 * This function creates a message from a template parameter pack
+		 * It is required that the operator+ of std::string is overloaded with all types passed to the template parameter pack
+		 */
+		template <typename lastType>
+		void makeMsg(std::string & str, lastType arg);
+
+	}
 
 }
 
 template <typename lastType>
-void logging::makeMsg(std::string & str, lastType arg) {
+void app::logging::makeMsg(std::string & str, lastType arg) {
 	str = str + arg;
 }
 
 template <typename firstType, typename... otherTypes>
-void logging::makeMsg(std::string & str, firstType headArg, otherTypes ... otherArgs) {
+void app::logging::makeMsg(std::string & str, firstType headArg, otherTypes ... otherArgs) {
 	str = str + headArg;
-	logging::makeMsg(str, otherArgs...);
+	app::logging::makeMsg(str, otherArgs...);
 }
 
 /** @} */ // End of LoggingGroup group

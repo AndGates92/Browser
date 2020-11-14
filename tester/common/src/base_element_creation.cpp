@@ -13,14 +13,14 @@
 
 LOGGING_CONTEXT(baseElementCreationOverall, baseElementCreation.overall, TYPE_LEVEL, INFO_VERBOSITY)
 
-base_element_creation::BaseElementCreation::BaseElementCreation() {
+tester::shared::BaseElementCreation::BaseElementCreation() {
 
-	LOG_INFO(logger::info_level_e::ZERO, baseElementCreationOverall,  "Base element creation constructor");
+	LOG_INFO(app::logger::info_level_e::ZERO, baseElementCreationOverall,  "Base element creation constructor");
 
 }
 
-base_element_creation::BaseElementCreation::~BaseElementCreation() {
+tester::shared::BaseElementCreation::~BaseElementCreation() {
 
-	LOG_INFO(logger::info_level_e::ZERO, baseElementCreationOverall,  "Base element creation destructor");
+	LOG_INFO(app::logger::info_level_e::ZERO, baseElementCreationOverall,  "Base element creation destructor");
 
 }

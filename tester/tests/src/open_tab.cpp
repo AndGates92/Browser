@@ -12,57 +12,64 @@
 #include "common/include/global_enums.h"
 #include "utility/logger/include/macros.h"
 #include "utility/qt/include/qt_operator.h"
-#include "utility/stl/include/stl_helper.h"
 #include "tests/include/open_tab.h"
-#include "base/tester/include/base_suite.h"
+#include "base/tester/include/suite.h"
 
 LOGGING_CONTEXT(openTabOverall, openTab.overall, TYPE_LEVEL, INFO_VERBOSITY)
 LOGGING_CONTEXT(openTabTest, openTab.test, TYPE_LEVEL, INFO_VERBOSITY)
 
-namespace open_tab {
+namespace tester {
 
-	namespace {
+	namespace test {
 
-		/**
-		 * @brief Path towards JSON file storing informations about commands and shortcuts
-		 *
-		 */
-		static const std::string jsonFilePath("json/");
+		namespace open_tab {
 
-		/**
-		 * @brief Filename storing informations about commands and shortcuts
-		 *
-		 */
-		static const std::string jsonFileName("tab_commands.json");
+			namespace {
 
-		/**
-		 * @brief Full path towards JSON file storing informations about commands and shortcuts
-		 *
-		 */
-		static const std::string jsonFileFullPath(jsonFilePath + jsonFileName);
+				/**
+				 * @brief Path towards JSON file storing informations about commands and shortcuts
+				 *
+				 */
+				static const std::string jsonFilePath("json/");
+
+				/**
+				 * @brief Filename storing informations about commands and shortcuts
+				 *
+				 */
+				static const std::string jsonFileName("tab_commands.json");
+
+				/**
+				 * @brief Full path towards JSON file storing informations about commands and shortcuts
+				 *
+				 */
+				static const std::string jsonFileFullPath(jsonFilePath + jsonFileName);
+
+			}
+
+		}
 
 	}
 
 }
 
-open_tab::OpenTab::OpenTab(const std::shared_ptr<base_suite::BaseSuite> & testSuite, const bool useShortcuts) : command_test::CommandTest(testSuite, "Open tab", open_tab::jsonFileFullPath, useShortcuts) {
-	LOG_INFO(logger::info_level_e::ZERO, openTabOverall,  "Creating test " << this->getName() << " in suite " << this->getSuite()->getName());
+tester::test::OpenTab::OpenTab(const std::shared_ptr<tester::base::Suite> & testSuite, const bool useShortcuts) : tester::base::CommandTest(testSuite, "Open tab", tester::test::open_tab::jsonFileFullPath, useShortcuts) {
+	LOG_INFO(app::logger::info_level_e::ZERO, openTabOverall,  "Creating test " << this->getName() << " in suite " << this->getSuite()->getName());
 }
 
-open_tab::OpenTab::~OpenTab() {
-	LOG_INFO(logger::info_level_e::ZERO, openTabOverall,  "Test " << this->getName() << " destructor");
+tester::test::OpenTab::~OpenTab() {
+	LOG_INFO(app::logger::info_level_e::ZERO, openTabOverall,  "Test " << this->getName() << " destructor");
 }
 
-void open_tab::OpenTab::testBody() {
-	LOG_INFO(logger::info_level_e::ZERO, openTabTest,  "Starting test " << this->getName() << " in suite " << this->getSuite()->getName());
+void tester::test::OpenTab::testBody() {
+	LOG_INFO(app::logger::info_level_e::ZERO, openTabTest,  "Starting test " << this->getName() << " in suite " << this->getSuite()->getName());
 
 	const std::string website("website.com");
-	LOG_INFO(logger::info_level_e::ZERO, openTabTest, "Open new tab with website " << website);
+	LOG_INFO(app::logger::info_level_e::ZERO, openTabTest, "Open new tab with website " << website);
 	this->openNewTab(website);
 
 	const std::string closeCommandName("close tab");
 	this->executeCommand(closeCommandName, std::string());
 
-	const std::shared_ptr<main_window::Core> & windowCore = this->windowWrapper->getWindowCore();
-	WAIT_FOR_CONDITION((windowCore->getTabCount() == 0), test_enums::error_type_e::TABS, "Closed tab with URL " + website + " - actual number of tabs " + std::to_string(windowCore->getTabCount()), 5000);
+	const std::shared_ptr<app::main_window::window::Core> & windowCore = this->windowWrapper->getWindowCore();
+	WAIT_FOR_CONDITION((windowCore->getTabCount() == 0), tester::shared::error_type_e::TABS, "Closed tab with URL " + website + " - actual number of tabs " + std::to_string(windowCore->getTabCount()), 5000);
 }

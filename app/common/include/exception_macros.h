@@ -12,8 +12,8 @@
 #include "utility/exception/include/browser_exception.h"
 #include "common/include/logging_functions.h"
 
-/** @defgroup ExceptionMacrosGroup Exception Macros Doxygen Group
- *  Exception Macros
+/** @defgroup CommonGroup Common Macros and Functions Doxygen Group
+ *  Common Macros and Functions
  *  @{
  */
 
@@ -54,8 +54,8 @@
 #define EXCEPTION_ACTION_INTERNAL(ACTION, CONDITION, ...)\
 	std::stringstream msgStream; \
 	msgStream << __VA_ARGS__; \
-	ACTION browser_exception::BrowserException(logging_functions::getDateTime().toStdString(), __LINE__, __FILE__, CONDITION, msgStream.str());
+	ACTION app::browser_exception::BrowserException(app::shared::getDateTime().toStdString(), __LINE__, __FILE__, CONDITION, msgStream.str());
 
-/** @} */ // End of ExceptionMacrosGroup group
+/** @} */ // End of CommonGroup group
 
 #endif // EXCEPTION_MACROS_H

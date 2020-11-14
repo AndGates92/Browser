@@ -13,20 +13,20 @@
 // Categories
 LOGGING_CONTEXT(mainWindowWrapperOverall, mainWindowWrapper.overall, TYPE_LEVEL, INFO_VERBOSITY)
 
-main_window::Wrapper::Wrapper(QWidget * parent, Qt::WindowFlags flags) : window(new main_window::MainWindow(parent, flags)) {
+app::main_window::window::Wrapper::Wrapper(QWidget * parent, Qt::WindowFlags flags) : window(new app::main_window::window::MainWindow(parent, flags)) {
 
-	LOG_INFO(logger::info_level_e::ZERO, mainWindowWrapperOverall,  "Main window wrapper constructor");
-
-}
-
-main_window::Wrapper::Wrapper(main_window::Wrapper && rhs) : window(std::exchange(rhs.window, Q_NULLPTR)) {
-	LOG_INFO(logger::info_level_e::ZERO, mainWindowWrapperOverall,  "Move constructor main window wrapper");
+	LOG_INFO(app::logger::info_level_e::ZERO, mainWindowWrapperOverall,  "Main window wrapper constructor");
 
 }
 
-main_window::Wrapper & main_window::Wrapper::operator=(main_window::Wrapper && rhs) {
+app::main_window::window::Wrapper::Wrapper(app::main_window::window::Wrapper && rhs) : window(std::exchange(rhs.window, Q_NULLPTR)) {
+	LOG_INFO(app::logger::info_level_e::ZERO, mainWindowWrapperOverall,  "Move constructor main window wrapper");
 
-	LOG_INFO(logger::info_level_e::ZERO, mainWindowWrapperOverall,  "Move assignment operator for main window wrapper");
+}
+
+app::main_window::window::Wrapper & app::main_window::window::Wrapper::operator=(app::main_window::window::Wrapper && rhs) {
+
+	LOG_INFO(app::logger::info_level_e::ZERO, mainWindowWrapperOverall,  "Move assignment operator for main window wrapper");
 
 	if (&rhs != this) {
 		this->window = std::move(rhs.window);
@@ -36,13 +36,13 @@ main_window::Wrapper & main_window::Wrapper::operator=(main_window::Wrapper && r
 	return *this;
 }
 
-main_window::Wrapper::~Wrapper() {
-	LOG_INFO(logger::info_level_e::ZERO, mainWindowWrapperOverall,  "Main window wrapper destructor");
+app::main_window::window::Wrapper::~Wrapper() {
+	LOG_INFO(app::logger::info_level_e::ZERO, mainWindowWrapperOverall,  "Main window wrapper destructor");
 }
 
-void main_window::Wrapper::show() {
-	LOG_INFO(logger::info_level_e::ZERO, mainWindowWrapperOverall,  "Show main window");
+void app::main_window::window::Wrapper::show() {
+	LOG_INFO(app::logger::info_level_e::ZERO, mainWindowWrapperOverall,  "Show main window");
 	this->window->show();
 }
 
-CONST_GETTER(main_window::Wrapper::getWindow, std::unique_ptr<main_window::MainWindow> &, this->window)
+CONST_GETTER(app::main_window::window::Wrapper::getWindow, std::unique_ptr<app::main_window::window::MainWindow> &, this->window)

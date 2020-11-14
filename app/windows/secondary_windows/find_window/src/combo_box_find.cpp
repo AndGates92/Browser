@@ -17,25 +17,25 @@
 // Categories
 LOGGING_CONTEXT(comboBoxFindOverall, comboBoxFind.overall, TYPE_LEVEL, INFO_VERBOSITY)
 
-find_window::ComboBoxFind::ComboBoxFind(const QIcon itemIcon, const QVariant itemUserData, const global_enums::offset_type_e itemDirection, std::unique_ptr<action::Action> itemAction) : combo_box_item::ComboBoxItem(itemIcon, itemUserData, itemAction), direction(itemDirection) {
-	LOG_INFO(logger::info_level_e::ZERO, comboBoxFindOverall,  "combo box find constructor with direction " << this->direction);
+app::find_window::ComboBoxFind::ComboBoxFind(const QIcon itemIcon, const QVariant itemUserData, const app::shared::offset_type_e itemDirection, std::unique_ptr<app::action::Action> itemAction) : app::combo_box_item::ComboBoxItem(itemIcon, itemUserData, itemAction), direction(itemDirection) {
+	LOG_INFO(app::logger::info_level_e::ZERO, comboBoxFindOverall,  "combo box find constructor with direction " << this->direction);
 
 }
 
-find_window::ComboBoxFind::ComboBoxFind(find_window::ComboBoxFind && rhs) : combo_box_item::ComboBoxItem(std::move(rhs)), direction(std::exchange(rhs.direction, global_enums::offset_type_e::IDLE)) {
-	LOG_INFO(logger::info_level_e::ZERO, comboBoxFindOverall,  "combo box find move constructor with direction " << this->direction);
+app::find_window::ComboBoxFind::ComboBoxFind(app::find_window::ComboBoxFind && rhs) : app::combo_box_item::ComboBoxItem(std::move(rhs)), direction(std::exchange(rhs.direction, app::shared::offset_type_e::IDLE)) {
+	LOG_INFO(app::logger::info_level_e::ZERO, comboBoxFindOverall,  "combo box find move constructor with direction " << this->direction);
 }
 
-find_window::ComboBoxFind & find_window::ComboBoxFind::operator=(find_window::ComboBoxFind && rhs) {
+app::find_window::ComboBoxFind & app::find_window::ComboBoxFind::operator=(app::find_window::ComboBoxFind && rhs) {
 
-	LOG_INFO(logger::info_level_e::ZERO, comboBoxFindOverall,  "Move assignment operator for combo box find with direction " << rhs.direction);
+	LOG_INFO(app::logger::info_level_e::ZERO, comboBoxFindOverall,  "Move assignment operator for combo box find with direction " << rhs.direction);
 
 	if (&rhs != this) {
-		combo_box_item::ComboBoxItem::operator=(std::move(rhs));
-		this->direction = std::exchange(rhs.direction, global_enums::offset_type_e::IDLE);
+		app::combo_box_item::ComboBoxItem::operator=(std::move(rhs));
+		this->direction = std::exchange(rhs.direction, app::shared::offset_type_e::IDLE);
 	}
 
 	return *this;
 }
 
-CONST_GETTER(find_window::ComboBoxFind::getDirection, global_enums::offset_type_e &, this->direction)
+CONST_GETTER(app::find_window::ComboBoxFind::getDirection, app::shared::offset_type_e &, this->direction)

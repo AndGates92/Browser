@@ -21,33 +21,41 @@
 // Categories
 LOGGING_CONTEXT(findButtonWindowSettingsOverall, findButtonWindowSettings.overall, TYPE_LEVEL, INFO_VERBOSITY)
 
-namespace find_window {
+namespace app {
 
-	namespace {
-		/**
-		 * @brief default layout stretch
-		 *
-		 */
-		static constexpr int defaultStretch = 0;
+	namespace find_window {
 
-		/**
-		 * @brief vertical spacing between widgets
-		 *
-		 */
-		static constexpr int widgetVSpacing = 10;
+		namespace settings {
 
-		/**
-		 * @brief horizontal spacing between widgets
-		 *
-		 */
-		static constexpr int widgetHSpacing = 10;
+			namespace {
+				/**
+				 * @brief default layout stretch
+				 *
+				 */
+				static constexpr int defaultStretch = 0;
+
+				/**
+				 * @brief vertical spacing between widgets
+				 *
+				 */
+				static constexpr int widgetVSpacing = 10;
+
+				/**
+				 * @brief horizontal spacing between widgets
+				 *
+				 */
+				static constexpr int widgetHSpacing = 10;
+			}
+
+		}
+
 	}
 
 }
 
-find_window::WindowSettings::WindowSettings(QWidget * parent) : QGroupBox("Settings", parent) {
+app::find_window::Settings::Settings(QWidget * parent) : QGroupBox("Settings", parent) {
 
-	LOG_INFO(logger::info_level_e::ZERO, findButtonWindowSettingsOverall,  "Creating find button window settings");
+	LOG_INFO(app::logger::info_level_e::ZERO, findButtonWindowSettingsOverall,  "Creating find button window settings");
 
 	// Create action
 	this->createActions();
@@ -69,11 +77,11 @@ find_window::WindowSettings::WindowSettings(QWidget * parent) : QGroupBox("Setti
 
 }
 
-find_window::WindowSettings::~WindowSettings() {
-	LOG_INFO(logger::info_level_e::ZERO, findButtonWindowSettingsOverall,  "Destructor of WindowSettings class");
+app::find_window::Settings::~Settings() {
+	LOG_INFO(app::logger::info_level_e::ZERO, findButtonWindowSettingsOverall,  "Destructor of Settings class");
 }
 
-void find_window::WindowSettings::widgetLayout() {
+void app::find_window::Settings::widgetLayout() {
 
 	// Layout
 	// -------------------------------------------------
@@ -85,7 +93,7 @@ void find_window::WindowSettings::widgetLayout() {
 	if (this->layout() == Q_NULLPTR) {
 		QVBoxLayout * layout = new QVBoxLayout(this);
 //		layout->setSizeConstraint(QLayout::SetFixedSize);
-		layout->setSpacing(find_window::widgetVSpacing);
+		layout->setSpacing(app::find_window::settings::widgetVSpacing);
 		this->setLayout(layout);
 	}
 
@@ -111,44 +119,44 @@ void find_window::WindowSettings::widgetLayout() {
 
 		QHBoxLayout * firstRowSettings = new QHBoxLayout(this);
 		// case sensitive check box
-		firstRowSettings->addWidget(this->caseSensitiveBox.get(), find_window::defaultStretch, Qt::AlignLeft);
-		firstRowSettings->addSpacing(find_window::widgetHSpacing);
+		firstRowSettings->addWidget(this->caseSensitiveBox.get(), app::find_window::settings::defaultStretch, Qt::AlignLeft);
+		firstRowSettings->addSpacing(app::find_window::settings::widgetHSpacing);
 		// direction dropdown
-		firstRowSettings->addWidget(this->findDirectionDropDown.get(), find_window::defaultStretch, Qt::AlignRight);
+		firstRowSettings->addWidget(this->findDirectionDropDown.get(), app::find_window::settings::defaultStretch, Qt::AlignRight);
 
 		layout->addLayout(firstRowSettings);
-		layout->addSpacing(find_window::widgetHSpacing);
-		layout->addWidget(this->matchFullWordOnlyBox.get(), find_window::defaultStretch, Qt::AlignLeft);
+		layout->addSpacing(app::find_window::settings::widgetHSpacing);
+		layout->addWidget(this->matchFullWordOnlyBox.get(), app::find_window::settings::defaultStretch, Qt::AlignLeft);
 
 	} catch (const std::bad_cast & badCastE) {
 		EXCEPTION_ACTION(throw, badCastE.what());
 	}
 }
 
-void find_window::WindowSettings::createActions() {
+void app::find_window::Settings::createActions() {
 
-	this->directionItems.emplace_back(QIcon(), QVariant(), global_enums::offset_type_e::UP, std::move(secondary_window::createAction(this, "Up", "Search item towards the top of the page", key_sequence::KeySequence(Qt::Key_K))));
-	this->directionItems.emplace_back(QIcon(), QVariant(), global_enums::offset_type_e::DOWN, std::move(secondary_window::createAction(this, "Down", "Search item towards the bottom of the page", key_sequence::KeySequence(Qt::Key_J))));
+	this->directionItems.emplace_back(QIcon(), QVariant(), app::shared::offset_type_e::UP, std::move(app::secondary_window::createAction(this, "Up", "Search item towards the top of the page", app::key_sequence::KeySequence(Qt::Key_K))));
+	this->directionItems.emplace_back(QIcon(), QVariant(), app::shared::offset_type_e::DOWN, std::move(app::secondary_window::createAction(this, "Down", "Search item towards the bottom of the page", app::key_sequence::KeySequence(Qt::Key_J))));
 
-	this->caseSensitiveAction = std::move(secondary_window::createAction(this, "Case sensitive search", "Enable/Disable case sensitive search", key_sequence::KeySequence(Qt::Key_C)));
-	this->matchFullWordOnlyAction = std::move(secondary_window::createAction(this, "Match full word only", "Enable/Disbale search of full words only", key_sequence::KeySequence(Qt::Key_M)));
+	this->caseSensitiveAction = std::move(app::secondary_window::createAction(this, "Case sensitive search", "Enable/Disable case sensitive search", app::key_sequence::KeySequence(Qt::Key_C)));
+	this->matchFullWordOnlyAction = std::move(app::secondary_window::createAction(this, "Match full word only", "Enable/Disbale search of full words only", app::key_sequence::KeySequence(Qt::Key_M)));
 }
 
-void find_window::WindowSettings::fillWidget() {
+void app::find_window::Settings::fillWidget() {
 
-	this->findDirectionDropDown = secondary_window::createComboBox<find_window::ComboBoxFind>(this, this->directionItems);
+	this->findDirectionDropDown = app::secondary_window::createComboBox<app::find_window::ComboBoxFind>(this, this->directionItems);
 
-	this->caseSensitiveBox = std::move(secondary_window::createCheckBox(this, this->caseSensitiveAction));
-	this->matchFullWordOnlyBox = std::move(secondary_window::createCheckBox(this, this->matchFullWordOnlyAction));
-
-}
-
-void find_window::WindowSettings::connectSignals() {
-	LOG_INFO(logger::info_level_e::ZERO, findButtonWindowSettingsOverall,  "Connect signals");
+	this->caseSensitiveBox = std::move(app::secondary_window::createCheckBox(this, this->caseSensitiveAction));
+	this->matchFullWordOnlyBox = std::move(app::secondary_window::createCheckBox(this, this->matchFullWordOnlyAction));
 
 }
 
-QSize find_window::WindowSettings::sizeHint() const {
+void app::find_window::Settings::connectSignals() {
+	LOG_INFO(app::logger::info_level_e::ZERO, findButtonWindowSettingsOverall,  "Connect signals");
+
+}
+
+QSize app::find_window::Settings::sizeHint() const {
 
 	int width = 0;
 
@@ -160,28 +168,28 @@ QSize find_window::WindowSettings::sizeHint() const {
 	}
 
 	// Adding 3 times the vertical spacing to account for spacing between widgets and top and bottom margins as well as space between 2 rows of widgets
-	int height = this->matchFullWordOnlyBox->height() + std::max(this->caseSensitiveBox->height(), this->findDirectionDropDown->height()) + 3 * find_window::widgetVSpacing;
+	int height = this->matchFullWordOnlyBox->height() + std::max(this->caseSensitiveBox->height(), this->findDirectionDropDown->height()) + 3 * app::find_window::settings::widgetVSpacing;
 
 	return QSize(width,height);
 }
 
-bool find_window::WindowSettings::isCaseSensitiveSearch() const {
+bool app::find_window::Settings::isCaseSensitiveSearch() const {
 	return (this->caseSensitiveBox->checkState() == Qt::Checked);
 }
 
-bool find_window::WindowSettings::isMatchFullWordSearch() const {
+bool app::find_window::Settings::isMatchFullWordSearch() const {
 	return (this->matchFullWordOnlyBox->checkState() == Qt::Checked);
 }
 
-global_enums::offset_type_e find_window::WindowSettings::getSearchDirection() const {
+app::shared::offset_type_e app::find_window::Settings::getSearchDirection() const {
 	const int index = this->findDirectionDropDown->currentIndex();
 	EXCEPTION_ACTION_COND((index == -1), throw, "Current index " << index << " is invalid to get the direction of search");
 	const QString text = this->findDirectionDropDown->itemText(index);
-	const auto & itemIt = std::find_if(this->directionItems.cbegin(), this->directionItems.cend(), [&] (const find_window::ComboBoxFind & item) {
+	const auto & itemIt = std::find_if(this->directionItems.cbegin(), this->directionItems.cend(), [&] (const app::find_window::ComboBoxFind & item) {
 		return (item.getText().compare(text.toStdString()) == 0);
 	});
 
-	global_enums::offset_type_e direction = global_enums::offset_type_e::IDLE;
+	app::shared::offset_type_e direction = app::shared::offset_type_e::IDLE;
 	if (itemIt != this->directionItems.cend()) {
 		direction = itemIt->getDirection();
 	}

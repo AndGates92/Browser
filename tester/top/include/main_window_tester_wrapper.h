@@ -23,7 +23,7 @@ namespace main_window_tester_wrapper {
 	 * @brief MainWindowTesterWrapper class
 	 *
 	 */
-	class MainWindowTesterWrapper final : public main_window::Wrapper {
+	class MainWindowTesterWrapper final : public app::main_window::window::Wrapper {
 
 		public:
 			/**
@@ -64,40 +64,40 @@ namespace main_window_tester_wrapper {
 			virtual ~MainWindowTesterWrapper();
 
 			/**
-			 * @brief Function: const std::unique_ptr<main_window_ctrl_wrapper::CtrlWrapper> & getWindowCtrl() const
+			 * @brief Function: const std::unique_ptr<app::main_window::window::CtrlWrapper> & getWindowCtrl() const
 			 *
 			 * \return main window controller
 			 *
 			 * This function returns the main window controller
 			 */
-			const std::unique_ptr<main_window_ctrl_wrapper::CtrlWrapper> & getWindowCtrl() const;
+			const std::unique_ptr<app::main_window::window::CtrlWrapper> & getWindowCtrl() const;
 
 			/**
-			 * @brief Function: const std::shared_ptr<main_window::Core> & getWindowCore() const
+			 * @brief Function: const std::shared_ptr<app::main_window::window::Core> & getWindowCore() const
 			 *
 			 * \return window core
 			 *
 			 * This method return the window core
 			 */
-			const std::shared_ptr<main_window::Core> & getWindowCore() const;
+			const std::shared_ptr<app::main_window::window::Core> & getWindowCore() const;
 
 			/**
-			 * @brief Function: const std::shared_ptr<main_window::PopupContainer> & getPopupContainer() const
+			 * @brief Function: const std::shared_ptr<app::main_window::popup::PopupContainer> & getPopupContainer() const
 			 *
 			 * \return popup container
 			 *
 			 * This method return the popup container of the window
 			 */
-			const std::shared_ptr<main_window::PopupContainer> & getPopupContainer() const;
+			const std::shared_ptr<app::main_window::popup::PopupContainer> & getPopupContainer() const;
 
 			/**
-			 * @brief Function: const std::shared_ptr<main_window::Tab> getCurrentTab() const
+			 * @brief Function: const std::shared_ptr<app::main_window::tab::Tab> getCurrentTab() const
 			 *
 			 * \return tab at the position of the current index or nullptr if none is opened
 			 *
 			 * This method return the tab at the position of the current index
 			 */
-			const std::shared_ptr<main_window::Tab> getCurrentTab() const;
+			const std::shared_ptr<app::main_window::tab::Tab> getCurrentTab() const;
 
 		protected:
 
