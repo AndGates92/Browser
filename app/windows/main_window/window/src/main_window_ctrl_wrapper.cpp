@@ -9,9 +9,9 @@
 // Qt libraries
 #include <QtGui/QKeyEvent>
 
-#include "main_window_ctrl_wrapper.h"
-#include "key_sequence.h"
-#include "exception_macros.h"
+#include "windows/main_window/window/include/main_window_ctrl_wrapper.h"
+#include "widgets/commands/include/key_sequence.h"
+#include "common/include/exception_macros.h"
 
 // Categories
 LOGGING_CONTEXT(mainWindowCtrlWrapperOverall, mainWindowCtrlWrapper.overall, TYPE_LEVEL, INFO_VERBOSITY)

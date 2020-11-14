@@ -8,7 +8,7 @@
  * @brief Scroll tab header file
  */
 
-#include "command_test.h"
+#include "base/tester/include/command_test.h"
 
 /** @defgroup ScrollTabGroup Scroll Tab Group
  *  Scroll tab functions and classes

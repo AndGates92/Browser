@@ -18,10 +18,10 @@
 #include <QtWidgets/QFileSystemModel>
 #include <QtWidgets/QTreeView>
 
-#include "action.h"
-#include "key_sequence.h"
-#include "constructor_macros.h"
-#include "secondary_window_interface.h"
+#include "widgets/commands/include/action.h"
+#include "widgets/commands/include/key_sequence.h"
+#include "common/include/constructor_macros.h"
+#include "windows/secondary_windows/base/include/secondary_window_interface.h"
 
 /** @defgroup FileHandlingWidgetsGroup File Handling Widgets Doxygen Group
  *  File Handling Widgets functions and classes

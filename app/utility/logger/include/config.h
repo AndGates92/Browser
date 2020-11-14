@@ -11,8 +11,8 @@
 #include <string>
 #include <memory>
 
-#include "enums.h"
-#include "singleton.h"
+#include "utility/logger/include/enums.h"
+#include "utility/stl/include/singleton.h"
 
 /** @defgroup LoggerGroup Logger Doxygen Group
  *  Logger functions and classes

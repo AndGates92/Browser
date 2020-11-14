@@ -10,11 +10,11 @@
 #include <QtCore/QtMessageHandler>
 #include <QtCore/QUnhandledException>
 
-#include "macros.h"
-#include "browser_exception.h"
-#include "logging.h"
-#include "test_runner.h"
-#include "browser_settings.h"
+#include "utility/logger/include/macros.h"
+#include "utility/exception/include/browser_exception.h"
+#include "utility/log/include/logging.h"
+#include "utility/include/test_runner.h"
+#include "settings/include/browser_settings.h"
 
 /** @addtogroup TesterGroup
  *  @{

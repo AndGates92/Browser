@@ -14,7 +14,7 @@
 #include <QtCore/QString>
 #include <QtCore/QFile>
 
-#include "type_print_macros.h"
+#include "common/include/type_print_macros.h"
 
 /** @defgroup JsonWrapperGroup JSON Wrapper Doxygen Group
  *  JSON Wrapper control functions and classes

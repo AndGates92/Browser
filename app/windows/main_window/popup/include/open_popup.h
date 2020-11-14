@@ -11,9 +11,9 @@
 #include <QtCore/QLoggingCategory>
 #include <QtWidgets/QWidget>
 
-#include "open_content.h"
-#include "main_window_popup_base.h"
-#include "constructor_macros.h"
+#include "base/file_handling/include/open_content.h"
+#include "windows/main_window/popup/include/main_window_popup_base.h"
+#include "common/include/constructor_macros.h"
 
 /** @defgroup OpenPopupGroup Open Popup Widget Doxygen Group
  *  Open popup menu functions and classes

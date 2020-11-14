@@ -9,8 +9,8 @@
 // Qt libraries
 #include <QtGui/QKeyEvent>
 
-#include "macros.h"
-#include "tab_history.h"
+#include "utility/logger/include/macros.h"
+#include "base/tabs/include/tab_history.h"
 
 // Categories
 LOGGING_CONTEXT(tabHistoryOverall, tabHistory.overall, TYPE_LEVEL, INFO_VERBOSITY)

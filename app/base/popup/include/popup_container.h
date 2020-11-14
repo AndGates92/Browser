@@ -10,10 +10,10 @@
 
 #include <memory>
 
-#include "constructor_macros.h"
-#include "smart_ptr_macros.h"
-#include "overlayed_widget.h"
-#include "popup_base.h"
+#include "common/include/constructor_macros.h"
+#include "common/include/smart_ptr_macros.h"
+#include "base/overlay/include/overlayed_widget.h"
+#include "base/popup/include/popup_base.h"
 
 /** @defgroup PopupContainerGroup Popup Container Doxygen Group
  *  Pop up container functions and classes

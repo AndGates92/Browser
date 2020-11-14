@@ -9,13 +9,13 @@
 // Qt libraries
 #include <QtCore/QUnhandledException>
 
-#include "exception_macros.h"
-#include "global_enums.h"
-#include "macros.h"
-#include "test_factory.h"
-#include "base_suite.h"
-#include "test_runner.h"
-#include "browser_settings.h"
+#include "common/include/exception_macros.h"
+#include "common/include/global_enums.h"
+#include "utility/logger/include/macros.h"
+#include "factories/include/test_factory.h"
+#include "base/tester/include/base_suite.h"
+#include "utility/include/test_runner.h"
+#include "settings/include/browser_settings.h"
 
 LOGGING_CONTEXT(testRunnerOverall, testRunner.overall, TYPE_LEVEL, INFO_VERBOSITY)
 LOGGING_CONTEXT(testRunnerResult, testRunner.result, TYPE_LEVEL, INFO_VERBOSITY)

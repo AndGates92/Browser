@@ -6,11 +6,11 @@
  * @brief Main Window Page Data functions
  */
 
-#include "main_window_page_data.h"
-#include "global_enums.h"
-#include "macros.h"
-#include "function_macros.h"
-#include "exception_macros.h"
+#include "windows/main_window/tabs/include/main_window_page_data.h"
+#include "common/include/global_enums.h"
+#include "utility/logger/include/macros.h"
+#include "common/include/function_macros.h"
+#include "common/include/exception_macros.h"
 
 // Categories
 LOGGING_CONTEXT(mainWindowPageDataOverall, mainWindowPageData.overall, TYPE_LEVEL, INFO_VERBOSITY)

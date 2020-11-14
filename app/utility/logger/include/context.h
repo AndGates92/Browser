@@ -13,8 +13,8 @@
 
 #include <QtCore/QLoggingCategory>
 
-#include "enums.h"
-#include "browser_settings.h"
+#include "utility/logger/include/enums.h"
+#include "settings/include/browser_settings.h"
 
 /** @defgroup LoggerGroup Logger Doxygen Group
  *  Logger functions and classes

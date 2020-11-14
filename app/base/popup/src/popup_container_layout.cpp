@@ -9,8 +9,8 @@
 // Qt libraries
 #include <QtWidgets/QWidget>
 
-#include "popup_container_layout.h"
-#include "macros.h"
+#include "base/popup/include/popup_container_layout.h"
+#include "utility/logger/include/macros.h"
 
 // Categories
 LOGGING_CONTEXT(popupContainerLayoutOverall, popupContainerLayout.overall, TYPE_LEVEL, INFO_VERBOSITY)

@@ -6,16 +6,16 @@
  * @brief Command suite functions
  */
 
-#include "macros.h"
-#include "command_suite.h"
-#include "launch_app.h"
-#include "open_tab.h"
-#include "move_tab.h"
-#include "find_tab.h"
-#include "reload_tab.h"
-#include "scroll_tab.h"
-#include "history_tab.h"
-#include "open_file.h"
+#include "utility/logger/include/macros.h"
+#include "suites/include/command_suite.h"
+#include "tests/include/launch_app.h"
+#include "tests/include/open_tab.h"
+#include "tests/include/move_tab.h"
+#include "tests/include/find_tab.h"
+#include "tests/include/reload_tab.h"
+#include "tests/include/scroll_tab.h"
+#include "tests/include/history_tab.h"
+#include "tests/include/open_file.h"
 
 LOGGING_CONTEXT(commandSuiteOverall, commandSuite.overall, TYPE_LEVEL, INFO_VERBOSITY)
 

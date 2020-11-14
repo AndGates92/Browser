@@ -6,9 +6,9 @@
  * @brief Printable Object functions
  */
 
-#include "macros.h"
-#include "global_enums.h"
-#include "printable_object.h"
+#include "utility/logger/include/macros.h"
+#include "common/include/global_enums.h"
+#include "utility/log/include/printable_object.h"
 
 // Categories
 LOGGING_CONTEXT(printableObjectOverall, printableObject.overall, TYPE_LEVEL, INFO_VERBOSITY)

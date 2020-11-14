@@ -10,8 +10,8 @@
 #include <QtCore/QLoggingCategory>
 #include <QtGui/QKeyEvent>
 
-#include "macros.h"
-#include "main_window_tab_load_manager.h"
+#include "utility/logger/include/macros.h"
+#include "windows/main_window/tabs/include/main_window_tab_load_manager.h"
 
 // Categories
 LOGGING_CONTEXT(mainWindowTabLoadManagerOverall, mainWindowTabLoadManager.overall, TYPE_LEVEL, INFO_VERBOSITY)

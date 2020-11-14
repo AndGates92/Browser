@@ -8,8 +8,8 @@
  * @brief Web Engine Settings header file
 */
 
-#include "web_engine_settings.h"
-#include "global_enums.h"
+#include "base/tabs/include/web_engine_settings.h"
+#include "common/include/global_enums.h"
 
 /** @defgroup MainWindowWebEngineSettingsGroup Web Engine Settings Doxygen Group
  *  Web Engine Settings functions and classes

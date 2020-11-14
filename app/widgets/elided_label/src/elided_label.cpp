@@ -9,11 +9,11 @@
 // Qt libraries
 #include <QtGui/QPainter>
 
-#include "cpp_operator.h"
-#include "function_macros.h"
-#include "macros.h"
-#include "global_enums.h"
-#include "elided_label.h"
+#include "utility/stl/include/cpp_operator.h"
+#include "common/include/function_macros.h"
+#include "utility/logger/include/macros.h"
+#include "common/include/global_enums.h"
+#include "widgets/elided_label/include/elided_label.h"
 
 // Categories
 LOGGING_CONTEXT(elidedLabelOverall, elidedLabel.overall, TYPE_LEVEL, INFO_VERBOSITY)

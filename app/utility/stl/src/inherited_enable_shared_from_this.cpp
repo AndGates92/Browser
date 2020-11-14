@@ -6,9 +6,7 @@
  * @brief Inherited Enable Shared From This functions
  */
 
-// Qt libraries
-
-#include "inherited_enable_shared_from_this.h"
+#include "utility/stl/include/inherited_enable_shared_from_this.h"
 
 // Categories
 LOGGING_CONTEXT(inheritedEnableSharedFromThisOverall, inheritedEnableSharedFromThis.overall, TYPE_LEVEL, INFO_VERBOSITY)

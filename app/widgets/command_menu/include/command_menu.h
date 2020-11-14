@@ -18,8 +18,8 @@
 #include <QtGui/QResizeEvent>
 #include <QtGui/QMouseEvent>
 
-#include "command_menu_model.h"
-#include "constructor_macros.h"
+#include "widgets/command_menu/include/command_menu_model.h"
+#include "common/include/constructor_macros.h"
 
 /** @defgroup CommandMenuGroup Command Menu Doxygen Group
  *  Command Menu functions and classes

@@ -2,14 +2,14 @@
 #define SMART_PTR_MACROS_H
 /**
  * @copyright
- * @file constructor_macros.h
+ * @file smart_ptr_macros.h
  * @author Andrea Gianarda
  * @date 27th of March 2020
- * @brief Constructor Macros file
+ * @brief Smart Pointer Macros file
 */
 
-/** @defgroup ConstructorMacrosGroup Constructor Macros Doxygen Group
- *  Constructor Macros
+/** @defgroup SmartPtrMacrosGroup Smart Pointer Macros Doxygen Group
+ *  Smart Pointer Macros
  *  @{
  */
 
@@ -50,6 +50,6 @@
 	INHERITED_SHARED_FROM_THIS(DERIVED, BASE) \
 	INHERITED_WEAK_FROM_THIS(DERIVED)
 
-/** @} */ // End of ConstructorMacrosGroup group
+/** @} */ // End of SmartPtrMacrosGroup group
 
 #endif // SMART_PTR_MACROS_H

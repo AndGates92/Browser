@@ -14,9 +14,9 @@
 #include <QtWidgets/QWidget>
 #include <QtWidgets/QMenuBar>
 
-#include "open_button_window.h"
-#include "menu.h"
-#include "constructor_macros.h"
+#include "windows/secondary_windows/open_window/include/open_button_window.h"
+#include "base/menu/include/menu.h"
+#include "common/include/constructor_macros.h"
 
 /** @defgroup FileMenuGroup File Menu Doxygen Group
  *  File Menu functions and classes

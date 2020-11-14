@@ -11,7 +11,7 @@
 #include <memory>
 #include <string>
 
-#include "printable_object.h"
+#include "utility/log/include/printable_object.h"
 
 /** @defgroup ErrorDataGroup Error Data Doxygen Group
  *  Error Data functions and classes

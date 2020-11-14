@@ -9,12 +9,12 @@
 #include <QtTest/QTest>
 #include <QtGui/QKeySequence>
 
-#include "global_enums.h"
-#include "macros.h"
-#include "qt_operator.h"
-#include "stl_helper.h"
-#include "open_tab.h"
-#include "base_suite.h"
+#include "common/include/global_enums.h"
+#include "utility/logger/include/macros.h"
+#include "utility/qt/include/qt_operator.h"
+#include "utility/stl/include/stl_helper.h"
+#include "tests/include/open_tab.h"
+#include "base/tester/include/base_suite.h"
 
 LOGGING_CONTEXT(openTabOverall, openTab.overall, TYPE_LEVEL, INFO_VERBOSITY)
 LOGGING_CONTEXT(openTabTest, openTab.test, TYPE_LEVEL, INFO_VERBOSITY)

@@ -14,14 +14,14 @@
 #include <QtGui/QKeyEvent>
 #include <QtCore/QObject>
 
-#include "cpp_operator.h"
-#include "main_window_menu_bar.h"
-#include "main_window_status_bar.h"
-#include "main_window_tab_widget.h"
-#include "command_menu.h"
-#include "macros.h"
-#include "global_enums.h"
-#include "main_window.h"
+#include "utility/stl/include/cpp_operator.h"
+#include "windows/main_window/window/include/main_window.h"
+#include "windows/main_window/menu/include/main_window_menu_bar.h"
+#include "windows/main_window/statusbar/include/main_window_status_bar.h"
+#include "windows/main_window/tabs/include/main_window_tab_widget.h"
+#include "widgets/command_menu/include/command_menu.h"
+#include "utility/logger/include/macros.h"
+#include "common/include/global_enums.h"
 
 // Categories
 LOGGING_CONTEXT(mainWindowOverall, mainWindow.overall, TYPE_LEVEL, INFO_VERBOSITY)

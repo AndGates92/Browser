@@ -10,9 +10,9 @@
 #include <QtCore/QLoggingCategory>
 #include <QtCore/QVariant>
 
-#include "macros.h"
-#include "function_macros.h"
-#include "combo_box_find.h"
+#include "utility/logger/include/macros.h"
+#include "common/include/function_macros.h"
+#include "windows/secondary_windows/find_window/include/combo_box_find.h"
 
 // Categories
 LOGGING_CONTEXT(comboBoxFindOverall, comboBoxFind.overall, TYPE_LEVEL, INFO_VERBOSITY)

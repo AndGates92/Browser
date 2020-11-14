@@ -12,10 +12,10 @@
 #include <QtCore/QString>
 #include <QtWebEngineWidgets/QWebEnginePage>
 
-#include "global_enums.h"
-#include "tab_component_widget.h"
-#include "constructor_macros.h"
-#include "find_settings.h"
+#include "common/include/global_enums.h"
+#include "base/tabs/include/tab_component_widget.h"
+#include "common/include/constructor_macros.h"
+#include "windows/common/include/find_settings.h"
 
 /** @defgroup TabSearchGroup Tab Search Doxygen Group
  *  Tab Search functions and classes

@@ -9,13 +9,13 @@
 #include <QtTest/QTest>
 #include <QtGui/QKeySequence>
 
-#include "global_enums.h"
-#include "macros.h"
-#include "qt_operator.h"
-#include "stl_helper.h"
-#include "main_window_constants.h"
-#include "history_tab.h"
-#include "base_suite.h"
+#include "common/include/global_enums.h"
+#include "utility/logger/include/macros.h"
+#include "utility/qt/include/qt_operator.h"
+#include "utility/stl/include/stl_helper.h"
+#include "windows/main_window/common/include/main_window_constants.h"
+#include "tests/include/history_tab.h"
+#include "base/tester/include/base_suite.h"
 
 LOGGING_CONTEXT(historyTabOverall, historyTab.overall, TYPE_LEVEL, INFO_VERBOSITY)
 LOGGING_CONTEXT(historyTabTest, historyTab.test, TYPE_LEVEL, INFO_VERBOSITY)

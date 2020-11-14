@@ -8,7 +8,7 @@
 
 #include <iostream>
 
-#include "main_window_tester_wrapper.h"
+#include "top/include/main_window_tester_wrapper.h"
 
 // Categories
 LOGGING_CONTEXT(mainWindowTesterWrapperOverall, mainWindowTesterWrapper.overall, TYPE_LEVEL, INFO_VERBOSITY)

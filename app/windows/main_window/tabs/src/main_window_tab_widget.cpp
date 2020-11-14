@@ -6,13 +6,13 @@
  * @brief Main Window Tab Widget functions
  */
 
-#include "cpp_operator.h"
-#include "main_window_shared_functions.h"
-#include "main_window_constants.h"
-#include "type_print_macros.h"
-#include "exception_macros.h"
-#include "main_window_web_engine_page.h"
-#include "main_window_tab_widget.h"
+#include "utility/stl/include/cpp_operator.h"
+#include "windows/main_window/common/include/main_window_shared_functions.h"
+#include "windows/main_window/common/include/main_window_constants.h"
+#include "common/include/type_print_macros.h"
+#include "common/include/exception_macros.h"
+#include "windows/main_window/tabs/include/main_window_web_engine_page.h"
+#include "windows/main_window/tabs/include/main_window_tab_widget.h"
 
 // Categories
 LOGGING_CONTEXT(mainWindowTabWidgetOverall, mainWindowTabWidget.overall, TYPE_LEVEL, INFO_VERBOSITY)

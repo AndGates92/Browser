@@ -8,9 +8,9 @@
  * @brief Exception Macros file
 */
 
-#include "global_macros.h"
-#include "browser_exception.h"
-#include "logging_functions.h"
+#include "common/include/global_macros.h"
+#include "utility/exception/include/browser_exception.h"
+#include "common/include/logging_functions.h"
 
 /** @defgroup ExceptionMacrosGroup Exception Macros Doxygen Group
  *  Exception Macros

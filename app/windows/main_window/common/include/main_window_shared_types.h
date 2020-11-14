@@ -8,7 +8,7 @@
  * @brief Main Window Shared Types header file
 */
 
-#include "type_print_macros.h"
+#include "common/include/type_print_macros.h"
 
 /** @defgroup MainWindowSharedTypesGroup Main Window Shared Types Doxygen Group
  *  Main Window Shared Types functions and class

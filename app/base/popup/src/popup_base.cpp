@@ -9,10 +9,10 @@
 // Qt libraries
 #include <QtGui/QFont>
 
-#include "popup_base.h"
-#include "key_sequence.h"
-#include "macros.h"
-#include "global_enums.h"
+#include "base/popup/include/popup_base.h"
+#include "widgets/commands/include/key_sequence.h"
+#include "utility/logger/include/macros.h"
+#include "common/include/global_enums.h"
 
 // Categories
 LOGGING_CONTEXT(popupBaseOverall, PopupBase.overall, TYPE_LEVEL, INFO_VERBOSITY)

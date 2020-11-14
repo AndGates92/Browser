@@ -13,12 +13,12 @@
 // Qt libraries
 #include <QtCore/QObject>
 
-#include "macros.h"
-#include "global_enums.h"
-#include "find_button_window.h"
-#include "menu.h"
-#include "constructor_macros.h"
-#include "find_settings.h"
+#include "utility/logger/include/macros.h"
+#include "common/include/global_enums.h"
+#include "windows/secondary_windows/find_window/include/find_button_window.h"
+#include "base/menu/include/menu.h"
+#include "common/include/constructor_macros.h"
+#include "windows/common/include/find_settings.h"
 
 /** @defgroup EditMenuGroup Edit Menu Doxygen Group
  *  Edit Menu functions and classes

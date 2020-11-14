@@ -10,8 +10,8 @@
 
 #include <QtWebEngineWidgets/QWebEngineProfile>
 
-#include "global_enums.h"
-#include "constructor_macros.h"
+#include "common/include/global_enums.h"
+#include "common/include/constructor_macros.h"
 
 /** @defgroup WebEngineProfileGroup Web Engine Profile Doxygen Group
  *  Web Engine Profile functions and classes

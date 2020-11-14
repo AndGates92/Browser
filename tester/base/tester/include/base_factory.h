@@ -11,10 +11,10 @@
 #include <memory>
 #include <set>
 
-#include "constructor_macros.h"
-#include "printable_object.h"
-#include "base_suite.h"
-#include "base_element_creation.h"
+#include "common/include/constructor_macros.h"
+#include "utility/log/include/printable_object.h"
+#include "base/tester/include/base_suite.h"
+#include "common/include/base_element_creation.h"
 
 /** @defgroup BaseFactoryGroup Base Factory Group
  *  Base factory functions and classes

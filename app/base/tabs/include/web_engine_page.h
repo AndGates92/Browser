@@ -11,9 +11,9 @@
 // Qt libraries
 #include <QtWebEngineWidgets/QWebEnginePage>
 
-#include "web_engine_profile.h"
-#include "global_enums.h"
-#include "constructor_macros.h"
+#include "base/tabs/include/web_engine_profile.h"
+#include "common/include/global_enums.h"
+#include "common/include/constructor_macros.h"
 
 /** @defgroup WebEnginePageGroup Web Engine Page Doxygen Group
  *  Web Engine Page functions and classes

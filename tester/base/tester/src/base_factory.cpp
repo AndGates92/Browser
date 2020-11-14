@@ -6,10 +6,10 @@
  * @brief Base factory functions
  */
 
-#include "global_enums.h"
-#include "macros.h"
-#include "function_macros.h"
-#include "base_factory.h"
+#include "common/include/global_enums.h"
+#include "utility/logger/include/macros.h"
+#include "common/include/function_macros.h"
+#include "base/tester/include/base_factory.h"
 
 LOGGING_CONTEXT(baseFactoryOverall, baseFactory.overall, TYPE_LEVEL, INFO_VERBOSITY)
 

@@ -9,11 +9,11 @@
 // Qt libraries
 #include <QtGui/QKeyEvent>
 
-#include "cpp_operator.h"
-#include "macros.h"
-#include "function_macros.h"
-#include "global_functions.h"
-#include "main_window_web_engine_page.h"
+#include "utility/stl/include/cpp_operator.h"
+#include "utility/logger/include/macros.h"
+#include "common/include/function_macros.h"
+#include "common/include/global_functions.h"
+#include "windows/main_window/tabs/include/main_window_web_engine_page.h"
 
 // Categories
 LOGGING_CONTEXT(mainWindowWebEnginePageOverall, mainWindowWebEnginePage.overall, TYPE_LEVEL, INFO_VERBOSITY)

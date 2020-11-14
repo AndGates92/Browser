@@ -6,12 +6,12 @@
  * @brief Open content functions
  */
 
-#include "macros.h"
-#include "function_macros.h"
-#include "global_enums.h"
-#include "cpp_operator.h"
-#include "open_content.h"
-#include "exception_macros.h"
+#include "utility/logger/include/macros.h"
+#include "common/include/function_macros.h"
+#include "common/include/global_enums.h"
+#include "utility/stl/include/cpp_operator.h"
+#include "base/file_handling/include/open_content.h"
+#include "common/include/exception_macros.h"
 
 // Categories
 LOGGING_CONTEXT(openContentOverall, openContent.overall, TYPE_LEVEL, INFO_VERBOSITY)

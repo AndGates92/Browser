@@ -10,11 +10,11 @@
 // Qt libraries
 #include <QtWidgets/QApplication>
 
-#include "macros.h"
-#include "global_enums.h"
-#include "main_window_wrapper.h"
-#include "init.h"
-#include "browser_settings.h"
+#include "utility/logger/include/macros.h"
+#include "common/include/global_enums.h"
+#include "windows/main_window/window/include/main_window_wrapper.h"
+#include "top/include/init.h"
+#include "settings/include/browser_settings.h"
 
 // Categories
 LOGGING_CONTEXT(initGraphicsOverall, init.graphics.overall, TYPE_LEVEL, INFO_VERBOSITY)

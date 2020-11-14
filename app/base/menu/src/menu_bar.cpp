@@ -8,9 +8,9 @@
 
 #include <iostream>
 
-#include "menu_bar.h"
-#include "global_enums.h"
-#include "macros.h"
+#include "base/menu/include/menu_bar.h"
+#include "common/include/global_enums.h"
+#include "utility/logger/include/macros.h"
 
 LOGGING_CONTEXT(menuBarOverall, menuBar.overall, TYPE_LEVEL, INFO_VERBOSITY)
 

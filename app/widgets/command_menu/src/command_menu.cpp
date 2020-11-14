@@ -10,9 +10,9 @@
 #include <QtGui/QPainter>
 #include <QtWidgets/QScrollBar>
 
-#include "cpp_operator.h"
-#include "macros.h"
-#include "command_menu.h"
+#include "utility/stl/include/cpp_operator.h"
+#include "utility/logger/include/macros.h"
+#include "widgets/command_menu/include/command_menu.h"
 
 // Categories
 LOGGING_CONTEXT(commandMenuOverall, commandMenu.overall, TYPE_LEVEL, INFO_VERBOSITY)

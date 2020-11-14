@@ -14,12 +14,12 @@
 // Qt libraries
 #include <QtWidgets/QWidget>
 
-#include "global_enums.h"
-#include "macros.h"
-#include "function_macros.h"
-#include "tab_shared_types.h"
-#include "constructor_macros.h"
-#include "tab.h"
+#include "common/include/global_enums.h"
+#include "utility/logger/include/macros.h"
+#include "common/include/function_macros.h"
+#include "base/tabs/include/tab_shared_types.h"
+#include "common/include/constructor_macros.h"
+#include "base/tabs/include/tab.h"
 
 /** @defgroup TabComponentWidgetGroup Tab Component Widget Doxygen Group
  *  Tab Component Widget functions and classes

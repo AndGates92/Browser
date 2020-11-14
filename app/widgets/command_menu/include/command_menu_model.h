@@ -14,7 +14,7 @@
 #include <QtCore/QModelIndex>
 #include <QtCore/QVariant>
 
-#include "constructor_macros.h"
+#include "common/include/constructor_macros.h"
 
 /** @defgroup CommandMenuModelGroup Command Menu Model Doxygen Group
  *  Command Menu Model functions and classes

@@ -6,11 +6,11 @@
  * @brief Popup container menu functions
  */
 
-#include "popup_container.h"
-#include "popup_container_layout.h"
-#include "exception_macros.h"
-#include "macros.h"
-#include "global_enums.h"
+#include "base/popup/include/popup_container.h"
+#include "base/popup/include/popup_container_layout.h"
+#include "common/include/exception_macros.h"
+#include "utility/logger/include/macros.h"
+#include "common/include/global_enums.h"
 
 // Categories
 LOGGING_CONTEXT(popupContainerOverall, popupContainer.overall, TYPE_LEVEL, INFO_VERBOSITY)

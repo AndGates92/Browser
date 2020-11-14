@@ -8,11 +8,11 @@
 
 #include <iostream>
 
-#include "cpp_operator.h"
-#include "exception_macros.h"
-#include "global_qfunctions.h"
-#include "function_macros.h"
-#include "main_window_core.h"
+#include "utility/stl/include/cpp_operator.h"
+#include "common/include/exception_macros.h"
+#include "common/include/global_qfunctions.h"
+#include "common/include/function_macros.h"
+#include "windows/main_window/window/include/main_window_core.h"
 
 // Categories
 LOGGING_CONTEXT(mainWindowCoreOverall, mainWindowCore.overall, TYPE_LEVEL, INFO_VERBOSITY)

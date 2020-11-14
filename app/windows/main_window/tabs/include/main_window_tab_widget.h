@@ -13,13 +13,13 @@
 // Qt libraries
 #include <QtWidgets/QWidget>
 
-#include "main_window_shared_types.h"
-#include "main_window_page_data.h"
-#include "main_window_tab.h"
-#include "tab_widget.h"
-#include "global_constants.h"
-#include "constructor_macros.h"
-#include "find_settings.h"
+#include "windows/main_window/common/include/main_window_shared_types.h"
+#include "windows/main_window/tabs/include/main_window_page_data.h"
+#include "windows/main_window/tabs/include/main_window_tab.h"
+#include "windows/common/include/find_settings.h"
+#include "base/tabs/include/tab_widget.h"
+#include "common/include/global_constants.h"
+#include "common/include/constructor_macros.h"
 
 /** @defgroup MainWindowTabWidgetGroup Main Window Tab Widget Doxygen Group
  *  Main Window tab widget functions and classes

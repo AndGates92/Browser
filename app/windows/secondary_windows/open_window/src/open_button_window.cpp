@@ -14,12 +14,12 @@
 #include <QtWidgets/QVBoxLayout>
 #include <QtWidgets/QLayoutItem>
 
-#include "cpp_operator.h"
-#include "macros.h"
-#include "global_enums.h"
-#include "exception_macros.h"
-#include "open_button_window.h"
-#include "secondary_window_utility.h"
+#include "utility/stl/include/cpp_operator.h"
+#include "utility/logger/include/macros.h"
+#include "common/include/global_enums.h"
+#include "common/include/exception_macros.h"
+#include "windows/secondary_windows/open_window/include/open_button_window.h"
+#include "windows/secondary_windows/common/include/secondary_window_utility.h"
 
 // Categories
 LOGGING_CONTEXT(openButtonWindowOverall, openButtonWindow.overall, TYPE_LEVEL, INFO_VERBOSITY)

@@ -10,7 +10,7 @@
 #include <sstream>
 #include <string>
 
-#include "global_functions.h"
+#include "common/include/global_functions.h"
 
 LOGGING_CONTEXT(readFileOverall, readFile.overall, TYPE_LEVEL, INFO_VERBOSITY)
 

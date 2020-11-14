@@ -8,8 +8,8 @@
  * @brief Command test header file
  */
 
-#include "main_window_json_action.h"
-#include "base_test.h"
+#include "windows/main_window/json/include/main_window_json_action.h"
+#include "base/tester/include/base_test.h"
 
 /** @defgroup CommandTestGroup Command Test Group
  *  Command test functions and classes

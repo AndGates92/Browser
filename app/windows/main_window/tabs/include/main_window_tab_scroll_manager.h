@@ -11,9 +11,9 @@
 // Qt libraries
 #include <QtWidgets/QWidget>
 
-#include "global_enums.h"
-#include "constructor_macros.h"
-#include "tab_scroll_manager.h"
+#include "common/include/global_enums.h"
+#include "common/include/constructor_macros.h"
+#include "base/tabs/include/tab_scroll_manager.h"
 
 /** @defgroup MainWindowTabScrollManagerGroup Main Window Tab Scroll Manager Doxygen Group
  *  Main Window Tab Scroll Manager functions and classes

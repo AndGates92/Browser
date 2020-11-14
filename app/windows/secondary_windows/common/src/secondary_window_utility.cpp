@@ -11,11 +11,11 @@
 // Qt libraries
 #include <QtCore/QObject>
 
-#include "cpp_operator.h"
-#include "qt_operator.h"
-#include "macros.h"
-#include "global_enums.h"
-#include "secondary_window_utility.h"
+#include "utility/stl/include/cpp_operator.h"
+#include "utility/qt/include/qt_operator.h"
+#include "utility/logger/include/macros.h"
+#include "common/include/global_enums.h"
+#include "windows/secondary_windows/common/include/secondary_window_utility.h"
 
 namespace secondary_window_utility {
 

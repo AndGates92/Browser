@@ -11,9 +11,9 @@
 // Qt libraries
 #include <QtWidgets/QWidget>
 
-#include "global_enums.h"
-#include "constructor_macros.h"
-#include "tab_load_manager.h"
+#include "common/include/global_enums.h"
+#include "common/include/constructor_macros.h"
+#include "base/tabs/include/tab_load_manager.h"
 
 /** @defgroup MainWindowTabLoadManagerGroup Main Window Tab Load Manager Doxygen Group
  *  Main Window Tab Load Manager functions and classes

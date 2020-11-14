@@ -8,7 +8,7 @@
 
 #include <iostream>
 
-#include "main_window_wrapper.h"
+#include "windows/main_window/window/include/main_window_wrapper.h"
 
 // Categories
 LOGGING_CONTEXT(mainWindowWrapperOverall, mainWindowWrapper.overall, TYPE_LEVEL, INFO_VERBOSITY)

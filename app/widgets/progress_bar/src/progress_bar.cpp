@@ -6,10 +6,10 @@
  * @brief Progress bar functions
 */
 
-#include "progress_bar.h"
-#include "exception_macros.h"
-#include "macros.h"
-#include "global_enums.h"
+#include "widgets/progress_bar/include/progress_bar.h"
+#include "common/include/exception_macros.h"
+#include "utility/logger/include/macros.h"
+#include "common/include/global_enums.h"
 
 // Categories
 LOGGING_CONTEXT(progressBarOverall, progressBar.overall, TYPE_LEVEL, INFO_VERBOSITY)

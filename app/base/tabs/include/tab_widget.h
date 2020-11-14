@@ -14,11 +14,11 @@
 #include <QtWidgets/QTabWidget>
 #include <QtGui/QIcon>
 
-#include "macros.h"
-#include "global_enums.h"
-#include "tab_bar.h"
-#include "tab.h"
-#include "constructor_macros.h"
+#include "utility/logger/include/macros.h"
+#include "common/include/global_enums.h"
+#include "base/tabs/include/tab_bar.h"
+#include "base/tabs/include/tab.h"
+#include "common/include/constructor_macros.h"
 
 /** @defgroup TabWidgetGroup Tab Widget Doxygen Group
  *  Tab Widget functions and classes

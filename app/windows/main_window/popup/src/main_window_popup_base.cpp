@@ -6,9 +6,9 @@
  * @brief Main Window popup base functions
 */
 
-#include "main_window_popup_base.h"
-#include "macros.h"
-#include "global_enums.h"
+#include "windows/main_window/popup/include/main_window_popup_base.h"
+#include "utility/logger/include/macros.h"
+#include "common/include/global_enums.h"
 
 // Categories
 LOGGING_CONTEXT(mainWindowPopupBaseOverall, mainWindowPopupBase.overall, TYPE_LEVEL, INFO_VERBOSITY)

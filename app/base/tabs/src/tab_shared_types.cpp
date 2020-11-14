@@ -10,8 +10,8 @@
 
 #include <QtCore/QTextStream>
 
-#include "type_print_macros.h"
-#include "tab_shared_types.h"
+#include "common/include/type_print_macros.h"
+#include "base/tabs/include/tab_shared_types.h"
 
 namespace tab_shared_types {
 

@@ -10,11 +10,11 @@
 
 #include <list>
 
-#include "constructor_macros.h"
-#include "printable_object.h"
-#include "command_line_argument.h"
-#include "types.h"
-#include "json_action.h"
+#include "common/include/constructor_macros.h"
+#include "utility/log/include/printable_object.h"
+#include "settings/include/command_line_argument.h"
+#include "settings/include/types.h"
+#include "base/json/include/json_action.h"
 
 /** @defgroup CommandLineParserGroup Command Line Parser Group
  *  Command line parser functions and classes

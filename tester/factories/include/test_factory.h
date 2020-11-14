@@ -8,8 +8,8 @@
  * @brief Test factory header file
  */
 
-#include "constructor_macros.h"
-#include "base_factory.h"
+#include "common/include/constructor_macros.h"
+#include "base/tester/include/base_factory.h"
 
 /** @defgroup TestFactoryGroup Test Factory Group
  *  Test factory functions and classes

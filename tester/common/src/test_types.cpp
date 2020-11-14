@@ -10,8 +10,8 @@
 
 #include <QtCore/QTextStream>
 
-#include "type_print_macros.h"
-#include "test_enums.h"
+#include "common/include/type_print_macros.h"
+#include "common/include/test_enums.h"
 
 namespace test_enums {
 

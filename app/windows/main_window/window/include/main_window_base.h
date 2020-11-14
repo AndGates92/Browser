@@ -2,7 +2,7 @@
 #define MAIN_WINDOW_BASE_H
 /**
  * @copyright
- * @file main_window_ctrl_base.h
+ * @file main_window_base.h
  * @author Andrea Gianarda
  * @date 03rd of February 2020
  * @brief Main Window base class header file
@@ -12,7 +12,7 @@
 
 #include <QtCore/QLoggingCategory>
 
-#include "main_window_core.h"
+#include "windows/main_window/window/include/main_window_core.h"
 
 /** @defgroup MainWindowBaseGroup Main Window Doxygen Group
  *  Main Window base functions and classes

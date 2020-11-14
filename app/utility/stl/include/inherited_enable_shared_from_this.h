@@ -10,8 +10,8 @@
 
 #include <memory>
 
-#include "global_enums.h"
-#include "macros.h"
+#include "common/include/global_enums.h"
+#include "utility/logger/include/macros.h"
 
 /** @defgroup InheritedEnableSharedFromThisGroup Inherited Enable Shared From This Doxygen Group
  *  Inherited Enable Shared From This functions and classes

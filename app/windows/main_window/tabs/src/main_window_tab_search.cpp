@@ -9,11 +9,11 @@
 // Qt libraries
 #include <QtGui/QKeyEvent>
 
-#include "macros.h"
-#include "main_window_tab_search.h"
-#include "main_window_web_engine_view.h"
-#include "main_window_tab.h"
-#include "exception_macros.h"
+#include "utility/logger/include/macros.h"
+#include "windows/main_window/tabs/include/main_window_tab_search.h"
+#include "windows/main_window/tabs/include/main_window_web_engine_view.h"
+#include "windows/main_window/tabs/include/main_window_tab.h"
+#include "common/include/exception_macros.h"
 
 // Categories
 LOGGING_CONTEXT(mainWindowTabSearchOverall, mainWindowTabSearch.overall, TYPE_LEVEL, INFO_VERBOSITY)

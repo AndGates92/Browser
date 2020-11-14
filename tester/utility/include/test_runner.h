@@ -10,10 +10,10 @@
 
 #include <list>
 
-#include "test_enums.h"
-#include "constructor_macros.h"
-#include "printable_object.h"
-#include "command_line_parser.h"
+#include "common/include/test_enums.h"
+#include "common/include/constructor_macros.h"
+#include "utility/log/include/printable_object.h"
+#include "settings/include/command_line_parser.h"
 
 /** @defgroup TestRunnerGroup Test Runner Group
  *  Test runner functions and classes

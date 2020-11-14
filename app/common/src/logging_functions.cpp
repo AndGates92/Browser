@@ -9,7 +9,7 @@
 #include <QtCore/QDateTime>
 #include <QtCore/QTimeZone>
 
-#include "logging_functions.h"
+#include "common/include/logging_functions.h"
 
 QString logging_functions::getDateTime() {
 	QString datetimeStr = QString();

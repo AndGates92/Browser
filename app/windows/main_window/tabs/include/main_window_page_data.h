@@ -10,8 +10,8 @@
 
 #include <memory>
 
-#include "main_window_shared_types.h"
-#include "printable_object.h"
+#include "windows/main_window/common/include/main_window_shared_types.h"
+#include "utility/log/include/printable_object.h"
 
 /** @defgroup MainWindowPageDataGroup Main Window Page Data Doxygen Group
  *  Main Window page data functions and classes

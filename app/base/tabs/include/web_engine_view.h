@@ -13,9 +13,9 @@
 // Qt libraries
 #include <QtWebEngineWidgets/QWebEngineView>
 
-#include "global_enums.h"
-#include "constructor_macros.h"
-#include "web_engine_page.h"
+#include "common/include/global_enums.h"
+#include "common/include/constructor_macros.h"
+#include "base/tabs/include/web_engine_page.h"
 
 /** @defgroup WebEngineViewGroup Web Engine View Doxygen Group
  *  Web Engine View functions and classes

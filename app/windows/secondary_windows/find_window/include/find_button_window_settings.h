@@ -17,10 +17,10 @@
 #include <QtWidgets/QComboBox>
 #include <QtWidgets/QGroupBox>
 
-#include "global_enums.h"
-#include "constructor_macros.h"
-#include "action.h"
-#include "combo_box_find.h"
+#include "common/include/global_enums.h"
+#include "common/include/constructor_macros.h"
+#include "widgets/commands/include/action.h"
+#include "windows/secondary_windows/find_window/include/combo_box_find.h"
 
 /** @defgroup FindButtonWindowSettingsGroup Find Button Window Doxygen Group
  *  Find Button Window functions and classes

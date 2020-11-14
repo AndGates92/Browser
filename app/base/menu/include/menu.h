@@ -16,9 +16,9 @@
 #include <QtWidgets/QMenuBar>
 #include <QtWidgets/QShortcut>
 
-#include "key_sequence.h"
-#include "constructor_macros.h"
-#include "printable_object.h"
+#include "widgets/commands/include/key_sequence.h"
+#include "common/include/constructor_macros.h"
+#include "utility/log/include/printable_object.h"
 
 /** @defgroup MenuGroup Menu Doxygen Group
  *  Menu functions and classes

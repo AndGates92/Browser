@@ -8,7 +8,7 @@
  * @brief Global Enums file
 */
 
-#include "type_print_macros.h"
+#include "common/include/type_print_macros.h"
 
 /** @defgroup GlobalEnumsGroup Global Enums Doxygen Group
  *  Global Enums

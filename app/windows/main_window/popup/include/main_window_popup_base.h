@@ -11,9 +11,9 @@
 #include <QtCore/QLoggingCategory>
 #include <QtWidgets/QWidget>
 
-#include "popup_base.h"
+#include "base/popup/include/popup_base.h"
 
-#include "constructor_macros.h"
+#include "common/include/constructor_macros.h"
 
 /** @defgroup MainWindowPopupBaseGroup Main Window Popup Base Doxygen Group
  *  Main Window popup base functions and classes

@@ -10,10 +10,10 @@
 #include <QtGui/QResizeEvent>
 #include <QtGui/QKeyEvent>
 
-#include "cpp_operator.h"
-#include "function_macros.h"
-#include "exception_macros.h"
-#include "tab_widget.h"
+#include "utility/stl/include/cpp_operator.h"
+#include "common/include/function_macros.h"
+#include "common/include/exception_macros.h"
+#include "base/tabs/include/tab_widget.h"
 
 // Categories
 LOGGING_CONTEXT(tabWidgetOverall, tabWidget.overall, TYPE_LEVEL, INFO_VERBOSITY)

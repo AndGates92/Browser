@@ -12,9 +12,9 @@
 
 #include <QtCore/QLoggingCategory>
 
-#include "global_enums.h"
-#include "constructor_macros.h"
-#include "printable_object.h"
+#include "common/include/global_enums.h"
+#include "common/include/constructor_macros.h"
+#include "utility/log/include/printable_object.h"
 
 /** @defgroup FindSettingsGroup Find Settings Doxygen Group
  *  Find Settings functions and classes

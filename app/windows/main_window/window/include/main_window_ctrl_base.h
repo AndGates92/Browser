@@ -13,9 +13,9 @@
 #include <QtCore/QLoggingCategory>
 #include <QtWidgets/QWidget>
 
-#include "main_window_base.h"
-#include "constructor_macros.h"
-#include "main_window_json_action.h"
+#include "common/include/constructor_macros.h"
+#include "windows/main_window/window/include/main_window_base.h"
+#include "windows/main_window/json/include/main_window_json_action.h"
 
 /** @defgroup MainWindowCtrlBaseGroup Main Window Control base Doxygen Group
  *  Main Window Control base functions and classes

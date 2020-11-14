@@ -6,12 +6,12 @@
  * @brief Browser settings functions
  */
 
-#include "global_enums.h"
-#include "exception_macros.h"
-#include "function_macros.h"
-#include "macros.h"
-#include "browser_settings.h"
-#include "command_line_parser.h"
+#include "common/include/global_enums.h"
+#include "common/include/exception_macros.h"
+#include "common/include/function_macros.h"
+#include "utility/logger/include/macros.h"
+#include "settings/include/browser_settings.h"
+#include "settings/include/command_line_parser.h"
 
 LOGGING_CONTEXT(browserSettingsOverall, browserSettings.overall, TYPE_LEVEL, INFO_VERBOSITY)
 

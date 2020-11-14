@@ -12,12 +12,12 @@
 #include <sstream>
 #include <string>
 
-#include "global_enums.h"
-#include "macros.h"
-#include "qt_operator.h"
-#include "stl_helper.h"
-#include "open_file.h"
-#include "base_suite.h"
+#include "common/include/global_enums.h"
+#include "utility/logger/include/macros.h"
+#include "utility/qt/include/qt_operator.h"
+#include "utility/stl/include/stl_helper.h"
+#include "tests/include/open_file.h"
+#include "base/tester/include/base_suite.h"
 
 LOGGING_CONTEXT(openFileOverall, openFile.overall, TYPE_LEVEL, INFO_VERBOSITY)
 LOGGING_CONTEXT(openFileTest, openFile.test, TYPE_LEVEL, INFO_VERBOSITY)

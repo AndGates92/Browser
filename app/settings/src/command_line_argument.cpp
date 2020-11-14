@@ -6,11 +6,11 @@
  * @brief Main Window JSON Data functions
  */
 
-#include "global_constants.h"
-#include "macros.h"
-#include "function_macros.h"
-#include "exception_macros.h"
-#include "command_line_argument.h"
+#include "common/include/global_constants.h"
+#include "utility/logger/include/macros.h"
+#include "common/include/function_macros.h"
+#include "common/include/exception_macros.h"
+#include "settings/include/command_line_argument.h"
 
 // Categories
 LOGGING_CONTEXT(commandLineArgumentOverall, commandLineArgument.overall, TYPE_LEVEL, INFO_VERBOSITY)

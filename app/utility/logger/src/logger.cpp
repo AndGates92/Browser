@@ -8,10 +8,10 @@
 
 #include <string>
 
-#include "cpp_operator.h"
-#include "function_macros.h"
-#include "macros.h"
-#include "logger.h"
+#include "utility/stl/include/cpp_operator.h"
+#include "common/include/function_macros.h"
+#include "utility/logger/include/macros.h"
+#include "utility/logger/include/logger.h"
 
 // Categories
 LOGGING_CONTEXT(loggerOverall, logger.overall, TYPE_LEVEL, INFO_VERBOSITY)

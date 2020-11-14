@@ -9,12 +9,12 @@
 // Qt libraries
 #include <QtGui/QKeyEvent>
 
-#include "cpp_operator.h"
-#include "key_sequence.h"
-#include "main_window_constants.h"
-#include "main_window_shared_functions.h"
-#include "exception_macros.h"
-#include "main_window_ctrl_tab.h"
+#include "utility/stl/include/cpp_operator.h"
+#include "widgets/commands/include/key_sequence.h"
+#include "windows/main_window/common/include/main_window_constants.h"
+#include "windows/main_window/common/include/main_window_shared_functions.h"
+#include "common/include/exception_macros.h"
+#include "windows/main_window/window/include/main_window_ctrl_tab.h"
 
 // Categories
 LOGGING_CONTEXT(mainWindowCtrlTabOverall, mainWindowCtrlTab.overall, TYPE_LEVEL, INFO_VERBOSITY)

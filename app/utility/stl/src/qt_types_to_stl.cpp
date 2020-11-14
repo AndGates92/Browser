@@ -6,8 +6,8 @@
  * @brief Qt Types To STL definition
  */
 
-#include "exception_macros.h"
-#include "qt_types_to_stl.h"
+#include "common/include/exception_macros.h"
+#include "utility/stl/include/qt_types_to_stl.h"
 
 const std::list<std::string> qt_types_to_stl::qStringListToStdList(const QStringList & qtList) {
 

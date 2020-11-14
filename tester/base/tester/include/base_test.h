@@ -11,13 +11,13 @@
 #include <memory>
 #include <map>
 
-#include "test_enums.h"
-#include "test_macros.h"
-#include "constructor_macros.h"
-#include "error_data.h"
-#include "printable_object.h"
-#include "base_element_creation.h"
-#include "main_window_tester_wrapper.h"
+#include "common/include/test_enums.h"
+#include "common/include/test_macros.h"
+#include "common/include/constructor_macros.h"
+#include "common/include/error_data.h"
+#include "utility/log/include/printable_object.h"
+#include "common/include/base_element_creation.h"
+#include "top/include/main_window_tester_wrapper.h"
 
 /** @defgroup BaseTestGroup Base Test Group
  *  Base test functions and classes

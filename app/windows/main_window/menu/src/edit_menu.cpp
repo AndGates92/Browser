@@ -13,7 +13,7 @@
 #include <QtWidgets/QWidget>
 #include <QtWidgets/QMenuBar>
 
-#include "edit_menu.h"
+#include "windows/main_window/menu/include/edit_menu.h"
 
 // Categories
 LOGGING_CONTEXT(editMenuOverall, editMenu.overall, TYPE_LEVEL, INFO_VERBOSITY)

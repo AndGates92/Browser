@@ -8,9 +8,9 @@
  * @brief Main Window JSON action class header file
 */
 
-#include "constructor_macros.h"
-#include "main_window_json_data.h"
-#include "json_action.h"
+#include "common/include/constructor_macros.h"
+#include "windows/main_window/json/include/main_window_json_data.h"
+#include "base/json/include/json_action.h"
 
 /** @defgroup MainWindowJsonActionGroup Main Window JSON action Doxygen Group
  *  Main Window JSON action functions and classes

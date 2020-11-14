@@ -11,7 +11,7 @@
 // Qt libraries
 #include <QtWebEngineWidgets/QWebEngineSettings>
 
-#include "global_enums.h"
+#include "common/include/global_enums.h"
 
 /** @defgroup WebEngineSettingsGroup Web Engine Settings Doxygen Group
  *  Web Engine Settings functions and classes

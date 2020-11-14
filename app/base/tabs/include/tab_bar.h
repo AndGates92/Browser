@@ -11,9 +11,9 @@
 // Qt libraries
 #include <QtWidgets/QTabBar>
 
-#include "macros.h"
-#include "global_enums.h"
-#include "constructor_macros.h"
+#include "utility/logger/include/macros.h"
+#include "common/include/global_enums.h"
+#include "common/include/constructor_macros.h"
 
 /** @defgroup TabBarGroup Tab Bar Doxygen Group
  *  Tab Bar functions and classes

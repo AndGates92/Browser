@@ -13,10 +13,10 @@
 #include <mutex>
 #include <fstream>
 
-#include "logging.h"
-#include "config.h"
-#include "context.h"
-#include "browser_settings.h"
+#include "utility/log/include/logging.h"
+#include "utility/logger/include/config.h"
+#include "utility/logger/include/context.h"
+#include "settings/include/browser_settings.h"
 
 /** @defgroup LoggerGroup Logger Doxygen Group
  *  Logger functions and classes

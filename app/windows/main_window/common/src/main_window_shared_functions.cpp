@@ -10,8 +10,8 @@
 #include <QtCore/QFile>
 #include <QtCore/QUrl>
 
-#include "global_constants.h"
-#include "main_window_shared_functions.h"
+#include "common/include/global_constants.h"
+#include "windows/main_window/common/include/main_window_shared_functions.h"
 
 bool main_window_shared_functions::isUrl(const QString & text) {
 

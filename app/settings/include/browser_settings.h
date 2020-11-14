@@ -8,11 +8,11 @@
  * @brief Browser settings header file
  */
 
-#include "constructor_macros.h"
-#include "printable_object.h"
+#include "common/include/constructor_macros.h"
+#include "utility/log/include/printable_object.h"
 
-#include "types.h"
-#include "singleton.h"
+#include "settings/include/types.h"
+#include "utility/stl/include/singleton.h"
 
 /** @defgroup BrowserSettingsGroup Browser Settings Group
  *  Browser settings functions and classes

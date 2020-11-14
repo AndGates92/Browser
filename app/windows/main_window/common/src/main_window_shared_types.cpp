@@ -10,8 +10,8 @@
 
 #include <QtCore/QTextStream>
 
-#include "type_print_macros.h"
-#include "main_window_shared_types.h"
+#include "common/include/type_print_macros.h"
+#include "windows/main_window/common/include/main_window_shared_types.h"
 
 namespace main_window_shared_types {
 

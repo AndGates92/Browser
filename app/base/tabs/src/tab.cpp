@@ -9,13 +9,13 @@
 // Qt libraries
 #include <QtGui/QKeyEvent>
 
-#include "cpp_operator.h"
-#include "function_macros.h"
-#include "macros.h"
-#include "tab.h"
-#include "tab_search.h"
-#include "tab_scroll_manager.h"
-#include "tab_history.h"
+#include "utility/stl/include/cpp_operator.h"
+#include "common/include/function_macros.h"
+#include "utility/logger/include/macros.h"
+#include "base/tabs/include/tab.h"
+#include "base/tabs/include/tab_search.h"
+#include "base/tabs/include/tab_scroll_manager.h"
+#include "base/tabs/include/tab_history.h"
 
 // Categories
 LOGGING_CONTEXT(tabOverall, tab.overall, TYPE_LEVEL, INFO_VERBOSITY)

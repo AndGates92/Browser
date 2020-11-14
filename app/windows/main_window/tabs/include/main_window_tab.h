@@ -11,16 +11,16 @@
 // Qt libraries
 #include <QtWidgets/QWidget>
 
-#include "tab.h"
-#include "global_enums.h"
-#include "constructor_macros.h"
-#include "main_window_shared_types.h"
-#include "main_window_web_engine_view.h"
-#include "main_window_web_engine_settings.h"
-#include "main_window_tab_history.h"
-#include "main_window_tab_search.h"
-#include "main_window_tab_load_manager.h"
-#include "main_window_tab_scroll_manager.h"
+#include "base/tabs/include/tab.h"
+#include "common/include/global_enums.h"
+#include "common/include/constructor_macros.h"
+#include "windows/main_window/common/include/main_window_shared_types.h"
+#include "windows/main_window/tabs/include/main_window_web_engine_view.h"
+#include "windows/main_window/tabs/include/main_window_web_engine_settings.h"
+#include "windows/main_window/tabs/include/main_window_tab_history.h"
+#include "windows/main_window/tabs/include/main_window_tab_search.h"
+#include "windows/main_window/tabs/include/main_window_tab_load_manager.h"
+#include "windows/main_window/tabs/include/main_window_tab_scroll_manager.h"
 
 /** @defgroup TabGroup Main Window Tab Doxygen Group
  *  Main Window Tab functions and classes

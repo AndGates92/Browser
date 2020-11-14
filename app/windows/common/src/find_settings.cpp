@@ -8,9 +8,9 @@
 
 #include <string>
 
-#include "macros.h"
-#include "find_settings.h"
-#include "function_macros.h"
+#include "utility/logger/include/macros.h"
+#include "windows/common/include/find_settings.h"
+#include "common/include/function_macros.h"
 
 // Categories
 LOGGING_CONTEXT(findSettingsOverall, findSettings.overall, TYPE_LEVEL, INFO_VERBOSITY)

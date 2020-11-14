@@ -13,10 +13,10 @@
 #include <QtWidgets/QHBoxLayout>
 #include <QtWidgets/QLayoutItem>
 
-#include "macros.h"
-#include "exception_macros.h"
-#include "secondary_window_utility.h"
-#include "find_button_window_settings.h"
+#include "utility/logger/include/macros.h"
+#include "common/include/exception_macros.h"
+#include "windows/secondary_windows/common/include/secondary_window_utility.h"
+#include "windows/secondary_windows/find_window/include/find_button_window_settings.h"
 
 // Categories
 LOGGING_CONTEXT(findButtonWindowSettingsOverall, findButtonWindowSettings.overall, TYPE_LEVEL, INFO_VERBOSITY)

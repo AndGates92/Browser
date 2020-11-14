@@ -11,7 +11,7 @@
 #include <QtCore/QLoggingCategory>
 #include <QtWidgets/QWidget>
 
-#include "main_window.h"
+#include "windows/main_window/window/include/main_window.h"
 
 /** @defgroup MainWindowWrapperGroup Main Window Wrapper Doxygen Group
  *  Main Window wrapper functions and classes

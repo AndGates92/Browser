@@ -14,7 +14,7 @@
 #include <QtWidgets/QWidget>
 #include <QtWidgets/QLabel>
 
-#include "constructor_macros.h"
+#include "common/include/constructor_macros.h"
 
 /** @defgroup ElidedLabelGroup Elided Label Doxygen Group
  *  Elided label functions and classes

@@ -11,9 +11,9 @@
 #include <QtWidgets/QStyle>
 #include <QtWidgets/QStyleOption>
 
-#include "overlayed_widget.h"
-#include "macros.h"
-#include "global_enums.h"
+#include "base/overlay/include/overlayed_widget.h"
+#include "utility/logger/include/macros.h"
+#include "common/include/global_enums.h"
 
 // Categories
 LOGGING_CONTEXT(overlayedWidgetOverall, overlayedWidget.overall, TYPE_LEVEL, INFO_VERBOSITY)

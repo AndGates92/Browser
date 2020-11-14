@@ -9,11 +9,11 @@
 // Qt libraries
 #include <QtWidgets/QHBoxLayout>
 
-#include "cpp_operator.h"
-#include "function_macros.h"
-#include "macros.h"
-#include "global_enums.h"
-#include "main_window_status_bar.h"
+#include "utility/stl/include/cpp_operator.h"
+#include "common/include/function_macros.h"
+#include "utility/logger/include/macros.h"
+#include "common/include/global_enums.h"
+#include "windows/main_window/statusbar/include/main_window_status_bar.h"
 
 // Categories
 LOGGING_CONTEXT(mainWindowStatusBarOverall, mainWindowStatusBar.overall, TYPE_LEVEL, INFO_VERBOSITY)

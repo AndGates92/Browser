@@ -11,7 +11,7 @@
 // Qt libraries
 #include <QtCore/QString>
 
-#include "json_wrapper.h"
+#include "utility/json/include/json_wrapper.h"
 
 /** @defgroup JsonParserGroup JSON Parser Doxygen Group
  *  JSON Parser control functions and classes

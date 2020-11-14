@@ -13,7 +13,7 @@
 // Qt libraries
 #include <QtWidgets/QWidget>
 
-#include "constructor_macros.h"
+#include "common/include/constructor_macros.h"
 
 /** @defgroup OverlayedWidgetGroup Main Window Popup Base Doxygen Group
  *  Overlayed widget functions and classes

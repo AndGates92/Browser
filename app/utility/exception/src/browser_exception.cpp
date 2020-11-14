@@ -8,11 +8,11 @@
 
 #include <iostream>
 
-#include "function_macros.h"
-#include "macros.h"
-#include "global_enums.h"
-#include "qt_operator.h"
-#include "browser_exception.h"
+#include "common/include/function_macros.h"
+#include "utility/logger/include/macros.h"
+#include "common/include/global_enums.h"
+#include "utility/qt/include/qt_operator.h"
+#include "utility/exception/include/browser_exception.h"
 
 // Categories
 LOGGING_CONTEXT(browserExceptionOverall, browserException.overall, TYPE_LEVEL, INFO_VERBOSITY)

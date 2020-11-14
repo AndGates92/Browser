@@ -9,13 +9,13 @@
 // Qt libraries
 #include <QtWidgets/QShortcut>
 
-#include "cpp_operator.h"
-#include "qt_operator.h"
-#include "global_enums.h"
-#include "macros.h"
-#include "main_window_shared_types.h"
-#include "main_window_ctrl_base.h"
-#include "key_sequence.h"
+#include "utility/stl/include/cpp_operator.h"
+#include "utility/qt/include/qt_operator.h"
+#include "common/include/global_enums.h"
+#include "utility/logger/include/macros.h"
+#include "windows/main_window/common/include/main_window_shared_types.h"
+#include "windows/main_window/window/include/main_window_ctrl_base.h"
+#include "widgets/commands/include/key_sequence.h"
 
 LOGGING_CONTEXT(mainWindowCtrlBaseOverall, mainWindowCtrlBase.overall, TYPE_LEVEL, INFO_VERBOSITY)
 LOGGING_CONTEXT(mainWindowCtrlBaseCheck, mainWindowCtrlBase.check, TYPE_LEVEL, INFO_VERBOSITY)

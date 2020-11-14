@@ -13,10 +13,10 @@
 #include <QtCore/QLoggingCategory>
 #include <QtWidgets/QMenu>
 
-#include "menu_bar.h"
-#include "file_menu.h"
-#include "edit_menu.h"
-#include "constructor_macros.h"
+#include "base/menu/include/menu_bar.h"
+#include "windows/main_window/menu/include/file_menu.h"
+#include "windows/main_window/menu/include/edit_menu.h"
+#include "common/include/constructor_macros.h"
 
 /** @defgroup MainWindowMenuBarGroup Main Window Menu Bar Doxygen Group
  *  Main Window Menu bar functions and classes

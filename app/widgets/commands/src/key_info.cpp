@@ -6,10 +6,10 @@
  * @brief Key Info functions
  */
 
-#include "cpp_operator.h"
-#include "global_enums.h"
-#include "macros.h"
-#include "key_info.h"
+#include "utility/stl/include/cpp_operator.h"
+#include "common/include/global_enums.h"
+#include "utility/logger/include/macros.h"
+#include "widgets/commands/include/key_info.h"
 
 // Categories
 LOGGING_CONTEXT(keyInfoOverall, keyInfo.overall, TYPE_LEVEL, INFO_VERBOSITY)

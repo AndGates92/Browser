@@ -9,8 +9,8 @@
 // Qt libraries
 #include <QtGui/QKeyEvent>
 
-#include "cpp_operator.h"
-#include "tab_bar.h"
+#include "utility/stl/include/cpp_operator.h"
+#include "base/tabs/include/tab_bar.h"
 
 // Categories
 LOGGING_CONTEXT(tabBarOverall, tabBar.overall, TYPE_LEVEL, INFO_VERBOSITY)

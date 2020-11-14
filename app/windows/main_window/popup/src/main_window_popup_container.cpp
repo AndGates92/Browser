@@ -9,10 +9,10 @@
 // Qt libraries
 #include <QtGui/QResizeEvent>
 
-#include "main_window_popup_container.h"
-#include "exception_macros.h"
-#include "macros.h"
-#include "global_enums.h"
+#include "windows/main_window/popup/include/main_window_popup_container.h"
+#include "common/include/exception_macros.h"
+#include "utility/logger/include/macros.h"
+#include "common/include/global_enums.h"
 
 // Categories
 LOGGING_CONTEXT(mainWindowPopupContainerOverall, mainWindowPopupContainer.overall, TYPE_LEVEL, INFO_VERBOSITY)

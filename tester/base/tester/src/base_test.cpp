@@ -13,13 +13,13 @@
 
 #include <QtTest/QTest>
 
-#include "global_enums.h"
-#include "macros.h"
-#include "qt_operator.h"
-#include "function_macros.h"
-#include "base_test.h"
-#include "base_factory.h"
-#include "base_suite.h"
+#include "common/include/global_enums.h"
+#include "utility/logger/include/macros.h"
+#include "utility/qt/include/qt_operator.h"
+#include "common/include/function_macros.h"
+#include "base/tester/include/base_test.h"
+#include "base/tester/include/base_factory.h"
+#include "base/tester/include/base_suite.h"
 
 LOGGING_CONTEXT(baseTestOverall, baseTest.overall, TYPE_LEVEL, INFO_VERBOSITY)
 LOGGING_CONTEXT(baseTestTest, baseTest.test, TYPE_LEVEL, INFO_VERBOSITY)

@@ -6,13 +6,13 @@
  * @brief Key Sequence functions
  */
 
-#include "cpp_operator.h"
-#include "exception_macros.h"
-#include "function_macros.h"
-#include "global_enums.h"
-#include "macros.h"
-#include "key_info.h"
-#include "key_sequence.h"
+#include "utility/stl/include/cpp_operator.h"
+#include "common/include/exception_macros.h"
+#include "common/include/function_macros.h"
+#include "common/include/global_enums.h"
+#include "utility/logger/include/macros.h"
+#include "widgets/commands/include/key_info.h"
+#include "widgets/commands/include/key_sequence.h"
 
 // Categories
 LOGGING_CONTEXT(keySequenceOverall, keySequence.overall, TYPE_LEVEL, INFO_VERBOSITY)

@@ -16,14 +16,14 @@
 // Qt libraries
 #include <QtWidgets/QWidget>
 
-#include "qt_types_to_stl.h"
-#include "qt_operator.h"
-#include "global_enums.h"
-#include "function_macros.h"
-#include "macros.h"
-#include "constructor_macros.h"
-#include "json_data.h"
-#include "json_parser.h"
+#include "utility/stl/include/qt_types_to_stl.h"
+#include "utility/qt/include/qt_operator.h"
+#include "common/include/global_enums.h"
+#include "common/include/function_macros.h"
+#include "utility/logger/include/macros.h"
+#include "common/include/constructor_macros.h"
+#include "base/json/include/json_data.h"
+#include "utility/json/include/json_parser.h"
 
 /** @defgroup JsonActionGroup Json Action Doxygen Group
  *  Json Action functions and classes

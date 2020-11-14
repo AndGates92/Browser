@@ -12,12 +12,12 @@
 #include <QtCore/QJsonDocument>
 #include <QtCore/QJsonParseError>
 
-#include "cpp_operator.h"
-#include "macros.h"
-#include "type_print_macros.h"
-#include "global_enums.h"
-#include "exception_macros.h"
-#include "json_wrapper.h"
+#include "utility/stl/include/cpp_operator.h"
+#include "utility/logger/include/macros.h"
+#include "utility/json/include/json_wrapper.h"
+#include "common/include/type_print_macros.h"
+#include "common/include/global_enums.h"
+#include "common/include/exception_macros.h"
 
 LOGGING_CONTEXT(jsonWrapperOverall, jsonWrapper.overall, TYPE_LEVEL, INFO_VERBOSITY)
 LOGGING_CONTEXT(jsonWrapperFile, jsonWrapper.file, TYPE_LEVEL, INFO_VERBOSITY)

@@ -6,7 +6,7 @@
  * @brief Qt operator functions
  */
 
-#include "qt_operator.h"
+#include "utility/qt/include/qt_operator.h"
 
 QTextStream & operator<<(QTextStream & stream, const std::string str) {
 	stream << QString::fromStdString(str);

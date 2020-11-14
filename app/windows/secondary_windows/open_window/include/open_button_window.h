@@ -13,8 +13,8 @@
 
 #include <QtWidgets/QPushButton>
 
-#include "open_content.h"
-#include "constructor_macros.h"
+#include "base/file_handling/include/open_content.h"
+#include "common/include/constructor_macros.h"
 
 /** @defgroup OpenButtonWindowGroup Open Button Window Doxygen Group
  *  Open Button Window functions and classes

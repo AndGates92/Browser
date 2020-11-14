@@ -15,10 +15,10 @@
 #include <QtWidgets/QAction>
 #include <QtWidgets/QLabel>
 
-#include "popup_properties.h"
+#include "base/popup/include/popup_properties.h"
 
-#include "action.h"
-#include "constructor_macros.h"
+#include "widgets/commands/include/action.h"
+#include "common/include/constructor_macros.h"
 
 /** @defgroup PopupBaseGroup Main Window Popup Base Doxygen Group
  *  Popup base functions and classes

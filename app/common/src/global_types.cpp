@@ -10,8 +10,8 @@
 
 #include <QtCore/QTextStream>
 
-#include "type_print_macros.h"
-#include "global_enums.h"
+#include "common/include/type_print_macros.h"
+#include "common/include/global_enums.h"
 
 namespace global_enums {
 

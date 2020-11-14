@@ -6,8 +6,8 @@
  * @brief Command menu model functions
  */
 
-#include "macros.h"
-#include "command_menu_model.h"
+#include "utility/logger/include/macros.h"
+#include "widgets/command_menu/include/command_menu_model.h"
 
 // Categories
 LOGGING_CONTEXT(commandMenuModelOverall, commandMenuModel.overall, TYPE_LEVEL, INFO_VERBOSITY)

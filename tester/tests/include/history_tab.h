@@ -8,7 +8,7 @@
  * @brief History tab test header file
  */
 
-#include "command_test.h"
+#include "base/tester/include/command_test.h"
 
 /** @defgroup HistoryTabGroup History Tab Group
  *  History tab functions and classes

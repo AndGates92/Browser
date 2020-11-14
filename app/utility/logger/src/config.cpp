@@ -8,12 +8,12 @@
 
 #include <string>
 
-#include "macros.h"
-#include "global_enums.h"
-#include "global_macros.h"
+#include "utility/logger/include/macros.h"
+#include "common/include/global_enums.h"
+#include "common/include/global_macros.h"
 
-#include "function_macros.h"
-#include "config.h"
+#include "common/include/function_macros.h"
+#include "utility/logger/include/config.h"
 
 // Categories
 LOGGING_CONTEXT(loggerConfigOverall, loggerConfig.overall, TYPE_LEVEL, INFO_VERBOSITY)

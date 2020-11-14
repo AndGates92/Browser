@@ -8,15 +8,15 @@
 
 #include <QtTest/QTest>
 
-#include "global_enums.h"
-#include "global_constants.h"
-#include "macros.h"
-#include "qt_operator.h"
-#include "stl_helper.h"
-#include "main_window_constants.h"
-#include "main_window_shared_functions.h"
-#include "command_test.h"
-#include "base_suite.h"
+#include "common/include/global_enums.h"
+#include "common/include/global_constants.h"
+#include "utility/logger/include/macros.h"
+#include "utility/qt/include/qt_operator.h"
+#include "utility/stl/include/stl_helper.h"
+#include "windows/main_window/common/include/main_window_constants.h"
+#include "windows/main_window/common/include/main_window_shared_functions.h"
+#include "base/tester/include/command_test.h"
+#include "base/tester/include/base_suite.h"
 
 LOGGING_CONTEXT(commandTestOverall, commandTest.overall, TYPE_LEVEL, INFO_VERBOSITY)
 LOGGING_CONTEXT(commandTestTest, commandTest.test, TYPE_LEVEL, INFO_VERBOSITY)

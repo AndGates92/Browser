@@ -15,10 +15,10 @@
 #include <QtWidgets/QMenuBar>
 #include <QtWidgets/QWidget>
 
-#include "main_window_shared_types.h"
-#include "main_window_ctrl.h"
-#include "main_window_ctrl_tab.h"
-#include "constructor_macros.h"
+#include "windows/main_window/common/include/main_window_shared_types.h"
+#include "windows/main_window/window/include/main_window_ctrl.h"
+#include "windows/main_window/window/include/main_window_ctrl_tab.h"
+#include "common/include/constructor_macros.h"
 
 /** @defgroup MainWindowCtrlWrapperGroup Main Window Doxygen Group
  *  Main Window control wrapper functions and classes

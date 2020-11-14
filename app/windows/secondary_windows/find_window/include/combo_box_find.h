@@ -15,9 +15,9 @@
 #include <QtCore/QVariant>
 #include <QtGui/QIcon>
 
-#include "global_enums.h"
-#include "action.h"
-#include "combo_box_item.h"
+#include "common/include/global_enums.h"
+#include "widgets/commands/include/action.h"
+#include "windows/secondary_windows/common/include/combo_box_item.h"
 
 /** @defgroup ComboBoxFindGroup Combo Box Find Doxygen Group
  *  Combo Box Find header functions and class

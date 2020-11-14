@@ -8,9 +8,9 @@
  * @brief Logging Macros file
 */
 
-#include "global_macros.h"
-#include "global_enums.h"
-#include "logger.h"
+#include "common/include/global_macros.h"
+#include "common/include/global_enums.h"
+#include "utility/logger/include/logger.h"
 
 /** @defgroup LoggingMacrosGroup Logging Macros Doxygen Group
  *  Logging Macros

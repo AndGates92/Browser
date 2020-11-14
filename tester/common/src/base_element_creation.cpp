@@ -6,10 +6,10 @@
  * @brief Base element creation functions
  */
 
-#include "global_enums.h"
-#include "macros.h"
+#include "common/include/global_enums.h"
+#include "utility/logger/include/macros.h"
 
-#include "base_element_creation.h"
+#include "common/include/base_element_creation.h"
 
 LOGGING_CONTEXT(baseElementCreationOverall, baseElementCreation.overall, TYPE_LEVEL, INFO_VERBOSITY)
 

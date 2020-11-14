@@ -8,7 +8,7 @@
  * @brief Open file header file
  */
 
-#include "command_test.h"
+#include "base/tester/include/command_test.h"
 
 /** @defgroup OpenFileGroup Open File Group
  *  Open file functions and classes

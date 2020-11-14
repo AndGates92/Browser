@@ -11,7 +11,7 @@
 // Qt libraries
 #include <QtWidgets/QMenuBar>
 
-#include "constructor_macros.h"
+#include "common/include/constructor_macros.h"
 
 /** @defgroup MenuBarGroup Menu Bar Doxygen Group
  *  Menu bar functions and classes

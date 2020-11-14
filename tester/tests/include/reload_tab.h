@@ -8,7 +8,7 @@
  * @brief Reload tab header file
  */
 
-#include "command_test.h"
+#include "base/tester/include/command_test.h"
 
 /** @defgroup ReloadTabGroup Reload Tab Group
  *  Reload tab functions and classes

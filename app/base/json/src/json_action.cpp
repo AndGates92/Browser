@@ -6,6 +6,6 @@
  * @brief Json Action class functions
  */
 
-#include "json_action.h"
+#include "base/json/include/json_action.h"
 
 LOGGING_CONTEXT(jsonActionOverall, jsonAction.overall, TYPE_LEVEL, INFO_VERBOSITY)

@@ -9,9 +9,9 @@
 // Qt libraries
 #include <QtGui/QKeyEvent>
 
-#include "macros.h"
-#include "function_macros.h"
-#include "tab_load_manager.h"
+#include "utility/logger/include/macros.h"
+#include "common/include/function_macros.h"
+#include "base/tabs/include/tab_load_manager.h"
 
 // Categories
 LOGGING_CONTEXT(tabLoadManagerOverall, tabLoadManager.overall, TYPE_LEVEL, INFO_VERBOSITY)

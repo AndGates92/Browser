@@ -11,11 +11,11 @@
 // Qt libraries
 #include <QtWidgets/QAction>
 
-#include "web_engine_view.h"
-#include "main_window_web_engine_page.h"
-#include "main_window_shared_types.h"
-#include "global_enums.h"
-#include "constructor_macros.h"
+#include "base/tabs/include/web_engine_view.h"
+#include "windows/main_window/tabs/include/main_window_web_engine_page.h"
+#include "windows/main_window/common/include/main_window_shared_types.h"
+#include "common/include/global_enums.h"
+#include "common/include/constructor_macros.h"
 
 /** @defgroup MainWindowWebEngineViewGroup Web Engine View Doxygen Group
  *  Main Window Web Engine View functions and classes

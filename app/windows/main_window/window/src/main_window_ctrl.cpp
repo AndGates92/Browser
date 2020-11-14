@@ -9,10 +9,10 @@
 // Qt libraries
 #include <QtGui/QKeyEvent>
 
-#include "cpp_operator.h"
-#include "exception_macros.h"
-#include "key_sequence.h"
-#include "main_window_ctrl.h"
+#include "utility/stl/include/cpp_operator.h"
+#include "common/include/exception_macros.h"
+#include "widgets/commands/include/key_sequence.h"
+#include "windows/main_window/window/include/main_window_ctrl.h"
 
 // Categories
 LOGGING_CONTEXT(mainWindowCtrlOverall, mainWindowCtrl.overall, TYPE_LEVEL, INFO_VERBOSITY)

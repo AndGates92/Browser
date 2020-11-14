@@ -8,12 +8,12 @@
 
 #include <string>
 
-#include "function_macros.h"
-#include "macros.h"
-#include "global_enums.h"
+#include "common/include/function_macros.h"
+#include "utility/logger/include/macros.h"
+#include "common/include/global_enums.h"
 
-#include "config.h"
-#include "context.h"
+#include "utility/logger/include/config.h"
+#include "utility/logger/include/context.h"
 
 logger::Context logger::Context::getDefaultContext() {
 	logger::Context context(logger::Config::getInstance()->getDefaultContextName(), std::string(), 0, std::string(), logger::Config::getInstance()->getDefaultType(), logger::Config::getInstance()->getDefaultVerbosity(), browser_settings::BrowserSettings::getLogFilePath());

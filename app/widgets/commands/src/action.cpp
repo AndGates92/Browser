@@ -9,10 +9,10 @@
 // Qt libraries
 #include <QtGui/QKeySequence>
 
-#include "cpp_operator.h"
-#include "macros.h"
-#include "global_enums.h"
-#include "action.h"
+#include "utility/stl/include/cpp_operator.h"
+#include "utility/logger/include/macros.h"
+#include "common/include/global_enums.h"
+#include "widgets/commands/include/action.h"
 
 // Categories
 LOGGING_CONTEXT(actionOverall, action.overall, TYPE_LEVEL, INFO_VERBOSITY)

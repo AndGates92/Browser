@@ -10,11 +10,11 @@
 
 #include <string>
 
-#include "action.h"
-#include "key_sequence.h"
-#include "constructor_macros.h"
+#include "widgets/commands/include/action.h"
+#include "widgets/commands/include/key_sequence.h"
+#include "common/include/constructor_macros.h"
 
-#include "file_handling_widgets.h"
+#include "base/file_handling/include/file_handling_widgets.h"
 
 /** @defgroup OpenContentGroup Open Content Doxygen Group
  *  Open Content functions and classes

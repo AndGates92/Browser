@@ -10,9 +10,9 @@
 
 #include <memory>
 
-#include "constructor_macros.h"
-#include "printable_object.h"
-#include "base_suite.h"
+#include "common/include/constructor_macros.h"
+#include "utility/log/include/printable_object.h"
+#include "base/tester/include/base_suite.h"
 
 /** @defgroup CommandSuiteGroup Command suite Group
  *  Command suite functions and classes

@@ -16,12 +16,12 @@
 #include <QtWidgets/QLineEdit>
 #include <QtWidgets/QPushButton>
 
-#include "global_enums.h"
-#include "constructor_macros.h"
-#include "secondary_window_interface.h"
-#include "find_button_window_settings.h"
-#include "action.h"
-#include "find_settings.h"
+#include "common/include/global_enums.h"
+#include "common/include/constructor_macros.h"
+#include "windows/secondary_windows/base/include/secondary_window_interface.h"
+#include "windows/secondary_windows/find_window/include/find_button_window_settings.h"
+#include "widgets/commands/include/action.h"
+#include "windows/common/include/find_settings.h"
 
 /** @defgroup FindButtonWindowGroup Find Button Window Doxygen Group
  *  Find Button Window functions and classes

@@ -6,11 +6,11 @@
  * @brief Tab Scroll Manager functions
  */
 
-#include "cpp_operator.h"
-#include "macros.h"
-#include "function_macros.h"
-#include "tab_scroll_manager.h"
-#include "exception_macros.h"
+#include "utility/stl/include/cpp_operator.h"
+#include "utility/logger/include/macros.h"
+#include "common/include/function_macros.h"
+#include "base/tabs/include/tab_scroll_manager.h"
+#include "common/include/exception_macros.h"
 
 // Categories
 LOGGING_CONTEXT(tabScrollManagerOverall, tabScrollManager.overall, TYPE_LEVEL, INFO_VERBOSITY)

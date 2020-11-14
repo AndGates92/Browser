@@ -8,7 +8,7 @@
  * @brief Tab Shared Types file
 */
 
-#include "type_print_macros.h"
+#include "common/include/type_print_macros.h"
 
 /** @defgroup TabSharedTypesGroup Tab Shared Types Doxygen Group
  *  Tab Shared Types

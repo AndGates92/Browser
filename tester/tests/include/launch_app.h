@@ -8,7 +8,7 @@
  * @brief Launch app header file
  */
 
-#include "command_test.h"
+#include "base/tester/include/command_test.h"
 
 /** @defgroup LaunchAppGroup Launch App Group
  *  Launch app functions and classes

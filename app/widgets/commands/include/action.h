@@ -14,10 +14,10 @@
 #include <QtWidgets/QWidget>
 #include <QtWidgets/QAction>
 
-#include "constructor_macros.h"
+#include "common/include/constructor_macros.h"
 
-#include "key_sequence.h"
-#include "printable_object.h"
+#include "widgets/commands/include/key_sequence.h"
+#include "utility/log/include/printable_object.h"
 
 /** @defgroup ActionGroup Action Widget Doxygen Group
  *  Action menu functions and classes

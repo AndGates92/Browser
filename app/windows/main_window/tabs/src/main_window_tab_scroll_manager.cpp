@@ -9,10 +9,10 @@
 // Qt libraries
 #include <QtGui/QKeyEvent>
 
-#include "macros.h"
-#include "function_macros.h"
-#include "main_window_tab.h"
-#include "main_window_tab_scroll_manager.h"
+#include "utility/logger/include/macros.h"
+#include "common/include/function_macros.h"
+#include "windows/main_window/tabs/include/main_window_tab.h"
+#include "windows/main_window/tabs/include/main_window_tab_scroll_manager.h"
 
 // Categories
 LOGGING_CONTEXT(mainWindowTabScrollManagerOverall, mainWindowTabScrollManager.overall, TYPE_LEVEL, INFO_VERBOSITY)

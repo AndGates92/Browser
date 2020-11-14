@@ -13,9 +13,9 @@
 // Qt libraries
 #include <QtWidgets/QWidget>
 
-#include "elided_label.h"
-#include "progress_bar.h"
-#include "constructor_macros.h"
+#include "widgets/elided_label/include/elided_label.h"
+#include "widgets/progress_bar/include/progress_bar.h"
+#include "common/include/constructor_macros.h"
 
 /** @defgroup MainWindowStatusBarGroup Main Window StatusBar Doxygen Group
  *  Main Window statusbar functions and classes

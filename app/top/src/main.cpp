@@ -9,10 +9,10 @@
 #include <QtCore/QtMessageHandler>
 #include <QtCore/QUnhandledException>
 
-#include "macros.h"
-#include "browser_exception.h"
-#include "logging.h"
-#include "init.h"
+#include "utility/logger/include/macros.h"
+#include "utility/exception/include/browser_exception.h"
+#include "utility/log/include/logging.h"
+#include "top/include/init.h"
 
 /** @addtogroup MainGroup
  *  @{

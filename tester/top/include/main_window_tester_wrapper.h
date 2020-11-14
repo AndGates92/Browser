@@ -10,7 +10,7 @@
 
 #include <QtWidgets/QWidget>
 
-#include "main_window_wrapper.h"
+#include "windows/main_window/window/include/main_window_wrapper.h"
 
 /** @defgroup MainWindowTesterWrapperGroup Main Window Tester Wrapper Doxygen Group
  *  Main Window Tester wrapper functions and classes

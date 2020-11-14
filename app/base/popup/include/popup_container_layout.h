@@ -11,7 +11,7 @@
 // Qt libraries
 #include <QtWidgets/QStackedLayout>
 
-#include "constructor_macros.h"
+#include "common/include/constructor_macros.h"
 
 /** @defgroup PopupContainerLayoutGroup Popup Container Layout Doxygen Group
  *  Pop up container layout functions and classes

@@ -6,12 +6,12 @@
  * @brief Main Window JSON Data functions
  */
 
-#include "qt_operator.h"
-#include "main_window_json_data.h"
-#include "global_constants.h"
-#include "macros.h"
-#include "function_macros.h"
-#include "exception_macros.h"
+#include "utility/qt/include/qt_operator.h"
+#include "windows/main_window/json/include/main_window_json_data.h"
+#include "common/include/global_constants.h"
+#include "utility/logger/include/macros.h"
+#include "common/include/function_macros.h"
+#include "common/include/exception_macros.h"
 
 // Categories
 LOGGING_CONTEXT(mainWindowJsonDataOverall, mainWindowJsonData.overall, TYPE_LEVEL, INFO_VERBOSITY)

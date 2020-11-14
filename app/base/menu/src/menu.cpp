@@ -6,11 +6,11 @@
  * @brief Top Menu functions
  */
 
-#include "macros.h"
-#include "global_enums.h"
-#include "cpp_operator.h"
+#include "utility/logger/include/macros.h"
+#include "common/include/global_enums.h"
+#include "utility/stl/include/cpp_operator.h"
 
-#include "menu.h"
+#include "base/menu/include/menu.h"
 
 // Categories
 LOGGING_CONTEXT(menuOverall, menu.overall, TYPE_LEVEL, INFO_VERBOSITY)

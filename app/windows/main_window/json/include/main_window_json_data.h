@@ -11,9 +11,9 @@
 #include <memory>
 #include <vector>
 
-#include "key_sequence.h"
-#include "main_window_shared_types.h"
-#include "json_data.h"
+#include "widgets/commands/include/key_sequence.h"
+#include "windows/main_window/common/include/main_window_shared_types.h"
+#include "base/json/include/json_data.h"
 
 /** @defgroup MainWindowJsonDataGroup Main Window Json Data Doxygen Group
  *  Main Window json data functions and classes

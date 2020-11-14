@@ -12,10 +12,10 @@
 #include <QtWidgets/QMenu>
 #include <QtWebEngineWidgets/QWebEngineHistory>
 
-#include "macros.h"
-#include "function_macros.h"
-#include "exception_macros.h"
-#include "main_window_web_engine_view.h"
+#include "utility/logger/include/macros.h"
+#include "common/include/function_macros.h"
+#include "common/include/exception_macros.h"
+#include "windows/main_window/tabs/include/main_window_web_engine_view.h"
 
 // Categories
 LOGGING_CONTEXT(mainWindowWebEngineViewOverall, mainWindowWebEngineView.overall, TYPE_LEVEL, INFO_VERBOSITY)

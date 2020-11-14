@@ -12,8 +12,8 @@
 #include <string>
 #include <list>
 
-#include "macros.h"
-#include "exception_macros.h"
+#include "utility/logger/include/macros.h"
+#include "common/include/exception_macros.h"
 
 /** @defgroup GlobalFunctionsGroup Global Functions Doxygen Group
  *  Global Functions

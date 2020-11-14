@@ -6,10 +6,10 @@
  * @brief Tab Component Widget functions
  */
 
-#include "macros.h"
-#include "function_macros.h"
-#include "tab_component_widget.h"
-#include "exception_macros.h"
+#include "utility/logger/include/macros.h"
+#include "common/include/function_macros.h"
+#include "base/tabs/include/tab_component_widget.h"
+#include "common/include/exception_macros.h"
 
 // Categories
 LOGGING_CONTEXT(tabComponentWidgetOverall, tabComponentWidget.overall, TYPE_LEVEL, INFO_VERBOSITY)

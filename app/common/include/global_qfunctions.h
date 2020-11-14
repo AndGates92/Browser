@@ -13,7 +13,7 @@
 // Qt libraries
 #include <QtCore/QMetaEnum>
 
-#include "exception_macros.h"
+#include "common/include/exception_macros.h"
 
 /** @defgroup GlobalQFunctionsGroup Global Qt Functions Doxygen Group
  *  Global Qt Functions

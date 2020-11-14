@@ -8,12 +8,12 @@
 
 #include <QtTest/QTest>
 
-#include "global_enums.h"
-#include "macros.h"
-#include "qt_operator.h"
-#include "stl_helper.h"
-#include "launch_app.h"
-#include "base_suite.h"
+#include "common/include/global_enums.h"
+#include "utility/logger/include/macros.h"
+#include "utility/qt/include/qt_operator.h"
+#include "utility/stl/include/stl_helper.h"
+#include "tests/include/launch_app.h"
+#include "base/tester/include/base_suite.h"
 
 LOGGING_CONTEXT(launchAppOverall, launchApp.overall, TYPE_LEVEL, INFO_VERBOSITY)
 LOGGING_CONTEXT(launchAppTest, launchApp.test, TYPE_LEVEL, INFO_VERBOSITY)

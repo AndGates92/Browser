@@ -9,8 +9,8 @@
 // Qt libraries
 #include <QtGui/QKeyEvent>
 
-#include "macros.h"
-#include "web_engine_settings.h"
+#include "utility/logger/include/macros.h"
+#include "base/tabs/include/web_engine_settings.h"
 
 // Categories
 LOGGING_CONTEXT(webEngineSettingsOverall, webEngineSettings.overall, TYPE_LEVEL, INFO_VERBOSITY)

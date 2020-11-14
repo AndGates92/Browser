@@ -8,7 +8,7 @@
  * @brief Singleton header file
  */
 
-#include "global_enums.h"
+#include "common/include/global_enums.h"
 
 /** @defgroup SingletonGroup Singleton Group
  *  Singleton functions and classes

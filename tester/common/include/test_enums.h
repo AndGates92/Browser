@@ -8,7 +8,7 @@
  * @brief Test Enums file
 */
 
-#include "type_print_macros.h"
+#include "common/include/type_print_macros.h"
 
 /** @defgroup TestEnumsGroup Test Enums Doxygen Group
  *  Test Enums

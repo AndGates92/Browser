@@ -11,12 +11,12 @@
 // Qt libraries
 #include <QtWidgets/QWidget>
 
-#include "global_enums.h"
-#include "constructor_macros.h"
-#include "find_settings.h"
-#include "web_engine_view.h"
-#include "web_engine_settings.h"
-#include "tab_load_manager.h"
+#include "common/include/global_enums.h"
+#include "common/include/constructor_macros.h"
+#include "windows/common/include/find_settings.h"
+#include "base/tabs/include/web_engine_view.h"
+#include "base/tabs/include/web_engine_settings.h"
+#include "base/tabs/include/tab_load_manager.h"
 
 /** @defgroup TabGroup Tab Doxygen Group
  *  Tab functions and classes

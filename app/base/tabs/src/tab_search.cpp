@@ -11,9 +11,9 @@
 // Qt libraries
 #include <QtGui/QKeyEvent>
 
-#include "macros.h"
-#include "tab_search.h"
-#include "exception_macros.h"
+#include "utility/logger/include/macros.h"
+#include "base/tabs/include/tab_search.h"
+#include "common/include/exception_macros.h"
 
 // Categories
 LOGGING_CONTEXT(tabSearchOverall, tabSearch.overall, TYPE_LEVEL, INFO_VERBOSITY)

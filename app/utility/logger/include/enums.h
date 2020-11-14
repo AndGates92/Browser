@@ -8,7 +8,7 @@
  * @brief Logger enumeration file
 */
 
-#include "type_print_macros.h"
+#include "common/include/type_print_macros.h"
 
 /** @defgroup LoggerGroup Logger Doxygen Group
  *  Logger

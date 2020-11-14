@@ -15,10 +15,10 @@
 #include <QtWebEngineCore/QWebEngineFindTextResult>
 #endif
 
-#include "tab_search.h"
-#include "main_window_web_engine_profile.h"
-#include "global_enums.h"
-#include "constructor_macros.h"
+#include "base/tabs/include/tab_search.h"
+#include "windows/main_window/tabs/include/main_window_web_engine_profile.h"
+#include "common/include/global_enums.h"
+#include "common/include/constructor_macros.h"
 
 /** @defgroup MainWindowTabSearchGroup Main Window Tab Search Doxygen Group
  *  Main Window Tab Search functions and classes

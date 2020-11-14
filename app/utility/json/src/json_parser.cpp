@@ -10,11 +10,11 @@
 #include <QtCore/QJsonObject>
 #include <QtCore/QJsonArray>
 
-#include "cpp_operator.h"
-#include "macros.h"
-#include "global_enums.h"
-#include "exception_macros.h"
-#include "json_parser.h"
+#include "utility/stl/include/cpp_operator.h"
+#include "utility/logger/include/macros.h"
+#include "common/include/global_enums.h"
+#include "common/include/exception_macros.h"
+#include "utility/json/include/json_parser.h"
 
 LOGGING_CONTEXT(jsonParserOverall, jsonParser.overall, TYPE_LEVEL, INFO_VERBOSITY)
 LOGGING_CONTEXT(jsonParserFileContent, jsonParser.file_content, TYPE_LEVEL, INFO_VERBOSITY)

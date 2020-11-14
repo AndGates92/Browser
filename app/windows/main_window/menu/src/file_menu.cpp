@@ -9,9 +9,9 @@
 // Qt libraries
 #include <QtCore/QObject>
 
-#include "macros.h"
-#include "global_enums.h"
-#include "file_menu.h"
+#include "utility/logger/include/macros.h"
+#include "common/include/global_enums.h"
+#include "windows/main_window/menu/include/file_menu.h"
 
 // Categories
 LOGGING_CONTEXT(fileMenuOverall, fileMenu.overall, TYPE_LEVEL, INFO_VERBOSITY)

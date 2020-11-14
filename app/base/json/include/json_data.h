@@ -10,8 +10,8 @@
 
 #include <set>
 
-#include "global_classes.h"
-#include "printable_object.h"
+#include "common/include/global_classes.h"
+#include "utility/log/include/printable_object.h"
 
 /** @defgroup JsonDataGroup Json Data Doxygen Group
  *  Json data functions and classes

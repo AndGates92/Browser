@@ -23,10 +23,10 @@
 #include <QtWidgets/QCheckBox>
 #include <QtWidgets/QGroupBox>
 
-#include "qt_operator.h"
-#include "action.h"
-#include "key_sequence.h"
-#include "combo_box_item.h"
+#include "utility/qt/include/qt_operator.h"
+#include "widgets/commands/include/action.h"
+#include "widgets/commands/include/key_sequence.h"
+#include "windows/secondary_windows/common/include/combo_box_item.h"
 
 /** @defgroup SecondaryWindowUtilityGroup Secondary Window Utility Doxygen Group
  *  Secondary Window Utility functions and classes

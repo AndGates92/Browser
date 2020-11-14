@@ -9,14 +9,14 @@
 // Qt libraries
 #include <QtWidgets/QShortcut>
 
-#include "qt_operator.h"
-#include "global_enums.h"
-#include "global_functions.h"
-#include "global_qfunctions.h"
-#include "macros.h"
-#include "main_window_shared_types.h"
-#include "main_window_json_action.h"
-#include "key_sequence.h"
+#include "utility/qt/include/qt_operator.h"
+#include "common/include/global_enums.h"
+#include "common/include/global_functions.h"
+#include "common/include/global_qfunctions.h"
+#include "utility/logger/include/macros.h"
+#include "windows/main_window/common/include/main_window_shared_types.h"
+#include "windows/main_window/json/include/main_window_json_action.h"
+#include "widgets/commands/include/key_sequence.h"
 
 LOGGING_CONTEXT(mainWindowJsonActionOverall, mainWindowJsonAction.overall, TYPE_LEVEL, INFO_VERBOSITY)
 

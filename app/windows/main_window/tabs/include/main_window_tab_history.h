@@ -8,8 +8,8 @@
  * @brief Tab History header file
 */
 
-#include "tab_history.h"
-#include "global_enums.h"
+#include "base/tabs/include/tab_history.h"
+#include "common/include/global_enums.h"
 
 /** @defgroup MainWindowTabHistoryGroup Tab History Doxygen Group
  *  Tab History functions and classes

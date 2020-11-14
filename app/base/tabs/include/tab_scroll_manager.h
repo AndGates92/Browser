@@ -13,11 +13,11 @@
 // Qt libraries
 #include <QtWidgets/QTabBar>
 
-#include "global_enums.h"
-#include "tab_component_widget.h"
-#include "tab_shared_types.h"
-#include "tab_bar.h"
-#include "constructor_macros.h"
+#include "common/include/global_enums.h"
+#include "base/tabs/include/tab_component_widget.h"
+#include "base/tabs/include/tab_shared_types.h"
+#include "base/tabs/include/tab_bar.h"
+#include "common/include/constructor_macros.h"
 
 /** @defgroup TabScrollManagerGroup Tab Scroll Manager Doxygen Group
  *  Tab Scroll Manager functions and classes

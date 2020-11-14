@@ -15,11 +15,11 @@
 // Get pointer to default category
 #include <QtCore/QLoggingCategory>
 
-#include "cpp_operator.h"
-#include "logging_functions.h"
-#include "exception_macros.h"
-#include "logging_macros.h"
-#include "logging.h"
+#include "utility/stl/include/cpp_operator.h"
+#include "common/include/logging_functions.h"
+#include "common/include/exception_macros.h"
+#include "common/include/logging_macros.h"
+#include "utility/log/include/logging.h"
 
 /**
 	* @brief bottom information label height

@@ -9,7 +9,7 @@
 */
 
 #include <QtCore/QtDebug>
-#include "global_qfunctions.h"
+#include "common/include/global_qfunctions.h"
 
 /** @defgroup TypePrintMacrosGroup Type Print Macros Doxygen Group
  *  Type Print Macros

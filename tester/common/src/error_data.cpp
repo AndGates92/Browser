@@ -6,11 +6,11 @@
  * @brief Error data functions
  */
 
-#include "global_enums.h"
-#include "macros.h"
-#include "function_macros.h"
-#include "error_data.h"
-#include "base_test.h"
+#include "common/include/global_enums.h"
+#include "utility/logger/include/macros.h"
+#include "common/include/function_macros.h"
+#include "common/include/error_data.h"
+#include "base/tester/include/base_test.h"
 
 // Categories
 LOGGING_CONTEXT(errorDataOverall, errorData.overall, TYPE_LEVEL, INFO_VERBOSITY)

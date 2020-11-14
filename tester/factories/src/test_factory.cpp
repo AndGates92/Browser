@@ -6,11 +6,11 @@
  * @brief Test factory functions
  */
 
-#include "global_enums.h"
-#include "macros.h"
-#include "function_macros.h"
-#include "test_factory.h"
-#include "command_suite.h"
+#include "common/include/global_enums.h"
+#include "utility/logger/include/macros.h"
+#include "common/include/function_macros.h"
+#include "factories/include/test_factory.h"
+#include "suites/include/command_suite.h"
 
 LOGGING_CONTEXT(testFactoryOverall, testFactory.overall, TYPE_LEVEL, INFO_VERBOSITY)
 

@@ -11,7 +11,7 @@
 #include <regex>
 #include <vector>
 
-#include "command_test.h"
+#include "base/tester/include/command_test.h"
 
 /** @defgroup FindTabGroup Find Tab Group
  *  Find tab functions and classes

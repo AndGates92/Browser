@@ -6,13 +6,13 @@
  * @brief Command line parser functions
  */
 
-#include "global_enums.h"
-#include "stl_helper.h"
-#include "qt_operator.h"
-#include "macros.h"
-#include "function_macros.h"
-#include "exception_macros.h"
-#include "command_line_parser.h"
+#include "common/include/global_enums.h"
+#include "utility/stl/include/stl_helper.h"
+#include "utility/qt/include/qt_operator.h"
+#include "utility/logger/include/macros.h"
+#include "common/include/function_macros.h"
+#include "common/include/exception_macros.h"
+#include "settings/include/command_line_parser.h"
 
 LOGGING_CONTEXT(commandLineParserOverall, commandLineParser.overall, TYPE_LEVEL, INFO_VERBOSITY)
 

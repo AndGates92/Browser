@@ -11,13 +11,13 @@
 #include <QtCore/QLoggingCategory>
 #include <QtWidgets/QWidget>
 
-#include "open_popup.h"
-#include "label_popup.h"
+#include "windows/main_window/popup/include/open_popup.h"
+#include "windows/main_window/popup/include/label_popup.h"
 
-#include "type_print_macros.h"
-#include "smart_ptr_macros.h"
-#include "popup_container.h"
-#include "constructor_macros.h"
+#include "common/include/type_print_macros.h"
+#include "common/include/smart_ptr_macros.h"
+#include "base/popup/include/popup_container.h"
+#include "common/include/constructor_macros.h"
 
 /** @defgroup MainWindowPopupContainerGroup Main Window Prompt Widget Doxygen Group
  *  Main Window prompt functions and classes

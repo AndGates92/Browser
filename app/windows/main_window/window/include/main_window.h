@@ -14,10 +14,10 @@
 #include <QtWidgets/QMainWindow>
 #include <QtWidgets/QWidget>
 
-#include "main_window_ctrl_wrapper.h"
-#include "main_window_base.h"
-#include "overlayed_widget.h"
-#include "constructor_macros.h"
+#include "windows/main_window/window/include/main_window_ctrl_wrapper.h"
+#include "windows/main_window/window/include/main_window_base.h"
+#include "base/overlay/include/overlayed_widget.h"
+#include "common/include/constructor_macros.h"
 
 /** @defgroup MainWindowGroup Main Window Doxygen Group
  *  Main Window functions and classes

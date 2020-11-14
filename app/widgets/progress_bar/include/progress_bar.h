@@ -11,7 +11,7 @@
 // Qt libraries
 #include <QtWidgets/QProgressBar>
 
-#include "constructor_macros.h"
+#include "common/include/constructor_macros.h"
 
 /** @defgroup ProgressBarGroup Progress Bar Doxygen Group
  *  Progress bar functions and classes

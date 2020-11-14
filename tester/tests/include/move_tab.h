@@ -8,7 +8,7 @@
  * @brief Move tab header file
  */
 
-#include "command_test.h"
+#include "base/tester/include/command_test.h"
 
 /** @defgroup MoveTabGroup Move Tab Group
  *  Move tab functions and classes

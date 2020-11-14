@@ -8,7 +8,7 @@
  * @brief Open tab header file
  */
 
-#include "command_test.h"
+#include "base/tester/include/command_test.h"
 
 /** @defgroup OpenTabGroup Open Tab Group
  *  Open tab functions and classes

@@ -8,10 +8,10 @@
 
 #include <iostream>
 
-#include "main_window_menu_bar.h"
-#include "global_enums.h"
-#include "function_macros.h"
-#include "macros.h"
+#include "windows/main_window/menu/include/main_window_menu_bar.h"
+#include "common/include/global_enums.h"
+#include "common/include/function_macros.h"
+#include "utility/logger/include/macros.h"
 
 LOGGING_CONTEXT(mainWindowMenuBarOverall, menuBar.overall, TYPE_LEVEL, INFO_VERBOSITY)
 

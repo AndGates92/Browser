@@ -11,10 +11,10 @@
 #include <memory>
 #include <set>
 
-#include "constructor_macros.h"
-#include "printable_object.h"
-#include "base_test.h"
-#include "base_element_creation.h"
+#include "common/include/constructor_macros.h"
+#include "utility/log/include/printable_object.h"
+#include "base/tester/include/base_test.h"
+#include "common/include/base_element_creation.h"
 
 /** @defgroup BaseSuiteGroup Base Suite Group
  *  Base suite functions and classes

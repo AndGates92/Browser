@@ -13,12 +13,12 @@
 #include <QtCore/QLoggingCategory>
 #include <QtWidgets/QWidget>
 
-#include "command_menu.h"
-#include "main_window_menu_bar.h"
-#include "main_window_tab_widget.h"
-#include "main_window_status_bar.h"
-#include "main_window_shared_types.h"
-#include "main_window_popup_container.h"
+#include "widgets/command_menu/include/command_menu.h"
+#include "windows/main_window/menu/include/main_window_menu_bar.h"
+#include "windows/main_window/tabs/include/main_window_tab_widget.h"
+#include "windows/main_window/statusbar/include/main_window_status_bar.h"
+#include "windows/main_window/common/include/main_window_shared_types.h"
+#include "windows/main_window/popup/include/main_window_popup_container.h"
 
 /** @defgroup MainWindowCoreGroup Main Window Core Doxygen Group
  *  Main Window core functions and class
