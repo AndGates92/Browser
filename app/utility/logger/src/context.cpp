@@ -16,7 +16,7 @@
 #include "utility/logger/include/context.h"
 
 logger::Context logger::Context::getDefaultContext() {
-	logger::Context context(logger::Config::getInstance()->getDefaultContextName(), std::string(), 0, std::string(), logger::Config::getInstance()->getDefaultType(), logger::Config::getInstance()->getDefaultVerbosity(), browser_settings::BrowserSettings::getLogFilePath());
+	logger::Context context(logger::Config::getInstance()->getDefaultContextName(), std::string(), 0, std::string(), logger::Config::getInstance()->getDefaultType(), logger::Config::getInstance()->getDefaultVerbosity(), settings::BrowserSettings::getLogFilePath());
 	return context;
 }
 

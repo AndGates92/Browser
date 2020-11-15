@@ -59,7 +59,7 @@ void launch_app::LaunchApp::testBody() {
 	const std::string quitCommandName("quit browser");
 	this->executeCommand(quitCommandName, std::string());
 
-	const std::unique_ptr<main_window_json_data::MainWindowJsonData> & quitCommandData = this->findDataWithFieldValue("Name", &quitCommandName);
+	const std::unique_ptr<main_window::JsonData> & quitCommandData = this->findDataWithFieldValue("Name", &quitCommandName);
 	ASSERT((quitCommandData != nullptr), test_enums::error_type_e::COMMAND, "Unable to find data with Name " + quitCommandName + " in " + this->getSourceFileName().toStdString());
 
 	const std::string * const quitCommandLongCmdPtr(static_cast<const std::string *>(quitCommandData->getValueFromMemberName("LongCmd")));

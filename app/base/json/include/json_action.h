@@ -25,14 +25,14 @@
 #include "base/json/include/json_data.h"
 #include "utility/json/include/json_parser.h"
 
-/** @defgroup JsonActionGroup Json Action Doxygen Group
- *  Json Action functions and classes
+/** @defgroup JsonGroup Json Doxygen Group
+ *  Json functions and classes
  *  @{
  */
 
 EXPORT_CONTEXT(jsonActionOverall)
 
-namespace json_action {
+namespace json {
 
 	/**
 	 * @brief JsonAction class
@@ -42,7 +42,7 @@ namespace json_action {
 	class JsonAction {
 
 		template<typename FuncRet>
-		using enableFunction = typename std::enable_if<std::is_base_of<json_data::JsonData, Data>::value, FuncRet>::type;
+		using enableFunction = typename std::enable_if<std::is_base_of<json::JsonData, Data>::value, FuncRet>::type;
 
 		public:
 			/**
@@ -157,21 +157,21 @@ namespace json_action {
 	};
 
 }
-/** @} */ // End of JsonActionGroup group
+/** @} */ // End of JsonGroup group
 
 template<class Data>
-json_action::JsonAction<Data>::JsonAction(QString jsonFileName) : commands(json_parser::JsonParser(jsonFileName, QIODevice::ReadOnly)), actionData(json_action::JsonAction<Data>::action_data_t()), sourceFileName(jsonFileName), invalidData(nullptr) {
+json::JsonAction<Data>::JsonAction(QString jsonFileName) : commands(json_parser::JsonParser(jsonFileName, QIODevice::ReadOnly)), actionData(json::JsonAction<Data>::action_data_t()), sourceFileName(jsonFileName), invalidData(nullptr) {
 	LOG_INFO(logger::info_level_e::ZERO, jsonActionOverall,  "Json Action classe constructor");
 }
 
 template<class Data>
-json_action::JsonAction<Data>::~JsonAction() {
+json::JsonAction<Data>::~JsonAction() {
 	LOG_INFO(logger::info_level_e::ZERO, jsonActionOverall,  "Json Action class destructor");
 }
 
 template<class Data>
 template<typename FuncRet>
-typename json_action::JsonAction<Data>::template enableFunction<FuncRet> json_action::JsonAction<Data>::populateActionData() {
+typename json::JsonAction<Data>::template enableFunction<FuncRet> json::JsonAction<Data>::populateActionData() {
 
 	const std::list<std::string> keys = qt_types_to_stl::qStringListToStdList(this->commands.getJsonKeys());
 
@@ -180,7 +180,7 @@ typename json_action::JsonAction<Data>::template enableFunction<FuncRet> json_ac
 		std::for_each(keys.cbegin(), keys.cend(), [&] (const std::string & key) {
 			// Create JSON data
 			std::unique_ptr<Data> newData = std::make_unique<Data>(key);
-			const json_data::JsonData::parameter_t & dataParameters = newData->getParameters();
+			const json::JsonData::parameter_t & dataParameters = newData->getParameters();
 			std::for_each(dataParameters.cbegin(), dataParameters.cend(), [&] (const std::string & param) {
 				const QString paramValue = this->commands.findKeyValue(QString::fromStdString(key), QString::fromStdString(param));
 				const std::string value = paramValue.toStdString();
@@ -209,15 +209,15 @@ typename json_action::JsonAction<Data>::template enableFunction<FuncRet> json_ac
 }
 
 template<class Data>
-CONST_GETTER(json_action::JsonAction<Data>::getInvalidData, std::unique_ptr<Data> &, this->invalidData)
+CONST_GETTER(json::JsonAction<Data>::getInvalidData, std::unique_ptr<Data> &, this->invalidData)
 
 template<class Data>
-CONST_GETTER(json_action::JsonAction<Data>::getSourceFileName, QString &, this->sourceFileName)
+CONST_GETTER(json::JsonAction<Data>::getSourceFileName, QString &, this->sourceFileName)
 
 template<class Data>
 template<typename FuncRet>
-typename json_action::JsonAction<Data>::template enableFunction<FuncRet> json_action::JsonAction<Data>::findDataWithFieldValue(const std::string & name, const void * value) const {
-	const typename json_action::JsonAction<Data>::action_data_t::const_iterator foundData = std::find_if(this->actionData.cbegin(), this->actionData.cend(), [&] (const auto & data) -> bool {
+typename json::JsonAction<Data>::template enableFunction<FuncRet> json::JsonAction<Data>::findDataWithFieldValue(const std::string & name, const void * value) const {
+	const typename json::JsonAction<Data>::action_data_t::const_iterator foundData = std::find_if(this->actionData.cbegin(), this->actionData.cend(), [&] (const auto & data) -> bool {
 		const std::unique_ptr<Data> & commandData = data.second;
 		bool found = commandData->isSameFieldValue(name, value);
 		return found;

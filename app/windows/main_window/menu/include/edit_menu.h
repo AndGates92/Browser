@@ -15,7 +15,7 @@
 
 #include "utility/logger/include/macros.h"
 #include "common/include/global_enums.h"
-#include "windows/secondary_windows/find_window/include/find_button_window.h"
+#include "windows/secondary_windows/find_window/include/window.h"
 #include "base/menu/include/menu.h"
 #include "common/include/constructor_macros.h"
 #include "windows/common/include/find_settings.h"
@@ -174,7 +174,7 @@ namespace edit_menu {
 			 * @brief window opened following the find action being triggered
 			 *
 			 */
-			std::unique_ptr<find_button_window::FindButtonWindow> findWindow;
+			std::unique_ptr<find_window::Window> findWindow;
 
 			/**
 			 * @brief Function: void createMenu()

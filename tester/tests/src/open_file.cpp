@@ -60,13 +60,13 @@ void open_file::OpenFile::testBody() {
 
 	LOG_INFO(logger::info_level_e::ZERO, openFileTest,  "Starting test " << this->getName() << " in suite " << this->getSuite()->getName());
 
-	const std::unique_ptr<main_window_ctrl_wrapper::MainWindowCtrlWrapper> & windowCtrl =  this->windowWrapper->getWindowCtrl();
-	const std::shared_ptr<main_window_core::MainWindowCore> & windowCore = this->windowWrapper->getWindowCore();
+	const std::unique_ptr<main_window::CtrlWrapper> & windowCtrl =  this->windowWrapper->getWindowCtrl();
+	const std::shared_ptr<main_window::Core> & windowCore = this->windowWrapper->getWindowCore();
 
 	const std::string openCommandName("open file");
 	this->executeCommand(openCommandName, std::string());
 
-	const std::shared_ptr<main_window_popup_container::MainWindowPopupContainer> & popupContainer = this->windowWrapper->getPopupContainer();
+	const std::shared_ptr<main_window::PopupContainer> & popupContainer = this->windowWrapper->getPopupContainer();
 	ASSERT((popupContainer != nullptr), test_enums::error_type_e::POPUP, "Popup container pointer is null");
 	std::shared_ptr<open_popup::OpenPopup> openFilePopup = popupContainer->getOpenFilePopup();
 	ASSERT((openFilePopup != nullptr), test_enums::error_type_e::POPUP, "Open file popup pointer is null");

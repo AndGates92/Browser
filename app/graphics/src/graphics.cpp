@@ -13,7 +13,7 @@
 
 #include "utility/logger/include/macros.h"
 #include "common/include/global_enums.h"
-#include "windows/main_window/window/include/main_window_wrapper.h"
+#include "windows/main_window/window/include/wrapper.h"
 #include "graphics/include/graphics.h"
 #include "utility/logger/include/logger.h"
 
@@ -25,7 +25,7 @@ void graphics::init_graphics(int & argc, char** argv) {
 
 	LOG_INFO(logger::info_level_e::ZERO, graphicsOverall,  "Create Application");
 
-	std::unique_ptr<main_window_wrapper::MainWindowWrapper> window = std::make_unique<main_window_wrapper::MainWindowWrapper>(Q_NULLPTR, Qt::Window);
+	std::unique_ptr<main_window::Wrapper> window = std::make_unique<main_window::Wrapper>(Q_NULLPTR, Qt::Window);
 	window->show();
 
 	app.exec();

@@ -14,9 +14,9 @@
 #include <QtWidgets/QWidget>
 #include <QtWidgets/QMenuBar>
 
-#include "windows/secondary_windows/open_window/include/open_button_window.h"
 #include "base/menu/include/menu.h"
 #include "common/include/constructor_macros.h"
+#include "windows/secondary_windows/open_window/include/window.h"
 
 /** @defgroup FileMenuGroup File Menu Doxygen Group
  *  File Menu functions and classes
@@ -136,7 +136,7 @@ namespace file_menu {
 			 * @brief window opened following the open action being triggered
 			 *
 			 */
-			std::unique_ptr<open_button_window::OpenButtonWindow> openWindow;
+			std::unique_ptr<open_window::Window> openWindow;
 
 			/**
 			 * @brief Function: void createMenu()

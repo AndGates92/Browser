@@ -57,7 +57,7 @@ void move_tab::MoveTab::testBody() {
 
 	LOG_INFO(logger::info_level_e::ZERO, moveTabTest,  "Starting test " << this->getName() << " in suite " << this->getSuite()->getName());
 
-	const std::shared_ptr<main_window_core::MainWindowCore> & windowCore = this->windowWrapper->getWindowCore();
+	const std::shared_ptr<main_window::Core> & windowCore = this->windowWrapper->getWindowCore();
 
 	const std::string https(global_constants::https.toStdString());
 	const std::string www(global_constants::www.toStdString());

@@ -43,12 +43,9 @@ namespace tab_history {
 	class TabHistory;
 }
 
-namespace main_window_tab {
-	class MainWindowTab;
-}
-
-namespace main_window_tab_widget {
-	class MainWindowTabWidget;
+namespace main_window {
+	class Tab;
+	class TabWidget;
 }
 
 namespace tab {
@@ -59,8 +56,8 @@ namespace tab {
 	 */
 	class Tab : public QWidget, public std::enable_shared_from_this<tab::Tab> {
 		friend class tab_widget::TabWidget;
-		friend class main_window_tab_widget::MainWindowTabWidget;
-		friend class main_window_tab::MainWindowTab;
+		friend class main_window::TabWidget;
+		friend class main_window::Tab;
 
 		Q_OBJECT
 

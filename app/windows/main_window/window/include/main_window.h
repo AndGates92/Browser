@@ -14,8 +14,8 @@
 #include <QtWidgets/QMainWindow>
 #include <QtWidgets/QWidget>
 
-#include "windows/main_window/window/include/main_window_ctrl_wrapper.h"
-#include "windows/main_window/window/include/main_window_base.h"
+#include "windows/main_window/window/include/ctrl_wrapper.h"
+#include "windows/main_window/window/include/base.h"
 #include "base/overlay/include/overlayed_widget.h"
 #include "common/include/constructor_macros.h"
 
@@ -30,7 +30,7 @@ namespace main_window {
 	 * @brief MainWindow class
 	 *
 	 */
-	class MainWindow final : public QMainWindow, public main_window_base::MainWindowBase {
+	class MainWindow final : public QMainWindow, public main_window::Base {
 
 		Q_OBJECT
 
@@ -54,13 +54,13 @@ namespace main_window {
 			virtual ~MainWindow();
 
 			/**
-			 * @brief Function: const std::unique_ptr<main_window_ctrl_wrapper::MainWindowCtrlWrapper> & getCtrl() const
+			 * @brief Function: const std::unique_ptr<main_window::CtrlWrapper> & getCtrl() const
 			 *
 			 * \return window controller
 			 *
 			 * This method return the window controller
 			 */
-			const std::unique_ptr<main_window_ctrl_wrapper::MainWindowCtrlWrapper> & getCtrl() const;
+			const std::unique_ptr<main_window::CtrlWrapper> & getCtrl() const;
 
 		protected:
 		#ifndef QT_NO_CONTEXTMENU
@@ -100,7 +100,7 @@ namespace main_window {
 			 * @brief Main window control
 			 *
 			 */
-			std::unique_ptr<main_window_ctrl_wrapper::MainWindowCtrlWrapper> ctrl;
+			std::unique_ptr<main_window::CtrlWrapper> ctrl;
 
 			/**
 			 * @brief list of overlayed widgets

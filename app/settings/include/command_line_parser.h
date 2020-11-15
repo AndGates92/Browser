@@ -21,13 +21,13 @@
  *  @{
  */
 
-namespace command_line_parser {
+namespace command_line {
 
 	/**
 	 * @brief CommandLineParser class
 	 *
 	 */
-	class CommandLineParser : public json_action::JsonAction<command_line_argument::CommandLineArgument>, public printable_object::PrintableObject {
+	class CommandLineParser : public json::JsonAction<command_line::CommandLineArgument>, public printable_object::PrintableObject {
 
 		public:
 			/**
@@ -127,7 +127,7 @@ namespace command_line_parser {
 			const std::string print() const override;
 
 			/**
-			 * @brief Function: virtual void addItemToActionData(std::unique_ptr<command_line_argument::CommandLineArgument> & data, const std::string & key, const std::string & item) override
+			 * @brief Function: virtual void addItemToActionData(std::unique_ptr<command_line::CommandLineArgument> & data, const std::string & key, const std::string & item) override
 			 *
 			 * \param data: data to be updated
 			 * \param key: key the tiem belongs to
@@ -135,7 +135,7 @@ namespace command_line_parser {
 			 *
 			 * This functions adds an item linked to the key to the data provided as input
 			 */
-			virtual void addItemToActionData(std::unique_ptr<command_line_argument::CommandLineArgument> & data, const std::string & key, const std::string & item) override;
+			virtual void addItemToActionData(std::unique_ptr<command_line::CommandLineArgument> & data, const std::string & key, const std::string & item) override;
 
 		protected:
 

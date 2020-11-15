@@ -9,10 +9,10 @@
 #include <QtCore/QtMessageHandler>
 #include <QtCore/QUnhandledException>
 
+#include "top/include/init.h"
 #include "utility/logger/include/macros.h"
 #include "utility/exception/include/browser_exception.h"
 #include "utility/log/include/logging.h"
-#include "top/include/init.h"
 
 /** @addtogroup MainGroup
  *  @{
@@ -34,12 +34,8 @@ int main (int argc, char* argv[]) {
 		logging::set_default_category();
 		qInstallMessageHandler(logging::handler);
 
-		browser_settings::BrowserSettings::setLogPath(argc, argv);
-	{
-		logger::Logger infoLogger(logger::msg_type_e::INFO, __FILE__, __LINE__, __func__, logger::info_level_e::ZERO);
-		infoLogger.initializeLogging();
-		infoLogger << "Test print";
-	}
+		settings::BrowserSettings::setLogPath(argc, argv);
+
 		LOG_INFO(logger::info_level_e::ZERO, , "Starting browser");
 		LOG_INFO(logger::info_level_e::ZERO, , "Built on " << __DATE__ << " at " << __TIME__);
 		LOG_INFO(logger::info_level_e::ZERO, , "QT version " << QT_VERSION_STR);

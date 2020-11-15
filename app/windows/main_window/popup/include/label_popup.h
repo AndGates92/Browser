@@ -13,7 +13,7 @@
 #include <QtCore/QTimer>
 
 #include "widgets/elided_label/include/elided_label.h"
-#include "windows/main_window/popup/include/main_window_popup_base.h"
+#include "windows/main_window/popup/include/popup_base.h"
 #include "common/include/constructor_macros.h"
 
 /** @defgroup LabelPopupGroup Label Popup Widget Doxygen Group
@@ -27,7 +27,7 @@ namespace label_popup {
 	 * @brief LabelPopup class
 	 *
 	 */
-	class LabelPopup final : public main_window_popup_base::MainWindowPopupBase {
+	class LabelPopup final : public main_window::PopupBase {
 
 		Q_OBJECT
 

@@ -19,17 +19,17 @@
  *  @{
  */
 
-namespace command_line_parser {
+namespace command_line {
 	class CommandLineParser;
 }
 
-namespace browser_settings {
+namespace settings {
 
 	/**
 	 * @brief BrowserSettings class
 	 *
 	 */
-	class BrowserSettings : public singleton::Singleton<browser_settings::BrowserSettings>, public printable_object::PrintableObject {
+	class BrowserSettings : public singleton::Singleton<settings::BrowserSettings>, public printable_object::PrintableObject {
 
 		public:
 			/**
@@ -150,7 +150,7 @@ namespace browser_settings {
 			 * @brief command line parser
 			 *
 			 */
-			std::unique_ptr<command_line_parser::CommandLineParser> parser;
+			std::unique_ptr<command_line::CommandLineParser> parser;
 
 			/**
 			 * @brief Function: void initialize()

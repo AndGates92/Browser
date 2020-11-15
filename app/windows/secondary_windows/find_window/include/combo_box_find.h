@@ -19,12 +19,12 @@
 #include "widgets/commands/include/action.h"
 #include "windows/secondary_windows/common/include/combo_box_item.h"
 
-/** @defgroup ComboBoxFindGroup Combo Box Find Doxygen Group
- *  Combo Box Find header functions and class
+/** @defgroup FindWindowGroup Find Window Doxygen Group
+ *  Find Window functions and classes
  *  @{
  */
 
-namespace combo_box_find {
+namespace find_window {
 
 	class ComboBoxFind final : public combo_box_item::ComboBoxItem {
 		public:
@@ -49,17 +49,17 @@ namespace combo_box_find {
 			 *
 			 * Combo box find move constructor
 			 */
-			ComboBoxFind(combo_box_find::ComboBoxFind && rhs);
+			ComboBoxFind(find_window::ComboBoxFind && rhs);
 
 			// Move and copy assignment operators
 			/**
-			 * @brief Function: ComboBoxFind & operator=(combo_box_find::ComboBoxFind && rhs)
+			 * @brief Function: ComboBoxFind & operator=(find_window::ComboBoxFind && rhs)
 			 *
 			 * \param rhs: class to move
 			 *
 			 * Command Combo box find move assignment operator
 			 */
-			ComboBoxFind & operator=(combo_box_find::ComboBoxFind && rhs);
+			ComboBoxFind & operator=(find_window::ComboBoxFind && rhs);
 
 			/**
 			 * @brief Function: const global_enums::offset_type_e & getDirection() const
@@ -87,16 +87,16 @@ namespace combo_box_find {
 			 *
 			 * Combo box find copy constructor
 			 */
-			ComboBoxFind(const combo_box_find::ComboBoxFind & rhs) = delete;
+			ComboBoxFind(const find_window::ComboBoxFind & rhs) = delete;
 
 			/**
-			 * @brief Function: ComboBoxFind & operator=(const combo_box_find::ComboBoxFind & rhs)
+			 * @brief Function: ComboBoxFind & operator=(const find_window::ComboBoxFind & rhs)
 			 *
 			 * \param rhs: class to copy
 			 *
 			 * Command Combo box find copy assignment operator
 			 */
-			ComboBoxFind & operator=(const combo_box_find::ComboBoxFind & rhs) = delete;
+			ComboBoxFind & operator=(const find_window::ComboBoxFind & rhs) = delete;
 
 			/**
 			 * @brief direction of search of the combo box find
@@ -107,7 +107,6 @@ namespace combo_box_find {
 	};
 
 }
-
-/** @} */ // End of ComboBoxFindGroup group
+/** @} */ // End of FindWindowGroup group
 
 #endif // COMBO_BOX_FIND_H

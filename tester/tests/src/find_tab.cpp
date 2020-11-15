@@ -13,7 +13,7 @@
 #include "utility/logger/include/macros.h"
 #include "utility/qt/include/qt_operator.h"
 #include "utility/stl/include/stl_helper.h"
-#include "windows/main_window/common/include/main_window_constants.h"
+#include "windows/main_window/common/include/constants.h"
 #include "tests/include/find_tab.h"
 #include "base/tester/include/base_suite.h"
 
@@ -74,7 +74,7 @@ find_tab::FindTab::~FindTab() {
 std::vector<std::string> find_tab::FindTab::extractDataFromSearchResult(const std::regex & numberRegex, const int & expectedNumberOfMatches) {
 	auto sregexIteratorEnd = std::sregex_iterator();
 
-	const std::shared_ptr<main_window_core::MainWindowCore> & windowCore = this->windowWrapper->getWindowCore();
+	const std::shared_ptr<main_window::Core> & windowCore = this->windowWrapper->getWindowCore();
 	const std::string searchTextInLabelAfterUp = windowCore->bottomStatusBar->getSearchResultText().toStdString();
 	auto itemMatch = std::sregex_iterator(searchTextInLabelAfterUp.cbegin(), searchTextInLabelAfterUp.cend(), numberRegex);
 	const long int numberOfMatches = std::distance(itemMatch, sregexIteratorEnd);
@@ -115,7 +115,7 @@ int find_tab::FindTab::computeNextMatchNumber(const std::string & command, const
 }
 
 int find_tab::FindTab::checkVScrolling(const int & initialVScroll, const int & initialMatchPosition, const int & finalMatchPosition) {
-	const std::shared_ptr<main_window_core::MainWindowCore> & windowCore = this->windowWrapper->getWindowCore();
+	const std::shared_ptr<main_window::Core> & windowCore = this->windowWrapper->getWindowCore();
 	const int currentVScroll = windowCore->bottomStatusBar->getVScroll();
 
 	if (initialMatchPosition < finalMatchPosition) {
@@ -131,7 +131,7 @@ int find_tab::FindTab::checkVScrolling(const int & initialVScroll, const int & i
 }
 
 int find_tab::FindTab::checkVScrolling(const int & initialVScroll, const std::string & command, const bool wrapping) {
-	const std::shared_ptr<main_window_core::MainWindowCore> & windowCore = this->windowWrapper->getWindowCore();
+	const std::shared_ptr<main_window::Core> & windowCore = this->windowWrapper->getWindowCore();
 	const int currentVScroll = windowCore->bottomStatusBar->getVScroll();
 
 	ASSERT(((command.compare(find_tab::findDownCommandName) == 0) && (command.compare(find_tab::findCommandName) == 0) && (command.compare(find_tab::findDownCommandName) == 0)), test_enums::error_type_e::COMMAND, "Command " + command + " is not in the list of allowed commands: " + find_tab::findCommandName + ", " + find_tab::findUpCommandName + " and " + find_tab::findDownCommandName);
@@ -178,14 +178,14 @@ void find_tab::FindTab::testBody() {
 	const std::string search("test");
 	LOG_INFO(logger::info_level_e::ZERO, findTabTest, "Open new tab searching " << search);
 	this->openNewTab(search);
-	const std::string authorityUrl0 = www + main_window_constants::defaultSearchEngine.arg(QString::fromStdString(search)).toStdString();
+	const std::string authorityUrl0 = www + main_window::defaultSearchEngine.arg(QString::fromStdString(search)).toStdString();
 	const std::string url0 = https + authorityUrl0;
 
-	const std::shared_ptr<main_window_tab::MainWindowTab> currentTab = this->windowWrapper->getCurrentTab();
+	const std::shared_ptr<main_window::Tab> currentTab = this->windowWrapper->getCurrentTab();
 	ASSERT((currentTab != nullptr), test_enums::error_type_e::TABS, "Current tab pointer is null event though it should have loaded website " + url0);
 	if (currentTab != nullptr) {
 
-		const std::shared_ptr<main_window_core::MainWindowCore> & windowCore = this->windowWrapper->getWindowCore();
+		const std::shared_ptr<main_window::Core> & windowCore = this->windowWrapper->getWindowCore();
 #if QT_VERSION >= QT_VERSION_CHECK(5, 14, 0)
 		const std::regex numberRegex("[0-9]+");
 		const int expectedNumberOfMatches = 2;

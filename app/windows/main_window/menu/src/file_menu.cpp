@@ -68,8 +68,8 @@ void file_menu::FileMenu::createMenu() {
 void file_menu::FileMenu::open() {
 	LOG_INFO(logger::info_level_e::ZERO, fileMenuOpenAction,  "Open slot: connect signal from open window to slot seding signal to the main window");
 
-	this->openWindow.reset(new open_button_window::OpenButtonWindow(this->parentWidget(), Qt::Window));
-	connect(this->openWindow.get(), &open_button_window::OpenButtonWindow::fileRead, this, &file_menu::FileMenu::updateCenterWindow);
+	this->openWindow.reset(new open_window::Window(this->parentWidget(), Qt::Window));
+	connect(this->openWindow.get(), &open_window::Window::fileRead, this, &file_menu::FileMenu::updateCenterWindow);
 	this->openWindow->show();
 	this->openWindow->setFocus();
 }

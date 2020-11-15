@@ -135,7 +135,7 @@ namespace logger {
 			const logger::info_level_e & getInfoVerbosity() const;
 
 			/**
-			 * @brief Function: explicit Context(const std::string contextName, const logger::msg_type_e contextType, const logger::info_level_e contextInfoVerbosity, const std::string ologfilename = browser_settings::BrowserSettings::getLogFilePath())
+			 * @brief Function: explicit Context(const std::string contextName, const logger::msg_type_e contextType, const logger::info_level_e contextInfoVerbosity, const std::string ologfilename = settings::BrowserSettings::getLogFilePath())
 			 *
 			 * \param contextName: name of the context
 			 * \param contextType: minimum message type accepted
@@ -144,10 +144,10 @@ namespace logger {
 			 *
 			 * Logger context constructor
 			 */
-			explicit Context(const std::string contextName, const logger::msg_type_e contextType, const logger::info_level_e contextInfoVerbosity, const std::string ologfilename = browser_settings::BrowserSettings::getLogFilePath());
+			explicit Context(const std::string contextName, const logger::msg_type_e contextType, const logger::info_level_e contextInfoVerbosity, const std::string ologfilename = settings::BrowserSettings::getLogFilePath());
 
 			/**
-			 * @brief Function: explicit Context(const std::string contextName, const std::string contextFile, const int contextLine, const std::string contextFunction, const logger::msg_type_e contextType, const logger::info_level_e contextInfoVerbosity, const std::string ologfilename = browser_settings::BrowserSettings::getLogFilePath())
+			 * @brief Function: explicit Context(const std::string contextName, const std::string contextFile, const int contextLine, const std::string contextFunction, const logger::msg_type_e contextType, const logger::info_level_e contextInfoVerbosity, const std::string ologfilename = settings::BrowserSettings::getLogFilePath())
 			 *
 			 * \param contextName: name of the context
 			 * \param contextFile: file of the context
@@ -159,7 +159,7 @@ namespace logger {
 			 *
 			 * Logger context constructor
 			 */
-			explicit Context(const std::string contextName, const std::string contextFile, const int contextLine, const std::string contextFunction, const logger::msg_type_e contextType, const logger::info_level_e contextInfoVerbosity, const std::string ologfilename = browser_settings::BrowserSettings::getLogFilePath());
+			explicit Context(const std::string contextName, const std::string contextFile, const int contextLine, const std::string contextFunction, const logger::msg_type_e contextType, const logger::info_level_e contextInfoVerbosity, const std::string ologfilename = settings::BrowserSettings::getLogFilePath());
 
 			/**
 			 * @brief Function: virtual ~Context()

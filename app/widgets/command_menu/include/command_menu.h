@@ -61,7 +61,7 @@ namespace command_menu {
 			 * @brief command menu model
 			 *
 			 */
-			command_menu_model::CommandMenuModel * menuModel;
+			command_menu::CommandMenuModel * menuModel;
 
 			/**
 			 * @brief Height to be displayed without the need of a scrollbar
@@ -89,13 +89,13 @@ namespace command_menu {
 			void setProperties();
 
 			/**
-			 * @brief Function: void setModel(command_menu_model::CommandMenuModel * model)
+			 * @brief Function: void setModel(command_menu::CommandMenuModel * model)
 			 *
 			 * \param model: model to set for the command menu
 			 *
 			 * Set command menu model
 			 */
-			void setModel(command_menu_model::CommandMenuModel * model);
+			void setModel(command_menu::CommandMenuModel * model);
 
 			/**
 			 * @brief Function: QRect visualRect(const QModelIndex & index) const

@@ -13,7 +13,7 @@
 #include "utility/logger/include/macros.h"
 #include "utility/qt/include/qt_operator.h"
 #include "utility/stl/include/stl_helper.h"
-#include "windows/main_window/common/include/main_window_constants.h"
+#include "windows/main_window/common/include/constants.h"
 #include "tests/include/history_tab.h"
 #include "base/tester/include/base_suite.h"
 
@@ -65,10 +65,10 @@ void history_tab::HistoryTab::testBody() {
 	const std::string search0("test0");
 	LOG_INFO(logger::info_level_e::ZERO, historyTabTest, "Open new tab searching " << search0);
 	this->openNewTab(search0);
-	const std::string authorityUrl0 = www + main_window_constants::defaultSearchEngine.arg(QString::fromStdString(search0)).toStdString();
+	const std::string authorityUrl0 = www + main_window::defaultSearchEngine.arg(QString::fromStdString(search0)).toStdString();
 	const std::string url0 = https + authorityUrl0;
 
-	const std::shared_ptr<main_window_tab::MainWindowTab> currentTab = this->windowWrapper->getCurrentTab();
+	const std::shared_ptr<main_window::Tab> currentTab = this->windowWrapper->getCurrentTab();
 	ASSERT((currentTab != nullptr), test_enums::error_type_e::TABS, "Current tab pointer is null event though it should have loaded website " + url0);
 	if (currentTab != nullptr) {
 
@@ -76,7 +76,7 @@ void history_tab::HistoryTab::testBody() {
 		const std::string search1("test1");
 		LOG_INFO(logger::info_level_e::ZERO, historyTabTest, "Search in tab " << search1);
 		this->makeSearchInTab(searchCommandName, search1);
-		const std::string authorityUrl1 = www + main_window_constants::defaultSearchEngine.arg(QString::fromStdString(search1)).toStdString();
+		const std::string authorityUrl1 = www + main_window::defaultSearchEngine.arg(QString::fromStdString(search1)).toStdString();
 		const std::string url1 = https + authorityUrl1;
 
 		const std::string historyPrevCommandName("history previous");

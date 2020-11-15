@@ -79,7 +79,7 @@ namespace open_popup {
 
 }
 
-open_popup::OpenPopup::OpenPopup(QWidget * parent, Qt::WindowFlags flags) : main_window_popup_base::MainWindowPopupBase(parent, true, open_popup::padding, flags), open_content::OpenContent(this) {
+open_popup::OpenPopup::OpenPopup(QWidget * parent, Qt::WindowFlags flags) : main_window::PopupBase(parent, true, open_popup::padding, flags), window::OpenContent(this) {
 
 	LOG_INFO(logger::info_level_e::ZERO, openPopupOverall,  "Creating open popup");
 

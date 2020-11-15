@@ -19,11 +19,9 @@
  *  @{
  */
 
-namespace command_line_parser {
-	class CommandLineParser;
-}
+namespace command_line {
 
-namespace command_line_argument {
+	class CommandLineParser;
 
 	namespace {
 		/**
@@ -37,12 +35,12 @@ namespace command_line_argument {
 	 * @brief CommandLineArgument class
 	 *
 	 */
-	class CommandLineArgument : public json_data::JsonData {
-		friend command_line_parser::CommandLineParser;
+	class CommandLineArgument : public json::JsonData {
+		friend command_line::CommandLineParser;
 
 		public:
 			/**
-			 * @brief Function: static std::shared_ptr<command_line_argument::CommandLineArgument> makeJsonData(const std::string & jsonKey, const std::string & nameKeyValue, const std::string & shortCmdKeyValue, const std::string & longCmdKeyValue, const std::string & defaultValueKeyValue, const int & numberOfArgumentsKeyValue, const std::string & helpKeyValue)
+			 * @brief Function: static std::shared_ptr<command_line::CommandLineArgument> makeJsonData(const std::string & jsonKey, const std::string & nameKeyValue, const std::string & shortCmdKeyValue, const std::string & longCmdKeyValue, const std::string & defaultValueKeyValue, const int & numberOfArgumentsKeyValue, const std::string & helpKeyValue)
 			 *
 			 * \param jsonKey: key in the json file
 			 * \param nameKeyValue: name of the argument
@@ -55,7 +53,7 @@ namespace command_line_argument {
 			 *
 			 * this function constructs a new instance of class CommandLineArgument
 			 */
-			static std::shared_ptr<command_line_argument::CommandLineArgument> makeJsonData(const std::string & jsonKey, const std::string & nameKeyValue, const std::string & shortCmdKeyValue, const std::string & longCmdKeyValue, const std::string & defaultValueKeyValue, const int & numberOfArgumentsKeyValue, const std::string & helpKeyValue);
+			static std::shared_ptr<command_line::CommandLineArgument> makeJsonData(const std::string & jsonKey, const std::string & nameKeyValue, const std::string & shortCmdKeyValue, const std::string & longCmdKeyValue, const std::string & defaultValueKeyValue, const int & numberOfArgumentsKeyValue, const std::string & helpKeyValue);
 
 			/**
 			 * @brief Function: CommandLineArgument(const std::string & jsonKey, const std::string & nameKeyValue = std::string(), const std::string & shortCmdKeyValue = std::string(), const std::string & longCmdKeyValue = std::string(), const std::string & defaultValueKeyValue = std::string(), const int & numberOfArgumentsKeyValue = -1, const std::string & helpKeyValue = std::string())
@@ -75,23 +73,23 @@ namespace command_line_argument {
 
 			// Move and copy constructor
 			/**
-			 * @brief Function: CommandLineArgument(const command_line_argument::CommandLineArgument & rhs)
+			 * @brief Function: CommandLineArgument(const command_line::CommandLineArgument & rhs)
 			 *
 			 * \param rhs: class to copy
 			 *
 			 * Main Window json data copy constructor
 			 * Do not set it as explicit as copy-initialization is allowed
 			 */
-			CommandLineArgument(const command_line_argument::CommandLineArgument & rhs);
+			CommandLineArgument(const command_line::CommandLineArgument & rhs);
 
 			/**
-			 * @brief Function: CommandLineArgument::CommandLineArgument(command_line_argument::CommandLineArgument && rhs)
+			 * @brief Function: CommandLineArgument::CommandLineArgument(command_line::CommandLineArgument && rhs)
 			 *
 			 * \param rhs: class to move
 			 *
 			 * Main Window json data move constructor
 			 */
-			explicit CommandLineArgument(command_line_argument::CommandLineArgument && rhs);
+			explicit CommandLineArgument(command_line::CommandLineArgument && rhs);
 
 			/**
 			 * @brief Function: virtual ~CommandLineArgument()
@@ -102,41 +100,41 @@ namespace command_line_argument {
 
 			// Move and copy assignment operators
 			/**
-			 * @brief Function: CommandLineArgument & operator=(const command_line_argument::CommandLineArgument & rhs)
+			 * @brief Function: CommandLineArgument & operator=(const command_line::CommandLineArgument & rhs)
 			 *
 			 * \param rhs: class to copy
 			 *
 			 * Main Window json data copy assignment operator
 			 */
-			CommandLineArgument & operator=(const command_line_argument::CommandLineArgument & rhs);
+			CommandLineArgument & operator=(const command_line::CommandLineArgument & rhs);
 
 			/**
-			 * @brief Function: CommandLineArgument & operator=(command_line_argument::CommandLineArgument && rhs)
+			 * @brief Function: CommandLineArgument & operator=(command_line::CommandLineArgument && rhs)
 			 *
 			 * \param rhs: class to move
 			 *
 			 * Main Window json data move assignment operator
 			 */
-			CommandLineArgument & operator=(command_line_argument::CommandLineArgument && rhs);
+			CommandLineArgument & operator=(command_line::CommandLineArgument && rhs);
 
 			/**
-			 * @brief Function: bool operator==(const command_line_argument::CommandLineArgument & rhs)
+			 * @brief Function: bool operator==(const command_line::CommandLineArgument & rhs)
 			 *
 			 * \param rhs: right side class to compare
 			 *
 			 * Main Window json data operator == overloading
 			 */
-			bool operator==(const command_line_argument::CommandLineArgument & rhs);
+			bool operator==(const command_line::CommandLineArgument & rhs);
 
 			/**
-			 * @brief Function: bool operator!=(const command_line_argument::CommandLineArgument & rhs)
+			 * @brief Function: bool operator!=(const command_line::CommandLineArgument & rhs)
 			 *
 			 * \param lhs: left side class to compare
 			 * \param rhs: right side class to compare
 			 *
 			 * Main Window json data operator != overloading
 			 */
-			bool operator!=(const command_line_argument::CommandLineArgument & rhs);
+			bool operator!=(const command_line::CommandLineArgument & rhs);
 
 			/**
 			 * @brief Function: virtual const std::string print() const override

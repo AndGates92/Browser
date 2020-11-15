@@ -109,8 +109,8 @@ void edit_menu::EditMenu::selectAll() {
 void edit_menu::EditMenu::find() {
 	LOG_INFO(logger::info_level_e::ZERO, editMenuFindAction,  "setting up find functionality: creating window and connecting signals and slots");
 
-	this->findWindow.reset(new find_button_window::FindButtonWindow(this->parentWidget(), Qt::Window));
-	connect(this->findWindow.get(), &find_button_window::FindButtonWindow::find, this, &edit_menu::EditMenu::doSearch);
+	this->findWindow.reset(new find_window::Window(this->parentWidget(), Qt::Window));
+	connect(this->findWindow.get(), &find_window::Window::find, this, &edit_menu::EditMenu::doSearch);
 	this->findWindow->show();
 	this->findWindow->setFocus();
 }

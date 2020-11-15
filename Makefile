@@ -262,10 +262,13 @@ INCLUDES = $(INCLUDE_HEADERS) \
 SRC_PATH := $(foreach DIR, ${DIR_LIST}, $(DIR)$(SRC_DIR))
 SRCS := $(wildcard $(foreach DIR, ${SRC_PATH}, $(DIR)/*.$(SRC_EXT)))
 HEADERS := $(wildcard $(foreach DIR, ${INCLUDE_PATH}, $(DIR)/*.$(HEADER_EXT)))
-MOC_SRCS = $(patsubst %.$(HEADER_EXT),$(MOC_SRC_DIR)/%.$(MOC_SRC_EXT),$(notdir $(HEADERS)))
-OBJS = $(patsubst %.$(SRC_EXT),$(OBJ_DIR)/%.$(OBJ_EXT),$(notdir $(SRCS)))
-MOC_OBJS = $(patsubst %.$(HEADER_EXT),$(MOC_OBJ_DIR)/%.$(MOC_OBJ_EXT),$(notdir $(HEADERS)))
-DEPS := $(patsubst %.$(OBJ_EXT),$(DEP_DIR)/%.$(DEP_EXT),$(notdir $(OBJS)))
+MOC_SRCS = $(patsubst %.$(HEADER_EXT), $(MOC_SRC_DIR)/%.$(MOC_SRC_EXT), $(HEADERS))
+OBJS = $(patsubst %.$(SRC_EXT),$(OBJ_DIR)/%.$(OBJ_EXT), $(SRCS))
+MOC_OBJS = $(patsubst %.$(HEADER_EXT), $(MOC_OBJ_DIR)/%.$(MOC_OBJ_EXT), $(HEADERS))
+DEPS := $(patsubst %.$(OBJ_EXT), $(DEP_DIR)/%.$(DEP_EXT), $(OBJS))
+
+OBJS_LIST = $(MOC_OBJS) \
+            $(OBJS)
 
 VPATH = $(SRC_PATH) \
         $(INCLUDE_PATH)
@@ -274,23 +277,20 @@ VPATH = $(SRC_PATH) \
 OBJS_DIR = $(MOC_OBJ_DIR) \
            $(OBJ_DIR)
 
-OBJS_LIST = $(MOC_OBJS) \
-            $(OBJS)
+APP_OBJS_DIR = $(foreach DIR, $(OBJS_DIR), $(DIR)/$(APP_DIR))
+TESTER_OBJS_DIR = $(foreach DIR, $(OBJS_DIR), $(DIR)/$(TESTER_DIR))
 
-APP_MAIN_OBJ = $(OBJ_DIR)/$(APP_MAIN).$(OBJ_EXT) \
-               $(MOC_OBJ_DIR)/$(APP_MAIN).$(MOC_OBJ_EXT)
+OBJS_EXT = $(MOC_OBJ_EXT) \
+           $(OBJ_EXT)
 
-TESTER_MAIN_OBJ = $(OBJ_DIR)/$(TESTER_MAIN).$(OBJ_EXT) \
-                  $(MOC_OBJ_DIR)/$(TESTER_MAIN).$(MOC_OBJ_EXT)
+APP_MAIN_OBJS = $(foreach EXT, $(OBJS_EXT), $(APP_MAIN).$(EXT))
+TESTER_MAIN_OBJS = $(foreach EXT, $(OBJS_EXT), $(TESTER_MAIN).$(EXT))
 
-MAIN_OBJS = $(APP_MAIN_OBJ) \
-            $(TESTER_MAIN_OBJ)
+MAIN_OBJS = $(APP_MAIN_OBJS) \
+            $(TESTER_MAIN_OBJS)
 
-# Leave only one top level
-# Filter out top level files from the main objects and then filter out the outcome from the full list of objects
-APP_UNNEEDED_OBJ = $(filter-out $(APP_MAIN_OBJ), $(MAIN_OBJS)) $(filter $(TESTER_DIR), $(OBJS_LIST))
-APP_OBJS = $(filter-out $(APP_UNNEEDED_OBJ), $(OBJS_LIST))
-TESTER_OBJS = $(filter-out $(filter-out $(TESTER_MAIN_OBJ), $(MAIN_OBJS)), $(OBJS_LIST))
+APP_OBJS = $(filter $(foreach DIR, $(APP_OBJS_DIR), $(DIR)/%), $(OBJS_LIST))
+TESTER_OBJS = $(filter-out $(foreach OBJ, $(APP_MAIN_OBJS), %/$(OBJ)), $(APP_OBJS)) $(filter $(foreach DIR, $(TESTER_OBJS_DIR), $(DIR)/%), $(OBJS_LIST))
 
 COVSEARCHDIR := $(foreach DIR, ${OBJS_DIR}, --object-directory ${DIR})
 COVOPTS = --all-blocks --branch-probabilities --function-summaries --demangled-names --unconditional-branches

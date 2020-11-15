@@ -81,7 +81,7 @@ namespace label_popup {
 
 }
 
-label_popup::LabelPopup::LabelPopup(QWidget * parent, Qt::WindowFlags flags) : main_window_popup_base::MainWindowPopupBase(parent, true, label_popup::padding, flags) {
+label_popup::LabelPopup::LabelPopup(QWidget * parent, Qt::WindowFlags flags) : main_window::PopupBase(parent, true, label_popup::padding, flags) {
 
 	LOG_INFO(logger::info_level_e::ZERO, labelPopupOverall,  "Creating label popup");
 

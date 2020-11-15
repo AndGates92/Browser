@@ -13,12 +13,12 @@
 
 #include "common/include/constructor_macros.h"
 
-/** @defgroup MenuBarGroup Menu Bar Doxygen Group
- *  Menu bar functions and classes
+/** @defgroup MenuGroup Menu Doxygen Group
+ *  Menu functions and classes
  *  @{
  */
 
-namespace menu_bar {
+namespace menu {
 
 	/**
 	 * @brief MenuBar class
@@ -63,6 +63,6 @@ namespace menu_bar {
 	};
 
 }
-/** @} */ // End of MenuBar group
+/** @} */ // End of Menu group
 
 #endif // MENU_BAR_H

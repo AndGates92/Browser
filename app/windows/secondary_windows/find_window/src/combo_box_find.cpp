@@ -17,16 +17,16 @@
 // Categories
 LOGGING_CONTEXT(comboBoxFindOverall, comboBoxFind.overall, TYPE_LEVEL, INFO_VERBOSITY)
 
-combo_box_find::ComboBoxFind::ComboBoxFind(const QIcon itemIcon, const QVariant itemUserData, const global_enums::offset_type_e itemDirection, std::unique_ptr<action::Action> itemAction) : combo_box_item::ComboBoxItem(itemIcon, itemUserData, itemAction), direction(itemDirection) {
+find_window::ComboBoxFind::ComboBoxFind(const QIcon itemIcon, const QVariant itemUserData, const global_enums::offset_type_e itemDirection, std::unique_ptr<action::Action> itemAction) : combo_box_item::ComboBoxItem(itemIcon, itemUserData, itemAction), direction(itemDirection) {
 	LOG_INFO(logger::info_level_e::ZERO, comboBoxFindOverall,  "combo box find constructor with direction " << this->direction);
 
 }
 
-combo_box_find::ComboBoxFind::ComboBoxFind(combo_box_find::ComboBoxFind && rhs) : combo_box_item::ComboBoxItem(std::move(rhs)), direction(std::exchange(rhs.direction, global_enums::offset_type_e::IDLE)) {
+find_window::ComboBoxFind::ComboBoxFind(find_window::ComboBoxFind && rhs) : combo_box_item::ComboBoxItem(std::move(rhs)), direction(std::exchange(rhs.direction, global_enums::offset_type_e::IDLE)) {
 	LOG_INFO(logger::info_level_e::ZERO, comboBoxFindOverall,  "combo box find move constructor with direction " << this->direction);
 }
 
-combo_box_find::ComboBoxFind & combo_box_find::ComboBoxFind::operator=(combo_box_find::ComboBoxFind && rhs) {
+find_window::ComboBoxFind & find_window::ComboBoxFind::operator=(find_window::ComboBoxFind && rhs) {
 
 	LOG_INFO(logger::info_level_e::ZERO, comboBoxFindOverall,  "Move assignment operator for combo box find with direction " << rhs.direction);
 
@@ -38,4 +38,4 @@ combo_box_find::ComboBoxFind & combo_box_find::ComboBoxFind::operator=(combo_box
 	return *this;
 }
 
-CONST_GETTER(combo_box_find::ComboBoxFind::getDirection, global_enums::offset_type_e &, this->direction)
+CONST_GETTER(find_window::ComboBoxFind::getDirection, global_enums::offset_type_e &, this->direction)

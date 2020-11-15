@@ -10,7 +10,7 @@
 
 #include <QtWidgets/QWidget>
 
-#include "windows/main_window/window/include/main_window_wrapper.h"
+#include "windows/main_window/window/include/wrapper.h"
 
 /** @defgroup MainWindowTesterWrapperGroup Main Window Tester Wrapper Doxygen Group
  *  Main Window Tester wrapper functions and classes
@@ -20,10 +20,10 @@
 namespace main_window_tester_wrapper {
 
 	/**
-	 * @brief MainWindowWrapper class
+	 * @brief MainWindowTesterWrapper class
 	 *
 	 */
-	class MainWindowTesterWrapper final : public main_window_wrapper::MainWindowWrapper {
+	class MainWindowTesterWrapper final : public main_window::Wrapper {
 
 		public:
 			/**
@@ -64,40 +64,40 @@ namespace main_window_tester_wrapper {
 			virtual ~MainWindowTesterWrapper();
 
 			/**
-			 * @brief Function: const std::unique_ptr<main_window_ctrl_wrapper::MainWindowCtrlWrapper> & getWindowCtrl() const
+			 * @brief Function: const std::unique_ptr<main_window_ctrl_wrapper::CtrlWrapper> & getWindowCtrl() const
 			 *
 			 * \return main window controller
 			 *
 			 * This function returns the main window controller
 			 */
-			const std::unique_ptr<main_window_ctrl_wrapper::MainWindowCtrlWrapper> & getWindowCtrl() const;
+			const std::unique_ptr<main_window_ctrl_wrapper::CtrlWrapper> & getWindowCtrl() const;
 
 			/**
-			 * @brief Function: const std::shared_ptr<main_window_core::MainWindowCore> & getWindowCore() const
+			 * @brief Function: const std::shared_ptr<main_window::Core> & getWindowCore() const
 			 *
 			 * \return window core
 			 *
 			 * This method return the window core
 			 */
-			const std::shared_ptr<main_window_core::MainWindowCore> & getWindowCore() const;
+			const std::shared_ptr<main_window::Core> & getWindowCore() const;
 
 			/**
-			 * @brief Function: const std::shared_ptr<main_window_popup_container::MainWindowPopupContainer> & getPopupContainer() const
+			 * @brief Function: const std::shared_ptr<main_window::PopupContainer> & getPopupContainer() const
 			 *
 			 * \return popup container
 			 *
 			 * This method return the popup container of the window
 			 */
-			const std::shared_ptr<main_window_popup_container::MainWindowPopupContainer> & getPopupContainer() const;
+			const std::shared_ptr<main_window::PopupContainer> & getPopupContainer() const;
 
 			/**
-			 * @brief Function: const std::shared_ptr<main_window_tab::MainWindowTab> getCurrentTab() const
+			 * @brief Function: const std::shared_ptr<main_window::Tab> getCurrentTab() const
 			 *
 			 * \return tab at the position of the current index or nullptr if none is opened
 			 *
 			 * This method return the tab at the position of the current index
 			 */
-			const std::shared_ptr<main_window_tab::MainWindowTab> getCurrentTab() const;
+			const std::shared_ptr<main_window::Tab> getCurrentTab() const;
 
 		protected:
 
@@ -107,7 +107,7 @@ namespace main_window_tester_wrapper {
 			 *
 			 * \param rhs: class to copy
 			 *
-			 * Command MainWindowWrapper copy constructor
+			 * Command MainWindowTesterWrapper copy constructor
 			 */
 			explicit MainWindowTesterWrapper(const main_window_tester_wrapper::MainWindowTesterWrapper & rhs) = delete;
 
@@ -116,7 +116,7 @@ namespace main_window_tester_wrapper {
 			 *
 			 * \param rhs: class to copy
 			 *
-			 * Command MainWindowWrapper copy assignment operator
+			 * Command MainWindowTesterWrapper copy assignment operator
 			 */
 			MainWindowTesterWrapper & operator=(const main_window_tester_wrapper::MainWindowTesterWrapper & rhs) = delete;
 

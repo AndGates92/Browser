@@ -1,0 +1,25 @@
+/**
+ * @copyright
+ * @file popup_base.cpp
+ * @author Andrea Gianarda
+ * @date 03rd of June 2020
+ * @brief Main Window popup base functions
+*/
+
+#include "windows/main_window/popup/include/popup_base.h"
+#include "utility/logger/include/macros.h"
+#include "common/include/global_enums.h"
+
+// Categories
+LOGGING_CONTEXT(mainWindowPopupBaseOverall, mainWindowPopupBase.overall, TYPE_LEVEL, INFO_VERBOSITY)
+
+main_window::PopupBase::PopupBase(QWidget * parent, const bool & centerWidget, const int & widgetPadding, Qt::WindowFlags flags) : popup_base::PopupBase(parent, centerWidget, widgetPadding, flags) {
+
+	LOG_INFO(logger::info_level_e::ZERO, mainWindowPopupBaseOverall,  "Main window popup base constructor");
+
+}
+
+main_window::PopupBase::~PopupBase() {
+	LOG_INFO(logger::info_level_e::ZERO, mainWindowPopupBaseOverall,  "Main window popup base destructor");
+
+}

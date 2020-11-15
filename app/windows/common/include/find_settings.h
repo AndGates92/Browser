@@ -21,11 +21,12 @@
  *  @{
  */
 
-namespace main_window_ctrl_tab {
-	class MainWindowCtrlTab;
+namespace main_window{
+	class CtrlTab;
 }
 
 namespace find_settings {
+
 
 	/**
 	 * @brief FindSettings class
@@ -33,7 +34,7 @@ namespace find_settings {
 	 */
 	class FindSettings final : public printable_object::PrintableObject {
 
-		friend main_window_ctrl_tab::MainWindowCtrlTab;
+		friend main_window::CtrlTab;
 
 		public:
 			/**

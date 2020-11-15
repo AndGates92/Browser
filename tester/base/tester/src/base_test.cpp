@@ -94,7 +94,7 @@ bool base_test::BaseTest::setup() {
 void base_test::BaseTest::wrapup() {
 
 	if (this->getWindow()->isVisible() == true) {
-		const std::unique_ptr<main_window_ctrl_wrapper::MainWindowCtrlWrapper> & windowCtrl =  this->windowWrapper->getWindowCtrl();
+		const std::unique_ptr<main_window::CtrlWrapper> & windowCtrl =  this->windowWrapper->getWindowCtrl();
 
 		// Send escape to close any menu or popup that may be opened
 		QTest::keyClick(windowCtrl.get(), Qt::Key_Escape);

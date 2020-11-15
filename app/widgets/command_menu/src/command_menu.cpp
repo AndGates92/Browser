@@ -78,7 +78,7 @@ namespace command_menu {
 
 }
 
-command_menu::CommandMenu::CommandMenu(QWidget * parent) : QAbstractItemView(parent), menuModel(new command_menu_model::CommandMenuModel(parent)), visibleHeight(0), visibleWidth(parent->width()) {
+command_menu::CommandMenu::CommandMenu(QWidget * parent) : QAbstractItemView(parent), menuModel(new command_menu::CommandMenuModel(parent)), visibleHeight(0), visibleWidth(parent->width()) {
 
 	LOG_INFO(logger::info_level_e::ZERO, commandMenuOverall,  "Create command menu");
 	this->setProperties();
@@ -121,7 +121,7 @@ void command_menu::CommandMenu::setProperties() {
 	this->setSelectionBehavior(command_menu::selection);
 }
 
-void command_menu::CommandMenu::setModel(command_menu_model::CommandMenuModel * model) {
+void command_menu::CommandMenu::setModel(command_menu::CommandMenuModel * model) {
 	// Call setModel from the base class
 	QAbstractItemView::setModel(model);
 }

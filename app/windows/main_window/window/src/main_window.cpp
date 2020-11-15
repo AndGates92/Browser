@@ -16,9 +16,9 @@
 
 #include "utility/stl/include/cpp_operator.h"
 #include "windows/main_window/window/include/main_window.h"
-#include "windows/main_window/menu/include/main_window_menu_bar.h"
-#include "windows/main_window/statusbar/include/main_window_status_bar.h"
-#include "windows/main_window/tabs/include/main_window_tab_widget.h"
+#include "windows/main_window/menu/include/menu_bar.h"
+#include "windows/main_window/statusbar/include/status_bar.h"
+#include "windows/main_window/tabs/include/tab_widget.h"
 #include "widgets/command_menu/include/command_menu.h"
 #include "utility/logger/include/macros.h"
 #include "common/include/global_enums.h"
@@ -65,7 +65,7 @@ namespace main_window {
 
 }
 
-main_window::MainWindow::MainWindow(QWidget * parent, Qt::WindowFlags flags) : QMainWindow(parent, flags), main_window_base::MainWindowBase(std::shared_ptr<main_window_core::MainWindowCore>(new main_window_core::MainWindowCore(this))), overlayedWidgets(std::list<std::shared_ptr<overlayed_widget::OverlayedWidget>>()) {
+main_window::MainWindow::MainWindow(QWidget * parent, Qt::WindowFlags flags) : QMainWindow(parent, flags), main_window::Base(std::shared_ptr<main_window::Core>(new main_window::Core(this))), overlayedWidgets(std::list<std::shared_ptr<overlayed_widget::OverlayedWidget>>()) {
 
 	LOG_INFO(logger::info_level_e::ZERO, mainWindowOverall,  "Main window constructor");
 
@@ -119,7 +119,7 @@ main_window::MainWindow::~MainWindow() {
 
 }
 
-CONST_GETTER(main_window::MainWindow::getCtrl, std::unique_ptr<main_window_ctrl_wrapper::MainWindowCtrlWrapper> &, this->ctrl)
+CONST_GETTER(main_window::MainWindow::getCtrl, std::unique_ptr<main_window::CtrlWrapper> &, this->ctrl)
 
 void main_window::MainWindow::customizeMainWidget() {
 	this->core->mainWidget->setAttribute(Qt::WA_DeleteOnClose);
@@ -228,7 +228,7 @@ void main_window::MainWindow::connectSignals() {
 	LOG_INFO(logger::info_level_e::ZERO, mainWindowOverall,  "Connect signals");
 
 	// Close window
-	connect(this->ctrl->winctrl.get(), &main_window_ctrl::MainWindowCtrl::closeWindowSignal, this, &main_window::MainWindow::closeWindow);
+	connect(this->ctrl->winctrl.get(), &main_window::Ctrl::closeWindowSignal, this, &main_window::MainWindow::closeWindow);
 
 	for (std::list<std::shared_ptr<overlayed_widget::OverlayedWidget>>::const_iterator widget = this->overlayedWidgets.cbegin(); widget != this->overlayedWidgets.cend(); widget++) {
 		connect((*widget).get(), &overlayed_widget::OverlayedWidget::updateGeometryRequest, this, &main_window::MainWindow::updateWidgetGeometry);
@@ -239,7 +239,7 @@ void main_window::MainWindow::createCtrl() {
 	LOG_INFO(logger::info_level_e::ZERO, mainWindowOverall,  "Create controller");
 
 	// main window control object
-	this->ctrl = std::make_unique<main_window_ctrl_wrapper::MainWindowCtrlWrapper>(this, this->core);
+	this->ctrl = std::make_unique<main_window::CtrlWrapper>(this, this->core);
 	this->setFocusProxy(this->ctrl.get());
 	this->ctrl->setFocus();
 

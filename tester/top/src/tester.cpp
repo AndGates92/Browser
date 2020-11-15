@@ -10,6 +10,7 @@
 #include <QtCore/QtMessageHandler>
 #include <QtCore/QUnhandledException>
 
+#include "top/include/init.h"
 #include "utility/logger/include/macros.h"
 #include "utility/exception/include/browser_exception.h"
 #include "utility/log/include/logging.h"
@@ -48,7 +49,7 @@ int main (int argc, char* argv[]) {
 		runner->printResults();
 
 	} catch (const browser_exception::BrowserException & bexc) {
-		QString bexcMsg(bexc.print());
+		std::string bexcMsg(bexc.print());
 		browser_exception::printException(bexcMsg);
 		return EXIT_FAILURE;
 	} catch (const QUnhandledException & unhandledexc) {

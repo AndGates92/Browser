@@ -13,12 +13,12 @@
 #include "common/include/global_classes.h"
 #include "utility/log/include/printable_object.h"
 
-/** @defgroup JsonDataGroup Json Data Doxygen Group
- *  Json data functions and classes
+/** @defgroup JsonGroup Json Doxygen Group
+ *  Json functions and classes
  *  @{
  */
 
-namespace json_data {
+namespace json {
 
 	/**
 	 * @brief JsonData class
@@ -51,23 +51,23 @@ namespace json_data {
 
 			// Move and copy constructor
 			/**
-			 * @brief Function: JsonData(const json_data::JsonData & rhs)
+			 * @brief Function: JsonData(const json::JsonData & rhs)
 			 *
 			 * \param rhs: class to copy
 			 *
 			 * Json data copy constructor
 			 * Do not set it as explicit as copy-initialization is allowed
 			 */
-			JsonData(const json_data::JsonData & rhs);
+			JsonData(const json::JsonData & rhs);
 
 			/**
-			 * @brief Function: JsonData::JsonData(json_data::JsonData && rhs)
+			 * @brief Function: JsonData::JsonData(json::JsonData && rhs)
 			 *
 			 * \param rhs: class to move
 			 *
 			 * Json data move constructor
 			 */
-			explicit JsonData(json_data::JsonData && rhs);
+			explicit JsonData(json::JsonData && rhs);
 
 			/**
 			 * @brief Function: virtual ~JsonData()
@@ -78,22 +78,22 @@ namespace json_data {
 
 			// Move and copy assignment operators
 			/**
-			 * @brief Function: JsonData & operator=(const json_data::JsonData & rhs)
+			 * @brief Function: JsonData & operator=(const json::JsonData & rhs)
 			 *
 			 * \param rhs: class to copy
 			 *
 			 * Json data copy assignment operator
 			 */
-			JsonData & operator=(const json_data::JsonData & rhs);
+			JsonData & operator=(const json::JsonData & rhs);
 
 			/**
-			 * @brief Function: JsonData & operator=(json_data::JsonData && rhs)
+			 * @brief Function: JsonData & operator=(json::JsonData && rhs)
 			 *
 			 * \param rhs: class to move
 			 *
 			 * Json data move assignment operator
 			 */
-			JsonData & operator=(json_data::JsonData && rhs);
+			JsonData & operator=(json::JsonData && rhs);
 
 			/**
 			 * @brief Function: virtual const std::string print() const override
@@ -147,22 +147,22 @@ namespace json_data {
 			virtual bool isSameFieldValue(const std::string & name, const void * value) const = 0;
 
 			/**
-			 * @brief Function: bool operator==(const json_data::JsonData & rhs)
+			 * @brief Function: bool operator==(const json::JsonData & rhs)
 			 *
 			 * \param rhs: right side class to compare
 			 *
 			 * Json data operator == overloading
 			 */
-			bool operator==(const json_data::JsonData & rhs);
+			bool operator==(const json::JsonData & rhs);
 
 			/**
-			 * @brief Function: bool operator!=(const json_data::JsonData & rhs)
+			 * @brief Function: bool operator!=(const json::JsonData & rhs)
 			 *
 			 * \param rhs: right side class to compare
 			 *
 			 * Json data operator != overloading
 			 */
-			bool operator!=(const json_data::JsonData & rhs);
+			bool operator!=(const json::JsonData & rhs);
 
 		private:
 			/**
@@ -177,6 +177,6 @@ namespace json_data {
 	};
 
 }
-/** @} */ // End of JsonDataGroup group
+/** @} */ // End of JsonGroup group
 
 #endif // JSON_DATA_H

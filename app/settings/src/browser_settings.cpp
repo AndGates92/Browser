@@ -27,10 +27,10 @@ LOGGING_CONTEXT(browserSettingsOverall, browserSettings.overall, TYPE_LEVEL, INF
  * @brief global browser settings
  *
  */
-std::string browser_settings::BrowserSettings::logFilePath = std::string();
+std::string settings::BrowserSettings::logFilePath = std::string();
 
 
-namespace browser_settings {
+namespace settings {
 
 	namespace {
 		/**
@@ -54,7 +54,7 @@ namespace browser_settings {
 
 }
 
-void browser_settings::BrowserSettings::setLogPath(int & argc, char** argv) {
+void settings::BrowserSettings::setLogPath(int & argc, char** argv) {
 	if (argv != nullptr) {
 		const std::string logFilePathLongCmd("--log");
 		const std::string logFilePathShortCmd("-l");
@@ -87,55 +87,55 @@ void browser_settings::BrowserSettings::setLogPath(int & argc, char** argv) {
 	}
 }
 
-const std::string & browser_settings::BrowserSettings::getLogFilePath() {
+const std::string & settings::BrowserSettings::getLogFilePath() {
 	return logFilePath;
 }
 
-browser_settings::BrowserSettings::BrowserSettings() : browser_settings::BrowserSettings(0, nullptr) {
+settings::BrowserSettings::BrowserSettings() : settings::BrowserSettings(0, nullptr) {
 
 }
 
-browser_settings::BrowserSettings::BrowserSettings(int argc, char** argv) : parser(new command_line_parser::CommandLineParser(argc, argv, browser_settings::settingsJsonFullPath)) {
+settings::BrowserSettings::BrowserSettings(int argc, char** argv) : parser(new command_line::CommandLineParser(argc, argv, settings::settingsJsonFullPath)) {
 	LOG_INFO(logger::info_level_e::ZERO, browserSettingsOverall,  "Creating browser settings with argc set to " << argc << " and argv set to " << argv);
-	if (browser_settings::BrowserSettings::getLogFilePath().empty() == true) {
-		browser_settings::BrowserSettings::setLogPath(argc, argv);
+	if (settings::BrowserSettings::getLogFilePath().empty() == true) {
+		settings::BrowserSettings::setLogPath(argc, argv);
 	}
 	this->initialize();
 }
 
-browser_settings::BrowserSettings::~BrowserSettings() {
+settings::BrowserSettings::~BrowserSettings() {
 	LOG_INFO(logger::info_level_e::ZERO, browserSettingsOverall,  "Browser settings destructor");
 }
 
-void browser_settings::BrowserSettings::initialize(int & argc, char** argv) {
+void settings::BrowserSettings::initialize(int & argc, char** argv) {
 	if ((this->parser->getArgc() == 0) && (this->parser->getArgv() == nullptr)) {
 		this->parser->initialize(argc, argv);
-		if (browser_settings::BrowserSettings::getLogFilePath().empty() == true) {
-			browser_settings::BrowserSettings::setLogPath(argc, argv);
+		if (settings::BrowserSettings::getLogFilePath().empty() == true) {
+			settings::BrowserSettings::setLogPath(argc, argv);
 		}
 		this->initialize();
 	}
 }
 
-void browser_settings::BrowserSettings::initialize() {
-	if (browser_settings::BrowserSettings::getLogFilePath().empty() == false) {
-		this->overrideArgumentValue("Log", browser_settings::BrowserSettings::getLogFilePath());
+void settings::BrowserSettings::initialize() {
+	if (settings::BrowserSettings::getLogFilePath().empty() == false) {
+		this->overrideArgumentValue("Log", settings::BrowserSettings::getLogFilePath());
 	}
 }
 
-void browser_settings::BrowserSettings::addArguments(const command_line::argument_map_t & arguments, const bool enableOverride) {
+void settings::BrowserSettings::addArguments(const command_line::argument_map_t & arguments, const bool enableOverride) {
 	this->parser->addArguments(arguments, enableOverride);
 }
 
-void browser_settings::BrowserSettings::addArgument(const std::string & key, const std::string & value) {
+void settings::BrowserSettings::addArgument(const std::string & key, const std::string & value) {
 	this->parser->addArgument(key, value);
 }
 
-void browser_settings::BrowserSettings::overrideArgumentValue(const std::string & key, const std::string & value) {
+void settings::BrowserSettings::overrideArgumentValue(const std::string & key, const std::string & value) {
 	this->parser->overrideArgumentValue(key, value);
 }
 
-const std::string browser_settings::BrowserSettings::print() const {
+const std::string settings::BrowserSettings::print() const {
 	const command_line::argument_map_t & settingsMap = this->getSettingsMap();
 
 	std::string settingsInfo = "Browser settings:\n";
@@ -146,4 +146,4 @@ const std::string browser_settings::BrowserSettings::print() const {
 	return settingsInfo;
 }
 
-CONST_GETTER(browser_settings::BrowserSettings::getSettingsMap, command_line::argument_map_t &, this->parser->getDecodedArguments())
+CONST_GETTER(settings::BrowserSettings::getSettingsMap, command_line::argument_map_t &, this->parser->getDecodedArguments())

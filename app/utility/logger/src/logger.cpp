@@ -50,7 +50,7 @@ void logger::Logger::copyContextData(const logger::Context & otherContext) {
 	this->context.setInfoVerbosity(otherContext.getInfoVerbosity());
 	const std::string & currentCtxtLogFilename = this->context.getLogFilename();
 	// Copy log filename from context only if no filename was passed to the logger at the time of construction
-	if ((currentCtxtLogFilename.empty() == true) || (currentCtxtLogFilename.compare(browser_settings::BrowserSettings::getLogFilePath()) == 0)) {
+	if ((currentCtxtLogFilename.empty() == true) || (currentCtxtLogFilename.compare(settings::BrowserSettings::getLogFilePath()) == 0)) {
 		this->context.setLogFilename(otherContext.getLogFilename());
 	}
 	EXCEPTION_ACTION_COND((this->getLogFilename().empty() == true), throw, "Log filename was set to an empty string");
@@ -109,8 +109,8 @@ void logger::Logger::openOFile() {
 	if (this->ofile.is_open() == false) {
 		EXCEPTION_ACTION_COND((this->getLogFilename().empty() == true), throw, "Unable to open file with empty name");
 		if (this->getLogFilename().empty() == true) {
-			this->ofile.open(browser_settings::BrowserSettings::getLogFilePath(), logger::Logger::openMode);
-			this->context.setLogFilename(browser_settings::BrowserSettings::getLogFilePath());
+			this->ofile.open(settings::BrowserSettings::getLogFilePath(), logger::Logger::openMode);
+			this->context.setLogFilename(settings::BrowserSettings::getLogFilePath());
 		} else {
 			this->ofile.open(this->getLogFilename(), logger::Logger::openMode);
 		}

@@ -11,8 +11,8 @@
 #include <QtCore/QLoggingCategory>
 #include <QtWidgets/QWidget>
 
-#include "base/file_handling/include/open_content.h"
-#include "windows/main_window/popup/include/main_window_popup_base.h"
+#include "windows/base/include/open_content.h"
+#include "windows/main_window/popup/include/popup_base.h"
 #include "common/include/constructor_macros.h"
 
 /** @defgroup OpenPopupGroup Open Popup Widget Doxygen Group
@@ -26,7 +26,7 @@ namespace open_popup {
 	 * @brief OpenPopup class
 	 *
 	 */
-	class OpenPopup final : public main_window_popup_base::MainWindowPopupBase, public open_content::OpenContent {
+	class OpenPopup final : public main_window::PopupBase, public window::OpenContent {
 
 		Q_OBJECT
 

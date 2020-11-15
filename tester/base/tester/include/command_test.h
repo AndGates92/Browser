@@ -8,7 +8,7 @@
  * @brief Command test header file
  */
 
-#include "windows/main_window/json/include/main_window_json_action.h"
+#include "windows/main_window/json/include/json_action.h"
 #include "base/tester/include/base_test.h"
 
 /** @defgroup CommandTestGroup Command Test Group
@@ -22,7 +22,7 @@ namespace command_test {
 	 * @brief CommandTest class
 	 *
 	 */
-	class CommandTest : public base_test::BaseTest, public main_window_json_action::MainWindowJsonAction {
+	class CommandTest : public base_test::BaseTest, public main_window::JsonAction {
 
 		public:
 			/**
@@ -108,7 +108,7 @@ namespace command_test {
 			std::string commandNameToShownText(const std::string & commandName, const bool commandState);
 
 			/**
-			 * @brief Function: void writeTextToStatusBar(const std::string & textToWrite, const std::string & expectedText, const main_window_shared_types::state_e & expectedState, const bool execute)
+			 * @brief Function: void writeTextToStatusBar(const std::string & textToWrite, const std::string & expectedText, const main_window::state_e & expectedState, const bool execute)
 			 *
 			 * \param textToWrite: text to write in the status bar
 			 * \param expectedText: expected text to be displayed in the window
@@ -118,10 +118,10 @@ namespace command_test {
 			 *
 			 * This function writes text to the status base and compares it against a golden reference
 			 */
-			void writeTextToStatusBar(const std::string & textToWrite, const std::string & expectedText, const main_window_shared_types::state_e & expectedState, const bool execute, const bool sendShortcut);
+			void writeTextToStatusBar(const std::string & textToWrite, const std::string & expectedText, const main_window::state_e & expectedState, const bool execute, const bool sendShortcut);
 
 			/**
-			 * @brief Function: void writeCommandToStatusBar(const std::string & commandName, const main_window_shared_types::state_e & expectedState, const bool execute)
+			 * @brief Function: void writeCommandToStatusBar(const std::string & commandName, const main_window::state_e & expectedState, const bool execute)
 			 *
 			 * \param commandName: name of command to search in the JSON
 			 * \param expectedState: expected window state while typing
@@ -129,7 +129,7 @@ namespace command_test {
 			 *
 			 * This function writes a command to the status base and creates the golden reference to compare against
 			 */
-			void writeCommandToStatusBar(const std::string & commandName, const main_window_shared_types::state_e & expectedState, const bool execute);
+			void writeCommandToStatusBar(const std::string & commandName, const main_window::state_e & expectedState, const bool execute);
 
 
 			/**

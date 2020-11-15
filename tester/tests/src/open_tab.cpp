@@ -63,6 +63,6 @@ void open_tab::OpenTab::testBody() {
 	const std::string closeCommandName("close tab");
 	this->executeCommand(closeCommandName, std::string());
 
-	const std::shared_ptr<main_window_core::MainWindowCore> & windowCore = this->windowWrapper->getWindowCore();
+	const std::shared_ptr<main_window::Core> & windowCore = this->windowWrapper->getWindowCore();
 	WAIT_FOR_CONDITION((windowCore->getTabCount() == 0), test_enums::error_type_e::TABS, "Closed tab with URL " + website + " - actual number of tabs " + std::to_string(windowCore->getTabCount()), 5000);
 }

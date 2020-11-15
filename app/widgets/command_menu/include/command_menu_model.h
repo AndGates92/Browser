@@ -16,12 +16,12 @@
 
 #include "common/include/constructor_macros.h"
 
-/** @defgroup CommandMenuModelGroup Command Menu Model Doxygen Group
- *  Command Menu Model functions and classes
+/** @defgroup CommandMenuGroup Command Menu Doxygen Group
+ *  Command Menu functions and classes
  *  @{
  */
 
-namespace command_menu_model {
+namespace command_menu {
 	/**
 	 * @brief CommandMenuModel class
 	 *
@@ -120,6 +120,6 @@ namespace command_menu_model {
 
 	};
 }
-/** @} */ // End of CommandMenuModelGroup group
+/** @} */ // End of CommandMenuGroup group
 
 #endif // COMMAND_MENU_MODEL_H
