@@ -9,6 +9,7 @@
 // Qt libraries
 #include <QtGui/QKeyEvent>
 
+#include "utility/stl/include/cpp_operator.h"
 #include "utility/logger/include/macros.h"
 #include "windows/main_window/tabs/include/main_window_tab_search.h"
 #include "windows/main_window/tabs/include/main_window_web_engine_view.h"

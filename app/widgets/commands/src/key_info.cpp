@@ -15,6 +15,22 @@
 LOGGING_CONTEXT(keyInfoOverall, keyInfo.overall, TYPE_LEVEL, INFO_VERBOSITY)
 LOGGING_CONTEXT(keyInfoString, keyInfo.string, TYPE_LEVEL, INFO_VERBOSITY)
 
+/** @addtogroup KeyInfoGroup Key Info Doxygen Group
+ *  @{
+ */
+/**
+ * @brief ADD_KEY_TO_MAP(KEY, STR)
+ *
+ * \param KEY  : key name
+ * \param STR  : string to be printed when the key is pressed
+ *
+ * Print a message to the log file if the chosen verbosity is less or equal to the default verbosity
+ */
+#define ADD_KEY_TO_MAP(KEY, STR)\
+	{ Qt::Key_##KEY, #STR }
+
+/** @} */ // End of KeyInfoGroup group
+
 namespace key_info {
 
 	namespace {
@@ -94,7 +110,7 @@ namespace key_info {
 			ADD_KEY_TO_MAP(Dead_Belowdiaeresis, "\u0324"),  // '̤'
 			ADD_KEY_TO_MAP(Dead_Invertedbreve, "\u0311"),  // '̑'
 			ADD_KEY_TO_MAP(Dead_Belowcomma, "\u0326"),  // '̦'
-			ADD_KEY_TO_MAP(Dead_Currency, ¤),
+			ADD_KEY_TO_MAP(Dead_Currency, "\u00a4"), // '¤'
 			ADD_KEY_TO_MAP(Dead_a, a),
 			ADD_KEY_TO_MAP(Dead_A, A),
 			ADD_KEY_TO_MAP(Dead_e, e),
@@ -105,12 +121,12 @@ namespace key_info {
 			ADD_KEY_TO_MAP(Dead_O, O),
 			ADD_KEY_TO_MAP(Dead_u, u),
 			ADD_KEY_TO_MAP(Dead_U, U),
-			ADD_KEY_TO_MAP(Dead_Small_Schwa, ə),
-			ADD_KEY_TO_MAP(Dead_Capital_Schwa, Ə),
+			ADD_KEY_TO_MAP(Dead_Small_Schwa, "\u0259"), // 'ə'
+			ADD_KEY_TO_MAP(Dead_Capital_Schwa, "\u018f"), // 'Ə'
 			ADD_KEY_TO_MAP(Dead_Greek, Greek),
 			ADD_KEY_TO_MAP(Dead_Lowline, "\u0332"),  // '̲'
 			ADD_KEY_TO_MAP(Dead_Aboveverticalline, "\u030d"),  // '̍'
-			ADD_KEY_TO_MAP(Dead_Belowverticalline, "\u0329"),
+			ADD_KEY_TO_MAP(Dead_Belowverticalline, "\u0329"), // ' ̩'
 			ADD_KEY_TO_MAP(Dead_Longsolidusoverlay, "\u0338"),  // '̸'
 			
 			ADD_KEY_TO_MAP(Memo, Memo),
@@ -130,6 +146,8 @@ namespace key_info {
 	}
 
 }
+
+#undef ADD_KEY_TO_MAP
 
 key_info::KeyInfo::KeyInfo(const QKeySequence & keySeq) {
 

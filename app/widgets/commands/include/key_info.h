@@ -20,17 +20,6 @@
  *  @{
  */
 
-/**
- * @brief ADD_KEY_TO_MAP(KEY, STR)
- *
- * \param KEY  : key name
- * \param STR  : string to be printed when the key is pressed
- *
- * Print a message to the log file if the chosen verbosity is less or equal to the default verbosity
- */
-#define ADD_KEY_TO_MAP(KEY, STR)\
-	{ Qt::Key_##KEY, #STR }
-
 namespace key_info {
 
 	/**

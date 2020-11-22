@@ -159,13 +159,11 @@ DFLAGS := $(foreach DEF, ${DEFINE_LIST}, -D${DEF})
 # Libraries
 THREADLIBS= pthread
 MATHLIBS= m
-GLUTLIBS = GLU GL glut
 QTLIBS = Qt5Widgets Qt5Gui Qt5Core Qt5WebEngineCore Qt5WebEngineWidgets
 QTTESTLIBS = Qt5Test
 X11LIBS = X11
 LIB_LIST = $(MATHLIBS)   \
            $(THREADLIBS) \
-           $(GLUTLIBS)   \
            $(QTLIBS)     \
            $(QTTESTLIBS) \
            $(X11LIBS)    \
@@ -246,8 +244,8 @@ endif
 ifneq ($(QTINCLUDEDIR),)
   QT_HEADERS = $(QTINCLUDEDIR)
 else
-  ifneq ($(wildcard /usr/include/x86_64-linux-gnu/qt5),)
-    QT_HEADERS = /usr/include/x86_64-linux-gnu/qt5
+  ifneq ($(wildcard /usr/include/qt),)
+    QT_HEADERS = /usr/include/qt
   else
     $(error Qt libraries not found - QTINCLUDEDIR is not defined)
   endif

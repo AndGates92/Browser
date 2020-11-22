@@ -199,7 +199,7 @@ void find_tab::FindTab::testBody() {
 #if QT_VERSION >= QT_VERSION_CHECK(5, 14, 0)
 		// Get the total number of matches and initial match number
 		const std::vector<std::string> matchVectorInitial = find_tab::FindTab::extractDataFromSearchResult(numberRegex, expectedNumberOfMatches);
-		std::vector<int> initialMatchPosition({std::atoi(matchVectorInitial[0]), std::atoi(matchVectorInitial[1]});
+		std::vector<int> initialMatchPosition({std::atoi(matchVectorInitial[0].c_str()), std::atoi(matchVectorInitial[1].c_str())});
 #endif // QT_VERSION
 		const int initialVScroll = windowCore->bottomStatusBar->getVScroll();
 
@@ -239,7 +239,7 @@ void find_tab::FindTab::testBody() {
 
 #if QT_VERSION >= QT_VERSION_CHECK(5, 14, 0)
 		const std::vector<int> matchVectorAfterFindingUpward = this->checkMatchPosition(find_tab::findUpCommandName, numberRegex, expectedNumberOfMatches, matchVectorAfterFindingDownward);
-		ASSERT((std::to_string(matchVectorAfterFindingUpward[0]) == matchVectorAfterFindingDownward[0]), test_enums::error_type_e::STATUSBAR, "Match position after one search upwards and one downward " + std::to_string(matchVectorAfterFindingUpward[0]) + " must be the same as the one before the second round of find down - find up " + std::to_string(matchVectorAfterFindingDownward[0]));
+		ASSERT((matchVectorAfterFindingUpward[0] == matchVectorAfterFindingDownward[0]), test_enums::error_type_e::STATUSBAR, "Match position after one search upwards and one downward " + std::to_string(matchVectorAfterFindingUpward[0]) + " must be the same as the one before the second round of find down - find up " + std::to_string(matchVectorAfterFindingDownward[0]));
 		this->checkVScrolling(initialVScroll, matchVectorAfterFindingDownward[0], matchVectorAfterFindingUpward[0]);
 #endif // QT_VERSION
 
