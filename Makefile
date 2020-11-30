@@ -147,7 +147,8 @@ BEHFLAGS ?=
 # -MMD Dependency file listing only header files
 # -MF specifies the dependency file
 DEPENDFLAG = -MT $@ -MP -MMD -MF $(DEPFILE)
-DEPFILE = $(patsubst %.$(OBJ_EXT),$(DEP_DIR)/%.$(DEP_EXT),$(notdir $@))
+DEPFILE = $(patsubst %.$(OBJ_EXT),$(DEP_DIR)/%.$(DEP_EXT),$(subst $(SRC_DIR)/,, $(subst $(OBJ_DIR)/,,$@)))
+#DEPFILE = $(patsubst %.$(OBJ_EXT),$(DEP_DIR)/%.$(DEP_EXT),$(notdir $@))
 
 # Defines
 QTTESTER_DEFINES = QT_TESTLIB_LIB QT_WIDGETS_LIB QT_GUI_LIB
@@ -173,13 +174,6 @@ LIBS := $(foreach LIB, ${LIB_LIST}, -l${LIB})
 # Directory containing source and header files
 APP_DIR = app
 TESTER_DIR = tester
-
-ROOT_DIR = ${APP_DIR} \
-           ${TESTER_DIR}
-
-CLASSCOMPONENT_DIR = $(foreach DIR, ${ROOT_DIR}, $(sort $(dir $(wildcard $(DIR)/*/))))
-COMPONENT_DIR = $(foreach DIR, ${CLASSCOMPONENT_DIR}, $(sort $(dir $(wildcard $(DIR)*/))))
-SUBCOMPONENT_DIR = $(foreach DIR, ${COMPONENT_DIR}, $(sort $(dir $(wildcard $(DIR)*/))))
 
 # Directory containing top level
 MAIN_DIR = top
@@ -224,12 +218,8 @@ VALGRINDLOGFILE = $(LOG_DIR)/$(VALGRINDLOGFILENAME)
 VALGRINDLOGOPTS = -v --log-file=$(VALGRINDLOGFILE) --time-stamp=yes
 VALGRINDEXEARGS ?=
 
-DIR_LIST = $(CLASSCOMPONENT_DIR) \
-           $(COMPONENT_DIR) \
-           $(SUBCOMPONENT_DIR)
-
-INCLUDE_PATH := $(foreach DIR, ${DIR_LIST}, $(DIR)$(INCLUDE_DIR))
-INCLUDE_HEADERS := $(foreach INCHEADER, ${ROOT_DIR}, -I${INCHEADER})
+INCLUDE_PATHS := $(INCLUDE_DIR)
+INCLUDE_HEADERS := $(foreach INCHEADER, ${INCLUDE_PATHS}, -I${INCHEADER})
 
 ifneq ($(QTLIBDIR),)
   QT_LIB_DIR = $(QTLIBDIR)
@@ -259,13 +249,33 @@ endif
 INCLUDES = $(INCLUDE_HEADERS) \
            $(INCLUDE_LIBS)
 
-SRC_PATH := $(foreach DIR, ${DIR_LIST}, $(DIR)$(SRC_DIR))
-SRCS := $(wildcard $(foreach DIR, ${SRC_PATH}, $(DIR)/*.$(SRC_EXT)))
-HEADERS := $(wildcard $(foreach DIR, ${INCLUDE_PATH}, $(DIR)/*.$(HEADER_EXT)))
-MOC_SRCS = $(patsubst %.$(HEADER_EXT), $(MOC_SRC_DIR)/%.$(MOC_SRC_EXT), $(HEADERS))
-OBJS = $(patsubst %.$(SRC_EXT),$(OBJ_DIR)/%.$(OBJ_EXT), $(SRCS))
-MOC_OBJS = $(patsubst %.$(HEADER_EXT), $(MOC_OBJ_DIR)/%.$(MOC_OBJ_EXT), $(HEADERS))
-DEPS := $(patsubst %.$(OBJ_EXT), $(DEP_DIR)/%.$(DEP_EXT), $(OBJS))
+SRC_TOP_DIR = $(foreach DIR, ${SRC_DIR}, $(sort $(dir $(wildcard $(DIR)/*/))))
+SRC_CLASSCOMPONENT_DIR = $(foreach DIR, ${SRC_TOP_DIR}, $(sort $(dir $(wildcard $(DIR)*/))))
+SRC_COMPONENT_DIR = $(foreach DIR, ${SRC_CLASSCOMPONENT_DIR}, $(sort $(dir $(wildcard $(DIR)*/))))
+SRC_SUBCOMPONENT_DIR = $(foreach DIR, ${SRC_COMPONENT_DIR}, $(sort $(dir $(wildcard $(DIR)*/))))
+
+SRC_DIR_LIST = $(SRC_CLASSCOMPONENT_DIR) \
+               $(SRC_COMPONENT_DIR) \
+               $(SRC_SUBCOMPONENT_DIR)
+
+SRC_PATH := $(foreach DIR, ${SRC_DIR_LIST}, $(DIR))
+SRCS := $(wildcard $(foreach DIR, ${SRC_PATH}, $(DIR)*.$(SRC_EXT)))
+OBJS = $(patsubst $(SRC_DIR)/%.$(SRC_EXT),$(OBJ_DIR)/%.$(OBJ_EXT), $(SRCS))
+DEPS := $(patsubst %.$(OBJ_EXT), $(DEP_DIR)/%.$(DEP_EXT), $(subst $(OBJ_DIR)/,,$(OBJS)))
+
+INCLUDE_TOP_DIR = $(foreach DIR, ${INCLUDE_DIR}, $(sort $(dir $(wildcard $(DIR)/*/))))
+INCLUDE_CLASSCOMPONENT_DIR = $(foreach DIR, ${INCLUDE_TOP_DIR}, $(sort $(dir $(wildcard $(DIR)*/))))
+INCLUDE_COMPONENT_DIR = $(foreach DIR, ${INCLUDE_CLASSCOMPONENT_DIR}, $(sort $(dir $(wildcard $(DIR)*/))))
+INCLUDE_SUBCOMPONENT_DIR = $(foreach DIR, ${INCLUDE_COMPONENT_DIR}, $(sort $(dir $(wildcard $(DIR)*/))))
+
+INCLUDE_DIR_LIST = $(INCLUDE_CLASSCOMPONENT_DIR) \
+                   $(INCLUDE_COMPONENT_DIR) \
+                   $(INCLUDE_SUBCOMPONENT_DIR)
+
+INCLUDE_PATH := $(foreach DIR, ${INCLUDE_DIR_LIST}, $(DIR))
+HEADERS := $(wildcard $(foreach DIR, $(INCLUDE_PATH), $(DIR)*.$(HEADER_EXT)))
+MOC_SRCS = $(patsubst $(INCLUDE_DIR)/%.$(HEADER_EXT), $(MOC_SRC_DIR)/%.$(MOC_SRC_EXT), $(HEADERS))
+MOC_OBJS = $(patsubst $(INCLUDE_DIR)/%.$(HEADER_EXT), $(MOC_OBJ_DIR)/%.$(MOC_OBJ_EXT), $(HEADERS))
 
 OBJS_LIST = $(MOC_OBJS) \
             $(OBJS)
@@ -322,13 +332,13 @@ $(APP_EXE) : $(APP_OBJS)
 	$(VERBOSE_ECHO)echo "[${TIMESTAMP}] Linking $(@F). Object files are: $^"
 	$(CC) $(ASANFLAGS) $(PROFILERFLAGS) -o $@ $(DFLAGS) $(BEHFLAGS) $(CEXTRAFLAGS) $^ $(LIB_DIR) $(LIBS)
 
-$(OBJ_DIR)/%.$(OBJ_EXT) : %.$(SRC_EXT)
-	$(MKDIR) $(DEP_DIR)
+$(OBJ_DIR)/%.$(OBJ_EXT) : $(SRC_DIR)/%.$(SRC_EXT)
+	$(MKDIR) $(dir $(DEPFILE))
 	$(MKDIR) $(@D)
 	$(VERBOSE_ECHO)echo "[${TIMESTAMP}] Compiling $(<F) and creating object $@ - dependency file is $(DEPFILE)"
 	$(CC) $(DEPENDFLAG) $(CFLAGS) $(ASANFLAGS) $(COVFLAGS) $(PROFILERFLAGS) $(INCLUDES) -c $< $(DFLAGS) $(BEHFLAGS) $(CEXTRAFLAGS) -o $@ $(LIBS)
 
-$(MOC_SRC_DIR)/%.$(MOC_SRC_EXT) : %.$(HEADER_EXT)
+$(MOC_SRC_DIR)/%.$(MOC_SRC_EXT) : $(INCLUDE_DIR)/%.$(HEADER_EXT)
 	$(MKDIR) $(@D)
 	$(VERBOSE_ECHO)echo "[${TIMESTAMP}] Compiling $(<F) and creating moc source $@"
 	$(MOC) $(DFLAGS) $(BEHFLAGS) $(CEXTRAFLAGS) $(INCLUDE_HEADERS) $< -o $@
