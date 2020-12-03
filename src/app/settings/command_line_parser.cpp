@@ -9,6 +9,7 @@
 #include "app/shared/enums.h"
 #include "app/utility/stl/stl_helper.h"
 #include "app/utility/qt/qt_operator.h"
+#include "app/utility/stl/cpp_operator.h"
 #include "app/utility/logger/macros.h"
 #include "app/shared/setters_getters.h"
 #include "app/shared/exception.h"
@@ -21,7 +22,7 @@ app::command_line::Parser::Parser(int & argc, char** argv, const std::string & j
 	EXCEPTION_ACTION_COND(((this->argc == 0) && (this->argv != nullptr)), throw, "The list of arguments (argv) must be null if the number of arguments (argc) is " << this->argc << ". Argv is set to " << this->argv << " instead.");
 	EXCEPTION_ACTION_COND(((this->argc != 0) && (this->argv == nullptr)), throw, "The number of arguments (argc) must be 0 if the list of arguments (argv) is null. Number of arguments is set to " << this->argc);
 	EXCEPTION_ACTION_COND((this->argc < 0), throw, "Number of arguments (argc) must be greater or equal than 0. Argc is set to " << this->argc);
-	LOG_INFO(app::logger::info_level_e::ZERO, commandLineParserOverall,  "Creating command line parser\n" << *this);
+	LOG_INFO(app::logger::info_level_e::ZERO, commandLineParserOverall, "Creating command line parser\n" << *this);
 
 	this->populateDefaultDecodedArguments();
 	this->populateActionData();
@@ -31,7 +32,7 @@ app::command_line::Parser::Parser(int & argc, char** argv, const std::string & j
 }
 
 app::command_line::Parser::~Parser() {
-	LOG_INFO(app::logger::info_level_e::ZERO, commandLineParserOverall,  "Command line parser destructor");
+	LOG_INFO(app::logger::info_level_e::ZERO, commandLineParserOverall, "Command line parser destructor");
 }
 
 void app::command_line::Parser::addArguments(const app::command_line::argument_map_t & arguments, const bool enableOverride) {
@@ -57,7 +58,7 @@ void app::command_line::Parser::addArgument(const std::string & key, const std::
 void app::command_line::Parser::overrideArgumentValue(const std::string & key, const std::string & value) {
 	const auto & currentValue = this->decodedArguments.find(key);
 	EXCEPTION_ACTION_COND((currentValue == this->decodedArguments.cend()), throw, "Unable to find key " << key << " in command line argument map");
-	LOG_INFO(app::logger::info_level_e::ZERO, commandLineParserOverall,  "Changing value of key " << key << " from " << currentValue->second << " to " << value);
+	LOG_INFO(app::logger::info_level_e::ZERO, commandLineParserOverall, "Changing value of key " << key << " from " << currentValue->second << " to " << value);
 	// Use insert_or_assign instead of operator[]
 	this->decodedArguments.insert_or_assign(key, value);
 }
@@ -105,30 +106,38 @@ void app::command_line::Parser::extractArguments() {
 		const std::unique_ptr<app::command_line::Argument> & shortCmdMatch = this->findDataWithFieldValue("ShortCmd", &prunedOption);
 		const std::unique_ptr<app::command_line::Argument> & longCmdMatch = this->findDataWithFieldValue("LongCmd", &prunedOption);
 
-		EXCEPTION_ACTION_COND(((shortCmdMatch == this->getInvalidData()) && (longCmdMatch == this->getInvalidData())), throw, "Unrecognized option " << option << ". No match found for short or long command");
+		// An option cannot match a short and long command at the same time
 		EXCEPTION_ACTION_COND(((shortCmdMatch != this->getInvalidData()) && (longCmdMatch != this->getInvalidData())), throw, "Option " << option << " matches a short or long command");
 
-		const std::unique_ptr<app::command_line::Argument> & match = (shortCmdMatch == nullptr) ? longCmdMatch : shortCmdMatch;
-
-		const int & numberOfArguments = match->getNumberOfArguments();
-		const std::string & longCmd = match->getLongCmd();
-
-		std::string value = std::string();
-		if (numberOfArguments == 0) {
-			value = std::to_string(1);
+		// An option may be unrecognized because it is dealt in another JSON file
+		if ((shortCmdMatch == this->getInvalidData()) && (longCmdMatch == this->getInvalidData())) {
+			LOG_WARNING(commandLineParserOverall, "Unrecognized option " << option << ". No match found for short or long command listed in " << this->getSourceFileName());
 		} else {
 
-			EXCEPTION_ACTION_COND(((counter + numberOfArguments) >= this->argc), throw, "Argument " << option << " expects " << numberOfArguments << " argument(s) (range within the command line from " << counter << " to " << (counter + numberOfArguments) << " but the number of provided arguments is " << this->argc);
-			for (int arg = 0; arg < numberOfArguments; arg++) {
-				counter++;
-				std::string value(this->argv[counter]);
-				if (arg != (numberOfArguments - 1)) {
-					value = value + " ";
+			const std::unique_ptr<app::command_line::Argument> & match = (shortCmdMatch == nullptr) ? longCmdMatch : shortCmdMatch;
+
+			const int & numberOfArguments = match->getNumberOfArguments();
+			const std::string & cmdName = match->getName();
+
+			std::string value = std::string();
+			if (numberOfArguments == 0) {
+				value = std::to_string(1);
+			} else {
+
+				EXCEPTION_ACTION_COND(((counter + numberOfArguments) >= this->argc), throw, "Argument " << option << " expects " << numberOfArguments << " argument(s) (range within the command line from " << counter << " to " << (counter + numberOfArguments) << " but the number of provided arguments is " << this->argc);
+				for (int arg = 0; arg < numberOfArguments; arg++) {
+					counter++;
+					std::string value(this->argv[counter]);
+					if (arg != (numberOfArguments - 1)) {
+						value = value + " ";
+					}
 				}
 			}
+
+			this->decodedArguments[cmdName] = value;
+
 		}
 
-		this->decodedArguments[longCmd] = value;
 		counter++;
 	}
 }

@@ -77,11 +77,12 @@ void app::settings::Global::setLogPath(int & argc, char** argv) {
 			const std::string option(argv[counter]);
 
 			if ((option.compare(logFilePathLongCmd) == 0) || (option.compare(logFilePathShortCmd) == 0)) {
-				EXCEPTION_ACTION_COND(((counter + numberOfArguments) >= argc), throw, "Argument " << option << " expects 1 argument (range within the command line from " << counter << " to " << (counter + numberOfArguments) << " but the number of provided arguments is " << argc);
+				EXCEPTION_ACTION_COND(((counter + numberOfArguments) >= argc), throw, "Argument " << option << " expects " << numberOfArguments << " argument(s) (range within the command line from " << counter << " to " << (counter + numberOfArguments) << " but the number of provided arguments is " << argc);
 				counter++;
 				logFilePathFromArgument = argv[counter];
 				break;
 			}
+			counter++;
 		}
 
 		if (logFilePathFromArgument.empty() == false) {

@@ -1,6 +1,6 @@
 {
 	"Log" : {
-		"Name" : "log",
+		"Name" : "Log",
 		"ShortCmd" : "l",
 		"LongCmd" : "log",
 		"DefaultValue" : "stdout",

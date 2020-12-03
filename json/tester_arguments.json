@@ -1,6 +1,6 @@
 {
 	"Suite" : {
-		"Name" : "suite",
+		"Name" : "Suite",
 		"ShortCmd" : "s",
 		"LongCmd" : "suite",
 		"DefaultValue" : "all",
@@ -9,7 +9,7 @@
 	},
 
 	"Test" : {
-		"Name" : "test",
+		"Name" : "Test",
 		"ShortCmd" : "t",
 		"LongCmd" : "test",
 		"DefaultValue" : "all",

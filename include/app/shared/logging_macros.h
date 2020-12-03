@@ -48,7 +48,7 @@
 	debugMsg << __VA_ARGS__; \
 
 /**
- * @brief LOG_INFO(VERBOSITY, CATEGORY, ...)
+ * @brief QINFO_PRINT(VERBOSITY, CATEGORY, ...)
  *
  * \param VERBOSITY : verbosity level
  * \param CATEGORY  : category of the print
