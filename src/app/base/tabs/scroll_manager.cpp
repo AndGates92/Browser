@@ -6,7 +6,7 @@
  * @brief Tab Scroll Manager functions
  */
 
-#include "app/utility/stl/cpp_operator.h"
+#include "app/utility/cpp/cpp_operator.h"
 #include "app/utility/logger/macros.h"
 #include "app/shared/setters_getters.h"
 #include "app/base/tabs/scroll_manager.h"

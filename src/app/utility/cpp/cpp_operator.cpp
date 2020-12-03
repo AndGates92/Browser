@@ -6,7 +6,7 @@
  * @brief C++ operator functions
  */
 
-#include "app/utility/stl/cpp_operator.h"
+#include "app/utility/cpp/cpp_operator.h"
 
 std::ostream & operator<<(std::ostream & stream, const std::string & str) {
 	stream << str.c_str();

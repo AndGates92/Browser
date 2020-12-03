@@ -12,7 +12,7 @@
 #include "app/shared/constants.h"
 #include "app/utility/logger/macros.h"
 #include "app/utility/qt/qt_operator.h"
-#include "app/utility/stl/stl_helper.h"
+#include "app/utility/cpp/stl_helper.h"
 #include "app/windows/main_window/shared/constants.h"
 #include "app/windows/main_window/shared/shared_functions.h"
 #include "tester/base/command_test.h"

@@ -7,7 +7,7 @@
  */
 
 #include "app/shared/exception.h"
-#include "app/utility/stl/qt_types_to_stl.h"
+#include "app/utility/cpp/qt_types_to_stl.h"
 
 const std::list<std::string> app::utility::qStringListToStdList(const QStringList & qtList) {
 

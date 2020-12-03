@@ -11,7 +11,7 @@
 #include <memory>
 
 #include "app/shared/constructor_macros.h"
-#include "app/shared/smart_ptr_macros.h"
+#include "app/utility/cpp/macros.h"
 #include "app/base/overlay/overlayed_widget.h"
 #include "app/base/popup/popup_base.h"
 

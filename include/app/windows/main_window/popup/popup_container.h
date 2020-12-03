@@ -15,7 +15,7 @@
 #include "app/windows/main_window/popup/label_popup.h"
 
 #include "app/shared/type_print_macros.h"
-#include "app/shared/smart_ptr_macros.h"
+#include "app/utility/cpp/macros.h"
 #include "app/base/popup/popup_container.h"
 #include "app/shared/constructor_macros.h"
 

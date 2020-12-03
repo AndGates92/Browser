@@ -9,7 +9,7 @@
 // Qt libraries
 #include <QtGui/QKeyEvent>
 
-#include "app/utility/stl/cpp_operator.h"
+#include "app/utility/cpp/cpp_operator.h"
 #include "app/widgets/commands/key_sequence.h"
 #include "app/windows/main_window/shared/constants.h"
 #include "app/windows/main_window/shared/shared_functions.h"

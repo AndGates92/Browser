@@ -12,7 +12,7 @@
 #include "app/utility/log/printable_object.h"
 
 #include "app/settings/types.h"
-#include "app/utility/stl/singleton.h"
+#include "app/utility/cpp/singleton.h"
 
 /** @defgroup SettingsGroup Browser Settings Group
  *  Browser settings functions and classes

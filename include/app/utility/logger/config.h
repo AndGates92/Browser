@@ -12,7 +12,7 @@
 #include <memory>
 
 #include "app/utility/logger/enums.h"
-#include "app/utility/stl/singleton.h"
+#include "app/utility/cpp/singleton.h"
 
 /** @defgroup LoggerGroup Logger Doxygen Group
  *  Logger functions and classes

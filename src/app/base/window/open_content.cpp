@@ -10,7 +10,7 @@
 #include "app/shared/enums.h"
 #include "app/shared/exception.h"
 #include "app/utility/logger/macros.h"
-#include "app/utility/stl/cpp_operator.h"
+#include "app/utility/cpp/cpp_operator.h"
 #include "app/base/window/open_content.h"
 
 // Categories

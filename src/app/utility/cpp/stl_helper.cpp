@@ -6,7 +6,7 @@
  * @brief STL Helper
  */
 
-#include "app/utility/stl/stl_helper.h"
+#include "app/utility/cpp/stl_helper.h"
 
 const std::string app::utility::findAndReplaceString(std::string text, const std::string & searchString, const std::string & replacingString) {
 

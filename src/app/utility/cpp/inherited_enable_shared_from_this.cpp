@@ -6,7 +6,7 @@
  * @brief Inherited Enable Shared From This functions
  */
 
-#include "app/utility/stl/inherited_enable_shared_from_this.h"
+#include "app/utility/cpp/inherited_enable_shared_from_this.h"
 
 // Categories
 LOGGING_CONTEXT(inheritedEnableSharedFromThisOverall, inheritedEnableSharedFromThis.overall, TYPE_LEVEL, INFO_VERBOSITY)

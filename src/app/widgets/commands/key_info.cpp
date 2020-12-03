@@ -6,7 +6,7 @@
  * @brief Key Info functions
  */
 
-#include "app/utility/stl/cpp_operator.h"
+#include "app/utility/cpp/cpp_operator.h"
 #include "app/shared/enums.h"
 #include "app/utility/logger/macros.h"
 #include "app/widgets/commands/key_info.h"

@@ -12,7 +12,7 @@
 #include <QtCore/QJsonDocument>
 #include <QtCore/QJsonParseError>
 
-#include "app/utility/stl/cpp_operator.h"
+#include "app/utility/cpp/cpp_operator.h"
 #include "app/utility/logger/macros.h"
 #include "app/utility/json/wrapper.h"
 #include "app/shared/type_print_macros.h"

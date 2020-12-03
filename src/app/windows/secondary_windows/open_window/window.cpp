@@ -14,7 +14,7 @@
 #include <QtWidgets/QVBoxLayout>
 #include <QtWidgets/QLayoutItem>
 
-#include "app/utility/stl/cpp_operator.h"
+#include "app/utility/cpp/cpp_operator.h"
 #include "app/utility/logger/macros.h"
 #include "app/shared/enums.h"
 #include "app/shared/exception.h"

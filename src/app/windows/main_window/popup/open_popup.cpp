@@ -18,7 +18,7 @@
 #include <QtWidgets/QVBoxLayout>
 #include <QtWidgets/QApplication>
 
-#include "app/utility/stl/cpp_operator.h"
+#include "app/utility/cpp/cpp_operator.h"
 #include "app/utility/logger/macros.h"
 #include "app/shared/enums.h"
 #include "app/windows/main_window/popup/open_popup.h"

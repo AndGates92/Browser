@@ -6,7 +6,7 @@
  * @brief Main Window Tab Widget functions
  */
 
-#include "app/utility/stl/cpp_operator.h"
+#include "app/utility/cpp/cpp_operator.h"
 #include "app/windows/main_window/shared/shared_functions.h"
 #include "app/windows/main_window/shared/constants.h"
 #include "app/shared/type_print_macros.h"

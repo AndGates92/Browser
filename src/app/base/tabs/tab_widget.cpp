@@ -10,7 +10,7 @@
 #include <QtGui/QResizeEvent>
 #include <QtGui/QKeyEvent>
 
-#include "app/utility/stl/cpp_operator.h"
+#include "app/utility/cpp/cpp_operator.h"
 #include "app/shared/setters_getters.h"
 #include "app/shared/exception.h"
 #include "app/base/tabs/tab_widget.h"

@@ -16,7 +16,7 @@
 // Qt libraries
 #include <QtWidgets/QWidget>
 
-#include "app/utility/stl/qt_types_to_stl.h"
+#include "app/utility/cpp/qt_types_to_stl.h"
 #include "app/utility/qt/qt_operator.h"
 #include "app/shared/enums.h"
 #include "app/shared/setters_getters.h"

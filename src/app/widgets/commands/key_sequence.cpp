@@ -6,7 +6,7 @@
  * @brief Key Sequence functions
  */
 
-#include "app/utility/stl/cpp_operator.h"
+#include "app/utility/cpp/cpp_operator.h"
 #include "app/shared/exception.h"
 #include "app/shared/setters_getters.h"
 #include "app/shared/enums.h"

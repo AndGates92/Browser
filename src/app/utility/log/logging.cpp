@@ -15,7 +15,7 @@
 // Get pointer to default category
 #include <QtCore/QLoggingCategory>
 
-#include "app/utility/stl/cpp_operator.h"
+#include "app/utility/cpp/cpp_operator.h"
 #include "app/shared/logging.h"
 #include "app/shared/exception.h"
 #include "app/shared/logging_macros.h"

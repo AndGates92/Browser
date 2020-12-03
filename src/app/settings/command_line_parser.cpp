@@ -7,9 +7,9 @@
  */
 
 #include "app/shared/enums.h"
-#include "app/utility/stl/stl_helper.h"
+#include "app/utility/cpp/stl_helper.h"
 #include "app/utility/qt/qt_operator.h"
-#include "app/utility/stl/cpp_operator.h"
+#include "app/utility/cpp/cpp_operator.h"
 #include "app/utility/logger/macros.h"
 #include "app/shared/setters_getters.h"
 #include "app/shared/exception.h"
