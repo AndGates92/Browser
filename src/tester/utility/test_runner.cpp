@@ -18,6 +18,7 @@
 #include "app/settings/global.h"
 
 LOGGING_CONTEXT(testRunnerOverall, testRunner.overall, TYPE_LEVEL, INFO_VERBOSITY)
+LOGGING_CONTEXT(testRunnerTests, testRunner.test, TYPE_LEVEL, INFO_VERBOSITY)
 LOGGING_CONTEXT(testRunnerResult, testRunner.result, TYPE_LEVEL, INFO_VERBOSITY)
 
 namespace tester {
@@ -95,11 +96,13 @@ void tester::utility::TestRunner::addTestFromSuiteToTestList(const std::shared_p
 		const tester::base::Suite::tests_container_t & tests = suite->getTests();
 		for (const auto & test : tests) {
 			this->testList.push_back(test);
+			LOG_INFO(app::logger::info_level_e::ZERO, testRunnerTests,  "Adding test " << test->getName() << " from suite " << suite->getName() << " to the list of tests to run");
 		}
 	} else {
 		const std::shared_ptr<tester::base::Test> & test = suite->findTest(testName);
 		if (test != nullptr) {
 			this->testList.push_back(test);
+			LOG_INFO(app::logger::info_level_e::ZERO, testRunnerTests,  "Adding test " << test->getName() << " from suite " << suite->getName() << " to the list of tests to run");
 		}
 	}
 }
