@@ -6,10 +6,12 @@
 # Shell script settings
 memleak=0
 compile=0
+compile_target=all
 sanitize=0
 coverage=0
 profiler=0
 tests=0
+testlist=all
 clean=no
 cleanbyproduct=0
 debug=0
@@ -57,6 +59,11 @@ TIME_FORMAT=%H:%M:%S
 
 ITEMSYMBOL="-->"
 
+valid_targets="
+	(all to compile both the application and the tester)
+	(app to compile only the application)
+	(tester to compile only the tester)"
+
 valid_compile_types="
 	(Debug to compile in debug mode without enabling compile optimizations)
 	(Compare to run compilation a second time to compare the executable with and without debug options)
@@ -95,11 +102,15 @@ usage() {
 	echotimestamp "       --compile|-co:		compile the programme.
 	Its default behaviour is to compile it in debug mode. Nonetheless the user can specify the mode by adding an optional argument to this option.
 	List of valid arguments is:${valid_compile_types}"
+	echotimestamp "       --target|-tgt:		target of the compilation.
+	Its default behaviour is to compile all binary. Nonetheless the user can specify the target by adding an optional argument to this option.
+	List of valid arguments is:${valid_targets}"
 	echotimestamp "       --sanitize|-s:		enable sanitize while compiling - note that this option is only valid if compiling the source code"
 	echotimestamp "       --coverage|-cov:		add coverage flags while compiling and generate coverage report"
 	echotimestamp "       --profiler|-p:		add profiling flags while compiling and generate profiling report"
 	echotimestamp "       --memleak|-m:		compile and check memory leaks using valgrind" 
-	echotimestamp "       --test|-t:			run tests"
+	echotimestamp "       --test|-t:			run tests.
+	Its default behaviour is to run all tests. Nonetheless the user can pass an extra argument with the list of tests to run."
 	echotimestamp "       --qtbasedir:		base directory of QT or system"
 	echotimestamp "       				- system: use system QT libraries"
 	echotimestamp "       				- <directory>: base directory of QT. It is assumed that it contains the following directories: lib, include and bin. QT specific environment variables are set as follows: QTLIBDIR = QTBASEDIR/lib and QTTOLLDIR = QTBASEDIR/bin"
@@ -271,6 +282,51 @@ configure_compilation() {
 }
 
 #########################################################
+# Target configuration
+#########################################################
+choose_target() {
+	valid_answer=0
+	echotimestamp " What type of compilation do you want to set?${valid_targets}"
+	while [ ${valid_answer} -eq 0 ]; do
+		read reply
+		case "${reply}" in
+			all|app|tester)
+				compile_target=${reply}
+				valid_answer=1
+				;;
+			?*)
+				echotimestamp " Reply ${reply} is not valid. Valid replies are:${valid_targets}"
+				valid_answer=0
+				;;
+		esac
+	done
+}
+
+check_target() {
+	valid_target=0;
+	case "${compile_target}" in
+		all|app|tester)
+			valid_target=1
+			;;
+		?*)
+			echotimestamp " Reply ${compile_target} is not valid. Valid replies are:${valid_targets}"
+			valid_target=0
+			;;
+	esac
+	return ${valid_compile_type}
+}
+
+configure_target() {
+	check_target
+	success=$?
+
+	if [ ${success} -eq 0 ]; then
+		echotimestamp " Target ${compile_target} is not supported"
+		choose_target
+	fi
+}
+
+#########################################################
 # Clean operation configuration
 #########################################################
 choose_clean_level() {
@@ -340,6 +396,20 @@ fi
 for args
 do
 	case "$1" in
+		--target|-tgt)
+			next_arg=$2
+			case "${next_arg}" in
+				"" | -*)
+					compile_target=all
+					;;
+				?*)
+					compile_target=${next_arg}
+					shift 1
+					;;
+			esac
+			configure_target
+			shift 1
+			;;
 		--compile|-co)
 			compile=1
 			next_arg=$2
@@ -369,6 +439,16 @@ do
 			;;
 		--test|-t)
 			tests=1
+			next_arg=$2
+			case "${next_arg}" in
+				"" | -*)
+					testlist=all
+					;;
+				?*)
+					testlist="${next_arg}"
+					shift 1
+					;;
+			esac
 			shift 1
 			;;
 		--doc|-d)
@@ -507,7 +587,7 @@ if [ ${debug} -eq 1 ]; then
 	 make debug LOG_DIR=${LOGDIR} QTLOGFILENAME=${EXEQTLOG} LOGFILENAME=${EXELOG} PROJ_NAME=${PROJNAME} EXE_NAME=${EXENAME} TESTER_EXE_NAME=${TESTEREXENAME} BIN_DIR=${EXEDIR} CEXTRAFLAGS=${CEXTRAFLAGS} SANITIZER=${SANITIZER} COVERAGE=${COVERAGE} PROFILER=${PROFILER} PROFEXTRAOPTS=${PROFEXTRAOPTS} COVEXTRAOPTS=${COVEXTRAOPTS} 1> ${LOGDIR}/${DEBUGLOG} 2> ${LOGDIR}/${DEBUGERR})
 fi
 
-compile_binary app
+compile_binary ${compile_target}
 
 if [ ${cleanbyproduct} -eq 1 ]; then
 	echo "\n"
@@ -518,18 +598,24 @@ if [ ${cleanbyproduct} -eq 1 ]; then
 	 make clean_byproducts LOG_DIR=${LOGDIR} PROJ_NAME=${PROJNAME} EXE_NAME=${EXENAME} TESTER_EXE_NAME=${TESTEREXENAME} BIN_DIR=${EXEDIR})
 fi
 
-if [ ${tests} -eq 1 ]; then
-
-	compile_binary tester
+if [ "${tests}" -eq 1 ]; then
 
 	if [ -f ./${EXEDIR}/${TESTEREXENAME} ]; then
 		echotimestamp " ========================================================================="
-		echotimestamp " Run program"
+		echotimestamp " Run tester"
 		echotimestamp " ========================================================================="
-		echotimestamp " START: Testing with no input file"
+		if [ "${testlist}" = "all" ]; then
+			echotimestamp " START: Tester running all tests"
+		else
+			echotimestamp " START: Tester running testlist '${testlist}'"
+		fi
 		(set -x; \
-		 ./${EXEDIR}/${TESTEREXENAME})
-		echotimestamp " COMPLETED: Testing with no input file"
+		 ./${EXEDIR}/${TESTEREXENAME} -t "${testlist}")
+		if [ "${testlist}" = "all" ]; then
+			echotimestamp " COMPLETED: Tester running all tests"
+		else
+			echotimestamp " COMPLETED: Tester running test(s) '${testlist}'"
+		fi
 	else
 		echotimestamp " FAILED: Compilation failed - Cannot find  ./${EXEDIR}/${TESTEREXENAME}"
 	fi

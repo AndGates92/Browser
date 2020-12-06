@@ -139,6 +139,8 @@ int app::base::tab::TabWidget::insertTab(const int & index, const std::shared_pt
 void app::base::tab::TabWidget::removeTab(const int & index) {
 	LOG_INFO(app::logger::info_level_e::ZERO, tabWidgetTabs,  "Close tab " << index);
 	QTabWidget::removeTab(index);
+	std::vector<std::shared_ptr<app::base::tab::Tab>>::const_iterator tabsBegin = this->tabs.cbegin();
+	this->tabs.erase((tabsBegin + index));
 	this->setVisibleAttribute();
 }
 

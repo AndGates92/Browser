@@ -6,12 +6,15 @@
  * @brief Command test functions
  */
 
+#include <filesystem>
+
 #include <QtTest/QTest>
 
 #include "app/shared/enums.h"
 #include "app/shared/constants.h"
 #include "app/utility/logger/macros.h"
 #include "app/utility/qt/qt_operator.h"
+#include "app/utility/cpp/cpp_operator.h"
 #include "app/utility/cpp/stl_helper.h"
 #include "app/windows/main_window/shared/constants.h"
 #include "app/windows/main_window/shared/shared_functions.h"
@@ -20,6 +23,49 @@
 
 LOGGING_CONTEXT(commandTestOverall, commandTest.overall, TYPE_LEVEL, INFO_VERBOSITY)
 LOGGING_CONTEXT(commandTestTest, commandTest.test, TYPE_LEVEL, INFO_VERBOSITY)
+
+namespace tester {
+	namespace base {
+		namespace command_test {
+			/**
+			 * @brief String with white-spaces as defiend by the current C locale:
+			 * - ' ': space
+			 * - \r: carriage return
+			 * - \n: line feed
+			 * - \t: horizontal tab
+			 * - \v: vertical tab
+			 * - \f: form feed
+			 *
+			 */
+			static const std::string whiteSpaces(" \n\t\v\f\r");
+
+			/**
+			 * @brief Quit command name
+			 *
+			 */
+			static const std::string openFileCommandName("open file");
+
+			/**
+			 * @brief Quit command name
+			 *
+			 */
+			static const std::string quitCommandName("quit");
+
+			/**
+			 * @brief Find upward command name
+			 *
+			 */
+			static const std::string findUpCommandName("find upward");
+
+			/**
+			 * @brief Find downward command name
+			 *
+			 */
+			static const std::string findDownCommandName("find downward");
+
+		}
+	}
+}
 
 tester::base::CommandTest::CommandTest(const std::shared_ptr<tester::base::Suite> & testSuite, const std::string & testName, const std::string & jsonFileName, const bool useShortcuts) : tester::base::Test(testSuite, (testName + " using " + (useShortcuts ? "shortcuts" : "full commands"))), app::main_window::json::Action(QString::fromStdString(jsonFileName)), sendCommandsThroughShortcuts(useShortcuts) {
 
@@ -33,58 +79,62 @@ tester::base::CommandTest::~CommandTest() {
 
 BASE_GETTER(tester::base::CommandTest::commandSentThroughShortcuts, bool, this->sendCommandsThroughShortcuts)
 
-void tester::base::CommandTest::writeTextToStatusBar(const std::string & textToWrite, const std::string & expectedText, const app::main_window::state_e & expectedState, const bool execute, const bool sendShortcut) {
+void tester::base::CommandTest::writeTextToStatusBar(const std::string & textToWrite, const std::string & expectedText, const app::main_window::state_e & expectedState, const bool execute, const bool pressEnter) {
 
 	LOG_INFO(app::logger::info_level_e::ZERO, commandTestTest,  "Write " << textToWrite << " to statusbar");
 
-	const std::unique_ptr<app::main_window::window::CtrlWrapper> & windowCtrl =  this->windowWrapper->getWindowCtrl();
 	const std::shared_ptr<app::main_window::window::Core> & windowCore = this->windowWrapper->getWindowCore();
 
 	QTest::KeyAction keyAction = QTest::KeyAction::Click;
-	QWidget * widget = windowCtrl.get();
-	// Send text characters one by one
-	for (const auto & character : textToWrite) {
-		QTest::keyEvent(keyAction, widget, character);
-	}
-
-	QApplication::processEvents(QEventLoop::AllEvents);
+	tester::base::CommandTest::sendKeyEventsToFocus(keyAction, textToWrite);
 
 	const app::main_window::state_e & currentStateBeforeExecution = windowCore->getMainWindowState();
 	WAIT_FOR_CONDITION((currentStateBeforeExecution == expectedState), tester::shared::error_type_e::WINDOW, "Expected window state " + expectedState + " doesn't match current window state " + currentStateBeforeExecution, 1000);
 
+	std::string prunedExpectedText(app::utility::removeTrailingCharacter(expectedText, tester::base::command_test::whiteSpaces));
 	const std::string textInLabel = windowCore->bottomStatusBar->getUserInputText().toStdString();
-	ASSERT((expectedText.compare(textInLabel) == 0), tester::shared::error_type_e::STATUSBAR, "Command sent " + expectedText + " doesn't match the command written in the user input label " + textInLabel);
+	std::string prunedTextInLabel(app::utility::removeTrailingCharacter(textInLabel, tester::base::command_test::whiteSpaces));
+	ASSERT((prunedExpectedText.compare(prunedTextInLabel) == 0), tester::shared::error_type_e::STATUSBAR, "Command sent \"" + prunedExpectedText + "\" doesn't match the command written in the user input label \"" + prunedTextInLabel + "\"");
 
 	if (execute == true) {
-		if (sendShortcut == false) {
-			QTest::keyClick(windowCtrl.get(), Qt::Key_Enter);
-			QApplication::processEvents(QEventLoop::AllEvents);
+		if (pressEnter == true) {
+			tester::base::CommandTest::sendKeyClickToFocus(Qt::Key_Enter);
 		}
 
-		const app::main_window::state_e expectedStateAfterExecution = app::main_window::state_e::IDLE;
-		const app::main_window::state_e & currentStateAfterExecution = windowCore->getMainWindowState();
-		ASSERT((currentStateAfterExecution == expectedStateAfterExecution), tester::shared::error_type_e::WINDOW, "Expected window state " + expectedStateAfterExecution + " doesn't match current window state " + currentStateAfterExecution);
+		if (expectedState != app::main_window::state_e::OPEN_FILE) {
+			const app::main_window::state_e expectedStateAfterExecution = app::main_window::state_e::IDLE;
+			const app::main_window::state_e & currentStateAfterExecution = windowCore->getMainWindowState();
+			ASSERT((currentStateAfterExecution == expectedStateAfterExecution), tester::shared::error_type_e::WINDOW, "Expected window state " + expectedStateAfterExecution + " doesn't match current window state " + currentStateAfterExecution);
+		}
 	}
 }
 
-std::string tester::base::CommandTest::commandNameToShownText(const std::string & commandName, const bool commandState) {
-	const std::unique_ptr<app::main_window::json::Data> & commandData = this->findDataWithFieldValue("Name", &commandName);
-	ASSERT((commandData != nullptr), tester::shared::error_type_e::COMMAND, "Unable to find data with Name " + commandName + " in " + this->getSourceFileName().toStdString());
+bool tester::base::CommandTest::commandRequiresEnter(const std::string & commandName) const {
+	return ((commandName.compare(tester::base::command_test::openFileCommandName) != 0) && (commandName.compare(tester::base::command_test::quitCommandName) != 0) && (commandName.compare(tester::base::command_test::findUpCommandName) != 0) && (commandName.compare(tester::base::command_test::findDownCommandName) != 0));
+}
 
+std::string tester::base::CommandTest::commandNameToShownText(const std::string & commandName, const bool useShortcut) {
 	std::string commandExpectedText = std::string();
-	if (commandData != nullptr) {
-		// Long command that the user has to type is :<long_command>
-		// It will be displayed as : <long_command>
-		const std::string * const commandLongCmdPtr(static_cast<const std::string *>(commandData->getValueFromMemberName("LongCmd")));
-		ASSERT((commandLongCmdPtr != nullptr), tester::shared::error_type_e::COMMAND, "Unable to find long command for data data with Name " + commandName + " in " + this->getSourceFileName().toStdString());
-		const std::string commandLongCmd(*commandLongCmdPtr);
-		commandExpectedText = ": " + commandLongCmd;
 
-		if (commandState == false) {
-			const std::string commandNameSearchString("-");
-			const std::string commandNameReplacingString(" ");
-			// If typing the shortcuts, the status bar label prints : <long_command_without_dashes>
-			commandExpectedText = app::utility::findAndReplaceString(commandExpectedText, commandNameSearchString, commandNameReplacingString);
+	const bool commandsPrintsText = ((commandName.compare(tester::base::command_test::openFileCommandName) == 0) || this->commandRequiresEnter(commandName));
+	if (commandsPrintsText == true) {
+		const std::unique_ptr<app::main_window::json::Data> & commandData = this->findDataWithFieldValue("Name", &commandName);
+		ASSERT((commandData != nullptr), tester::shared::error_type_e::COMMAND, "Unable to find data with Name " + commandName + " in " + this->getSourceFileName().toStdString());
+
+		if (commandData != nullptr) {
+			// Long command that the user has to type is :<long_command>
+			// It will be displayed as : <long_command>
+			const std::string * const commandLongCmdPtr(static_cast<const std::string *>(commandData->getValueFromMemberName("LongCmd")));
+			ASSERT((commandLongCmdPtr != nullptr), tester::shared::error_type_e::COMMAND, "Unable to find long command for data data with Name " + commandName + " in " + this->getSourceFileName().toStdString());
+			const std::string commandLongCmd(*commandLongCmdPtr);
+			commandExpectedText = ":" + commandLongCmd;
+
+			if (useShortcut == false) {
+				const std::string commandNameSearchString("-");
+				const std::string commandNameReplacingString(" ");
+				// If typing the shortcuts, the status bar label prints : <long_command_without_dashes>
+				commandExpectedText = app::utility::findAndReplaceString(commandExpectedText, commandNameSearchString, commandNameReplacingString);
+			}
 		}
 	}
 
@@ -97,13 +147,66 @@ void tester::base::CommandTest::writeCommandToStatusBar(const std::string & comm
 	const std::string commandExpectedText(this->commandNameToShownText(commandName, (this->commandSentThroughShortcuts() == false)));
 
 	LOG_INFO(app::logger::info_level_e::ZERO, commandTestTest, "Type command " << commandName << " - text sent to statusbar: " << commandToSend);
-	this->writeTextToStatusBar(commandToSend, commandExpectedText, expectedState, execute, this->sendCommandsThroughShortcuts);
+	const bool commandRequiredEnter = this->commandRequiresEnter(commandName);
+	const bool pressEnter = commandRequiredEnter && this->sendCommandsThroughShortcuts;
+	this->writeTextToStatusBar(commandToSend, commandExpectedText, expectedState, execute, pressEnter);
 }
 
 void tester::base::CommandTest::openNewTab(const std::string & search) {
+	if (search.empty() == true) {
+		LOG_INFO(app::logger::info_level_e::ZERO, commandTestTest, "Open new tab to search engine");
+	} else {
+		LOG_INFO(app::logger::info_level_e::ZERO, commandTestTest, "Open new tab searching " << search);
+	}
 	const std::string openCommandName("open new tab");
 	this->makeSearchInTab(openCommandName, search);
+	const std::shared_ptr<app::main_window::window::Core> & windowCore = this->windowWrapper->getWindowCore();
+	const int loadBarUpperBoundary = 70;
+	WAIT_FOR_CONDITION((windowCore->bottomStatusBar->getProgressValue() == loadBarUpperBoundary), tester::shared::error_type_e::STATUSBAR, "Progress bar didn't reach " + std::to_string(loadBarUpperBoundary) + " event though user sent command \"" + openCommandName + "\" and searched " + search, 5000);
+	WAIT_FOR_CONDITION((windowCore->bottomStatusBar->getLoadBarVisibility() == false), tester::shared::error_type_e::STATUSBAR, "Progress bar didn't change visibility to false", 5000);
 }
+
+void tester::base::CommandTest::openFile(const std::string & filepath) {
+	const std::string openCommandName("open file");
+	this->executeCommand(openCommandName, std::string());
+
+	const std::shared_ptr<app::main_window::popup::PopupContainer> & popupContainer = this->windowWrapper->getPopupContainer();
+	ASSERT((popupContainer != nullptr), tester::shared::error_type_e::POPUP, "Popup container pointer is null");
+	std::shared_ptr<app::main_window::popup::OpenPopup> openFilePopup = popupContainer->getOpenFilePopup();
+	ASSERT((openFilePopup != nullptr), tester::shared::error_type_e::POPUP, "Open file popup pointer is null");
+
+	const std::filesystem::path file(filepath);
+	ASSERT((std::filesystem::exists(file) == true), tester::shared::error_type_e::TEST, "Trying to open inexistent file " + filepath);
+
+	if (openFilePopup != nullptr) {
+
+		WAIT_FOR_CONDITION((openFilePopup->isVisible() == true), tester::shared::error_type_e::POPUP, "Open file popup is not visible even though command " + openCommandName + " was executed.", 5000);
+
+		// Enable insert mode
+		tester::base::CommandTest::sendKeyEventToFocus(QTest::KeyAction::Click, 'i');
+
+		// Open file
+		tester::base::CommandTest::sendKeyClicksToFocus(filepath);
+		const std::string typedFilePath(openFilePopup->getTypedPath().toStdString());
+		ASSERT((typedFilePath.compare(filepath) == 0), tester::shared::error_type_e::POPUP, "Typed filepath " + typedFilePath + " doesn't match expected filepath " + filepath);
+		ASSERT((openFilePopup->isTypedPathAFile() == true), tester::shared::error_type_e::POPUP, "Typed filepath " + typedFilePath + " is not a file");
+
+		// Open file
+		if (this->commandSentThroughShortcuts() == true) {
+			// Remove focus from QLineEdit
+			tester::base::CommandTest::sendKeyClickToFocus(Qt::Key_Escape);
+			tester::base::CommandTest::sendKeyEventToFocus(QTest::KeyAction::Click, 'o');
+		} else {
+			// Press enter while focus is still on the QLineEdit opens the file
+			tester::base::CommandTest::sendKeyClickToFocus(Qt::Key_Enter);
+		}
+	}
+
+	const std::shared_ptr<app::main_window::window::Core> & windowCore = this->windowWrapper->getWindowCore();
+	ASSERT((windowCore->getTabCount() == 1), tester::shared::error_type_e::TABS, "Opened file " + filepath + " in tab - actual number of tabs " + std::to_string(windowCore->getTabCount()));
+}
+
+
 
 void tester::base::CommandTest::makeSearchInTab(const std::string & commandName, const std::string & search) {
 	const std::shared_ptr<app::main_window::window::Core> & windowCore = this->windowWrapper->getWindowCore();
@@ -145,10 +248,16 @@ void tester::base::CommandTest::makeSearchInTab(const std::string & commandName,
 		}
 
 		const QUrl & tabUrl = currentTab->getPage()->url();
-		WAIT_FOR_CONDITION((expectedAuthority.compare(tabUrl.authority().toStdString()) == 0), tester::shared::error_type_e::TABS, "Current URL authority " + tabUrl.authority().toStdString() + " doesn't match expected authority " + expectedAuthority, 5000);
+		std::string currentUrl(tabUrl.toString().toStdString());
+		std::size_t currentUrlHttpsPosition = currentUrl.find(https);
+		const bool currentUrlContainsHttps = (currentUrlHttpsPosition != std::string::npos);
+		if (currentUrlContainsHttps == true) {
+			currentUrl.erase(currentUrlHttpsPosition, https.size());
+		}
+		WAIT_FOR_CONDITION((expectedAuthority.compare(currentUrl) == 0), tester::shared::error_type_e::TABS, "Current URL " + currentUrl + " doesn't match expected URL " + expectedAuthority, 5000);
 
 		const std::string expectedTextInLabel = https + expectedAuthority;
-		const std::string textInLabel = windowCore->bottomStatusBar->getUserInputText().toStdString();
+		const std::string textInLabel = windowCore->bottomStatusBar->getContentPathText().toStdString();
 		ASSERT((expectedTextInLabel.compare(textInLabel) == 0), tester::shared::error_type_e::STATUSBAR, "Source of the content in tab " + expectedTextInLabel + " doesn't match the source of the content that the user requested to search " + textInLabel);
 	}
 }
@@ -201,10 +310,11 @@ void tester::base::CommandTest::executeCommand(const std::string & commandName, 
 	app::main_window::state_e commandExpectedState = app::main_window::state_e::UNKNOWN;
 
 	if (this->commandSentThroughShortcuts() == true) {
-		if (argument.empty() == true) {
-			commandExpectedState = app::main_window::state_e::IDLE;
-		} else {
+		const bool commandRequiredEnter = this->commandRequiresEnter(commandName);
+		if ((commandName.compare(tester::base::command_test::openFileCommandName) == 0) || (commandRequiredEnter == true)) {
 			commandExpectedState = commandState;
+		} else {
+			commandExpectedState = app::main_window::state_e::IDLE;
 		}
 	} else {
 		commandExpectedState = app::main_window::state_e::COMMAND;
@@ -219,7 +329,7 @@ void tester::base::CommandTest::executeCommand(const std::string & commandName, 
 		const app::main_window::state_e argumentExpectedState = commandState;
 
 		LOG_INFO(app::logger::info_level_e::ZERO, commandTestTest, "Give argument " << argument << " to command " << commandName);
-		this->writeTextToStatusBar(argument, argumentExpectedText, argumentExpectedState, true, false);
+		this->writeTextToStatusBar(argument, argumentExpectedText, argumentExpectedState, true, true);
 	}
 
 }

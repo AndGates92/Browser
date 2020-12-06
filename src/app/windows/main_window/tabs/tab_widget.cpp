@@ -33,8 +33,8 @@ app::main_window::tab::TabWidget::~TabWidget() {
 		const app::main_window::page_type_e type = this->getPageType(idx);
 
 		Q_ASSERT_X(((type == app::main_window::page_type_e::TEXT) || (type == app::main_window::page_type_e::WEB_CONTENT)), "Invalid tab type", "Unable to delete provided tab as type is not recognized");
-		this->removeTab(idx);
 		LOG_INFO(app::logger::info_level_e::ZERO, mainWindowTabWidgetOverall,  "Removing tab type " << type);
+		this->removeTab(idx);
 	}
 }
 
@@ -59,6 +59,8 @@ void app::main_window::tab::TabWidget::moveTab(const int & indexFrom, const int 
 void app::main_window::tab::TabWidget::disconnectTab(const int & index) {
 
 	const int tabCount = this->count();
+
+	LOG_INFO(app::logger::info_level_e::ZERO, mainWindowTabWidgetTabs,  "Disconnecting from tab " << index << " out of " << tabCount);
 
 	if (tabCount > 0) {
 		try {
@@ -91,6 +93,8 @@ void app::main_window::tab::TabWidget::disconnectTab(const int & index) {
 void app::main_window::tab::TabWidget::connectTab(const int & index) {
 
 	const int tabCount = this->count();
+
+	LOG_INFO(app::logger::info_level_e::ZERO, mainWindowTabWidgetTabs,  "Connecting to tab " << index << " out of " << tabCount);
 
 	if (tabCount > 0) {
 		std::shared_ptr<app::main_window::tab::Tab> tab = this->widget(index, true);

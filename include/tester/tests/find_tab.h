@@ -57,6 +57,37 @@ namespace tester {
 			private:
 
 				/**
+				 * @brief Function: void findInTab(const std::string & command, const std::regex & numberRegex, const int & expectedNumberOfMatches, const int & initialVScroll, int & vScrollPageMatch, const std::vector<int> & initialMatchPosition, std::vector<int> & currentPageMatchPosition, const bool wrapping)
+				 *
+				 * \param command: find command
+				 * \param numberRegex: regex to extract data from the search result label
+				 * \param expectedNumberOfMatches: expected number of matches
+				 * \param initialVScroll: initial position of the vertical cursor
+				 * \param currentVScroll: current position of the vertical cursor
+				 * \param wrapping: whether the search is expected to wrap around the page in order ot look for a match
+				 *
+				 * \return a vector of strings with the matches of the regular expression
+				 *
+				 * This function extracts the data from the search result label
+				 */
+				void findInTab(const std::string & command, const std::regex & numberRegex, const int & expectedNumberOfMatches, int & vScrollPageMatch, std::vector<int> & currentPageMatchPosition, const bool wrapping);
+
+			#if QT_VERSION >= QT_VERSION_CHECK(5, 14, 0)
+				/**
+				 * @brief Function: std::vector<int> searchDataToNumbers(const std::regex & numberRegex, const int & expectedNumberOfMatches)
+				 *
+				 * \param numberRegex: regex to extract data from the search result label
+				 * \param expectedNumberOfMatches: expected number of matches
+				 *
+				 * \return a vector of integers with the matches of the regular expression
+				 *
+				 * This function extracts the data from the search result label as a vector of integers
+				 */
+				std::vector<int> searchDataToNumbers(const std::regex & numberRegex, const int & expectedNumberOfMatches);
+			#endif // QT_VERSION
+
+			#if QT_VERSION >= QT_VERSION_CHECK(5, 14, 0)
+				/**
 				 * @brief Function: std::vector<std::string> extractDataFromSearchResult(const std::regex & numberRegex, const int & expectedNumberOfMatches)
 				 *
 				 * \param numberRegex: regex to extract data from the search result label
@@ -64,9 +95,10 @@ namespace tester {
 				 *
 				 * \return a vector of strings with the matches of the regular expression
 				 *
-				 * This function extracts the data from the search result label
+				 * This function extracts the data from the search result label as a vector of strings
 				 */
 				std::vector<std::string> extractDataFromSearchResult(const std::regex & numberRegex, const int & expectedNumberOfMatches);
+			#endif // QT_VERSION
 
 				/**
 				 * @brief Function: int computeNextMatchNumber(const std::string & command, const std::vector<int> & initialMatchPosition)
@@ -80,6 +112,7 @@ namespace tester {
 				 */
 				int computeNextMatchNumber(const std::string & command, const std::vector<int> & initialMatchPosition);
 
+			#if QT_VERSION >= QT_VERSION_CHECK(5, 14, 0)
 				/**
 				 * @brief Function: std::vector<int> checkMatchPosition(const std::string & command, const std::regex & numberRegex, const int & expectedNumberOfMatches, const std::vector<int> & initialMatchPosition)
 				 *
@@ -93,6 +126,7 @@ namespace tester {
 				 * This method checks that the match position is the one that is expected
 				 */
 				std::vector<int> checkMatchPosition(const std::string & command, const std::regex & numberRegex, const int & expectedNumberOfMatches, const std::vector<int> & initialMatchPosition);
+			#endif // QT_VERSION
 
 				/**
 				 * @brief Function: int checkVScrolling(const int & initialVScroll, const std::string & command, const bool wrapping)

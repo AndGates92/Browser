@@ -44,6 +44,33 @@ namespace app {
 					 */
 					const QString getTypedPath() const;
 
+					/**
+					 * @brief Function: bool isTypedPathValid() const
+					 *
+					 * \return whether the typed path is matching a file or directory
+					 *
+					 * This method return whether the path typed by the user exists
+					 */
+					bool isTypedPathValid() const;
+
+					/**
+					 * @brief Function: bool isTypedPathAFile() const
+					 *
+					 * \return whether the typed path is matching a file
+					 *
+					 * This method return whether the path typed by the user is a file
+					 */
+					bool isTypedPathAFile() const;
+
+					/**
+					 * @brief Function: bool isTypedPathADirectory() const
+					 *
+					 * \return whether the typed path is matching a directory
+					 *
+					 * This method return whether the path typed by the user is a directory
+					 */
+					bool isTypedPathADirectory() const;
+
 				protected:
 					/**
 					 * @brief Function: explicit OpenContent(QWidget *widgetParent)

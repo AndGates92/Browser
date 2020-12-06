@@ -11,6 +11,8 @@
 #include <memory>
 #include <map>
 
+#include <QtTest/QTest>
+
 #include "tester/shared/enums.h"
 #include "tester/shared/macros.h"
 #include "app/shared/constructor_macros.h"
@@ -49,6 +51,44 @@ namespace tester {
 				 *
 				 */
 				typedef std::multimap<tester::shared::error_type_e, tester::shared::ErrorData> test_error_container_t;
+
+				/**
+				 * @brief Function: static void sendKeyClickToFocus(const Qt::Key key)
+				 *
+				 * \return key: key to send to the focus
+				 *
+				 * This function sends a key click to the current focus
+				 */
+				static void sendKeyClickToFocus(const Qt::Key key);
+
+				/**
+				 * @brief Function: static void sendKeyClicksToFocus(const std::string & text)
+				 *
+				 * \return text: key to send to the focus
+				 *
+				 * This function sends the text as key clicks to the current focus
+				 */
+				static void sendKeyClicksToFocus(const std::string & text);
+
+				/*
+				 * @brief Function: static void sendKeyEventToFocus(const QTest::KeyAction & keyAction, const char character)
+				 *
+				 * \return keyAction: key action to send to the focus
+				 * \return character: character to send to the focus
+				 *
+				 * This function sends a key action to the current focus
+				 */
+				static void sendKeyEventToFocus(const QTest::KeyAction & keyAction, const char character);
+
+				/*
+				 * @brief Function: static void sendKeyEventsToFocus(const QTest::KeyAction & keyAction, const std::string & text)
+				 *
+				 * \return keyAction: key action to send to the focus
+				 * \return text: string to send to the focus
+				 *
+				 * This function sends a string as single characters to the current focus
+				 */
+				static void sendKeyEventsToFocus(const QTest::KeyAction & keyAction, const std::string & text);
 
 				/**
 				 * @brief Function: virtual void postProcessCreation() override
@@ -146,7 +186,6 @@ namespace tester {
 				 * This function returns the window used for the test
 				 */
 				const std::unique_ptr<app::main_window::window::MainWindow> & getWindow() const;
-
 
 			protected:
 

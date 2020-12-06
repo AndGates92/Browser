@@ -32,6 +32,18 @@ namespace app {
 		 */
 		const std::string findAndReplaceString(std::string text, const std::string & searchString, const std::string & replacingString);
 
+		/**
+		 * @brief Function: const std::string removeTrailingCharacter(std::string text, const std::string & trailingCharacters)
+		 *
+		 * \param text: text to pruned trailing characters from
+		 * \param trailingCharacters: set of trailing characters to search
+		 *
+		 * \return: modified string
+		 *
+		 * This function removes trailing characters from a string
+		 */
+		const std::string removeTrailingCharacter(std::string text, const std::string & trailingCharacters);
+
 	}
 
 }

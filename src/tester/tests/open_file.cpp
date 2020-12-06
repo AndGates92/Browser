@@ -15,6 +15,7 @@
 #include "app/shared/enums.h"
 #include "app/utility/logger/macros.h"
 #include "app/utility/qt/qt_operator.h"
+#include "app/utility/cpp/cpp_operator.h"
 #include "tester/tests/open_file.h"
 #include "tester/base/suite.h"
 
@@ -67,7 +68,6 @@ void tester::test::OpenFile::testBody() {
 
 	LOG_INFO(app::logger::info_level_e::ZERO, openFileTest,  "Starting test " << this->getName() << " in suite " << this->getSuite()->getName());
 
-	const std::unique_ptr<app::main_window::window::CtrlWrapper> & windowCtrl =  this->windowWrapper->getWindowCtrl();
 	const std::shared_ptr<app::main_window::window::Core> & windowCore = this->windowWrapper->getWindowCore();
 
 	const std::string openCommandName("open file");
@@ -86,35 +86,34 @@ void tester::test::OpenFile::testBody() {
 	ASSERT((openFilePopup == currentPopupWidget), tester::shared::error_type_e::POPUP, "Open file popup pointer address " + openFilePopupAddress.str() + " doesn't match current popup widget " + currentPopupWidgetAddress.str());
 
 	if (openFilePopup != nullptr) {
-		ASSERT((openFilePopup->isVisible() == true), tester::shared::error_type_e::POPUP, "Open file popup is not visible even though command " + openCommandName + " was executed.");
+		WAIT_FOR_CONDITION((openFilePopup->isVisible() == true), tester::shared::error_type_e::POPUP, "Open file popup is not visible even though command " + openCommandName + " was executed.", 5000);
 
 		ASSERT((windowCore->getTabCount() == 0), tester::shared::error_type_e::TABS, "No tab opened but actual number of tabs is " + std::to_string(windowCore->getTabCount()));
 
 		// Try to type text while not in insert mode
 		const std::string dummyText("aaaaaa");
-		QTest::keyClicks(openFilePopup.get(), QString::fromStdString(dummyText));
-		QApplication::processEvents(QEventLoop::AllEvents);
+		tester::test::OpenFile::sendKeyClicksToFocus(dummyText);
 		const std::string initialFilePath(openFilePopup->getTypedPath().toStdString());
 		ASSERT((initialFilePath.empty() == true), tester::shared::error_type_e::POPUP, "Typed filepath is expected to be empty because the open file popup is not in insert mode instead it has the following text " + initialFilePath);
 
 		// Enable insert mode
-		QTest::keyEvent(QTest::KeyAction::Click, openFilePopup.get(), 'i');
-		QApplication::processEvents(QEventLoop::AllEvents);
+		tester::test::OpenFile::sendKeyEventToFocus(QTest::KeyAction::Click, 'i');
 
 		// Open file
 		const std::string filename("Makefile");
-		QTest::keyClicks(openFilePopup.get(), QString::fromStdString(filename));
-		QApplication::processEvents(QEventLoop::AllEvents);
+		tester::test::OpenFile::sendKeyClicksToFocus(filename);
 		const std::string typedFilePath(openFilePopup->getTypedPath().toStdString());
 		ASSERT((typedFilePath.compare(filename) == 0), tester::shared::error_type_e::POPUP, "Typed filepath " + typedFilePath + " doesn't match expected filepath " + filename);
 
+		// Open file
 		if (this->commandSentThroughShortcuts() == true) {
-			QTest::keyClick(windowCtrl.get(), Qt::Key_Escape);
-			QTest::keyEvent(QTest::KeyAction::Click, openFilePopup.get(), 'o');
+			// Remove focus from QLineEdit
+			tester::test::OpenFile::sendKeyClickToFocus(Qt::Key_Escape);
+			tester::test::OpenFile::sendKeyEventToFocus(QTest::KeyAction::Click, 'o');
 		} else {
-			QTest::keyClick(windowCtrl.get(), Qt::Key_Enter);
+			// Press enter while focus is still on the QLineEdit opens the file
+			tester::test::OpenFile::sendKeyClickToFocus(Qt::Key_Enter);
 		}
-		QApplication::processEvents(QEventLoop::AllEvents);
 
 		ASSERT((windowCore->getTabCount() == 1), tester::shared::error_type_e::TABS, "Opened file " + filename + " in tab - actual number of tabs " + std::to_string(windowCore->getTabCount()));
 		ASSERT((openFilePopup->isVisible() == false), tester::shared::error_type_e::POPUP, "Open file popup is visible even though file " + filename + " was opened.");

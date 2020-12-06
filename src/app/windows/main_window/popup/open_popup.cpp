@@ -330,6 +330,7 @@ QSize app::main_window::popup::OpenPopup::sizeHint() const {
 
 void app::main_window::popup::OpenPopup::pathChanged(const QString & path) {
 	const QFileInfo pathInfo(path);
-	this->openLabel->setEnabled(pathInfo.exists());
-	this->applyAction->setEnabled(pathInfo.exists());
+	const bool enableAction = pathInfo.exists() && pathInfo.isFile();
+	this->openLabel->setEnabled(enableAction);
+	this->applyAction->setEnabled(enableAction);
 }

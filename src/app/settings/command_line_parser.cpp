@@ -119,16 +119,23 @@ void app::command_line::Parser::extractArguments() {
 			const int & numberOfArguments = match->getNumberOfArguments();
 			const std::string & cmdName = match->getName();
 
+			LOG_INFO(app::logger::info_level_e::ZERO, commandLineParserOverall, "Found setting " << cmdName << " matching option " << option << " which expected " << numberOfArguments << " arguments");
+
 			std::string value = std::string();
 			if (numberOfArguments == 0) {
 				value = std::to_string(1);
 			} else {
 
 				EXCEPTION_ACTION_COND(((counter + numberOfArguments) >= this->argc), throw, "Argument " << option << " expects " << numberOfArguments << " argument(s) (range within the command line from " << counter << " to " << (counter + numberOfArguments) << " but the number of provided arguments is " << this->argc);
-				for (int arg = 0; arg < numberOfArguments; arg++) {
+				for (int argNo = 0; argNo < numberOfArguments; argNo++) {
+
 					counter++;
-					std::string value(this->argv[counter]);
-					if (arg != (numberOfArguments - 1)) {
+
+					std::string arg(this->argv[counter]);
+					LOG_INFO(app::logger::info_level_e::ZERO, commandLineParserOverall, "Argument " << argNo << " of settings " << cmdName << " is " << arg);
+
+					value = value + arg;
+					if (argNo != (numberOfArguments - 1)) {
 						value = value + " ";
 					}
 				}

@@ -9,9 +9,8 @@
 // Qt libraries
 #include <QtWidgets/QApplication>
 
+#include <locale>
 #include <thread>
-
-#include <QtTest/QTest>
 
 #include "app/shared/enums.h"
 #include "app/utility/logger/macros.h"
@@ -23,6 +22,7 @@
 
 LOGGING_CONTEXT(baseTestOverall, baseTest.overall, TYPE_LEVEL, INFO_VERBOSITY)
 LOGGING_CONTEXT(baseTestTest, baseTest.test, TYPE_LEVEL, INFO_VERBOSITY)
+LOGGING_CONTEXT(baseTestError, baseTest.error, TYPE_LEVEL, INFO_VERBOSITY)
 LOGGING_CONTEXT(baseTestApp, baseTest.app, TYPE_LEVEL, INFO_VERBOSITY)
 
 bool tester::base::TestPtrCompare::operator() (const std::shared_ptr<tester::base::Test> & rhs, const std::shared_ptr<tester::base::Test> & lhs) const {
@@ -95,19 +95,34 @@ void tester::base::Test::wrapup() {
 
 	if (this->getWindow()->isVisible() == true) {
 		const std::unique_ptr<app::main_window::window::CtrlWrapper> & windowCtrl =  this->windowWrapper->getWindowCtrl();
+		const std::shared_ptr<app::main_window::window::Core> & windowCore = this->windowWrapper->getWindowCore();
 
 		// Send escape to close any menu or popup that may be opened
-		QTest::keyClick(windowCtrl.get(), Qt::Key_Escape);
+		tester::base::Test::sendKeyClickToFocus(Qt::Key_Escape);
 		QApplication::processEvents(QEventLoop::AllEvents);
 
-		const std::string command(":quit");
-		LOG_INFO(app::logger::info_level_e::ZERO, baseTestTest, "Type " << command);
+		const int tabCount = windowCore->getTabCount();
 
-		QTest::keyClicks(windowCtrl.get(), QString::fromStdString(command));
+		// Close all tabs one by one by sending as many close tab command as opened tabs
+		for (int idx = 0; idx < tabCount; idx++) {
+			const std::string closeTabCommand(":close-tab");
+			LOG_INFO(app::logger::info_level_e::ZERO, baseTestTest, "Type " << closeTabCommand);
+			QTest::keyClicks(windowCtrl.get(), QString::fromStdString(closeTabCommand));
+			QApplication::processEvents(QEventLoop::AllEvents);
+			QTest::keyClick(windowCtrl.get(), Qt::Key_Enter);
+			QApplication::processEvents(QEventLoop::AllEvents);
+		}
+
+		WAIT_FOR_CONDITION((windowCore->getTabCount() == 0), tester::shared::error_type_e::TABS, "Failed to closed " + std::to_string(tabCount) + " tab(s). There are still " + std::to_string(windowCore->getTabCount()) + " opened.", 5000);
+
+		const std::string quitCommand(":quit");
+		LOG_INFO(app::logger::info_level_e::ZERO, baseTestTest, "Type " << quitCommand);
+
+		QTest::keyClicks(windowCtrl.get(), QString::fromStdString(quitCommand));
 		QApplication::processEvents(QEventLoop::AllEvents);
 		QTest::keyClick(windowCtrl.get(), Qt::Key_Enter);
 		QApplication::processEvents(QEventLoop::AllEvents);
-		WAIT_FOR_CONDITION((this->getWindow()->isHidden() == true), tester::shared::error_type_e::WINDOW, "Window is still active even though command " + command + " was executed.", 5000);
+		WAIT_FOR_CONDITION((this->getWindow()->isHidden() == true), tester::shared::error_type_e::WINDOW, "Window is still active even though command " + quitCommand + " was executed.", 5000);
 
 	}
 
@@ -204,6 +219,7 @@ void tester::base::Test::addExpectedError(const tester::shared::error_type_e & t
 
 void tester::base::Test::addAssertionFailure(const int & line, const std::string & filename, const std::string & condition, const tester::shared::error_type_e & type, const std::string & errorMessage) {
 	const tester::shared::ErrorData data(this->weak_from_this(), filename, line, condition, errorMessage);
+	LOG_INFO(app::logger::info_level_e::ZERO, baseTestTest,  "ASSERTION FAILED: " << data);
 	this->addError(this->errorMap, type, data);
 }
 
@@ -311,3 +327,31 @@ const std::string tester::base::Test::print() const {
 	return testInfo;
 }
 
+void tester::base::Test::sendKeyClickToFocus(const Qt::Key key) {
+	QWidget * focusWidget = QApplication::focusWidget();
+	QTest::keyClick(focusWidget, key);
+	QApplication::processEvents(QEventLoop::AllEvents);
+}
+
+void tester::base::Test::sendKeyClicksToFocus(const std::string & text) {
+	QWidget * focusWidget = QApplication::focusWidget();
+	QTest::keyClicks(focusWidget, QString::fromStdString(text));
+	QApplication::processEvents(QEventLoop::AllEvents);
+}
+
+void tester::base::Test::sendKeyEventToFocus(const QTest::KeyAction & keyAction, const char character) {
+	QWidget * focusWidget = QApplication::focusWidget();
+	Qt::KeyboardModifiers modifier = Qt::NoModifier;
+	if (isupper(character) != 0) {
+		modifier |= Qt::ShiftModifier;
+	}
+	QTest::keyEvent(keyAction, focusWidget, character, modifier);
+	QApplication::processEvents(QEventLoop::AllEvents);
+}
+
+void tester::base::Test::sendKeyEventsToFocus(const QTest::KeyAction & keyAction, const std::string & text) {
+	// Send text characters one by one
+	for (const auto & character : text) {
+		tester::base::Test::sendKeyEventToFocus(keyAction, character);
+	}
+}

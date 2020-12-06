@@ -28,4 +28,13 @@ const std::string app::utility::findAndReplaceString(std::string text, const std
 	return text;
 }
 
+const std::string app::utility::removeTrailingCharacter(std::string text, const std::string & trailingCharacters) {
+	std::size_t lastValidCharacter = text.find_last_not_of(trailingCharacters);
+	if (lastValidCharacter != std::string::npos) {
+		text.erase(lastValidCharacter + 1);
+	} else {
+		text.clear();
+	}
 
+	return text;
+}

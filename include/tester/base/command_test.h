@@ -44,7 +44,7 @@ namespace tester {
 				 * \param testSuite: test suite
 				 * \param testName: name of the test
 				 * \param jsonFileName: JSON filename
-				 * \param useShortcut: test uses shortcuts to send commands
+				 * \param useShortcuts: test uses shortcuts to send commands
 				 *
 				 * Command test constructor
 				 */
@@ -77,6 +77,15 @@ namespace tester {
 				void openNewTab(const std::string & website = std::string());
 
 				/**
+				 * @brief Function: void openFile(const std::string & filepath)
+				 *
+				 * \param filepath: path to the file to open
+				 *
+				 * This function opens a file in a new tab
+				 */
+				void openFile(const std::string & filepath);
+
+				/**
 				 * @brief Function: void executeCommand(const std::string & commandName, const std::string & argument)
 				 *
 				 * \param commandName: name of command to search in the JSON
@@ -85,6 +94,15 @@ namespace tester {
 				 * This function send an argument and pass an argument to it
 				 */
 				void executeCommand(const std::string & commandName, const std::string & argument);
+
+				/**
+				 * @brief Function: bool commandRequiresEnter(const std::string & commandName) const
+				 *
+				 * \param commandName: name of command to search in the JSON
+				 *
+				 * This function returns true if the command requires the user to press Enter to validate the command
+				 */
+				bool commandRequiresEnter(const std::string & commandName) const;
 
 			protected:
 
@@ -100,14 +118,14 @@ namespace tester {
 				std::string commandNameToTypedText(const std::string & commandName);
 
 				/**
-				 * @brief Function: std::string commandNameToShownText(const std::string & commandName, const bool commandState);
+				 * @brief Function: std::string commandNameToShownText(const std::string & commandName, const bool useShortcut);
 				 *
 				 * \param commandName: name of command to search in the JSON
-				 * \param commandState: window in command state
+				 * \param useShortcut: command sent through shortcuts
 				 *
 				 * This function converts a command name into the text to shown in the statusbar
 				 */
-				std::string commandNameToShownText(const std::string & commandName, const bool commandState);
+				std::string commandNameToShownText(const std::string & commandName, const bool useShortcut);
 
 				/**
 				 * @brief Function: void writeTextToStatusBar(const std::string & textToWrite, const std::string & expectedText, const app::main_window::state_e & expectedState, const bool execute)
@@ -116,11 +134,11 @@ namespace tester {
 				 * \param expectedText: expected text to be displayed in the window
 				 * \param expectedState: expected window state while typing
 				 * \param excute: boolean that control whether to execute the command or not
-				 * \param sendShortcut: send commands through shortcuts
+				 * \param pressEnter: press enter to validate the command
 				 *
 				 * This function writes text to the status base and compares it against a golden reference
 				 */
-				void writeTextToStatusBar(const std::string & textToWrite, const std::string & expectedText, const app::main_window::state_e & expectedState, const bool execute, const bool sendShortcut);
+				void writeTextToStatusBar(const std::string & textToWrite, const std::string & expectedText, const app::main_window::state_e & expectedState, const bool execute, const bool pressEnter);
 
 				/**
 				 * @brief Function: void writeCommandToStatusBar(const std::string & commandName, const app::main_window::state_e & expectedState, const bool execute)

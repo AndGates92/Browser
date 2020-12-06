@@ -30,6 +30,7 @@ tester::suite::CommandSuite::~CommandSuite() {
 }
 
 void tester::suite::CommandSuite::populate() {
+	LOG_INFO(app::logger::info_level_e::ZERO, commandSuiteOverall,  "Populating suite " << this->getName());
 	for (const bool & shortcut : { false, true } ) {
 		tester::test::LaunchApp::create<tester::test::LaunchApp>(this->shared_from_this(), shortcut);
 		tester::test::OpenTab::create<tester::test::OpenTab>(this->shared_from_this(), shortcut);

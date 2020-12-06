@@ -25,7 +25,8 @@ namespace tester {
 		 *
 		 */
 		typedef enum class error_type_list {
-			UNKNOWN,   /**< Unknown error type */
+			UNKNOWN,   /**< Unknown error */
+			TEST,      /**< Test error */
 			EXCEPTION, /**< Exception thrown */
 			COMMAND,   /**< Command error */
 			STATUSBAR, /**< Statusbar error */

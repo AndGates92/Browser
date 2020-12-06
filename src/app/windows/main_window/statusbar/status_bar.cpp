@@ -102,7 +102,7 @@ namespace app {
 
 app::main_window::status_bar::StatusBar::StatusBar(QWidget * parent, Qt::WindowFlags flags) : QWidget(parent, flags), userInput(Q_NULLPTR), contentPath(Q_NULLPTR), scroll(Q_NULLPTR), info(Q_NULLPTR), searchResult(Q_NULLPTR), loadBar(Q_NULLPTR) {
 
-	LOG_INFO(app::logger::info_level_e::ZERO, mainWindowStatusBarOverall,  "Main window status bar constructor");
+	LOG_INFO(app::logger::info_level_e::ZERO, mainWindowStatusBarOverall, "Main window status bar constructor");
 
 	this->userInput = std::move(this->newWindowLabel());
 	this->contentPath = std::move(this->newWindowLabel());
@@ -147,7 +147,7 @@ app::main_window::status_bar::StatusBar::StatusBar(QWidget * parent, Qt::WindowF
 }
 
 app::main_window::status_bar::StatusBar::~StatusBar() {
-	LOG_INFO(app::logger::info_level_e::ZERO, mainWindowStatusBarOverall,  "Main window status bar destructor");
+	LOG_INFO(app::logger::info_level_e::ZERO, mainWindowStatusBarOverall, "Main window status bar destructor");
 
 }
 

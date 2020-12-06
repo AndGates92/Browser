@@ -69,6 +69,7 @@ void tester::test::OpenTab::testBody() {
 
 	const std::string closeCommandName("close tab");
 	this->executeCommand(closeCommandName, std::string());
+	tester::base::CommandTest::sendKeyClickToFocus(Qt::Key_Enter);
 
 	const std::shared_ptr<app::main_window::window::Core> & windowCore = this->windowWrapper->getWindowCore();
 	WAIT_FOR_CONDITION((windowCore->getTabCount() == 0), tester::shared::error_type_e::TABS, "Closed tab with URL " + website + " - actual number of tabs " + std::to_string(windowCore->getTabCount()), 5000);

@@ -75,10 +75,14 @@ void tester::utility::TestRunner::fillTestList() {
 	const auto & suiteArgument = settingsMap.find("Suite");
 	EXCEPTION_ACTION_COND((suiteArgument == settingsMap.cend()), throw, "Unable to find key suite in command line argument map");
 	const std::string & suiteName = suiteArgument->second;
+	EXCEPTION_ACTION_COND((suiteName.empty() == true), throw, "Unable to set up runner if name of suiteName is an empty string. Choose a suite or keep the default value that ensures that you runs all tests.");
 
 	const auto & testArgument = settingsMap.find("Test");
 	EXCEPTION_ACTION_COND((testArgument == settingsMap.cend()), throw, "Unable to find key test in command line argument map");
 	const std::string & testName = testArgument->second;
+	EXCEPTION_ACTION_COND((testName.empty() == true), throw, "Unable to set up runner if name of the test is an empty string. Choose a test or keep the default value that ensures that you runs all tests.");
+
+	LOG_INFO(app::logger::info_level_e::ZERO, testRunnerTests,  "Looking for " << ((testName.compare("all") == 0) ? "all tests" : (std::string("test ") + testName)) << " in " << ((suiteName.compare("all") == 0) ? "all test suites" : (std::string("suite ") + suiteName)));
 
 	if (suiteName.compare("all") == 0) {
 		const tester::base::Factory::suite_container_t & suites = this->factory->getSuites();
@@ -100,6 +104,7 @@ void tester::utility::TestRunner::addTestFromSuiteToTestList(const std::shared_p
 		}
 	} else {
 		const std::shared_ptr<tester::base::Test> & test = suite->findTest(testName);
+		EXCEPTION_ACTION_COND((test == nullptr), throw, "Unable to find test " << testName << " from suite " << suite->getName());
 		if (test != nullptr) {
 			this->testList.push_back(test);
 			LOG_INFO(app::logger::info_level_e::ZERO, testRunnerTests,  "Adding test " << test->getName() << " from suite " << suite->getName() << " to the list of tests to run");
@@ -139,7 +144,7 @@ void tester::utility::TestRunner::printResults() const {
 	for (const auto & test : this->failedTests) {
 		const tester::base::Test::test_error_container_t & errorMap = test->getErrorMap();
 		if (errorMap.empty() == false) {
-			LOG_INFO(app::logger::info_level_e::ZERO, testRunnerResult,  "Test errors:");
+			LOG_INFO(app::logger::info_level_e::ZERO, testRunnerResult,  "Test \"" << test->getName() << "\" has " << errorMap.size() << " errors:");
 			for (const auto & e : errorMap) {
 				LOG_INFO(app::logger::info_level_e::ZERO, testRunnerResult,  "- type " << e.first << " error data " << e.second);
 			}

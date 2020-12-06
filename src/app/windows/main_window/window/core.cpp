@@ -64,6 +64,7 @@ app::main_window::window::Core::~Core() {
 	// Reset pointers
 	this->cmdMenu.reset();
 	this->bottomStatusBar.reset();
+	this->tabs.reset();
 
 }
 

@@ -65,3 +65,18 @@ void app::base::window::OpenContent::doubleClickOnFile(const QFileInfo & pathInf
 }
 
 CONST_GETTER(app::base::window::OpenContent::getTypedPath, QString, this->pathToOpen->text())
+
+bool app::base::window::OpenContent::isTypedPathValid() const {
+	const QFileInfo pathInfo(this->getTypedPath());
+	return pathInfo.exists();
+}
+
+bool app::base::window::OpenContent::isTypedPathAFile() const {
+	const QFileInfo pathInfo(this->getTypedPath());
+	return this->isTypedPathValid() && pathInfo.isFile();
+}
+
+bool app::base::window::OpenContent::isTypedPathADirectory() const {
+	const QFileInfo pathInfo(this->getTypedPath());
+	return this->isTypedPathValid() && pathInfo.isDir();
+}
