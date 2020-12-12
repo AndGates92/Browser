@@ -42,12 +42,12 @@ void app::elided_label::ElidedLabel::setText(const QString & text) {
 void app::elided_label::ElidedLabel::updateElidedText(const int & width) {
 	// If no elision or text is null, then set elision text to null
 	if ((this->elisionMode == Qt::ElideNone) || (this->text() == QString())) {
-		LOG_INFO(app::logger::info_level_e::ZERO, elidedLabelElision,  "Elided text is set to null");
 		this->elisionText = QString();
+		LOG_INFO(app::logger::info_level_e::ZERO, elidedLabelElision,  "Elided text is set to null");
 	} else {
 		this->elisionText = this->fontMetrics().elidedText(this->text(), this->elisionMode, width, Qt::TextShowMnemonic);
+		LOG_INFO(app::logger::info_level_e::ZERO, elidedLabelElision,  "Elided text is set to " << this->elisionText);
 	}
-	LOG_INFO(app::logger::info_level_e::ZERO, elidedLabelElision,  "Elided text is set to " << this->elisionText);
 }
 
 void app::elided_label::ElidedLabel::resizeEvent(QResizeEvent * event) {
