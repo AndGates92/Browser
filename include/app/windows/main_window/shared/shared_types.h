@@ -26,6 +26,7 @@ namespace app {
 		 */
 		typedef enum class state_postprocessing_list {
 			NONE,             /**< No post processing ot state transition */
+			SETUP,            /**< Run setup only */
 			POSTPROCESS,      /**< Run postprocessing */
 			ACTION            /**< Execute action */
 		} state_postprocessing_e;

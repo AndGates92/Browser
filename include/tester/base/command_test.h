@@ -109,6 +109,12 @@ namespace tester {
 			private:
 
 				/**
+				 * @brief use shortcuts to send commands
+				 *
+				 */
+				bool sendCommandsThroughShortcuts;
+
+				/**
 				 * @brief Function: std::string commandNameToTypedText(const std::string & commandName)
 				 *
 				 * \param commandName: name of command to search in the JSON
@@ -118,14 +124,14 @@ namespace tester {
 				std::string commandNameToTypedText(const std::string & commandName);
 
 				/**
-				 * @brief Function: std::string commandNameToShownText(const std::string & commandName, const bool useShortcut);
+				 * @brief Function: std::string commandNameToShownText(const std::string & commandName, const bool commandAsTyped);
 				 *
 				 * \param commandName: name of command to search in the JSON
-				 * \param useShortcut: command sent through shortcuts
+				 * \param commandAsTyped: keep command as shown
 				 *
 				 * This function converts a command name into the text to shown in the statusbar
 				 */
-				std::string commandNameToShownText(const std::string & commandName, const bool useShortcut);
+				std::string commandNameToShownText(const std::string & commandName, const bool commandAsTyped);
 
 				/**
 				 * @brief Function: void writeTextToStatusBar(const std::string & textToWrite, const std::string & expectedText, const app::main_window::state_e & expectedState, const bool execute)
@@ -151,15 +157,17 @@ namespace tester {
 				 */
 				void writeCommandToStatusBar(const std::string & commandName, const app::main_window::state_e & expectedState, const bool execute);
 
-
 				/**
-				 * @brief use shortcuts to send commands
+				 * @brief Function: void checkStateAfterTypingText(const std::string & expectedText, const app::main_window::state_e & expectedState)
 				 *
+				 * \param expectedText: expected text to be displayed in the window
+				 * \param expectedState: expected window state while typing
+				 *
+				 * This function checks the text in the status bar and window state
 				 */
-				bool sendCommandsThroughShortcuts;
+				void checkStateAfterTypingText(const std::string & expectedText, const app::main_window::state_e & expectedState);
 
 		};
-
 
 	}
 

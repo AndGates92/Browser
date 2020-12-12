@@ -31,21 +31,20 @@ namespace app {
 			 * @brief CtrlBase class
 			 *
 			 */
-			class CtrlBase : public QWidget, public app::main_window::window::Base, public app::main_window::json::Action {
+			class CtrlBase : public QWidget, public app::main_window::window::Base {
 
 				Q_OBJECT
 
 				public:
 					/**
-					 * @brief Function: explicit CtrlBase(QWidget * parent, const std::shared_ptr<app::main_window::window::Core> & core, const QString & jsonFileName = QString())
+					 * @brief Function: explicit CtrlBase(QWidget * parent, const std::shared_ptr<app::main_window::window::Core> & core)
 					 *
 					 * \param core: main window core
 					 * \param parent: parent windget
-					 * \param jsonFileName: JSON filename
 					 *
 					 * Main window control base class constructor
 					 */
-					explicit CtrlBase(QWidget * parent, const std::shared_ptr<app::main_window::window::Core> & core, const QString & jsonFileName = QString());
+					explicit CtrlBase(QWidget * parent, const std::shared_ptr<app::main_window::window::Core> & core);
 
 					/**
 					 * @brief Function: virtual ~CtrlBase()
@@ -76,14 +75,17 @@ namespace app {
 					virtual void keyReleaseEvent(QKeyEvent * event);
 
 				signals:
+
 					/**
-					 * @brief Function: void windowStateChanged(const app::main_window::state_e & nextState)
+					 * @brief Function: void windowStateChangeRequested(const app::main_window::state_e & nextState, const app::main_window::state_postprocessing_e postprocess, const Qt::Key key = Qt::Key_unknown)
 					 *
 					 * \param nextState: state the window is requested to go into.
+					 * \param postprocess: flag to execute post process after chaning state.
+					 * \param key: key pressed that supports the request for a state change.
 					 *
-					 * This function sets the state of window
+					 * This function changes the state of window
 					 */
-					void windowStateChanged(const app::main_window::state_e & nextState);
+					void windowStateChangeRequested(const app::main_window::state_e & nextState, const app::main_window::state_postprocessing_e postprocess, const Qt::Key key = Qt::Key_unknown);
 
 					/**
 					 * @brief Function: void updatePrompt(QWidget * widget)
@@ -95,18 +97,18 @@ namespace app {
 				protected:
 
 					/**
-					 * @brief Function: virtual void createExtraShortcuts()
+					 * @brief Function: virtual void createShortcuts()
 					 *
-					 * This function creates shortcuts for the items on the window a part from those listed in the JSON file
+					 * This function creates shortcuts for the items on the window
 					 */
-					virtual void createExtraShortcuts() = 0;
+					virtual void createShortcuts() = 0;
 
 					/**
-					 * @brief Function: virtual void connectExtraSignals()
+					 * @brief Function: virtual void connectSignals()
 					 *
-					 * This function connects extra signals and slots within main window controller a part from those listed in the JSON file
+					 * This function connects extra signals and slots within main window controller
 					 */
-					virtual void connectExtraSignals() = 0;
+					virtual void connectSignals() = 0;
 
 					/**
 					 * @brief Function: virtual void actionOnReleasedKey(const app::main_window::state_e & windowState, QKeyEvent * event)
@@ -138,15 +140,6 @@ namespace app {
 					virtual void prepareAction(const app::main_window::state_e & windowState, QKeyEvent * event) = 0;
 
 					/**
-					 * @brief Function: virtual void postprocessWindowStateChange(const app::main_window::state_e & previousState)
-					 *
-					 * \param previousState: state the window was into before the transition.
-					 *
-					 * This function is abstract and it defines action to be taken immediately after the window has changed state
-					 */
-					virtual void postprocessWindowStateChange(const app::main_window::state_e & previousState) = 0;
-
-					/**
 					 * @brief Function: virtual void executeCommand(const QString & userCommand, const app::main_window::state_postprocessing_e & postprocess) final
 					 *
 					 * \param userCommand: command to execute.
@@ -155,39 +148,6 @@ namespace app {
 					 * This function executes a command on a based on user input
 					 */
 					virtual void executeCommand(const QString & userCommand, const app::main_window::state_postprocessing_e & postprocess) final;
-
-					/**
-					 * @brief Function: virtual void changeWindowStateWrapper(const std::unique_ptr<app::main_window::json::Data> & commandData, const app::main_window::state_postprocessing_e & postprocess) final
-					 *
-					 * \param commandData: data relative to a command.
-					 * \param postprocess: flag to execute post process after chaning state.
-					 *
-					 * This function is a wrapper to change the state of window
-					 */
-					virtual void changeWindowStateWrapper(const std::unique_ptr<app::main_window::json::Data> & commandData, const app::main_window::state_postprocessing_e & postprocess) final;
-
-					/**
-					 * @brief Function: virtual void changeWindowState(const app::main_window::state_e & nextState, const app::main_window::state_postprocessing_e postprocess, const Qt::Key key = Qt::Key_unknown) final
-					 *
-					 * \param nextState: state the window is requested to go into.
-					 * \param postprocess: flag to execute post process after chaning state.
-					 * \param key: key pressed that supports the request for a state change.
-					 *
-					 * This function changes the state of window
-					 */
-					virtual void changeWindowState(const app::main_window::state_e & nextState, const app::main_window::state_postprocessing_e postprocess, const Qt::Key key = Qt::Key_unknown) final;
-
-					/**
-					 * @brief Function: virtual bool isValidWindowState(const app::main_window::state_e & windowState)
-					 *
-					 * \param windowState: state the window is requested to go into.
-					 *
-					 * \return boolean whether the state is valid or not. true if the state is valid and false otherwise.
-					 *
-					 * This function is abstract and it checks that the state is valid
-					 * It is recommend to call it within changeWindowState
-					 */
-					virtual bool isValidWindowState(const app::main_window::state_e & windowState) = 0;
 
 					/**
 					 * @brief Function: void updateScroll(const int & currIndex)
@@ -208,16 +168,6 @@ namespace app {
 					void updateInfo(const int & currIndex);
 
 					/**
-					 * @brief Function: void printUserInput(const app::main_window::text_action_e & action, const QString & text = QString())
-					 *
-					 * \param action: action to execute - valid values are: SET, APPEND and CLEAR
-					 * \param text: text to append to userText
-					 *
-					 * This function updates the user input label
-					 */
-					void printUserInput(const app::main_window::text_action_e & action, const QString & text = QString());
-
-					/**
 					 * @brief Function: QString tabInfoStr(const int & currIndex) const
 					 *
 					 * \param currIndex: current page index or -1 if no tabs
@@ -227,29 +177,6 @@ namespace app {
 					 * This function creates the string with the tab information to be displayed at the bottom of the window
 					 */
 					QString tabInfoStr(const int & currIndex) const;
-
-					/**
-					 * @brief Function: void setAllShortcutEnabledProperty(const bool enabled)
-					 *
-					 * \param enabled: value of enabled property
-					 *
-					 * This function sets the enabled property of all shortcuts of the main window and menus of the main window
-					 */
-					void setAllShortcutEnabledProperty(const bool enabled);
-
-					/**
-					 * @brief Function: virtual void createShortcuts() final
-					 *
-					 * This function creates shortcuts for the items on the window
-					 */
-					virtual void createShortcuts() final;
-
-					/**
-					 * @brief Function: virtual void connectSignals() final
-					 *
-					 * This function connects signals and slots within main window controller
-					 */
-					virtual void connectSignals() final;
 
 					/**
 					 * @brief Function: void moveToCommandStateFromNonIdleState(const app::main_window::state_e & windowState, const Qt::Key & key)

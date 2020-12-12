@@ -68,6 +68,36 @@ app::main_window::window::Core::~Core() {
 
 }
 
+void app::main_window::window::Core::printUserInput(const app::main_window::text_action_e & action, const QString & text) {
+
+	QString textPrint = QString();
+	if (text == QString()) {
+		textPrint.append("Not provided");
+	} else {
+		textPrint.append(text);
+	}
+
+	LOG_INFO(app::logger::info_level_e::ZERO, mainWindowCoreUserInput,  "Action is " << action << " for user input " << textPrint);
+
+	this->updateUserInput(action, text);
+
+	const app::main_window::state_e windowState = this->getMainWindowState();
+
+	QString textLabel = QString();
+	if (windowState != app::main_window::state_e::IDLE) {
+		QString userAction = QString();
+		if (windowState != app::main_window::state_e::COMMAND) {
+			// Get action name
+			userAction = this->getActionName();
+		}
+		// Create string following format: :<action> <userText>
+		textLabel.append(":" + userAction + " " + this->getUserText());
+	}
+
+	this->bottomStatusBar->setUserInputText(textLabel);
+
+}
+
 const QString app::main_window::window::Core::getActionName() const {
 	QString actionNameText = QString();
 

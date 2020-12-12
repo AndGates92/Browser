@@ -29,11 +29,14 @@ namespace app {
 
 		namespace window {
 
+			class CtrlWrapper;
+
 			/**
 			 * @brief Ctrl class
 			 *
 			 */
 			class Ctrl final : public app::main_window::window::CtrlBase {
+				friend class app::main_window::window::CtrlWrapper;
 
 				Q_OBJECT
 
@@ -96,38 +99,18 @@ namespace app {
 				private:
 
 					/**
-					 * @brief Function: virtual void createExtraShortcuts() override
+					 * @brief Function: virtual void createShortcuts() override
 					 *
 					 * This function creates shortcuts for the items on the window
 					 */
-					virtual void createExtraShortcuts() override;
+					virtual void createShortcuts() override;
 
 					/**
-					 * @brief Function: virtual void connectExtraSignals() override
+					 * @brief Function: virtual void connectSignals() override
 					 *
 					 * This function connects signals and slots within main window controller
 					 */
-					virtual void connectExtraSignals() override;
-
-					/**
-					 * @brief Function: virtual void postprocessWindowStateChange(const app::main_window::state_e & previousState) override
-					 *
-					 * \param previousState: state the window was into before the transition.
-					 *
-					 * This function is abstract and it defines action to be taken immediately after the window has changed state
-					 */
-					virtual void postprocessWindowStateChange(const app::main_window::state_e & previousState) override;
-
-					/**
-					 * @brief Function: virtual bool isValidWindowState(const app::main_window::state_e & windowState) override
-					 *
-					 * \param windowState: state the window is requested to go into.
-					 *
-					 * \return boolean whether the state is valid or not. true if the state is valid and false otherwise.
-					 *
-					 * This function checks that the state is valid
-					 */
-					virtual bool isValidWindowState(const app::main_window::state_e & windowState) override;
+					virtual void connectSignals() override;
 
 					/**
 					 * @brief Function: virtual void prepareAction(const app::main_window::state_e & windowState, QKeyEvent * event) override

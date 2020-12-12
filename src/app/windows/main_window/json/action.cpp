@@ -9,10 +9,11 @@
 // Qt libraries
 #include <QtWidgets/QShortcut>
 
-#include "app/utility/qt/qt_operator.h"
 #include "app/shared/enums.h"
 #include "app/shared/cpp_functions.h"
 #include "app/shared/qt_functions.h"
+#include "app/utility/cpp/cpp_operator.h"
+#include "app/utility/qt/qt_operator.h"
 #include "app/utility/logger/macros.h"
 #include "app/windows/main_window/shared/shared_types.h"
 #include "app/windows/main_window/json/action.h"
@@ -20,15 +21,28 @@
 
 LOGGING_CONTEXT(mainWindowActionOverall, mainWindowAction.overall, TYPE_LEVEL, INFO_VERBOSITY)
 
-app::main_window::json::Action::Action(const QString & jsonFileName) : app::base::json::Action<app::main_window::json::Data>(jsonFileName) {
-	LOG_INFO(app::logger::info_level_e::ZERO, mainWindowActionOverall,  "Main window json action classe constructor");
+app::main_window::json::Action::Action() : app::main_window::json::Action::Action(QString()) {
 
-	this->populateActionData();
+}
+
+app::main_window::json::Action::Action(const QStringList jsonFiles) : app::base::json::Action<app::main_window::json::Data>() {
+	if (jsonFiles.empty() == false) {
+		this->appendActionData(jsonFiles);
+	}
+	LOG_INFO(app::logger::info_level_e::ZERO, mainWindowActionOverall, "Main window json action classe constructor with " << this->getActionJsonFilesAsString());
+}
+
+app::main_window::json::Action::Action(const QString jsonFileName) : app::base::json::Action<app::main_window::json::Data>() {
+	if (jsonFileName.isEmpty() == false) {
+		this->appendActionData(jsonFileName);
+	}
+	LOG_INFO(app::logger::info_level_e::ZERO, mainWindowActionOverall, "Main window json action classe constructor with " << this->getActionJsonFilesAsString());
+
 
 }
 
 app::main_window::json::Action::~Action() {
-	LOG_INFO(app::logger::info_level_e::ZERO, mainWindowActionOverall,  "Main window json action class destructor");
+	LOG_INFO(app::logger::info_level_e::ZERO, mainWindowActionOverall, "Main window json action class destructor");
 }
 
 // TODO handle shortcuts with multiple keys

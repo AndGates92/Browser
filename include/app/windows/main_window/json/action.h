@@ -30,13 +30,29 @@ namespace app {
 
 				public:
 					/**
-					 * @brief Function: explicit Action(const QString & jsonFileName = QString())
+					 * @brief Function: explicit Action()
+					 *
+					 * Default Main window json action class constructor
+					 */
+					explicit Action();
+
+					/**
+					 * @brief Function: explicit Action(const QString jsonFileName)
 					 *
 					 * \param jsonFileName: JSON filename
 					 *
-					 * Main window json action class constructor
+					 * Main window json action class constructor with JSON filename
 					 */
-					explicit Action(const QString & jsonFileName = QString());
+					explicit Action(const QString jsonFileName);
+
+					/**
+					 * @brief Function: explicit Action(const QString jsonFiles)
+					 *
+					 * \param jsonFiles: list of JSON file names
+					 *
+					 * Main window json action class constructor with list of JSON file names
+					 */
+					explicit Action(const QStringList jsonFiles);
 
 					/**
 					 * @brief Function: virtual ~Action()

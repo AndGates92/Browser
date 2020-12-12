@@ -150,6 +150,16 @@ namespace app {
 					void setOffsetType(const app::shared::offset_type_e & value);
 
 					/**
+					 * @brief Function: void printUserInput(const app::main_window::text_action_e & action, const QString & text = QString())
+					 *
+					 * \param action: action to execute - valid values are: SET, APPEND and CLEAR
+					 * \param text: text to append to userText
+					 *
+					 * This function updates the user input label
+					 */
+					void printUserInput(const app::main_window::text_action_e & action, const QString & text = QString());
+
+					/**
 					 * @brief Function: void updateUserInput(const app::main_window::text_action_e & action, const QString & text = QString())
 					 *
 					 * \param action: action to execute - valid values are: SET, APPEND and CLEAR

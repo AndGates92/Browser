@@ -23,51 +23,13 @@ LOGGING_CONTEXT(mainWindowCtrlTabSearch, mainWindowCtrlTab.search, TYPE_LEVEL, I
 LOGGING_CONTEXT(mainWindowCtrlTabTabs, mainWindowCtrlTab.tabs, TYPE_LEVEL, INFO_VERBOSITY)
 LOGGING_CONTEXT(mainWindowCtrlTabUrl, mainWindowCtrlTab.url, TYPE_LEVEL, INFO_VERBOSITY)
 
-namespace app {
-
-	namespace main_window {
-
-		namespace window {
-
-			namespace tab_ctrl {
-
-				namespace {
-
-					/**
-					 * @brief Path towards JSON file storing informations about commands and shortcuts
-					 *
-					 */
-					static const QString commandFilePath("json/");
-
-					/**
-					 * @brief Filename storing informations about commands and shortcuts
-					 *
-					 */
-					static const QString commandFileName("tab_commands.json");
-
-					/**
-					 * @brief Full path towards JSON file storing informations about commands and shortcuts
-					 *
-					 */
-					static const QString commandFileFullPath(commandFilePath + commandFileName);
-
-				}
-
-			}
-
-		}
-
-	}
-
-}
-
-app::main_window::window::CtrlTab::CtrlTab(QWidget * parent, const std::shared_ptr<app::main_window::window::Core> & core) : app::main_window::window::CtrlBase(parent, core, app::main_window::window::tab_ctrl::commandFileFullPath), findSettings(QString(), app::shared::offset_type_e::IDLE, false, false) {
+app::main_window::window::CtrlTab::CtrlTab(QWidget * parent, const std::shared_ptr<app::main_window::window::Core> & core) : app::main_window::window::CtrlBase(parent, core), findSettings(QString(), app::shared::offset_type_e::IDLE, false, false) {
 
 	// Shortcuts
-	this->createExtraShortcuts();
+	this->createShortcuts();
 
 	// Connect signals and slots
-	this->connectExtraSignals();
+	this->connectSignals();
 
 }
 
@@ -75,12 +37,12 @@ app::main_window::window::CtrlTab::~CtrlTab() {
 
 }
 
-void app::main_window::window::CtrlTab::createExtraShortcuts() {
+void app::main_window::window::CtrlTab::createShortcuts() {
 	LOG_INFO(app::logger::info_level_e::ZERO, mainWindowCtrlTabOverall,  "Create shortcuts");
 
 }
 
-void app::main_window::window::CtrlTab::connectExtraSignals() {
+void app::main_window::window::CtrlTab::connectSignals() {
 	LOG_INFO(app::logger::info_level_e::ZERO, mainWindowCtrlTabOverall,  "Connect signals");
 
 	// open tab action (from fileMenu)
@@ -126,7 +88,7 @@ void app::main_window::window::CtrlTab::connectExtraSignals() {
 void app::main_window::window::CtrlTab::setUpOpenNewTab() {
 	LOG_INFO(app::logger::info_level_e::ZERO, mainWindowCtrlTabSearch,  "Open new tab");
 	const app::main_window::state_e requestedWindowState = app::main_window::state_e::OPEN_TAB;
-	this->changeWindowState(requestedWindowState, app::main_window::state_postprocessing_e::POSTPROCESS);
+	emit windowStateChangeRequested(requestedWindowState, app::main_window::state_postprocessing_e::POSTPROCESS);
 }
 
 //************************************************************************************
@@ -419,10 +381,17 @@ void app::main_window::window::CtrlTab::actionOnReleasedKey(const app::main_wind
 	}
 }
 
+void app::main_window::window::CtrlTab::setFindDirection(const app::shared::offset_type_e direction) {
+	this->findSettings.setDirection(direction);
+}
+
 void app::main_window::window::CtrlTab::executeAction(const app::main_window::state_e & windowState) {
 	const QString userTypedText = this->core->getUserText();
 
 	switch (windowState) {
+		case app::main_window::state_e::OPEN_FILE:
+			this->createOpenPrompt();
+			break;
 		case app::main_window::state_e::OPEN_TAB:
 			this->addNewTabAndSearch(userTypedText);
 			break;
@@ -440,20 +409,20 @@ void app::main_window::window::CtrlTab::executeAction(const app::main_window::st
 		case app::main_window::state_e::FIND_DOWN:
 			this->findSettings.setDirection(app::shared::offset_type_e::DOWN);
 			this->searchCurrentTab(QString());
-			this->changeWindowState(app::main_window::state_e::IDLE, app::main_window::state_postprocessing_e::POSTPROCESS);
+			emit windowStateChangeRequested(app::main_window::state_e::IDLE, app::main_window::state_postprocessing_e::POSTPROCESS);
 			break;
 		case app::main_window::state_e::FIND_UP:
 			this->findSettings.setDirection(app::shared::offset_type_e::UP);
 			this->searchCurrentTab(QString());
-			this->changeWindowState(app::main_window::state_e::IDLE, app::main_window::state_postprocessing_e::POSTPROCESS);
+			emit windowStateChangeRequested(app::main_window::state_e::IDLE, app::main_window::state_postprocessing_e::POSTPROCESS);
 			break;
 		case app::main_window::state_e::SCROLL_UP:
 			this->scrollTab(app::shared::offset_type_e::UP);
-			this->changeWindowState(app::main_window::state_e::IDLE, app::main_window::state_postprocessing_e::POSTPROCESS);
+			emit windowStateChangeRequested(app::main_window::state_e::IDLE, app::main_window::state_postprocessing_e::POSTPROCESS);
 			break;
 		case app::main_window::state_e::SCROLL_DOWN:
 			this->scrollTab(app::shared::offset_type_e::DOWN);
-			this->changeWindowState(app::main_window::state_e::IDLE, app::main_window::state_postprocessing_e::POSTPROCESS);
+			emit windowStateChangeRequested(app::main_window::state_e::IDLE, app::main_window::state_postprocessing_e::POSTPROCESS);
 			break;
 		case app::main_window::state_e::REFRESH_TAB:
 		case app::main_window::state_e::CLOSE_TAB:
@@ -461,9 +430,6 @@ void app::main_window::window::CtrlTab::executeAction(const app::main_window::st
 		case app::main_window::state_e::MOVE_LEFT:
 		case app::main_window::state_e::MOVE_TAB:
 			this->processTabIndex(userTypedText);
-			break;
-		case app::main_window::state_e::COMMAND:
-			this->executeCommand(userTypedText, app::main_window::state_postprocessing_e::ACTION);
 			break;
 		default:
 			// Do nothing by default
@@ -478,17 +444,12 @@ void app::main_window::window::CtrlTab::prepareAction(const app::main_window::st
 	const QString userTypedText = this->core->getUserText();
 
 	switch (windowState) {
-		case app::main_window::state_e::COMMAND:
-			if (pressedKey == Qt::Key_Space) {
-				this->executeCommand(userTypedText, app::main_window::state_postprocessing_e::NONE);
-			}
-			break;
 		case app::main_window::state_e::OPEN_TAB:
 		case app::main_window::state_e::NEW_SEARCH:
 		case app::main_window::state_e::EDIT_SEARCH:
 		case app::main_window::state_e::FIND:
 			if ((pressedKey >= Qt::Key_Space) && (pressedKey <= Qt::Key_ydiaeresis)) {
-				this->printUserInput(app::main_window::text_action_e::APPEND, event->text());
+				this->core->printUserInput(app::main_window::text_action_e::APPEND, event->text());
 			}
 			break;
 		case app::main_window::state_e::CLOSE_TAB:
@@ -496,7 +457,7 @@ void app::main_window::window::CtrlTab::prepareAction(const app::main_window::st
 		case app::main_window::state_e::MOVE_LEFT:
 		case app::main_window::state_e::REFRESH_TAB:
 			if ((pressedKey >= Qt::Key_0) && (pressedKey <= Qt::Key_9)) {
-				this->printUserInput(app::main_window::text_action_e::APPEND, event->text());
+				this->core->printUserInput(app::main_window::text_action_e::APPEND, event->text());
 			} else {
 				LOG_WARNING(mainWindowCtrlTabUserInput, "Pressed key " << event->text() << ". Only numbers are accepted when executing actions like closing windows or moving in the tab bar");
 			}
@@ -509,19 +470,19 @@ void app::main_window::window::CtrlTab::prepareAction(const app::main_window::st
 				// If key l is pressed, then the value is considered to be relative to the current tab and considered to go to the right
 				if ((pressedKey >= Qt::Key_0) && (pressedKey <= Qt::Key_9)) {
 					this->core->setOffsetType(app::shared::offset_type_e::ABSOLUTE);
-					this->printUserInput(app::main_window::text_action_e::APPEND, event->text());
+					this->core->printUserInput(app::main_window::text_action_e::APPEND, event->text());
 				} else if ((pressedKey == Qt::Key_Plus) || (pressedKey == Qt::Key_L)) {
 					this->core->setOffsetType(app::shared::offset_type_e::RIGHT);
-					this->printUserInput(app::main_window::text_action_e::CLEAR);
+					this->core->printUserInput(app::main_window::text_action_e::CLEAR);
 				} else if ((pressedKey == Qt::Key_H) || (pressedKey == Qt::Key_Minus)) {
 					this->core->setOffsetType(app::shared::offset_type_e::LEFT);
-					this->printUserInput(app::main_window::text_action_e::CLEAR);
+					this->core->printUserInput(app::main_window::text_action_e::CLEAR);
 				} else {
 					LOG_WARNING(mainWindowCtrlTabUserInput, "Pressed key " << event->text() << ". Only numbers and + and - signs are accepted when executing actions like move tabs in the tab bar");
 				}
 			} else {
 				if ((pressedKey >= Qt::Key_0) && (pressedKey <= Qt::Key_9)) {
-					this->printUserInput(app::main_window::text_action_e::APPEND, event->text());
+					this->core->printUserInput(app::main_window::text_action_e::APPEND, event->text());
 				} else {
 					LOG_WARNING(mainWindowCtrlTabUserInput, "Pressed key " << event->text() << ". Only numbers accepted when executing actions like move tabs in the tab bar");
 				}
@@ -590,132 +551,6 @@ void app::main_window::window::CtrlTab::convertToAbsTabIndex(const int & offset,
 			EXCEPTION_ACTION(throw,  "Undefined action when in state " << windowState);
 			break;
 	}
-}
-
-void app::main_window::window::CtrlTab::postprocessWindowStateChange(const app::main_window::state_e & previousState) {
-	const app::main_window::state_e windowState = this->core->getMainWindowState();
-	LOG_INFO(app::logger::info_level_e::ZERO, mainWindowCtrlTabTabs,  "Current state " << windowState << " previousState " << previousState);
-
-	const int tabCount = this->core->getTabCount();
-	std::shared_ptr<app::main_window::tab::Tab> tab = nullptr;
-	QString searchText = QString();
-	if (tabCount > 0) {
-		const int tabIndex = this->core->getCurrentTabIndex();
-		tab = this->core->tabs->widget(tabIndex);
-		searchText = tab->getSearchText();
-	}
-
-	// Hide search results if not in find state
-	const bool isFindState = ((windowState == app::main_window::state_e::FIND) || (windowState == app::main_window::state_e::FIND_DOWN) || (windowState == app::main_window::state_e::FIND_UP));
-	std::unique_ptr<app::main_window::status_bar::StatusBar> & statusBar = this->core->bottomStatusBar;
-	statusBar->showSearchResult(isFindState);
-
-	// If requesting to go to the idle state, enable shortcuts
-	switch (windowState) {
-		case app::main_window::state_e::OPEN_FILE:
-			this->setAllShortcutEnabledProperty(false);
-			this->createOpenPrompt();
-			// Set window state back to idle to be ready to accept a new command upon closure of the popup
-			//this->changeWindowState(app::main_window::state_e::IDLE, app::main_window::state_postprocessing_e::POSTPROCESS);
-			break;
-		case app::main_window::state_e::IDLE:
-			this->setAllShortcutEnabledProperty(true);
-			this->printUserInput(app::main_window::text_action_e::CLEAR);
-			break;
-		case app::main_window::state_e::OPEN_TAB:
-		case app::main_window::state_e::NEW_SEARCH:
-		case app::main_window::state_e::REFRESH_TAB:
-		case app::main_window::state_e::CLOSE_TAB:
-		case app::main_window::state_e::MOVE_RIGHT:
-		case app::main_window::state_e::MOVE_LEFT:
-		case app::main_window::state_e::MOVE_TAB:
-		case app::main_window::state_e::FIND:
-			this->setAllShortcutEnabledProperty(false);
-			this->setFocus();
-			break;
-		case app::main_window::state_e::EDIT_SEARCH:
-			EXCEPTION_ACTION_COND((tab == nullptr), throw,  "Postprocessing state " << windowState << ": Unable to edit string used for previous search as pointer to tab is " << tab.get());
-			this->printUserInput(app::main_window::text_action_e::SET, searchText);
-			this->setAllShortcutEnabledProperty(false);
-			this->setFocus();
-			break;
-		case app::main_window::state_e::FIND_DOWN:
-			this->findSettings.setDirection(app::shared::offset_type_e::DOWN);
-			this->searchCurrentTab(QString());
-			this->changeWindowState(app::main_window::state_e::IDLE, app::main_window::state_postprocessing_e::POSTPROCESS);
-			break;
-		case app::main_window::state_e::FIND_UP:
-			this->findSettings.setDirection(app::shared::offset_type_e::UP);
-			this->searchCurrentTab(QString());
-			this->changeWindowState(app::main_window::state_e::IDLE, app::main_window::state_postprocessing_e::POSTPROCESS);
-			break;
-		case app::main_window::state_e::SCROLL_UP:
-			this->scrollTab(app::shared::offset_type_e::UP);
-			this->changeWindowState(app::main_window::state_e::IDLE, app::main_window::state_postprocessing_e::POSTPROCESS);
-			break;
-		case app::main_window::state_e::SCROLL_DOWN:
-			this->scrollTab(app::shared::offset_type_e::DOWN);
-			this->changeWindowState(app::main_window::state_e::IDLE, app::main_window::state_postprocessing_e::POSTPROCESS);
-			break;
-		case app::main_window::state_e::HISTORY_PREV:
-			this->goToPageInHistory(app::main_window::navigation_type_e::PREVIOUS);
-			this->changeWindowState(app::main_window::state_e::IDLE, app::main_window::state_postprocessing_e::POSTPROCESS);
-			break;
-		case app::main_window::state_e::HISTORY_NEXT:
-			this->goToPageInHistory(app::main_window::navigation_type_e::NEXT);
-			this->changeWindowState(app::main_window::state_e::IDLE, app::main_window::state_postprocessing_e::POSTPROCESS);
-			break;
-		default:
-			this->setAllShortcutEnabledProperty(false);
-			break;
-	}
-}
-
-bool app::main_window::window::CtrlTab::isValidWindowState(const app::main_window::state_e & requestedWindowState) {
-	bool isValid = false;
-	const app::main_window::state_e windowState = this->core->getMainWindowState();
-	const int tabCount = this->core->getTabCount();
-
-	switch (requestedWindowState) {
-		case app::main_window::state_e::OPEN_FILE:
-		case app::main_window::state_e::IDLE:
-			// It is always possible to go to the idle state
-			isValid = true;
-			break;
-		case app::main_window::state_e::OPEN_TAB:
-			// It is only possible to open a tab if in the idle state
-			isValid = (windowState == app::main_window::state_e::IDLE);
-			break;
-		case app::main_window::state_e::NEW_SEARCH:
-		case app::main_window::state_e::EDIT_SEARCH:
-		case app::main_window::state_e::REFRESH_TAB:
-		case app::main_window::state_e::CLOSE_TAB:
-		case app::main_window::state_e::FIND:
-		case app::main_window::state_e::FIND_DOWN:
-		case app::main_window::state_e::FIND_UP:
-		case app::main_window::state_e::SCROLL_UP:
-		case app::main_window::state_e::SCROLL_DOWN:
-		case app::main_window::state_e::HISTORY_PREV:
-		case app::main_window::state_e::HISTORY_NEXT:
-			// It is only possible to perform an operation on a signel tab if the current state is idle and at least 1 tab is opened
-			isValid = ((tabCount > 0) && (windowState == app::main_window::state_e::IDLE));
-			break;
-		case app::main_window::state_e::MOVE_RIGHT:
-		case app::main_window::state_e::MOVE_LEFT:
-		case app::main_window::state_e::MOVE_TAB:
-			// It is only possible to perform an operation that requires movement of cursors or tabs if the current state is idle and at least 2 tab is opened
-			isValid = ((tabCount > 1) && (windowState == app::main_window::state_e::IDLE));
-			break;
-		case app::main_window::state_e::COMMAND:
-			// Set to false as transition to COMMAND state is handled in the base class by the global conditions
-			isValid = false;
-			break;
-		default:
-			EXCEPTION_ACTION(throw, "Unable to determine whether transaction from " << windowState << " to " << requestedWindowState << " is valid");
-			break;
-	}
-
-	return isValid;
 }
 
 void app::main_window::window::CtrlTab::updateStatusBar(const int & tabIndex) {
@@ -824,5 +659,5 @@ void app::main_window::window::CtrlTab::setUpSearchFromMenu(const app::windows::
 	} else if (searchDirection == app::shared::offset_type_e::UP) {
 		windowState = app::main_window::state_e::FIND_DOWN;
 	}
-	this->changeWindowState(windowState, app::main_window::state_postprocessing_e::POSTPROCESS);
+	emit windowStateChangeRequested(windowState, app::main_window::state_postprocessing_e::POSTPROCESS);
 }

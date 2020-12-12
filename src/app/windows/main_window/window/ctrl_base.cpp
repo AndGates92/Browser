@@ -14,6 +14,7 @@
 #include "app/shared/enums.h"
 #include "app/utility/logger/macros.h"
 #include "app/windows/main_window/shared/shared_types.h"
+#include "app/windows/main_window/window/commands.h"
 #include "app/windows/main_window/window/ctrl_base.h"
 #include "app/widgets/commands/key_sequence.h"
 
@@ -21,97 +22,37 @@ LOGGING_CONTEXT(mainWindowCtrlBaseOverall, mainWindowCtrlBase.overall, TYPE_LEVE
 LOGGING_CONTEXT(mainWindowCtrlBaseCheck, mainWindowCtrlBase.check, TYPE_LEVEL, INFO_VERBOSITY)
 LOGGING_CONTEXT(mainWindowCtrlBaseUserInput, mainWindowCtrlBase.userInput, TYPE_LEVEL, INFO_VERBOSITY)
 
-app::main_window::window::CtrlBase::CtrlBase(QWidget * parent, const std::shared_ptr<app::main_window::window::Core> & core, const QString & jsonFileName) : QWidget(parent), app::main_window::window::Base(core), app::main_window::json::Action(jsonFileName) {
+app::main_window::window::CtrlBase::CtrlBase(QWidget * parent, const std::shared_ptr<app::main_window::window::Core> & core) : QWidget(parent), app::main_window::window::Base(core) {
 	LOG_INFO(app::logger::info_level_e::ZERO, mainWindowCtrlBaseOverall,  "Main window control base classe constructor");
-
-	// Shortcuts
-	this->createShortcuts();
-
-	// Connect signals and slots
-	this->connectSignals();
-
 }
 
 app::main_window::window::CtrlBase::~CtrlBase() {
 	LOG_INFO(app::logger::info_level_e::ZERO, mainWindowCtrlBaseOverall,  "Main window control base class destructor");
 }
 
-void app::main_window::window::CtrlBase::printUserInput(const app::main_window::text_action_e & action, const QString & text) {
-
-	QString textPrint = QString();
-	if (text == QString()) {
-		textPrint.append("Not provided");
-	} else {
-		textPrint.append(text);
-	}
-
-	LOG_INFO(app::logger::info_level_e::ZERO, mainWindowCtrlBaseUserInput,  "Action is " << action << " for user input " << textPrint);
-
-	this->core->updateUserInput(action, text);
-
-	const app::main_window::state_e windowState = this->core->getMainWindowState();
-
-	QString textLabel = QString();
-	if (windowState != app::main_window::state_e::IDLE) {
-		QString userAction = QString();
-		if (windowState != app::main_window::state_e::COMMAND) {
-			// Get action name
-			userAction = this->core->getActionName();
-		}
-		// Create string following format: :<action> <userText>
-		textLabel.append(":" + userAction + " " + this->core->getUserText());
-	}
-
-	this->core->bottomStatusBar->setUserInputText(textLabel);
-
-}
-
-void app::main_window::window::CtrlBase::changeWindowStateWrapper(const std::unique_ptr<app::main_window::json::Data> & commandData, const app::main_window::state_postprocessing_e & postprocess) {
-	LOG_INFO(app::logger::info_level_e::ZERO, mainWindowCtrlBaseOverall,  "Command " << commandData->getName() << " (shortcut: " << commandData->getShortcut() << " long command: " << commandData->getLongCmd() << ") - moving to state " << commandData->getState());
-	this->changeWindowState(commandData->getState(), postprocess);
-}
-
 void app::main_window::window::CtrlBase::executeCommand(const QString & userCommand, const app::main_window::state_postprocessing_e & postprocess) {
 	LOG_INFO(app::logger::info_level_e::ZERO, mainWindowCtrlBaseOverall,  "Looking for command matching user input: " << userCommand);
 
-	std::for_each(this->actionData.cbegin(), this->actionData.cend(), [&] (const auto & data) {
+	const app::main_window::state_e previousWindowState = this->core->getMainWindowState();
+
+	const app::main_window::window::Commands::action_data_t & commands = app::main_window::window::Commands::getInstance()->getActions();
+
+	std::for_each(commands.cbegin(), commands.cend(), [&] (const auto & data) {
 		const std::unique_ptr<app::main_window::json::Data> & commandData = data.second;
 		const QString refCommand = QString::fromStdString(commandData->getLongCmd());
 
 		// If user command matches the command in the JSON file
 		if (userCommand.compare(refCommand) == 0) {
 			LOG_INFO(app::logger::info_level_e::ZERO, mainWindowCtrlBaseOverall,  "Found command " << refCommand << " matching user input: " << userCommand);
-			this->changeWindowStateWrapper(commandData, postprocess);
+			emit windowStateChangeRequested(commandData->getState(), postprocess);
 		}
 	});
 
-}
+	const app::main_window::state_e currentWindowState = this->core->getMainWindowState();
 
-void app::main_window::window::CtrlBase::createShortcuts() {
-	LOG_INFO(app::logger::info_level_e::ZERO, mainWindowCtrlBaseOverall,  "Create shortcuts");
-
-//	this->createExtraShortcuts();
-}
-
-void app::main_window::window::CtrlBase::connectSignals() {
-
-	LOG_INFO(app::logger::info_level_e::ZERO, mainWindowCtrlBaseOverall,  "Connect signals");
-
-	std::for_each(this->actionData.cbegin(), this->actionData.cend(), [&] (const auto & data) {
-		const std::unique_ptr<app::main_window::json::Data> & commandData = data.second;
-		QShortcut * shortcut = new QShortcut(commandData->getShortcut(), this->window());
-		LOG_INFO(app::logger::info_level_e::ZERO, mainWindowCtrlBaseOverall, "Connecting shortcut for key " << (commandData->getShortcut()) << " to trigger a change of controller state to " << commandData->getState());
-		QMetaObject::Connection connection = connect(shortcut, &QShortcut::activated,
-			[&] () {
-				this->changeWindowStateWrapper(commandData, app::main_window::state_postprocessing_e::POSTPROCESS);
-			}
-		);
-
-		EXCEPTION_ACTION_COND((static_cast<bool>(connection) == false), throw, "Unable to connect shortcut for key " << (commandData->getShortcut()) << " to trigger a change of controller state to " << commandData->getState());
-
-	});
-
-//	this->connectExtraSignals();
+	if (previousWindowState == currentWindowState) {
+		LOG_WARNING(mainWindowCtrlBaseOverall, "Window state remained unchanged to " << currentWindowState << " while runnign command " << userCommand);
+	}
 
 }
 
@@ -150,50 +91,6 @@ QString app::main_window::window::CtrlBase::tabInfoStr(const int & currIndex) co
 	return tabInfo;
 }
 
-void app::main_window::window::CtrlBase::setAllShortcutEnabledProperty(const bool enabled) {
-	const QList<QShortcut *> shortcuts = this->window()->findChildren<QShortcut *>(QString(), Qt::FindChildrenRecursively);
-
-	for (QShortcut * shortcut : shortcuts) {
-		app::key_sequence::KeySequence key(shortcut->key());
-		// If shortcut key is not defined, then do not do anything
-		if (key.count() > 0) {
-			LOG_INFO(app::logger::info_level_e::ZERO, mainWindowCtrlBaseUserInput,  "Setting enabled for key " << key.toString() << " to " << enabled);
-			shortcut->setEnabled(enabled);
-		}
-	}
-}
-
-void app::main_window::window::CtrlBase::changeWindowState(const app::main_window::state_e & nextState, const app::main_window::state_postprocessing_e postprocess, const Qt::Key key) {
-
-	const app::main_window::state_e windowState = this->core->getMainWindowState();
-	const QString userTypedText = this->core->getUserText();
-
-	// Global conditions are:
-	// - it is possible to move to any state from the COMMAND state
-	// - it is possible to move from any state to COMMAND state if the user types Backspace and the user types text is empty
-	const bool globalCondition = (windowState == app::main_window::state_e::COMMAND) || ((windowState != app::main_window::state_e::COMMAND) && (nextState == app::main_window::state_e::COMMAND) && (userTypedText.isEmpty() == true) && (key == Qt::Key_Backspace));
-
-
-	// Do not change state if the window is already in the one requested
-	if (windowState != nextState) {
-		bool isValid = this->isValidWindowState(nextState) || globalCondition;
-		if (isValid == true) {
-			this->core->setMainWindowState(nextState);
-
-			this->printUserInput(app::main_window::text_action_e::CLEAR);
-
-			if (postprocess == app::main_window::state_postprocessing_e::POSTPROCESS) {
-				this->postprocessWindowStateChange(windowState);
-			} else if (postprocess == app::main_window::state_postprocessing_e::ACTION) {
-				this->executeAction(nextState);
-			}
-			emit windowStateChanged(nextState);
-		}
-	} else {
-		LOG_WARNING(mainWindowCtrlBaseOverall, "Ignoring request to go from state " << windowState << " to state " << nextState);
-	}
-}
-
 void app::main_window::window::CtrlBase::keyReleaseEvent(QKeyEvent * event) {
 
 	const int releasedKey = event->key();
@@ -217,7 +114,7 @@ void app::main_window::window::CtrlBase::keyReleaseEvent(QKeyEvent * event) {
 					if (windowState != app::main_window::state_e::COMMAND) {
 						if (windowState == app::main_window::state_e::MOVE_TAB) {
 							this->core->setOffsetType(app::shared::offset_type_e::IDLE);
-							this->printUserInput(app::main_window::text_action_e::CLEAR);
+							this->core->printUserInput(app::main_window::text_action_e::CLEAR);
 						}
 						this->moveToCommandStateFromNonIdleState(windowState, static_cast<Qt::Key>(releasedKey));
 					}
@@ -226,7 +123,7 @@ void app::main_window::window::CtrlBase::keyReleaseEvent(QKeyEvent * event) {
 					const int endString = userTypedText.count() - 1;
 					// Delete last character of the string
 					userTypedText = userTypedText.remove(endString, 1);
-					this->printUserInput(app::main_window::text_action_e::SET, userTypedText);
+					this->core->printUserInput(app::main_window::text_action_e::SET, userTypedText);
 				}
 				break;
 			default:
@@ -235,8 +132,6 @@ void app::main_window::window::CtrlBase::keyReleaseEvent(QKeyEvent * event) {
 		}
 	}
 }
-
-
 
 void app::main_window::window::CtrlBase::keyPressEvent(QKeyEvent * event) {
 
@@ -272,25 +167,21 @@ void app::main_window::window::CtrlBase::keyPressEvent(QKeyEvent * event) {
 void app::main_window::window::CtrlBase::moveToCommandStateFromNonIdleState(const app::main_window::state_e & windowState, const Qt::Key & key) {
 	// Saving long command for a given state to set it after changing state
 	const app::main_window::state_e requestedWindowState = app::main_window::state_e::COMMAND;
-	const std::unique_ptr<app::main_window::json::Data> & data = this->findDataWithFieldValue("State", &windowState);
-	if (data != this->getInvalidData()) {
+	const std::unique_ptr<app::main_window::json::Data> & data = app::main_window::window::Commands::getInstance()->findDataWithFieldValue("State", &windowState);
+	if (data != app::main_window::window::Commands::getInstance()->getInvalidData()) {
 		QString longCmd(QString::fromStdString(data->getLongCmd()));
-		this->changeWindowState(requestedWindowState, app::main_window::state_postprocessing_e::POSTPROCESS, key);
+		emit windowStateChangeRequested(requestedWindowState, app::main_window::state_postprocessing_e::POSTPROCESS, key);
 		// Setting the user input here because it is cleared when changing state
-		this->printUserInput(app::main_window::text_action_e::SET, longCmd);
+		this->core->printUserInput(app::main_window::text_action_e::SET, longCmd);
 	}
 }
 
 void app::main_window::window::CtrlBase::resetWindowState() {
 	const app::main_window::state_e requestedWindowState = app::main_window::state_e::IDLE;
-	this->core->setMainWindowState(requestedWindowState);
+	emit windowStateChangeRequested(requestedWindowState, app::main_window::state_postprocessing_e::POSTPROCESS);
 
 	this->core->updateUserInput(app::main_window::text_action_e::CLEAR, QString());
 	this->core->bottomStatusBar->setUserInputText(QString());
-	this->core->getUserText();
-
-	// Enable all shortcuts
-	this->setAllShortcutEnabledProperty(true);
 
 	// Give the focus back to the parent widget
 	this->parentWidget()->setFocus();

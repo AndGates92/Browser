@@ -79,6 +79,17 @@ tester::base::CommandTest::~CommandTest() {
 
 BASE_GETTER(tester::base::CommandTest::commandSentThroughShortcuts, bool, this->sendCommandsThroughShortcuts)
 
+void tester::base::CommandTest::checkStateAfterTypingText(const std::string & expectedText, const app::main_window::state_e & expectedState) {
+	const std::shared_ptr<app::main_window::window::Core> & windowCore = this->windowWrapper->getWindowCore();
+	const app::main_window::state_e & currentState = windowCore->getMainWindowState();
+	WAIT_FOR_CONDITION((currentState == expectedState), tester::shared::error_type_e::WINDOW, "Expected window state " + expectedState + " doesn't match current window state " + currentState, 1000);
+
+	std::string prunedExpectedText(app::utility::removeTrailingCharacter(expectedText, tester::base::command_test::whiteSpaces));
+	const std::string textInLabel = windowCore->bottomStatusBar->getUserInputText().toStdString();
+	std::string prunedTextInLabel(app::utility::removeTrailingCharacter(textInLabel, tester::base::command_test::whiteSpaces));
+	ASSERT((prunedExpectedText.compare(prunedTextInLabel) == 0), tester::shared::error_type_e::STATUSBAR, "Command sent \"" + prunedExpectedText + "\" doesn't match the command written in the user input label \"" + prunedTextInLabel + "\"");
+}
+
 void tester::base::CommandTest::writeTextToStatusBar(const std::string & textToWrite, const std::string & expectedText, const app::main_window::state_e & expectedState, const bool execute, const bool pressEnter) {
 
 	LOG_INFO(app::logger::info_level_e::ZERO, commandTestTest,  "Write " << textToWrite << " to statusbar");
@@ -88,13 +99,7 @@ void tester::base::CommandTest::writeTextToStatusBar(const std::string & textToW
 	QTest::KeyAction keyAction = QTest::KeyAction::Click;
 	tester::base::CommandTest::sendKeyEventsToFocus(keyAction, textToWrite);
 
-	const app::main_window::state_e & currentStateBeforeExecution = windowCore->getMainWindowState();
-	WAIT_FOR_CONDITION((currentStateBeforeExecution == expectedState), tester::shared::error_type_e::WINDOW, "Expected window state " + expectedState + " doesn't match current window state " + currentStateBeforeExecution, 1000);
-
-	std::string prunedExpectedText(app::utility::removeTrailingCharacter(expectedText, tester::base::command_test::whiteSpaces));
-	const std::string textInLabel = windowCore->bottomStatusBar->getUserInputText().toStdString();
-	std::string prunedTextInLabel(app::utility::removeTrailingCharacter(textInLabel, tester::base::command_test::whiteSpaces));
-	ASSERT((prunedExpectedText.compare(prunedTextInLabel) == 0), tester::shared::error_type_e::STATUSBAR, "Command sent \"" + prunedExpectedText + "\" doesn't match the command written in the user input label \"" + prunedTextInLabel + "\"");
+	this->checkStateAfterTypingText(expectedText, expectedState);
 
 	if (execute == true) {
 		if (pressEnter == true) {
@@ -113,23 +118,27 @@ bool tester::base::CommandTest::commandRequiresEnter(const std::string & command
 	return ((commandName.compare(tester::base::command_test::openFileCommandName) != 0) && (commandName.compare(tester::base::command_test::quitCommandName) != 0) && (commandName.compare(tester::base::command_test::findUpCommandName) != 0) && (commandName.compare(tester::base::command_test::findDownCommandName) != 0));
 }
 
-std::string tester::base::CommandTest::commandNameToShownText(const std::string & commandName, const bool useShortcut) {
+std::string tester::base::CommandTest::commandNameToShownText(const std::string & commandName, const bool commandAsTyped) {
 	std::string commandExpectedText = std::string();
 
 	const bool commandsPrintsText = ((commandName.compare(tester::base::command_test::openFileCommandName) == 0) || this->commandRequiresEnter(commandName));
 	if (commandsPrintsText == true) {
 		const std::unique_ptr<app::main_window::json::Data> & commandData = this->findDataWithFieldValue("Name", &commandName);
-		ASSERT((commandData != nullptr), tester::shared::error_type_e::COMMAND, "Unable to find data with Name " + commandName + " in " + this->getSourceFileName().toStdString());
+		ASSERT((commandData != nullptr), tester::shared::error_type_e::COMMAND, "Unable to find data with Name " + commandName + " in " + this->getActionJsonFilesAsString().toStdString());
 
 		if (commandData != nullptr) {
 			// Long command that the user has to type is :<long_command>
 			// It will be displayed as : <long_command>
 			const std::string * const commandLongCmdPtr(static_cast<const std::string *>(commandData->getValueFromMemberName("LongCmd")));
-			ASSERT((commandLongCmdPtr != nullptr), tester::shared::error_type_e::COMMAND, "Unable to find long command for data data with Name " + commandName + " in " + this->getSourceFileName().toStdString());
+			ASSERT((commandLongCmdPtr != nullptr), tester::shared::error_type_e::COMMAND, "Unable to find long command for data data with Name " + commandName + " in " + this->getActionJsonFilesAsString().toStdString());
 			const std::string commandLongCmd(*commandLongCmdPtr);
-			commandExpectedText = ":" + commandLongCmd;
+			commandExpectedText = ":";
+			if (commandAsTyped == true) {
+				commandExpectedText += " ";
+			}
+			commandExpectedText += commandLongCmd;
 
-			if (useShortcut == false) {
+			if (commandAsTyped == false) {
 				const std::string commandNameSearchString("-");
 				const std::string commandNameReplacingString(" ");
 				// If typing the shortcuts, the status bar label prints : <long_command_without_dashes>
@@ -144,11 +153,21 @@ std::string tester::base::CommandTest::commandNameToShownText(const std::string 
 void tester::base::CommandTest::writeCommandToStatusBar(const std::string & commandName, const app::main_window::state_e & expectedState, const bool execute) {
 
 	const std::string commandToSend(this->commandNameToTypedText(commandName));
-	const std::string commandExpectedText(this->commandNameToShownText(commandName, (this->commandSentThroughShortcuts() == false)));
+	const std::string commandExpectedText(this->commandNameToShownText(commandName, (expectedState == app::main_window::state_e::COMMAND)));
 
 	LOG_INFO(app::logger::info_level_e::ZERO, commandTestTest, "Type command " << commandName << " - text sent to statusbar: " << commandToSend);
 	const bool commandRequiredEnter = this->commandRequiresEnter(commandName);
-	const bool pressEnter = commandRequiredEnter && this->sendCommandsThroughShortcuts;
+	const bool pressEnter = execute || (commandRequiredEnter && this->sendCommandsThroughShortcuts);
+
+	// Send : to move to the command state
+	if (this->commandSentThroughShortcuts() == false) {
+		const std::string startCommandText(":");
+		QTest::KeyAction keyAction = QTest::KeyAction::Click;
+		tester::base::CommandTest::sendKeyEventsToFocus(keyAction, startCommandText);
+
+		this->checkStateAfterTypingText(startCommandText, expectedState);
+	}
+
 	this->writeTextToStatusBar(commandToSend, commandExpectedText, expectedState, execute, pressEnter);
 }
 
@@ -264,13 +283,13 @@ void tester::base::CommandTest::makeSearchInTab(const std::string & commandName,
 
 std::string tester::base::CommandTest::commandNameToTypedText(const std::string & commandName) {
 	const std::unique_ptr<app::main_window::json::Data> & commandData = this->findDataWithFieldValue("Name", &commandName);
-	ASSERT((commandData != nullptr), tester::shared::error_type_e::COMMAND, "Unable to find data with Name " + commandName + " in " + this->getSourceFileName().toStdString());
+	ASSERT((commandData != nullptr), tester::shared::error_type_e::COMMAND, "Unable to find data with Name " + commandName + " in " + this->getActionJsonFilesAsString().toStdString());
 
 	std::string commandToSend = std::string();
 	if (commandData != nullptr) {
 		if (this->commandSentThroughShortcuts() == true) {
 			const int * const commandShortcutPtr(static_cast<const int *>(commandData->getValueFromMemberName("Shortcut")));
-			ASSERT((commandShortcutPtr != nullptr), tester::shared::error_type_e::COMMAND, "Unable to find shortcut for data data with Name " + commandName + " in " + this->getSourceFileName().toStdString());
+			ASSERT((commandShortcutPtr != nullptr), tester::shared::error_type_e::COMMAND, "Unable to find shortcut for data data with Name " + commandName + " in " + this->getActionJsonFilesAsString().toStdString());
 			int shortcut = *commandShortcutPtr;
 			// In order to get the key of the shortcut, bitwise and with the negation of the modifier mask
 			Qt::Key key = (Qt::Key)(shortcut & ~app::shared::qmodifierMask);
@@ -286,9 +305,9 @@ std::string tester::base::CommandTest::commandNameToTypedText(const std::string 
 			}
 		} else {
 			const std::string * const commandLongCmdPtr(static_cast<const std::string *>(commandData->getValueFromMemberName("LongCmd")));
-			ASSERT((commandLongCmdPtr != nullptr), tester::shared::error_type_e::COMMAND, "Unable to find long command for data data with Name " + commandName + " in " + this->getSourceFileName().toStdString());
+			ASSERT((commandLongCmdPtr != nullptr), tester::shared::error_type_e::COMMAND, "Unable to find long command for data data with Name " + commandName + " in " + this->getActionJsonFilesAsString().toStdString());
 			const std::string commandLongCmd(*commandLongCmdPtr);
-			commandToSend = ":" + commandLongCmd;
+			commandToSend = commandLongCmd;
 		}
 	}
 
@@ -298,12 +317,12 @@ std::string tester::base::CommandTest::commandNameToTypedText(const std::string 
 void tester::base::CommandTest::executeCommand(const std::string & commandName, const std::string & argument) {
 
 	const std::unique_ptr<app::main_window::json::Data> & commandData = this->findDataWithFieldValue("Name", &commandName);
-	ASSERT((commandData != nullptr), tester::shared::error_type_e::COMMAND, "Unable to find data with Name " + commandName + " in " + this->getSourceFileName().toStdString());
+	ASSERT((commandData != nullptr), tester::shared::error_type_e::COMMAND, "Unable to find data with Name " + commandName + " in " + this->getActionJsonFilesAsString().toStdString());
 
 	app::main_window::state_e commandState = app::main_window::state_e::UNKNOWN;
 	if (commandData != nullptr) {
 		const app::main_window::state_e * const commandStatePtr(static_cast<const app::main_window::state_e *>(commandData->getValueFromMemberName("State")));
-		ASSERT((commandStatePtr != nullptr), tester::shared::error_type_e::COMMAND, "Unable to find shortcut for data data with Name " + commandName + " in " + this->getSourceFileName().toStdString());
+		ASSERT((commandStatePtr != nullptr), tester::shared::error_type_e::COMMAND, "Unable to find shortcut for data data with Name " + commandName + " in " + this->getActionJsonFilesAsString().toStdString());
 		commandState = *commandStatePtr;
 	}
 
@@ -323,13 +342,19 @@ void tester::base::CommandTest::executeCommand(const std::string & commandName, 
 	this->writeCommandToStatusBar(commandName, commandExpectedState, argument.empty());
 
 	if (argument.empty() == false) {
+		if (this->commandSentThroughShortcuts() == false) {
+			// Send Space to window in order to change state
+			tester::base::CommandTest::sendKeyClickToFocus(Qt::Key_Space);
+			const std::string commandAfterStateChanged(this->commandNameToShownText(commandName, false));
+
+			this->checkStateAfterTypingText(commandAfterStateChanged, commandState);
+		}
 
 		const std::string commandExpectedName(this->commandNameToShownText(commandName, false));
 		const std::string argumentExpectedText = commandExpectedName + " " + argument;
-		const app::main_window::state_e argumentExpectedState = commandState;
 
 		LOG_INFO(app::logger::info_level_e::ZERO, commandTestTest, "Give argument " << argument << " to command " << commandName);
-		this->writeTextToStatusBar(argument, argumentExpectedText, argumentExpectedState, true, true);
+		this->writeTextToStatusBar(argument, argumentExpectedText, commandState, true, true);
 	}
 
 }

@@ -17,15 +17,15 @@
 
 LOGGING_CONTEXT(commandLineParserOverall, commandLineParser.overall, TYPE_LEVEL, INFO_VERBOSITY)
 
-app::command_line::Parser::Parser(int & argc, char** argv, const std::string & jsonFile) : app::base::json::Action<app::command_line::Argument>(QString::fromStdString(jsonFile)), argc(argc), argv(argv), decodedArguments(app::command_line::argument_map_t()) {
+app::command_line::Parser::Parser(int & argc, char** argv, const std::string & jsonFile) : app::base::json::Action<app::command_line::Argument>(), argc(argc), argv(argv), decodedArguments(app::command_line::argument_map_t()) {
 	EXCEPTION_ACTION_COND((jsonFile.empty() == true), throw, "JSON file name cannot be empty");
 	EXCEPTION_ACTION_COND(((this->argc == 0) && (this->argv != nullptr)), throw, "The list of arguments (argv) must be null if the number of arguments (argc) is " << this->argc << ". Argv is set to " << this->argv << " instead.");
 	EXCEPTION_ACTION_COND(((this->argc != 0) && (this->argv == nullptr)), throw, "The number of arguments (argc) must be 0 if the list of arguments (argv) is null. Number of arguments is set to " << this->argc);
 	EXCEPTION_ACTION_COND((this->argc < 0), throw, "Number of arguments (argc) must be greater or equal than 0. Argc is set to " << this->argc);
 	LOG_INFO(app::logger::info_level_e::ZERO, commandLineParserOverall, "Creating command line parser\n" << *this);
 
+	this->appendActionData(QString::fromStdString(jsonFile));
 	this->populateDefaultDecodedArguments();
-	this->populateActionData();
 	if ((this->argc != 0) && (this->argv != nullptr)) {
 		this->extractArguments();
 	}
@@ -111,7 +111,27 @@ void app::command_line::Parser::extractArguments() {
 
 		// An option may be unrecognized because it is dealt in another JSON file
 		if ((shortCmdMatch == this->getInvalidData()) && (longCmdMatch == this->getInvalidData())) {
-			LOG_WARNING(commandLineParserOverall, "Unrecognized option " << option << ". No match found for short or long command listed in " << this->getSourceFileName());
+			QString jsonFilePrint = QString();
+			const QStringList & actionFiles = this->getActionJsonFiles();
+			if (actionFiles.empty() == true) {
+				jsonFilePrint.append("because no action JSON file was provided");
+			} else {
+				jsonFilePrint.append(" in JSON file");
+				if (actionFiles.size() == 1) {
+					jsonFilePrint.append(": ");
+				} else {
+					// Append s to make plural as the file list has more than 1 element
+					jsonFilePrint.append("s: ");
+				}
+
+				for (const auto & filename : actionFiles) {
+					if (filename.compare(actionFiles.constFirst(), Qt::CaseSensitive) != 0) {
+						jsonFilePrint.append(", ");
+					}
+					jsonFilePrint.append(filename);
+				}
+			}
+			LOG_WARNING(commandLineParserOverall, "Unrecognized option " << option << ". No match found for short or long command listed " << jsonFilePrint);
 		} else {
 
 			const std::unique_ptr<app::command_line::Argument> & match = (shortCmdMatch == nullptr) ? longCmdMatch : shortCmdMatch;
@@ -166,11 +186,8 @@ void app::command_line::Parser::addItemToActionData(std::unique_ptr<app::command
 }
 
 void app::command_line::Parser::populateDefaultDecodedArguments() {
-
-	const std::map<std::string, std::string> defaultArgumentValueMap = app::utility::qMapOfqStringToStdMapofStdStrings(this->commands.findKeyAllValues("DefaultValue"));
-
-	for (const auto & item : defaultArgumentValueMap) {
-		this->decodedArguments[item.first] = item.second;
-		
+	for (const auto & item : this->actionData) {
+		const std::string & defaultValue = static_cast<app::command_line::Argument *>(item.second.get())->getDefaultValue();
+		this->decodedArguments[item.first] = defaultValue;
 	}
 }

@@ -118,7 +118,7 @@ void tester::test::OpenFile::testBody() {
 		ASSERT((windowCore->getTabCount() == 1), tester::shared::error_type_e::TABS, "Opened file " + filename + " in tab - actual number of tabs " + std::to_string(windowCore->getTabCount()));
 		ASSERT((openFilePopup->isVisible() == false), tester::shared::error_type_e::POPUP, "Open file popup is visible even though file " + filename + " was opened.");
 
-		const std::string textInStatusBar = windowCore->bottomStatusBar->getUserInputText().toStdString();
+		const std::string textInStatusBar = windowCore->bottomStatusBar->getContentPathText().toStdString();
 		const bool foundFilename = (textInStatusBar.find(filename) != std::string::npos);
 		const std::string filetype("file:");
 		const bool foundFiletype = (textInStatusBar.find(filetype) != std::string::npos);
