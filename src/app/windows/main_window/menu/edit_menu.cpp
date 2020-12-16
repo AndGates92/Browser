@@ -13,6 +13,7 @@
 #include <QtWidgets/QWidget>
 #include <QtWidgets/QMenuBar>
 
+#include "app/utility/logger/macros.h"
 #include "app/windows/main_window/menu/edit_menu.h"
 
 // Categories

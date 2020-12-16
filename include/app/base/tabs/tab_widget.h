@@ -14,7 +14,6 @@
 #include <QtWidgets/QTabWidget>
 #include <QtGui/QIcon>
 
-#include "app/utility/logger/macros.h"
 #include "app/shared/enums.h"
 #include "app/base/tabs/tab_bar.h"
 #include "app/base/tabs/tab.h"

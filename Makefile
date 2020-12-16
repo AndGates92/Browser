@@ -103,7 +103,7 @@ COV_FILES = gcov
 # C++14 standard
 # -rdyanmic: ELF linked adds all symbols to the dynamic symbol table
 CFLAGS = -Wnon-virtual-dtor -Wall -Wconversion -fPIC -Werror -Wextra -Wpedantic -std=c++17 -rdynamic
-CDEBUGFLAGS += -Og -g3
+CDEBUGFLAGS += -g3
 ifeq ($(COMPILE_TYPE), Debug)
   CFLAGS += $(CDEBUGFLAGS)
 else

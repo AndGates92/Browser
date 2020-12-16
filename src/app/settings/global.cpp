@@ -11,7 +11,6 @@
 #include "app/shared/setters_getters.h"
 #include "app/utility/logger/macros.h"
 #include "app/settings/global.h"
-#include "app/settings/command_line_parser.h"
 
 LOGGING_CONTEXT(browserSettingsOverall, browserSettings.overall, TYPE_LEVEL, INFO_VERBOSITY)
 
@@ -103,7 +102,7 @@ app::settings::Global::Global() : app::settings::Global(0, nullptr) {
 
 }
 
-app::settings::Global::Global(int argc, char** argv) : parser(new app::command_line::Parser(argc, argv, app::settings::global::jsonFullPath)) {
+app::settings::Global::Global(int argc, char** argv) : app::command_line::Parser(argc, argv, app::settings::global::jsonFullPath) {
 	LOG_INFO(app::logger::info_level_e::ZERO, browserSettingsOverall,  "Creating browser settings with argc set to " << argc << " and argv set to " << argv);
 	if (app::settings::Global::getLogFilePath().empty() == true) {
 		app::settings::Global::setLogPath(argc, argv);
@@ -116,8 +115,8 @@ app::settings::Global::~Global() {
 }
 
 void app::settings::Global::initialize(int & argc, char** argv) {
-	if ((this->parser->getArgc() == 0) && (this->parser->getArgv() == nullptr)) {
-		this->parser->initialize(argc, argv);
+	if ((this->getArgc() == 0) && (this->getArgv() == nullptr)) {
+		app::command_line::Parser::initialize(argc, argv);
 		if (app::settings::Global::getLogFilePath().empty() == true) {
 			app::settings::Global::setLogPath(argc, argv);
 		}
@@ -131,18 +130,6 @@ void app::settings::Global::initialize() {
 	}
 }
 
-void app::settings::Global::addArguments(const app::command_line::argument_map_t & arguments, const bool enableOverride) {
-	this->parser->addArguments(arguments, enableOverride);
-}
-
-void app::settings::Global::addArgument(const std::string & key, const std::string & value) {
-	this->parser->addArgument(key, value);
-}
-
-void app::settings::Global::overrideArgumentValue(const std::string & key, const std::string & value) {
-	this->parser->overrideArgumentValue(key, value);
-}
-
 const std::string app::settings::Global::print() const {
 	const app::command_line::argument_map_t & settingsMap = this->getSettingsMap();
 
@@ -154,4 +141,16 @@ const std::string app::settings::Global::print() const {
 	return settingsInfo;
 }
 
-CONST_GETTER(app::settings::Global::getSettingsMap, app::command_line::argument_map_t &, this->parser->getDecodedArguments())
+CONST_GETTER(app::settings::Global::getSettingsMap, app::command_line::argument_map_t &, this->getDecodedArguments())
+
+void app::settings::Global::appendActionData(const std::list<std::string> & jsonFiles) {
+	app::command_line::Parser::appendActionData(jsonFiles);
+}
+
+void app::settings::Global::appendActionData(const std::string & filename) {
+	app::command_line::Parser::appendActionData(filename);
+}
+
+void app::settings::Global::clear() {
+	app::command_line::Parser::clear();
+}

@@ -13,7 +13,6 @@
 // Qt libraries
 #include <QtCore/QObject>
 
-#include "app/utility/logger/macros.h"
 #include "app/shared/enums.h"
 #include "app/windows/secondary_windows/find_window/window.h"
 #include "app/base/menu/menu.h"

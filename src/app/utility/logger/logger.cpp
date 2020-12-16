@@ -8,15 +8,25 @@
 
 #include <string>
 
-#include "app/utility/cpp/cpp_operator.h"
+#include "app/settings/global.h"
 #include "app/shared/setters_getters.h"
+#include "app/utility/cpp/cpp_operator.h"
 #include "app/utility/logger/macros.h"
+#include "app/utility/logger/config.h"
 #include "app/utility/logger/logger.h"
 
 // Categories
 LOGGING_CONTEXT(loggerOverall, logger.overall, TYPE_LEVEL, INFO_VERBOSITY)
 
+app::logger::Logger::Logger(const app::logger::msg_type_e loggerType, const std::string contextFile, const int line, const std::string function, app::logger::Logger::context_function_t loggerContextConstRef, const app::logger::info_level_e loggerInfoVerbosity) : app::logger::Logger(loggerType, contextFile, line, function, loggerContextConstRef, loggerInfoVerbosity, app::settings::Global::getLogFilePath()) {
+
+}
+
 app::logger::Logger::Logger(const app::logger::msg_type_e loggerType, const std::string contextFile, const int line, const std::string function, app::logger::Logger::context_function_t loggerContextConstRef, const app::logger::info_level_e loggerInfoVerbosity, const std::string ologfilename) : app::logger::Logger(loggerType, contextFile, line, function, loggerContextConstRef(), loggerInfoVerbosity, ologfilename) {
+
+}
+
+app::logger::Logger::Logger(const app::logger::msg_type_e loggerType, const std::string contextFile, const int line, const std::string function, const app::logger::Context loggerContext, const app::logger::info_level_e loggerInfoVerbosity) : app::logger::Logger(loggerType, contextFile, line, function, loggerContext, loggerInfoVerbosity, app::settings::Global::getLogFilePath()) {
 
 }
 
@@ -24,7 +34,15 @@ app::logger::Logger::Logger(const app::logger::msg_type_e loggerType, const std:
 	this->initializeLogging(loggerContext);
 }
 
+app::logger::Logger::Logger(const app::logger::msg_type_e loggerType, const std::string contextFile, const int line, const std::string function, const app::logger::info_level_e loggerInfoVerbosity) : app::logger::Logger(loggerType, contextFile, line, function, loggerInfoVerbosity, app::settings::Global::getLogFilePath()) {
+
+}
+
 app::logger::Logger::Logger(const app::logger::msg_type_e loggerType, const std::string contextFile, const int line, const std::string function, const app::logger::info_level_e loggerInfoVerbosity, const std::string ologfilename) : context(app::logger::Config::getInstance()->getDefaultContextName(), contextFile, line, function, app::logger::Config::getInstance()->getDefaultType(), app::logger::Config::getInstance()->getDefaultVerbosity()), ofile(ologfilename, app::logger::Logger::openMode), infoVerbosity(loggerInfoVerbosity), type(loggerType), state(app::logger::state_e::CONSTRUCTED) {
+
+}
+
+app::logger::Logger::Logger(const app::logger::msg_type_e loggerType, const std::string contextFile, const int line, const std::string function) : app::logger::Logger(loggerType, contextFile, line, function, app::settings::Global::getLogFilePath()) {
 
 }
 

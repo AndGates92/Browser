@@ -14,9 +14,8 @@
 #include <fstream>
 
 #include "app/utility/log/logging.h"
-#include "app/utility/logger/config.h"
+#include "app/utility/logger/enums.h"
 #include "app/utility/logger/context.h"
-#include "app/settings/global.h"
 
 /** @defgroup LoggerGroup Logger Doxygen Group
  *  Logger functions and classes
@@ -25,6 +24,8 @@
 namespace app {
 
 	namespace logger {
+
+		class Context;
 
 		class Logger {
 
@@ -37,7 +38,21 @@ namespace app {
 				typedef std::function<const app::logger::Context &(void)> context_function_t;
 
 				/**
-				 * @brief Function: explicit Logger(const app::logger::msg_type_e loggerType, const std::string contextFile, const int line, const std::string function, const app::logger::Context loggerContext, const app::logger::info_level_e loggerInfoVerbosity, const std::string ologfilename = app::settings::Global::getLogFilePath())
+				 * @brief Function: explicit Logger(const app::logger::msg_type_e loggerType, const std::string contextFile, const int line, const std::string function, const app::logger::Context loggerContext, const app::logger::info_level_e loggerInfoVerbosity)
+				 *
+				 * \param loggerType: message type associated with the logger
+				 * \param contextFile: filename of the context
+				 * \param line: line of the context
+				 * \param function: function of the context
+				 * \param loggerContext: context to get data from
+				 * \param loggerInfoVerbosity: verbosity level of information messages
+				 *
+				 * Logger constructor with context
+				 */
+				explicit Logger(const app::logger::msg_type_e loggerType, const std::string contextFile, const int line, const std::string function, const app::logger::Context loggerContext, const app::logger::info_level_e loggerInfoVerbosity);
+
+				/**
+				 * @brief Function: explicit Logger(const app::logger::msg_type_e loggerType, const std::string contextFile, const int line, const std::string function, const app::logger::Context loggerContext, const app::logger::info_level_e loggerInfoVerbosity, const std::string ologfilename)
 				 *
 				 * \param loggerType: message type associated with the logger
 				 * \param contextFile: filename of the context
@@ -49,10 +64,24 @@ namespace app {
 				 *
 				 * Logger constructor with context
 				 */
-				explicit Logger(const app::logger::msg_type_e loggerType, const std::string contextFile, const int line, const std::string function, const app::logger::Context loggerContext, const app::logger::info_level_e loggerInfoVerbosity, const std::string ologfilename = app::settings::Global::getLogFilePath());
+				explicit Logger(const app::logger::msg_type_e loggerType, const std::string contextFile, const int line, const std::string function, const app::logger::Context loggerContext, const app::logger::info_level_e loggerInfoVerbosity, const std::string ologfilename);
 
 				/**
-				 * @brief Function: explicit Logger(const app::logger::msg_type_e loggerType, const std::string contextFile, const int line, const std::string function, context_function_t loggerContextConstRef, const app::logger::info_level_e loggerInfoVerbosity, const std::string ologfilename = app::settings::Global::getLogFilePath())
+				 * @brief Function: explicit Logger(const app::logger::msg_type_e loggerType, const std::string contextFile, const int line, const std::string function, context_function_t loggerContextConstRef, const app::logger::info_level_e loggerInfoVerbosity)
+				 *
+				 * \param loggerType: message type associated with the logger
+				 * \param contextFile: filename of the context
+				 * \param line: line of the context
+				 * \param function: function of the context
+				 * \param loggerContextConstRef: pointer to a function that returns a constant reference to the context
+				 * \param loggerInfoVerbosity: verbosity level of information messages
+				 *
+				 * Logger constructor with context
+				 */
+				explicit Logger(const app::logger::msg_type_e loggerType, const std::string contextFile, const int line, const std::string function, context_function_t loggerContextConstRef, const app::logger::info_level_e loggerInfoVerbosity);
+
+				/**
+				 * @brief Function: explicit Logger(const app::logger::msg_type_e loggerType, const std::string contextFile, const int line, const std::string function, context_function_t loggerContextConstRef, const app::logger::info_level_e loggerInfoVerbosity, const std::string ologfilename)
 				 *
 				 * \param loggerType: message type associated with the logger
 				 * \param contextFile: filename of the context
@@ -64,10 +93,23 @@ namespace app {
 				 *
 				 * Logger constructor with context
 				 */
-				explicit Logger(const app::logger::msg_type_e loggerType, const std::string contextFile, const int line, const std::string function, context_function_t loggerContextConstRef, const app::logger::info_level_e loggerInfoVerbosity, const std::string ologfilename = app::settings::Global::getLogFilePath());
+				explicit Logger(const app::logger::msg_type_e loggerType, const std::string contextFile, const int line, const std::string function, context_function_t loggerContextConstRef, const app::logger::info_level_e loggerInfoVerbosity, const std::string ologfilename);
 
 				/**
-				 * @brief Function: explicit Logger(const app::logger::msg_type_e loggerType, const std::string contextFile, const int line, const std::string function, const app::logger::info_level_e loggerInfoVerbosity, const std::string ologfilename = app::settings::Global::getLogFilePath())
+				 * @brief Function: explicit Logger(const app::logger::msg_type_e loggerType, const std::string contextFile, const int line, const std::string function, const app::logger::info_level_e loggerInfoVerbosity)
+				 *
+				 * \param loggerType: message type associated with the logger
+				 * \param contextFile: filename of the context
+				 * \param line: line of the context
+				 * \param function: function of the context
+				 * \param loggerInfoVerbosity: verbosity level of information messages
+				 *
+				 * Logger constructor
+				 */
+				explicit Logger(const app::logger::msg_type_e loggerType, const std::string contextFile, const int line, const std::string function, const app::logger::info_level_e loggerInfoVerbosity);
+
+				/**
+				 * @brief Function: explicit Logger(const app::logger::msg_type_e loggerType, const std::string contextFile, const int line, const std::string function, const app::logger::info_level_e loggerInfoVerbosity, const std::string ologfilename)
 				 *
 				 * \param loggerType: message type associated with the logger
 				 * \param contextFile: filename of the context
@@ -78,10 +120,23 @@ namespace app {
 				 *
 				 * Logger constructor
 				 */
-				explicit Logger(const app::logger::msg_type_e loggerType, const std::string contextFile, const int line, const std::string function, const app::logger::info_level_e loggerInfoVerbosity, const std::string ologfilename = app::settings::Global::getLogFilePath());
+				explicit Logger(const app::logger::msg_type_e loggerType, const std::string contextFile, const int line, const std::string function, const app::logger::info_level_e loggerInfoVerbosity, const std::string ologfilename);
 
 				/**
-				 * @brief Function: explicit Logger(const app::logger::msg_type_e loggerType, const std::string contextFile, const int line, const std::string function, const std::string ologfilename = app::settings::Global::getLogFilePath())
+				 * @brief Function: explicit Logger(const app::logger::msg_type_e loggerType, const std::string contextFile, const int line, const std::string function)
+				 *
+				 * \param loggerType: message type associated with the logger
+				 * \param contextFile: filename of the context
+				 * \param line: line of the context
+				 * \param function: function of the context
+				 *
+				 * Logger constructor
+				 */
+				explicit Logger(const app::logger::msg_type_e loggerType, const std::string contextFile, const int line, const std::string function);
+
+
+				/**
+				 * @brief Function: explicit Logger(const app::logger::msg_type_e loggerType, const std::string contextFile, const int line, const std::string function, const std::string ologfilename)
 				 *
 				 * \param loggerType: message type associated with the logger
 				 * \param contextFile: filename of the context
@@ -91,7 +146,7 @@ namespace app {
 				 *
 				 * Logger constructor
 				 */
-				explicit Logger(const app::logger::msg_type_e loggerType, const std::string contextFile, const int line, const std::string function, const std::string ologfilename = app::settings::Global::getLogFilePath());
+				explicit Logger(const app::logger::msg_type_e loggerType, const std::string contextFile, const int line, const std::string function, const std::string ologfilename);
 
 				/**
 				 * @brief Function: virtual ~Logger()
@@ -123,13 +178,13 @@ namespace app {
 				void initAndLog(context_function_t loggerContextConstRef, argTypes... args);
 
 				/**
-				 * @brief Function: void initializeLogging(const app::logger::Context & otherContext = app::logger::Context::getDefaultContext())
+				 * @brief Function: void initializeLogging(const app::logger::Context & messageContext = app::logger::Context::getDefaultContext())
 				 *
-				 * \param otherContext: context to copy
+				 * \param messageContext: context to copy
 				 *
 				 * This function initialize the log
 				 */
-				void initializeLogging(const app::logger::Context & otherContext = app::logger::Context::getDefaultContext());
+				void initializeLogging(const app::logger::Context & messageContext = app::logger::Context::getDefaultContext());
 
 				/**
 				 * @brief Function: void initializeLogging(context_function_t otherLoggerContextConstRef)

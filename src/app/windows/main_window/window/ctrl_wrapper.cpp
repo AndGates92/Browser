@@ -32,31 +32,31 @@ namespace app {
 					 * @brief Path towards JSON file storing informations about commands and shortcuts
 					 *
 					 */
-					static const QString commandFileDirectory("json/");
+					static const std::string commandFileDirectory("json/");
 
 					/**
 					 * @brief Filename storing informations about commands and shortcuts
 					 *
 					 */
-					static const QString globalCommandFileName("global_commands.json");
+					static const std::string globalCommandFileName("global_commands.json");
 
 					/**
 					 * @brief Full path towards JSON file storing informations about commands and shortcuts
 					 *
 					 */
-					static const QString globalCommandFileFullPath(commandFileDirectory + globalCommandFileName);
+					static const std::string globalCommandFileFullPath(commandFileDirectory + globalCommandFileName);
 
 					/**
 					 * @brief Filename storing informations about commands and shortcuts
 					 *
 					 */
-					static const QString tabCommandFileName("tab_commands.json");
+					static const std::string tabCommandFileName("tab_commands.json");
 
 					/**
 					 * @brief Full path towards JSON file storing informations about commands and shortcuts
 					 *
 					 */
-					static const QString tabCommandFileFullPath(commandFileDirectory + tabCommandFileName);
+					static const std::string tabCommandFileFullPath(commandFileDirectory + tabCommandFileName);
 
 				}
 
@@ -69,7 +69,7 @@ namespace app {
 }
 
 app::main_window::window::CtrlWrapper::CtrlWrapper(QWidget * parent, const std::shared_ptr<app::main_window::window::Core> & core) : QWidget(parent), app::main_window::window::Base(core), winctrl(new app::main_window::window::Ctrl(this, core)), tabctrl(new app::main_window::window::CtrlTab(this, core)) {
-	QStringList commandJsonFiles({app::main_window::window::ctrl_wrapper::tabCommandFileFullPath, app::main_window::window::ctrl_wrapper::globalCommandFileFullPath});
+	std::list<std::string> commandJsonFiles({app::main_window::window::ctrl_wrapper::tabCommandFileFullPath, app::main_window::window::ctrl_wrapper::globalCommandFileFullPath});
 	app::main_window::window::Commands::getInstance()->appendActionData(commandJsonFiles);
 
 	// Connect signals and slots
@@ -78,7 +78,7 @@ app::main_window::window::CtrlWrapper::CtrlWrapper(QWidget * parent, const std::
 }
 
 app::main_window::window::CtrlWrapper::~CtrlWrapper() {
-	LOG_INFO(app::logger::info_level_e::ZERO, mainWindowCtrlWrapperOverall,  "Main window destructor");
+	LOG_INFO(app::logger::info_level_e::ZERO, mainWindowCtrlWrapperOverall,  "Main window control wrapper destructor");
 }
 
 void app::main_window::window::CtrlWrapper::keyPressEvent(QKeyEvent * event) {

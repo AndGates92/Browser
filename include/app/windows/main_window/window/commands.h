@@ -44,44 +44,51 @@ namespace app {
 					virtual ~Commands();
 
 					/**
-					 * @brief Function: void appendActionData(const QStringList & jsonFiles)
+					 * @brief Function: void appendActionData(const std::list<std::string> & jsonFiles)
 					 *
 					 * \param jsonFiles: list of JSON file names
 					 *
 					 * This function append to the action data map with the content from the json files
 					 */
-					void appendActionData(const QStringList & jsonFiles);
+					void appendActionData(const std::list<std::string> & jsonFiles);
 
 					/**
-					 * @brief Function: void appendActionData(const QString & filename)
+					 * @brief Function: void appendActionData(const std::string & filename)
 					 *
 					 * \param filename: JSON file name to append
 					 *
 					 * This function append to the action data map with the content of a JSON file
 					 */
-					void appendActionData(const QString & filename);
+					void appendActionData(const std::string & filename);
+
+					/**
+					 * @brief Function: void clear()
+					 *
+					 * This function clears the main window commands 
+					 */
+					void clear();
 
 				protected:
 
 				private:
 
 					/**
-					 * @brief Function: explicit Commands(const QString jsonFile)
+					 * @brief Function: explicit Commands(const std::string jsonFile)
 					 *
 					 * \param jsonFile: JSON files with the commands
 					 *
 					 * Main window commands constructor with JSON file
 					 */
-					explicit Commands(const QString jsonFile);
+					explicit Commands(const std::string jsonFile);
 
 					/**
-					 * @brief Function: explicit Commands(const QStringList jsonFiles)
+					 * @brief Function: explicit Commands(const std::list<std::string> jsonFiles)
 					 *
 					 * \param jsonFiles: list of JSON files with the commands
 					 *
 					 * Main window commands constructor with JSON file list
 					 */
-					explicit Commands(const QStringList jsonFiles);
+					explicit Commands(const std::list<std::string> jsonFiles);
 
 					// Move and copy constructor
 					/**

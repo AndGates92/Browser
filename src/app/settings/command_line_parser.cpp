@@ -17,18 +17,23 @@
 
 LOGGING_CONTEXT(commandLineParserOverall, commandLineParser.overall, TYPE_LEVEL, INFO_VERBOSITY)
 
-app::command_line::Parser::Parser(int & argc, char** argv, const std::string & jsonFile) : app::base::json::Action<app::command_line::Argument>(), argc(argc), argv(argv), decodedArguments(app::command_line::argument_map_t()) {
-	EXCEPTION_ACTION_COND((jsonFile.empty() == true), throw, "JSON file name cannot be empty");
+app::command_line::Parser::Parser(int & argc, char** argv) : app::base::json::Action<app::command_line::Argument>(), argc(argc), argv(argv), decodedArguments(app::command_line::argument_map_t()) {
+
 	EXCEPTION_ACTION_COND(((this->argc == 0) && (this->argv != nullptr)), throw, "The list of arguments (argv) must be null if the number of arguments (argc) is " << this->argc << ". Argv is set to " << this->argv << " instead.");
 	EXCEPTION_ACTION_COND(((this->argc != 0) && (this->argv == nullptr)), throw, "The number of arguments (argc) must be 0 if the list of arguments (argv) is null. Number of arguments is set to " << this->argc);
 	EXCEPTION_ACTION_COND((this->argc < 0), throw, "Number of arguments (argc) must be greater or equal than 0. Argc is set to " << this->argc);
 	LOG_INFO(app::logger::info_level_e::ZERO, commandLineParserOverall, "Creating command line parser\n" << *this);
 
-	this->appendActionData(QString::fromStdString(jsonFile));
-	this->populateDefaultDecodedArguments();
-	if ((this->argc != 0) && (this->argv != nullptr)) {
-		this->extractArguments();
-	}
+}
+
+app::command_line::Parser::Parser(int & argc, char** argv, const std::string & jsonFile) : app::command_line::Parser::Parser(argc, argv) {
+
+	this->appendActionData(jsonFile);
+}
+
+app::command_line::Parser::Parser(int & argc, char** argv, const std::list<std::string> & jsonFiles) : app::command_line::Parser::Parser(argc, argv) {
+
+	this->appendActionData(jsonFiles);
 }
 
 app::command_line::Parser::~Parser() {
@@ -111,8 +116,8 @@ void app::command_line::Parser::extractArguments() {
 
 		// An option may be unrecognized because it is dealt in another JSON file
 		if ((shortCmdMatch == this->getInvalidData()) && (longCmdMatch == this->getInvalidData())) {
-			QString jsonFilePrint = QString();
-			const QStringList & actionFiles = this->getActionJsonFiles();
+			std::string jsonFilePrint = std::string();
+			const std::list<std::string> & actionFiles = this->getActionJsonFiles();
 			if (actionFiles.empty() == true) {
 				jsonFilePrint.append("because no action JSON file was provided");
 			} else {
@@ -125,7 +130,7 @@ void app::command_line::Parser::extractArguments() {
 				}
 
 				for (const auto & filename : actionFiles) {
-					if (filename.compare(actionFiles.constFirst(), Qt::CaseSensitive) != 0) {
+					if (filename.compare(actionFiles.front()) != 0) {
 						jsonFilePrint.append(", ");
 					}
 					jsonFilePrint.append(filename);
@@ -190,4 +195,25 @@ void app::command_line::Parser::populateDefaultDecodedArguments() {
 		const std::string & defaultValue = static_cast<app::command_line::Argument *>(item.second.get())->getDefaultValue();
 		this->decodedArguments[item.first] = defaultValue;
 	}
+}
+
+void app::command_line::Parser::appendActionData(const std::list<std::string> & jsonFiles) {
+	app::base::json::Action<app::command_line::Argument>::appendActionData(jsonFiles);
+	this->populateDefaultDecodedArguments();
+	if ((this->argc != 0) && (this->argv != nullptr)) {
+		this->extractArguments();
+	}
+}
+
+void app::command_line::Parser::appendActionData(const std::string & filename) {
+	app::base::json::Action<app::command_line::Argument>::appendActionData(filename);
+	this->populateDefaultDecodedArguments();
+	if ((this->argc != 0) && (this->argv != nullptr)) {
+		this->extractArguments();
+	}
+}
+
+void app::command_line::Parser::clear() {
+	app::base::json::Action<app::command_line::Argument>::clear();
+	this->decodedArguments.clear();
 }

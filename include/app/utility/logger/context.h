@@ -14,7 +14,6 @@
 #include <QtCore/QLoggingCategory>
 
 #include "app/utility/logger/enums.h"
-#include "app/settings/global.h"
 
 /** @defgroup LoggerGroup Logger Doxygen Group
  *  Logger functions and classes
@@ -137,7 +136,7 @@ namespace app {
 				const app::logger::info_level_e & getInfoVerbosity() const;
 
 				/**
-				 * @brief Function: explicit Context(const std::string contextName, const app::logger::msg_type_e contextType, const app::logger::info_level_e contextInfoVerbosity, const std::string ologfilename = app::settings::Global::getLogFilePath())
+				 * @brief Function: explicit Context(const std::string contextName, const app::logger::msg_type_e contextType, const app::logger::info_level_e contextInfoVerbosity, const std::string ologfilename)
 				 *
 				 * \param contextName: name of the context
 				 * \param contextType: minimum message type accepted
@@ -146,10 +145,21 @@ namespace app {
 				 *
 				 * Logger context constructor
 				 */
-				explicit Context(const std::string contextName, const app::logger::msg_type_e contextType, const app::logger::info_level_e contextInfoVerbosity, const std::string ologfilename = app::settings::Global::getLogFilePath());
+				explicit Context(const std::string contextName, const app::logger::msg_type_e contextType, const app::logger::info_level_e contextInfoVerbosity, const std::string ologfilename);
 
 				/**
-				 * @brief Function: explicit Context(const std::string contextName, const std::string contextFile, const int contextLine, const std::string contextFunction, const app::logger::msg_type_e contextType, const app::logger::info_level_e contextInfoVerbosity, const std::string ologfilename = app::settings::Global::getLogFilePath())
+				 * @brief Function: explicit Context(const std::string contextName, const app::logger::msg_type_e contextType, const app::logger::info_level_e contextInfoVerbosity)
+				 *
+				 * \param contextName: name of the context
+				 * \param contextType: minimum message type accepted
+				 * \param contextInfoVerbosity: minimum verbosity level of information messages
+				 *
+				 * Logger context constructor
+				 */
+				explicit Context(const std::string contextName, const app::logger::msg_type_e contextType, const app::logger::info_level_e contextInfoVerbosity);
+
+				/**
+				 * @brief Function: explicit Context(const std::string contextName, const std::string contextFile, const int contextLine, const std::string contextFunction, const app::logger::msg_type_e contextType, const app::logger::info_level_e contextInfoVerbosity, const std::string ologfilename)
 				 *
 				 * \param contextName: name of the context
 				 * \param contextFile: file of the context
@@ -161,7 +171,22 @@ namespace app {
 				 *
 				 * Logger context constructor
 				 */
-				explicit Context(const std::string contextName, const std::string contextFile, const int contextLine, const std::string contextFunction, const app::logger::msg_type_e contextType, const app::logger::info_level_e contextInfoVerbosity, const std::string ologfilename = app::settings::Global::getLogFilePath());
+				explicit Context(const std::string contextName, const std::string contextFile, const int contextLine, const std::string contextFunction, const app::logger::msg_type_e contextType, const app::logger::info_level_e contextInfoVerbosity, const std::string ologfilename);
+
+
+				/**
+				 * @brief Function: explicit Context(const std::string contextName, const std::string contextFile, const int contextLine, const std::string contextFunction, const app::logger::msg_type_e contextType, const app::logger::info_level_e contextInfoVerbosity)
+				 *
+				 * \param contextName: name of the context
+				 * \param contextFile: file of the context
+				 * \param contextLine: line of the context
+				 * \param contextFunction: function of the context
+				 * \param contextType: minimum message type accepted
+				 * \param contextInfoVerbosity: minimum verbosity level of information messages
+				 *
+				 * Logger context constructor
+				 */
+				explicit Context(const std::string contextName, const std::string contextFile, const int contextLine, const std::string contextFunction, const app::logger::msg_type_e contextType, const app::logger::info_level_e contextInfoVerbosity);
 
 				/**
 				 * @brief Function: virtual ~Context()

@@ -37,22 +37,22 @@ namespace app {
 					explicit Action();
 
 					/**
-					 * @brief Function: explicit Action(const QString jsonFileName)
+					 * @brief Function: explicit Action(const std::string jsonFileName)
 					 *
 					 * \param jsonFileName: JSON filename
 					 *
 					 * Main window json action class constructor with JSON filename
 					 */
-					explicit Action(const QString jsonFileName);
+					explicit Action(const std::string jsonFileName);
 
 					/**
-					 * @brief Function: explicit Action(const QString jsonFiles)
+					 * @brief Function: explicit Action(const std::list<std::string> jsonFiles)
 					 *
 					 * \param jsonFiles: list of JSON file names
 					 *
 					 * Main window json action class constructor with list of JSON file names
 					 */
-					explicit Action(const QStringList jsonFiles);
+					explicit Action(const std::list<std::string> jsonFiles);
 
 					/**
 					 * @brief Function: virtual ~Action()

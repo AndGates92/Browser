@@ -8,10 +8,11 @@
 
 #include <string>
 
+#include "app/settings/global.h"
 #include "app/shared/setters_getters.h"
-#include "app/utility/logger/macros.h"
 #include "app/shared/enums.h"
 
+#include "app/utility/logger/macros.h"
 #include "app/utility/logger/config.h"
 #include "app/utility/logger/context.h"
 
@@ -24,7 +25,15 @@ app::logger::Context::Context(const std::string contextName, const std::string c
 
 }
 
-app::logger::Context::Context(const std::string contextName, const app::logger::msg_type_e contextType, const app::logger::info_level_e contextInfoVerbosity, const std::string ologfilename) : name(contextName), file(std::string()), line(0), function(std::string()), logFilename(ologfilename), type(contextType), infoVerbosity(contextInfoVerbosity) {
+app::logger::Context::Context(const std::string contextName, const std::string contextFile, const int contextLine, const std::string contextFunction, const app::logger::msg_type_e contextType, const app::logger::info_level_e contextInfoVerbosity) : app::logger::Context::Context(contextName, contextFile, contextLine, contextFunction, contextType, contextInfoVerbosity, app::settings::Global::getLogFilePath()) {
+
+}
+
+app::logger::Context::Context(const std::string contextName, const app::logger::msg_type_e contextType, const app::logger::info_level_e contextInfoVerbosity, const std::string ologfilename) : app::logger::Context::Context(contextName, std::string(), 0, std::string(), contextType, contextInfoVerbosity, ologfilename) {
+
+}
+
+app::logger::Context::Context(const std::string contextName, const app::logger::msg_type_e contextType, const app::logger::info_level_e contextInfoVerbosity) : app::logger::Context::Context(contextName, std::string(), 0, std::string(), contextType, contextInfoVerbosity, app::settings::Global::getLogFilePath()) {
 
 }
 

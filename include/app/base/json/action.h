@@ -18,12 +18,13 @@
 
 #include "app/utility/cpp/qt_types_to_stl.h"
 #include "app/utility/qt/qt_operator.h"
+#include "app/utility/cpp/cpp_operator.h"
+#include "app/utility/logger/macros.h"
+#include "app/utility/json/parser.h"
 #include "app/shared/enums.h"
 #include "app/shared/setters_getters.h"
-#include "app/utility/logger/macros.h"
 #include "app/shared/constructor_macros.h"
 #include "app/base/json/data.h"
-#include "app/utility/json/parser.h"
 
 /** @defgroup JsonGroup Json Doxygen Group
  *  Json functions and classes
@@ -88,22 +89,22 @@ namespace app {
 					enableFunction<FuncRet> findDataWithFieldValue(const std::string & name, const void * value) const;
 
 					/**
-					 * @brief Function: const QStringList & getActionJsonFiles() const
+					 * @brief Function: const std::list<std::string> & getActionJsonFiles() const
 					 *
 					 * \return the list of parsed JSON files
 					 *
 					 * This functions returns the list of parsed JSON files
 					 */
-					const QStringList & getActionJsonFiles() const;
+					const std::list<std::string> & getActionJsonFiles() const;
 
 					/**
-					 * @brief Function: const QString getActionJsonFilesAsString() const
+					 * @brief Function: const std::string getActionJsonFilesAsString() const
 					 *
 					 * \return a string with the list of parsed JSON files
 					 *
 					 * This functions returns a string listing the parsed JSON files
 					 */
-					const QString getActionJsonFilesAsString() const;
+					const std::string getActionJsonFilesAsString() const;
 
 
 				protected:
@@ -130,24 +131,31 @@ namespace app {
 					action_data_t actionData;
 
 					/**
-					 * @brief Function: enableFunction<FuncRet> appendActionData(const QStringList & jsonFiles)
+					 * @brief Function: enableFunction<FuncRet> appendActionData(const std::list<std::string> & jsonFiles)
 					 *
 					 * \param jsonFiles: list of JSON file names
 					 *
 					 * This function append to the action data map with the content from the json files
 					 */
 					template<typename FuncRet = void>
-					enableFunction<FuncRet> appendActionData(const QStringList & jsonFiles);
+					enableFunction<FuncRet> appendActionData(const std::list<std::string> & jsonFiles);
 
 					/**
-					 * @brief Function: enableFunction<FuncRet> appendActionData(const QString & filename)
+					 * @brief Function: enableFunction<FuncRet> appendActionData(const std::string & filename)
 					 *
 					 * \param filename: JSON file name to append
 					 *
 					 * This function append to the action data map with the content of a JSON file
 					 */
 					template<typename FuncRet = void>
-					enableFunction<FuncRet> appendActionData(const QString & filename);
+					enableFunction<FuncRet> appendActionData(const std::string & filename);
+
+					/**
+					 * @brief Function: void clear()
+					 *
+					 * This function clears content of the action
+					 */
+					void clear();
 
 					/**
 					 * @brief Function: virtual void addItemToActionData(std::unique_ptr<Data> & data, const std::string & key, const std::string & item)
@@ -166,7 +174,7 @@ namespace app {
 					 * @brief list of JSON filenames that were parsed
 					 *
 					 */
-					QStringList actionJsonFiles;
+					std::list<std::string> actionJsonFiles;
 
 					/**
 					 * @brief invalid data
@@ -191,7 +199,7 @@ namespace app {
 /** @} */ // End of JsonGroup group
 
 template<class Data>
-app::base::json::Action<Data>::Action() : actionData(app::base::json::Action<Data>::action_data_t()), actionJsonFiles(QStringList()), invalidData(nullptr) {
+app::base::json::Action<Data>::Action() : actionData(app::base::json::Action<Data>::action_data_t()), actionJsonFiles(std::list<std::string>()), invalidData(nullptr) {
 
 }
 
@@ -202,9 +210,9 @@ app::base::json::Action<Data>::~Action() {
 
 template<class Data>
 template<typename FuncRet>
-typename app::base::json::Action<Data>::template enableFunction<FuncRet> app::base::json::Action<Data>::appendActionData(const QStringList & jsonFiles) {
+typename app::base::json::Action<Data>::template enableFunction<FuncRet> app::base::json::Action<Data>::appendActionData(const std::list<std::string> & jsonFiles) {
 
-	EXCEPTION_ACTION_COND((jsonFiles.isEmpty() == true), throw, "Provided an empty JSON file list to function " << __func__);
+	EXCEPTION_ACTION_COND((jsonFiles.empty() == true), throw, "Provided an empty JSON file list to function " << __func__);
 
 	for (const auto & filename : jsonFiles) {
 		this->appendActionData(filename);
@@ -214,11 +222,11 @@ typename app::base::json::Action<Data>::template enableFunction<FuncRet> app::ba
 
 template<class Data>
 template<typename FuncRet>
-typename app::base::json::Action<Data>::template enableFunction<FuncRet> app::base::json::Action<Data>::appendActionData(const QString & filename) {
+typename app::base::json::Action<Data>::template enableFunction<FuncRet> app::base::json::Action<Data>::appendActionData(const std::string & filename) {
 
-	EXCEPTION_ACTION_COND((filename.isEmpty() == true), throw, "Provided an empty JSON file name to function " << __func__);
+	EXCEPTION_ACTION_COND((filename.empty() == true), throw, "Provided an empty JSON file name to function " << __func__);
 
-	app::utility::json::Parser commands(filename, QIODevice::ReadOnly);
+	app::utility::json::Parser commands(QString::fromStdString(filename), QIODevice::ReadOnly);
 	const std::list<std::string> keys = app::utility::qStringListToStdList(commands.getJsonKeys());
 
 	if (keys.empty() == false) {
@@ -244,13 +252,14 @@ typename app::base::json::Action<Data>::template enableFunction<FuncRet> app::ba
 			// - second is true if the insertion is successful, false otherwise
 			const auto [it, success] = this->actionData.insert(std::move(dataPair));
 
-			EXCEPTION_ACTION_COND((success == false), throw, "Insertion of element " << *newData << " failed.");
+			EXCEPTION_ACTION_COND((success == false), throw, "Insertion of element " << *(it->second) << " failed.");
 
 			LOG_INFO(app::logger::info_level_e::ZERO, jsonActionOverall,  "Appending data for key " << it->first << ": " << *(it->second));
 
-			if (this->actionJsonFiles.contains(filename) == false) {
+			const auto jsonFile = std::find(this->actionJsonFiles.cbegin(), this->actionJsonFiles.cend(), filename);
+			if (jsonFile == this->actionJsonFiles.cend()) {
 				LOG_INFO(app::logger::info_level_e::ZERO, jsonActionOverall,  "Adding " << filename << " to the list of action JSON files");
-				this->actionJsonFiles.append(filename);
+				this->actionJsonFiles.push_back(filename);
 			} else {
 				LOG_WARNING(jsonActionOverall,  "File " << filename << " has already been added to the list of JSON files");
 			}
@@ -279,17 +288,23 @@ typename app::base::json::Action<Data>::template enableFunction<FuncRet> app::ba
 }
 
 template<class Data>
+void app::base::json::Action<Data>::clear() {
+	this->actionData.clear();
+	this->actionJsonFiles.clear();
+}
+
+template<class Data>
 CONST_GETTER(app::base::json::Action<Data>::getInvalidData, std::unique_ptr<Data> &, this->invalidData)
 
 template<class Data>
 CONST_GETTER(app::base::json::Action<Data>::getActions, typename app::base::json::Action<Data>::action_data_t &, this->actionData)
 
 template<class Data>
-CONST_GETTER(app::base::json::Action<Data>::getActionJsonFiles, QStringList &, this->actionJsonFiles)
+CONST_GETTER(app::base::json::Action<Data>::getActionJsonFiles, std::list<std::string> &, this->actionJsonFiles)
 
 template<class Data>
-const QString app::base::json::Action<Data>::getActionJsonFilesAsString() const {
-	QString jsonFilePrint = QString();
+const std::string app::base::json::Action<Data>::getActionJsonFilesAsString() const {
+	std::string jsonFilePrint = std::string();
 	if (this->actionJsonFiles.empty() == true) {
 		jsonFilePrint.append("no input JSON file");
 	} else {
@@ -302,7 +317,7 @@ const QString app::base::json::Action<Data>::getActionJsonFilesAsString() const 
 		}
 
 		for (const auto & filename : this->actionJsonFiles) {
-			if (filename.compare(this->actionJsonFiles.constFirst(), Qt::CaseSensitive) != 0) {
+			if (filename.compare(this->actionJsonFiles.front()) != 0) {
 				jsonFilePrint.append(", ");
 			}
 			jsonFilePrint.append(filename);

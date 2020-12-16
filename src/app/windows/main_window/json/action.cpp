@@ -21,19 +21,19 @@
 
 LOGGING_CONTEXT(mainWindowActionOverall, mainWindowAction.overall, TYPE_LEVEL, INFO_VERBOSITY)
 
-app::main_window::json::Action::Action() : app::main_window::json::Action::Action(QString()) {
+app::main_window::json::Action::Action() : app::main_window::json::Action::Action(std::string()) {
 
 }
 
-app::main_window::json::Action::Action(const QStringList jsonFiles) : app::base::json::Action<app::main_window::json::Data>() {
+app::main_window::json::Action::Action(const std::list<std::string> jsonFiles) : app::base::json::Action<app::main_window::json::Data>() {
 	if (jsonFiles.empty() == false) {
 		this->appendActionData(jsonFiles);
 	}
 	LOG_INFO(app::logger::info_level_e::ZERO, mainWindowActionOverall, "Main window json action classe constructor with " << this->getActionJsonFilesAsString());
 }
 
-app::main_window::json::Action::Action(const QString jsonFileName) : app::base::json::Action<app::main_window::json::Data>() {
-	if (jsonFileName.isEmpty() == false) {
+app::main_window::json::Action::Action(const std::string jsonFileName) : app::base::json::Action<app::main_window::json::Data>() {
+	if (jsonFileName.empty() == false) {
 		this->appendActionData(jsonFileName);
 	}
 	LOG_INFO(app::logger::info_level_e::ZERO, mainWindowActionOverall, "Main window json action classe constructor with " << this->getActionJsonFilesAsString());

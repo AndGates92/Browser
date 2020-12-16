@@ -9,6 +9,7 @@
 // Qt libraries
 #include <QtGui/QKeyEvent>
 
+#include "app/utility/logger/macros.h"
 #include "app/utility/cpp/cpp_operator.h"
 #include "app/base/tabs/tab_bar.h"
 

@@ -9,7 +9,7 @@
  */
 
 #include "app/shared/constructor_macros.h"
-#include "app/utility/log/printable_object.h"
+#include "app/settings/command_line_parser.h"
 
 #include "app/settings/types.h"
 #include "app/utility/cpp/singleton.h"
@@ -20,17 +20,13 @@
  */
 namespace app {
 
-	namespace command_line {
-		class Parser;
-	}
-
 	namespace settings {
 
 		/**
 		 * @brief Global class
 		 *
 		 */
-		class Global : public app::utility::Singleton<app::settings::Global>, public app::printable_object::PrintableObject {
+		class Global : public app::utility::Singleton<app::settings::Global>, public app::command_line::Parser {
 
 			public:
 				/**
@@ -78,6 +74,31 @@ namespace app {
 				void initialize(int & argc, char** argv);
 
 				/**
+				 * @brief Function: void appendActionData(const std::list<std::string> & jsonFiles)
+				 *
+				 * \param jsonFiles: list of JSON file names
+				 *
+				 * This function append to the action data map with the content from the json files
+				 */
+				void appendActionData(const std::list<std::string> & jsonFiles);
+
+				/**
+				 * @brief Function: void appendActionData(const std::string & filename)
+				 *
+				 * \param filename: JSON file name to append
+				 *
+				 * This function append to the action data map with the content of a JSON file
+				 */
+				void appendActionData(const std::string & filename);
+
+				/**
+				 * @brief Function: void clear()
+				 *
+				 * This function clears content of the settings 
+				 */
+				void clear();
+
+				/**
 				 * @brief Function: const std::string print() const override
 				 *
 				 * \return settings informations to std::string
@@ -94,38 +115,6 @@ namespace app {
 				 * This function returns a map of settings
 				 */
 				const app::command_line::argument_map_t & getSettingsMap() const;
-
-				/**
-				 * @brief Function: void addArguments(const app::command_line::argument_map_t & arguments, const bool enableOverride = false)
-				 *
-				 * \param arguments: arguments to add or override
-				 * \param enableOverride: if the decoded argument map already contains some keys, they will be overridden
-				 *
-				 * This function merges the map of arguments provided as argument with the map locally stored.
-				 */
-				void addArguments(const app::command_line::argument_map_t & arguments, const bool enableOverride = false);
-
-				/**
-				 * @brief Function: void addArgument(const std::string & key, const std::string & value)
-				 *
-				 * \param key: key to add
-				 * \param value: new value of key provided as argument
-				 *
-				 * This function adds a key and its value to the argument map.
-				 * It will throw an exception if the key is already in the map before adding it.
-				 */
-				void addArgument(const std::string & key, const std::string & value);
-
-				/**
-				 * @brief Function: void overrideArgumentValue(const std::string & key, const std::string & value)
-				 *
-				 * \param key: key whose value has to be changed
-				 * \param value: new value of key provided as argument
-				 *
-				 * This function changes the value of an argument.
-				 * It will throw an exception if the key is not found.
-				 */
-				void overrideArgumentValue(const std::string & key, const std::string & value);
 
 			protected:
 
@@ -146,12 +135,6 @@ namespace app {
 				 * Browser Settings constructor
 				 */
 				explicit Global(int argc, char** argv);
-
-				/**
-				 * @brief command line parser
-				 *
-				 */
-				std::unique_ptr<app::command_line::Parser> parser;
 
 				/**
 				 * @brief Function: void initialize()

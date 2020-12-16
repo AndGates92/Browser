@@ -56,10 +56,7 @@ namespace tester {
 tester::utility::TestRunner::TestRunner(int & argc, char** argv) : factory(new tester::factory::TestFactory(argc, argv)), testList(tester::utility::TestRunner::test_list_container_t()), failedTests(tester::utility::TestRunner::test_list_container_t()) {
 	LOG_INFO(app::logger::info_level_e::ZERO, testRunnerOverall,  "Creating test runner");
 
-	std::unique_ptr<app::command_line::Parser> runnerArgumentParser = std::make_unique<app::command_line::Parser>(argc, argv, tester::utility::test_runner::jsonFullPath);
-	const app::command_line::argument_map_t & runnerArgumentMap = runnerArgumentParser->getDecodedArguments();
-	app::settings::Global::getInstance()->addArguments(runnerArgumentMap);
-
+	app::settings::Global::getInstance()->appendActionData(tester::utility::test_runner::jsonFullPath);
 	this->factory->populate();
 	this->fillTestList();
 }

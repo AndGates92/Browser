@@ -67,7 +67,7 @@ namespace tester {
 	}
 }
 
-tester::base::CommandTest::CommandTest(const std::shared_ptr<tester::base::Suite> & testSuite, const std::string & testName, const std::string & jsonFileName, const bool useShortcuts) : tester::base::Test(testSuite, (testName + " using " + (useShortcuts ? "shortcuts" : "full commands"))), app::main_window::json::Action(QString::fromStdString(jsonFileName)), sendCommandsThroughShortcuts(useShortcuts) {
+tester::base::CommandTest::CommandTest(const std::shared_ptr<tester::base::Suite> & testSuite, const std::string & testName, const std::string & jsonFileName, const bool useShortcuts) : tester::base::Test(testSuite, (testName + " using " + (useShortcuts ? "shortcuts" : "full commands"))), app::main_window::json::Action(jsonFileName), sendCommandsThroughShortcuts(useShortcuts) {
 
 	LOG_INFO(app::logger::info_level_e::ZERO, commandTestOverall,  "Creating test " << this->getName() << " in suite " << this->getSuite()->getName());
 
@@ -124,13 +124,13 @@ std::string tester::base::CommandTest::commandNameToShownText(const std::string 
 	const bool commandsPrintsText = ((commandName.compare(tester::base::command_test::openFileCommandName) == 0) || this->commandRequiresEnter(commandName));
 	if (commandsPrintsText == true) {
 		const std::unique_ptr<app::main_window::json::Data> & commandData = this->findDataWithFieldValue("Name", &commandName);
-		ASSERT((commandData != nullptr), tester::shared::error_type_e::COMMAND, "Unable to find data with Name " + commandName + " in " + this->getActionJsonFilesAsString().toStdString());
+		ASSERT((commandData != nullptr), tester::shared::error_type_e::COMMAND, "Unable to find data with Name " + commandName + " in " + this->getActionJsonFilesAsString());
 
 		if (commandData != nullptr) {
 			// Long command that the user has to type is :<long_command>
 			// It will be displayed as : <long_command>
 			const std::string * const commandLongCmdPtr(static_cast<const std::string *>(commandData->getValueFromMemberName("LongCmd")));
-			ASSERT((commandLongCmdPtr != nullptr), tester::shared::error_type_e::COMMAND, "Unable to find long command for data data with Name " + commandName + " in " + this->getActionJsonFilesAsString().toStdString());
+			ASSERT((commandLongCmdPtr != nullptr), tester::shared::error_type_e::COMMAND, "Unable to find long command for data data with Name " + commandName + " in " + this->getActionJsonFilesAsString());
 			const std::string commandLongCmd(*commandLongCmdPtr);
 			commandExpectedText = ":";
 			if (commandAsTyped == true) {
@@ -283,13 +283,13 @@ void tester::base::CommandTest::makeSearchInTab(const std::string & commandName,
 
 std::string tester::base::CommandTest::commandNameToTypedText(const std::string & commandName) {
 	const std::unique_ptr<app::main_window::json::Data> & commandData = this->findDataWithFieldValue("Name", &commandName);
-	ASSERT((commandData != nullptr), tester::shared::error_type_e::COMMAND, "Unable to find data with Name " + commandName + " in " + this->getActionJsonFilesAsString().toStdString());
+	ASSERT((commandData != nullptr), tester::shared::error_type_e::COMMAND, "Unable to find data with Name " + commandName + " in " + this->getActionJsonFilesAsString());
 
 	std::string commandToSend = std::string();
 	if (commandData != nullptr) {
 		if (this->commandSentThroughShortcuts() == true) {
 			const int * const commandShortcutPtr(static_cast<const int *>(commandData->getValueFromMemberName("Shortcut")));
-			ASSERT((commandShortcutPtr != nullptr), tester::shared::error_type_e::COMMAND, "Unable to find shortcut for data data with Name " + commandName + " in " + this->getActionJsonFilesAsString().toStdString());
+			ASSERT((commandShortcutPtr != nullptr), tester::shared::error_type_e::COMMAND, "Unable to find shortcut for data data with Name " + commandName + " in " + this->getActionJsonFilesAsString());
 			int shortcut = *commandShortcutPtr;
 			// In order to get the key of the shortcut, bitwise and with the negation of the modifier mask
 			Qt::Key key = (Qt::Key)(shortcut & ~app::shared::qmodifierMask);
@@ -305,7 +305,7 @@ std::string tester::base::CommandTest::commandNameToTypedText(const std::string 
 			}
 		} else {
 			const std::string * const commandLongCmdPtr(static_cast<const std::string *>(commandData->getValueFromMemberName("LongCmd")));
-			ASSERT((commandLongCmdPtr != nullptr), tester::shared::error_type_e::COMMAND, "Unable to find long command for data data with Name " + commandName + " in " + this->getActionJsonFilesAsString().toStdString());
+			ASSERT((commandLongCmdPtr != nullptr), tester::shared::error_type_e::COMMAND, "Unable to find long command for data data with Name " + commandName + " in " + this->getActionJsonFilesAsString());
 			const std::string commandLongCmd(*commandLongCmdPtr);
 			commandToSend = commandLongCmd;
 		}
@@ -317,12 +317,12 @@ std::string tester::base::CommandTest::commandNameToTypedText(const std::string 
 void tester::base::CommandTest::executeCommand(const std::string & commandName, const std::string & argument) {
 
 	const std::unique_ptr<app::main_window::json::Data> & commandData = this->findDataWithFieldValue("Name", &commandName);
-	ASSERT((commandData != nullptr), tester::shared::error_type_e::COMMAND, "Unable to find data with Name " + commandName + " in " + this->getActionJsonFilesAsString().toStdString());
+	ASSERT((commandData != nullptr), tester::shared::error_type_e::COMMAND, "Unable to find data with Name " + commandName + " in " + this->getActionJsonFilesAsString());
 
 	app::main_window::state_e commandState = app::main_window::state_e::UNKNOWN;
 	if (commandData != nullptr) {
 		const app::main_window::state_e * const commandStatePtr(static_cast<const app::main_window::state_e *>(commandData->getValueFromMemberName("State")));
-		ASSERT((commandStatePtr != nullptr), tester::shared::error_type_e::COMMAND, "Unable to find shortcut for data data with Name " + commandName + " in " + this->getActionJsonFilesAsString().toStdString());
+		ASSERT((commandStatePtr != nullptr), tester::shared::error_type_e::COMMAND, "Unable to find shortcut for data data with Name " + commandName + " in " + this->getActionJsonFilesAsString());
 		commandState = *commandStatePtr;
 	}
 

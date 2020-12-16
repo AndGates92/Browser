@@ -43,8 +43,8 @@ int main (int argc, char* argv[]) {
 		LOG_INFO(app::logger::info_level_e::ZERO, , "Built on " << __DATE__ << " at " << __TIME__);
 		LOG_INFO(app::logger::info_level_e::ZERO, , "QT version " << QT_VERSION_STR);
 
-		std::unique_ptr<tester::utility::TestRunner> runner = std::make_unique<tester::utility::TestRunner>(argc, argv);
 		app::init::initializeSettings(argc, argv);
+		std::unique_ptr<tester::utility::TestRunner> runner = std::make_unique<tester::utility::TestRunner>(argc, argv);
 		runner->run();
 		runner->printResults();
 

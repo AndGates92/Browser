@@ -67,7 +67,7 @@ void tester::test::LaunchApp::testBody() {
 	this->executeCommand(quitCommandName, std::string());
 
 	const std::unique_ptr<app::main_window::json::Data> & quitCommandData = this->findDataWithFieldValue("Name", &quitCommandName);
-	ASSERT((quitCommandData != nullptr), tester::shared::error_type_e::COMMAND, "Unable to find data with Name " + quitCommandName + " in " + this->getActionJsonFilesAsString().toStdString());
+	ASSERT((quitCommandData != nullptr), tester::shared::error_type_e::COMMAND, "Unable to find data with Name " + quitCommandName + " in " + this->getActionJsonFilesAsString());
 
 	const std::string * const quitCommandLongCmdPtr(static_cast<const std::string *>(quitCommandData->getValueFromMemberName("LongCmd")));
 	const std::string quitCommandLongCmd(*quitCommandLongCmdPtr);

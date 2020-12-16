@@ -32,6 +32,16 @@ namespace app {
 
 			public:
 				/**
+				 * @brief Function: explicit Parser(int & argc, char** argv)
+				 *
+				 * \param argc: number of arguments
+				 * \param argv: value of arguments
+				 *
+				 * Command Line Parser constructor
+				 */
+				explicit Parser(int & argc, char** argv);
+
+				/**
 				 * @brief Function: explicit Parser(int & argc, char** argv, const std::string & jsonFile)
 				 *
 				 * \param argc: number of arguments
@@ -41,6 +51,17 @@ namespace app {
 				 * Command Line Parser constructor
 				 */
 				explicit Parser(int & argc, char** argv, const std::string & jsonFile);
+
+				/**
+				 * @brief Function: explicit Parser(int & argc, char** argv, const std::list<std::string> & jsonFiles)
+				 *
+				 * \param argc: number of arguments
+				 * \param argv: value of arguments
+				 * \param jsonFiles: list of JSON filenames
+				 *
+				 * Command Line Parser constructor
+				 */
+				explicit Parser(int & argc, char** argv, const std::list<std::string> & jsonFiles);
 
 				/**
 				 * @brief Function: virtual ~Parser()
@@ -78,6 +99,50 @@ namespace app {
 				char ** getArgv();
 
 				/**
+				 * @brief Function: const app::command_line::argument_map_t & getDecodedArguments() const
+				 *
+				 * \return decoded arguments
+				 *
+				 * This function returns the decoded arguments
+				 */
+				const app::command_line::argument_map_t & getDecodedArguments() const;
+
+				/**
+				 * @brief Function: const std::string print() const override
+				 *
+				 * \return command line to std::string
+				 *
+				 * This functions prints command line parsed informations to std::string
+				 */
+				const std::string print() const override;
+
+			protected:
+				/**
+				 * @brief Function: void appendActionData(const std::list<std::string> & jsonFiles)
+				 *
+				 * \param jsonFiles: list of JSON file names
+				 *
+				 * This function append to the action data map with the content from the json files
+				 */
+				void appendActionData(const std::list<std::string> & jsonFiles);
+
+				/**
+				 * @brief Function: void appendActionData(const std::string & filename)
+				 *
+				 * \param filename: JSON file name to append
+				 *
+				 * This function append to the action data map with the content of a JSON file
+				 */
+				void appendActionData(const std::string & filename);
+
+				/**
+				 * @brief Function: void clear()
+				 *
+				 * This function clears content of the parser
+				 */
+				void clear();
+
+				/**
 				 * @brief Function: void addArguments(const app::command_line::argument_map_t & arguments, const bool enableOverride = false)
 				 *
 				 * \param arguments: arguments to add or override
@@ -110,24 +175,6 @@ namespace app {
 				void overrideArgumentValue(const std::string & key, const std::string & value);
 
 				/**
-				 * @brief Function: const app::command_line::argument_map_t & getDecodedArguments() const
-				 *
-				 * \return decoded arguments
-				 *
-				 * This function returns the decoded arguments
-				 */
-				const app::command_line::argument_map_t & getDecodedArguments() const;
-
-				/**
-				 * @brief Function: const std::string print() const override
-				 *
-				 * \return command line to std::string
-				 *
-				 * This functions prints command line parsed informations to std::string
-				 */
-				const std::string print() const override;
-
-				/**
 				 * @brief Function: virtual void addItemToActionData(std::unique_ptr<app::command_line::Argument> & data, const std::string & key, const std::string & item) override
 				 *
 				 * \param data: data to be updated
@@ -137,8 +184,6 @@ namespace app {
 				 * This functions adds an item linked to the key to the data provided as input
 				 */
 				virtual void addItemToActionData(std::unique_ptr<app::command_line::Argument> & data, const std::string & key, const std::string & item) override;
-
-			protected:
 
 			private:
 				/**
