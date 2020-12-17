@@ -35,7 +35,7 @@ void app::main_window::window::CtrlBase::executeCommand(const QString & userComm
 
 	const app::main_window::state_e previousWindowState = this->core->getMainWindowState();
 
-	const app::main_window::window::Commands::action_data_t & commands = app::main_window::window::Commands::getInstance()->getActions();
+	const app::main_window::window::Commands::action_data_t & commands = this->core->commands->getActions();
 
 	std::for_each(commands.cbegin(), commands.cend(), [&] (const auto & data) {
 		const std::unique_ptr<app::main_window::json::Data> & commandData = data.second;
@@ -167,8 +167,8 @@ void app::main_window::window::CtrlBase::keyPressEvent(QKeyEvent * event) {
 void app::main_window::window::CtrlBase::moveToCommandStateFromNonIdleState(const app::main_window::state_e & windowState, const Qt::Key & key) {
 	// Saving long command for a given state to set it after changing state
 	const app::main_window::state_e requestedWindowState = app::main_window::state_e::COMMAND;
-	const std::unique_ptr<app::main_window::json::Data> & data = app::main_window::window::Commands::getInstance()->findDataWithFieldValue("State", &windowState);
-	if (data != app::main_window::window::Commands::getInstance()->getInvalidData()) {
+	const std::unique_ptr<app::main_window::json::Data> & data = this->core->commands->findDataWithFieldValue("State", &windowState);
+	if (data != this->core->commands->getInvalidData()) {
 		QString longCmd(QString::fromStdString(data->getLongCmd()));
 		emit windowStateChangeRequested(requestedWindowState, app::main_window::state_postprocessing_e::POSTPROCESS, key);
 		// Setting the user input here because it is cleared when changing state

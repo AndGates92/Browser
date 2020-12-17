@@ -11,7 +11,6 @@
 
 #include "app/utility/cpp/cpp_operator.h"
 #include "app/windows/main_window/window/ctrl_wrapper.h"
-#include "app/windows/main_window/window/commands.h"
 #include "app/widgets/commands/key_sequence.h"
 #include "app/shared/exception.h"
 
@@ -19,59 +18,7 @@
 LOGGING_CONTEXT(mainWindowCtrlWrapperOverall, mainWindowCtrlWrapper.overall, TYPE_LEVEL, INFO_VERBOSITY)
 LOGGING_CONTEXT(mainWindowCtrlWrapperUserInput, mainWindowCtrlWrapper.userInput, TYPE_LEVEL, INFO_VERBOSITY)
 
-namespace app {
-
-	namespace main_window {
-
-		namespace window {
-
-			namespace ctrl_wrapper {
-
-				namespace {
-					/**
-					 * @brief Path towards JSON file storing informations about commands and shortcuts
-					 *
-					 */
-					static const std::string commandFileDirectory("json/");
-
-					/**
-					 * @brief Filename storing informations about commands and shortcuts
-					 *
-					 */
-					static const std::string globalCommandFileName("global_commands.json");
-
-					/**
-					 * @brief Full path towards JSON file storing informations about commands and shortcuts
-					 *
-					 */
-					static const std::string globalCommandFileFullPath(commandFileDirectory + globalCommandFileName);
-
-					/**
-					 * @brief Filename storing informations about commands and shortcuts
-					 *
-					 */
-					static const std::string tabCommandFileName("tab_commands.json");
-
-					/**
-					 * @brief Full path towards JSON file storing informations about commands and shortcuts
-					 *
-					 */
-					static const std::string tabCommandFileFullPath(commandFileDirectory + tabCommandFileName);
-
-				}
-
-			}
-
-		}
-
-	}
-
-}
-
 app::main_window::window::CtrlWrapper::CtrlWrapper(QWidget * parent, const std::shared_ptr<app::main_window::window::Core> & core) : QWidget(parent), app::main_window::window::Base(core), winctrl(new app::main_window::window::Ctrl(this, core)), tabctrl(new app::main_window::window::CtrlTab(this, core)) {
-	std::list<std::string> commandJsonFiles({app::main_window::window::ctrl_wrapper::tabCommandFileFullPath, app::main_window::window::ctrl_wrapper::globalCommandFileFullPath});
-	app::main_window::window::Commands::getInstance()->appendActionData(commandJsonFiles);
-
 	// Connect signals and slots
 	this->connectSignals();
 
@@ -99,7 +46,7 @@ void app::main_window::window::CtrlWrapper::connectSignals() {
 	connect(this->winctrl.get(), &app::main_window::window::Ctrl::windowStateChangeRequested, this, &app::main_window::window::CtrlWrapper::changeWindowState);
 	connect(this->tabctrl.get(), &app::main_window::window::CtrlTab::windowStateChangeRequested, this, &app::main_window::window::CtrlWrapper::changeWindowState);
 
-	const app::main_window::window::Commands::action_data_t & commands = app::main_window::window::Commands::getInstance()->getActions();
+	const app::main_window::window::Commands::action_data_t & commands = this->core->commands->getActions();
 
 	std::for_each(commands.cbegin(), commands.cend(), [&] (const auto & data) {
 		const std::unique_ptr<app::main_window::json::Data> & commandData = data.second;

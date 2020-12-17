@@ -19,6 +19,7 @@
 #include "app/windows/main_window/statusbar/status_bar.h"
 #include "app/windows/main_window/shared/shared_types.h"
 #include "app/windows/main_window/popup/popup_container.h"
+#include "app/windows/main_window/window/commands.h"
 
 /** @defgroup MainWindowGroup Main Window Doxygen Group
  *  Main Window functions and class
@@ -201,10 +202,16 @@ namespace app {
 					std::unique_ptr<app::main_window::status_bar::StatusBar> bottomStatusBar;
 
 					/**
-					 * @brief Command menu 
+					 * @brief Command menu
 					 *
 					 */
 					std::unique_ptr<app::command_menu::CommandMenu> cmdMenu;
+
+					/**
+					 * @brief Main window commands
+					 *
+					 */
+					std::unique_ptr<app::main_window::window::Commands> commands;
 
 				private:
 

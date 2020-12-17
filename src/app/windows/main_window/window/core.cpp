@@ -18,12 +18,61 @@
 LOGGING_CONTEXT(mainWindowCoreOverall, mainWindowCore.overall, TYPE_LEVEL, INFO_VERBOSITY)
 LOGGING_CONTEXT(mainWindowCoreUserInput, mainWindowCore.userInput, TYPE_LEVEL, INFO_VERBOSITY)
 
-app::main_window::window::Core::Core(QWidget * parent) : mainWidget(new QWidget(parent)), tabs(new app::main_window::tab::TabWidget(parent)), topMenuBar(new app::main_window::menu::MenuBar(parent)), popup(new app::main_window::popup::PopupContainer(parent)), bottomStatusBar(new app::main_window::status_bar::StatusBar(parent)), cmdMenu(new app::command_menu::CommandMenu(parent)), mainWindowState(app::main_window::state_e::IDLE), offsetType(app::shared::offset_type_e::IDLE), userText(QString()) {
+namespace app {
+
+	namespace main_window {
+
+		namespace window {
+
+			namespace core {
+
+				namespace {
+					/**
+					 * @brief Path towards JSON file storing informations about commands and shortcuts
+					 *
+					 */
+					static const std::string commandFileDirectory("json/");
+
+					/**
+					 * @brief Filename storing informations about commands and shortcuts
+					 *
+					 */
+					static const std::string globalCommandFileName("global_commands.json");
+
+					/**
+					 * @brief Full path towards JSON file storing informations about commands and shortcuts
+					 *
+					 */
+					static const std::string globalCommandFileFullPath(commandFileDirectory + globalCommandFileName);
+
+					/**
+					 * @brief Filename storing informations about commands and shortcuts
+					 *
+					 */
+					static const std::string tabCommandFileName("tab_commands.json");
+
+					/**
+					 * @brief Full path towards JSON file storing informations about commands and shortcuts
+					 *
+					 */
+					static const std::string tabCommandFileFullPath(commandFileDirectory + tabCommandFileName);
+
+				}
+
+			}
+
+		}
+
+	}
+
+}
+
+app::main_window::window::Core::Core(QWidget * parent) : mainWidget(new QWidget(parent)), tabs(new app::main_window::tab::TabWidget(parent)), topMenuBar(new app::main_window::menu::MenuBar(parent)), popup(new app::main_window::popup::PopupContainer(parent)), bottomStatusBar(new app::main_window::status_bar::StatusBar(parent)), cmdMenu(new app::command_menu::CommandMenu(parent)), commands(new app::main_window::window::Commands({app::main_window::window::core::tabCommandFileFullPath, app::main_window::window::core::globalCommandFileFullPath})), mainWindowState(app::main_window::state_e::IDLE), offsetType(app::shared::offset_type_e::IDLE), userText(QString()) {
 	LOG_INFO(app::logger::info_level_e::ZERO, mainWindowCoreOverall,  "Main window core constructor");
 	this->topMenuBar->createMenus();
 }
 
-app::main_window::window::Core::Core(app::main_window::window::Core && rhs) :  mainWidget(std::exchange(rhs.mainWidget, Q_NULLPTR)), tabs(std::exchange(rhs.tabs, Q_NULLPTR)), topMenuBar(std::exchange(rhs.topMenuBar, Q_NULLPTR)), popup(std::exchange(rhs.popup, Q_NULLPTR)), bottomStatusBar(std::exchange(rhs.bottomStatusBar, Q_NULLPTR)), cmdMenu(std::exchange(rhs.cmdMenu, Q_NULLPTR)), mainWindowState(std::exchange(rhs.mainWindowState, app::main_window::state_e::IDLE)), offsetType(std::exchange(rhs.offsetType, app::shared::offset_type_e::IDLE)), userText(std::exchange(rhs.userText, QString())) {
+app::main_window::window::Core::Core(app::main_window::window::Core && rhs) :  mainWidget(std::exchange(rhs.mainWidget, Q_NULLPTR)), tabs(std::exchange(rhs.tabs, Q_NULLPTR)), topMenuBar(std::exchange(rhs.topMenuBar, Q_NULLPTR)), popup(std::exchange(rhs.popup, Q_NULLPTR)), bottomStatusBar(std::exchange(rhs.bottomStatusBar, Q_NULLPTR)), cmdMenu(std::exchange(rhs.cmdMenu, Q_NULLPTR)), commands(std::exchange(rhs.commands, Q_NULLPTR)), mainWindowState(std::exchange(rhs.mainWindowState, app::main_window::state_e::IDLE)), offsetType(std::exchange(rhs.offsetType, app::shared::offset_type_e::IDLE)), userText(std::exchange(rhs.userText, QString())) {
 	LOG_INFO(app::logger::info_level_e::ZERO, mainWindowCoreOverall,  "Move constructor main window core");
 }
 
@@ -50,6 +99,9 @@ app::main_window::window::Core & app::main_window::window::Core::operator=(app::
 		this->cmdMenu = std::move(rhs.cmdMenu);
 		rhs.cmdMenu.reset();
 
+		this->commands = std::move(rhs.commands);
+		rhs.commands.reset();
+
 		this->mainWindowState = std::exchange(rhs.mainWindowState, app::main_window::state_e::IDLE);
 		this->offsetType = std::exchange(rhs.offsetType, app::shared::offset_type_e::IDLE);
 		this->userText = std::exchange(rhs.userText, QString());
@@ -62,6 +114,7 @@ app::main_window::window::Core::~Core() {
 	LOG_INFO(app::logger::info_level_e::ZERO, mainWindowCoreOverall,  "Main window core destructor");
 
 	// Reset pointers
+	this->commands.reset();
 	this->cmdMenu.reset();
 	this->bottomStatusBar.reset();
 	this->tabs.reset();

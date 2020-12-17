@@ -9,7 +9,6 @@
  */
 
 #include "app/shared/constructor_macros.h"
-#include "app/utility/cpp/singleton.h"
 #include "app/windows/main_window/json/action.h"
 
 /** @defgroup MainWindowGroup Main Window Doxygen Group
@@ -26,7 +25,7 @@ namespace app {
 			 * @brief Commands class
 			 *
 			 */
-			class Commands : public app::utility::Singleton<app::main_window::window::Commands>, public app::main_window::json::Action::Action {
+			class Commands : public app::main_window::json::Action::Action {
 
 				public:
 					/**
@@ -35,6 +34,24 @@ namespace app {
 					 * Main window commands constructor
 					 */
 					explicit Commands();
+
+					/**
+					 * @brief Function: explicit Commands(const std::string jsonFile)
+					 *
+					 * \param jsonFile: JSON files with the commands
+					 *
+					 * Main window commands constructor with JSON file
+					 */
+					explicit Commands(const std::string jsonFile);
+
+					/**
+					 * @brief Function: explicit Commands(const std::list<std::string> jsonFiles)
+					 *
+					 * \param jsonFiles: list of JSON files with the commands
+					 *
+					 * Main window commands constructor with JSON file list
+					 */
+					explicit Commands(const std::list<std::string> jsonFiles);
 
 					/**
 					 * @brief Function: virtual ~Commands()
@@ -71,24 +88,6 @@ namespace app {
 				protected:
 
 				private:
-
-					/**
-					 * @brief Function: explicit Commands(const std::string jsonFile)
-					 *
-					 * \param jsonFile: JSON files with the commands
-					 *
-					 * Main window commands constructor with JSON file
-					 */
-					explicit Commands(const std::string jsonFile);
-
-					/**
-					 * @brief Function: explicit Commands(const std::list<std::string> jsonFiles)
-					 *
-					 * \param jsonFiles: list of JSON files with the commands
-					 *
-					 * Main window commands constructor with JSON file list
-					 */
-					explicit Commands(const std::list<std::string> jsonFiles);
 
 					// Move and copy constructor
 					/**
