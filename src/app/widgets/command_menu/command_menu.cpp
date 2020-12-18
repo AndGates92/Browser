@@ -10,9 +10,11 @@
 #include <QtGui/QPainter>
 #include <QtWidgets/QScrollBar>
 
+#include "app/shared/enums.h"
 #include "app/utility/cpp/cpp_operator.h"
 #include "app/utility/logger/macros.h"
 #include "app/widgets/command_menu/command_menu.h"
+#include "app/widgets/command_menu/command_menu_model.h"
 
 // Categories
 LOGGING_CONTEXT(commandMenuOverall, commandMenu.overall, TYPE_LEVEL, INFO_VERBOSITY)

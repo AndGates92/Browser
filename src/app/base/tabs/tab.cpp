@@ -13,7 +13,10 @@
 #include "app/shared/setters_getters.h"
 #include "app/utility/logger/macros.h"
 #include "app/base/tabs/tab.h"
+#include "app/base/tabs/web_engine_view.h"
+#include "app/base/tabs/web_engine_settings.h"
 #include "app/base/tabs/search.h"
+#include "app/base/tabs/load_manager.h"
 #include "app/base/tabs/scroll_manager.h"
 #include "app/base/tabs/history.h"
 

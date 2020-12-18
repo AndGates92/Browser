@@ -10,8 +10,6 @@
 
 #include <memory>
 
-#include <QtCore/QLoggingCategory>
-
 #include "app/shared/enums.h"
 #include "app/shared/constructor_macros.h"
 #include "app/utility/log/printable_object.h"

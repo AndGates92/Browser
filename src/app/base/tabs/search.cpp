@@ -9,11 +9,15 @@
 #include <QtWidgets/QMessageBox>
 
 // Qt libraries
+#include <QtCore/QString>
 #include <QtGui/QKeyEvent>
+#include <QtWebEngineWidgets/QWebEnginePage>
 
-#include "app/utility/logger/macros.h"
 #include "app/base/tabs/search.h"
+#include "app/base/tabs/web_engine_page.h"
+#include "app/shared/enums.h"
 #include "app/shared/exception.h"
+#include "app/utility/logger/macros.h"
 
 // Categories
 LOGGING_CONTEXT(tabSearchOverall, tabSearch.overall, TYPE_LEVEL, INFO_VERBOSITY)

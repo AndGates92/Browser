@@ -13,7 +13,6 @@
 #include "app/shared/constructor_macros.h"
 #include "app/utility/cpp/macros.h"
 #include "app/base/overlay/overlayed_widget.h"
-#include "app/base/popup/popup_base.h"
 
 /** @defgroup PopupGroup Popup Doxygen Group
  *  Popup functions and classes
@@ -25,6 +24,8 @@ namespace app {
 	namespace base {
 
 		namespace popup {
+
+			class PopupBase;
 
 			/**
 			 * @brief PopupContainer class

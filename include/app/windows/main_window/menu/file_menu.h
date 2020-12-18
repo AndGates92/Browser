@@ -16,13 +16,18 @@
 
 #include "app/base/menu/menu.h"
 #include "app/shared/constructor_macros.h"
-#include "app/windows/secondary_windows/open_window/window.h"
 
 /** @defgroup MainWindowGroup Main Window Doxygen Group
  *  Main Window functions and classes
  *  @{
  */
 namespace app {
+
+	namespace open_window {
+
+		class Window;
+
+	}
 
 	namespace main_window {
 

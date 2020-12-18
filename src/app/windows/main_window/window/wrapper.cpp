@@ -6,9 +6,11 @@
  * @brief Main Window wrapper functions
  */
 
-#include <iostream>
-
+#include "app/utility/logger/enums.h"
+#include "app/utility/logger/macros.h"
+#include "app/shared/setters_getters.h"
 #include "app/windows/main_window/window/wrapper.h"
+#include "app/windows/main_window/window/main_window.h"
 
 // Categories
 LOGGING_CONTEXT(mainWindowWrapperOverall, mainWindowWrapper.overall, TYPE_LEVEL, INFO_VERBOSITY)

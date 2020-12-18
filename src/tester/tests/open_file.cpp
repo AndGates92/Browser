@@ -12,12 +12,17 @@
 #include <sstream>
 #include <string>
 
+#include "app/windows/main_window/window/core.h"
+#include "app/windows/main_window/popup/popup_container.h"
+#include "app/windows/main_window/popup/open_popup.h"
+#include "app/windows/main_window/statusbar/status_bar.h"
 #include "app/shared/enums.h"
 #include "app/utility/logger/macros.h"
 #include "app/utility/qt/qt_operator.h"
 #include "app/utility/cpp/cpp_operator.h"
 #include "tester/tests/open_file.h"
 #include "tester/base/suite.h"
+#include "tester/top/main_window_tester_wrapper.h"
 
 LOGGING_CONTEXT(openFileOverall, openFile.overall, TYPE_LEVEL, INFO_VERBOSITY)
 LOGGING_CONTEXT(openFileTest, openFile.test, TYPE_LEVEL, INFO_VERBOSITY)

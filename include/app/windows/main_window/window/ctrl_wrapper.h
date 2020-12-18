@@ -8,16 +8,10 @@
  * @brief Main Window Control Wrapper header file
 */
 
-#include <QtCore/QLoggingCategory>
-#include <QtWidgets/QMainWindow>
-#include <QtWidgets/QMenu>
-#include <QtWidgets/QAction>
-#include <QtWidgets/QMenuBar>
 #include <QtWidgets/QWidget>
 
 #include "app/windows/main_window/shared/shared_types.h"
-#include "app/windows/main_window/window/ctrl.h"
-#include "app/windows/main_window/window/ctrl_tab.h"
+#include "app/windows/main_window/window/ctrl_base.h"
 #include "app/shared/constructor_macros.h"
 
 /** @defgroup MainWindowGroup Main Window Doxygen Group
@@ -28,9 +22,17 @@ namespace app {
 
 	namespace main_window {
 
+		namespace json {
+
+			class Data;
+
+		}
+
 		namespace window {
 
 			class MainWindow;
+			class Ctrl;
+			class CtrlTab;
 
 			/**
 			 * @brief CtrlWrapper class

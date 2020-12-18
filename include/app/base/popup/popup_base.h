@@ -16,8 +16,6 @@
 #include <QtWidgets/QLabel>
 
 #include "app/base/popup/popup_properties.h"
-
-#include "app/widgets/commands/action.h"
 #include "app/shared/constructor_macros.h"
 
 /** @defgroup PopupGroup Popup Doxygen Group
@@ -26,6 +24,12 @@
  */
 
 namespace app {
+
+	namespace action {
+
+		class Action;
+
+	}
 
 	namespace base {
 
@@ -90,7 +94,7 @@ namespace app {
 					virtual void connectSignals() = 0;
 
 					/**
-					 * @brief Function: std::unique_ptr<QLabel> actionToLabel(QWidget * parent, const std::unique_ptr<QAction> & action) const
+					 * @brief Function: std::unique_ptr<QLabel> actionToLabel(QWidget * parent, const std::unique_ptr<app::action::Action> & action) const
 					 *
 					 * \param parent: parent widget of QLabel
 					 * \param action: action to convert to QLabel

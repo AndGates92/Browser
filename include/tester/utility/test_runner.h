@@ -13,7 +13,6 @@
 #include "tester/shared/enums.h"
 #include "app/shared/constructor_macros.h"
 #include "app/utility/log/printable_object.h"
-#include "app/settings/command_line_parser.h"
 
 /** @defgroup UtilityGroup Utility Doxygen Group
  *  Utility functions and classes

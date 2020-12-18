@@ -7,12 +7,18 @@
  */
 
 // Qt libraries
+#include <QtWidgets/QAction>
 #include <QtGui/QKeyEvent>
 
+#include "app/utility/logger/enums.h"
+#include "app/utility/logger/macros.h"
 #include "app/utility/cpp/cpp_operator.h"
 #include "app/shared/exception.h"
 #include "app/widgets/commands/key_sequence.h"
 #include "app/windows/main_window/window/ctrl.h"
+#include "app/windows/main_window/menu/menu_bar.h"
+#include "app/windows/main_window/menu/file_menu.h"
+#include "app/windows/main_window/popup/popup_container.h"
 
 // Categories
 LOGGING_CONTEXT(mainWindowCtrlOverall, mainWindowCtrl.overall, TYPE_LEVEL, INFO_VERBOSITY)

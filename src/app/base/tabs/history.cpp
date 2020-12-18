@@ -9,6 +9,7 @@
 // Qt libraries
 #include <QtGui/QKeyEvent>
 
+#include "app/shared/enums.h"
 #include "app/utility/logger/macros.h"
 #include "app/base/tabs/history.h"
 

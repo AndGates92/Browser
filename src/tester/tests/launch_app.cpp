@@ -11,6 +11,8 @@
 #include "app/shared/enums.h"
 #include "app/utility/logger/macros.h"
 #include "app/utility/qt/qt_operator.h"
+#include "app/windows/main_window/window/main_window.h"
+#include "app/windows/main_window/json/data.h"
 #include "tester/tests/launch_app.h"
 #include "tester/base/suite.h"
 

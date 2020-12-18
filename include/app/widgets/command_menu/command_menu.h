@@ -18,7 +18,6 @@
 #include <QtGui/QResizeEvent>
 #include <QtGui/QMouseEvent>
 
-#include "app/widgets/command_menu/command_menu_model.h"
 #include "app/shared/constructor_macros.h"
 
 /** @defgroup CommandMenuGroup Command Menu Doxygen Group
@@ -28,6 +27,8 @@
 namespace app {
 
 	namespace command_menu {
+
+		class CommandMenuModel;
 
 		/**
 		 * @brief CommandMenu class

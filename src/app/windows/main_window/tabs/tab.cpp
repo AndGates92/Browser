@@ -13,6 +13,13 @@
 #include "app/utility/logger/macros.h"
 #include "app/shared/setters_getters.h"
 #include "app/windows/main_window/tabs/tab.h"
+#include "app/windows/main_window/tabs/web_engine_view.h"
+#include "app/windows/main_window/tabs/web_engine_page.h"
+#include "app/windows/main_window/tabs/web_engine_settings.h"
+#include "app/windows/main_window/tabs/history.h"
+#include "app/windows/main_window/tabs/search.h"
+#include "app/windows/main_window/tabs/load_manager.h"
+#include "app/windows/main_window/tabs/scroll_manager.h"
 
 // Categories
 LOGGING_CONTEXT(mainWindowTabOverall, mainWindowTab.overall, TYPE_LEVEL, INFO_VERBOSITY)

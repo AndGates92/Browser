@@ -6,6 +6,7 @@
  * @brief Popup container menu functions
  */
 
+#include "app/base/popup/popup_base.h"
 #include "app/base/popup/popup_container.h"
 #include "app/base/popup/popup_container_layout.h"
 #include "app/shared/exception.h"

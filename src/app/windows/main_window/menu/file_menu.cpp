@@ -12,6 +12,7 @@
 #include "app/utility/logger/macros.h"
 #include "app/shared/enums.h"
 #include "app/windows/main_window/menu/file_menu.h"
+#include "app/windows/secondary_windows/open_window/window.h"
 
 // Categories
 LOGGING_CONTEXT(fileMenuOverall, fileMenu.overall, TYPE_LEVEL, INFO_VERBOSITY)

@@ -15,8 +15,6 @@
 #include <QtGui/QIcon>
 
 #include "app/shared/enums.h"
-#include "app/base/tabs/tab_bar.h"
-#include "app/base/tabs/tab.h"
 #include "app/shared/constructor_macros.h"
 
 /** @defgroup TabGroup Tab Doxygen Group
@@ -29,6 +27,9 @@ namespace app {
 	namespace base {
 
 		namespace tab {
+
+			class Tab;
+			class TabBar;
 
 			/**
 			 * @brief TabWidget class

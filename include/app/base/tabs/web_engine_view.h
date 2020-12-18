@@ -15,7 +15,6 @@
 
 #include "app/shared/enums.h"
 #include "app/shared/constructor_macros.h"
-#include "app/base/tabs/web_engine_page.h"
 
 /** @defgroup TabGroup Tab Doxygen Group
  *  Tab functions and classes
@@ -29,6 +28,7 @@ namespace app {
 		namespace tab {
 
 			class Tab;
+			class WebEnginePage;
 
 			/**
 			 * @brief WebEngineView class

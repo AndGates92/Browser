@@ -8,6 +8,7 @@
 
 // Qt libraries
 #include <QtWidgets/QShortcut>
+#include <QtGui/QKeyEvent>
 
 #include "app/utility/cpp/cpp_operator.h"
 #include "app/utility/qt/qt_operator.h"
@@ -16,6 +17,8 @@
 #include "app/windows/main_window/shared/shared_types.h"
 #include "app/windows/main_window/window/commands.h"
 #include "app/windows/main_window/window/ctrl_base.h"
+#include "app/windows/main_window/statusbar/status_bar.h"
+#include "app/windows/main_window/json/action.h"
 #include "app/widgets/commands/key_sequence.h"
 
 LOGGING_CONTEXT(mainWindowCtrlBaseOverall, mainWindowCtrlBase.overall, TYPE_LEVEL, INFO_VERBOSITY)

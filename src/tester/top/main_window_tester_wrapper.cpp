@@ -8,6 +8,15 @@
 
 #include <iostream>
 
+#include "app/utility/logger/enums.h"
+#include "app/utility/logger/macros.h"
+#include "app/shared/setters_getters.h"
+#include "app/windows/main_window/window/core.h"
+#include "app/windows/main_window/window/main_window.h"
+#include "app/windows/main_window/window/ctrl_wrapper.h"
+#include "app/windows/main_window/tabs/tab_widget.h"
+#include "app/windows/main_window/tabs/tab.h"
+#include "app/windows/main_window/popup/popup_container.h"
 #include "tester/top/main_window_tester_wrapper.h"
 
 // Categories

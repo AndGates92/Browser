@@ -6,12 +6,13 @@
  * @brief Main Window JSON Data functions
  */
 
-#include "app/utility/qt/qt_operator.h"
-#include "app/windows/main_window/json/data.h"
-#include "app/shared/constants.h"
+#include "app/widgets/commands/key_sequence.h"
 #include "app/utility/logger/macros.h"
+#include "app/utility/qt/qt_operator.h"
+#include "app/shared/constants.h"
 #include "app/shared/setters_getters.h"
 #include "app/shared/exception.h"
+#include "app/windows/main_window/json/data.h"
 
 // Categories
 LOGGING_CONTEXT(mainWindowDataOverall, mainWindowData.overall, TYPE_LEVEL, INFO_VERBOSITY)

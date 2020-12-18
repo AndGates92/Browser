@@ -8,8 +8,6 @@
  * @brief Singleton header file
  */
 
-#include "app/shared/enums.h"
-
 /** @defgroup SingletonGroup Singleton Group
  *  Singleton functions and classes
  *  @{

@@ -16,7 +16,7 @@
 #endif
 
 #include "app/base/tabs/search.h"
-#include "app/windows/main_window/tabs/web_engine_profile.h"
+#include "app/windows/main_window/tabs/types.h"
 #include "app/shared/enums.h"
 #include "app/shared/constructor_macros.h"
 
@@ -31,15 +31,7 @@ namespace app {
 		namespace tab {
 
 			class Tab;
-
-			/**
-			 * @brief search data changed
-			 *
-			 */
-			typedef struct search_data_list {
-				const int activeMatch;       /**< active match */
-				const int numberOfMatches;   /**< total number of matches */
-			} search_data_s;
+			class WebEngineProfile;
 
 			/**
 			 * @brief Search class

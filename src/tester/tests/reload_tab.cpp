@@ -10,11 +10,17 @@
 #include <QtGui/QKeySequence>
 
 #include "app/shared/enums.h"
+#include "app/shared/constants.h"
 #include "app/utility/logger/macros.h"
 #include "app/utility/qt/qt_operator.h"
 #include "app/windows/main_window/shared/constants.h"
-#include "tester/tests/reload_tab.h"
+#include "app/windows/main_window/statusbar/status_bar.h"
+#include "app/windows/main_window/window/core.h"
+#include "app/windows/main_window/tabs/tab.h"
+#include "app/widgets/progress_bar/progress_bar.h"
 #include "tester/base/suite.h"
+#include "tester/tests/reload_tab.h"
+#include "tester/top/main_window_tester_wrapper.h"
 
 LOGGING_CONTEXT(reloadTabOverall, reloadTab.overall, TYPE_LEVEL, INFO_VERBOSITY)
 LOGGING_CONTEXT(reloadTabTest, reloadTab.test, TYPE_LEVEL, INFO_VERBOSITY)

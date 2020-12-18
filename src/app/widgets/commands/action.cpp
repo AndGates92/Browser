@@ -13,6 +13,7 @@
 #include "app/utility/logger/macros.h"
 #include "app/shared/enums.h"
 #include "app/widgets/commands/action.h"
+#include "app/widgets/commands/key_sequence.h"
 
 // Categories
 LOGGING_CONTEXT(actionOverall, action.overall, TYPE_LEVEL, INFO_VERBOSITY)

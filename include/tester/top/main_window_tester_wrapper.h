@@ -17,6 +17,33 @@
  *  @{
  */
 
+namespace app {
+
+	namespace main_window {
+
+		namespace popup {
+
+			class PopupContainer;
+
+		}
+
+		namespace tab {
+
+			class Tab;
+
+		}
+
+		namespace window {
+
+			class CtrlWrapper;
+			class Core;
+
+		}
+
+	}
+
+}
+
 namespace main_window_tester_wrapper {
 
 	/**

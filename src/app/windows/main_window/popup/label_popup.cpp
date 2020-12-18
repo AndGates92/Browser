@@ -22,7 +22,7 @@
 #include "app/shared/enums.h"
 #include "app/windows/main_window/popup/label_popup.h"
 #include "app/shared/exception.h"
-
+#include "app/widgets/elided_label/elided_label.h"
 
 // Categories
 LOGGING_CONTEXT(labelPopupOverall, labelPopup.overall, TYPE_LEVEL, INFO_VERBOSITY)

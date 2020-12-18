@@ -8,10 +8,7 @@
  * @brief Main Window wrapper class header file
 */
 
-#include <QtCore/QLoggingCategory>
 #include <QtWidgets/QWidget>
-
-#include "app/windows/main_window/window/main_window.h"
 
 /** @defgroup MainWindowGroup Main Window Doxygen Group
  *  Main Window functions and classes
@@ -22,6 +19,8 @@ namespace app {
 	namespace main_window {
 
 		namespace window {
+
+			class MainWindow;
 
 			/**
 			 * @brief Wrapper class

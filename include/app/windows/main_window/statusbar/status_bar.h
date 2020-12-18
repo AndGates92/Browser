@@ -13,8 +13,6 @@
 // Qt libraries
 #include <QtWidgets/QWidget>
 
-#include "app/widgets/elided_label/elided_label.h"
-#include "app/widgets/progress_bar/progress_bar.h"
 #include "app/shared/constructor_macros.h"
 
 /** @defgroup MainWindowGroup Main Window Doxygen Group
@@ -22,6 +20,18 @@
  *  @{
  */
 namespace app {
+
+	namespace elided_label {
+
+		class ElidedLabel;
+
+	}
+
+	namespace progress_bar {
+
+		class ProgressBar;
+
+	}
 
 	namespace main_window {
 

@@ -16,7 +16,6 @@
 
 #include "app/shared/constructor_macros.h"
 
-#include "app/widgets/commands/key_sequence.h"
 #include "app/utility/log/printable_object.h"
 
 /** @defgroup ActionGroup Action Widget Doxygen Group
@@ -24,6 +23,12 @@
  *  @{
  */
 namespace app {
+
+	namespace key_sequence {
+
+		class KeySequence;
+
+	}
 
 	namespace action {
 

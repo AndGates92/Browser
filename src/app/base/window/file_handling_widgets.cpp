@@ -10,12 +10,15 @@
 
 // Qt libraries
 #include <QtCore/QObject>
+#include <QtCore/QDir>
 
+#include "app/base/window/file_handling_widgets.h"
+#include "app/widgets/commands/key_sequence.h"
+#include "app/widgets/commands/action.h"
+#include "app/utility/cpp/cpp_operator.h"
 #include "app/utility/logger/macros.h"
 #include "app/shared/enums.h"
 #include "app/shared/exception.h"
-#include "app/utility/cpp/cpp_operator.h"
-#include "app/base/window/file_handling_widgets.h"
 #include "app/windows/secondary_windows/shared/utility.h"
 
 // Categories

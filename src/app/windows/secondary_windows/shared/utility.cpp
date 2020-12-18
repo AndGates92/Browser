@@ -10,11 +10,13 @@
 
 // Qt libraries
 #include <QtCore/QObject>
+#include <QtWidgets/QAction>
 
 #include "app/utility/cpp/cpp_operator.h"
 #include "app/utility/qt/qt_operator.h"
 #include "app/utility/logger/macros.h"
 #include "app/shared/enums.h"
+#include "app/widgets/commands/key_sequence.h"
 #include "app/windows/secondary_windows/shared/utility.h"
 
 namespace app {

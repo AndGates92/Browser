@@ -11,12 +11,10 @@
 #include <memory>
 
 // Qt libraries
-#include <QtCore/QLoggingCategory>
 #include <QtCore/QVariant>
 #include <QtGui/QIcon>
 
 #include "app/shared/enums.h"
-#include "app/widgets/commands/action.h"
 #include "app/windows/secondary_windows/shared/combo_box_item.h"
 
 /** @defgroup FindWindowGroup Find Window Doxygen Group
@@ -25,13 +23,23 @@
  */
 namespace app {
 
+	namespace action {
+
+		class Action;
+
+	}
+
 	namespace find_window {
 
+		/**
+		 * @brief Combo box find class
+		 *
+		 */
 		class ComboBoxFind final : public app::combo_box_item::ComboBoxItem {
 			public:
 
 				/**
-				 * @brief Function: ComboBoxFind(const QIcon itemIcon, const QVariant itemUserData, const app::shared::offset_type_e itemDirection, std::unique_ptr<app::action::Action> itemAction)
+				 * @brief Function: explicit ComboBoxFind(const QIcon itemIcon, const QVariant itemUserData, const app::shared::offset_type_e itemDirection, std::unique_ptr<app::action::Action> itemAction)
 				 *
 				 * \param itemIcon: icon of the combo box item
 				 * \param itemUserData: user data of the combo box item
@@ -40,7 +48,14 @@ namespace app {
 				 *
 				 * Combo box find constructor
 				 */
-				ComboBoxFind(const QIcon itemIcon, const QVariant itemUserData, const app::shared::offset_type_e itemDirection, std::unique_ptr<app::action::Action> itemAction);
+				explicit ComboBoxFind(const QIcon itemIcon, const QVariant itemUserData, const app::shared::offset_type_e itemDirection, std::unique_ptr<app::action::Action> itemAction);
+
+				/**
+				 * @brief Function: virtual ~ComboBoxFind()
+				 *
+				 * Combo box find destructor
+				 */
+				virtual ~ComboBoxFind();
 
 				// Move and copy constructor
 				/**

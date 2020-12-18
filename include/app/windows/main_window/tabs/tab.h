@@ -14,13 +14,8 @@
 #include "app/base/tabs/tab.h"
 #include "app/shared/enums.h"
 #include "app/shared/constructor_macros.h"
+#include "app/windows/main_window/tabs/types.h"
 #include "app/windows/main_window/shared/shared_types.h"
-#include "app/windows/main_window/tabs/web_engine_view.h"
-#include "app/windows/main_window/tabs/web_engine_settings.h"
-#include "app/windows/main_window/tabs/history.h"
-#include "app/windows/main_window/tabs/search.h"
-#include "app/windows/main_window/tabs/load_manager.h"
-#include "app/windows/main_window/tabs/scroll_manager.h"
 
 /** @defgroup MainWindowGroup Main Window Doxygen Group
  *  Main Window functions and classes
@@ -33,6 +28,13 @@ namespace app {
 		namespace tab {
 
 			class TabWidget;
+			class WebEngineView;
+			class WebEnginePage;
+			class WebEngineSettings;
+			class History;
+			class Search;
+			class LoadManager;
+			class ScrollManager;
 
 			/**
 			 * @brief Tab class

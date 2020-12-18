@@ -11,11 +11,12 @@
 
 #include "app/shared/exception.h"
 #include "app/shared/enums.h"
-#include "app/utility/logger/macros.h"
-#include "tester/factories/test_factory.h"
-#include "tester/base/suite.h"
-#include "tester/utility/test_runner.h"
 #include "app/settings/global.h"
+#include "app/utility/logger/macros.h"
+#include "tester/base/suite.h"
+#include "tester/factories/test_factory.h"
+#include "tester/shared/error_data.h"
+#include "tester/utility/test_runner.h"
 
 LOGGING_CONTEXT(testRunnerOverall, testRunner.overall, TYPE_LEVEL, INFO_VERBOSITY)
 LOGGING_CONTEXT(testRunnerTests, testRunner.test, TYPE_LEVEL, INFO_VERBOSITY)

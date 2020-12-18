@@ -15,7 +15,10 @@
 
 #include "app/utility/logger/macros.h"
 #include "app/shared/exception.h"
+#include "app/widgets/commands/action.h"
+#include "app/widgets/commands/key_sequence.h"
 #include "app/windows/secondary_windows/shared/utility.h"
+#include "app/windows/secondary_windows/find_window/combo_box_find.h"
 #include "app/windows/secondary_windows/find_window/window_settings.h"
 
 // Categories

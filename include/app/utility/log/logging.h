@@ -11,7 +11,6 @@
 // Qt libraries
 #include <QtCore/QMessageLogContext>
 #include <QtCore/QString>
-#include <QtCore/QFile>
 
 /** @defgroup LoggingGroup Logging Doxygen Group
  *  Logging functions and classes

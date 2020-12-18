@@ -8,13 +8,25 @@
 
 // Qt libraries
 #include <QtGui/QKeyEvent>
+#include <QtWidgets/QAction>
 
+#include "app/utility/logger/enums.h"
+#include "app/utility/logger/macros.h"
 #include "app/utility/cpp/cpp_operator.h"
 #include "app/widgets/commands/key_sequence.h"
 #include "app/windows/main_window/shared/constants.h"
 #include "app/windows/main_window/shared/shared_functions.h"
-#include "app/shared/exception.h"
 #include "app/windows/main_window/window/ctrl_tab.h"
+#include "app/windows/main_window/tabs/tab.h"
+#include "app/windows/main_window/tabs/tab_widget.h"
+#include "app/windows/main_window/menu/menu_bar.h"
+#include "app/windows/main_window/menu/file_menu.h"
+#include "app/windows/main_window/menu/edit_menu.h"
+#include "app/windows/main_window/statusbar/status_bar.h"
+#include "app/windows/main_window/popup/popup_container.h"
+#include "app/windows/main_window/popup/open_popup.h"
+#include "app/windows/main_window/popup/label_popup.h"
+#include "app/shared/exception.h"
 
 // Categories
 LOGGING_CONTEXT(mainWindowCtrlTabOverall, mainWindowCtrlTab.overall, TYPE_LEVEL, INFO_VERBOSITY)

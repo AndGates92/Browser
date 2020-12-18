@@ -6,11 +6,15 @@
  * @brief Tab Scroll Manager functions
  */
 
+// Qt libraries
+#include <QtWidgets/QTabBar>
+
 #include "app/utility/cpp/cpp_operator.h"
 #include "app/utility/logger/macros.h"
-#include "app/shared/setters_getters.h"
-#include "app/base/tabs/scroll_manager.h"
 #include "app/shared/exception.h"
+#include "app/shared/setters_getters.h"
+#include "app/base/tabs/tab_bar.h"
+#include "app/base/tabs/scroll_manager.h"
 
 // Categories
 LOGGING_CONTEXT(tabScrollManagerOverall, tabScrollManager.overall, TYPE_LEVEL, INFO_VERBOSITY)

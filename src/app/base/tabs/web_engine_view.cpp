@@ -11,6 +11,7 @@
 
 #include "app/utility/logger/macros.h"
 #include "app/shared/setters_getters.h"
+#include "app/base/tabs/web_engine_page.h"
 #include "app/base/tabs/web_engine_view.h"
 
 // Categories

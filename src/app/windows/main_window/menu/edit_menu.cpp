@@ -15,6 +15,7 @@
 
 #include "app/utility/logger/macros.h"
 #include "app/windows/main_window/menu/edit_menu.h"
+#include "app/windows/secondary_windows/find_window/window.h"
 
 // Categories
 LOGGING_CONTEXT(editMenuOverall, editMenu.overall, TYPE_LEVEL, INFO_VERBOSITY)

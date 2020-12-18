@@ -8,7 +8,6 @@
  * @brief Open Window header file
 */
 
-#include <QtCore/QLoggingCategory>
 #include <QtWidgets/QWidget>
 
 #include <QtWidgets/QPushButton>

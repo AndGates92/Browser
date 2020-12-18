@@ -12,13 +12,18 @@
 #include <locale>
 #include <thread>
 
+#include "app/windows/main_window/window/main_window.h"
+#include "app/windows/main_window/window/ctrl_wrapper.h"
+#include "app/windows/main_window/window/core.h"
+#include "app/shared/setters_getters.h"
 #include "app/shared/enums.h"
 #include "app/utility/logger/macros.h"
 #include "app/utility/qt/qt_operator.h"
-#include "app/shared/setters_getters.h"
+#include "tester/shared/error_data.h"
 #include "tester/base/test.h"
 #include "tester/base/factory.h"
 #include "tester/base/suite.h"
+#include "tester/top/main_window_tester_wrapper.h"
 
 LOGGING_CONTEXT(baseTestOverall, baseTest.overall, TYPE_LEVEL, INFO_VERBOSITY)
 LOGGING_CONTEXT(baseTestTest, baseTest.test, TYPE_LEVEL, INFO_VERBOSITY)

@@ -11,7 +11,6 @@
 // Qt libraries
 #include <QtWidgets/QWidget>
 
-#include "app/shared/enums.h"
 #include "app/base/tabs/tab_shared_types.h"
 #include "app/shared/constructor_macros.h"
 

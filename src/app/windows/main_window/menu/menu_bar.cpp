@@ -8,10 +8,12 @@
 
 #include <iostream>
 
-#include "app/windows/main_window/menu/menu_bar.h"
 #include "app/shared/enums.h"
 #include "app/shared/setters_getters.h"
 #include "app/utility/logger/macros.h"
+#include "app/windows/main_window/menu/file_menu.h"
+#include "app/windows/main_window/menu/edit_menu.h"
+#include "app/windows/main_window/menu/menu_bar.h"
 
 LOGGING_CONTEXT(mainWindowMenuBarOverall, menuBar.overall, TYPE_LEVEL, INFO_VERBOSITY)
 

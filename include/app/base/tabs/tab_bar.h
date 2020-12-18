@@ -11,7 +11,6 @@
 // Qt libraries
 #include <QtWidgets/QTabBar>
 
-#include "app/shared/enums.h"
 #include "app/shared/constructor_macros.h"
 
 /** @defgroup TabGroup Tab Doxygen Group

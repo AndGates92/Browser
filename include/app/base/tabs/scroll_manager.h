@@ -10,13 +10,8 @@
 
 #include <memory>
 
-// Qt libraries
-#include <QtWidgets/QTabBar>
-
-#include "app/shared/enums.h"
 #include "app/base/tabs/tab_component_widget.h"
 #include "app/base/tabs/tab_shared_types.h"
-#include "app/base/tabs/tab_bar.h"
 #include "app/shared/constructor_macros.h"
 
 /** @defgroup TabGroup Tab Doxygen Group

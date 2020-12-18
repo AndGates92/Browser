@@ -8,11 +8,6 @@
  * @brief Tab Search header file
 */
 
-// Qt libraries
-#include <QtCore/QString>
-#include <QtWebEngineWidgets/QWebEnginePage>
-
-#include "app/shared/enums.h"
 #include "app/base/tabs/tab_component_widget.h"
 #include "app/shared/constructor_macros.h"
 #include "app/windows/shared/find_settings.h"

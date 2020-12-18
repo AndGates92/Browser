@@ -11,7 +11,6 @@
 #include <memory>
 #include <vector>
 
-#include "app/widgets/commands/key_sequence.h"
 #include "app/windows/main_window/shared/shared_types.h"
 #include "app/base/json/data.h"
 
@@ -20,6 +19,12 @@
  *  @{
  */
 namespace app {
+
+	namespace key_sequence {
+
+		class KeySequence;
+
+	}
 
 	namespace main_window {
 

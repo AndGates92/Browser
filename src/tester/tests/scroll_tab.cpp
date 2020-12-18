@@ -10,11 +10,16 @@
 #include <QtGui/QKeySequence>
 
 #include "app/shared/enums.h"
+#include "app/shared/constants.h"
 #include "app/utility/logger/macros.h"
 #include "app/utility/qt/qt_operator.h"
 #include "app/windows/main_window/shared/constants.h"
-#include "tester/tests/scroll_tab.h"
+#include "app/windows/main_window/window/core.h"
+#include "app/windows/main_window/statusbar/status_bar.h"
+#include "app/windows/main_window/tabs/tab.h"
 #include "tester/base/suite.h"
+#include "tester/tests/scroll_tab.h"
+#include "tester/top/main_window_tester_wrapper.h"
 
 LOGGING_CONTEXT(scrollTabOverall, scrollTab.overall, TYPE_LEVEL, INFO_VERBOSITY)
 LOGGING_CONTEXT(scrollTabTest, scrollTab.test, TYPE_LEVEL, INFO_VERBOSITY)

@@ -6,12 +6,14 @@
  * @brief Open content functions
  */
 
+#include "app/base/window/open_content.h"
 #include "app/shared/setters_getters.h"
 #include "app/shared/enums.h"
 #include "app/shared/exception.h"
 #include "app/utility/logger/macros.h"
 #include "app/utility/cpp/cpp_operator.h"
-#include "app/base/window/open_content.h"
+#include "app/widgets/commands/action.h"
+#include "app/widgets/commands/key_sequence.h"
 
 // Categories
 LOGGING_CONTEXT(openContentOverall, openContent.overall, TYPE_LEVEL, INFO_VERBOSITY)

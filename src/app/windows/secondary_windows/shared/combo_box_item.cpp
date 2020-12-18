@@ -12,6 +12,7 @@
 
 #include "app/utility/logger/macros.h"
 #include "app/shared/setters_getters.h"
+#include "app/widgets/commands/action.h"
 #include "app/windows/secondary_windows/shared/combo_box_item.h"
 
 // Categories
@@ -22,6 +23,10 @@ app::combo_box_item::ComboBoxItem::ComboBoxItem(const QIcon itemIcon, const QVar
 	EXCEPTION_ACTION_COND((this->action->print().empty() == true), throw,  "Action text cannot be empty");
 	LOG_INFO(app::logger::info_level_e::ZERO, comboBoxItemOverall,  "combo box item constructor with action " << this->action.get());
 
+}
+
+app::combo_box_item::ComboBoxItem::~ComboBoxItem() {
+	LOG_INFO(app::logger::info_level_e::ZERO, comboBoxItemOverall,  "Destructor of Combo box item class");
 }
 
 app::combo_box_item::ComboBoxItem::ComboBoxItem(app::combo_box_item::ComboBoxItem && rhs) : icon(std::exchange(rhs.icon, QIcon())), userData(std::exchange(rhs.userData, QVariant())), action(std::exchange(rhs.action, Q_NULLPTR)) {

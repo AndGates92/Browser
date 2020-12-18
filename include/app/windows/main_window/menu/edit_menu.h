@@ -14,9 +14,10 @@
 #include <QtCore/QObject>
 
 #include "app/shared/enums.h"
-#include "app/windows/secondary_windows/find_window/window.h"
 #include "app/base/menu/menu.h"
 #include "app/shared/constructor_macros.h"
+
+// Included here because it is an argument to a Qt slot hence MOC must be able to find it
 #include "app/windows/shared/find_settings.h"
 
 /** @defgroup MainWindowGroup Main Window Doxygen Group
@@ -24,6 +25,12 @@
  *  @{
  */
 namespace app {
+
+	namespace find_window {
+
+		class Window;
+
+	}
 
 	namespace main_window {
 

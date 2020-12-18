@@ -9,9 +9,10 @@
 // Qt libraries
 #include <QtGui/QKeyEvent>
 
+#include "app/shared/enums.h"
+#include "app/base/tabs/tab_bar.h"
 #include "app/utility/logger/macros.h"
 #include "app/utility/cpp/cpp_operator.h"
-#include "app/base/tabs/tab_bar.h"
 
 // Categories
 LOGGING_CONTEXT(tabBarOverall, tabBar.overall, TYPE_LEVEL, INFO_VERBOSITY)

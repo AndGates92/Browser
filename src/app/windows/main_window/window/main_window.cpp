@@ -11,17 +11,23 @@
 #include <QtWidgets/QStatusBar>
 #include <QtWidgets/QTabBar>
 #include <QtWidgets/QSizePolicy>
+#include <QtWidgets/QShortcut>
 #include <QtGui/QKeyEvent>
 #include <QtCore/QObject>
 
-#include "app/utility/cpp/cpp_operator.h"
-#include "app/windows/main_window/window/main_window.h"
+#include "app/base/overlay/overlayed_widget.h"
+#include "app/windows/main_window/popup/popup_container.h"
 #include "app/windows/main_window/menu/menu_bar.h"
 #include "app/windows/main_window/statusbar/status_bar.h"
 #include "app/windows/main_window/tabs/tab_widget.h"
+#include "app/windows/main_window/window/main_window.h"
+#include "app/windows/main_window/window/ctrl_wrapper.h"
+#include "app/windows/main_window/window/ctrl.h"
 #include "app/widgets/command_menu/command_menu.h"
 #include "app/utility/logger/macros.h"
+#include "app/utility/cpp/cpp_operator.h"
 #include "app/shared/enums.h"
+#include "app/shared/setters_getters.h"
 
 // Categories
 LOGGING_CONTEXT(mainWindowOverall, mainWindow.overall, TYPE_LEVEL, INFO_VERBOSITY)

@@ -11,7 +11,6 @@
 // Qt libraries
 #include <QtWebEngineWidgets/QWebEngineHistory>
 
-#include "app/shared/enums.h"
 #include "app/base/tabs/tab_shared_types.h"
 #include "app/base/tabs/tab_component_widget.h"
 

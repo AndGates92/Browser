@@ -9,11 +9,13 @@
 #include <QtTest/QTest>
 #include <QtGui/QKeySequence>
 
+#include "app/windows/main_window/window/core.h"
 #include "app/shared/enums.h"
 #include "app/utility/logger/macros.h"
 #include "app/utility/qt/qt_operator.h"
 #include "tester/tests/open_tab.h"
 #include "tester/base/suite.h"
+#include "tester/top/main_window_tester_wrapper.h"
 
 LOGGING_CONTEXT(openTabOverall, openTab.overall, TYPE_LEVEL, INFO_VERBOSITY)
 LOGGING_CONTEXT(openTabTest, openTab.test, TYPE_LEVEL, INFO_VERBOSITY)

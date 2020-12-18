@@ -13,16 +13,19 @@
 
 #include "app/shared/enums.h"
 #include "app/shared/constructor_macros.h"
-#include "app/windows/shared/find_settings.h"
-#include "app/base/tabs/web_engine_view.h"
-#include "app/base/tabs/web_engine_settings.h"
-#include "app/base/tabs/load_manager.h"
+#include "app/base/tabs/tab_shared_types.h"
 
 /** @defgroup TabGroup Tab Doxygen Group
  *  Tab functions and classes
  *  @{
  */
 namespace app {
+
+	namespace windows {
+		namespace shared {
+			class FindSettings;
+		}
+	}
 
 	namespace main_window {
 		namespace tab {
@@ -36,13 +39,13 @@ namespace app {
 		namespace tab {
 
 			class TabBar;
-
 			class TabWidget;
-
+			class WebEngineSettings;
+			class WebEngineView;
+			class WebEnginePage;
 			class Search;
-
+			class LoadManager;
 			class ScrollManager;
-
 			class History;
 
 			/**

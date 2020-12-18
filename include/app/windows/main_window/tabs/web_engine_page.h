@@ -9,7 +9,6 @@
 */
 
 #include "app/base/tabs/web_engine_page.h"
-#include "app/windows/main_window/tabs/page_data.h"
 #include "app/windows/main_window/shared/shared_types.h"
 #include "app/windows/main_window/tabs/web_engine_profile.h"
 #include "app/shared/enums.h"
@@ -25,6 +24,7 @@ namespace app {
 
 		namespace tab {
 
+			class PageData;
 			class Tab;
 			class TabWidget;
 			class WebEngineView;
@@ -42,7 +42,7 @@ namespace app {
 
 				public:
 					/**
-					 * @brief Function: explicit WebEnginePage(QWidget * parent, const app::main_window::page_type_e & type, const QString & src, app::base::tab::WebEngineProfile * profile, const void * data = nullptr)
+					 * @brief Function: explicit WebEnginePage(QWidget * parent, const app::main_window::page_type_e & type, const QString & src, app::base::tab::WebEngineProfile * profile = app::main_window::tab::WebEngineProfile::defaultProfile(), const void * data = nullptr)
 					 *
 					 * \param type: page type
 					 * \param src: source of the page content

@@ -14,9 +14,7 @@
 #include <QtWidgets/QWidget>
 
 #include "app/windows/main_window/shared/shared_types.h"
-#include "app/windows/main_window/tabs/page_data.h"
-#include "app/windows/main_window/tabs/tab.h"
-#include "app/windows/shared/find_settings.h"
+#include "app/windows/main_window/tabs/types.h"
 #include "app/base/tabs/tab_widget.h"
 #include "app/shared/constants.h"
 #include "app/shared/constructor_macros.h"
@@ -27,9 +25,23 @@
  */
 namespace app {
 
+	namespace windows {
+
+		namespace shared {
+
+			class FindSettings;
+
+		}
+
+	}
+
 	namespace main_window {
 
 		namespace tab {
+
+			class WebEnginePage;
+			class PageData;
+			class Tab;
 
 			/**
 			 * @brief TabWidget class

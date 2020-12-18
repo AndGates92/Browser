@@ -12,14 +12,11 @@
 #include <memory>
 
 // Qt libraries
-#include <QtCore/QDir>
 #include <QtWidgets/QLineEdit>
 #include <QtWidgets/QAction>
 #include <QtWidgets/QFileSystemModel>
 #include <QtWidgets/QTreeView>
 
-#include "app/widgets/commands/action.h"
-#include "app/widgets/commands/key_sequence.h"
 #include "app/shared/constructor_macros.h"
 #include "app/base/window/action_interface.h"
 
@@ -29,6 +26,12 @@
  */
 
 namespace app {
+
+	namespace action {
+
+		class Action;
+
+	}
 
 	namespace base {
 

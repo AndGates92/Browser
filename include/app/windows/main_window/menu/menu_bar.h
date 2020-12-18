@@ -14,8 +14,6 @@
 #include <QtWidgets/QMenu>
 
 #include "app/base/menu/menu_bar.h"
-#include "app/windows/main_window/menu/file_menu.h"
-#include "app/windows/main_window/menu/edit_menu.h"
 #include "app/shared/constructor_macros.h"
 
 /** @defgroup MainWindowGroup Main Window Doxygen Group
@@ -27,6 +25,9 @@ namespace app {
 	namespace main_window {
 
 		namespace menu {
+
+			class EditMenu;
+			class FileMenu;
 
 			/**
 			 * @brief MenuBar class

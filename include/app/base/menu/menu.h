@@ -8,16 +8,14 @@
  * @brief Menu header file
 */
 
-#include <memory>
-
 // Qt libraries
 #include <QtWidgets/QMenu>
 #include <QtWidgets/QWidget>
 #include <QtWidgets/QMenuBar>
 #include <QtWidgets/QShortcut>
 
-#include "app/widgets/commands/key_sequence.h"
 #include "app/shared/constructor_macros.h"
+#include "app/widgets/commands/key_sequence.h"
 #include "app/utility/log/printable_object.h"
 
 /** @defgroup MenuGroup Menu Doxygen Group

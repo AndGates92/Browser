@@ -10,10 +10,14 @@
 #include <QtGui/QKeySequence>
 
 #include "app/shared/enums.h"
+#include "app/shared/constants.h"
 #include "app/utility/logger/macros.h"
 #include "app/utility/qt/qt_operator.h"
+#include "app/windows/main_window/window/core.h"
+#include "app/windows/main_window/statusbar/status_bar.h"
 #include "tester/tests/move_tab.h"
 #include "tester/base/suite.h"
+#include "tester/top/main_window_tester_wrapper.h"
 
 LOGGING_CONTEXT(moveTabOverall, moveTab.overall, TYPE_LEVEL, INFO_VERBOSITY)
 LOGGING_CONTEXT(moveTabTest, moveTab.test, TYPE_LEVEL, INFO_VERBOSITY)

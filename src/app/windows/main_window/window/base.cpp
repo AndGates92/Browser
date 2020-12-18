@@ -6,8 +6,9 @@
  * @brief Main Window base class functions
  */
 
-#include "app/windows/main_window/window/base.h"
 #include "app/shared/enums.h"
+#include "app/shared/setters_getters.h"
+#include "app/windows/main_window/window/base.h"
 #include "app/utility/logger/macros.h"
 
 LOGGING_CONTEXT(mainWindowBaseOverall, mainWindowBase.overall, TYPE_LEVEL, INFO_VERBOSITY)

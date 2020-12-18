@@ -8,11 +8,17 @@
 
 #include <iostream>
 
+#include "app/widgets/command_menu/command_menu.h"
 #include "app/utility/cpp/cpp_operator.h"
 #include "app/shared/exception.h"
 #include "app/shared/qt_functions.h"
 #include "app/shared/setters_getters.h"
 #include "app/windows/main_window/window/core.h"
+#include "app/windows/main_window/window/commands.h"
+#include "app/windows/main_window/popup/popup_container.h"
+#include "app/windows/main_window/menu/menu_bar.h"
+#include "app/windows/main_window/tabs/tab_widget.h"
+#include "app/windows/main_window/statusbar/status_bar.h"
 
 // Categories
 LOGGING_CONTEXT(mainWindowCoreOverall, mainWindowCore.overall, TYPE_LEVEL, INFO_VERBOSITY)

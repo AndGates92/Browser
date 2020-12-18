@@ -16,10 +16,17 @@
 #include "app/utility/qt/qt_operator.h"
 #include "app/utility/cpp/cpp_operator.h"
 #include "app/utility/cpp/stl_helper.h"
+#include "app/windows/main_window/window/core.h"
+#include "app/windows/main_window/statusbar/status_bar.h"
+#include "app/windows/main_window/popup/open_popup.h"
+#include "app/windows/main_window/popup/popup_container.h"
+#include "app/windows/main_window/tabs/tab.h"
+#include "app/windows/main_window/tabs/web_engine_page.h"
 #include "app/windows/main_window/shared/constants.h"
 #include "app/windows/main_window/shared/shared_functions.h"
 #include "tester/base/command_test.h"
 #include "tester/base/suite.h"
+#include "tester/top/main_window_tester_wrapper.h"
 
 LOGGING_CONTEXT(commandTestOverall, commandTest.overall, TYPE_LEVEL, INFO_VERBOSITY)
 LOGGING_CONTEXT(commandTestTest, commandTest.test, TYPE_LEVEL, INFO_VERBOSITY)

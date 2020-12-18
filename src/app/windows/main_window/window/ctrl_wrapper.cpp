@@ -8,9 +8,18 @@
 
 // Qt libraries
 #include <QtGui/QKeyEvent>
+#include <QtWidgets/QShortcut>
 
+#include "app/utility/logger/enums.h"
+#include "app/utility/logger/macros.h"
 #include "app/utility/cpp/cpp_operator.h"
+#include "app/windows/main_window/window/commands.h"
 #include "app/windows/main_window/window/ctrl_wrapper.h"
+#include "app/windows/main_window/window/ctrl.h"
+#include "app/windows/main_window/window/ctrl_tab.h"
+#include "app/windows/main_window/statusbar/status_bar.h"
+#include "app/windows/main_window/tabs/tab.h"
+#include "app/windows/main_window/tabs/tab_widget.h"
 #include "app/widgets/commands/key_sequence.h"
 #include "app/shared/exception.h"
 

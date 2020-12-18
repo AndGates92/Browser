@@ -7,7 +7,6 @@
  */
 
 // Qt libraries
-#include <QtCore/QLoggingCategory>
 #include <QtGui/QKeyEvent>
 #include <QtWidgets/QMenu>
 #include <QtWebEngineWidgets/QWebEngineHistory>
@@ -16,6 +15,7 @@
 #include "app/shared/setters_getters.h"
 #include "app/shared/exception.h"
 #include "app/windows/main_window/tabs/web_engine_view.h"
+#include "app/windows/main_window/tabs/web_engine_page.h"
 
 // Categories
 LOGGING_CONTEXT(mainWindowWebEngineViewOverall, mainWindowWebEngineView.overall, TYPE_LEVEL, INFO_VERBOSITY)

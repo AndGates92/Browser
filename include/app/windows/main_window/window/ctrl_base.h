@@ -10,12 +10,10 @@
 
 #include <memory>
 
-#include <QtCore/QLoggingCategory>
 #include <QtWidgets/QWidget>
 
 #include "app/shared/constructor_macros.h"
 #include "app/windows/main_window/window/base.h"
-#include "app/windows/main_window/json/action.h"
 
 /** @defgroup MainWindowGroup Main Window Doxygen Group
  *  Main Window functions and classes
@@ -24,6 +22,12 @@
 namespace app {
 
 	namespace main_window {
+
+		namespace json {
+
+			class Action;
+
+		}
 
 		namespace window {
 

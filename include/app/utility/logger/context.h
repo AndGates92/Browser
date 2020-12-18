@@ -9,7 +9,6 @@
 */
 
 #include <string>
-#include <memory>
 
 #include <QtCore/QLoggingCategory>
 

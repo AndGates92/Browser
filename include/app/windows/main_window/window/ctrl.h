@@ -8,15 +8,10 @@
  * @brief Main Window Control header file
 */
 
-#include <QtCore/QLoggingCategory>
-#include <QtWidgets/QMainWindow>
-#include <QtWidgets/QMenu>
-#include <QtWidgets/QAction>
-#include <QtWidgets/QMenuBar>
 #include <QtWidgets/QWidget>
 
 #include "app/windows/main_window/shared/shared_types.h"
-#include "app/windows/main_window/window/ctrl_tab.h"
+#include "app/windows/main_window/window/ctrl_base.h"
 #include "app/shared/constructor_macros.h"
 
 /** @defgroup MainWindowGroup Main Window Doxygen Group

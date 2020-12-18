@@ -11,12 +11,10 @@
 #include <QtCore/QLoggingCategory>
 #include <QtWidgets/QWidget>
 
-#include "app/windows/main_window/popup/open_popup.h"
-#include "app/windows/main_window/popup/label_popup.h"
-
 #include "app/shared/type_print_macros.h"
 #include "app/utility/cpp/macros.h"
 #include "app/base/popup/popup_container.h"
+#include "app/base/popup/popup_properties.h"
 #include "app/shared/constructor_macros.h"
 
 /** @defgroup MainWindowGroup Main Window Doxygen Group
@@ -45,6 +43,9 @@ namespace app {
 			 *
 			 */
 			OVERLOAD_OPERATORS_CUSTOM_TYPE_FUNCTION_PROTOTYPE(widget_list, app::main_window::popup::widget_e)
+
+			class LabelPopup;
+			class OpenPopup;
 
 			/**
 			 * @brief PopupContainer class

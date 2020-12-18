@@ -10,8 +10,6 @@
 
 #include <memory>
 
-#include <QtCore/QLoggingCategory>
-
 #include "app/windows/main_window/window/core.h"
 
 /** @defgroup MainWindowGroup Main Window Doxygen Group

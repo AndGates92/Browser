@@ -10,13 +10,10 @@
 
 #include <memory>
 
-#include <QtCore/QLoggingCategory>
 #include <QtWidgets/QMainWindow>
 #include <QtWidgets/QWidget>
 
-#include "app/windows/main_window/window/ctrl_wrapper.h"
 #include "app/windows/main_window/window/base.h"
-#include "app/base/overlay/overlayed_widget.h"
 #include "app/shared/constructor_macros.h"
 
 /** @defgroup MainWindowGroup Main Window Doxygen Group
@@ -25,9 +22,21 @@
  */
 namespace app {
 
+	namespace base {
+
+		namespace overlayed_widget {
+
+			class OverlayedWidget;
+
+		}
+
+	}
+
 	namespace main_window {
 
 		namespace window {
+
+			class CtrlWrapper;
 
 			/**
 			 * @brief MainWindow class

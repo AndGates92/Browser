@@ -10,7 +10,6 @@
 
 #include <map>
 #include <string>
-#include <memory>
 #include <utility>
 
 // Qt libraries

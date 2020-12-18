@@ -27,9 +27,6 @@ namespace tester {
 
 		class Factory;
 
-		class Test;
-		struct TestPtrCompare;
-
 		/**
 		 * @brief BaseSuite class
 		 *

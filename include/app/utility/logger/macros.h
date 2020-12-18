@@ -9,7 +9,6 @@
 */
 
 #include "app/shared/utility_macros.h"
-#include "app/shared/enums.h"
 #include "app/utility/logger/logger.h"
 
 /** @defgroup Logger Logging Macros Doxygen Group

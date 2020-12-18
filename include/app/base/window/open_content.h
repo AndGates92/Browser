@@ -10,10 +10,7 @@
 
 #include <string>
 
-#include "app/widgets/commands/action.h"
-#include "app/widgets/commands/key_sequence.h"
 #include "app/shared/constructor_macros.h"
-
 #include "app/base/window/file_handling_widgets.h"
 
 /** @defgroup WindowGroup Window Doxygen Group

@@ -12,11 +12,9 @@
 #include <string>
 #include <memory>
 
-#include <QtCore/QLoggingCategory>
 #include <QtCore/QDir>
 #include <QtWidgets/QLineEdit>
 #include <QtWidgets/QPushButton>
-#include <QtWidgets/QAction>
 #include <QtWidgets/QFileSystemModel>
 #include <QtWidgets/QComboBox>
 #include <QtWidgets/QTreeView>
@@ -25,7 +23,6 @@
 
 #include "app/utility/qt/qt_operator.h"
 #include "app/widgets/commands/action.h"
-#include "app/widgets/commands/key_sequence.h"
 #include "app/windows/secondary_windows/shared/combo_box_item.h"
 
 /** @defgroup SecondaryWindowUtilityGroup Secondary Window Utility Doxygen Group
@@ -36,6 +33,12 @@
 EXPORT_CONTEXT(secondaryWindowUtilityOverall)
 
 namespace app {
+
+	namespace key_sequence {
+
+		class KeySequence;
+
+	}
 
 	namespace secondary_window {
 

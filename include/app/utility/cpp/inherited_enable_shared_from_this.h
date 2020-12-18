@@ -10,7 +10,6 @@
 
 #include <memory>
 
-#include "app/shared/enums.h"
 #include "app/utility/logger/macros.h"
 
 /** @defgroup InheritedEnableSharedFromThisGroup Inherited Enable Shared From This Doxygen Group

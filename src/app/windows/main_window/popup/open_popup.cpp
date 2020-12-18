@@ -18,11 +18,13 @@
 #include <QtWidgets/QVBoxLayout>
 #include <QtWidgets/QApplication>
 
+#include "app/widgets/commands/action.h"
+#include "app/widgets/commands/key_sequence.h"
 #include "app/utility/cpp/cpp_operator.h"
 #include "app/utility/logger/macros.h"
+#include "app/shared/exception.h"
 #include "app/shared/enums.h"
 #include "app/windows/main_window/popup/open_popup.h"
-#include "app/shared/exception.h"
 
 // Categories
 LOGGING_CONTEXT(openPopupOverall, openPopup.overall, TYPE_LEVEL, INFO_VERBOSITY)

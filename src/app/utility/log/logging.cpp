@@ -11,6 +11,7 @@
 // Qt libraries
 #include <QtCore/QtGlobal>
 #include <QtCore/QTextStream>
+#include <QtCore/QFile>
 
 // Get pointer to default category
 #include <QtCore/QLoggingCategory>

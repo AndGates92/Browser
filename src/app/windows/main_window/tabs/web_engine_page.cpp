@@ -14,6 +14,7 @@
 #include "app/shared/setters_getters.h"
 #include "app/shared/cpp_functions.h"
 #include "app/windows/main_window/tabs/web_engine_page.h"
+#include "app/windows/main_window/tabs/page_data.h"
 
 // Categories
 LOGGING_CONTEXT(mainWindowWebEnginePageOverall, mainWindowWebEnginePage.overall, TYPE_LEVEL, INFO_VERBOSITY)

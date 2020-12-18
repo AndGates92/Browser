@@ -10,16 +10,10 @@
 
 #include <memory>
 
-#include <QtCore/QLoggingCategory>
 #include <QtWidgets/QWidget>
 
-#include "app/widgets/command_menu/command_menu.h"
-#include "app/windows/main_window/menu/menu_bar.h"
-#include "app/windows/main_window/tabs/tab_widget.h"
-#include "app/windows/main_window/statusbar/status_bar.h"
+#include "app/shared/enums.h"
 #include "app/windows/main_window/shared/shared_types.h"
-#include "app/windows/main_window/popup/popup_container.h"
-#include "app/windows/main_window/window/commands.h"
 
 /** @defgroup MainWindowGroup Main Window Doxygen Group
  *  Main Window functions and class
@@ -27,9 +21,41 @@
  */
 namespace app {
 
+	namespace command_menu {
+
+		class CommandMenu;
+
+	}
+
 	namespace main_window {
 
+		namespace menu {
+
+			class MenuBar;
+
+		}
+
+		namespace tab {
+
+			class TabWidget;
+
+		}
+
+		namespace status_bar {
+
+			class StatusBar;
+
+		}
+
+		namespace popup {
+
+			class PopupContainer;
+
+		}
+
 		namespace window {
+
+			class Commands;
 
 			/**
 			 * @brief Core class

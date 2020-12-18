@@ -10,9 +10,11 @@
 #include <QtWidgets/QHBoxLayout>
 
 #include "app/utility/cpp/cpp_operator.h"
-#include "app/shared/setters_getters.h"
 #include "app/utility/logger/macros.h"
+#include "app/shared/setters_getters.h"
 #include "app/shared/enums.h"
+#include "app/widgets/elided_label/elided_label.h"
+#include "app/widgets/progress_bar/progress_bar.h"
 #include "app/windows/main_window/statusbar/status_bar.h"
 
 // Categories

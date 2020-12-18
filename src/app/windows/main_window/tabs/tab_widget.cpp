@@ -6,13 +6,19 @@
  * @brief Main Window Tab Widget functions
  */
 
+#include "app/utility/logger/enums.h"
+#include "app/utility/logger/macros.h"
 #include "app/utility/cpp/cpp_operator.h"
-#include "app/windows/main_window/shared/shared_functions.h"
-#include "app/windows/main_window/shared/constants.h"
 #include "app/shared/type_print_macros.h"
 #include "app/shared/exception.h"
+#include "app/windows/main_window/shared/constants.h"
+#include "app/windows/main_window/shared/shared_functions.h"
 #include "app/windows/main_window/tabs/web_engine_page.h"
 #include "app/windows/main_window/tabs/tab_widget.h"
+#include "app/windows/main_window/tabs/page_data.h"
+#include "app/windows/main_window/tabs/tab.h"
+#include "app/windows/shared/find_settings.h"
+#include "app/base/tabs/tab_bar.h"
 
 // Categories
 LOGGING_CONTEXT(mainWindowTabWidgetOverall, mainWindowTabWidget.overall, TYPE_LEVEL, INFO_VERBOSITY)

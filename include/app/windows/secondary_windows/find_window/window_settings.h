@@ -10,7 +10,6 @@
 
 #include <memory>
 
-#include <QtCore/QLoggingCategory>
 #include <QtWidgets/QWidget>
 
 #include <QtWidgets/QCheckBox>
@@ -19,8 +18,6 @@
 
 #include "app/shared/enums.h"
 #include "app/shared/constructor_macros.h"
-#include "app/widgets/commands/action.h"
-#include "app/windows/secondary_windows/find_window/combo_box_find.h"
 
 /** @defgroup FindWindowGroup Find Window Doxygen Group
  *  Find Window functions and classes
@@ -28,7 +25,15 @@
  */
 namespace app {
 
+	namespace action {
+
+		class Action;
+
+	}
+
 	namespace find_window {
+
+		class ComboBoxFind;
 
 		/**
 		 * @brief Settings class

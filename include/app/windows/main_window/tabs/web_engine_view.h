@@ -12,7 +12,6 @@
 #include <QtWidgets/QAction>
 
 #include "app/base/tabs/web_engine_view.h"
-#include "app/windows/main_window/tabs/web_engine_page.h"
 #include "app/windows/main_window/shared/shared_types.h"
 #include "app/shared/enums.h"
 #include "app/shared/constructor_macros.h"
@@ -28,6 +27,7 @@ namespace app {
 		namespace tab {
 
 			class Tab;
+			class WebEnginePage;
 
 			/**
 			 * @brief WebEngineView class

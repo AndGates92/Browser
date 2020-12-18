@@ -12,7 +12,6 @@
 #include <QtWidgets/QWidget>
 #include <QtCore/QTimer>
 
-#include "app/widgets/elided_label/elided_label.h"
 #include "app/windows/main_window/popup/popup_base.h"
 #include "app/shared/constructor_macros.h"
 
@@ -21,6 +20,12 @@
  *  @{
  */
 namespace app {
+
+	namespace elided_label {
+
+		class ElidedLabel;
+
+	}
 
 	namespace main_window {
 

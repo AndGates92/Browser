@@ -16,19 +16,33 @@
 #include "tester/shared/enums.h"
 #include "tester/shared/macros.h"
 #include "app/shared/constructor_macros.h"
-#include "tester/shared/error_data.h"
 #include "app/utility/log/printable_object.h"
 #include "tester/shared/base_element_creation.h"
-#include "tester/top/main_window_tester_wrapper.h"
 
 /** @defgroup TesterBaseGroup Tester Base Doxygen Group
  *  Tester Base functions and classes
  *  @{
  */
 
+namespace main_window_tester_wrapper {
+	class MainWindowTesterWrapper;
+}
+
+namespace app {
+	namespace main_window {
+		namespace window {
+			class MainWindow;
+		}
+	}
+}
+
 namespace tester {
 	namespace utility {
 		class TestRunner;
+	}
+
+	namespace shared {
+		class ErrorData;
 	}
 
 	namespace base {

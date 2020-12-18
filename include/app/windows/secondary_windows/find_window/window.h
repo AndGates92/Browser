@@ -10,7 +10,6 @@
 
 #include <memory>
 
-#include <QtCore/QLoggingCategory>
 #include <QtWidgets/QWidget>
 
 #include <QtWidgets/QLineEdit>
@@ -19,8 +18,8 @@
 #include "app/shared/enums.h"
 #include "app/shared/constructor_macros.h"
 #include "app/base/window/action_interface.h"
-#include "app/windows/secondary_windows/find_window/window_settings.h"
-#include "app/widgets/commands/action.h"
+
+// Including here because it is used in a signal
 #include "app/windows/shared/find_settings.h"
 
 /** @defgroup FindWindowGroup Find Window Doxygen Group
@@ -29,154 +28,162 @@
  */
 namespace app {
 
+	namespace action {
+
+		class Action;
+
+	}
+
 	namespace find_window {
 
-	/**
-	 * @brief Window class
-	 *
-	 */
-	class Window final : public QWidget, public app::base::window::ActionInterface {
+		class Settings;
 
-		Q_OBJECT
+		/**
+		 * @brief Window class
+		 *
+		 */
+		class Window final : public QWidget, public app::base::window::ActionInterface {
 
-		public:
-			/**
-			 * @brief Function: explicit Window(QWidget * parent, Qt::WindowFlags flags = Qt::WindowFlags())
-			 *
-			 * \param parent: parent window
-			 * \param flags: window flags
-			 *
-			 * Find button window constructor
-			 */
-			explicit Window(QWidget * parent, Qt::WindowFlags flags = Qt::WindowFlags());
+			Q_OBJECT
 
-			/**
-			 * @brief Function: virtual ~Window()
-			 *
-			 * Find button window destructor
-			 */
-			virtual ~Window();
+			public:
+				/**
+				 * @brief Function: explicit Window(QWidget * parent, Qt::WindowFlags flags = Qt::WindowFlags())
+				 *
+				 * \param parent: parent window
+				 * \param flags: window flags
+				 *
+				 * Find button window constructor
+				 */
+				explicit Window(QWidget * parent, Qt::WindowFlags flags = Qt::WindowFlags());
 
-		protected:
+				/**
+				 * @brief Function: virtual ~Window()
+				 *
+				 * Find button window destructor
+				 */
+				virtual ~Window();
 
-		private slots:
-			/**
-			 * @brief Function: virtual void apply() override
-			 *
-			 * This function is the slot of the find action
-			 */
-			virtual void apply() override;
+			protected:
 
-			/**
-			 * @brief Function: virtual void cancel() override
-			 *
-			 * This function is the slot of the cancel button
-			 */
-			virtual void cancel() override;
+			private slots:
+				/**
+				 * @brief Function: virtual void apply() override
+				 *
+				 * This function is the slot of the find action
+				 */
+				virtual void apply() override;
 
-		signals:
-			/**
-			 * @brief Function: void find(const app::windows::shared::FindSettings settings) const
-			 *
-			 * \param settings: search settings
-			 *
-			 * This function is the signal to trigger a find in the page
-			 */
-			void find(const app::windows::shared::FindSettings settings) const;
+				/**
+				 * @brief Function: virtual void cancel() override
+				 *
+				 * This function is the slot of the cancel button
+				 */
+				virtual void cancel() override;
 
-		private:
-			/**
-			 * @brief Function: void windowLayout()
-			 *
-			 * This function creates the layout of the window
-			 */
-			void windowLayout();
+			signals:
+				/**
+				 * @brief Function: void find(const app::windows::shared::FindSettings settings) const
+				 *
+				 * \param settings: search settings
+				 *
+				 * This function is the signal to trigger a find in the page
+				 */
+				void find(const app::windows::shared::FindSettings settings) const;
 
-			/**
-			 * @brief Function: void createActions()
-			 *
-			 * This function creates actions for the find window
-			 */
-			void createActions();
+			private:
+				/**
+				 * @brief Function: void windowLayout()
+				 *
+				 * This function creates the layout of the window
+				 */
+				void windowLayout();
 
-			/**
-			 * @brief Function: void fillWindow()
-			 *
-			 * This function creates widgets that are part of the window
-			 */
-			void fillWindow();
+				/**
+				 * @brief Function: void createActions()
+				 *
+				 * This function creates actions for the find window
+				 */
+				void createActions();
 
-			/**
-			 * @brief Function: virtual void connectSignals() override
-			 *
-			 * This function connects signals and slots between main window elements
-			 */
-			virtual void connectSignals() override;
+				/**
+				 * @brief Function: void fillWindow()
+				 *
+				 * This function creates widgets that are part of the window
+				 */
+				void fillWindow();
 
-			/**
-			 * @brief Function: virtual void close() override
-			 *
-			 * This function closes the window
-			 */
-			virtual void close() override;
+				/**
+				 * @brief Function: virtual void connectSignals() override
+				 *
+				 * This function connects signals and slots between main window elements
+				 */
+				virtual void connectSignals() override;
 
-			/**
-			 * @brief Function: virtual QSize sizeHint() const override
-			 *
-			 * \return return recommended size of the widget
-			 *
-			 * Compute recommendend size of the widget
-			 */
-			virtual QSize sizeHint() const override;
+				/**
+				 * @brief Function: virtual void close() override
+				 *
+				 * This function closes the window
+				 */
+				virtual void close() override;
 
-			/**
-			 * @brief find action
-			 *
-			 */
-			std::unique_ptr<app::action::Action> findAction;
+				/**
+				 * @brief Function: virtual QSize sizeHint() const override
+				 *
+				 * \return return recommended size of the widget
+				 *
+				 * Compute recommendend size of the widget
+				 */
+				virtual QSize sizeHint() const override;
 
-			/**
-			 * @brief cancel action
-			 *
-			 */
-			std::unique_ptr<app::action::Action> cancelAction;
+				/**
+				 * @brief find action
+				 *
+				 */
+				std::unique_ptr<app::action::Action> findAction;
 
-			/**
-			 * @brief insert action
-			 *
-			 */
-			std::unique_ptr<app::action::Action> typeAction;
+				/**
+				 * @brief cancel action
+				 *
+				 */
+				std::unique_ptr<app::action::Action> cancelAction;
 
-			/**
-			 * @brief text to find in the page
-			 *
-			 */
-			std::shared_ptr<QLineEdit> textToFind;
+				/**
+				 * @brief insert action
+				 *
+				 */
+				std::unique_ptr<app::action::Action> typeAction;
 
-			/**
-			 * @brief find button
-			 *
-			 */
-			std::unique_ptr<QPushButton> findButton;
+				/**
+				 * @brief text to find in the page
+				 *
+				 */
+				std::shared_ptr<QLineEdit> textToFind;
 
-			/**
-			 * @brief cancel button
-			 *
-			 */
-			std::unique_ptr<QPushButton> cancelButton;
+				/**
+				 * @brief find button
+				 *
+				 */
+				std::unique_ptr<QPushButton> findButton;
 
-			/**
-			 * @brief search settings box
-			 *
-			 */
-			std::unique_ptr<app::find_window::Settings> settingsBox;
+				/**
+				 * @brief cancel button
+				 *
+				 */
+				std::unique_ptr<QPushButton> cancelButton;
 
-			// Move and copy constructor
-			/**
-			 * @brief Disable move and copy constructors and operator= overloading for class Window
-			 *
-			 */
-			DISABLE_COPY_MOVE(Window)
+				/**
+				 * @brief search settings box
+				 *
+				 */
+				std::unique_ptr<app::find_window::Settings> settingsBox;
+
+				// Move and copy constructor
+				/**
+				 * @brief Disable move and copy constructors and operator= overloading for class Window
+				 *
+				 */
+				DISABLE_COPY_MOVE(Window)
 
 		};
 

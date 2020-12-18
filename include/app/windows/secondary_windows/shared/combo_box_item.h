@@ -11,7 +11,6 @@
 #include <memory>
 
 // Qt libraries
-#include <QtCore/QLoggingCategory>
 #include <QtCore/QVariant>
 #include <QtGui/QIcon>
 
@@ -24,13 +23,23 @@
  */
 namespace app {
 
+	namespace action {
+
+		class Action;
+
+	}
+
 	namespace combo_box_item {
 
+		/**
+		 * @brief Combo box item class
+		 *
+		 */
 		class ComboBoxItem {
 			public:
 
 				/**
-				 * @brief Function: ComboBoxItem(const QIcon itemIcon, const QVariant itemUserData, std::unique_ptr<app::action::Action> & itemAction)
+				 * @brief Function: explicit ComboBoxItem(const QIcon itemIcon, const QVariant itemUserData, std::unique_ptr<app::action::Action> & itemAction)
 				 *
 				 * \param itemIcon: icon of the combo box item
 				 * \param itemUserData: user data of the combo box item
@@ -38,7 +47,14 @@ namespace app {
 				 *
 				 * Combo box item constructor
 				 */
-				ComboBoxItem(const QIcon itemIcon, const QVariant itemUserData, std::unique_ptr<app::action::Action> & itemAction);
+				explicit ComboBoxItem(const QIcon itemIcon, const QVariant itemUserData, std::unique_ptr<app::action::Action> & itemAction);
+
+				/**
+				 * @brief Function: virtual ~ComboBoxItem()
+				 *
+				 * Combo box find destructor
+				 */
+				virtual ~ComboBoxItem();
 
 				// Move and copy constructor
 				/**

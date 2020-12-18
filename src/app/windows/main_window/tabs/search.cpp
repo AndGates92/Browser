@@ -12,6 +12,8 @@
 #include "app/utility/cpp/cpp_operator.h"
 #include "app/utility/logger/macros.h"
 #include "app/windows/main_window/tabs/search.h"
+#include "app/windows/main_window/tabs/web_engine_page.h"
+#include "app/windows/main_window/tabs/web_engine_profile.h"
 #include "app/windows/main_window/tabs/web_engine_view.h"
 #include "app/windows/main_window/tabs/tab.h"
 #include "app/shared/exception.h"

@@ -8,17 +8,15 @@
  * @brief Main Window Tab Control header file
 */
 
-#include <QtCore/QLoggingCategory>
-#include <QtWidgets/QMainWindow>
-#include <QtWidgets/QMenu>
-#include <QtWidgets/QAction>
-#include <QtWidgets/QMenuBar>
 #include <QtWidgets/QWidget>
 
 #include "app/windows/main_window/shared/shared_types.h"
 #include "app/windows/main_window/window/ctrl_base.h"
-#include "app/windows/main_window/tabs/tab.h"
+#include "app/windows/main_window/tabs/types.h"
 #include "app/shared/constructor_macros.h"
+
+// Included here because it is an argument to a Qt slot hence MOC must be able to find it
+#include "app/windows/shared/find_settings.h"
 
 /** @defgroup MainWindowGroup Main Window Doxygen Group
  *  Main Window functions and classes
@@ -27,6 +25,12 @@
 namespace app {
 
 	namespace main_window {
+
+		namespace window {
+
+			class Tab;
+
+		}
 
 		namespace window {
 

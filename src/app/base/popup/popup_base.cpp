@@ -10,6 +10,7 @@
 #include <QtGui/QFont>
 
 #include "app/base/popup/popup_base.h"
+#include "app/widgets/commands/action.h"
 #include "app/widgets/commands/key_sequence.h"
 #include "app/utility/logger/macros.h"
 #include "app/shared/enums.h"
