@@ -25,24 +25,18 @@ namespace app {
 
 		namespace popup {
 
-//			Q_NAMESPACE
+			namespace popup_container {
 
-			/**
-			 * @brief postprocessing action after state change
-			 *
-			 */
-//			typedef enum class widget_list {
-//				OPEN_FILE,       /**< Open file popup */
-//				WARNING          /**< Warning popup */
-//			} widget_e;
+				/**
+				 * @brief postprocessing action after state change
+				 *
+				 */
+				typedef enum class widget_list {
+					OPEN_FILE,       /**< Open file popup */
+					WARNING          /**< Warning popup */
+				} widget_e;
 
-			/**
-			 * @brief Overload operators to ease print of the state of the main window controller
-			 *
-			 */
-//			OVERLOAD_OPERATORS_CUSTOM_TYPE_FUNCTION_PROTOTYPE(widget_list, app::main_window::popup::widget_e)
-
-			OVERLOAD_OPERATORS_CUSTOM_TYPE(app::main_window::popup::widget_e)
+			}
 
 		}
 
@@ -78,22 +72,22 @@ app::main_window::popup::PopupContainer::~PopupContainer() {
 }
 
 bool app::main_window::popup::PopupContainer::showWarningPopup() {
-	const app::main_window::popup::widget_e index = app::main_window::popup::widget_e::WARNING;
+	const app::main_window::popup::popup_container::widget_e index = app::main_window::popup::popup_container::widget_e::WARNING;
 	return this->showPopup<app::main_window::popup::LabelPopup>((unsigned int)index);
 }
 
 bool app::main_window::popup::PopupContainer::showOpenFilePopup() {
-	const app::main_window::popup::widget_e index = app::main_window::popup::widget_e::OPEN_FILE;
+	const app::main_window::popup::popup_container::widget_e index = app::main_window::popup::popup_container::widget_e::OPEN_FILE;
 	return this->showPopup<app::main_window::popup::OpenPopup>((unsigned int)index);
 }
 
 std::shared_ptr<app::main_window::popup::LabelPopup> app::main_window::popup::PopupContainer::getWarningPopup() const {
-	const app::main_window::popup::widget_e index = app::main_window::popup::widget_e::WARNING;
+	const app::main_window::popup::popup_container::widget_e index = app::main_window::popup::popup_container::widget_e::WARNING;
 	return this->getPopup<app::main_window::popup::LabelPopup>((unsigned int)index);
 }
 
 std::shared_ptr<app::main_window::popup::OpenPopup> app::main_window::popup::PopupContainer::getOpenFilePopup() const {
-	const app::main_window::popup::widget_e index = app::main_window::popup::widget_e::OPEN_FILE;
+	const app::main_window::popup::popup_container::widget_e index = app::main_window::popup::popup_container::widget_e::OPEN_FILE;
 	return this->getPopup<app::main_window::popup::OpenPopup>((unsigned int)index);
 }
 
@@ -105,7 +99,7 @@ void app::main_window::popup::PopupContainer::connectSignals() {
 
 void app::main_window::popup::PopupContainer::addOpenPopup() {
 	std::shared_ptr<app::main_window::popup::OpenPopup> popup = std::make_shared<app::main_window::popup::OpenPopup>(this);
-	this->addWidget((unsigned int)app::main_window::popup::widget_e::OPEN_FILE, popup);
+	this->addWidget((unsigned int)app::main_window::popup::popup_container::widget_e::OPEN_FILE, popup);
 }
 
 void app::main_window::popup::PopupContainer::addWarningPopup() {
@@ -115,5 +109,5 @@ void app::main_window::popup::PopupContainer::addWarningPopup() {
 			"color: orange;"
 		"}"
 	);
-	this->addWidget((unsigned int)app::main_window::popup::widget_e::WARNING, popup);
+	this->addWidget((unsigned int)app::main_window::popup::popup_container::widget_e::WARNING, popup);
 }

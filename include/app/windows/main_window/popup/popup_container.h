@@ -27,23 +27,6 @@ namespace app {
 
 		namespace popup {
 
-			Q_NAMESPACE
-
-			/**
-			 * @brief postprocessing action after state change
-			 *
-			 */
-			typedef enum class widget_list {
-				OPEN_FILE,       /**< Open file popup */
-				WARNING          /**< Warning popup */
-			} widget_e;
-
-			/**
-			 * @brief Overload operators to ease print of the state of the main window controller
-			 *
-			 */
-			OVERLOAD_OPERATORS_CUSTOM_TYPE_FUNCTION_PROTOTYPE(widget_list, app::main_window::popup::widget_e)
-
 			class LabelPopup;
 			class OpenPopup;
 
