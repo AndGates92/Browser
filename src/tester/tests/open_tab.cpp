@@ -15,7 +15,7 @@
 #include "app/utility/qt/qt_operator.h"
 #include "tester/tests/open_tab.h"
 #include "tester/base/suite.h"
-#include "tester/top/main_window_tester_wrapper.h"
+#include "tester/top/main_window_wrapper.h"
 
 LOGGING_CONTEXT(openTabOverall, openTab.overall, TYPE_LEVEL, INFO_VERBOSITY)
 LOGGING_CONTEXT(openTabTest, openTab.test, TYPE_LEVEL, INFO_VERBOSITY)

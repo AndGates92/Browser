@@ -23,7 +23,7 @@
 #include "tester/base/test.h"
 #include "tester/base/factory.h"
 #include "tester/base/suite.h"
-#include "tester/top/main_window_tester_wrapper.h"
+#include "tester/top/main_window_wrapper.h"
 
 LOGGING_CONTEXT(baseTestOverall, baseTest.overall, TYPE_LEVEL, INFO_VERBOSITY)
 LOGGING_CONTEXT(baseTestTest, baseTest.test, TYPE_LEVEL, INFO_VERBOSITY)
@@ -296,7 +296,7 @@ void tester::base::Test::run() {
 	const std::shared_ptr<tester::base::Factory> & factory = this->getFactory();
 	QApplication app(factory->getArgc(), factory->getArgv());
 
-	this->windowWrapper = std::make_unique<main_window_tester_wrapper::MainWindowTesterWrapper>(Q_NULLPTR, Qt::Window);
+	this->windowWrapper = std::make_unique<tester::main_window_wrapper::MainWindowWrapper>(Q_NULLPTR, Qt::Window);
 	this->windowWrapper->show();
 
 	WAIT_FOR_CONDITION((this->getWindow()->isHidden() == false), tester::shared::error_type_e::WINDOW, "Window is not active at the start of test " + this->getName(), 5000);

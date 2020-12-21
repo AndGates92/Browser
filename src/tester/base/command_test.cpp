@@ -26,7 +26,7 @@
 #include "app/windows/main_window/shared/shared_functions.h"
 #include "tester/base/command_test.h"
 #include "tester/base/suite.h"
-#include "tester/top/main_window_tester_wrapper.h"
+#include "tester/top/main_window_wrapper.h"
 
 LOGGING_CONTEXT(commandTestOverall, commandTest.overall, TYPE_LEVEL, INFO_VERBOSITY)
 LOGGING_CONTEXT(commandTestTest, commandTest.test, TYPE_LEVEL, INFO_VERBOSITY)

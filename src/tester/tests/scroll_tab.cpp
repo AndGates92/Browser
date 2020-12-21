@@ -19,7 +19,7 @@
 #include "app/windows/main_window/tabs/tab.h"
 #include "tester/base/suite.h"
 #include "tester/tests/scroll_tab.h"
-#include "tester/top/main_window_tester_wrapper.h"
+#include "tester/top/main_window_wrapper.h"
 
 LOGGING_CONTEXT(scrollTabOverall, scrollTab.overall, TYPE_LEVEL, INFO_VERBOSITY)
 LOGGING_CONTEXT(scrollTabTest, scrollTab.test, TYPE_LEVEL, INFO_VERBOSITY)

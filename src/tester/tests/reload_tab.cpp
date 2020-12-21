@@ -20,7 +20,7 @@
 #include "app/widgets/progress_bar/progress_bar.h"
 #include "tester/base/suite.h"
 #include "tester/tests/reload_tab.h"
-#include "tester/top/main_window_tester_wrapper.h"
+#include "tester/top/main_window_wrapper.h"
 
 LOGGING_CONTEXT(reloadTabOverall, reloadTab.overall, TYPE_LEVEL, INFO_VERBOSITY)
 LOGGING_CONTEXT(reloadTabTest, reloadTab.test, TYPE_LEVEL, INFO_VERBOSITY)

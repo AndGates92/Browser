@@ -22,7 +22,7 @@
 #include "app/utility/cpp/cpp_operator.h"
 #include "tester/tests/open_file.h"
 #include "tester/base/suite.h"
-#include "tester/top/main_window_tester_wrapper.h"
+#include "tester/top/main_window_wrapper.h"
 
 LOGGING_CONTEXT(openFileOverall, openFile.overall, TYPE_LEVEL, INFO_VERBOSITY)
 LOGGING_CONTEXT(openFileTest, openFile.test, TYPE_LEVEL, INFO_VERBOSITY)

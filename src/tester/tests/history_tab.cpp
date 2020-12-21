@@ -18,7 +18,7 @@
 #include "app/windows/main_window/tabs/web_engine_page.h"
 #include "tester/tests/history_tab.h"
 #include "tester/base/suite.h"
-#include "tester/top/main_window_tester_wrapper.h"
+#include "tester/top/main_window_wrapper.h"
 
 LOGGING_CONTEXT(historyTabOverall, historyTab.overall, TYPE_LEVEL, INFO_VERBOSITY)
 LOGGING_CONTEXT(historyTabTest, historyTab.test, TYPE_LEVEL, INFO_VERBOSITY)

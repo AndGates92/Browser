@@ -24,10 +24,6 @@
  *  @{
  */
 
-namespace main_window_tester_wrapper {
-	class MainWindowTesterWrapper;
-}
-
 namespace app {
 	namespace main_window {
 		namespace window {
@@ -37,6 +33,11 @@ namespace app {
 }
 
 namespace tester {
+
+	namespace main_window_wrapper {
+		class MainWindowWrapper;
+	}
+
 	namespace utility {
 		class TestRunner;
 	}
@@ -207,7 +208,7 @@ namespace tester {
 				 * @brief browser window wrapper
 				 *
 				 */
-				std::unique_ptr<main_window_tester_wrapper::MainWindowTesterWrapper> windowWrapper;
+				std::unique_ptr<tester::main_window_wrapper::MainWindowWrapper> windowWrapper;
 
 				/**
 				 * @brief Function: explicit Test(const std::shared_ptr<tester::base::Suite> & testSuite, const std::string & testName)

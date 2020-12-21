@@ -17,7 +17,7 @@
 #include "app/windows/main_window/statusbar/status_bar.h"
 #include "tester/tests/move_tab.h"
 #include "tester/base/suite.h"
-#include "tester/top/main_window_tester_wrapper.h"
+#include "tester/top/main_window_wrapper.h"
 
 LOGGING_CONTEXT(moveTabOverall, moveTab.overall, TYPE_LEVEL, INFO_VERBOSITY)
 LOGGING_CONTEXT(moveTabTest, moveTab.test, TYPE_LEVEL, INFO_VERBOSITY)
