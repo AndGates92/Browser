@@ -14,10 +14,10 @@
 #include "app/utility/logger/macros.h"
 #include "app/utility/qt/qt_operator.h"
 #include "app/windows/main_window/shared/constants.h"
-#include "app/windows/main_window/statusbar/status_bar.h"
+#include "app/windows/main_window/statusbar/bar.h"
 #include "app/windows/main_window/window/core.h"
 #include "app/windows/main_window/tabs/tab.h"
-#include "app/widgets/progress_bar/progress_bar.h"
+#include "app/widgets/progress_bar/bar.h"
 #include "tester/base/suite.h"
 #include "tester/tests/reload_tab.h"
 #include "tester/top/main_window_wrapper.h"
@@ -93,7 +93,7 @@ void tester::test::ReloadTab::testBody() {
 
 		// Wait for page being refreshed
 		WAIT_FOR_CONDITION((windowCore->bottomStatusBar->getLoadBarVisibility() == true), tester::shared::error_type_e::STATUSBAR, "Load bar never became visible following command " + refreshCommandName, 1000);
-		const int maximumProgressValue = app::progress_bar::ProgressBar::getMaximumValue();
+		const int maximumProgressValue = app::progress_bar::Bar::getMaximumValue();
 		WAIT_FOR_CONDITION((windowCore->bottomStatusBar->getProgressValue() == maximumProgressValue), tester::shared::error_type_e::STATUSBAR, "Load bar is expected to reach " + std::to_string(maximumProgressValue) + " instead it reached " + std::to_string(windowCore->bottomStatusBar->getProgressValue()) + " after executing command " + refreshCommandName, 1000);
 		WAIT_FOR_CONDITION((windowCore->bottomStatusBar->getLoadBarVisibility() == false), tester::shared::error_type_e::STATUSBAR, "Load bar is expected to be hiddeni after command " + refreshCommandName + " is executed", 1000);
 

@@ -18,7 +18,7 @@
 #include "app/base/overlay/overlayed_widget.h"
 #include "app/windows/main_window/popup/popup_container.h"
 #include "app/windows/main_window/menu/menu_bar.h"
-#include "app/windows/main_window/statusbar/status_bar.h"
+#include "app/windows/main_window/statusbar/bar.h"
 #include "app/windows/main_window/tabs/tab_widget.h"
 #include "app/windows/main_window/window/main_window.h"
 #include "app/windows/main_window/window/ctrl_wrapper.h"

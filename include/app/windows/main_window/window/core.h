@@ -41,9 +41,9 @@ namespace app {
 
 		}
 
-		namespace status_bar {
+		namespace statusbar {
 
-			class StatusBar;
+			class Bar;
 
 		}
 
@@ -225,7 +225,7 @@ namespace app {
 					 * @brief Bottom menu bar of browser
 					 *
 					 */
-					std::unique_ptr<app::main_window::status_bar::StatusBar> bottomStatusBar;
+					std::unique_ptr<app::main_window::statusbar::Bar> bottomStatusBar;
 
 					/**
 					 * @brief Command menu

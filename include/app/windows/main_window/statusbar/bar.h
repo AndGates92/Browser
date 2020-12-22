@@ -2,7 +2,7 @@
 #define MAIN_WINDOW_STATUS_BAR_H
 /**
  * @copyright
- * @file status_bar.h
+ * @file bar.h
  * @author Andrea Gianarda
  * @date 03rd of February 2020
  * @brief Main Window statusbar class header file
@@ -29,39 +29,39 @@ namespace app {
 
 	namespace progress_bar {
 
-		class ProgressBar;
+		class Bar;
 
 	}
 
 	namespace main_window {
 
-		namespace status_bar {
+		namespace statusbar {
 
 			/**
-			 * @brief StatusBar class
+			 * @brief Status Bar class
 			 *
 			 */
-			class StatusBar final : public QWidget {
+			class Bar final : public QWidget {
 
 				Q_OBJECT
 
 				public:
 					/**
-					 * @brief Function: explicit StatusBar(QWidget * parent, Qt::WindowFlags flags = Qt::WindowFlags())
+					 * @brief Function: explicit Bar(QWidget * parent, Qt::WindowFlags flags = Qt::WindowFlags())
 					 *
 					 * \param parent: parent window
 					 * \param flags: window flags
 					 *
 					 * Main window statusbar constructor
 					 */
-					explicit StatusBar(QWidget * parent, Qt::WindowFlags flags = Qt::WindowFlags());
+					explicit Bar(QWidget * parent, Qt::WindowFlags flags = Qt::WindowFlags());
 
 					/**
-					 * @brief Function: virtual ~StatusBar()
+					 * @brief Function: virtual ~Bar()
 					 *
 					 * Main window statusbar destructor
 					 */
-					virtual ~StatusBar();
+					virtual ~Bar();
 
 					/**
 					 * Function: void showSearchResult(const bool & showWidget)
@@ -229,7 +229,7 @@ namespace app {
 					 * @brief load bar
 					 *
 					 */
-					std::unique_ptr<app::progress_bar::ProgressBar> loadBar;
+					std::unique_ptr<app::progress_bar::Bar> loadBar;
 
 					/**
 					 * @brief Function: std::unique_ptr<app::elided_label::ElidedLabel> newWindowLabel()
@@ -241,13 +241,13 @@ namespace app {
 					std::unique_ptr<app::elided_label::ElidedLabel> newWindowLabel();
 
 					/**
-					 * @brief Function: std::unique_ptr<app::progress_bar::ProgressBar> newProgressBar()
+					 * @brief Function: std::unique_ptr<app::progress_bar::Bar> newProgressBar()
 					 *
 					 * \return configured progress bar
 					 *
 					 * Configure progress bar
 					 */
-					std::unique_ptr<app::progress_bar::ProgressBar> newProgressBar();
+					std::unique_ptr<app::progress_bar::Bar> newProgressBar();
 
 					/**
 					 * @brief Function: void fillStatusBar()
@@ -278,10 +278,10 @@ namespace app {
 
 					// Move and copy constructor
 					/**
-					 * @brief Disable move and copy constructors and operator= overloading for class StatusBar
+					 * @brief Disable move and copy constructors and operator= overloading for class Bar
 					 *
 					 */
-					DISABLE_COPY_MOVE(StatusBar)
+					DISABLE_COPY_MOVE(Bar)
 
 			};
 

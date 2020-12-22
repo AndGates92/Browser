@@ -17,7 +17,7 @@
 #include "app/windows/main_window/shared/shared_types.h"
 #include "app/windows/main_window/window/commands.h"
 #include "app/windows/main_window/window/ctrl_base.h"
-#include "app/windows/main_window/statusbar/status_bar.h"
+#include "app/windows/main_window/statusbar/bar.h"
 #include "app/windows/main_window/json/action.h"
 #include "app/widgets/commands/key_sequence.h"
 

@@ -17,7 +17,7 @@
 #include "app/utility/cpp/cpp_operator.h"
 #include "app/utility/cpp/stl_helper.h"
 #include "app/windows/main_window/window/core.h"
-#include "app/windows/main_window/statusbar/status_bar.h"
+#include "app/windows/main_window/statusbar/bar.h"
 #include "app/windows/main_window/popup/open_popup.h"
 #include "app/windows/main_window/popup/popup_container.h"
 #include "app/windows/main_window/tabs/tab.h"

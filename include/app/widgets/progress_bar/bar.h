@@ -2,7 +2,7 @@
 #define PROGRESS_BAR_H
 /**
  * @copyright
- * @file progress_bar.h
+ * @file bar.h
  * @author Andrea Gianarda
  * @date 04th of March 2020
  * @brief Progress bar class header file
@@ -22,29 +22,29 @@ namespace app {
 	namespace progress_bar {
 
 		/**
-		 * @brief ProgressBar class
+		 * @brief Progress Bar class
 		 *
 		 */
-		class ProgressBar final : public QProgressBar {
+		class Bar final : public QProgressBar {
 
 			Q_OBJECT
 
 			public:
 				/**
-				 * @brief Function: explicit ProgressBar(QWidget * parent)
+				 * @brief Function: explicit Bar(QWidget * parent)
 				 *
 				 * \param parent: parent window
 				 *
 				 * Progress bar constructor
 				 */
-				explicit ProgressBar(QWidget * parent);
+				explicit Bar(QWidget * parent);
 
 				/**
-				 * @brief Function: virtual ~ProgressBar()
+				 * @brief Function: virtual ~Bar()
 				 *
 				 * Progress bar destructor
 				 */
-				virtual ~ProgressBar();
+				virtual ~Bar();
 
 				/**
 				 * @brief Function: static int getMinimumValue()
@@ -131,10 +131,10 @@ namespace app {
 				QSize sizeHint();
 
 				/**
-				 * @brief Disable move and copy constructors and operator= overloading for class ProgressBar
+				 * @brief Disable move and copy constructors and operator= overloading for class Bar
 				 *
 				 */
-				DISABLE_COPY_MOVE(ProgressBar)
+				DISABLE_COPY_MOVE(Bar)
 
 		};
 

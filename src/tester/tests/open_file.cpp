@@ -15,7 +15,7 @@
 #include "app/windows/main_window/window/core.h"
 #include "app/windows/main_window/popup/popup_container.h"
 #include "app/windows/main_window/popup/open_popup.h"
-#include "app/windows/main_window/statusbar/status_bar.h"
+#include "app/windows/main_window/statusbar/bar.h"
 #include "app/shared/enums.h"
 #include "app/utility/logger/macros.h"
 #include "app/utility/qt/qt_operator.h"

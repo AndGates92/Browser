@@ -22,7 +22,7 @@
 #include "app/windows/main_window/menu/menu_bar.h"
 #include "app/windows/main_window/menu/file_menu.h"
 #include "app/windows/main_window/menu/edit_menu.h"
-#include "app/windows/main_window/statusbar/status_bar.h"
+#include "app/windows/main_window/statusbar/bar.h"
 #include "app/windows/main_window/popup/popup_container.h"
 #include "app/windows/main_window/popup/open_popup.h"
 #include "app/windows/main_window/popup/label_popup.h"
@@ -69,8 +69,8 @@ void app::main_window::window::CtrlTab::connectSignals() {
 	// Search text in webpage
 	connect(this->core->topMenuBar->getEditMenu().get(), &app::main_window::menu::EditMenu::triggerSearch, this, &app::main_window::window::CtrlTab::setUpSearchFromMenu);
 
-	std::unique_ptr<app::main_window::status_bar::StatusBar> & statusBar = this->core->bottomStatusBar;
-	connect(this, &app::main_window::window::CtrlTab::currentTabSrcChanged, statusBar.get(), &app::main_window::status_bar::StatusBar::setContentPathText);
+	std::unique_ptr<app::main_window::statusbar::Bar> & statusBar = this->core->bottomStatusBar;
+	connect(this, &app::main_window::window::CtrlTab::currentTabSrcChanged, statusBar.get(), &app::main_window::statusbar::Bar::setContentPathText);
 
 	// Updates to the window depending on changes in tabs
 	connect(tabs.get(), &app::main_window::tab::TabWidget::tabSourceChanged, this, &app::main_window::window::CtrlTab::createContentPathTextFromSource);
@@ -236,11 +236,11 @@ void app::main_window::window::CtrlTab::connectTab(const int & tabIndex) {
 
 	std::shared_ptr<app::main_window::tab::Tab> tab = this->core->tabs->widget(tabIndex);
 
-	std::unique_ptr<app::main_window::status_bar::StatusBar> & statusBar = this->core->bottomStatusBar;
-	connect(tab.get(), &app::main_window::tab::Tab::verticalScrollChanged, statusBar.get(), &app::main_window::status_bar::StatusBar::setVScroll);
+	std::unique_ptr<app::main_window::statusbar::Bar> & statusBar = this->core->bottomStatusBar;
+	connect(tab.get(), &app::main_window::tab::Tab::verticalScrollChanged, statusBar.get(), &app::main_window::statusbar::Bar::setVScroll);
 	statusBar->setVScroll(tab->getVerticalScroll());
 
-	connect(tab.get(), &app::main_window::tab::Tab::loadProgressChanged, statusBar.get(), &app::main_window::status_bar::StatusBar::setProgressValue);
+	connect(tab.get(), &app::main_window::tab::Tab::loadProgressChanged, statusBar.get(), &app::main_window::statusbar::Bar::setProgressValue);
 	statusBar->setProgressValue(tab->getLoadProgress());
 
 	// Move focus to the tab index
@@ -253,9 +253,9 @@ void app::main_window::window::CtrlTab::disconnectTab(const int & tabIndex) {
 
 	const std::shared_ptr<app::main_window::tab::Tab> tab = this->core->tabs->widget(tabIndex);
 
-	std::unique_ptr<app::main_window::status_bar::StatusBar> & statusBar = this->core->bottomStatusBar;
-	disconnect(tab.get(), &app::main_window::tab::Tab::verticalScrollChanged, statusBar.get(), &app::main_window::status_bar::StatusBar::setVScroll);
-	disconnect(tab.get(), &app::main_window::tab::Tab::loadProgressChanged, statusBar.get(), &app::main_window::status_bar::StatusBar::setProgressValue);
+	std::unique_ptr<app::main_window::statusbar::Bar> & statusBar = this->core->bottomStatusBar;
+	disconnect(tab.get(), &app::main_window::tab::Tab::verticalScrollChanged, statusBar.get(), &app::main_window::statusbar::Bar::setVScroll);
+	disconnect(tab.get(), &app::main_window::tab::Tab::loadProgressChanged, statusBar.get(), &app::main_window::statusbar::Bar::setProgressValue);
 
 }
 
@@ -572,7 +572,7 @@ void app::main_window::window::CtrlTab::updateStatusBar(const int & tabIndex) {
 }
 
 void app::main_window::window::CtrlTab::printSearchResult(const app::main_window::tab::search_data_s & data) const {
-	std::unique_ptr<app::main_window::status_bar::StatusBar> & statusBar = this->core->bottomStatusBar;
+	std::unique_ptr<app::main_window::statusbar::Bar> & statusBar = this->core->bottomStatusBar;
 	const bool textFound = (data.numberOfMatches > 0);
 	if (textFound == true) {
 		// Integers are to be converted in base 10

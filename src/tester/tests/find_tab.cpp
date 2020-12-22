@@ -15,7 +15,7 @@
 #include "app/utility/qt/qt_operator.h"
 #include "app/windows/main_window/shared/constants.h"
 #include "app/windows/main_window/window/core.h"
-#include "app/windows/main_window/statusbar/status_bar.h"
+#include "app/windows/main_window/statusbar/bar.h"
 #include "app/windows/main_window/tabs/tab.h"
 #include "tester/tests/find_tab.h"
 #include "tester/base/suite.h"

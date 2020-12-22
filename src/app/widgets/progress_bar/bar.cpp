@@ -1,12 +1,12 @@
 /**
  * @copyright
- * @file progress_bar.cpp
+ * @file bar.cpp
  * @author Andrea Gianarda
  * @date 04th of March 2020
  * @brief Progress bar functions
 */
 
-#include "app/widgets/progress_bar/progress_bar.h"
+#include "app/widgets/progress_bar/bar.h"
 #include "app/shared/exception.h"
 #include "app/utility/logger/macros.h"
 #include "app/shared/enums.h"
@@ -54,7 +54,7 @@ namespace app {
 
 }
 
-app::progress_bar::ProgressBar::ProgressBar(QWidget * parent) : QProgressBar(parent) {
+app::progress_bar::Bar::Bar(QWidget * parent) : QProgressBar(parent) {
 	LOG_INFO(app::logger::info_level_e::ZERO, progressBarOverall,  "Progress bar constructor");
 
 	this->setAlignment(app::progress_bar::progressAlignment);
@@ -68,38 +68,38 @@ app::progress_bar::ProgressBar::ProgressBar(QWidget * parent) : QProgressBar(par
 	this->setSizePolicy(QSizePolicy::Preferred, QSizePolicy::Minimum);
 
 	// range
-	this->setMinimum(app::progress_bar::ProgressBar::getMinimumValue());
-	this->setMaximum(app::progress_bar::ProgressBar::getMaximumValue());
+	this->setMinimum(app::progress_bar::Bar::getMinimumValue());
+	this->setMaximum(app::progress_bar::Bar::getMaximumValue());
 
 	// Hide the bar at the start
 	this->setVisible(false);
 }
 
-void app::progress_bar::ProgressBar::setMaximum(const int value) {
+void app::progress_bar::Bar::setMaximum(const int value) {
 	QProgressBar::setMaximum(value);
 }
 
-int app::progress_bar::ProgressBar::getMaximumValue() {
+int app::progress_bar::Bar::getMaximumValue() {
 	return 100;
 }
 
-void app::progress_bar::ProgressBar::setMinimum(const int value) {
+void app::progress_bar::Bar::setMinimum(const int value) {
 	QProgressBar::setMinimum(value);
 }
 
-int app::progress_bar::ProgressBar::getMinimumValue() {
+int app::progress_bar::Bar::getMinimumValue() {
 	return 0;
 }
 
-app::progress_bar::ProgressBar::~ProgressBar() {
+app::progress_bar::Bar::~Bar() {
 	LOG_INFO(app::logger::info_level_e::ZERO, progressBarOverall,  "Progress bar destructor");
 }
 
-void app::progress_bar::ProgressBar::startLoading() {
+void app::progress_bar::Bar::startLoading() {
 	this->setValue(this->minimum());
 }
 
-void app::progress_bar::ProgressBar::setValue(const int & value) {
+void app::progress_bar::Bar::setValue(const int & value) {
 	this->setVisible(true);
 	QProgressBar::setValue(value);
 
@@ -110,7 +110,7 @@ void app::progress_bar::ProgressBar::setValue(const int & value) {
 	}
 }
 
-void app::progress_bar::ProgressBar::endLoading(const bool & success) {
+void app::progress_bar::Bar::endLoading(const bool & success) {
 
 	EXCEPTION_ACTION_COND((!success), throw,  "Operation didn't complete succesfully");
 
@@ -118,11 +118,11 @@ void app::progress_bar::ProgressBar::endLoading(const bool & success) {
 	this->setVisible(false);
 }
 
-QSize app::progress_bar::ProgressBar::minimumSizeHint() {
+QSize app::progress_bar::Bar::minimumSizeHint() {
 	return this->sizeHint();
 }
 
-QSize app::progress_bar::ProgressBar::sizeHint() {
+QSize app::progress_bar::Bar::sizeHint() {
 	const QWidget * parent = this->parentWidget();
 	int width;
 	if (parent == Q_NULLPTR) {

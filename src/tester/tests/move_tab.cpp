@@ -14,7 +14,7 @@
 #include "app/utility/logger/macros.h"
 #include "app/utility/qt/qt_operator.h"
 #include "app/windows/main_window/window/core.h"
-#include "app/windows/main_window/statusbar/status_bar.h"
+#include "app/windows/main_window/statusbar/bar.h"
 #include "tester/tests/move_tab.h"
 #include "tester/base/suite.h"
 #include "tester/top/main_window_wrapper.h"

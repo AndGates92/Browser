@@ -18,7 +18,7 @@
 #include "app/windows/main_window/popup/popup_container.h"
 #include "app/windows/main_window/menu/menu_bar.h"
 #include "app/windows/main_window/tabs/tab_widget.h"
-#include "app/windows/main_window/statusbar/status_bar.h"
+#include "app/windows/main_window/statusbar/bar.h"
 
 // Categories
 LOGGING_CONTEXT(mainWindowCoreOverall, mainWindowCore.overall, TYPE_LEVEL, INFO_VERBOSITY)
@@ -73,7 +73,7 @@ namespace app {
 
 }
 
-app::main_window::window::Core::Core(QWidget * parent) : mainWidget(new QWidget(parent)), tabs(new app::main_window::tab::TabWidget(parent)), topMenuBar(new app::main_window::menu::MenuBar(parent)), popup(new app::main_window::popup::PopupContainer(parent)), bottomStatusBar(new app::main_window::status_bar::StatusBar(parent)), cmdMenu(new app::command_menu::CommandMenu(parent)), commands(new app::main_window::window::Commands({app::main_window::window::core::tabCommandFileFullPath, app::main_window::window::core::globalCommandFileFullPath})), mainWindowState(app::main_window::state_e::IDLE), offsetType(app::shared::offset_type_e::IDLE), userText(QString()) {
+app::main_window::window::Core::Core(QWidget * parent) : mainWidget(new QWidget(parent)), tabs(new app::main_window::tab::TabWidget(parent)), topMenuBar(new app::main_window::menu::MenuBar(parent)), popup(new app::main_window::popup::PopupContainer(parent)), bottomStatusBar(new app::main_window::statusbar::Bar(parent)), cmdMenu(new app::command_menu::CommandMenu(parent)), commands(new app::main_window::window::Commands({app::main_window::window::core::tabCommandFileFullPath, app::main_window::window::core::globalCommandFileFullPath})), mainWindowState(app::main_window::state_e::IDLE), offsetType(app::shared::offset_type_e::IDLE), userText(QString()) {
 	LOG_INFO(app::logger::info_level_e::ZERO, mainWindowCoreOverall,  "Main window core constructor");
 	this->topMenuBar->createMenus();
 }

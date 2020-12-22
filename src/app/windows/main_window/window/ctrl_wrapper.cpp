@@ -17,7 +17,7 @@
 #include "app/windows/main_window/window/ctrl_wrapper.h"
 #include "app/windows/main_window/window/ctrl.h"
 #include "app/windows/main_window/window/ctrl_tab.h"
-#include "app/windows/main_window/statusbar/status_bar.h"
+#include "app/windows/main_window/statusbar/bar.h"
 #include "app/windows/main_window/tabs/tab.h"
 #include "app/windows/main_window/tabs/tab_widget.h"
 #include "app/widgets/commands/key_sequence.h"
@@ -190,7 +190,7 @@ void app::main_window::window::CtrlWrapper::setupWindowState(const app::main_win
 
 	// Hide search results if not in find state
 	const bool isFindState = ((windowState == app::main_window::state_e::FIND) || (windowState == app::main_window::state_e::FIND_DOWN) || (windowState == app::main_window::state_e::FIND_UP));
-	std::unique_ptr<app::main_window::status_bar::StatusBar> & statusBar = this->core->bottomStatusBar;
+	std::unique_ptr<app::main_window::statusbar::Bar> & statusBar = this->core->bottomStatusBar;
 	statusBar->showSearchResult(isFindState);
 
 	// If requesting to go to the idle state, enable shortcuts
