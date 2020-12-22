@@ -25,7 +25,7 @@
  */
 namespace app {
 
-	namespace action {
+	namespace commands {
 
 		class Action;
 
@@ -136,13 +136,13 @@ namespace app {
 				 * @brief case sensitive action
 				 *
 				 */
-				std::unique_ptr<app::action::Action> caseSensitiveAction;
+				std::unique_ptr<app::commands::Action> caseSensitiveAction;
 
 				/**
 				 * @brief match full word only action
 				 *
 				 */
-				std::unique_ptr<app::action::Action> matchFullWordOnlyAction;
+				std::unique_ptr<app::commands::Action> matchFullWordOnlyAction;
 
 				/**
 				 * @brief search direction items

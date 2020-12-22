@@ -15,7 +15,7 @@
 // Categories
 LOGGING_CONTEXT(menuOverall, menu.overall, TYPE_LEVEL, INFO_VERBOSITY)
 
-app::base::menu::Menu::Menu(QWidget * parent, std::weak_ptr<QMenuBar> menuBar, const char* menuName, const app::key_sequence::KeySequence & key) : QWidget(parent), app::printable_object::PrintableObject(), menuBar(menuBar), menuName(menuName), key(key) {
+app::base::menu::Menu::Menu(QWidget * parent, std::weak_ptr<QMenuBar> menuBar, const char* menuName, const app::commands::KeySequence & key) : QWidget(parent), app::printable_object::PrintableObject(), menuBar(menuBar), menuName(menuName), key(key) {
 
 	LOG_INFO(app::logger::info_level_e::ZERO, menuOverall, "Create menu:  " << *this);
 	this->createMenu();
@@ -38,7 +38,7 @@ void app::base::menu::Menu::createShortcuts() {
 	this->expandMenu.reset(new QShortcut(this));
 
 	// Do not bind key if it is not set
-	if (this->key != app::key_sequence::KeySequence(QKeySequence::UnknownKey)) {
+	if (this->key != app::commands::KeySequence(QKeySequence::UnknownKey)) {
 		this->expandMenu->setKey(this->key.toQKeySequence());
 		connect(this->expandMenu.get(), &QShortcut::activated, this, &base::menu::Menu::expand);
 	}

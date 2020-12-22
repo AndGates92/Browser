@@ -25,7 +25,7 @@
 
 namespace app {
 
-	namespace action {
+	namespace commands {
 
 		class Action;
 
@@ -94,14 +94,14 @@ namespace app {
 					virtual void connectSignals() = 0;
 
 					/**
-					 * @brief Function: std::unique_ptr<QLabel> actionToLabel(QWidget * parent, const std::unique_ptr<app::action::Action> & action) const
+					 * @brief Function: std::unique_ptr<QLabel> actionToLabel(QWidget * parent, const std::unique_ptr<app::commands::Action> & action) const
 					 *
 					 * \param parent: parent widget of QLabel
 					 * \param action: action to convert to QLabel
 					 *
 					 * This function allows to print text and shortcut in a QLabel
 					 */
-					std::unique_ptr<QLabel> actionToLabel(QWidget * parent, const std::unique_ptr<app::action::Action> & action) const;
+					std::unique_ptr<QLabel> actionToLabel(QWidget * parent, const std::unique_ptr<app::commands::Action> & action) const;
 
 				private:
 

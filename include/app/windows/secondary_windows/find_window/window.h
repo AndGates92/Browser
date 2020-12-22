@@ -28,7 +28,7 @@
  */
 namespace app {
 
-	namespace action {
+	namespace commands {
 
 		class Action;
 
@@ -140,19 +140,19 @@ namespace app {
 				 * @brief find action
 				 *
 				 */
-				std::unique_ptr<app::action::Action> findAction;
+				std::unique_ptr<app::commands::Action> findAction;
 
 				/**
 				 * @brief cancel action
 				 *
 				 */
-				std::unique_ptr<app::action::Action> cancelAction;
+				std::unique_ptr<app::commands::Action> cancelAction;
 
 				/**
 				 * @brief insert action
 				 *
 				 */
-				std::unique_ptr<app::action::Action> typeAction;
+				std::unique_ptr<app::commands::Action> typeAction;
 
 				/**
 				 * @brief text to find in the page

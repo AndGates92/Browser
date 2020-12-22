@@ -44,7 +44,7 @@ namespace app {
 				public:
 
 					/**
-					 * @brief Function: explicit FileMenu(QWidget * parent, std::weak_ptr<QMenuBar> menuBar, const char* menuName, const app::key_sequence::KeySequence & key)
+					 * @brief Function: explicit FileMenu(QWidget * parent, std::weak_ptr<QMenuBar> menuBar, const char* menuName, const app::commands::KeySequence & key)
 					 *
 					 * \param parent: pointer to the parent of the menu
 					 * \param menuBar: menubar the menu is part of
@@ -53,7 +53,7 @@ namespace app {
 					 *
 					 * Constructor of file menu
 					 */
-					explicit FileMenu(QWidget * parent, std::weak_ptr<QMenuBar> menuBar, const char* menuName, const app::key_sequence::KeySequence & key);
+					explicit FileMenu(QWidget * parent, std::weak_ptr<QMenuBar> menuBar, const char* menuName, const app::commands::KeySequence & key);
 
 					/**
 					 * @brief open tab action

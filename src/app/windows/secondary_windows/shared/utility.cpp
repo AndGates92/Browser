@@ -99,7 +99,7 @@ std::unique_ptr<QTreeView> app::secondary_window::createFileView(std::unique_ptr
 
 }
 
-std::unique_ptr<app::action::Action> app::secondary_window::createAction(QObject * parent, const std::string & text, const std::string & tip, const app::key_sequence::KeySequence & shortcut) {
+std::unique_ptr<app::commands::Action> app::secondary_window::createAction(QObject * parent, const std::string & text, const std::string & tip, const app::commands::KeySequence & shortcut) {
 
 	LOG_INFO(app::logger::info_level_e::ZERO, secondaryWindowUtilityOverall,  "Creating Action object with text " << text << " tip " << tip << " key " << shortcut.toString());
 
@@ -108,7 +108,7 @@ std::unique_ptr<app::action::Action> app::secondary_window::createAction(QObject
 		actionText = QAction::tr(text.c_str());
 	}
 
-	std::unique_ptr<app::action::Action> newAction = std::make_unique<app::action::Action>(parent, actionText);
+	std::unique_ptr<app::commands::Action> newAction = std::make_unique<app::commands::Action>(parent, actionText);
 	if (tip.empty() == false) {
 		newAction->setStatusTip(QAction::tr(tip.c_str()));
 	}
@@ -117,7 +117,7 @@ std::unique_ptr<app::action::Action> app::secondary_window::createAction(QObject
 	return newAction;
 }
 
-std::shared_ptr<QLineEdit> app::secondary_window::createLineEdit(QWidget * parent, const std::string & text, const std::unique_ptr<app::action::Action> & focusAction) {
+std::shared_ptr<QLineEdit> app::secondary_window::createLineEdit(QWidget * parent, const std::string & text, const std::unique_ptr<app::commands::Action> & focusAction) {
 
 	LOG_INFO(app::logger::info_level_e::ZERO, secondaryWindowUtilityOverall,  "Creating Line Edit object with text " << text << " action " << *focusAction);
 
@@ -128,8 +128,8 @@ std::shared_ptr<QLineEdit> app::secondary_window::createLineEdit(QWidget * paren
 	lineEdit->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Fixed);
 	lineEdit->setFixedHeight(lineEdit->fontMetrics().height() + app::secondary_window::topLineEditMargin + app::secondary_window::bottomLineEditMargin);
 	if (focusAction != nullptr) {
-		lineEdit->addAction(const_cast<app::action::Action *>(focusAction.get()));
-		QObject::connect(focusAction.get(), &app::action::Action::triggered, lineEdit.get(), [lineEdit] () {
+		lineEdit->addAction(const_cast<app::commands::Action *>(focusAction.get()));
+		QObject::connect(focusAction.get(), &app::commands::Action::triggered, lineEdit.get(), [lineEdit] () {
 			lineEdit->setFocus();
 		});
 	}
@@ -137,14 +137,14 @@ std::shared_ptr<QLineEdit> app::secondary_window::createLineEdit(QWidget * paren
 	return lineEdit;
 }
 
-std::unique_ptr<QPushButton> app::secondary_window::createPushButton(QWidget *parent, const std::unique_ptr<app::action::Action> & actionPtr) {
+std::unique_ptr<QPushButton> app::secondary_window::createPushButton(QWidget *parent, const std::unique_ptr<app::commands::Action> & actionPtr) {
 
 	std::string buttonText(actionPtr->print());
 
 	LOG_INFO(app::logger::info_level_e::ZERO, secondaryWindowUtilityOverall,  "Creating Push Button object with text " << buttonText << " action " << *actionPtr);
 
 	std::unique_ptr<QPushButton> button = std::make_unique<QPushButton>(QPushButton::tr(buttonText.c_str()), parent);
-	button->addAction(const_cast<app::action::Action *>(actionPtr.get()));
+	button->addAction(const_cast<app::commands::Action *>(actionPtr.get()));
 	button->setSizePolicy(QSizePolicy::Fixed, QSizePolicy::Fixed);
 	button->setFixedHeight(button->fontMetrics().height() + app::secondary_window::topButtonMargin + app::secondary_window::bottomButtonMargin);
 
@@ -163,7 +163,7 @@ std::unique_ptr<QGroupBox> app::secondary_window::createGroupBox(QWidget *parent
 	return groupBox;
 }
 
-std::unique_ptr<QCheckBox> app::secondary_window::createCheckBox(QWidget *parent, const std::unique_ptr<app::action::Action> & toggleAction) {
+std::unique_ptr<QCheckBox> app::secondary_window::createCheckBox(QWidget *parent, const std::unique_ptr<app::commands::Action> & toggleAction) {
 
 	LOG_INFO(app::logger::info_level_e::ZERO, secondaryWindowUtilityOverall,  "Creating Check Box object" << " action " << *toggleAction);
 
@@ -174,8 +174,8 @@ std::unique_ptr<QCheckBox> app::secondary_window::createCheckBox(QWidget *parent
 		std::string checkBoxText(toggleAction->print());
 		LOG_INFO(app::logger::info_level_e::ZERO, secondaryWindowUtilityOverall,  "Setting Check Box text to " << checkBoxText);
 		checkBox->setText(QCheckBox::tr(checkBoxText.c_str()));
-		checkBox->addAction(const_cast<app::action::Action *>(toggleAction.get()));
-		QObject::connect(toggleAction.get(), &app::action::Action::triggered, checkBox.get(), &QCheckBox::toggle);
+		checkBox->addAction(const_cast<app::commands::Action *>(toggleAction.get()));
+		QObject::connect(toggleAction.get(), &app::commands::Action::triggered, checkBox.get(), &QCheckBox::toggle);
 	}
 
 	return checkBox;

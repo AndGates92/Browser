@@ -23,7 +23,7 @@
  */
 namespace app {
 
-	namespace action {
+	namespace commands {
 
 		class Action;
 
@@ -39,7 +39,7 @@ namespace app {
 			public:
 
 				/**
-				 * @brief Function: explicit ComboBoxFind(const QIcon itemIcon, const QVariant itemUserData, const app::shared::offset_type_e itemDirection, std::unique_ptr<app::action::Action> itemAction)
+				 * @brief Function: explicit ComboBoxFind(const QIcon itemIcon, const QVariant itemUserData, const app::shared::offset_type_e itemDirection, std::unique_ptr<app::commands::Action> itemAction)
 				 *
 				 * \param itemIcon: icon of the combo box item
 				 * \param itemUserData: user data of the combo box item
@@ -48,7 +48,7 @@ namespace app {
 				 *
 				 * Combo box find constructor
 				 */
-				explicit ComboBoxFind(const QIcon itemIcon, const QVariant itemUserData, const app::shared::offset_type_e itemDirection, std::unique_ptr<app::action::Action> itemAction);
+				explicit ComboBoxFind(const QIcon itemIcon, const QVariant itemUserData, const app::shared::offset_type_e itemDirection, std::unique_ptr<app::commands::Action> itemAction);
 
 				/**
 				 * @brief Function: virtual ~ComboBoxFind()

@@ -217,10 +217,10 @@ void app::main_window::popup::OpenPopup::fillPopup() {
 void app::main_window::popup::OpenPopup::connectSignals() {
 	LOG_INFO(app::logger::info_level_e::ZERO, openPopupOverall,  "Connect signals");
 
-	connect(this->applyAction.get(), &app::action::Action::triggered, this, &app::main_window::popup::OpenPopup::apply);
-	connect(this->cancelAction.get(), &app::action::Action::triggered, this, &app::main_window::popup::OpenPopup::cancel);
-	connect(this->browseAction.get(), &app::action::Action::triggered, this, &app::main_window::popup::OpenPopup::browse);
-	connect(this->typeAction.get(), &app::action::Action::triggered, this, &app::main_window::popup::OpenPopup::postProcessTypeAction);
+	connect(this->applyAction.get(), &app::commands::Action::triggered, this, &app::main_window::popup::OpenPopup::apply);
+	connect(this->cancelAction.get(), &app::commands::Action::triggered, this, &app::main_window::popup::OpenPopup::cancel);
+	connect(this->browseAction.get(), &app::commands::Action::triggered, this, &app::main_window::popup::OpenPopup::browse);
+	connect(this->typeAction.get(), &app::commands::Action::triggered, this, &app::main_window::popup::OpenPopup::postProcessTypeAction);
 
 	connect(this->pathToOpen.get(), &QLineEdit::textChanged, this, &app::main_window::popup::OpenPopup::pathChanged);
 
@@ -303,7 +303,7 @@ void app::main_window::popup::OpenPopup::keyPressEvent(QKeyEvent * event) {
 	const int pressedKey = event->key();
 	const Qt::KeyboardModifiers keyModifiers = event->modifiers();
 
-	const app::key_sequence::KeySequence keySeq(pressedKey | keyModifiers);
+	const app::commands::KeySequence keySeq(pressedKey | keyModifiers);
 
 	if (event->type() == QEvent::KeyPress) {
 

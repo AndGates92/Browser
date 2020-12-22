@@ -19,7 +19,7 @@
  */
 namespace app {
 
-	namespace key_sequence {
+	namespace commands {
 
 		/**
 		 * @brief KeySequence class
@@ -72,42 +72,42 @@ namespace app {
 
 				// Move and copy constructor
 				/**
-				 * @brief Function: KeySequence(const app::key_sequence::KeySequence & rhs)
+				 * @brief Function: KeySequence(const app::commands::KeySequence & rhs)
 				 *
 				 * \param rhs: class to copy
 				 *
 				 * Key Sequence copy constructor
 				 * Not setting to explicit as it is required by getters to perform a copy-initialization
 				 */
-				KeySequence(const app::key_sequence::KeySequence & rhs);
+				KeySequence(const app::commands::KeySequence & rhs);
 
 				/**
-				 * @brief Function: KeySequence::KeySequence(app::key_sequence::KeySequence && rhs)
+				 * @brief Function: KeySequence::KeySequence(app::commands::KeySequence && rhs)
 				 *
 				 * \param rhs: class to move
 				 *
 				 * Key Sequence move constructor
 				 */
-				explicit KeySequence(app::key_sequence::KeySequence && rhs);
+				explicit KeySequence(app::commands::KeySequence && rhs);
 
 				// Move and copy assignment operators
 				/**
-				 * @brief Function: KeySequence & operator=(const app::key_sequence::KeySequence & rhs)
+				 * @brief Function: KeySequence & operator=(const app::commands::KeySequence & rhs)
 				 *
 				 * \param rhs: class to copy
 				 *
 				 * Key Sequence copy assignment operator
 				 */
-				KeySequence & operator=(const app::key_sequence::KeySequence & rhs);
+				KeySequence & operator=(const app::commands::KeySequence & rhs);
 
 				/**
-				 * @brief Function: KeySequence & operator=(app::key_sequence::KeySequence && rhs)
+				 * @brief Function: KeySequence & operator=(app::commands::KeySequence && rhs)
 				 *
 				 * \param rhs: class to move
 				 *
 				 * Key Sequence move assignment operator
 				 */
-				KeySequence & operator=(app::key_sequence::KeySequence && rhs);
+				KeySequence & operator=(app::commands::KeySequence && rhs);
 
 				/**
 				 * @brief Function: virtual ~KeySequence()

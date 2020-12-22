@@ -36,10 +36,10 @@ app::base::window::FileHandlingWidgets::FileHandlingWidgets(QWidget *widgetParen
 
 	LOG_INFO(app::logger::info_level_e::ZERO, fileHandlingWidgetsOverall,  "Creating FileHandlingWidgets class");
 
-	this->applyAction = std::move(app::secondary_window::createAction(widgetParent, std::string(), std::string(), app::key_sequence::KeySequence(Qt::Key_unknown)));
-	this->browseAction = std::move(app::secondary_window::createAction(widgetParent, "Browse", "Browse files", app::key_sequence::KeySequence(Qt::Key_B)));
-	this->cancelAction = std::move(app::secondary_window::createAction(widgetParent, "Cancel", "Cancel operation", app::key_sequence::KeySequence(Qt::Key_Escape)));
-	this->typeAction = std::move(app::secondary_window::createAction(widgetParent, "Insert", "Insert", app::key_sequence::KeySequence(Qt::Key_I)));
+	this->applyAction = std::move(app::secondary_window::createAction(widgetParent, std::string(), std::string(), app::commands::KeySequence(Qt::Key_unknown)));
+	this->browseAction = std::move(app::secondary_window::createAction(widgetParent, "Browse", "Browse files", app::commands::KeySequence(Qt::Key_B)));
+	this->cancelAction = std::move(app::secondary_window::createAction(widgetParent, "Cancel", "Cancel operation", app::commands::KeySequence(Qt::Key_Escape)));
+	this->typeAction = std::move(app::secondary_window::createAction(widgetParent, "Insert", "Insert", app::commands::KeySequence(Qt::Key_I)));
 
 	this->pathToOpen = app::secondary_window::createLineEdit(widgetParent, std::string(), this->typeAction);
 

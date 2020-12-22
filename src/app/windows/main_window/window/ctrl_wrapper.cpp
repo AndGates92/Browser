@@ -298,7 +298,7 @@ void app::main_window::window::CtrlWrapper::setAllShortcutEnabledProperty(const 
 	const QList<QShortcut *> shortcuts = this->window()->findChildren<QShortcut *>(QString(), Qt::FindChildrenRecursively);
 
 	for (QShortcut * shortcut : shortcuts) {
-		app::key_sequence::KeySequence key(shortcut->key());
+		app::commands::KeySequence key(shortcut->key());
 		// If shortcut key is not defined, then do not do anything
 		if (key.count() > 0) {
 			LOG_INFO(app::logger::info_level_e::ZERO, mainWindowCtrlWrapperUserInput,  "Setting enabled for key " << key.toString() << " to " << enabled);

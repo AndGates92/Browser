@@ -23,7 +23,7 @@
  */
 namespace app {
 
-	namespace action {
+	namespace commands {
 
 		class Action;
 
@@ -39,7 +39,7 @@ namespace app {
 			public:
 
 				/**
-				 * @brief Function: explicit ComboBoxItem(const QIcon itemIcon, const QVariant itemUserData, std::unique_ptr<app::action::Action> & itemAction)
+				 * @brief Function: explicit ComboBoxItem(const QIcon itemIcon, const QVariant itemUserData, std::unique_ptr<app::commands::Action> & itemAction)
 				 *
 				 * \param itemIcon: icon of the combo box item
 				 * \param itemUserData: user data of the combo box item
@@ -47,7 +47,7 @@ namespace app {
 				 *
 				 * Combo box item constructor
 				 */
-				explicit ComboBoxItem(const QIcon itemIcon, const QVariant itemUserData, std::unique_ptr<app::action::Action> & itemAction);
+				explicit ComboBoxItem(const QIcon itemIcon, const QVariant itemUserData, std::unique_ptr<app::commands::Action> & itemAction);
 
 				/**
 				 * @brief Function: virtual ~ComboBoxItem()
@@ -104,13 +104,13 @@ namespace app {
 				const QVariant & getUserData() const;
 
 				/**
-				 * @brief Function: const std::unique_ptr<app::action::Action> & getAction() const
+				 * @brief Function: const std::unique_ptr<app::commands::Action> & getAction() const
 				 *
 				 * \return the action of a combo box item
 				 *
 				 * This function returns the action of a combo box item
 				 */
-				const std::unique_ptr<app::action::Action> & getAction() const;
+				const std::unique_ptr<app::commands::Action> & getAction() const;
 
 			protected:
 
@@ -156,7 +156,7 @@ namespace app {
 				 * @brief action of the combo box item
 				 *
 				 */
-				std::unique_ptr<app::action::Action> action;
+				std::unique_ptr<app::commands::Action> action;
 
 		};
 

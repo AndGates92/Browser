@@ -13,6 +13,7 @@
 #include "app/utility/logger/macros.h"
 #include "app/utility/exception/exception.h"
 #include "app/utility/log/logging.h"
+#include "app/settings/global.h"
 
 /** @addtogroup MainGroup
  *  @{

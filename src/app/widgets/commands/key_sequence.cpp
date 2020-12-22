@@ -20,27 +20,31 @@ LOGGING_CONTEXT(keySequenceString, keySequence.string, TYPE_LEVEL, INFO_VERBOSIT
 
 namespace app {
 
-	namespace key_sequence {
+	namespace commands {
 
-		namespace {
-			/**
-			 * @brief Maximum number of element on the QKeySequence vector
-			 *
-			 */
-			static constexpr unsigned int maxCount = 4;
+		namespace key_sequence {
 
-			/**
-			 * @brief Maximum number of key codes in every element of the vector
-			 *
-			 */
-			static constexpr unsigned int maxKeyCodesInEl = 1;
+			namespace {
+				/**
+				 * @brief Maximum number of element on the QKeySequence vector
+				 *
+				 */
+				static constexpr unsigned int maxCount = 4;
+
+				/**
+				 * @brief Maximum number of key codes in every element of the vector
+				 *
+				 */
+				static constexpr unsigned int maxKeyCodesInEl = 1;
+			}
+
 		}
 
 	}
 
 }
 
-app::key_sequence::KeySequence::KeySequence(const QString & keyStr, QKeySequence::SequenceFormat format) {
+app::commands::KeySequence::KeySequence(const QString & keyStr, QKeySequence::SequenceFormat format) {
 	LOG_INFO(app::logger::info_level_e::ZERO, keySequenceOverall,  "Key Sequence constructor: key " << keyStr);
 
 	// Split key sequence string into individual key sequences
@@ -59,7 +63,7 @@ app::key_sequence::KeySequence::KeySequence(const QString & keyStr, QKeySequence
 	this->checkRules();
 }
 
-app::key_sequence::KeySequence::KeySequence(int key0, int key1, int key2, int key3) {
+app::commands::KeySequence::KeySequence(int key0, int key1, int key2, int key3) {
 	LOG_INFO(app::logger::info_level_e::ZERO, keySequenceOverall,  "Key Sequence constructor: key0 0x" << QString("%1").arg(key0, 0, 16) << " key1 0x" << QString("%1").arg(key1, 0, 16) << " key2 0x" << QString("%1").arg(key2, 0, 16) << " key3 0x" << QString("%1").arg(key3, 0, 16));
 	this->addKey(key0);
 	this->addKey(key1);
@@ -69,7 +73,7 @@ app::key_sequence::KeySequence::KeySequence(int key0, int key1, int key2, int ke
 	this->checkRules();
 }
 
-app::key_sequence::KeySequence::KeySequence(const QKeySequence & qKeySeq) {
+app::commands::KeySequence::KeySequence(const QKeySequence & qKeySeq) {
 	const unsigned int thisSize = qKeySeq.count();
 
 	for (unsigned int idx = 0; idx < thisSize; idx++) {
@@ -81,7 +85,7 @@ app::key_sequence::KeySequence::KeySequence(const QKeySequence & qKeySeq) {
 	this->checkRules();
 }
 
-app::key_sequence::KeySequence::KeySequence(const QKeySequence::StandardKey stdKey) {
+app::commands::KeySequence::KeySequence(const QKeySequence::StandardKey stdKey) {
 	LOG_INFO(app::logger::info_level_e::ZERO, keySequenceOverall,  "Key Sequence constructor: key " << stdKey);
 	const QKeySequence qKeySeq(stdKey);
 	// There is only 1 key in the key sequence, therefore accessing it at index 0
@@ -91,13 +95,13 @@ app::key_sequence::KeySequence::KeySequence(const QKeySequence::StandardKey stdK
 	this->checkRules();
 }
 
-app::key_sequence::KeySequence::KeySequence(const app::key_sequence::KeySequence & rhs) : keySeqVec(rhs.keySeqVec) {
+app::commands::KeySequence::KeySequence(const app::commands::KeySequence & rhs) : keySeqVec(rhs.keySeqVec) {
 
 	LOG_INFO(app::logger::info_level_e::ZERO, keySequenceOverall,  "Copy constructor key sequence");
 
 }
 
-app::key_sequence::KeySequence & app::key_sequence::KeySequence::operator=(const app::key_sequence::KeySequence & rhs) {
+app::commands::KeySequence & app::commands::KeySequence::operator=(const app::commands::KeySequence & rhs) {
 
 	LOG_INFO(app::logger::info_level_e::ZERO, keySequenceOverall,  "Copy assignment operator for key sequence");
 
@@ -113,14 +117,14 @@ app::key_sequence::KeySequence & app::key_sequence::KeySequence::operator=(const
 	return *this;
 }
 
-app::key_sequence::KeySequence::KeySequence(app::key_sequence::KeySequence && rhs) : keySeqVec(std::exchange(rhs.keySeqVec, QVector<QKeySequence>())) {
+app::commands::KeySequence::KeySequence(app::commands::KeySequence && rhs) : keySeqVec(std::exchange(rhs.keySeqVec, QVector<QKeySequence>())) {
 
 	LOG_INFO(app::logger::info_level_e::ZERO, keySequenceOverall,  "Move constructor key sequence");
 
 	EXCEPTION_ACTION_COND((rhs.keySeqVec.capacity() != 0), throw,  "Released all memory used by vector but capacity is still non-zero - actual capacity " << rhs.keySeqVec.capacity());
 }
 
-app::key_sequence::KeySequence & app::key_sequence::KeySequence::operator=(app::key_sequence::KeySequence && rhs) {
+app::commands::KeySequence & app::commands::KeySequence::operator=(app::commands::KeySequence && rhs) {
 
 	LOG_INFO(app::logger::info_level_e::ZERO, keySequenceOverall,  "Move assignment operator for key sequence");
 
@@ -132,12 +136,12 @@ app::key_sequence::KeySequence & app::key_sequence::KeySequence::operator=(app::
 	return *this;
 }
 
-app::key_sequence::KeySequence::~KeySequence() {
+app::commands::KeySequence::~KeySequence() {
 	LOG_INFO(app::logger::info_level_e::ZERO, keySequenceOverall,  "Destructor of KeySequence class");
 
 }
 
-void app::key_sequence::KeySequence::addKey(int key, QKeySequence::SequenceFormat format) {
+void app::commands::KeySequence::addKey(int key, QKeySequence::SequenceFormat format) {
 	if (key != Qt::Key_unknown) {
 		LOG_INFO(app::logger::info_level_e::ZERO, keySequenceOverall,  "Adding 0x" << QString("%1").arg(int(key), 0, 16) << " to key sequence vector");
 		const QKeySequence keySeq(key, format);
@@ -145,11 +149,11 @@ void app::key_sequence::KeySequence::addKey(int key, QKeySequence::SequenceForma
 	}
 }
 
-unsigned int app::key_sequence::KeySequence::count() const {
+unsigned int app::commands::KeySequence::count() const {
 	return this->keySeqVec.size();
 }
 
-int app::key_sequence::KeySequence::getIntKey(const unsigned int & index) const {
+int app::commands::KeySequence::getIntKey(const unsigned int & index) const {
 
 	this->checkRules();
 
@@ -166,17 +170,17 @@ int app::key_sequence::KeySequence::getIntKey(const unsigned int & index) const 
 	return key;
 }
 
-void app::key_sequence::KeySequence::checkRules() const {
+void app::commands::KeySequence::checkRules() const {
 	unsigned int numEl = this->count();
-	EXCEPTION_ACTION_COND((numEl > app::key_sequence::maxCount), throw,  "Vector has " << numEl << " elements which is larger than the allowed maximum number " << app::key_sequence::maxCount);
+	EXCEPTION_ACTION_COND((numEl > app::commands::key_sequence::maxCount), throw,  "Vector has " << numEl << " elements which is larger than the allowed maximum number " << app::commands::key_sequence::maxCount);
 
 	for (QVector<QKeySequence>::const_iterator cIter = this->keySeqVec.cbegin(); cIter != this->keySeqVec.cend(); cIter++) {
 		unsigned int numKeyCode = cIter->count();
-		EXCEPTION_ACTION_COND((numKeyCode > app::key_sequence::maxKeyCodesInEl), throw,  "Element has " << numKeyCode << " key codes which is larger than the allowed maximum number " << app::key_sequence::maxKeyCodesInEl);
+		EXCEPTION_ACTION_COND((numKeyCode > app::commands::key_sequence::maxKeyCodesInEl), throw,  "Element has " << numKeyCode << " key codes which is larger than the allowed maximum number " << app::commands::key_sequence::maxKeyCodesInEl);
 	}
 }
 
-QKeySequence app::key_sequence::KeySequence::toQKeySequence() const {
+QKeySequence app::commands::KeySequence::toQKeySequence() const {
 
 	int key0 = this->getIntKey(0);
 	int key1 = this->getIntKey(1);
@@ -189,7 +193,7 @@ QKeySequence app::key_sequence::KeySequence::toQKeySequence() const {
 
 }
 
-bool app::key_sequence::KeySequence::isEmpty() const {
+bool app::commands::KeySequence::isEmpty() const {
 	const bool emptyVector = keySeqVec.empty();
 
 
@@ -213,7 +217,7 @@ bool app::key_sequence::KeySequence::isEmpty() const {
 	return emptyKeySequence;
 }
 
-QString app::key_sequence::KeySequence::toString(QKeySequence::SequenceFormat format) const {
+QString app::commands::KeySequence::toString(QKeySequence::SequenceFormat format) const {
 
 	QStringList keySeqList;
 
@@ -222,7 +226,7 @@ QString app::key_sequence::KeySequence::toString(QKeySequence::SequenceFormat fo
 		// - split the key from the modifier (using Qt::KeyboardModifierMask)
 		// - if the sequence is only a special character then print string from the lookup table
 		// - if the sequence contains also a non-special character then call QKeySequence method toString
-		app::key_info::KeyInfo seqInfo(*cIter);
+		app::commands::KeyInfo seqInfo(*cIter);
 		LOG_INFO(app::logger::info_level_e::ZERO, keySequenceString,  "Processing key " << seqInfo.toString(format));
 		keySeqList.append(seqInfo.toString(format));
 	}
@@ -233,14 +237,14 @@ QString app::key_sequence::KeySequence::toString(QKeySequence::SequenceFormat fo
 	return keyStr;
 }
 
-std::string app::key_sequence::KeySequence::toStdString(const QKeySequence::SequenceFormat format) const {
+std::string app::commands::KeySequence::toStdString(const QKeySequence::SequenceFormat format) const {
 	QString keyQStr(this->toString(format));
 	return keyQStr.toStdString();
 }
 
-CONST_GETTER(app::key_sequence::KeySequence::getSeqVec, QVector<QKeySequence> &, this->keySeqVec)
+CONST_GETTER(app::commands::KeySequence::getSeqVec, QVector<QKeySequence> &, this->keySeqVec)
 
-QKeySequence::SequenceMatch app::key_sequence::KeySequence::matches(const app::key_sequence::KeySequence & otherSeq) const {
+QKeySequence::SequenceMatch app::commands::KeySequence::matches(const app::commands::KeySequence & otherSeq) const {
 	const unsigned int thisSize = this->count();
 	const unsigned int otherSize = otherSeq.count();
 
@@ -269,25 +273,25 @@ QKeySequence::SequenceMatch app::key_sequence::KeySequence::matches(const app::k
 }
 
 // Operator overloading
-bool app::key_sequence::KeySequence::operator< (const app::key_sequence::KeySequence & otherSeq) const {
+bool app::commands::KeySequence::operator< (const app::commands::KeySequence & otherSeq) const {
 	QVector<QKeySequence> otherKeySeq(otherSeq.getSeqVec());
 	bool cmp = std::lexicographical_compare(this->keySeqVec.cbegin(), this->keySeqVec.cend(), otherKeySeq.cbegin(), otherKeySeq.cend());
 	return cmp;
 }
 
-bool app::key_sequence::KeySequence::operator> (const app::key_sequence::KeySequence & otherSeq) const {
+bool app::commands::KeySequence::operator> (const app::commands::KeySequence & otherSeq) const {
 	return (otherSeq < *this);
 }
 
-bool app::key_sequence::KeySequence::operator>= (const app::key_sequence::KeySequence & otherSeq) const {
+bool app::commands::KeySequence::operator>= (const app::commands::KeySequence & otherSeq) const {
 	return !(*this < otherSeq);
 }
 
-bool app::key_sequence::KeySequence::operator<= (const app::key_sequence::KeySequence & otherSeq) const {
+bool app::commands::KeySequence::operator<= (const app::commands::KeySequence & otherSeq) const {
 	return !(otherSeq < *this);
 }
 
-bool app::key_sequence::KeySequence::operator== (const app::key_sequence::KeySequence & otherSeq) const {
+bool app::commands::KeySequence::operator== (const app::commands::KeySequence & otherSeq) const {
 	// If the length of the two key sequences are different, they cannot be equal
 	if (this->count() != otherSeq.count()) {
 		return false;
@@ -307,10 +311,10 @@ bool app::key_sequence::KeySequence::operator== (const app::key_sequence::KeySeq
 	return equal;
 }
 
-bool app::key_sequence::KeySequence::operator!= (const app::key_sequence::KeySequence & otherSeq) const {
+bool app::commands::KeySequence::operator!= (const app::commands::KeySequence & otherSeq) const {
 	return !(*this == otherSeq);
 }
 
-int app::key_sequence::KeySequence::operator[] (const int & index) const {
+int app::commands::KeySequence::operator[] (const int & index) const {
 	return this->getIntKey(index);
 }

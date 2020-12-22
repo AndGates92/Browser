@@ -6,7 +6,6 @@
  * @brief Main Window JSON Data functions
  */
 
-#include "app/widgets/commands/key_sequence.h"
 #include "app/utility/logger/macros.h"
 #include "app/utility/qt/qt_operator.h"
 #include "app/shared/constants.h"

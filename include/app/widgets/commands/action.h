@@ -24,13 +24,9 @@
  */
 namespace app {
 
-	namespace key_sequence {
+	namespace commands {
 
 		class KeySequence;
-
-	}
-
-	namespace action {
 
 		/**
 		 * @brief Action class
@@ -58,40 +54,40 @@ namespace app {
 				virtual ~Action();
 
 				/**
-				 * @brief Function: void setShortcut(const app::key_sequence::KeySequence & shortcut)
+				 * @brief Function: void setShortcut(const app::commands::KeySequence & shortcut)
 				 *
 				 * \param shortcut: primary shortcut key
 				 *
 				 * This function sets the primary shortcut key
 				 */
-				 void setShortcut(const app::key_sequence::KeySequence & shortcut);
+				 void setShortcut(const app::commands::KeySequence & shortcut);
 
 				/**
-				 * @brief Function: void setShortcuts(const std::list<app::key_sequence::KeySequence> & shortcuts)
+				 * @brief Function: void setShortcuts(const std::list<app::commands::KeySequence> & shortcuts)
 				 *
 				 * \param shortcuts: list of shortcuts that trigger the action
 				 *
 				 * This function sets the primary shortcut key
 				 */
-				 void setShortcuts(const std::list<app::key_sequence::KeySequence> & shortcuts);
+				 void setShortcuts(const std::list<app::commands::KeySequence> & shortcuts);
 
 				/**
-				 * @brief Function: app::key_sequence::KeySequence shortcut() const
+				 * @brief Function: app::commands::KeySequence shortcut() const
 				 *
 				 * \return primary shortcut key
 				 *
 				 * This function returns the primary shortcut key
 				 */
-				app::key_sequence::KeySequence shortcut() const;
+				app::commands::KeySequence shortcut() const;
 
 				/**
-				 * @brief Function: std::list<app::key_sequence::KeySequence> shortcuts() const
+				 * @brief Function: std::list<app::commands::KeySequence> shortcuts() const
 				 *
 				 * \return a list of shortcuts
 				 *
 				 * This function returns a list of shortcuts where the primary one is at the head of the list
 				 */
-				std::list<app::key_sequence::KeySequence> shortcuts() const;
+				std::list<app::commands::KeySequence> shortcuts() const;
 
 				/**
 				 * @brief Function: virtual const std::string print() const override

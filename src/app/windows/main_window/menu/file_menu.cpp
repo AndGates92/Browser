@@ -22,7 +22,7 @@ LOGGING_CONTEXT(fileMenuSaveAction, fileMenu.saveAction, TYPE_LEVEL, INFO_VERBOS
 LOGGING_CONTEXT(fileMenuPrintAction, fileMenu.printAction, TYPE_LEVEL, INFO_VERBOSITY)
 LOGGING_CONTEXT(fileMenuExitAction, fileMenu.exitAction, TYPE_LEVEL, INFO_VERBOSITY)
 
-app::main_window::menu::FileMenu::FileMenu(QWidget * parent, std::weak_ptr<QMenuBar> menuBar, const char* menuName, const app::key_sequence::KeySequence & key) : app::base::menu::Menu(parent,menuBar,menuName,key), openWindow(Q_NULLPTR) {
+app::main_window::menu::FileMenu::FileMenu(QWidget * parent, std::weak_ptr<QMenuBar> menuBar, const char* menuName, const app::commands::KeySequence & key) : app::base::menu::Menu(parent,menuBar,menuName,key), openWindow(Q_NULLPTR) {
 
 	LOG_INFO(app::logger::info_level_e::ZERO, fileMenuOverall,  "Creating file menu");
 	this->createActions();

@@ -138,11 +138,11 @@ void app::find_window::Settings::widgetLayout() {
 
 void app::find_window::Settings::createActions() {
 
-	this->directionItems.emplace_back(QIcon(), QVariant(), app::shared::offset_type_e::UP, std::move(app::secondary_window::createAction(this, "Up", "Search item towards the top of the page", app::key_sequence::KeySequence(Qt::Key_K))));
-	this->directionItems.emplace_back(QIcon(), QVariant(), app::shared::offset_type_e::DOWN, std::move(app::secondary_window::createAction(this, "Down", "Search item towards the bottom of the page", app::key_sequence::KeySequence(Qt::Key_J))));
+	this->directionItems.emplace_back(QIcon(), QVariant(), app::shared::offset_type_e::UP, std::move(app::secondary_window::createAction(this, "Up", "Search item towards the top of the page", app::commands::KeySequence(Qt::Key_K))));
+	this->directionItems.emplace_back(QIcon(), QVariant(), app::shared::offset_type_e::DOWN, std::move(app::secondary_window::createAction(this, "Down", "Search item towards the bottom of the page", app::commands::KeySequence(Qt::Key_J))));
 
-	this->caseSensitiveAction = std::move(app::secondary_window::createAction(this, "Case sensitive search", "Enable/Disable case sensitive search", app::key_sequence::KeySequence(Qt::Key_C)));
-	this->matchFullWordOnlyAction = std::move(app::secondary_window::createAction(this, "Match full word only", "Enable/Disbale search of full words only", app::key_sequence::KeySequence(Qt::Key_M)));
+	this->caseSensitiveAction = std::move(app::secondary_window::createAction(this, "Case sensitive search", "Enable/Disable case sensitive search", app::commands::KeySequence(Qt::Key_C)));
+	this->matchFullWordOnlyAction = std::move(app::secondary_window::createAction(this, "Match full word only", "Enable/Disbale search of full words only", app::commands::KeySequence(Qt::Key_M)));
 }
 
 void app::find_window::Settings::fillWidget() {

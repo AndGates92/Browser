@@ -18,7 +18,7 @@
 // Categories
 LOGGING_CONTEXT(comboBoxFindOverall, comboBoxFind.overall, TYPE_LEVEL, INFO_VERBOSITY)
 
-app::find_window::ComboBoxFind::ComboBoxFind(const QIcon itemIcon, const QVariant itemUserData, const app::shared::offset_type_e itemDirection, std::unique_ptr<app::action::Action> itemAction) : app::combo_box_item::ComboBoxItem(itemIcon, itemUserData, itemAction), direction(itemDirection) {
+app::find_window::ComboBoxFind::ComboBoxFind(const QIcon itemIcon, const QVariant itemUserData, const app::shared::offset_type_e itemDirection, std::unique_ptr<app::commands::Action> itemAction) : app::combo_box_item::ComboBoxItem(itemIcon, itemUserData, itemAction), direction(itemDirection) {
 	LOG_INFO(app::logger::info_level_e::ZERO, comboBoxFindOverall,  "combo box find constructor with direction " << this->direction);
 
 }

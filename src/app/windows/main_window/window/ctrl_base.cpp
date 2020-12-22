@@ -99,7 +99,7 @@ void app::main_window::window::CtrlBase::keyReleaseEvent(QKeyEvent * event) {
 	const int releasedKey = event->key();
 	const Qt::KeyboardModifiers keyModifiers = event->modifiers();
 
-	const app::key_sequence::KeySequence keySeq(releasedKey | keyModifiers);
+	const app::commands::KeySequence keySeq(releasedKey | keyModifiers);
 
 	if (event->type() == QEvent::KeyRelease) {
 
@@ -141,7 +141,7 @@ void app::main_window::window::CtrlBase::keyPressEvent(QKeyEvent * event) {
 	const int pressedKey = event->key();
 	const Qt::KeyboardModifiers keyModifiers = event->modifiers();
 
-	const app::key_sequence::KeySequence keySeq(pressedKey | keyModifiers);
+	const app::commands::KeySequence keySeq(pressedKey | keyModifiers);
 
 	if (event->type() == QEvent::KeyPress) {
 

@@ -376,7 +376,7 @@ void app::main_window::window::CtrlTab::actionOnReleasedKey(const app::main_wind
 	const int releasedKey = event->key();
 	const Qt::KeyboardModifiers keyModifiers = event->modifiers();
 
-	const app::key_sequence::KeySequence keySeq(releasedKey | keyModifiers);
+	const app::commands::KeySequence keySeq(releasedKey | keyModifiers);
 
 	if (event->type() == QEvent::KeyRelease) {
 

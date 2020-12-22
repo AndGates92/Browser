@@ -17,7 +17,6 @@
 #include "app/utility/logger/macros.h"
 #include "app/windows/main_window/shared/shared_types.h"
 #include "app/windows/main_window/json/action.h"
-#include "app/widgets/commands/key_sequence.h"
 
 LOGGING_CONTEXT(mainWindowActionOverall, mainWindowAction.overall, TYPE_LEVEL, INFO_VERBOSITY)
 

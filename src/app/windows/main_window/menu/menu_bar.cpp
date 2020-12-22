@@ -22,8 +22,8 @@ app::main_window::menu::MenuBar::MenuBar(QWidget * parent) : app::base::menu::Me
 }
 
 void app::main_window::menu::MenuBar::createMenus() {
-	this->fileMenu = std::make_unique<app::main_window::menu::FileMenu>(this, this->weak_from_this(), "File", app::key_sequence::KeySequence(Qt::Key_F));
-	this->editMenu = std::make_unique<app::main_window::menu::EditMenu>(this, this->weak_from_this(), "Edit", app::key_sequence::KeySequence(Qt::Key_E));
+	this->fileMenu = std::make_unique<app::main_window::menu::FileMenu>(this, this->weak_from_this(), "File", app::commands::KeySequence(Qt::Key_F));
+	this->editMenu = std::make_unique<app::main_window::menu::EditMenu>(this, this->weak_from_this(), "Edit", app::commands::KeySequence(Qt::Key_E));
 }
 
 app::main_window::menu::MenuBar::~MenuBar() {

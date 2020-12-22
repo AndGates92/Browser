@@ -20,7 +20,7 @@
  */
 namespace app {
 
-	namespace key_sequence {
+	namespace commands {
 
 		class KeySequence;
 

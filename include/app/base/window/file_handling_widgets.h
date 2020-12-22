@@ -27,7 +27,7 @@
 
 namespace app {
 
-	namespace action {
+	namespace commands {
 
 		class Action;
 
@@ -72,25 +72,25 @@ namespace app {
 					 * @brief open action
 					 *
 					 */
-					std::unique_ptr<app::action::Action> applyAction;
+					std::unique_ptr<app::commands::Action> applyAction;
 
 					/**
 					 * @brief browse action
 					 *
 					 */
-					std::unique_ptr<app::action::Action> browseAction;
+					std::unique_ptr<app::commands::Action> browseAction;
 
 					/**
 					 * @brief cancel action
 					 *
 					 */
-					std::unique_ptr<app::action::Action> cancelAction;
+					std::unique_ptr<app::commands::Action> cancelAction;
 
 					/**
 					 * @brief insert action
 					 *
 					 */
-					std::unique_ptr<app::action::Action> typeAction;
+					std::unique_ptr<app::commands::Action> typeAction;
 
 					/**
 					 * @brief file browser

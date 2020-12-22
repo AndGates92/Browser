@@ -205,11 +205,11 @@ void app::open_window::Window::fillWindow() {
 void app::open_window::Window::connectSignals() {
 	LOG_INFO(app::logger::info_level_e::ZERO, openButtonWindowOverall,  "Connect signals");
 
-	connect(this->applyAction.get(), &app::action::Action::triggered, this, &app::open_window::Window::apply);
+	connect(this->applyAction.get(), &app::commands::Action::triggered, this, &app::open_window::Window::apply);
 	connect(this->openButton.get(), &QPushButton::pressed, this, &app::open_window::Window::apply);
-	connect(this->browseAction.get(), &app::action::Action::triggered, this, &app::open_window::Window::browse);
+	connect(this->browseAction.get(), &app::commands::Action::triggered, this, &app::open_window::Window::browse);
 	connect(this->browseButton.get(), &QPushButton::pressed, this, &app::open_window::Window::browse);
-	connect(this->cancelAction.get(), &app::action::Action::triggered, this, &app::open_window::Window::cancel);
+	connect(this->cancelAction.get(), &app::commands::Action::triggered, this, &app::open_window::Window::cancel);
 	connect(this->cancelButton.get(), &QPushButton::released, this, &app::open_window::Window::cancel);
 
 	connect(this->pathToOpen.get(), &QLineEdit::textChanged, this, &app::open_window::Window::pathChanged);

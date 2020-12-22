@@ -172,9 +172,9 @@ void app::find_window::Window::windowLayout() {
 
 void app::find_window::Window::createActions() {
 
-	this->findAction = std::move(app::secondary_window::createAction(this, "Find", "Find text in the current page", app::key_sequence::KeySequence(Qt::Key_F)));
-	this->cancelAction = std::move(app::secondary_window::createAction(this, "Cancel", "Cancel operation", app::key_sequence::KeySequence(Qt::Key_Escape)));
-	this->typeAction = std::move(app::secondary_window::createAction(this, "Insert", "Insert", app::key_sequence::KeySequence(Qt::Key_I)));
+	this->findAction = std::move(app::secondary_window::createAction(this, "Find", "Find text in the current page", app::commands::KeySequence(Qt::Key_F)));
+	this->cancelAction = std::move(app::secondary_window::createAction(this, "Cancel", "Cancel operation", app::commands::KeySequence(Qt::Key_Escape)));
+	this->typeAction = std::move(app::secondary_window::createAction(this, "Insert", "Insert", app::commands::KeySequence(Qt::Key_I)));
 
 }
 
@@ -193,9 +193,9 @@ void app::find_window::Window::fillWindow() {
 void app::find_window::Window::connectSignals() {
 	LOG_INFO(app::logger::info_level_e::ZERO, findButtonWindowOverall,  "Connect signals");
 
-	connect(this->findAction.get(), &app::action::Action::triggered, this, &app::find_window::Window::apply);
+	connect(this->findAction.get(), &app::commands::Action::triggered, this, &app::find_window::Window::apply);
 	connect(this->findButton.get(), &QPushButton::pressed, this, &app::find_window::Window::apply);
-	connect(this->cancelAction.get(), &app::action::Action::triggered, this, &app::find_window::Window::cancel);
+	connect(this->cancelAction.get(), &app::commands::Action::triggered, this, &app::find_window::Window::cancel);
 	connect(this->cancelButton.get(), &QPushButton::pressed, this, &app::find_window::Window::cancel);
 }
 

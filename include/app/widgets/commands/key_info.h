@@ -21,7 +21,7 @@
  */
 namespace app {
 
-	namespace key_info {
+	namespace commands {
 
 		/**
 		 * @brief KeyInfo class
@@ -41,41 +41,41 @@ namespace app {
 
 				// Move and copy constructor
 				/**
-				 * @brief Function: KeyInfo(const app::key_info::KeyInfo & rhs)
+				 * @brief Function: KeyInfo(const app::commands::KeyInfo & rhs)
 				 *
 				 * \param rhs: class to copy
 				 *
 				 * JSON parser copy constructor
 				 */
-				explicit KeyInfo(const app::key_info::KeyInfo & rhs);
+				explicit KeyInfo(const app::commands::KeyInfo & rhs);
 
 				/**
-				 * @brief Function: KeyInfo::KeyInfo(app::key_info::KeyInfo && rhs)
+				 * @brief Function: KeyInfo::KeyInfo(app::commands::KeyInfo && rhs)
 				 *
 				 * \param rhs: class to move
 				 *
 				 * JSON parser move constructor
 				 */
-				explicit KeyInfo(app::key_info::KeyInfo && rhs);
+				explicit KeyInfo(app::commands::KeyInfo && rhs);
 
 				// Move and copy assignment operators
 				/**
-				 * @brief Function: KeyInfo & operator=(const app::key_info::KeyInfo & rhs)
+				 * @brief Function: KeyInfo & operator=(const app::commands::KeyInfo & rhs)
 				 *
 				 * \param rhs: class to copy
 				 *
 				 * JSON parser copy assignment operator
 				 */
-				KeyInfo & operator=(const app::key_info::KeyInfo & rhs);
+				KeyInfo & operator=(const app::commands::KeyInfo & rhs);
 
 				/**
-				 * @brief Function: KeyInfo & operator=(app::key_info::KeyInfo && rhs)
+				 * @brief Function: KeyInfo & operator=(app::commands::KeyInfo && rhs)
 				 *
 				 * \param rhs: class to move
 				 *
 				 * JSON parser move assignment operator
 				 */
-				KeyInfo & operator=(app::key_info::KeyInfo && rhs);
+				KeyInfo & operator=(app::commands::KeyInfo && rhs);
 
 				/**
 				 * @brief Function: virtual ~KeyInfo()

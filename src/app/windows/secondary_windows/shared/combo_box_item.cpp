@@ -18,7 +18,7 @@
 // Categories
 LOGGING_CONTEXT(comboBoxItemOverall, comboBoxItem.overall, TYPE_LEVEL, INFO_VERBOSITY)
 
-app::combo_box_item::ComboBoxItem::ComboBoxItem(const QIcon itemIcon, const QVariant itemUserData, std::unique_ptr<app::action::Action> & itemAction) : icon(itemIcon), userData(itemUserData), action(std::move(itemAction)) {
+app::combo_box_item::ComboBoxItem::ComboBoxItem(const QIcon itemIcon, const QVariant itemUserData, std::unique_ptr<app::commands::Action> & itemAction) : icon(itemIcon), userData(itemUserData), action(std::move(itemAction)) {
 	EXCEPTION_ACTION_COND((this->action == nullptr), throw,  "Action must not be null");
 	EXCEPTION_ACTION_COND((this->action->print().empty() == true), throw,  "Action text cannot be empty");
 	LOG_INFO(app::logger::info_level_e::ZERO, comboBoxItemOverall,  "combo box item constructor with action " << this->action.get());
@@ -49,5 +49,5 @@ app::combo_box_item::ComboBoxItem & app::combo_box_item::ComboBoxItem::operator=
 
 CONST_GETTER(app::combo_box_item::ComboBoxItem::getIcon, QIcon &, this->icon)
 CONST_GETTER(app::combo_box_item::ComboBoxItem::getUserData, QVariant &, this->userData)
-CONST_GETTER(app::combo_box_item::ComboBoxItem::getAction, std::unique_ptr<app::action::Action> &, this->action)
+CONST_GETTER(app::combo_box_item::ComboBoxItem::getAction, std::unique_ptr<app::commands::Action> &, this->action)
 CONST_GETTER(app::combo_box_item::ComboBoxItem::getText, std::string, this->action->print())

@@ -29,10 +29,10 @@ app::base::popup::PopupBase::~PopupBase() {
 
 }
 
-std::unique_ptr<QLabel> app::base::popup::PopupBase::actionToLabel(QWidget * parent, const std::unique_ptr<app::action::Action> & action) const {
+std::unique_ptr<QLabel> app::base::popup::PopupBase::actionToLabel(QWidget * parent, const std::unique_ptr<app::commands::Action> & action) const {
 	std::unique_ptr<QLabel> label = std::make_unique<QLabel>(parent);
 
-	app::key_sequence::KeySequence actionKey(action->shortcut());
+	app::commands::KeySequence actionKey(action->shortcut());
 	QString actionText(action->text());
 
 	QString labelText = QString();

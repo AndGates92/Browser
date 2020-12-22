@@ -40,7 +40,7 @@ namespace app {
 				public:
 
 					/**
-					 * @brief Function: explicit Menu(QWidget * parent = Q_NULLPTR, std::weak_ptr<QMenuBar> menuBar = std::weak_ptr<QMenuBar>(), const char* menuName = "Unknown", const app::key_sequence::KeySequence & key = app::key_sequence::KeySequence(QKeySequence::UnknownKey))
+					 * @brief Function: explicit Menu(QWidget * parent = Q_NULLPTR, std::weak_ptr<QMenuBar> menuBar = std::weak_ptr<QMenuBar>(), const char* menuName = "Unknown", const app::commands::KeySequence & key = app::commands::KeySequence(QKeySequence::UnknownKey))
 					 *
 					 * \param parent: pointer to the parent of the menu
 					 * \param menuBar: menubar the menu is part of
@@ -49,7 +49,7 @@ namespace app {
 					 *
 					 * Constructor of base class menu
 					 */
-					explicit Menu(QWidget * parent = Q_NULLPTR, std::weak_ptr<QMenuBar> menuBar = std::weak_ptr<QMenuBar>(), const char* menuName = "Unknown", const app::key_sequence::KeySequence & key = app::key_sequence::KeySequence(QKeySequence::UnknownKey));
+					explicit Menu(QWidget * parent = Q_NULLPTR, std::weak_ptr<QMenuBar> menuBar = std::weak_ptr<QMenuBar>(), const char* menuName = "Unknown", const app::commands::KeySequence & key = app::commands::KeySequence(QKeySequence::UnknownKey));
 
 					/**
 					 * @brief Function: virtual ~Menu()
@@ -108,7 +108,7 @@ namespace app {
 					 * @brief shortcut key sequence
 					 *
 					 */
-					const app::key_sequence::KeySequence key;
+					const app::commands::KeySequence key;
 
 				private slots:
 					/**

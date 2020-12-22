@@ -26,7 +26,7 @@ app::base::window::OpenContent::OpenContent(QWidget *widgetParent) : app::base::
 
 	this->applyAction->setText("Open");
 	this->applyAction->setStatusTip("Open URL or file");
-	this->applyAction->setShortcut(app::key_sequence::KeySequence(Qt::Key_O));
+	this->applyAction->setShortcut(app::commands::KeySequence(Qt::Key_O));
 
 }
 

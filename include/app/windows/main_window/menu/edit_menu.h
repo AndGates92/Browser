@@ -46,7 +46,7 @@ namespace app {
 
 				public:
 					/**
-					 * @brief Function: explicit EditMenu(QWidget * parent, std::weak_ptr<QMenuBar> menuBar, const char* menuName, const app::key_sequence::KeySequence & key)
+					 * @brief Function: explicit EditMenu(QWidget * parent, std::weak_ptr<QMenuBar> menuBar, const char* menuName, const app::commands::KeySequence & key)
 					 *
 					 * \param parent: pointer to the parent of the menu
 					 * \param menuBar: menubar the menu is part of
@@ -55,7 +55,7 @@ namespace app {
 					 *
 					 * Constructor of edit menu
 					 */
-					explicit EditMenu(QWidget * parent, std::weak_ptr<QMenuBar> menuBar, const char* menuName, const app::key_sequence::KeySequence & key);
+					explicit EditMenu(QWidget * parent, std::weak_ptr<QMenuBar> menuBar, const char* menuName, const app::commands::KeySequence & key);
 
 					/**
 					 * @brief Function: virtual ~EditMenu()
