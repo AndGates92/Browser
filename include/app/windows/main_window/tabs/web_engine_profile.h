@@ -46,7 +46,7 @@ namespace app {
 					 *
 					 * Main window web engine profile constructor
 					 */
-					explicit WebEngineProfile(QObject * parent, const QString & storageName);
+					explicit WebEngineProfile(const QString & storageName, QObject * parent);
 
 					/**
 					 * @brief Function: virtual ~WebEngineProfile()

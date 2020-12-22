@@ -41,14 +41,14 @@ namespace app {
 					static app::base::tab::WebEngineProfile * defaultProfile();
 
 					/**
-					 * @brief Function: explicit WebEngineProfile(QObject * parent, const QString & storageName)
+					 * @brief Function: explicit WebEngineProfile(const QString & storageName, QObject * parent)
 					 *
 					 * \param storageName: name of the profile
 					 * \param parent: parent object
 					 *
 					 * Web engine profile constructor
 					 */
-					explicit WebEngineProfile(QObject * parent, const QString & storageName);
+					explicit WebEngineProfile(const QString & storageName, QObject * parent);
 
 					/**
 					 * @brief Function: virtual ~WebEngineProfile()

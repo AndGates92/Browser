@@ -19,7 +19,7 @@ LOGGING_CONTEXT(webEngineProfileOverall, webEngineProfile.overall, TYPE_LEVEL, I
 app::base::tab::WebEngineProfile * app::base::tab::WebEngineProfile::defaultProfile() {
 
 	try {
-		app::base::tab::WebEngineProfile * profile = dynamic_cast<app::base::tab::WebEngineProfile *>(QWebEngineProfile::defaultProfile());
+		static app::base::tab::WebEngineProfile * profile = dynamic_cast<app::base::tab::WebEngineProfile *>(QWebEngineProfile::defaultProfile());
 		return profile;
 	} catch (const std::bad_cast & badCastE) {
 		EXCEPTION_ACTION(throw, badCastE.what());
@@ -29,7 +29,7 @@ app::base::tab::WebEngineProfile * app::base::tab::WebEngineProfile::defaultProf
 
 }
 
-app::base::tab::WebEngineProfile::WebEngineProfile(QObject * parent, const QString & storageName): QWebEngineProfile(storageName, parent) {
+app::base::tab::WebEngineProfile::WebEngineProfile(const QString & storageName, QObject * parent): QWebEngineProfile(storageName, parent) {
 	LOG_INFO(app::logger::info_level_e::ZERO, webEngineProfileOverall,  "Web engine profile constructor");
 
 }
