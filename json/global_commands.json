@@ -7,6 +7,30 @@
 		"Help" : "This command signals the browser that the user is about to start typing a command"
 	},
 
+	"Cut" : {
+		"Name" : "cut selection to clipboard",
+		"State" : "CUT",
+		"Shortcut" : "c",
+		"LongCmd" : "cut",
+		"Help" : "This command cuts the selection to the clipboard"
+	},
+
+	"Copy" : {
+		"Name" : "copy selection to clipboard",
+		"State" : "COPY",
+		"Shortcut" : "y",
+		"LongCmd" : "copy",
+		"Help" : "This command copies the selection to the clipboard"
+	},
+
+	"Paste" : {
+		"Name" : "paste clipboard to current widget",
+		"State" : "PASTE",
+		"Shortcut" : "p",
+		"LongCmd" : "paste",
+		"Help" : "This command pastes the selection to the current widget"
+	},
+
 	"ToggleMenubar" : {
 		"Name" : "show/hide menubar",
 		"State" : "TOGGLE_MENUBAR",

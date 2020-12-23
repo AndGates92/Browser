@@ -81,6 +81,12 @@ void app::main_window::window::Ctrl::actionOnReleasedKey(const app::main_window:
 void app::main_window::window::Ctrl::executeAction(const app::main_window::state_e & windowState) {
 	const QString userTypedText = this->core->getUserText();
 	switch (windowState) {
+		case app::main_window::state_e::CUT:
+			break;
+		case app::main_window::state_e::COPY:
+			break;
+		case app::main_window::state_e::PASTE:
+			break;
 		case app::main_window::state_e::QUIT:
 			this->closeWindow();
 			break;
@@ -102,6 +108,12 @@ void app::main_window::window::Ctrl::prepareAction(const app::main_window::state
 	const int pressedKey = event->key();
 
 	switch (windowState) {
+		case app::main_window::state_e::CUT:
+			break;
+		case app::main_window::state_e::COPY:
+			break;
+		case app::main_window::state_e::PASTE:
+			break;
 		case app::main_window::state_e::COMMAND:
 			if (pressedKey == Qt::Key_Space) {
 				this->executeCommand(this->core->getUserText(), app::main_window::state_postprocessing_e::SETUP);

@@ -54,9 +54,12 @@ namespace app {
 			MOVE_LEFT,        /**< Move to tab to the left */
 			MOVE_RIGHT,       /**< Move to tab to the right */
 			MOVE_TAB,         /**< Move tab */
+			CUT,              /**< Cut text */
+			COPY,             /**< Copy selection to the clipboard */
+			PASTE,            /**< Paste clipboard to current widget */
 			FIND,             /**< Find string in the tab */
 			FIND_DOWN,        /**< Find next match in the tab */
-			FIND_UP,        /**< Find previous match in the tab */
+			FIND_UP,          /**< Find previous match in the tab */
 			HISTORY_NEXT,     /**< Go to next history item if possible */
 			HISTORY_PREV,     /**< Go to previous history item if possible */
 			SCROLL_UP,        /**< Scroll up in the page */
