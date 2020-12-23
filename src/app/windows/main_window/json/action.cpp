@@ -55,10 +55,14 @@ std::string app::main_window::json::Action::getShortcutKey(const std::string & v
 	auto slashChar = [&] (unsigned char c) {
 		return ((std::isgraph(c) != 0) && (c == '/'));
 	};
+	auto colonChar = [&] (unsigned char c) {
+		return ((std::isgraph(c) != 0) && (c == ':'));
+	};
 
 	for (std::string iter : subStrs) {
 		bool isAlphaNum = (std::find_if(iter.cbegin(), iter.cend(), alphaNum) != iter.cend());
 		bool isSlash = (std::find_if(iter.cbegin(), iter.cend(), slashChar) != iter.cend());
+		bool isColon = (std::find_if(iter.cbegin(), iter.cend(), colonChar) != iter.cend());
 		if (isAlphaNum == true) {
 			// Initialize upperKey with as many spaces as the number of characters in iter in order for std::transform to access already allocated space
 			std::string upperKey(iter.size(), ' ');
@@ -72,6 +76,8 @@ std::string app::main_window::json::Action::getShortcutKey(const std::string & v
 		} else if (isSlash == true) {
 			// If string contains only 1 backslash
 			keyName.append("Key_Slash");
+		} else if (isColon == true) {
+			keyName.append("Key_Colon");
 		} else {
 			EXCEPTION_ACTION(throw,  "Value in JSON file " << value << " is not alphanumeric and lowercase ");
 		}

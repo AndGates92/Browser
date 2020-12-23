@@ -55,7 +55,6 @@ void app::main_window::window::Ctrl::connectSignals() {
 	connect(this->core->popup.get(), &app::main_window::popup::PopupContainer::closeContainer,  [this] () {
 		emit windowStateChangeRequested(app::main_window::state_e::IDLE, app::main_window::state_postprocessing_e::POSTPROCESS);
 	});
-
 }
 
 void app::main_window::window::Ctrl::actionOnReleasedKey(const app::main_window::state_e & windowState, QKeyEvent * event) {
@@ -109,11 +108,6 @@ void app::main_window::window::Ctrl::prepareAction(const app::main_window::state
 			}
 			break;
 		case app::main_window::state_e::IDLE:
-			if (pressedKey == Qt::Key_Colon) {
-				const app::main_window::state_e requestedWindowState = app::main_window::state_e::COMMAND;
-				emit windowStateChangeRequested(requestedWindowState, app::main_window::state_postprocessing_e::POSTPROCESS, static_cast<Qt::Key>(pressedKey));
-			}
-			this->core->printUserInput(app::main_window::text_action_e::CLEAR);
 			break;
 		default:
 			LOG_INFO(app::logger::info_level_e::ZERO, mainWindowCtrlUserInput,  "Window in state " << windowState << " Key pressed is " << event->text() << "(ID " << pressedKey << ")");

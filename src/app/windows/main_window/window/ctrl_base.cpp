@@ -7,13 +7,12 @@
  */
 
 // Qt libraries
-#include <QtWidgets/QShortcut>
 #include <QtGui/QKeyEvent>
 
 #include "app/utility/cpp/cpp_operator.h"
 #include "app/utility/qt/qt_operator.h"
-#include "app/shared/enums.h"
 #include "app/utility/logger/macros.h"
+#include "app/shared/enums.h"
 #include "app/windows/main_window/shared/shared_types.h"
 #include "app/windows/main_window/window/commands.h"
 #include "app/windows/main_window/window/ctrl_base.h"
@@ -96,12 +95,12 @@ QString app::main_window::window::CtrlBase::tabInfoStr(const int & currIndex) co
 
 void app::main_window::window::CtrlBase::keyReleaseEvent(QKeyEvent * event) {
 
-	const int releasedKey = event->key();
-	const Qt::KeyboardModifiers keyModifiers = event->modifiers();
-
-	const app::commands::KeySequence keySeq(releasedKey | keyModifiers);
-
 	if (event->type() == QEvent::KeyRelease) {
+
+		const int releasedKey = event->key();
+		const Qt::KeyboardModifiers keyModifiers = event->modifiers();
+
+		const app::commands::KeySequence keySeq(releasedKey | keyModifiers);
 
 		const app::main_window::state_e windowState = this->core->getMainWindowState();
 		QString userTypedText = this->core->getUserText();
@@ -138,12 +137,14 @@ void app::main_window::window::CtrlBase::keyReleaseEvent(QKeyEvent * event) {
 
 void app::main_window::window::CtrlBase::keyPressEvent(QKeyEvent * event) {
 
-	const int pressedKey = event->key();
-	const Qt::KeyboardModifiers keyModifiers = event->modifiers();
-
-	const app::commands::KeySequence keySeq(pressedKey | keyModifiers);
 
 	if (event->type() == QEvent::KeyPress) {
+
+		const int pressedKey = event->key();
+
+		const Qt::KeyboardModifiers keyModifiers = event->modifiers();
+
+		const app::commands::KeySequence keySeq(pressedKey | keyModifiers);
 
 		const app::main_window::state_e windowState = this->core->getMainWindowState();
 
@@ -158,13 +159,13 @@ void app::main_window::window::CtrlBase::keyPressEvent(QKeyEvent * event) {
 				this->prepareAction(windowState, event);
 				break;
 		}
-	}
 
-	// If user presses escape, enter or return key, bring the state to IDLE and delete user input
-	if ((pressedKey == Qt::Key_Escape) || (pressedKey == Qt::Key_Return) || (pressedKey == Qt::Key_Enter)) {
-		this->resetWindowState();
-	}
+		// If user presses escape, enter or return key, bring the state to IDLE and delete user input
+		if ((pressedKey == Qt::Key_Escape) || (pressedKey == Qt::Key_Return) || (pressedKey == Qt::Key_Enter)) {
+			this->resetWindowState();
+		}
 
+	}
 }
 
 void app::main_window::window::CtrlBase::moveToCommandStateFromNonIdleState(const app::main_window::state_e & windowState, const Qt::Key & key) {
@@ -185,7 +186,4 @@ void app::main_window::window::CtrlBase::resetWindowState() {
 
 	this->core->updateUserInput(app::main_window::text_action_e::CLEAR, QString());
 	this->core->bottomStatusBar->setUserInputText(QString());
-
-	// Give the focus back to the parent widget
-	this->parentWidget()->setFocus();
 }

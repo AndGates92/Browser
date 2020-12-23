@@ -1,4 +1,12 @@
 {
+	"Command" : {
+		"Name" : "start of typing long command",
+		"State" : "COMMAND",
+		"Shortcut" : ":",
+		"LongCmd" : "",
+		"Help" : "This command signals the browser that the user is about to start typing a command"
+	},
+
 	"ToggleMenubar" : {
 		"Name" : "show/hide menubar",
 		"State" : "TOGGLE_MENUBAR",
