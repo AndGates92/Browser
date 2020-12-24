@@ -102,6 +102,16 @@ namespace app {
 					 */
 					void configure(const std::shared_ptr<app::base::tab::TabBar> & tabBar, const app::main_window::page_type_e & type, const QString & src, const void * data);
 
+					/**
+					 * @brief Function: virtual void keyReleaseEvent(QKeyEvent * event) override final
+					 *
+					 * \param event: event coming from keyboard
+					 *
+					 * This function handles event coming from the keyboard
+					 * Re-implement key released event
+					 */
+					virtual void keyReleaseEvent(QKeyEvent * event) override final;
+
 				signals:
 					/**
 					 * @brief Function: void sourceChanged(const QString & src)
@@ -174,58 +184,58 @@ namespace app {
 					void setSearchText(const QString & value);
 
 					/**
-					 * @brief Function: std::shared_ptr<app::main_window::tab::WebEngineView> getView() const
+					 * @brief Function: const std::shared_ptr<app::main_window::tab::WebEngineView> getView() const
 					 *
 					 * \return tab view
 					 *
 					 * This function returns the tab view
 					 */
-					std::shared_ptr<app::main_window::tab::WebEngineView> getView() const;
+					const std::shared_ptr<app::main_window::tab::WebEngineView> getView() const;
 
 					/**
-					 * @brief Function: std::shared_ptr<app::main_window::tab::LoadManager> getLoadManager() const
+					 * @brief Function: const std::shared_ptr<app::main_window::tab::LoadManager> getLoadManager() const
 					 *
 					 * \return load manager
 					 *
 					 * This function returns the load manager
 					 */
-					std::shared_ptr<app::main_window::tab::LoadManager> getLoadManager() const;
+					const std::shared_ptr<app::main_window::tab::LoadManager> getLoadManager() const;
 
 					/**
-					 * @brief Function: std::shared_ptr<app::main_window::tab::Search> getSearch() const
+					 * @brief Function: const std::shared_ptr<app::main_window::tab::Search> getSearch() const
 					 *
 					 * \return tab search
 					 *
 					 * This function returns the tab search
 					 */
-					std::shared_ptr<app::main_window::tab::Search> getSearch() const;
+					const std::shared_ptr<app::main_window::tab::Search> getSearch() const;
 
 					/**
-					 * @brief Function: std::shared_ptr<app::main_window::tab::History> getHistory() const
+					 * @brief Function: const std::shared_ptr<app::main_window::tab::History> getHistory() const
 					 *
 					 * \return history of the tab
 					 *
 					 * This function returns the history of the page
 					 */
-					std::shared_ptr<app::main_window::tab::History> getHistory() const;
+					const std::shared_ptr<app::main_window::tab::History> getHistory() const;
 
 					/**
-					 * @brief Function: std::shared_ptr<app::main_window::tab::WebEngineSettings> getSettings() const
+					 * @brief Function: const std::shared_ptr<app::main_window::tab::WebEngineSettings> getSettings() const
 					 *
 					 * \return tab settings
 					 *
 					 * This function returns the settings
 					 */
-					std::shared_ptr<app::main_window::tab::WebEngineSettings> getSettings() const;
+					const std::shared_ptr<app::main_window::tab::WebEngineSettings> getSettings() const;
 
 					/**
-					 * @brief Function: std::shared_ptr<app::main_window::tab::ScrollManager> getScrollManager() const
+					 * @brief Function: const std::shared_ptr<app::main_window::tab::ScrollManager> getScrollManager() const
 					 *
 					 * \return scroll manager
 					 *
 					 * This function returns the scroll manager
 					 */
-					std::shared_ptr<app::main_window::tab::ScrollManager> getScrollManager() const;
+					const std::shared_ptr<app::main_window::tab::ScrollManager> getScrollManager() const;
 
 					/**
 					 * @brief Function: void updateView(const std::shared_ptr<app::main_window::tab::WebEngineView> & value)

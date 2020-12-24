@@ -263,13 +263,13 @@ namespace app {
 					void setView(const std::shared_ptr<app::base::tab::WebEngineView> & value);
 
 					/**
-					 * @brief Function: std::shared_ptr<app::base::tab::WebEngineView> getView() const
+					 * @brief Function: const std::shared_ptr<app::base::tab::WebEngineView> getView() const
 					 *
 					 * \return tab view
 					 *
 					 * This function returns the tab view
 					 */
-					std::shared_ptr<app::base::tab::WebEngineView> getView() const;
+					const std::shared_ptr<app::base::tab::WebEngineView> getView() const;
 
 					/**
 					 * @brief Function: void setLoadManager(const std::shared_ptr<app::base::tab::LoadManager> & value)
@@ -281,13 +281,13 @@ namespace app {
 					void setLoadManager(const std::shared_ptr<app::base::tab::LoadManager> & value);
 
 					/**
-					 * @brief Function: std::shared_ptr<app::base::tab::LoadManager> getLoadManager() const
+					 * @brief Function: const std::shared_ptr<app::base::tab::LoadManager> getLoadManager() const
 					 *
 					 * \return load manager
 					 *
 					 * This function returns the load manager
 					 */
-					std::shared_ptr<app::base::tab::LoadManager> getLoadManager() const;
+					const std::shared_ptr<app::base::tab::LoadManager> getLoadManager() const;
 
 					/**
 					 * @brief Function: void setSearch(const std::shared_ptr<app::base::tab::Search> & value)
@@ -299,13 +299,13 @@ namespace app {
 					void setSearch(const std::shared_ptr<app::base::tab::Search> & value);
 
 					/**
-					 * @brief Function: std::shared_ptr<app::base::tab::Search> getSearch() const
+					 * @brief Function: const std::shared_ptr<app::base::tab::Search> getSearch() const
 					 *
 					 * \return tab search
 					 *
 					 * This function returns the tab search
 					 */
-					std::shared_ptr<app::base::tab::Search> getSearch() const;
+					const std::shared_ptr<app::base::tab::Search> getSearch() const;
 
 					/**
 					 * @brief Function: void setHistory(const std::shared_ptr<app::base::tab::History> & value)
@@ -317,13 +317,13 @@ namespace app {
 					void setHistory(const std::shared_ptr<app::base::tab::History> & value);
 
 					/**
-					 * @brief Function: std::shared_ptr<app::base::tab::History> getHistory() const
+					 * @brief Function: const std::shared_ptr<app::base::tab::History> getHistory() const
 					 *
 					 * \return history of the tab
 					 *
 					 * This function returns the history of the page
 					 */
-					std::shared_ptr<app::base::tab::History> getHistory() const;
+					const std::shared_ptr<app::base::tab::History> getHistory() const;
 
 					/**
 					 * @brief Function: void setSettings(const std::shared_ptr<app::base::tab::WebEngineSettings> & value)
@@ -335,13 +335,13 @@ namespace app {
 					void setSettings(const std::shared_ptr<app::base::tab::WebEngineSettings> & value);
 
 					/**
-					 * @brief Function: std::shared_ptr<app::base::tab::WebEngineSettings> getSettings() const
+					 * @brief Function: const std::shared_ptr<app::base::tab::WebEngineSettings> getSettings() const
 					 *
 					 * \return tab settings
 					 *
 					 * This function returns the settings
 					 */
-					std::shared_ptr<app::base::tab::WebEngineSettings> getSettings() const;
+					const std::shared_ptr<app::base::tab::WebEngineSettings> getSettings() const;
 
 					/**
 					 * @brief Function: void setScrollManager(const std::shared_ptr<app::base::tab::ScrollManager> & value)
@@ -353,13 +353,13 @@ namespace app {
 					void setScrollManager(const std::shared_ptr<app::base::tab::ScrollManager> & value);
 
 					/**
-					 * @brief Function: std::shared_ptr<app::base::tab::ScrollManager> getScrollManager() const
+					 * @brief Function: const std::shared_ptr<app::base::tab::ScrollManager> getScrollManager() const
 					 *
 					 * \return scroll manager
 					 *
 					 * This function returns the scroll manager
 					 */
-					std::shared_ptr<app::base::tab::ScrollManager> getScrollManager() const;
+					const std::shared_ptr<app::base::tab::ScrollManager> getScrollManager() const;
 
 					/**
 					 * @brief Function: virtual virtual void find(const app::windows::shared::FindSettings & settings) const final

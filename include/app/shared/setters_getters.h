@@ -266,6 +266,26 @@ std::shared_ptr<ARGTYPE> FNAME() const { \
 }
 
 /**
+ * @brief CASTED_SHARED_PTR_GETTER_BASE(ATTRIBUTE, FNAME, ARGTYPE, VAR)
+ *
+ * \param FNAME : function name
+ * \param ARGTYPE : type of returned value
+ * \param VAR : class member to return or function returning it
+ *
+ * Base getter for a shared pointer in a derived class or struct that requires downcasting
+ */
+#define CASTED_SHARED_PTR_GETTER_BASE(ATTRIBUTE, FNAME, ARGTYPE, VAR) \
+ATTRIBUTE std::shared_ptr<ARGTYPE> FNAME() const { \
+	try { \
+		ATTRIBUTE std::shared_ptr<ARGTYPE> ptr = std::dynamic_pointer_cast<ARGTYPE>(VAR); \
+		return ptr; \
+	} catch (const std::bad_cast & badCastE) { \
+		EXCEPTION_ACTION(throw, badCastE.what()); \
+	} \
+	return nullptr; \
+}
+
+/**
  * @brief CASTED_SHARED_PTR_GETTER(FNAME, ARGTYPE, VAR)
  *
  * \param FNAME : function name
@@ -275,15 +295,19 @@ std::shared_ptr<ARGTYPE> FNAME() const { \
  * Getter for a shared pointer in a derived class or struct that requires downcasting
  */
 #define CASTED_SHARED_PTR_GETTER(FNAME, ARGTYPE, VAR) \
-std::shared_ptr<ARGTYPE> FNAME() const { \
-	try { \
-		std::shared_ptr<ARGTYPE> ptr = std::dynamic_pointer_cast<ARGTYPE>(VAR); \
-		return ptr; \
-	} catch (const std::bad_cast & badCastE) { \
-		EXCEPTION_ACTION(throw, badCastE.what()); \
-	} \
-	return nullptr; \
-}
+	CASTED_SHARED_PTR_GETTER_BASE(, FNAME, ARGTYPE, VAR)
+
+/**
+ * @brief CONST_CASTED_SHARED_PTR_GETTER(FNAME, ARGTYPE, VAR)
+ *
+ * \param FNAME : function name
+ * \param ARGTYPE : type of returned value
+ * \param VAR : class member to return or function returning it
+ *
+ * Getter for a const shared pointer in a derived class or struct that requires downcasting
+ */
+#define CONST_CASTED_SHARED_PTR_GETTER(FNAME, ARGTYPE, VAR) \
+	CASTED_SHARED_PTR_GETTER_BASE(const, FNAME, ARGTYPE, VAR)
 
 /** @} */ // End of SharedGroup group
 

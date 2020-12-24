@@ -36,6 +36,15 @@ namespace app {
 
 			public:
 				/**
+				 * @brief Function: static app::commands::Action * createSeparator(QObject * parent)
+				 *
+				 * \param parent: parent object
+				 *
+				 * This function creates an action separator
+				 */
+				static app::commands::Action * createSeparator(QObject * parent);
+
+				/**
 				 * @brief Function: explicit Action(QObject * parent, const QString & text = QString(), const QIcon & icon = QIcon())
 				 *
 				 * \param parent: parent window

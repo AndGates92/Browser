@@ -8,19 +8,25 @@
 
 // Qt libraries
 #include <QtGui/QKeyEvent>
+#include <QtGui/QClipboard>
 #include <QtWidgets/QMenu>
+#include <QtWidgets/QApplication>
 #include <QtWebEngineWidgets/QWebEngineHistory>
 
+#include "app/widgets/commands/action.h"
+#include "app/utility/cpp/cpp_operator.h"
 #include "app/utility/logger/macros.h"
 #include "app/shared/setters_getters.h"
 #include "app/shared/exception.h"
+#include "app/windows/main_window/tabs/tab.h"
 #include "app/windows/main_window/tabs/web_engine_view.h"
 #include "app/windows/main_window/tabs/web_engine_page.h"
 
 // Categories
 LOGGING_CONTEXT(mainWindowWebEngineViewOverall, mainWindowWebEngineView.overall, TYPE_LEVEL, INFO_VERBOSITY)
+LOGGING_CONTEXT(mainWindowWebEngineViewMenu, mainWindowWebEngineView.menu, TYPE_LEVEL, INFO_VERBOSITY)
 
-app::main_window::tab::WebEngineView::WebEngineView(QWidget * parent, const app::main_window::page_type_e & type, const QString & src, const void * data): app::base::tab::WebEngineView(parent) {
+app::main_window::tab::WebEngineView::WebEngineView(QWidget * parent, std::weak_ptr<app::main_window::tab::Tab> attachedTab, const app::main_window::page_type_e & type, const QString & src, const void * data): app::base::tab::WebEngineView(parent, attachedTab) {
 	LOG_INFO(app::logger::info_level_e::ZERO, mainWindowWebEngineViewOverall,  "Web engine view constructor");
 
 	// Use deleteLater to schedule a destruction event in the event loop
@@ -37,6 +43,8 @@ app::main_window::tab::WebEngineView::~WebEngineView() {
 }
 
 CASTED_SHARED_PTR_GETTER(app::main_window::tab::WebEngineView::page, app::main_window::tab::WebEnginePage, app::base::tab::WebEngineView::page())
+
+CONST_CASTED_SHARED_PTR_GETTER(app::main_window::tab::WebEngineView::getTab, app::main_window::tab::Tab, app::base::tab::WebEngineView::getTab())
 
 void app::main_window::tab::WebEngineView::connectSignals() {
 	connect(this, &app::main_window::tab::WebEngineView::urlChanged, this, &app::main_window::tab::WebEngineView::updatePageSource, Qt::UniqueConnection);
@@ -57,34 +65,46 @@ void app::main_window::tab::WebEngineView::updatePageSource(const QUrl & url) {
 	}
 }
 
-bool app::main_window::tab::WebEngineView::isSameAction(const QAction * lhs, const QAction * rhs) const {
-	const QList<QKeySequence> keyList1(lhs->shortcuts());
-	const QList<QKeySequence> keyList2(rhs->shortcuts());
-
-	if (keyList1.size() != keyList2.size()) {
-		return false;
-	}
-
-	for(QList<QKeySequence>::const_iterator keyIt1 = keyList1.cbegin(), keyIt2 = keyList2.cbegin(); (keyIt1 != keyList1.cend() && keyIt2 != keyList2.cend()); keyIt1++, keyIt2++) {
-		if ((*keyIt1) != (*keyIt2)) {
-			return false;
+const std::string app::main_window::tab::WebEngineView::printActionMap() const {
+	std::string actionListString = std::string();
+	const app::main_window::tab::action_list_t::size_type numberOfActions = this->contextMenuExtraActions.size();
+	app::main_window::tab::action_list_t::size_type counter = 0;
+	if (numberOfActions == 0) {
+		actionListString.append("Empty action map");
+	} else {
+		for (const auto & element : this->contextMenuExtraActions) {
+			QAction * action = element.action;
+			counter++;
+			if ((action != nullptr) && (action->isSeparator() == false)) {
+				actionListString.append(action->text().toStdString());
+				if (counter < numberOfActions) {
+					// From first to third last element
+					actionListString.append(", ");
+				}
+			}
 		}
 	}
 
-	// Discard mnemonic that could cause comparison to mismatch
-	QString lhsText(lhs->text().replace(QString("&"), QString("")));
-	QString rhsText(rhs->text().replace(QString("&"), QString("")));
+	return actionListString;
+}
 
-	if (QString::compare(lhsText, rhsText, Qt::CaseSensitive) != 0) {
-			return false;
+void app::main_window::tab::WebEngineView::enableMenuCustomAction(QMenu * menu) {
+
+	// Enable or disable actions according to value of map
+	const std::list<QAction *> menuActions(menu->actions().cbegin(), menu->actions().cend());
+	for (const auto & extraAction : this->contextMenuExtraActions) {
+		const auto & menuActionIt = std::find_if(menuActions.cbegin(), menuActions.cend(), [&extraAction] (const auto & menuAction) {
+			return (app::shared::QActionCompare()(*(extraAction.action), *menuAction) == app::shared::QActionCompare()(*menuAction, *(extraAction.action)));
+		});
+		EXCEPTION_ACTION_COND((menuActionIt == menuActions.cend()), throw, "Unable to find action " << (*menuActionIt)->text() << " in action map: " << this->printActionMap());
+		(*menuActionIt)->setEnabled(extraAction.enabled());
 	}
-
-	return true;
 
 }
 
 void app::main_window::tab::WebEngineView::contextMenuEvent(QContextMenuEvent * event) {
-	QMenu * contextMenu(this->page()->createStandardContextMenu());
+
+	QMenu * contextMenu = this->page()->createStandardContextMenu();
 
 	contextMenu->setStyleSheet(
 		"QMenu {"
@@ -113,92 +133,10 @@ void app::main_window::tab::WebEngineView::contextMenuEvent(QContextMenuEvent * 
 		"}"
 	);
 
-	const QList<QAction *> actions(contextMenu->actions());
+	this->enableMenuCustomAction(contextMenu);
 
-	for(QList<QAction *>::const_iterator actionIt = actions.cbegin(); actionIt != actions.cend(); actionIt++) {
-		QAction * action(*actionIt);
-		// Eliminates mnemonic shortcuts
-		action->setText(action->text().replace(QString("&"), QString("")));
-		QFont actionFont(action->font());
-		if (this->isSameAction(action, this->page()->action(QWebEnginePage::Forward)) == true) {
-			action->setEnabled(this->history()->canGoForward());
-		} else if (this->isSameAction(action, this->page()->action(QWebEnginePage::Back)) == true) {
-			action->setEnabled(this->history()->canGoBack());
-		}
+	const QPoint & position = event->pos();
+	// Show context menu
+	contextMenu->popup(position);
 
-		action->setFont(actionFont);
-	}
-
-	if (this->hasSelection() == true) {
-		std::list<QWebEnginePage::WebAction> actionsToAdd;
-		actionsToAdd.push_back(QWebEnginePage::Cut);
-		actionsToAdd.push_back(QWebEnginePage::Copy);
-		actionsToAdd.push_back(QWebEnginePage::Paste);
-
-		QAction * separator(contextMenu->addSeparator());
-
-		QList<QAction *>::const_iterator actionIt = actions.cbegin();
-		QAction * action(*actionIt);
-
-		QList<QAction *> actionList;
-
-		for (std::list<QWebEnginePage::WebAction>::const_iterator newActionIt = actionsToAdd.cbegin(); newActionIt != actionsToAdd.cend(); ++newActionIt) {
-			if (newActionIt == actionsToAdd.cbegin()) {
-				actionList.clear();
-			}
-
-			QWebEnginePage::WebAction webAction(*newActionIt);
-			if (webAction == QWebEnginePage::NoWebAction) {
-				// Add separator to the list. If we it this line, it means that we have more elements coming next
-				actionList.append(separator);
-				action = this->addActionListToMenu(contextMenu, action, actionList);
-
-				// Clear list
-				actionList.clear();
-
-			} else {
-				actionList.append(this->page()->action(webAction));
-			}
-		}
-
-		if (actions.empty() == false) {
-			// Add separator to the list. If we it this line, it means that we have more elements coming next
-			actionList.append(separator);
-		}
-		this->addActionListToMenu(contextMenu, action, actionList);
-	}
-
-	contextMenu->popup(event->globalPos());
-
-}
-
-QAction * app::main_window::tab::WebEngineView::addActionListToMenu(QMenu * menu, QAction * pos, const QList<QAction *> & actionList) {
-
-	QAction * action(pos);
-	const QList<QAction *> actions(menu->actions());
-
-	// Only add actions if list is not empty
-	if (actionList.empty() == false) {
-
-		menu->insertActions(action, actionList);
-
-		// get iterator of next item after the last added
-		// 1. Get iterator over last added element
-		QList<QAction *>::const_iterator posIt = actionList.cend();
-
-		// 2. Find last added element in the action list
-		const QList<QAction *> actionTmp(menu->actions());
-		posIt = std::find(actionTmp.cbegin(), actionTmp.cend(), *posIt);
-
-		// 3. Increment iterator by 1 to compute the element next set of action must be appended before
-		posIt++;
-		if (posIt == actionTmp.cend()) {
-			// Reached end of list of actions
-			action = Q_NULLPTR;
-		} else {
-			action = *posIt;
-		}
-	}
-
-	return action;
 }

@@ -21,12 +21,20 @@ LOGGING_CONTEXT(actionShortcut, action.shortcut, TYPE_LEVEL, INFO_VERBOSITY)
 
 app::commands::Action::Action(QObject * parent, const QString & text, const QIcon & icon) : QAction(icon, text, parent), app::printable_object::PrintableObject() {
 
-	LOG_INFO(app::logger::info_level_e::ZERO, actionOverall,  "Creating action");
+	LOG_INFO(app::logger::info_level_e::ZERO, actionOverall,  "Creating action with " << ((text.isEmpty() == true) ? ("text " + text) : ("no text")));
 
 }
 
 app::commands::Action::~Action() {
 	LOG_INFO(app::logger::info_level_e::ZERO, actionOverall,  "Destructor of action class");
+
+}
+
+app::commands::Action * app::commands::Action::createSeparator(QObject * parent) {
+	app::commands::Action * separator = new app::commands::Action(parent, "------------------");
+	separator->setSeparator(true);
+
+	return separator;
 
 }
 

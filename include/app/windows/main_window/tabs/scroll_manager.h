@@ -39,8 +39,8 @@ namespace app {
 					 * @brief Function: explicit ScrollManager(QWidget * parent, std::weak_ptr<app::main_window::tab::Tab> browserTab, const std::shared_ptr<app::base::tab::TabBar> & tabBar)
 					 *
 					 * \param parent: parent widget
+					 * \param browserTab: tab
 					 * \param tabBar: tab bar
-					 * \param tab: tab
 					 *
 					 * Main Window Tab Scroll Manager constructor
 					 */

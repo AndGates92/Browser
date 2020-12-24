@@ -99,7 +99,7 @@ namespace app {
 					std::unique_ptr<QFileSystemModel> fileModel;
 
 					/**
-					 * @brief file browser
+					 * @brief file view
 					 *
 					 */
 					std::unique_ptr<QTreeView> fileView;

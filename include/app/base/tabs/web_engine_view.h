@@ -39,13 +39,14 @@ namespace app {
 
 				public:
 					/**
-					 * @brief Function: explicit WebEngineView(QWidget * parent)
+					 * @brief Function: explicit WebEngineView(QWidget * parent, std::weak_ptr<app::base::tab::Tab> attachedTab)
 					 *
 					 * \param parent: parent widget
+					 * \param attachedTab: tab attached to this view
 					 *
 					 * Web engine view constructor
 					 */
-					explicit WebEngineView(QWidget * parent);
+					explicit WebEngineView(QWidget * parent, std::weak_ptr<app::base::tab::Tab> attachedTab);
 
 					/**
 					 * @brief Function: virtual ~WebEngineView()
@@ -63,6 +64,15 @@ namespace app {
 					 */
 					std::shared_ptr<app::base::tab::WebEnginePage> page() const;
 
+					/**
+					 * @brief Function: const std::shared_ptr<app::base::tab::Tab> getTab() const
+					 *
+					 * \return tab the view belongs to
+					 *
+					 * This function returns the tab the web widget view belongs to
+					 */
+					const std::shared_ptr<app::base::tab::Tab> getTab() const;
+
 				protected:
 
 					/**
@@ -74,12 +84,27 @@ namespace app {
 					 */
 					void updatePage(const std::shared_ptr<app::base::tab::WebEnginePage> & newPage);
 
+					/**
+					 * @brief Function: void setTab(std::weak_ptr<app::base::tab::Tab> value)
+					 *
+					 * \param tab: tab the component belongs to
+					 *
+					 * This function sets the tab the component belongs to
+					 */
+					void setTab(std::weak_ptr<app::base::tab::Tab> value);
+
 				private:
 					/**
 					 * @brief current page linked to the web view
 					 *
 					 */
 					std::shared_ptr<app::base::tab::WebEnginePage> currentPage;
+
+					/**
+					 * @brief tab the scroll manager belongs to
+					 *
+					 */
+					std::weak_ptr<app::base::tab::Tab> browserTab;
 
 					// Move and copy constructor
 					/**

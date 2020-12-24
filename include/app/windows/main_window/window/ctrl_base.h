@@ -62,7 +62,7 @@ namespace app {
 					 *
 					 * \param event: event coming from keyboard
 					 *
-					 * This function handles event coming from the keyboard
+					 * This function handles events coming from the keyboard
 					 * Escape is not triggered in keyPressedEvent
 					 * Re-implement key pressed event
 					 */

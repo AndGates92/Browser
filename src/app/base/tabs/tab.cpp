@@ -29,7 +29,7 @@ app::base::tab::Tab::Tab(QWidget * parent): QWidget(parent), view(Q_NULLPTR), lo
 }
 
 void app::base::tab::Tab::configure(std::shared_ptr<app::base::tab::TabBar> tabBar) {
-	std::shared_ptr<app::base::tab::WebEngineView> tabView = std::make_shared<app::base::tab::WebEngineView>(this);
+	std::shared_ptr<app::base::tab::WebEngineView> tabView = std::make_shared<app::base::tab::WebEngineView>(this, this->weak_from_this());
 	this->setView(tabView);
 
 	std::shared_ptr<app::base::tab::LoadManager> tabLoadManager = std::make_shared<app::base::tab::LoadManager>(this);
@@ -66,12 +66,12 @@ void app::base::tab::Tab::setLoadManager(const std::shared_ptr<app::base::tab::L
 	}
 }
 
-BASE_GETTER(app::base::tab::Tab::getLoadManager, std::shared_ptr<app::base::tab::LoadManager>, this->loadManager)
+CONST_GETTER(app::base::tab::Tab::getLoadManager, std::shared_ptr<app::base::tab::LoadManager>, this->loadManager)
 
-BASE_GETTER(app::base::tab::Tab::getView, std::shared_ptr<app::base::tab::WebEngineView>, this->view)
+CONST_GETTER(app::base::tab::Tab::getView, std::shared_ptr<app::base::tab::WebEngineView>, this->view)
 CONST_REF_SETTER(app::base::tab::Tab::setView, std::shared_ptr<app::base::tab::WebEngineView>, this->view)
 
-BASE_GETTER(app::base::tab::Tab::getSearch, std::shared_ptr<app::base::tab::Search>, this->search)
+CONST_GETTER(app::base::tab::Tab::getSearch, std::shared_ptr<app::base::tab::Search>, this->search)
 CONST_REF_SETTER(app::base::tab::Tab::setSearch, std::shared_ptr<app::base::tab::Search>, this->search)
 
 void app::base::tab::Tab::setHistory(const std::shared_ptr<app::base::tab::History> & value) {
@@ -89,7 +89,7 @@ void app::base::tab::Tab::setHistory(const std::shared_ptr<app::base::tab::Histo
 	}
 }
 
-BASE_GETTER(app::base::tab::Tab::getHistory, std::shared_ptr<app::base::tab::History>, this->history)
+CONST_GETTER(app::base::tab::Tab::getHistory, std::shared_ptr<app::base::tab::History>, this->history)
 
 void app::base::tab::Tab::setScrollManager(const std::shared_ptr<app::base::tab::ScrollManager> & value) {
 	if (this->scrollManager != value) {
@@ -113,9 +113,9 @@ void app::base::tab::Tab::setScrollManager(const std::shared_ptr<app::base::tab:
 	}
 }
 
-BASE_GETTER(app::base::tab::Tab::getScrollManager, std::shared_ptr<app::base::tab::ScrollManager>, this->scrollManager)
+CONST_GETTER(app::base::tab::Tab::getScrollManager, std::shared_ptr<app::base::tab::ScrollManager>, this->scrollManager)
 
-BASE_GETTER(app::base::tab::Tab::getSettings, std::shared_ptr<app::base::tab::WebEngineSettings>, this->settings)
+CONST_GETTER(app::base::tab::Tab::getSettings, std::shared_ptr<app::base::tab::WebEngineSettings>, this->settings)
 CONST_REF_SETTER(app::base::tab::Tab::setSettings, std::shared_ptr<app::base::tab::WebEngineSettings>, this->settings)
 
 void app::base::tab::Tab::resize(const QSize size) {

@@ -11,6 +11,7 @@
 #include <QtGui/QKeyEvent>
 
 #include "app/utility/logger/macros.h"
+#include "app/utility/cpp/cpp_operator.h"
 #include "app/shared/setters_getters.h"
 #include "app/windows/main_window/tabs/tab.h"
 #include "app/windows/main_window/tabs/web_engine_view.h"
@@ -20,9 +21,11 @@
 #include "app/windows/main_window/tabs/search.h"
 #include "app/windows/main_window/tabs/load_manager.h"
 #include "app/windows/main_window/tabs/scroll_manager.h"
+#include "app/widgets/commands/key_sequence.h"
 
 // Categories
 LOGGING_CONTEXT(mainWindowTabOverall, mainWindowTab.overall, TYPE_LEVEL, INFO_VERBOSITY)
+LOGGING_CONTEXT(mainWindowTabKeys, mainWindowTab.key, TYPE_LEVEL, INFO_VERBOSITY)
 
 app::main_window::tab::Tab::Tab(QWidget * parent, const QString & search): app::base::tab::Tab(parent), searchText(search) {
 	LOG_INFO(app::logger::info_level_e::ZERO, mainWindowTabOverall,  "Tab constructor");
@@ -30,7 +33,7 @@ app::main_window::tab::Tab::Tab(QWidget * parent, const QString & search): app::
 }
 
 void app::main_window::tab::Tab::configure(const std::shared_ptr<app::base::tab::TabBar> & tabBar, const app::main_window::page_type_e & type, const QString & src, const void * data) {
-	std::shared_ptr<app::main_window::tab::WebEngineView> tabView = std::make_shared<app::main_window::tab::WebEngineView>(this, type, src, data);
+	std::shared_ptr<app::main_window::tab::WebEngineView> tabView = std::make_shared<app::main_window::tab::WebEngineView>(this, this->weak_from_this(), type, src, data);
 	this->updateView(tabView);
 
 	std::shared_ptr<app::main_window::tab::LoadManager> tabLoadManager = std::make_shared<app::main_window::tab::LoadManager>(this);
@@ -76,12 +79,12 @@ void app::main_window::tab::Tab::updateView(const std::shared_ptr<app::main_wind
 
 CONST_SETTER_GETTER(app::main_window::tab::Tab::setSearchText, app::main_window::tab::Tab::getSearchText, QString &, this->searchText)
 BASE_GETTER(app::main_window::tab::Tab::getVerticalScrollPercentage, int, this->getScrollManager()->getVerticalScrollPercentage())
-CASTED_SHARED_PTR_GETTER(app::main_window::tab::Tab::getView, app::main_window::tab::WebEngineView, app::base::tab::Tab::getView())
-CASTED_SHARED_PTR_GETTER(app::main_window::tab::Tab::getLoadManager, app::main_window::tab::LoadManager, app::base::tab::Tab::getLoadManager())
-CASTED_SHARED_PTR_GETTER(app::main_window::tab::Tab::getSearch, app::main_window::tab::Search, app::base::tab::Tab::getSearch())
-CASTED_SHARED_PTR_GETTER(app::main_window::tab::Tab::getHistory, app::main_window::tab::History, app::base::tab::Tab::getHistory())
-CASTED_SHARED_PTR_GETTER(app::main_window::tab::Tab::getSettings, app::main_window::tab::WebEngineSettings, app::base::tab::Tab::getSettings())
-CASTED_SHARED_PTR_GETTER(app::main_window::tab::Tab::getScrollManager, app::main_window::tab::ScrollManager, app::base::tab::Tab::getScrollManager())
+CONST_CASTED_SHARED_PTR_GETTER(app::main_window::tab::Tab::getView, app::main_window::tab::WebEngineView, app::base::tab::Tab::getView())
+CONST_CASTED_SHARED_PTR_GETTER(app::main_window::tab::Tab::getLoadManager, app::main_window::tab::LoadManager, app::base::tab::Tab::getLoadManager())
+CONST_CASTED_SHARED_PTR_GETTER(app::main_window::tab::Tab::getSearch, app::main_window::tab::Search, app::base::tab::Tab::getSearch())
+CONST_CASTED_SHARED_PTR_GETTER(app::main_window::tab::Tab::getHistory, app::main_window::tab::History, app::base::tab::Tab::getHistory())
+CONST_CASTED_SHARED_PTR_GETTER(app::main_window::tab::Tab::getSettings, app::main_window::tab::WebEngineSettings, app::base::tab::Tab::getSettings())
+CONST_CASTED_SHARED_PTR_GETTER(app::main_window::tab::Tab::getScrollManager, app::main_window::tab::ScrollManager, app::base::tab::Tab::getScrollManager())
 
 void app::main_window::tab::Tab::connectSignals() {
 	const std::shared_ptr<app::main_window::tab::WebEngineView> view = this->getView();
@@ -136,4 +139,27 @@ void app::main_window::tab::Tab::postprocessLoadFinished(const bool & success) {
 std::shared_ptr<app::main_window::tab::WebEnginePage> app::main_window::tab::Tab::getPage() const {
 	std::shared_ptr<app::main_window::tab::WebEngineView> view = this->getView();
 	return view->page();
+}
+
+void app::main_window::tab::Tab::keyReleaseEvent(QKeyEvent * event) {
+
+	if (event->type() == QEvent::KeyRelease) {
+
+		const int releasedKey = event->key();
+		const Qt::KeyboardModifiers keyModifiers = event->modifiers();
+
+		const app::commands::KeySequence keySeq(releasedKey | keyModifiers);
+
+		// Retrieve main window controller state
+		LOG_INFO(app::logger::info_level_e::ZERO, mainWindowTabKeys, "Key pressed Tab key " << keySeq.toString());
+
+		switch (releasedKey) {
+			case Qt::Key_Escape:
+				this->window()->setFocus();
+				break;
+			default:
+				break;
+		}
+
+	}
 }

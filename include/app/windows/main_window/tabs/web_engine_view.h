@@ -14,6 +14,7 @@
 #include "app/base/tabs/web_engine_view.h"
 #include "app/windows/main_window/shared/shared_types.h"
 #include "app/shared/enums.h"
+#include "app/shared/classes.h"
 #include "app/shared/constructor_macros.h"
 
 /** @defgroup MainWindowGroup Main Window Doxygen Group
@@ -30,6 +31,27 @@ namespace app {
 			class WebEnginePage;
 
 			/**
+			 * @brief action enable function
+			 *
+			 */
+			using enable_function_t = std::function<bool()>;
+
+			/**
+			 * @brief search data changed
+			 *
+			 */
+			typedef struct context_menu_list_item_t {
+				QAction * action;                                 /**< action */
+				app::main_window::tab::enable_function_t enabled; /**< Enable function */
+			} context_menu_list_item_s;
+
+			/**
+			 * @brief context menu of the engine view
+			 *
+			 */
+			using action_list_t = std::list<app::main_window::tab::context_menu_list_item_s>;
+
+			/**
 			 * @brief WebEngineView class
 			 *
 			 */
@@ -40,16 +62,17 @@ namespace app {
 
 				public:
 					/**
-					 * @brief Function: explicit WebEngineView(QWidget * parent, const app::main_window::page_type_e & type, const QString & src, const void * data)
+					 * @brief Function: explicit WebEngineView(QWidget * parent, std::weak_ptr<app::main_window::tab::Tab> attachedTab, const app::main_window::page_type_e & type, const QString & src, const void * data)
 					 *
 					 * \param type: tab type
+					 * \param attachedTab: tab attached to this view
 					 * \param src: source of the tab
 					 * \param data: tab extra data
 					 * \param parent: parent widget
 					 *
 					 * Main window web engine view constructor
 					 */
-					explicit WebEngineView(QWidget * parent, const app::main_window::page_type_e & type, const QString & src, const void * data);
+					explicit WebEngineView(QWidget * parent, std::weak_ptr<app::main_window::tab::Tab> attachedTab, const app::main_window::page_type_e & type, const QString & src, const void * data);
 
 					/**
 					 * @brief Function: virtual ~WebEngineView()
@@ -67,14 +90,23 @@ namespace app {
 					 */
 					std::shared_ptr<app::main_window::tab::WebEnginePage> page() const;
 
+					/**
+					 * @brief Function: const std::shared_ptr<app::main_window::tab::Tab> getTab() const
+					 *
+					 * \return tab the view belongs to
+					 *
+					 * This function returns the tab the web widget view belongs to
+					 */
+					const std::shared_ptr<app::main_window::tab::Tab> getTab() const;
+
 				protected:
+
 					/**
 					 * @brief Function: virtual void contextMenuEvent(QContextMenuEvent * event) override
 					 *
-					 * \param event: context menu event
+					 * \param event: Context menu event
 					 *
-					 * This function is a function that handles the context menu event. It editsslot that receives a notification that the url has changed and it updates the page source
-					 * It edits the content of the menu
+					 * This function is triggered when the context menu has to be shown
 					 */
 					virtual void contextMenuEvent(QContextMenuEvent * event) override;
 
@@ -90,6 +122,14 @@ namespace app {
 
 				private:
 					/**
+					 * @brief actions of the context menu
+					 * key is the action
+					 * value is a function that returns a boolean stating whether the action should be enabled or not
+					 *
+					 */
+					action_list_t contextMenuExtraActions;
+
+					/**
 					 * @brief Function: void connectSignals()
 					 *
 					 * This function connects signals and slots within the web engine view
@@ -97,33 +137,23 @@ namespace app {
 					void connectSignals();
 
 					/**
-					 * @brief Function: bool isSameAction(const QAction * lhs, const QAction * rhs) const
+					 * @brief Function: const std::string printActionMap() const
 					 *
-					 * \param lhs: left hand side of the comparison
-					 * \param rhs: right hand side of the comparison
+					 * \return string listing the actions in the context menu
 					 *
-					 * \return a boolean is the 2 QAction are identical or not
-					 *
-					 * This function implements the comparison between two QActions
-					 * In order to be identical, QAction must have the following members identical:
-					 *  - shortcut list size
-					 *  - shortcuts
-					 *  - text without mnemonics
+					 * This function returns a string of listing the actions in the context menu
 					 */
-					bool isSameAction(const QAction * lhs, const QAction * rhs) const;
+					const std::string printActionMap() const;
 
 					/**
-					 * @brief Function: QAction * addActionListToMenu(QMenu * menu, QAction * pos, const QList<QAction *> & actionList)
+					 * @brief Function: void enableMenuCustomAction(QMenu * menu)
 					 *
-					 * \param menu: menu to add actions to
-					 * \param pos: positon of the new added action
-					 * \param actionList: list of actions to add
+					 * \param menu: menu to enabled actions to
+					 * \param position: position in the web engine view where the menu was requested
 					 *
-					 * \return pointer to the action after the last one in the list
-					 *
-					 * This function adds a list of action to a menu and returns a pointer to the action after the last one in the list
+					 * This function is a function that shows the context menu.
 					 */
-					QAction * addActionListToMenu(QMenu * menu, QAction * pos, const QList<QAction *> & actionList);
+					void enableMenuCustomAction(QMenu * menu);
 
 					// Move and copy constructor
 					/**

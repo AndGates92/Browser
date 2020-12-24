@@ -17,8 +17,11 @@
 // Categories
 LOGGING_CONTEXT(webEngineViewOverall, webEngineView.overall, TYPE_LEVEL, INFO_VERBOSITY)
 
-app::base::tab::WebEngineView::WebEngineView(QWidget * parent): QWebEngineView(parent) {
+app::base::tab::WebEngineView::WebEngineView(QWidget * parent, std::weak_ptr<app::base::tab::Tab> attachedTab): QWebEngineView(parent) {
 	LOG_INFO(app::logger::info_level_e::ZERO, webEngineViewOverall,  "Web engine view constructor");
+
+	this->browserTab.reset();
+	this->setTab(attachedTab);
 
 	// Use deleteLater to schedule a destruction event in the event loop
 	std::shared_ptr<app::base::tab::WebEnginePage> newPage = std::shared_ptr<app::base::tab::WebEnginePage>(new app::base::tab::WebEnginePage(parent, app::base::tab::WebEngineProfile::defaultProfile()), [] (app::base::tab::WebEnginePage * p) {
@@ -37,3 +40,9 @@ void app::base::tab::WebEngineView::updatePage(const std::shared_ptr<app::base::
 }
 
 BASE_GETTER(app::base::tab::WebEngineView::page, std::shared_ptr<app::base::tab::WebEnginePage>, this->currentPage)
+
+void app::base::tab::WebEngineView::setTab(std::weak_ptr<app::base::tab::Tab> value) {
+	this->browserTab = value;
+}
+
+CONST_GETTER(app::base::tab::WebEngineView::getTab, std::shared_ptr<app::base::tab::Tab>, this->browserTab.lock())
