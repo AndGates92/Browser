@@ -72,13 +72,10 @@ void tester::test::ScrollTab::testBody() {
 
 	const std::shared_ptr<app::main_window::window::Core> & windowCore = this->windowWrapper->getWindowCore();
 
-	const std::string https(app::shared::https.toStdString());
-	const std::string www(app::shared::www.toStdString());
-
 	const std::string search("test");
 	LOG_INFO(app::logger::info_level_e::ZERO, scrollTabTest, "Open new tab searching " << search);
 	this->openNewTab(search);
-	const std::string url = https + www + app::main_window::defaultSearchEngine.arg(QString::fromStdString(search)).toStdString();
+	const std::string url = app::main_window::defaultSearchEngine.arg(QString::fromStdString(search)).toStdString();
 
 	const std::shared_ptr<app::main_window::tab::Tab> currentTab = this->windowWrapper->getCurrentTab();
 	ASSERT((currentTab != nullptr), tester::shared::error_type_e::TABS, "Current tab pointer is null event though it should have website " + url + " open.");

@@ -143,6 +143,7 @@ void app::main_window::window::Core::printUserInput(const app::main_window::text
 	const app::main_window::state_e windowState = this->getMainWindowState();
 
 	QString textLabel = QString();
+
 	if (windowState != app::main_window::state_e::IDLE) {
 		QString userAction = QString();
 		if (windowState != app::main_window::state_e::COMMAND) {
@@ -189,6 +190,8 @@ CONST_GETTER(app::main_window::window::Core::getUserText, QString &, this->userT
 void app::main_window::window::Core::updateUserInput(const app::main_window::text_action_e & action, const QString & text) {
 
 	switch (action) {
+		case app::main_window::text_action_e::NO_CHANGE:
+			break;
 		case app::main_window::text_action_e::SET:
 			this->userText.clear();
 			this->userText.append(text);

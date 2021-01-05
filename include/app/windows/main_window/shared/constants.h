@@ -22,13 +22,19 @@ namespace app {
 		 * @brief default serch engine is duckduckgo
 		 *
 		 */
-		static const QString defaultSearchEngine("duckduckgo.com/?q=%1");
+		static const QString defaultSearchEngine("https://www.duckduckgo.com/?q=%1");
 
 		/**
 		 * @brief file prefix in status bar label
 		 *
 		 */
 		const QString filePrefix("file:");
+
+		/**
+		 * @brief Text to print when no tab is opened
+		 *
+		 */
+		const QString noTabInfoText("No tabs");
 
 	}
 

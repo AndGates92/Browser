@@ -25,7 +25,7 @@
 
 // Categories
 LOGGING_CONTEXT(mainWindowTabOverall, mainWindowTab.overall, TYPE_LEVEL, INFO_VERBOSITY)
-LOGGING_CONTEXT(mainWindowTabKeys, mainWindowTab.key, TYPE_LEVEL, INFO_VERBOSITY)
+LOGGING_CONTEXT(mainWindowTabUserInput, mainWindowTab.userInput, TYPE_LEVEL, INFO_VERBOSITY)
 
 app::main_window::tab::Tab::Tab(QWidget * parent, const QString & search): app::base::tab::Tab(parent), searchText(search) {
 	LOG_INFO(app::logger::info_level_e::ZERO, mainWindowTabOverall,  "Tab constructor");
@@ -85,6 +85,9 @@ CONST_CASTED_SHARED_PTR_GETTER(app::main_window::tab::Tab::getSearch, app::main_
 CONST_CASTED_SHARED_PTR_GETTER(app::main_window::tab::Tab::getHistory, app::main_window::tab::History, app::base::tab::Tab::getHistory())
 CONST_CASTED_SHARED_PTR_GETTER(app::main_window::tab::Tab::getSettings, app::main_window::tab::WebEngineSettings, app::base::tab::Tab::getSettings())
 CONST_CASTED_SHARED_PTR_GETTER(app::main_window::tab::Tab::getScrollManager, app::main_window::tab::ScrollManager, app::base::tab::Tab::getScrollManager())
+
+CONST_GETTER(app::main_window::tab::Tab::getType, app::main_window::page_type_e &, this->getPage()->getType())
+CONST_GETTER(app::main_window::tab::Tab::getSource, QString, this->getPage()->getSource())
 
 void app::main_window::tab::Tab::connectSignals() {
 	const std::shared_ptr<app::main_window::tab::WebEngineView> view = this->getView();
@@ -150,8 +153,7 @@ void app::main_window::tab::Tab::keyReleaseEvent(QKeyEvent * event) {
 
 		const app::commands::KeySequence keySeq(releasedKey | keyModifiers);
 
-		// Retrieve main window controller state
-		LOG_INFO(app::logger::info_level_e::ZERO, mainWindowTabKeys, "Key pressed Tab key " << keySeq.toString());
+		LOG_INFO(app::logger::info_level_e::ZERO, mainWindowTabUserInput, "Key released: " << keySeq.toString());
 
 		switch (releasedKey) {
 			case Qt::Key_Escape:

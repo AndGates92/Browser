@@ -15,6 +15,13 @@
  *  Tester Base functions and classes
  *  @{
  */
+namespace app {
+	namespace main_window {
+		namespace tab {
+			class Tab;
+		}
+	}
+}
 
 namespace tester {
 
@@ -86,14 +93,15 @@ namespace tester {
 				void openFile(const std::string & filepath);
 
 				/**
-				 * @brief Function: void executeCommand(const std::string & commandName, const std::string & argument)
+				 * @brief Function: void executeCommand(const std::string & commandName, const std::string & argument, const bool execute = true)
 				 *
 				 * \param commandName: name of command to search in the JSON
 				 * \param argument: argument to provide to the command. This argument can be an empty string
+				 * \param execute: execute command qfter typing it and its argument
 				 *
 				 * This function send an argument and pass an argument to it
 				 */
-				void executeCommand(const std::string & commandName, const std::string & argument);
+				void executeCommand(const std::string & commandName, const std::string & argument, const bool execute = true);
 
 				/**
 				 * @brief Function: bool commandRequiresEnter(const std::string & commandName) const
@@ -103,6 +111,33 @@ namespace tester {
 				 * This function returns true if the command requires the user to press Enter to validate the command
 				 */
 				bool commandRequiresEnter(const std::string & commandName) const;
+
+				/**
+				 * @brief Function: void checkCurrentTab(const std::string & search, const int & expectedNumberOfTabs)
+				 *
+				 * \param search: text searched by the user
+				 * \param expectedNumberOfTabs: expected number of tabs
+				 *
+				 * This function check the URL in the current tab and the number of tabs
+				 */
+				void checkCurrentTab(const std::string & search, const int & expectedNumberOfTabs);
+
+				/**
+				 * @brief Function: void checkSource(const std::shared_ptr<app::main_window::tab::Tab> & tab, const std::string & search)
+				 *
+				 * \param tab: tab to check URL for
+				 * \param search: text searched by the user
+				 *
+				 * This function check the tab URL based on the text searched from the user
+				 */
+				void checkSource(const std::shared_ptr<app::main_window::tab::Tab> & tab, const std::string & search);
+
+				/**
+				 * @brief Function: void waitForTabOpened()
+				 *
+				 * This function waits for the tab to be opened
+				 */
+				void waitForTabOpened();
 
 			protected:
 

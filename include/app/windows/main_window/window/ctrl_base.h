@@ -87,16 +87,23 @@ namespace app {
 					 * \param postprocess: flag to execute post process after chaning state.
 					 * \param key: key pressed that supports the request for a state change.
 					 *
-					 * This function changes the state of window
+					 * This function is a signal to request a change of the state of window
 					 */
 					void windowStateChangeRequested(const app::main_window::state_e & nextState, const app::main_window::state_postprocessing_e postprocess, const Qt::Key key = Qt::Key_unknown);
 
 					/**
-					 * @brief Function: void updatePrompt(QWidget * widget)
+					 * @brief Function: void saveCurrentState()
 					 *
-					 * This function requests to update window layout
+					 * This function is a signal to save the current state of the controller
 					 */
-					void updatePrompt(QWidget * widget);
+					void saveCurrentState();
+
+					/**
+					 * @brief Function: void restoreSavedState()
+					 *
+					 * This function is a signal to restore the saved state of the controller
+					 */
+					void restoreSavedState();
 
 				protected:
 
@@ -198,6 +205,24 @@ namespace app {
 					 * this function resets the window state to IDLE and clear user input
 					 */
 					void resetWindowState();
+
+					/**
+					 * @brief Function: virtual void focusInEvent(QFocusEvent * event) override
+					 *
+					 * \param event: focus event
+					 *
+					 * This function handles incoming focus event
+					 */
+					virtual void focusInEvent(QFocusEvent * event) override;
+
+					/**
+					 * @brief Function: virtual void focusOutEvent(QFocusEvent * event) override
+					 *
+					 * \param event: focus event
+					 *
+					 * This function handles outgoing focus event
+					 */
+					virtual void focusOutEvent(QFocusEvent * event) override;
 
 				private:
 					// Move and copy constructor

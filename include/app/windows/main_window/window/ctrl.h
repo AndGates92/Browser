@@ -64,8 +64,25 @@ namespace app {
 					 */
 					virtual void actionOnReleasedKey(const app::main_window::state_e & windowState, QKeyEvent * event) override;
 
-
 				protected:
+
+					/**
+					 * @brief Function: virtual void focusInEvent(QFocusEvent * event) override
+					 *
+					 * \param event: focus event
+					 *
+					 * This function handles incoming focus event
+					 */
+					virtual void focusInEvent(QFocusEvent * event) override;
+
+					/**
+					 * @brief Function: virtual void focusOutEvent(QFocusEvent * event) override
+					 *
+					 * \param event: focus event
+					 *
+					 * This function handles outgoing focus event
+					 */
+					virtual void focusOutEvent(QFocusEvent * event) override;
 
 				signals:
 					/**

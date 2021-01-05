@@ -14,6 +14,7 @@
 #include "app/utility/logger/macros.h"
 #include "app/shared/enums.h"
 #include "app/windows/main_window/shared/shared_types.h"
+#include "app/windows/main_window/shared/constants.h"
 #include "app/windows/main_window/window/commands.h"
 #include "app/windows/main_window/window/ctrl_base.h"
 #include "app/windows/main_window/statusbar/bar.h"
@@ -82,7 +83,7 @@ QString app::main_window::window::CtrlBase::tabInfoStr(const int & currIndex) co
 
 	QString tabInfo = QString();
 	if (tabCount == 0) {
-		tabInfo.append("No tabs");
+		tabInfo.append(app::main_window::noTabInfoText);
 	} else {
 		tabInfo.append("tab ");
 		tabInfo.append(QString("%1").arg(currIndex + 1));
@@ -102,15 +103,15 @@ void app::main_window::window::CtrlBase::keyReleaseEvent(QKeyEvent * event) {
 
 		const app::commands::KeySequence keySeq(releasedKey | keyModifiers);
 
+		// Retrieve main window controller state
 		const app::main_window::state_e windowState = this->core->getMainWindowState();
 		QString userTypedText = this->core->getUserText();
 
-		// Retrieve main window controller state
-		LOG_INFO(app::logger::info_level_e::ZERO, mainWindowCtrlBaseUserInput,  "State " << windowState << " key " << keySeq.toString());
+		LOG_INFO(app::logger::info_level_e::ZERO, mainWindowCtrlBaseUserInput, "Key " << keySeq.toString() << " has been pressed while window is in state " << windowState);
 
 		switch (releasedKey) {
 			case Qt::Key_Backspace:
-				LOG_INFO(app::logger::info_level_e::ZERO, mainWindowCtrlBaseUserInput,  "User typed text " << userTypedText);
+				LOG_INFO(app::logger::info_level_e::ZERO, mainWindowCtrlBaseUserInput, "User typed text " << userTypedText);
 				// If in state TAB MOVE and the core->userText is empty after deleting the last character, set the move value to IDLE
 				if (userTypedText.isEmpty() == true) {
 					if (windowState != app::main_window::state_e::COMMAND) {
@@ -137,7 +138,6 @@ void app::main_window::window::CtrlBase::keyReleaseEvent(QKeyEvent * event) {
 
 void app::main_window::window::CtrlBase::keyPressEvent(QKeyEvent * event) {
 
-
 	if (event->type() == QEvent::KeyPress) {
 
 		const int pressedKey = event->key();
@@ -148,7 +148,7 @@ void app::main_window::window::CtrlBase::keyPressEvent(QKeyEvent * event) {
 
 		const app::main_window::state_e windowState = this->core->getMainWindowState();
 
-		LOG_INFO(app::logger::info_level_e::ZERO, mainWindowCtrlBaseUserInput,  "State " << windowState << " key " << keySeq.toString());
+		LOG_INFO(app::logger::info_level_e::ZERO, mainWindowCtrlBaseUserInput, "Key " << keySeq.toString() << " has been pressed while window is in state " << windowState);
 
 		switch (pressedKey) {
 			case Qt::Key_Enter:
@@ -186,4 +186,25 @@ void app::main_window::window::CtrlBase::resetWindowState() {
 
 	this->core->updateUserInput(app::main_window::text_action_e::CLEAR, QString());
 	this->core->bottomStatusBar->setUserInputText(QString());
+	emit this->saveCurrentState();
+}
+
+void app::main_window::window::CtrlBase::focusInEvent(QFocusEvent * event) {
+	if (event->gotFocus() == true) {
+		// If the controller is not in the idle state, it is already dealing with a command
+		const app::main_window::state_e windowState = this->core->getMainWindowState();
+		if (windowState == app::main_window::state_e::IDLE) {
+			emit this->restoreSavedState();
+		}
+	}
+
+}
+
+void app::main_window::window::CtrlBase::focusOutEvent(QFocusEvent * event) {
+	if (event->lostFocus() == true) {
+		const app::main_window::state_e requestedWindowState = app::main_window::state_e::IDLE;
+		LOG_INFO(app::logger::info_level_e::ZERO, mainWindowCtrlBaseOverall, "Main window control wrapper lost the keyboard focus. Saving the data and setting the state to " << requestedWindowState);
+		emit this->saveCurrentState();
+		emit windowStateChangeRequested(requestedWindowState, app::main_window::state_postprocessing_e::SETUP);
+	}
 }

@@ -64,6 +64,24 @@ namespace app {
 					virtual ~Tab();
 
 					/**
+					 * @brief Function: const app::main_window::page_type_e & getType() const
+					 *
+					 * \return page type
+					 *
+					 * This function returns page type
+					 */
+					const app::main_window::page_type_e & getType() const;
+
+					/**
+					 * @brief Function: const QString getSource() const
+					 *
+					 * \return source of the page
+					 *
+					 * This function returns the source of the page
+					 */
+					const QString getSource() const;
+
+					/**
 					 * @brief Function: std::shared_ptr<app::main_window::tab::WebEnginePage> getPage() const
 					 *
 					 * \return tab web page object

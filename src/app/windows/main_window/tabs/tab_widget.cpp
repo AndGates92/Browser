@@ -391,7 +391,7 @@ void app::main_window::tab::TabWidget::setTabTitle(const int & index, const QStr
 
 	std::shared_ptr<app::main_window::tab::WebEnginePage> page = this->getPage(index);
 	if (page != nullptr) {
-		page->setSource(source);
+		page->setSource(app::main_window::deletePrefix(source));
 	}
 }
 
@@ -441,9 +441,9 @@ QString app::main_window::tab::TabWidget::searchToUrl(const QString & search) co
 
 		url += search;
 	} else if (app::main_window::isText(search) == true) {
-		url = app::shared::https + app::shared::www + app::main_window::defaultSearchEngine.arg(search);
+		url = app::main_window::defaultSearchEngine.arg(search);
 	} else {
-		EXCEPTION_ACTION(throw, "Unable to associate a  page type to search " << search);
+		EXCEPTION_ACTION(throw, "Unable to associate a page type to search " << search);
 	}
 
 	LOG_INFO(app::logger::info_level_e::ZERO, mainWindowTabWidgetTabs, "Converting search " << search << " to the following URL " << url);

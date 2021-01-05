@@ -180,15 +180,19 @@ void tester::base::CommandTest::writeCommandToStatusBar(const std::string & comm
 
 void tester::base::CommandTest::openNewTab(const std::string & search) {
 	if (search.empty() == true) {
-		LOG_INFO(app::logger::info_level_e::ZERO, commandTestTest, "Open new tab to search engine");
+		LOG_INFO(app::logger::info_level_e::ZERO, commandTestTest, "Open new tab to search engine " << app::shared::https << app::shared::www << app::main_window::defaultSearchEngine);
 	} else {
 		LOG_INFO(app::logger::info_level_e::ZERO, commandTestTest, "Open new tab searching " << search);
 	}
 	const std::string openCommandName("open new tab");
 	this->makeSearchInTab(openCommandName, search);
+}
+
+void tester::base::CommandTest::waitForTabOpened() {
 	const std::shared_ptr<app::main_window::window::Core> & windowCore = this->windowWrapper->getWindowCore();
+	WAIT_FOR_CONDITION((windowCore->bottomStatusBar->getLoadBarVisibility() == true), tester::shared::error_type_e::STATUSBAR, "Progress bar didn't change visibility to true", 5000);
 	const int loadBarUpperBoundary = 70;
-	WAIT_FOR_CONDITION((windowCore->bottomStatusBar->getProgressValue() == loadBarUpperBoundary), tester::shared::error_type_e::STATUSBAR, "Progress bar didn't reach " + std::to_string(loadBarUpperBoundary) + " event though user sent command \"" + openCommandName + "\" and searched " + search, 5000);
+	WAIT_FOR_CONDITION((windowCore->bottomStatusBar->getProgressValue() >= loadBarUpperBoundary), tester::shared::error_type_e::STATUSBAR, "Progress bar didn't reach " + std::to_string(loadBarUpperBoundary), 5000);
 	WAIT_FOR_CONDITION((windowCore->bottomStatusBar->getLoadBarVisibility() == false), tester::shared::error_type_e::STATUSBAR, "Progress bar didn't change visibility to false", 5000);
 }
 
@@ -247,45 +251,124 @@ void tester::base::CommandTest::makeSearchInTab(const std::string & commandName,
 
 	this->executeCommand(commandName, search);
 
-	WAIT_FOR_CONDITION((windowCore->getTabCount() == expectedNumberOfTabs), tester::shared::error_type_e::TABS, "Number of tab mismatch after executing command " + commandName + " - actual number of tabs " + std::to_string(windowCore->getTabCount()) + " expected number of tabs is " + std::to_string(expectedNumberOfTabs), 5000);
+	this->waitForTabOpened();
+	this->checkCurrentTab(search, expectedNumberOfTabs);
+}
+
+void tester::base::CommandTest::checkCurrentTab(const std::string & search, const int & expectedNumberOfTabs) {
+	const std::shared_ptr<app::main_window::window::Core> & windowCore = this->windowWrapper->getWindowCore();
+	WAIT_FOR_CONDITION((windowCore->getTabCount() == expectedNumberOfTabs), tester::shared::error_type_e::TABS, "Number of tab mismatch - actual number of tabs " + std::to_string(windowCore->getTabCount()) + " expected number of tabs is " + std::to_string(expectedNumberOfTabs), 5000);
 
 	const std::shared_ptr<app::main_window::tab::Tab> currentTab = this->windowWrapper->getCurrentTab();
 	ASSERT((currentTab != nullptr), tester::shared::error_type_e::TABS, "Current tab pointer is null event though " + search + " has been searched.");
 	if (currentTab != nullptr) {
-		std::string expectedAuthority = std::string();
-		std::string searchHostname(search);
-		const std::string https(app::shared::https.toStdString());
-		const std::string www(app::shared::www.toStdString());
-		if (app::main_window::isUrl(QString::fromStdString(search)) == true) {
-			std::size_t httpsPosition = searchHostname.find(https);
-			const bool containsHttps = (httpsPosition != std::string::npos);
-			if (containsHttps == true) {
-				searchHostname.erase(httpsPosition, https.size());
-			}
-			const bool containsWww = (search.find(www) != std::string::npos);
-			if (containsWww == false) {
-				expectedAuthority += www;
-			}
-			expectedAuthority += searchHostname;
-		} else if (app::main_window::isText(QString::fromStdString(search)) == true) {
-			expectedAuthority = www + app::main_window::defaultSearchEngine.arg(QString::fromStdString(search)).toStdString();
-		} else {
-			EXCEPTION_ACTION(throw, "Unable to deduce type of search " << search);
-		}
-
-		const QUrl & tabUrl = currentTab->getPage()->url();
-		std::string currentUrl(tabUrl.toString().toStdString());
-		std::size_t currentUrlHttpsPosition = currentUrl.find(https);
-		const bool currentUrlContainsHttps = (currentUrlHttpsPosition != std::string::npos);
-		if (currentUrlContainsHttps == true) {
-			currentUrl.erase(currentUrlHttpsPosition, https.size());
-		}
-		WAIT_FOR_CONDITION((expectedAuthority.compare(currentUrl) == 0), tester::shared::error_type_e::TABS, "Current URL " + currentUrl + " doesn't match expected URL " + expectedAuthority, 5000);
-
-		const std::string expectedTextInLabel = https + expectedAuthority;
-		const std::string textInLabel = windowCore->bottomStatusBar->getContentPathText().toStdString();
-		ASSERT((expectedTextInLabel.compare(textInLabel) == 0), tester::shared::error_type_e::STATUSBAR, "Source of the content in tab " + expectedTextInLabel + " doesn't match the source of the content that the user requested to search " + textInLabel);
+		this->checkSource(currentTab, search);
 	}
+}
+
+void tester::base::CommandTest::checkSource(const std::shared_ptr<app::main_window::tab::Tab> & tab, const std::string & search) {
+	std::string expectedSourceText = std::string();
+	std::string searchHostname(search);
+	const std::string www(app::shared::www.toStdString());
+
+	app::main_window::page_type_e tabType = tab->getType();
+
+	if (tabType == app::main_window::page_type_e::WEB_CONTENT) {
+		ASSERT(((app::main_window::isUrl(QString::fromStdString(search)) == true) || (app::main_window::isText(QString::fromStdString(search)) == true)), tester::shared::error_type_e::TABS, "Search string " + search + " for tab of type " + tabType + " is not recognized neither as a URL or a text");
+	} else if (tabType == app::main_window::page_type_e::TEXT) {
+		ASSERT((app::main_window::isFile(QString::fromStdString(search)) == true), tester::shared::error_type_e::TABS, "Search string " + search + " for tab of type " + tabType + " is not recognized as a file path");
+	} else {
+		EXCEPTION_ACTION(throw, "Untreated case of tab of type " << tabType);
+	}
+
+	if (app::main_window::isUrl(QString::fromStdString(search)) == true) {
+		const std::string https(app::shared::https.toStdString());
+
+		std::size_t httpsPosition = searchHostname.find(https);
+		const bool containsHttps = (httpsPosition != std::string::npos);
+		// Erase https from searched text
+		if (containsHttps == true) {
+			searchHostname.erase(httpsPosition, https.size());
+		}
+		expectedSourceText = https;
+
+		// Add www to searched text
+		const bool containsWww = (search.find(www) != std::string::npos);
+		if (containsWww == false) {
+			expectedSourceText += www;
+		}
+		expectedSourceText += searchHostname;
+		// expectedSourceText is the hostname (www.<domainName>.<domainSuffix>
+	} else if (app::main_window::isText(QString::fromStdString(search)) == true) {
+		std::string unprocessedAuthority = app::main_window::defaultSearchEngine.arg(QString::fromStdString(search)).toStdString();
+		// Let Qt fix common mistakes in URL
+		QUrl authority(QString::fromStdString(unprocessedAuthority), QUrl::TolerantMode);
+		expectedSourceText = authority.url().toStdString();
+	} else if (app::main_window::isFile(QString::fromStdString(search)) == true) {
+		expectedSourceText += search;
+	} else {
+		EXCEPTION_ACTION(throw, "Unable to deduce type of search " << search);
+	}
+
+	std::string currentSource = std::string();
+	if (tabType == app::main_window::page_type_e::WEB_CONTENT) {
+		const QUrl & tabUrl = tab->getPage()->url();
+		currentSource = tabUrl.toString().toStdString();
+		ASSERT((tabUrl.isValid() == true), tester::shared::error_type_e::TABS, "The URL returned by the tab " + tabUrl.toString().toStdString() + " is not a valid URL");
+		std::string tabUrlPath = std::string();
+		std::string tabUrlHost = std::string();
+		if (tabUrl.isValid() == true) {
+			tabUrlPath = tabUrl.path(QUrl::FullyEncoded).toStdString();
+			tabUrlHost = tabUrl.host(QUrl::FullyEncoded).toStdString();
+			std::size_t wwwPosition = tabUrlHost.find(www);
+			const bool containsWww = (wwwPosition != std::string::npos);
+			// Erase https from searched text
+			if (containsWww == true) {
+				tabUrlHost.erase(wwwPosition, www.size());
+			}
+		} else {
+			tabUrlPath = "Invalid tab URL";
+			tabUrlHost = "Invalid tab URL";
+		}
+		const QUrl expectedUrl = QUrl(QString::fromStdString(expectedSourceText));
+		ASSERT((expectedUrl.isValid() == true), tester::shared::error_type_e::TEST, "The expected source " + expectedSourceText + " is not a valid URL");
+		std::string expectedUrlPath = std::string();
+		std::string expectedUrlHost = std::string();
+		if (expectedUrl.isValid() == true) {
+			expectedUrlPath = expectedUrl.path(QUrl::FullyEncoded).toStdString();
+			expectedUrlHost = expectedUrl.host(QUrl::FullyEncoded).toStdString();
+			std::size_t wwwPosition = expectedUrlHost.find(www);
+			const bool containsWww = (wwwPosition != std::string::npos);
+			// Erase https from searched text
+			if (containsWww == true) {
+				expectedUrlHost.erase(wwwPosition, www.size());
+			}
+		} else {
+			expectedUrlPath = "Invalid expected URL";
+			expectedUrlHost = "Invalid expected URL";
+		}
+		ASSERT((tabUrlPath.find(expectedUrlPath) != std::string::npos), tester::shared::error_type_e::TABS, "Current path " + tabUrlPath + " of URL " + currentSource + " opened in tab doesn't contain path " + expectedUrlPath + " of the expected URL " + expectedSourceText);
+		ASSERT((tabUrlHost.find(expectedUrlHost) != std::string::npos), tester::shared::error_type_e::TABS, "Current host " + tabUrlHost + " of URL " + currentSource + " opened in tab doesn't contain host " + expectedUrlHost + " of the expected URL " + expectedSourceText);
+	} else if (tabType == app::main_window::page_type_e::TEXT) {
+		currentSource = tab->getSource().toStdString();
+		WAIT_FOR_CONDITION((expectedSourceText.compare(currentSource) == 0), tester::shared::error_type_e::TABS, "Current source " + currentSource + " doesn't match expected source " + expectedSourceText, 5000);
+	}
+
+	std::string expectedTextInLabel = std::string();
+	if ((app::main_window::isUrl(QString::fromStdString(search)) == true) || (app::main_window::isText(QString::fromStdString(search)) == true)) {
+		expectedTextInLabel = currentSource;
+	} else if (app::main_window::isFile(QString::fromStdString(search)) == true) {
+		const std::string filePrefix(app::main_window::filePrefix.toStdString());
+		expectedTextInLabel = filePrefix + currentSource;
+	}
+
+	if (tabType == app::main_window::page_type_e::WEB_CONTENT) {
+		const QUrl & tabUrl = tab->getPage()->url();
+LOG_INFO(app::logger::info_level_e::ZERO, commandTestTest, "DEBUG: current tab source " + tabUrl.toString().toStdString() + " saved tab source " + expectedSourceText);
+	}
+	const std::shared_ptr<app::main_window::window::Core> & windowCore = this->windowWrapper->getWindowCore();
+	const std::string textInLabel = windowCore->bottomStatusBar->getContentPathText().toStdString();
+	ASSERT((expectedTextInLabel.compare(textInLabel) == 0), tester::shared::error_type_e::STATUSBAR, "Source of the content in tab " + expectedTextInLabel + " doesn't match the source of the content that the user requested to search " + textInLabel);
 }
 
 std::string tester::base::CommandTest::commandNameToTypedText(const std::string & commandName) {
@@ -321,7 +404,7 @@ std::string tester::base::CommandTest::commandNameToTypedText(const std::string 
 	return commandToSend;
 }
 
-void tester::base::CommandTest::executeCommand(const std::string & commandName, const std::string & argument) {
+void tester::base::CommandTest::executeCommand(const std::string & commandName, const std::string & argument, const bool execute) {
 
 	const std::unique_ptr<app::main_window::json::Data> & commandData = this->findDataWithFieldValue("Name", &commandName);
 	ASSERT((commandData != nullptr), tester::shared::error_type_e::COMMAND, "Unable to find data with Name " + commandName + " in " + this->getActionJsonFilesAsString());
@@ -361,7 +444,7 @@ void tester::base::CommandTest::executeCommand(const std::string & commandName, 
 		const std::string argumentExpectedText = commandExpectedName + " " + argument;
 
 		LOG_INFO(app::logger::info_level_e::ZERO, commandTestTest, "Give argument " << argument << " to command " << commandName);
-		this->writeTextToStatusBar(argument, argumentExpectedText, commandState, true, true);
+		this->writeTextToStatusBar(argument, argumentExpectedText, commandState, execute, true);
 	}
 
 }

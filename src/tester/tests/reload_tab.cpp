@@ -78,8 +78,7 @@ void tester::test::ReloadTab::testBody() {
 	const std::string search("test");
 	LOG_INFO(app::logger::info_level_e::ZERO, reloadTabTest, "Open new tab searching " << search);
 	this->openNewTab(search);
-	const std::string authorityUrl0 = www + app::main_window::defaultSearchEngine.arg(QString::fromStdString(search)).toStdString();
-	const std::string url0 = https + authorityUrl0;
+	const std::string url0 = app::main_window::defaultSearchEngine.arg(QString::fromStdString(search)).toStdString();
 
 	const std::shared_ptr<app::main_window::tab::Tab> currentTab = this->windowWrapper->getCurrentTab();
 	ASSERT((currentTab != nullptr), tester::shared::error_type_e::TABS, "Current tab pointer is null event though it should have loaded website " + url0);
@@ -92,10 +91,7 @@ void tester::test::ReloadTab::testBody() {
 		this->executeCommand(refreshCommandName, std::string());
 
 		// Wait for page being refreshed
-		WAIT_FOR_CONDITION((windowCore->bottomStatusBar->getLoadBarVisibility() == true), tester::shared::error_type_e::STATUSBAR, "Load bar never became visible following command " + refreshCommandName, 1000);
-		const int maximumProgressValue = app::progress_bar::Bar::getMaximumValue();
-		WAIT_FOR_CONDITION((windowCore->bottomStatusBar->getProgressValue() == maximumProgressValue), tester::shared::error_type_e::STATUSBAR, "Load bar is expected to reach " + std::to_string(maximumProgressValue) + " instead it reached " + std::to_string(windowCore->bottomStatusBar->getProgressValue()) + " after executing command " + refreshCommandName, 1000);
-		WAIT_FOR_CONDITION((windowCore->bottomStatusBar->getLoadBarVisibility() == false), tester::shared::error_type_e::STATUSBAR, "Load bar is expected to be hiddeni after command " + refreshCommandName + " is executed", 1000);
+		this->waitForTabOpened();
 
 		const int currentTabIndex = windowCore->getCurrentTabIndex();
 		const int expectedInitialTabIndex = 0;

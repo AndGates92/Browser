@@ -124,3 +124,11 @@ void app::main_window::window::Ctrl::closeWindow() {
 	LOG_INFO(app::logger::info_level_e::ZERO, mainWindowCtrlOverall,  "Close slot: exiting from the browser");
 	emit this->closeWindowSignal();
 }
+
+void app::main_window::window::Ctrl::focusInEvent(QFocusEvent * event) {
+	app::main_window::window::CtrlBase::focusInEvent(event);
+}
+
+void app::main_window::window::Ctrl::focusOutEvent(QFocusEvent * event) {
+	app::main_window::window::CtrlBase::focusOutEvent(event);
+}

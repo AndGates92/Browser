@@ -15,10 +15,14 @@
 #include "app/shared/enums.h"
 #include "app/widgets/elided_label/elided_label.h"
 #include "app/widgets/progress_bar/bar.h"
+#include "app/widgets/commands/key_sequence.h"
+#include "app/windows/main_window/shared/constants.h"
 #include "app/windows/main_window/statusbar/bar.h"
 
 // Categories
 LOGGING_CONTEXT(mainWindowStatusBarOverall, mainWindowStatusBar.overall, TYPE_LEVEL, INFO_VERBOSITY)
+LOGGING_CONTEXT(mainWindowStatusBarMouse, mainWindowStatusBar.mouse, TYPE_LEVEL, INFO_VERBOSITY)
+LOGGING_CONTEXT(mainWindowStatusBarUserInput, mainWindowStatusBar.userInput, TYPE_LEVEL, INFO_VERBOSITY)
 
 namespace app {
 
@@ -108,7 +112,7 @@ app::main_window::statusbar::Bar::Bar(QWidget * parent, Qt::WindowFlags flags) :
 
 	this->userInput = std::move(this->newWindowLabel());
 	this->contentPath = std::move(this->newWindowLabel());
-	this->scroll= std::move(this->newWindowLabel());
+	this->scroll = std::move(this->newWindowLabel());
 	this->info = std::move(this->newWindowLabel());
 	this->searchResult = std::move(this->newWindowLabel());
 	this->loadBar = std::move(this->newProgressBar());
@@ -300,26 +304,31 @@ void app::main_window::statusbar::Bar::setProgressValue(const int & value) {
 }
 BASE_GETTER(app::main_window::statusbar::Bar::getProgressValue, int, this->loadBar->value())
 BASE_GETTER(app::main_window::statusbar::Bar::getLoadBarVisibility, bool, this->loadBar->isVisible())
+CONST_GETTER(app::main_window::statusbar::Bar::getLoadBar, std::unique_ptr<app::progress_bar::Bar> &, this->loadBar)
 
 void app::main_window::statusbar::Bar::setInfoText(const QString & text) {
 	this->info->setText(text);
 }
 CONST_GETTER(app::main_window::statusbar::Bar::getInfoText, QString, this->info->text())
+CONST_GETTER(app::main_window::statusbar::Bar::getInfo, std::unique_ptr<app::elided_label::ElidedLabel> &, this->info)
 
 void app::main_window::statusbar::Bar::setUserInputText(const QString & text) {
 	this->userInput->setText(text);
 }
 CONST_GETTER(app::main_window::statusbar::Bar::getUserInputText, QString, this->userInput->text())
+CONST_GETTER(app::main_window::statusbar::Bar::getUserInput, std::unique_ptr<app::elided_label::ElidedLabel> &, this->userInput)
 
 void app::main_window::statusbar::Bar::setContentPathText(const QString & text) {
 	this->contentPath->setText(text);
 }
 CONST_GETTER(app::main_window::statusbar::Bar::getContentPathText, QString, this->contentPath->text())
+CONST_GETTER(app::main_window::statusbar::Bar::getContentPath, std::unique_ptr<app::elided_label::ElidedLabel> &, this->contentPath)
 
 void app::main_window::statusbar::Bar::setSearchResultText(const QString & text) {
 	this->searchResult->setText(text);
 }
 CONST_GETTER(app::main_window::statusbar::Bar::getSearchResultText, QString, this->searchResult->text())
+CONST_GETTER(app::main_window::statusbar::Bar::getSearchResult, std::unique_ptr<app::elided_label::ElidedLabel> &, this->searchResult)
 
 void app::main_window::statusbar::Bar::showSearchResult(const bool & showWidget) {
 	const bool isTextEmpty = this->searchResult->text().isEmpty();
@@ -329,3 +338,115 @@ void app::main_window::statusbar::Bar::showSearchResult(const bool & showWidget)
 		this->searchResult->hide();
 	}
 }
+
+void app::main_window::statusbar::Bar::mousePressEvent(QMouseEvent * event) {
+
+	if (event->type() == QEvent::MouseButtonPress) {
+
+		const Qt::MouseButton & button = event->button();
+
+		if (button & Qt::LeftButton) {
+
+			// Do not give focus if not tabs are opened
+			const QString infoText(this->info->text());
+			if (infoText.compare(app::main_window::noTabInfoText, Qt::CaseSensitive) != 0) {
+				// Position relative to the widget
+				const QPointF & relativePosition = event->localPos();
+				QWidget * clickedWidget = this->childAt(relativePosition.toPoint());
+
+				// Do not give focus to the status bar if clicking on the progress bar
+				if (clickedWidget == this->userInput.get()) {
+					LOG_INFO(app::logger::info_level_e::ZERO, mainWindowStatusBarMouse, "Give focus to window " << this->window());
+					// If wanting to type a command give the focus to the window as it will proxy it to the control wrapper
+					this->window()->setFocus();
+				} else if (clickedWidget == this->contentPath.get()) {
+					LOG_INFO(app::logger::info_level_e::ZERO, mainWindowStatusBarMouse, "Give focus proxy to widget " << clickedWidget);
+					this->setFocus();
+					this->setFocusProxy(clickedWidget);
+					emit this->childFocusIn();
+				}
+
+			}
+
+		}
+
+	}
+}
+
+void app::main_window::statusbar::Bar::keyPressEvent(QKeyEvent * event) {
+
+	if (event->type() == QEvent::KeyPress) {
+
+		const int pressedKey = event->key();
+		const Qt::KeyboardModifiers keyModifiers = event->modifiers();
+
+		const app::commands::KeySequence keySeq(pressedKey | keyModifiers);
+
+		// Retrieve main window controller state
+		LOG_INFO(app::logger::info_level_e::ZERO, mainWindowStatusBarUserInput, "Key pressed " << keySeq.toString());
+
+		QWidget * focusWidget = this->focusProxy();
+		EXCEPTION_ACTION_COND((focusWidget == this->userInput.get()), throw, "Key events towards the command label should be sent directly through the main window");
+		EXCEPTION_ACTION_COND((focusWidget == this->loadBar.get()), throw, "Loadbar is unable to accept key inputs");
+		EXCEPTION_ACTION_COND((focusWidget == this->scroll.get()), throw, "Unable to scroll to the " + std::to_string(this->getVScroll()) + " %% of the page");
+		EXCEPTION_ACTION_COND((focusWidget == this->info.get()), throw, "Cannot change tab by changing the information text \"" + this->getInfoText() + "\" in the statusbar");
+		EXCEPTION_ACTION_COND((focusWidget == this->searchResult.get()), throw, "Cannot change search result match number by changing the text \"" + this->getSearchResultText() + "\" in the statusbar");
+
+		app::elided_label::ElidedLabel * label = static_cast<app::elided_label::ElidedLabel *>(focusWidget);
+		QString labelText(label->text());
+
+		// Print visible text characters
+		if ((pressedKey >= Qt::Key_Space) && (pressedKey <= Qt::Key_ydiaeresis)) {
+			labelText.append(event->text());
+			label->setText(labelText);
+
+		} else if ((pressedKey == Qt::Key_Enter) || (pressedKey == Qt::Key_Return)) {
+			if ((focusWidget == this->loadBar.get()) || (focusWidget == this->userInput.get())) {
+				EXCEPTION_ACTION(throw, "Unable to execute action because focus widget is set to " << focusWidget);
+			} else if (focusWidget == this->contentPath.get()) {
+				QString path = this->contentPath->text();
+				LOG_INFO(app::logger::info_level_e::ZERO, mainWindowStatusBarUserInput, "Opening URL or file " << path);
+				// Notify that the content path has changed
+				emit this->contentPathChanged(path);
+				this->window()->setFocus();
+			} else {
+				EXCEPTION_ACTION(throw, "Unable to accept key events because focus widget is set to " << focusWidget);
+			}
+			// TODO handle enter or return key
+			// TODO: emit signal to execute action
+		}
+	}
+}
+
+void app::main_window::statusbar::Bar::keyReleaseEvent(QKeyEvent * event) {
+	if (event->type() == QEvent::KeyRelease) {
+
+		const int releasedKey = event->key();
+		const Qt::KeyboardModifiers keyModifiers = event->modifiers();
+
+		const app::commands::KeySequence keySeq(releasedKey | keyModifiers);
+
+		// Retrieve main window controller state
+		LOG_INFO(app::logger::info_level_e::ZERO, mainWindowStatusBarUserInput, "Released key " << keySeq.toString());
+
+		QWidget * focusWidget = this->focusProxy();
+		app::elided_label::ElidedLabel * label = static_cast<app::elided_label::ElidedLabel *>(focusWidget);
+		QString labelText(label->text());
+
+		switch (releasedKey) {
+			case Qt::Key_Escape:
+				this->window()->setFocus();
+				this->setFocusProxy(nullptr);
+				break;
+			case Qt::Key_Backspace:
+				if (labelText.isEmpty() == false) {
+					labelText.chop(1);
+					label->setText(labelText);
+				}
+			default:
+				break;
+		}
+	}
+}
+
+

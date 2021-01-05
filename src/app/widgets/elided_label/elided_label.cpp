@@ -46,7 +46,7 @@ void app::elided_label::ElidedLabel::updateElidedText(const int & width) {
 		LOG_INFO(app::logger::info_level_e::ZERO, elidedLabelElision,  "Elided text is set to null");
 	} else {
 		this->elisionText = this->fontMetrics().elidedText(this->text(), this->elisionMode, width, Qt::TextShowMnemonic);
-		LOG_INFO(app::logger::info_level_e::ZERO, elidedLabelElision,  "Elided text is set to " << this->elisionText);
+		LOG_INFO(app::logger::info_level_e::ZERO, elidedLabelElision,  "Unprocessed text is \"" << this->text() << "\" and elided text is set to " << this->elisionText);
 	}
 }
 

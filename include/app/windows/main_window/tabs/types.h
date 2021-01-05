@@ -22,7 +22,7 @@ namespace app {
 			 * @brief search data changed
 			 *
 			 */
-			typedef struct search_data_list {
+			typedef struct search_data_t {
 				const int activeMatch;       /**< active match */
 				const int numberOfMatches;   /**< total number of matches */
 			} search_data_s;

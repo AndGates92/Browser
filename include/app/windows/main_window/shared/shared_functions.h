@@ -8,7 +8,7 @@
  * @brief Main Window Shared Functions file
 */
 
-#include "app/shared/type_print_macros.h"
+#include "app/windows/main_window/shared/shared_types.h"
 
 /** @defgroup MainWindowGroup Main Window Doxygen Group
  *  Main Window functions
@@ -51,6 +51,27 @@ namespace app {
 		 */
 		bool isText(const QString & text);
 
+		/**
+		 * @brief Function: app::main_window::page_type_e textToPageType(const QString & text)
+		 *
+		 * \param text: text to deduce type from
+		 *
+		 * \return the page type deduced for the text provided as argument
+		 *
+		 * This function deduces the page type associated with the text provided as argument
+		 */
+		app::main_window::page_type_e textToPageType(const QString & text);
+
+		/**
+		 * @brief Function: QString app::main_window::deletePrefix(QString text)
+		 *
+		 * \param source: raw text
+		 *
+		 * \return the text without any prefix
+		 *
+		 * This function deletes prefixes from the text passed as argument
+		 */
+		QString deletePrefix(QString text);
 	}
 
 }

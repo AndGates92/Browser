@@ -11,7 +11,9 @@
 #include <QtCore/QUrl>
 
 #include "app/shared/constants.h"
+#include "app/utility/cpp/cpp_operator.h"
 #include "app/windows/main_window/shared/shared_functions.h"
+#include "app/windows/main_window/shared/constants.h"
 
 bool app::main_window::isUrl(const QString & text) {
 
@@ -50,4 +52,24 @@ bool app::main_window::isText(const QString & text) {
 	bool validFile = app::main_window::isFile(text);
 
 	return ((validUrl == false) && (validFile == false));
+}
+
+app::main_window::page_type_e app::main_window::textToPageType(const QString & text) {
+	app::main_window::page_type_e type = app::main_window::page_type_e::UNKNOWN;
+	if (app::main_window::isFile(text) == true) {
+		type = app::main_window::page_type_e::TEXT;
+	} else if ((app::main_window::isUrl(text) == true) || (app::main_window::isText(text) == true)) {
+		type = app::main_window::page_type_e::WEB_CONTENT;
+	} else {
+		EXCEPTION_ACTION(throw, "Unable to associate a page type to text " << text);
+	}
+	return type;
+}
+
+QString app::main_window::deletePrefix(QString text) {
+	const QString filePrefix(app::main_window::filePrefix);
+	if (text.contains(filePrefix) == true) {
+		text.remove(filePrefix, Qt::CaseSensitive);
+	}
+	return text;
 }

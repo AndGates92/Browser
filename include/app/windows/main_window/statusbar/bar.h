@@ -64,6 +64,60 @@ namespace app {
 					virtual ~Bar();
 
 					/**
+					 * Function: const std::unique_ptr<app::elided_label::ElidedLabel> & getUserInput() const
+					 *
+					 * \return command argument
+					 *
+					 * This function returns the command argument
+					 */
+					const std::unique_ptr<app::elided_label::ElidedLabel> & getUserInput() const;
+
+					/**
+					 * Function: const std::unique_ptr<app::elided_label::ElidedLabel> & getContentPath() const
+					 *
+					 * \return content path
+					 *
+					 * This function returns the content path
+					 */
+					const std::unique_ptr<app::elided_label::ElidedLabel> & getContentPath() const;
+
+					/**
+					 * Function: const std::unique_ptr<app::elided_label::ElidedLabel> & getScroll() const
+					 *
+					 * \return web page scroll
+					 *
+					 * This function returns the web page scroll
+					 */
+					const std::unique_ptr<app::elided_label::ElidedLabel> & getScroll() const;
+
+					/**
+					 * Function: const std::unique_ptr<app::elided_label::ElidedLabel> & getInfo() const
+					 *
+					 * \return web page informations
+					 *
+					 * This function returns the web page informations
+					 */
+					const std::unique_ptr<app::elided_label::ElidedLabel> & getInfo() const;
+
+					/**
+					 * Function: const std::unique_ptr<app::elided_label::ElidedLabel> & getSearchResult() const
+					 *
+					 * \return search results
+					 *
+					 * This function returns the search result
+					 */
+					const std::unique_ptr<app::elided_label::ElidedLabel> & getSearchResult() const;
+
+					/**
+					 * Function: const std::unique_ptr<app::progress_bar::Bar> & getLoadBar() const
+					 *
+					 * \return progress bar
+					 *
+					 * This function returns the progress bar
+					 */
+					const std::unique_ptr<app::progress_bar::Bar> & getLoadBar() const;
+
+					/**
 					 * Function: void showSearchResult(const bool & showWidget)
 					 *
 					 * \param showWidget: boolean indicating whether to show the search result or not
@@ -144,6 +198,27 @@ namespace app {
 					 */
 					void setSearchResultText(const QString & text);
 
+					/**
+					 * @brief Function: virtual void keyPressEvent(QKeyEvent * event) override final
+					 *
+					 * \param event: event coming from keyboard
+					 *
+					 * This function handles events coming from the keyboard
+					 * Escape is not triggered in keyPressedEvent
+					 * Re-implement key pressed event
+					 */
+					virtual void keyPressEvent(QKeyEvent * event) override final;
+
+					/**
+					 * @brief Function: virtual void keyReleaseEvent(QKeyEvent * event) override final
+					 *
+					 * \param event: event coming from keyboard
+					 *
+					 * This function handles event coming from the keyboard
+					 * Re-implement key released event
+					 */
+					virtual void keyReleaseEvent(QKeyEvent * event) override final;
+
 				public slots:
 					/**
 					 * Function: void setProgressValue(const int & value)
@@ -190,7 +265,39 @@ namespace app {
 					 */
 					void setContentPathText(const QString & text);
 
+				signals:
+					/**
+					 * @brief Function: void childFocusIn();
+					 *
+					 * This function is a signal triggered when a child widget gets the focus
+					 */
+					void childFocusIn();
+
+					/**
+					 * @brief Function: void childFocusOut();
+					 *
+					 * This function is a signal triggered when a child widget loses the focus
+					 */
+					void childFocusOut();
+
+					/**
+					 * @brief Function: void contentPathChanged(const QString & text);
+					 *
+					 * This function is a signal triggered when the content path changed after the user directly modified it
+					 */
+					void contentPathChanged(const QString & text);
+
+
 				protected:
+					/**
+					 * @brief Function: virtual void mousePressEvent(QMouseEvent * event) override final
+					 *
+					 * \param event: event coming from mouse
+					 *
+					 * This function handles events coming from the mouse
+					 * Re-implement mouse pressed event
+					 */
+					virtual void mousePressEvent(QMouseEvent * event) override final;
 
 				private:
 

@@ -209,7 +209,7 @@ void app::main_window::window::MainWindow::customizeTopMenuBar() {
 }
 
 void app::main_window::window::MainWindow::customizeBottomStatusBar() {
-	LOG_INFO(app::logger::info_level_e::ZERO, mainWindowOverall,  "Customize top menu bar");
+	LOG_INFO(app::logger::info_level_e::ZERO, mainWindowOverall,  "Customize bottom menu bar");
 
 }
 
@@ -251,6 +251,7 @@ void app::main_window::window::MainWindow::connectSignals() {
 	for (std::list<std::shared_ptr<app::base::overlayed_widget::OverlayedWidget>>::const_iterator widget = this->overlayedWidgets.cbegin(); widget != this->overlayedWidgets.cend(); widget++) {
 		connect((*widget).get(), &app::base::overlayed_widget::OverlayedWidget::updateGeometryRequest, this, &app::main_window::window::MainWindow::updateWidgetGeometry);
 	}
+
 }
 
 void app::main_window::window::MainWindow::createCtrl() {

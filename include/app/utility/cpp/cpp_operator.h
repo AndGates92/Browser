@@ -59,6 +59,18 @@ std::ostream & operator<<(std::ostream & stream, const QString & str);
 std::string operator+(const std::string & str, const void * ptr);
 
 /**
+ * @brief Function: std::string operator+(const std::string & str, const QString & qStr)
+ *
+ * \param str: string to append the pointer value to
+ * \param qStr: Qt string to append
+ *
+ * \return string with QString appended
+ *
+ * operator + overloading between std::string and a QString
+ */
+std::string operator+(const std::string & str, const QString & qStr);
+
+/**
  * Structure that list needed types that overload operator<< between QDataStream and the type itself
  *
  */

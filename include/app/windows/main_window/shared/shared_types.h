@@ -92,6 +92,7 @@ namespace app {
 		 *
 		 */
 		typedef enum class text_action_list {
+			NO_CHANGE,        /**< Do not change text */
 			SET,              /**< Set text */
 			APPEND,           /**< Append text */
 			CLEAR             /**< Clear text */

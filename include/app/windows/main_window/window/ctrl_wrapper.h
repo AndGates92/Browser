@@ -11,7 +11,8 @@
 #include <QtWidgets/QWidget>
 
 #include "app/windows/main_window/shared/shared_types.h"
-#include "app/windows/main_window/window/ctrl_base.h"
+#include "app/windows/main_window/window/base.h"
+#include "app/windows/main_window/window/types.h"
 #include "app/shared/constructor_macros.h"
 
 /** @defgroup MainWindowGroup Main Window Doxygen Group
@@ -63,25 +64,52 @@ namespace app {
 					virtual ~CtrlWrapper();
 
 					/**
-					 * @brief Function: void keyReleaseEvent(QKeyEvent * event) override
+					 * @brief Function: virtual void keyPressEvent(QKeyEvent * event) override
 					 *
 					 * \param event: event coming from keyboard
 					 *
-					 * This function handles event coming from the keyboard
-					 * Re-implement key released event
-					 */
-					void keyReleaseEvent(QKeyEvent * event) override;
-
-					/**
-					 * @brief Function: void keyPressEvent(QKeyEvent * event) override
-					 *
-					 * \param event: event coming from keyboard
-					 *
-					 * This function handles event coming from the keyboard
+					 * This function handles events coming from the keyboard
 					 * Escape is not triggered in keyPressedEvent
 					 * Re-implement key pressed event
 					 */
-					void keyPressEvent(QKeyEvent * event) override;
+					virtual void keyPressEvent(QKeyEvent * event) override;
+
+					/**
+					 * @brief Function: virtual void keyReleaseEvent(QKeyEvent * event) override
+					 *
+					 * \param event: event coming from keyboard
+					 *
+					 * This function handles events coming from the keyboard
+					 * Re-implement key released event
+					 */
+					virtual void keyReleaseEvent(QKeyEvent * event) override;
+
+					/**
+					 * @brief Function: virtual void focusInEvent(QFocusEvent * event) override
+					 *
+					 * \param event: focus event
+					 *
+					 * This function handles incoming focus event
+					 */
+					virtual void focusInEvent(QFocusEvent * event) override;
+
+					/**
+					 * @brief Function: virtual void focusOutEvent(QFocusEvent * event) override
+					 *
+					 * \param event: focus event
+					 *
+					 * This function handles outgoing focus event
+					 */
+					virtual void focusOutEvent(QFocusEvent * event) override;
+
+					/**
+					 * @brief Function: const app::main_window::window::ctrl_data_s & getSavedData() const
+					 *
+					 * \return saved data to restore
+					 *
+					 * This function returns the data to restore
+					 */
+					const app::main_window::window::ctrl_data_s & getSavedData() const;
 
 				signals:
 					/**
@@ -108,6 +136,12 @@ namespace app {
 					 *
 					 */
 					std::unique_ptr<app::main_window::window::CtrlTab> tabctrl;
+
+					/**
+					 * @brief state to restore when the window gets the focus
+					 *
+					 */
+					app::main_window::window::ctrl_data_s savedData;
 
 					/**
 					 * @brief Function: virtual void connectSignals() final
@@ -195,6 +229,19 @@ namespace app {
 					 */
 					virtual void changeWindowState(const app::main_window::state_e & nextState, const app::main_window::state_postprocessing_e postprocess, const Qt::Key key = Qt::Key_unknown) final;
 
+					/**
+					 * @brief Function: void saveData()
+					 *
+					 * This function saves the current status of the controller
+					 */
+					void saveData();
+
+					/**
+					 * @brief Function: void restoreSavedData()
+					 *
+					 * This function restores the controller at the point where it was saved
+					 */
+					void restoreSavedData();
 
 			};
 

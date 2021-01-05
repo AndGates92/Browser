@@ -44,9 +44,10 @@ void app::main_window::tab::WebEnginePage::setBody() {
 	switch (type) {
 		case app::main_window::page_type_e::WEB_CONTENT:
 		{
-			const QUrl url(this->getSource(), QUrl::StrictMode);
+			const QUrl url(this->getSource(), QUrl::TolerantMode);
 			EXCEPTION_ACTION_COND((url.isValid() == false), throw,  "URL is not valid. The following error has been identified: " << url.errorString());
 			this->setUrl(url);
+			this->setSource(url.toString());
 			break;
 		}
 		case app::main_window::page_type_e::TEXT:

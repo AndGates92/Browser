@@ -27,7 +27,7 @@
 LOGGING_CONTEXT(mainWindowCtrlWrapperOverall, mainWindowCtrlWrapper.overall, TYPE_LEVEL, INFO_VERBOSITY)
 LOGGING_CONTEXT(mainWindowCtrlWrapperUserInput, mainWindowCtrlWrapper.userInput, TYPE_LEVEL, INFO_VERBOSITY)
 
-app::main_window::window::CtrlWrapper::CtrlWrapper(QWidget * parent, const std::shared_ptr<app::main_window::window::Core> & core) : QWidget(parent), app::main_window::window::Base(core), winctrl(new app::main_window::window::Ctrl(this, core)), tabctrl(new app::main_window::window::CtrlTab(this, core)) {
+app::main_window::window::CtrlWrapper::CtrlWrapper(QWidget * parent, const std::shared_ptr<app::main_window::window::Core> & core) : QWidget(parent), app::main_window::window::Base(core), winctrl(new app::main_window::window::Ctrl(this, core)), tabctrl(new app::main_window::window::CtrlTab(this, core)), savedData({app::main_window::state_e::IDLE, QString()}) {
 	// Connect signals and slots
 	this->connectSignals();
 
@@ -39,7 +39,7 @@ app::main_window::window::CtrlWrapper::~CtrlWrapper() {
 
 void app::main_window::window::CtrlWrapper::keyPressEvent(QKeyEvent * event) {
 
-	LOG_INFO(app::logger::info_level_e::ZERO, mainWindowCtrlWrapperOverall,  "Key event details: event type: keyPress key: " << event->key() << " modifier: " << event->modifiers());
+	LOG_INFO(app::logger::info_level_e::ZERO, mainWindowCtrlWrapperUserInput,  "Key event details: event type: keyPress key: " << event->key() << " modifier: " << event->modifiers());
 
 	this->winctrl->keyPressEvent(event);
 	this->tabctrl->keyPressEvent(event);
@@ -52,8 +52,20 @@ void app::main_window::window::CtrlWrapper::connectSignals() {
 
 	LOG_INFO(app::logger::info_level_e::ZERO, mainWindowCtrlWrapperOverall,  "Connect signals");
 
+	// Window state change
 	connect(this->winctrl.get(), &app::main_window::window::Ctrl::windowStateChangeRequested, this, &app::main_window::window::CtrlWrapper::changeWindowState);
 	connect(this->tabctrl.get(), &app::main_window::window::CtrlTab::windowStateChangeRequested, this, &app::main_window::window::CtrlWrapper::changeWindowState);
+
+	// Controller state save and restore
+	connect(this->winctrl.get(), &app::main_window::window::Ctrl::saveCurrentState, this, &app::main_window::window::CtrlWrapper::saveData);
+	connect(this->tabctrl.get(), &app::main_window::window::CtrlTab::saveCurrentState, this, &app::main_window::window::CtrlWrapper::saveData);
+	connect(this->winctrl.get(), &app::main_window::window::Ctrl::restoreSavedState, this, &app::main_window::window::CtrlWrapper::restoreSavedData);
+	connect(this->tabctrl.get(), &app::main_window::window::CtrlTab::restoreSavedState, this, &app::main_window::window::CtrlWrapper::restoreSavedData);
+
+	std::unique_ptr<app::main_window::statusbar::Bar> & statusBar = this->core->bottomStatusBar;
+	connect(statusBar.get(), &app::main_window::statusbar::Bar::childFocusIn, this, [this] () {
+		this->setAllShortcutEnabledProperty(false);
+	});
 
 	const app::main_window::window::Commands::action_data_t & commands = this->core->commands->getActions();
 
@@ -73,16 +85,33 @@ void app::main_window::window::CtrlWrapper::connectSignals() {
 
 }
 
-void app::main_window::window::CtrlWrapper::keyReleaseEvent(QKeyEvent * event) {
+void app::main_window::window::CtrlWrapper::saveData() {
 
-	LOG_INFO(app::logger::info_level_e::ZERO, mainWindowCtrlWrapperOverall,  "Key event details: event type: keyRelease key: " << event->key() << " modifier: " << event->modifiers());
+	const app::main_window::state_e windowState = this->core->getMainWindowState();
+	const QString & commandArgument = this->core->getUserText();
 
-	this->winctrl->keyReleaseEvent(event);
-	this->tabctrl->keyReleaseEvent(event);
+	LOG_INFO(app::logger::info_level_e::ZERO, mainWindowCtrlWrapperOverall, "Saving data: window state " << windowState << " command argument " << commandArgument);
 
-	this->core->mainWidget->repaint();
-
+	this->savedData.state = windowState;
+	this->savedData.commandArgument = commandArgument;
 }
+
+void app::main_window::window::CtrlWrapper::restoreSavedData() {
+	const app::main_window::state_e windowState = this->savedData.state;
+	// Not taking a reference because when going to the IDLE state to any other state the text is cleared and the focus is changed hence the save data are as well
+	const QString commandArgument = this->savedData.commandArgument;
+	LOG_INFO(app::logger::info_level_e::ZERO, mainWindowCtrlWrapperOverall, "Restoring data: window state " << windowState << " command argument " << commandArgument);
+
+	// TODO: Restore window state based on the user input text
+	// TODO: - parse user input text to find command string (:<command name> -> NON COMMAND STATE or :<space> -> COMMAND)
+	// TODO: - set state with no preprocessing - this should change the focus
+	// TODO: - check that state is not IDLE
+
+	this->changeWindowState(windowState, app::main_window::state_postprocessing_e::SETUP);
+	this->core->printUserInput(app::main_window::text_action_e::SET, commandArgument);
+}
+
+CONST_GETTER(app::main_window::window::CtrlWrapper::getSavedData, app::main_window::window::ctrl_data_s &, this->savedData)
 
 bool app::main_window::window::CtrlWrapper::isValidWindowState(const app::main_window::state_e & requestedWindowState) {
 	bool isValid = false;
@@ -137,19 +166,14 @@ void app::main_window::window::CtrlWrapper::changeWindowStateWrapper(const std::
 	this->changeWindowState(commandData->getState(), postprocess);
 }
 
-void app::main_window::window::CtrlWrapper::executeAction(const app::main_window::state_e & windowState) {
-	this->winctrl->executeAction(windowState);
-	this->tabctrl->executeAction(windowState);
-}
-
 void app::main_window::window::CtrlWrapper::changeWindowState(const app::main_window::state_e & nextState, const app::main_window::state_postprocessing_e postprocess, const Qt::Key key) {
 
 	const app::main_window::state_e windowState = this->core->getMainWindowState();
-	const QString userTypedText = this->core->getUserText();
+	const QString & userTypedText = this->core->getUserText();
 
 	// Global conditions are:
 	// - it is possible to move to any state from the COMMAND state
-	// - it is possible to move from any state to COMMAND state if the user types Backspace and the user types text is empty
+	// - it is possible to move from any state to COMMAND state if the user types Backspace and the argument of the command is empty
 	const bool globalCondition = ((windowState != app::main_window::state_e::COMMAND) && (nextState == app::main_window::state_e::COMMAND) && (userTypedText.isEmpty() == true) && (key == Qt::Key_Backspace));
 
 	// Do not change state if the window is already in the one requested
@@ -168,6 +192,7 @@ void app::main_window::window::CtrlWrapper::changeWindowState(const app::main_wi
 			} else if (postprocess == app::main_window::state_postprocessing_e::ACTION) {
 				this->executeAction(nextState);
 			}
+
 			emit windowStateChanged(nextState);
 		}
 	} else {
@@ -203,7 +228,7 @@ void app::main_window::window::CtrlWrapper::setupWindowState(const app::main_win
 		case app::main_window::state_e::TOGGLE_MENUBAR:
 		case app::main_window::state_e::COMMAND:
 			this->setAllShortcutEnabledProperty(false);
-			winctrl->setFocus();
+			this->winctrl->setFocus();
 			break;
 		case app::main_window::state_e::OPEN_FILE:
 		case app::main_window::state_e::OPEN_TAB:
@@ -221,13 +246,13 @@ void app::main_window::window::CtrlWrapper::setupWindowState(const app::main_win
 		case app::main_window::state_e::HISTORY_PREV:
 		case app::main_window::state_e::HISTORY_NEXT:
 			this->setAllShortcutEnabledProperty(false);
-			tabctrl->setFocus();
+			this->tabctrl->setFocus();
 			break;
 		case app::main_window::state_e::EDIT_SEARCH:
 			EXCEPTION_ACTION_COND((tab == nullptr), throw,  "Postprocessing state " << windowState << ": Unable to edit string used for previous search as pointer to tab is " << tab.get());
 			this->core->printUserInput(app::main_window::text_action_e::SET, searchText);
 			this->setAllShortcutEnabledProperty(false);
-			tabctrl->setFocus();
+			this->tabctrl->setFocus();
 			break;
 		default: 
 			EXCEPTION_ACTION(throw, "Unable to postprocess transaction to " << windowState << " is valid as state " << windowState << " doesn't have a defined postprocess action");
@@ -253,39 +278,39 @@ void app::main_window::window::CtrlWrapper::postprocessWindowStateChange(const a
 		case app::main_window::state_e::FIND:
 			break;
 		case app::main_window::state_e::QUIT:
-			winctrl->closeWindow();
+			this->winctrl->closeWindow();
 			break;
 		case app::main_window::state_e::TOGGLE_MENUBAR:
-			winctrl->toggleShowMenubar();
+			this->winctrl->toggleShowMenubar();
 			this->changeWindowState(app::main_window::state_e::IDLE, app::main_window::state_postprocessing_e::POSTPROCESS);
 			break;
 		case app::main_window::state_e::OPEN_FILE:
-			tabctrl->createOpenPrompt();
+			this->tabctrl->createOpenPrompt();
 			break;
 		case app::main_window::state_e::FIND_DOWN:
-			tabctrl->setFindDirection(app::shared::offset_type_e::DOWN);
-			tabctrl->searchCurrentTab(QString());
+			this->tabctrl->setFindDirection(app::shared::offset_type_e::DOWN);
+			this->tabctrl->searchCurrentTab(QString());
 			this->changeWindowState(app::main_window::state_e::IDLE, app::main_window::state_postprocessing_e::POSTPROCESS);
 			break;
 		case app::main_window::state_e::FIND_UP:
-			tabctrl->setFindDirection(app::shared::offset_type_e::UP);
-			tabctrl->searchCurrentTab(QString());
+			this->tabctrl->setFindDirection(app::shared::offset_type_e::UP);
+			this->tabctrl->searchCurrentTab(QString());
 			this->changeWindowState(app::main_window::state_e::IDLE, app::main_window::state_postprocessing_e::POSTPROCESS);
 			break;
 		case app::main_window::state_e::SCROLL_UP:
-			tabctrl->scrollTab(app::shared::offset_type_e::UP);
+			this->tabctrl->scrollTab(app::shared::offset_type_e::UP);
 			this->changeWindowState(app::main_window::state_e::IDLE, app::main_window::state_postprocessing_e::POSTPROCESS);
 			break;
 		case app::main_window::state_e::SCROLL_DOWN:
-			tabctrl->scrollTab(app::shared::offset_type_e::DOWN);
+			this->tabctrl->scrollTab(app::shared::offset_type_e::DOWN);
 			this->changeWindowState(app::main_window::state_e::IDLE, app::main_window::state_postprocessing_e::POSTPROCESS);
 			break;
 		case app::main_window::state_e::HISTORY_PREV:
-			tabctrl->goToPageInHistory(app::main_window::navigation_type_e::PREVIOUS);
+			this->tabctrl->goToPageInHistory(app::main_window::navigation_type_e::PREVIOUS);
 			this->changeWindowState(app::main_window::state_e::IDLE, app::main_window::state_postprocessing_e::POSTPROCESS);
 			break;
 		case app::main_window::state_e::HISTORY_NEXT:
-			tabctrl->goToPageInHistory(app::main_window::navigation_type_e::NEXT);
+			this->tabctrl->goToPageInHistory(app::main_window::navigation_type_e::NEXT);
 			this->changeWindowState(app::main_window::state_e::IDLE, app::main_window::state_postprocessing_e::POSTPROCESS);
 			break;
 		default: 
@@ -304,5 +329,42 @@ void app::main_window::window::CtrlWrapper::setAllShortcutEnabledProperty(const 
 			LOG_INFO(app::logger::info_level_e::ZERO, mainWindowCtrlWrapperUserInput,  "Setting enabled for key " << key.toString() << " to " << enabled);
 			shortcut->setEnabled(enabled);
 		}
+	}
+}
+
+void app::main_window::window::CtrlWrapper::executeAction(const app::main_window::state_e & windowState) {
+	this->winctrl->executeAction(windowState);
+	this->tabctrl->executeAction(windowState);
+}
+
+void app::main_window::window::CtrlWrapper::keyReleaseEvent(QKeyEvent * event) {
+
+	LOG_INFO(app::logger::info_level_e::ZERO, mainWindowCtrlWrapperOverall,  "Key event details: event type: keyRelease key: " << event->key() << " modifier: " << event->modifiers());
+
+	this->winctrl->keyReleaseEvent(event);
+	this->tabctrl->keyReleaseEvent(event);
+
+	this->core->mainWidget->repaint();
+
+}
+
+void app::main_window::window::CtrlWrapper::focusInEvent(QFocusEvent * event) {
+	if (event->gotFocus() == true) {
+		// If the controller is not in the idle state, it is already dealing with a command
+		const app::main_window::state_e windowState = this->core->getMainWindowState();
+		if (windowState == app::main_window::state_e::IDLE) {
+			this->restoreSavedData();
+			this->setAllShortcutEnabledProperty(true);
+		}
+	}
+
+}
+
+void app::main_window::window::CtrlWrapper::focusOutEvent(QFocusEvent * event) {
+	if (event->lostFocus() == true) {
+		const app::main_window::state_e requestedWindowState = app::main_window::state_e::IDLE;
+		LOG_INFO(app::logger::info_level_e::ZERO, mainWindowCtrlWrapperOverall, "Main window control wrapper lost the keyboard focus. Saving the data and setting the state to " << requestedWindowState);
+		this->saveData();
+		this->changeWindowState(requestedWindowState, app::main_window::state_postprocessing_e::SETUP);
 	}
 }

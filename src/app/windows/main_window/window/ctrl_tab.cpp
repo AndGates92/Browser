@@ -69,9 +69,6 @@ void app::main_window::window::CtrlTab::connectSignals() {
 	// Search text in webpage
 	connect(this->core->topMenuBar->getEditMenu().get(), &app::main_window::menu::EditMenu::triggerSearch, this, &app::main_window::window::CtrlTab::setUpSearchFromMenu);
 
-	std::unique_ptr<app::main_window::statusbar::Bar> & statusBar = this->core->bottomStatusBar;
-	connect(this, &app::main_window::window::CtrlTab::currentTabSrcChanged, statusBar.get(), &app::main_window::statusbar::Bar::setContentPathText);
-
 	// Updates to the window depending on changes in tabs
 	connect(tabs.get(), &app::main_window::tab::TabWidget::tabSourceChanged, this, &app::main_window::window::CtrlTab::createContentPathTextFromSource);
 
@@ -91,6 +88,13 @@ void app::main_window::window::CtrlTab::connectSignals() {
 
 	// History of the tab
 	connect(tabs.get(), &app::main_window::tab::TabWidget::historyItemChanged, this, &app::main_window::window::CtrlTab::historyBoundaryHit);
+
+	std::unique_ptr<app::main_window::statusbar::Bar> & statusBar = this->core->bottomStatusBar;
+	connect(this, &app::main_window::window::CtrlTab::currentTabSrcChanged, statusBar.get(), &app::main_window::statusbar::Bar::setContentPathText);
+	connect(statusBar.get(), &app::main_window::statusbar::Bar::contentPathChanged, this, [this] (const QString & source) {
+		int index = this->core->getCurrentTabIndex();
+		this->searchTab(index, source);
+	});
 
 }
 
@@ -143,18 +147,9 @@ int app::main_window::window::CtrlTab::addNewTab(const app::main_window::page_ty
 
 void app::main_window::window::CtrlTab::searchTab(const int & index, const QString & search) {
 	LOG_INFO(app::logger::info_level_e::ZERO, mainWindowCtrlTabSearch,  "User input " << search << " in tab " << index);
-	app::main_window::page_type_e type = this->core->tabs->getPageType(index);
-
-	if (type == app::main_window::page_type_e::UNKNOWN) {
-		if (app::main_window::isFile(search) == true) {
-			type = app::main_window::page_type_e::TEXT;
-		} else if ((app::main_window::isUrl(search) == true) || (app::main_window::isText(search) == true)) {
-			type = app::main_window::page_type_e::WEB_CONTENT;
-		} else {
-			EXCEPTION_ACTION(throw, "Unable to associate a  page type to search " << search);
-		}
-	}
-	this->core->tabs->changeTabContent(index, type, search, nullptr);
+	const QString prunedSearch(app::main_window::deletePrefix(search));
+	app::main_window::page_type_e type = app::main_window::textToPageType(prunedSearch);
+	this->core->tabs->changeTabContent(index, type, prunedSearch, nullptr);
 }
 
 void app::main_window::window::CtrlTab::searchCurrentTab(const QString & search) {
@@ -672,4 +667,12 @@ void app::main_window::window::CtrlTab::setUpSearchFromMenu(const app::windows::
 		windowState = app::main_window::state_e::FIND_DOWN;
 	}
 	emit windowStateChangeRequested(windowState, app::main_window::state_postprocessing_e::POSTPROCESS);
+}
+
+void app::main_window::window::CtrlTab::focusInEvent(QFocusEvent * event) {
+	app::main_window::window::CtrlBase::focusInEvent(event);
+}
+
+void app::main_window::window::CtrlTab::focusOutEvent(QFocusEvent * event) {
+	app::main_window::window::CtrlBase::focusOutEvent(event);
 }

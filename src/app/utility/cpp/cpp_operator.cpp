@@ -26,3 +26,9 @@ std::string operator+ (const std::string & str, const void * ptr) {
 	os << ptr;
 	return os.str();
 }
+
+std::string operator+ (const std::string & str, const QString & qStr) {
+	std::string newStr(str);
+	newStr.append(qStr.toStdString());
+	return newStr;
+}
