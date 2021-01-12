@@ -23,6 +23,8 @@ namespace tester {
 
 		OVERLOAD_OPERATORS_CUSTOM_TYPE(tester::shared::test_status_e)
 
+		OVERLOAD_OPERATORS_CUSTOM_TYPE(tester::shared::text_type_e)
+
 	}
 
 }

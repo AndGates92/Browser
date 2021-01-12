@@ -26,14 +26,15 @@ namespace tester {
 
 			public:
 				/**
-				 * @brief Function: explicit OpenTab(const std::shared_ptr<tester::base::Suite> & testSuite, const bool useShortcuts)
+				 * @brief Function: explicit OpenTab(const std::shared_ptr<tester::base::Suite> & testSuite, const bool useShortcuts, const tester::shared::text_type_e type)
 				 *
 				 * \param testSuite: test suite
 				 * \param useShortcut: test uses shortcuts to send commands
+				 * \param type: type of text given to the command to open the tab
 				 *
 				 * Open tab constructor
 				 */
-				explicit OpenTab(const std::shared_ptr<tester::base::Suite> & testSuite, const bool useShortcuts);
+				explicit OpenTab(const std::shared_ptr<tester::base::Suite> & testSuite, const bool useShortcuts, const tester::shared::text_type_e type);
 
 				/**
 				 * @brief Function: virtual ~OpenTab()
@@ -53,6 +54,11 @@ namespace tester {
 
 			private:
 
+				/**
+				 * @brief type of text to type as argument to open tab command
+				 *
+				 */
+				tester::shared::text_type_e searchType;
 		};
 
 	}

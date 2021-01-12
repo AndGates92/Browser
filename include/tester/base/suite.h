@@ -20,7 +20,6 @@
  *  Tester Base functions and classes
  *  @{
  */
-
 namespace tester {
 
 	namespace base {

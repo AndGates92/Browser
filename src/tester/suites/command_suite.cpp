@@ -33,7 +33,9 @@ void tester::suite::CommandSuite::populate() {
 	LOG_INFO(app::logger::info_level_e::ZERO, commandSuiteOverall,  "Populating suite " << this->getName());
 	for (const bool & shortcut : { false, true } ) {
 		tester::test::LaunchApp::create<tester::test::LaunchApp>(this->shared_from_this(), shortcut);
-		tester::test::OpenTab::create<tester::test::OpenTab>(this->shared_from_this(), shortcut);
+		tester::test::OpenTab::create<tester::test::OpenTab>(this->shared_from_this(), shortcut, tester::shared::text_type_e::ALPHANUMERICAL);
+		tester::test::OpenTab::create<tester::test::OpenTab>(this->shared_from_this(), shortcut, tester::shared::text_type_e::COMPLEX);
+		tester::test::OpenTab::create<tester::test::OpenTab>(this->shared_from_this(), shortcut, tester::shared::text_type_e::URL);
 		tester::test::FindTab::create<tester::test::FindTab>(this->shared_from_this(), shortcut);
 		tester::test::MoveTab::create<tester::test::MoveTab>(this->shared_from_this(), shortcut);
 		tester::test::ReloadTab::create<tester::test::ReloadTab>(this->shared_from_this(), shortcut);

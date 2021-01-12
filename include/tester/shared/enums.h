@@ -76,6 +76,22 @@ namespace tester {
 		 */
 		OVERLOAD_OPERATORS_CUSTOM_TYPE_FUNCTION_PROTOTYPE(test_status_list, tester::shared::test_status_e)
 
+		/**
+		 * @brief Text type
+		 *
+		 */
+		typedef enum class text_type_list {
+			URL,                /**< Text is an URL */
+			ALPHANUMERICAL,     /**< Text has only alphanumerical characters */
+			COMPLEX             /**< Text has also punctuation and spaces */
+		} text_type_e;
+
+		/**
+		 * @brief Overload operators to ease print of the status of the test
+		 *
+		 */
+		OVERLOAD_OPERATORS_CUSTOM_TYPE_FUNCTION_PROTOTYPE(text_type_list, tester::shared::text_type_e)
+
 	}
 
 }

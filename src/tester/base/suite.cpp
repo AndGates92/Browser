@@ -46,7 +46,8 @@ const std::string & tester::base::Suite::getName() const {
 }
 
 void tester::base::Suite::addTest(const std::shared_ptr<tester::base::Test> & test) {
-	this->tests.insert(test);
+	const auto & insertReturnPair = this->tests.insert(test);
+	EXCEPTION_ACTION_COND((insertReturnPair.second == false), throw, "Unable to insert test " << test->getName() << " to the list of tests in suite " << this->name);
 }
 
 CONST_GETTER(tester::base::Suite::getTests, tester::base::Suite::tests_container_t &, this->tests)

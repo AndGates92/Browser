@@ -18,7 +18,6 @@
  *  Utility functions and classes
  *  @{
  */
-
 namespace tester {
 	namespace factory {
 		class TestFactory;
