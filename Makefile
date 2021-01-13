@@ -102,13 +102,13 @@ COV_FILES = gcov
 # PIC (Position Independent Code) is required by Qt
 # C++14 standard
 # -rdyanmic: ELF linked adds all symbols to the dynamic symbol table
-CFLAGS = -Wnon-virtual-dtor -Wall -Wconversion -fPIC -Werror -Wextra -Wpedantic -std=c++17 -rdynamic
+CXXFLAGS = -Wnon-virtual-dtor -Wall -Wconversion -fPIC -Werror -Wextra -Wpedantic -std=c++17 -rdynamic
 CDEBUGFLAGS += -g3
 ifeq ($(COMPILE_TYPE), Debug)
-  CFLAGS += $(CDEBUGFLAGS)
+  CXXFLAGS += $(CDEBUGFLAGS)
 else
   ifeq ($(COMPILE_TYPE), Release)
-    CFLAGS += -O3
+    CXXFLAGS += -O3
   else
     ifeq ($(COMPILE_TYPE), Compare)
       export GCC_COMPARE_DEBUG = "$(CDEBUGFLAGS) -fcompare-debug-not-overriden"
@@ -141,7 +141,7 @@ ifeq ($(APP_MAIN), $(TESTER_MAIN))
 endif
 
 TESTFLAGS ?=
-CEXTRAFLAGS ?=
+CXXEXTRAFLAGS ?=
 BEHFLAGS ?=
 # -MP workaround for make errors when an header file is removed (Add phony target for each dependency other the main file)
 # -MMD Dependency file listing only header files
@@ -156,6 +156,7 @@ LOG_DEFINES = QT_LOGFILE="$(QTLOGFILE)" LOGFILE="$(LOGFILE)" QINFO_VERBOSITY=$(Q
 DEFINE_LIST = $(LOG_DEFINES) \
               $(QTTESTER_DEFINES)
 DFLAGS := $(foreach DEF, ${DEFINE_LIST}, -D${DEF})
+CPPFLAGS = $(DFLAGS)
 
 # Libraries
 THREADLIBS= pthread
@@ -169,7 +170,7 @@ LIB_LIST = $(MATHLIBS)   \
            $(QTTESTLIBS) \
            $(X11LIBS)    \
            $(COVLIBS)
-LIBS := $(foreach LIB, ${LIB_LIST}, -l${LIB})
+LDFLAGS := $(foreach LIB, ${LIB_LIST}, -l${LIB})
 
 # Directory containing source and header files
 APP_DIR = app
@@ -324,29 +325,29 @@ $(TESTER_EXE) : $(TESTER_OBJS)
 	$(MKDIR) $(LOG_DIR)
 	$(MKDIR) $(@D)
 	$(VERBOSE_ECHO)echo "[${TIMESTAMP}] Linking $(@F). Object files are: $^"
-	$(CC) $(ASANFLAGS) $(PROFILERFLAGS) -o $@ $(DFLAGS) $(BEHFLAGS) $(CEXTRAFLAGS) $^ $(LIB_DIR) $(LIBS)
+	$(CC) $(ASANFLAGS) $(PROFILERFLAGS) -o $@ $(CPPFLAGS) $(CXXEXTRAFLAGS) $^ $(LIB_DIR) $(LDFLAGS)
 
 $(APP_EXE) : $(APP_OBJS)
 	$(MKDIR) $(LOG_DIR)
 	$(MKDIR) $(@D)
 	$(VERBOSE_ECHO)echo "[${TIMESTAMP}] Linking $(@F). Object files are: $^"
-	$(CC) $(ASANFLAGS) $(PROFILERFLAGS) -o $@ $(DFLAGS) $(BEHFLAGS) $(CEXTRAFLAGS) $^ $(LIB_DIR) $(LIBS)
+	$(CC) $(ASANFLAGS) $(PROFILERFLAGS) -o $@ $(CPPFLAGS) $(CXXEXTRAFLAGS) $^ $(LIB_DIR) $(LDFLAGS)
 
 $(OBJ_DIR)/%.$(OBJ_EXT) : $(SRC_DIR)/%.$(SRC_EXT)
 	$(MKDIR) $(dir $(DEPFILE))
 	$(MKDIR) $(@D)
 	$(VERBOSE_ECHO)echo "[${TIMESTAMP}] Compiling $(<F) and creating object $@ - dependency file is $(DEPFILE)"
-	$(CC) $(DEPENDFLAG) $(CFLAGS) $(ASANFLAGS) $(COVFLAGS) $(PROFILERFLAGS) $(INCLUDES) -c $< $(DFLAGS) $(BEHFLAGS) $(CEXTRAFLAGS) -o $@ $(LIBS)
+	$(CC) $(DEPENDFLAG) $(CXXFLAGS) $(ASANFLAGS) $(COVFLAGS) $(PROFILERFLAGS) $(INCLUDES) -c $< $(CPPFLAGS) $(CXXEXTRAFLAGS) -o $@ $(LDFLAGS)
 
 $(MOC_SRC_DIR)/%.$(MOC_SRC_EXT) : $(INCLUDE_DIR)/%.$(HEADER_EXT)
 	$(MKDIR) $(@D)
 	$(VERBOSE_ECHO)echo "[${TIMESTAMP}] Compiling $(<F) and creating moc source $@"
-	$(MOC) $(DFLAGS) $(BEHFLAGS) $(CEXTRAFLAGS) $(INCLUDE_HEADERS) $< -o $@
+	$(MOC) $(CPPFLAGS) $(CXXEXTRAFLAGS) $(INCLUDE_HEADERS) $< -o $@
 
 $(MOC_OBJ_DIR)/%.$(MOC_OBJ_EXT) : $(MOC_SRC_DIR)/%.$(MOC_SRC_EXT)
 	$(MKDIR) $(@D)
 	$(VERBOSE_ECHO)echo "[${TIMESTAMP}] Compiling $(<F) and creating moc object $@"
-	$(CC) $(CFLAGS) $(ASANFLAGS) $(COVFLAGS) $(PROFILERFLAGS) $(INCLUDES) -c $< $(DFLAGS) $(BEHFLAGS) $(CEXTRAFLAGS) -o $@ $(LIBS)
+	$(CC) $(CXXFLAGS) $(ASANFLAGS) $(COVFLAGS) $(PROFILERFLAGS) $(INCLUDES) -c $< $(CPPFLAGS) $(CXXEXTRAFLAGS) -o $@ $(LDFLAGS)
 
 # Work around to force generating the file
 $(DEPS) :
@@ -372,8 +373,8 @@ debug :
 	$(VERBOSE_ECHO)echo "[${TIMESTAMP}] --> application: $(APP_EXE)"
 	$(VERBOSE_ECHO)echo "[${TIMESTAMP}] --> tester: $(TESTER_EXE)"
 	$(VERBOSE_ECHO)echo "[${TIMESTAMP}] Compiler options:"
-	$(VERBOSE_ECHO)echo "[${TIMESTAMP}] --> $(PROG_LANG) flags: $(CFLAGS)"
-	$(VERBOSE_ECHO)echo "[${TIMESTAMP}] --> $(PROG_LANG) extra flags: $(CEXTRAFLAGS)"
+	$(VERBOSE_ECHO)echo "[${TIMESTAMP}] --> $(PROG_LANG) flags: $(CXXFLAGS)"
+	$(VERBOSE_ECHO)echo "[${TIMESTAMP}] --> $(PROG_LANG) extra flags: $(CXXEXTRAFLAGS)"
 	$(VERBOSE_ECHO)echo "[${TIMESTAMP}] --> ASAN flags: $(ASANFLAGS)"
 	$(VERBOSE_ECHO)echo "[${TIMESTAMP}] --> Coverage compile flags: $(COVFLAGS)"
 	$(VERBOSE_ECHO)echo "[${TIMESTAMP}] --> Profiler flags: $(PROFILERFLAGS)"
