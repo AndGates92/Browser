@@ -27,7 +27,7 @@
 		"Name" : "search tab",
 		"State" : "NEW_SEARCH",
 		"Shortcut" : "s",
-		"LongCmd" : "search-tab",
+		"LongCmd" : "search",
 		"Help" : "This command searches content in a tab"
 	},
 
@@ -35,7 +35,7 @@
 		"Name" : "edit search tab",
 		"State" : "EDIT_SEARCH",
 		"Shortcut" : "S",
-		"LongCmd" : "edit-search-tab",
+		"LongCmd" : "edit-search",
 		"Help" : "This command allows the user make a new search starting from the previous one"
 	},
 

@@ -13,6 +13,7 @@
 #include "tester/tests/move_tab.h"
 #include "tester/tests/find_tab.h"
 #include "tester/tests/reload_tab.h"
+#include "tester/tests/search_tab.h"
 #include "tester/tests/scroll_tab.h"
 #include "tester/tests/history_tab.h"
 #include "tester/tests/open_file.h"
@@ -40,6 +41,7 @@ void tester::suite::CommandSuite::populate() {
 		tester::test::OpenTab::create<tester::test::OpenTab>(this->shared_from_this(), shortcut, tester::shared::text_type_e::URL);
 		tester::test::FindTab::create<tester::test::FindTab>(this->shared_from_this(), shortcut);
 		tester::test::MoveTab::create<tester::test::MoveTab>(this->shared_from_this(), shortcut);
+		tester::test::SearchTab::create<tester::test::SearchTab>(this->shared_from_this(), shortcut);
 		tester::test::ReloadTab::create<tester::test::ReloadTab>(this->shared_from_this(), shortcut);
 		tester::test::ScrollTab::create<tester::test::ScrollTab>(this->shared_from_this(), shortcut);
 		tester::test::HistoryTab::create<tester::test::HistoryTab>(this->shared_from_this(), shortcut);

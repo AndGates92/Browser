@@ -270,6 +270,7 @@ void app::main_window::window::CtrlWrapper::postprocessWindowStateChange(const a
 		case app::main_window::state_e::COMMAND:
 		case app::main_window::state_e::OPEN_TAB:
 		case app::main_window::state_e::NEW_SEARCH:
+		case app::main_window::state_e::EDIT_SEARCH:
 		case app::main_window::state_e::REFRESH_TAB:
 		case app::main_window::state_e::CLOSE_TAB:
 		case app::main_window::state_e::MOVE_RIGHT:

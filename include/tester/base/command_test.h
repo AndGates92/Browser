@@ -93,24 +93,49 @@ namespace tester {
 				void openFile(const std::string & filepath);
 
 				/**
-				 * @brief Function: void executeCommand(const std::string & commandName, const std::string & argument, const bool execute = true)
+				 * @brief Function: void executeCommand(const std::string & commandName, const std::string & argument = std::string(), const bool execute = true)
 				 *
 				 * \param commandName: name of command to search in the JSON
 				 * \param argument: argument to provide to the command. This argument can be an empty string
-				 * \param execute: execute command qfter typing it and its argument
+				 * \param execution: execute of the command after typing argument
 				 *
 				 * This function send an argument and pass an argument to it
 				 */
-				void executeCommand(const std::string & commandName, const std::string & argument, const bool execute = true);
+				void executeCommand(const std::string & commandName, const std::string & argument = std::string(), const bool execute = true);
 
 				/**
 				 * @brief Function: bool commandRequiresEnter(const std::string & commandName) const
 				 *
 				 * \param commandName: name of command to search in the JSON
 				 *
+				 * \return true if command requires enter, false otherwise
+				 *
 				 * This function returns true if the command requires the user to press Enter to validate the command
 				 */
 				bool commandRequiresEnter(const std::string & commandName) const;
+
+				/**
+				 * @brief Function: std::string commandNameToTypedText(const std::string & commandName)
+				 *
+				 * \param commandName: name of command to search in the JSON
+				 *
+				 * \return text to send to the application for a given command
+				 *
+				 * This function converts a command name into the text to send to the app
+				 */
+				std::string commandNameToTypedText(const std::string & commandName);
+
+				/**
+				 * @brief Function: std::string commandNameToShownText(const std::string & commandName, const bool commandAsTyped);
+				 *
+				 * \param commandName: name of command to search in the JSON
+				 * \param commandAsTyped: keep command as shown
+				 *
+				 * \return text shown in the status after typing a command
+				 *
+				 * This function converts a command name into the text to shown in the statusbar
+				 */
+				std::string commandNameToShownText(const std::string & commandName, const bool commandAsTyped);
 
 				/**
 				 * @brief Function: void checkCurrentTab(const std::string & search, const int & expectedNumberOfTabs)
@@ -139,8 +164,6 @@ namespace tester {
 				 */
 				void waitForTabOpened();
 
-			protected:
-
 			private:
 
 				/**
@@ -150,23 +173,15 @@ namespace tester {
 				bool sendCommandsThroughShortcuts;
 
 				/**
-				 * @brief Function: std::string commandNameToTypedText(const std::string & commandName)
+				 * @brief Function: bool stateRequiresArgument(const app::main_window::state_e & state) const
 				 *
-				 * \param commandName: name of command to search in the JSON
+				 * \param state: state to check whether argument is required
 				 *
-				 * This function converts a command name into the text to send to the app
+				 * \return true if state requires argument, false otherwise
+				 *
+				 * This function returns true if state requires argument, false otherwise
 				 */
-				std::string commandNameToTypedText(const std::string & commandName);
-
-				/**
-				 * @brief Function: std::string commandNameToShownText(const std::string & commandName, const bool commandAsTyped);
-				 *
-				 * \param commandName: name of command to search in the JSON
-				 * \param commandAsTyped: keep command as shown
-				 *
-				 * This function converts a command name into the text to shown in the statusbar
-				 */
-				std::string commandNameToShownText(const std::string & commandName, const bool commandAsTyped);
+				bool stateRequiresArgument(const app::main_window::state_e & state) const;
 
 				/**
 				 * @brief Function: void writeTextToStatusBar(const std::string & textToWrite, const std::string & expectedText, const app::main_window::state_e & expectedState, const bool execute)

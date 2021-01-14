@@ -136,17 +136,23 @@ std::string tester::base::CommandTest::commandNameToShownText(const std::string 
 		if (commandData != nullptr) {
 			// Long command that the user has to type is :<long_command>
 			// It will be displayed as : <long_command>
-			const std::string * const commandLongCmdPtr(static_cast<const std::string *>(commandData->getValueFromMemberName("LongCmd")));
-			ASSERT((commandLongCmdPtr != nullptr), tester::shared::error_type_e::COMMAND, "Unable to find long command for data data with Name " + commandName + " in " + this->getActionJsonFilesAsString());
-			const std::string commandLongCmd(*commandLongCmdPtr);
 			commandExpectedText = ":";
 			if (commandAsTyped == true) {
+				const std::string * const commandLongCmdPtr(static_cast<const std::string *>(commandData->getValueFromMemberName("LongCmd")));
+				ASSERT((commandLongCmdPtr != nullptr), tester::shared::error_type_e::COMMAND, "Unable to find long command for data data with Name " + commandName + " in " + this->getActionJsonFilesAsString());
+				const std::string commandLongCmd(*commandLongCmdPtr);
 				commandExpectedText += " ";
-			}
-			commandExpectedText += commandLongCmd;
+				commandExpectedText += commandLongCmd;
+			} else {
+				const app::main_window::state_e * const commandStatePtr(static_cast<const app::main_window::state_e *>(commandData->getValueFromMemberName("State")));
+				const std::string commandState(app::shared::qEnumToQString(*commandStatePtr, true).toStdString());
+				std::string lowerCommandState = commandState;
+				std::transform(lowerCommandState.begin(), lowerCommandState.end(), lowerCommandState.begin(), [] (unsigned char c) {
+					return std::tolower(c);
+				});
+				commandExpectedText += lowerCommandState;
 
-			if (commandAsTyped == false) {
-				const std::string commandNameSearchString("-");
+				const std::string commandNameSearchString("_");
 				const std::string commandNameReplacingString(" ");
 				// If typing the shortcuts, the status bar label prints : <long_command_without_dashes>
 				commandExpectedText = app::utility::findAndReplaceString(commandExpectedText, commandNameSearchString, commandNameReplacingString);
@@ -175,7 +181,14 @@ void tester::base::CommandTest::writeCommandToStatusBar(const std::string & comm
 		this->checkStateAfterTypingText(startCommandText, expectedState);
 	}
 
-	this->writeTextToStatusBar(commandToSend, commandExpectedText, expectedState, execute, pressEnter);
+	std::string expectedText = commandExpectedText;
+	if (expectedState == app::main_window::state_e::EDIT_SEARCH) {
+		expectedText += " ";
+		const std::shared_ptr<app::main_window::tab::Tab> currentTab = this->windowWrapper->getCurrentTab();
+		expectedText += currentTab->getSearchText().toStdString();
+	}
+
+	this->writeTextToStatusBar(commandToSend, expectedText, expectedState, execute, pressEnter);
 }
 
 void tester::base::CommandTest::openNewTab(const std::string & search) {
@@ -364,7 +377,6 @@ void tester::base::CommandTest::checkSource(const std::shared_ptr<app::main_wind
 
 	if (tabType == app::main_window::page_type_e::WEB_CONTENT) {
 		const QUrl & tabUrl = tab->getPage()->url();
-LOG_INFO(app::logger::info_level_e::ZERO, commandTestTest, "DEBUG: current tab source " + tabUrl.toString().toStdString() + " saved tab source " + expectedSourceText);
 	}
 	const std::shared_ptr<app::main_window::window::Core> & windowCore = this->windowWrapper->getWindowCore();
 	const std::string textInLabel = windowCore->bottomStatusBar->getContentPathText().toStdString();
@@ -404,6 +416,43 @@ std::string tester::base::CommandTest::commandNameToTypedText(const std::string 
 	return commandToSend;
 }
 
+bool tester::base::CommandTest::stateRequiresArgument(const app::main_window::state_e & state) const {
+	bool required = false;
+
+	switch (state) {
+		case app::main_window::state_e::IDLE:
+		case app::main_window::state_e::QUIT:
+		case app::main_window::state_e::TOGGLE_MENUBAR:
+		case app::main_window::state_e::OPEN_FILE:
+		case app::main_window::state_e::REFRESH_TAB:
+		case app::main_window::state_e::FIND_DOWN:
+		case app::main_window::state_e::FIND_UP:
+		case app::main_window::state_e::SCROLL_UP:
+		case app::main_window::state_e::SCROLL_DOWN:
+		case app::main_window::state_e::HISTORY_PREV:
+		case app::main_window::state_e::HISTORY_NEXT:
+		case app::main_window::state_e::OPEN_TAB:
+		case app::main_window::state_e::CLOSE_TAB:
+		case app::main_window::state_e::MOVE_RIGHT:
+		case app::main_window::state_e::MOVE_LEFT:
+		case app::main_window::state_e::MOVE_TAB:
+			required = false;
+			break;
+		case app::main_window::state_e::COMMAND:
+
+		case app::main_window::state_e::FIND:
+		case app::main_window::state_e::NEW_SEARCH:
+		case app::main_window::state_e::EDIT_SEARCH:
+			required = true;
+			break;
+		default:
+			EXCEPTION_ACTION(throw, "Unable to determine whether state " << state << " requires an argument");
+			break;
+	}
+
+	return required;
+}
+
 void tester::base::CommandTest::executeCommand(const std::string & commandName, const std::string & argument, const bool execute) {
 
 	const std::unique_ptr<app::main_window::json::Data> & commandData = this->findDataWithFieldValue("Name", &commandName);
@@ -429,15 +478,17 @@ void tester::base::CommandTest::executeCommand(const std::string & commandName, 
 		commandExpectedState = app::main_window::state_e::COMMAND;
 	}
 
-	this->writeCommandToStatusBar(commandName, commandExpectedState, argument.empty());
+	const bool executeCommand = ((this->stateRequiresArgument(commandExpectedState) == false) && (argument.empty() == true));
+	this->writeCommandToStatusBar(commandName, commandExpectedState, executeCommand);
 
 	if (argument.empty() == false) {
 		if (this->commandSentThroughShortcuts() == false) {
 			// Send Space to window in order to change state
 			tester::base::CommandTest::sendKeyClickToFocus(Qt::Key_Space);
 			const std::string commandAfterStateChanged(this->commandNameToShownText(commandName, false));
+			const std::string expectedText = commandAfterStateChanged;
 
-			this->checkStateAfterTypingText(commandAfterStateChanged, commandState);
+			this->checkStateAfterTypingText(expectedText, commandState);
 		}
 
 		const std::string commandExpectedName(this->commandNameToShownText(commandName, false));
