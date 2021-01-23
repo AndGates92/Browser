@@ -25,6 +25,7 @@ void app::init::initializeSettings(int & argc, char** argv) {
 
 void app::init::initializeGraphics(int & argc, char** argv) {
 	QApplication app(argc, argv);
+	app.setQuitOnLastWindowClosed(true);
 
 	LOG_INFO(app::logger::info_level_e::ZERO, initGraphicsOverall,  "Create Application");
 
