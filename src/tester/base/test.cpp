@@ -294,7 +294,11 @@ void tester::base::Test::run() {
 	LOG_INFO(app::logger::info_level_e::ZERO, baseTestOverall,  "Running test " << this->name << " in suite " << this->getSuite()->getName());
 
 	const std::shared_ptr<tester::base::Factory> & factory = this->getFactory();
-	QApplication app(factory->getArgc(), factory->getArgv());
+
+	QApplication * app = static_cast<QApplication *>(QApplication::instance());
+	if (app == nullptr) {
+		app = new QApplication(factory->getArgc(), factory->getArgv());
+	}
 
 	this->windowWrapper = std::make_unique<tester::main_window_wrapper::MainWindowWrapper>(Q_NULLPTR, Qt::Window);
 	this->windowWrapper->show();
