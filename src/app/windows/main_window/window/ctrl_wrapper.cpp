@@ -109,6 +109,11 @@ void app::main_window::window::CtrlWrapper::restoreSavedData() {
 
 	this->changeWindowState(windowState, app::main_window::state_postprocessing_e::SETUP);
 	this->core->printUserInput(app::main_window::text_action_e::SET, commandArgument);
+	if (windowState == app::main_window::state_e::IDLE) {
+		this->setAllShortcutEnabledProperty(true);
+	} else {
+		this->setAllShortcutEnabledProperty(false);
+	}
 }
 
 CONST_GETTER(app::main_window::window::CtrlWrapper::getSavedData, app::main_window::window::ctrl_data_s &, this->savedData)
@@ -355,7 +360,6 @@ void app::main_window::window::CtrlWrapper::focusInEvent(QFocusEvent * event) {
 		const app::main_window::state_e windowState = this->core->getMainWindowState();
 		if (windowState == app::main_window::state_e::IDLE) {
 			this->restoreSavedData();
-			this->setAllShortcutEnabledProperty(true);
 		}
 	}
 
