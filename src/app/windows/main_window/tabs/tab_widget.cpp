@@ -57,7 +57,10 @@ void app::main_window::tab::TabWidget::moveTab(const int & indexFrom, const int 
 	if (indexFrom != indexTo) {
 		LOG_INFO(app::logger::info_level_e::ZERO, mainWindowTabWidgetTabs, "Move tab from " << indexFrom << " to " << indexTo);
 		this->disconnectTab(this->currentIndex());
+
 		this->bar->moveTab(indexFrom, indexTo);
+		app::base::tab::TabWidget::moveTab(indexFrom, indexTo);
+
 		this->connectTab(this->currentIndex());
 	}
 }
@@ -220,7 +223,7 @@ int app::main_window::tab::TabWidget::insertTab(const int & index, const app::ma
 	this->connectTab(currIndex);
 
 	// Move to the newly opened tab
-		this->setCurrentIndex(currIndex);
+	this->setCurrentIndex(currIndex);
 
 	return currIndex;
 }

@@ -171,3 +171,12 @@ std::shared_ptr<app::base::tab::Tab> app::base::tab::TabWidget::widget(const int
 
 	return requestedWidget;
 }
+
+void app::base::tab::TabWidget::moveTab(const int & indexFrom, const int & indexTo) {
+	std::shared_ptr<app::base::tab::Tab> tabFrom = this->widget(indexFrom, true);
+	std::shared_ptr<app::base::tab::Tab> tabTo = this->widget(indexTo, true);
+
+	this->tabs.at(indexFrom) = tabTo;
+	this->tabs.at(indexTo) = tabFrom;
+
+}

@@ -75,48 +75,41 @@ void tester::test::HistoryTab::testBody() {
 	this->openNewTab(search0);
 	const std::string url0 = app::main_window::defaultSearchEngine.arg(QString::fromStdString(search0)).toStdString();
 
-	std::string authorityUrl0 = url0;
-	const std::string https(app::shared::https.toStdString());
-	std::size_t httpsPosition0 = authorityUrl0.find(https);
-	const bool containsHttps0 = (httpsPosition0 != std::string::npos);
-	// Erase https from searched text
-	if (containsHttps0 == true) {
-		authorityUrl0.erase(httpsPosition0, https.size());
-	}
-
 	const std::shared_ptr<app::main_window::tab::Tab> currentTab = this->windowWrapper->getCurrentTab();
 	ASSERT((currentTab != nullptr), tester::shared::error_type_e::TABS, "Current tab pointer is null event though it should have loaded website " + url0);
 	if (currentTab != nullptr) {
 
 		const std::string searchCommandName("search tab");
+
 		const std::string search1("test1");
 		LOG_INFO(app::logger::info_level_e::ZERO, historyTabTest, "Search in tab " << search1);
 		this->makeSearchInTab(searchCommandName, search1);
-
 		const std::string url1 = app::main_window::defaultSearchEngine.arg(QString::fromStdString(search1)).toStdString();
 
-		std::string authorityUrl1 = url1;
-		const std::string https(app::shared::https.toStdString());
-		std::size_t httpsPosition1 = authorityUrl1.find(https);
-		const bool containsHttps1 = (httpsPosition1 != std::string::npos);
-		// Erase https from searched text
-		if (containsHttps1 == true) {
-			authorityUrl1.erase(httpsPosition1, https.size());
-		}
+		const std::string search2("test2");
+		LOG_INFO(app::logger::info_level_e::ZERO, historyTabTest, "Search in tab " << search2);
+		this->makeSearchInTab(searchCommandName, search2);
+		const std::string url2 = app::main_window::defaultSearchEngine.arg(QString::fromStdString(search2)).toStdString();
 
 		const std::string historyPrevCommandName("history previous");
-		this->executeCommand(historyPrevCommandName, std::string());
 
+		this->executeCommand(historyPrevCommandName, std::string());
 		const QUrl & tabUrlAfterHistoryBack = currentTab->getPage()->url();
+		this->checkUrl(tabUrlAfterHistoryBack.toString().toStdString(), url1);
 	
-		WAIT_FOR_CONDITION((authorityUrl0.compare(tabUrlAfterHistoryBack.authority().toStdString()) == 0), tester::shared::error_type_e::TABS, "Current URL authority " + tabUrlAfterHistoryBack.authority().toStdString() + " doesn't match expected authority " + authorityUrl0, 5000);
+		this->executeCommand(historyPrevCommandName, std::string());
+		const QUrl & tabUrlAfterStartHistory = currentTab->getPage()->url();
+		this->checkUrl(tabUrlAfterStartHistory.toString().toStdString(), url0);
 
 		const std::string historyNextCommandName("history next");
-		this->executeCommand(historyNextCommandName, std::string());
 
+		this->executeCommand(historyNextCommandName, std::string());
 		const QUrl & tabUrlAfterHistoryForward = currentTab->getPage()->url();
-	
-		WAIT_FOR_CONDITION((authorityUrl1.compare(tabUrlAfterHistoryForward.authority().toStdString()) == 0), tester::shared::error_type_e::TABS, "Current URL authority " + tabUrlAfterHistoryForward.authority().toStdString() + " doesn't match expected authority " + authorityUrl1, 5000);
+		this->checkUrl(tabUrlAfterHistoryForward.toString().toStdString(), url1);
+
+		this->executeCommand(historyNextCommandName, std::string());
+		const QUrl & tabUrlAfterEndHistory = currentTab->getPage()->url();
+		this->checkUrl(tabUrlAfterEndHistory.toString().toStdString(), url2);
 
 	}
 }

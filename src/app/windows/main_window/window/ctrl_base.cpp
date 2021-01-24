@@ -205,6 +205,13 @@ void app::main_window::window::CtrlBase::focusOutEvent(QFocusEvent * event) {
 		const app::main_window::state_e requestedWindowState = app::main_window::state_e::IDLE;
 		LOG_INFO(app::logger::info_level_e::ZERO, mainWindowCtrlBaseOverall, "Main window control wrapper lost the keyboard focus. Saving the data and setting the state to " << requestedWindowState);
 		emit this->saveCurrentState();
-		emit windowStateChangeRequested(requestedWindowState, app::main_window::state_postprocessing_e::SETUP);
+		app::main_window::state_postprocessing_e statePostprocess = app::main_window::state_postprocessing_e::NONE;
+		const app::main_window::state_e windowState = this->core->getMainWindowState();
+		if (windowState == app::main_window::state_e::OPEN_FILE) {
+			statePostprocess = app::main_window::state_postprocessing_e::NONE;
+		} else {
+			statePostprocess = app::main_window::state_postprocessing_e::SETUP;
+		}
+		emit windowStateChangeRequested(requestedWindowState, statePostprocess);
 	}
 }

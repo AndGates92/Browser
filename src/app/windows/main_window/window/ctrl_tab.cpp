@@ -32,6 +32,7 @@
 LOGGING_CONTEXT(mainWindowCtrlTabOverall, mainWindowCtrlTab.overall, TYPE_LEVEL, INFO_VERBOSITY)
 LOGGING_CONTEXT(mainWindowCtrlTabUserInput, mainWindowCtrlTab.userInput, TYPE_LEVEL, INFO_VERBOSITY)
 LOGGING_CONTEXT(mainWindowCtrlTabSearch, mainWindowCtrlTab.search, TYPE_LEVEL, INFO_VERBOSITY)
+LOGGING_CONTEXT(mainWindowCtrlTabPrompt, mainWindowCtrlTab.prompt, TYPE_LEVEL, INFO_VERBOSITY)
 LOGGING_CONTEXT(mainWindowCtrlTabTabs, mainWindowCtrlTab.tabs, TYPE_LEVEL, INFO_VERBOSITY)
 LOGGING_CONTEXT(mainWindowCtrlTabUrl, mainWindowCtrlTab.url, TYPE_LEVEL, INFO_VERBOSITY)
 
@@ -237,6 +238,8 @@ void app::main_window::window::CtrlTab::connectTab(const int & tabIndex) {
 
 	connect(tab.get(), &app::main_window::tab::Tab::loadProgressChanged, statusBar.get(), &app::main_window::statusbar::Bar::setProgressValue);
 	statusBar->setProgressValue(tab->getLoadProgress());
+
+	statusBar->setContentPathText(tab->getSource());
 
 	// Move focus to the tab index
 	tab->setFocus();
@@ -648,6 +651,7 @@ void app::main_window::window::CtrlTab::createContentPathTextFromSource(const ap
 }
 
 void app::main_window::window::CtrlTab::createOpenPrompt() {
+	LOG_INFO(app::logger::info_level_e::ZERO, mainWindowCtrlTabPrompt,  "Open prompt to allow user to choose a file to display in a new tab");
 	std::shared_ptr<app::main_window::popup::PopupContainer> container = this->core->popup;
 	bool success = container->showOpenFilePopup();
 	container->setFocus();

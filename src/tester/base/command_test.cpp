@@ -122,35 +122,74 @@ void tester::base::CommandTest::writeTextToStatusBar(const std::string & textToW
 }
 
 bool tester::base::CommandTest::commandRequiresEnter(const std::string & commandName) const {
-	return ((commandName.compare(tester::base::command_test::openFileCommandName) != 0) && (commandName.compare(tester::base::command_test::quitCommandName) != 0) && (commandName.compare(tester::base::command_test::findUpCommandName) != 0) && (commandName.compare(tester::base::command_test::findDownCommandName) != 0));
+	const std::unique_ptr<app::main_window::json::Data> & commandData = this->findDataWithFieldValue("Name", &commandName);
+//	ASSERT((commandData != nullptr), tester::shared::error_type_e::COMMAND, "Unable to find data with Name " + commandName + " in " + this->getActionJsonFilesAsString());
+
+	bool required = false;
+
+	if (commandData != nullptr) {
+		const app::main_window::state_e * const commandStatePtr(static_cast<const app::main_window::state_e *>(commandData->getValueFromMemberName("State")));
+		const app::main_window::state_e state = *commandStatePtr;
+
+		switch (state) {
+			case app::main_window::state_e::IDLE:
+			case app::main_window::state_e::QUIT:
+			case app::main_window::state_e::TOGGLE_MENUBAR:
+			case app::main_window::state_e::OPEN_FILE:
+			case app::main_window::state_e::FIND_DOWN:
+			case app::main_window::state_e::FIND_UP:
+			case app::main_window::state_e::SCROLL_UP:
+			case app::main_window::state_e::SCROLL_DOWN:
+			case app::main_window::state_e::HISTORY_PREV:
+			case app::main_window::state_e::HISTORY_NEXT:
+				required = false;
+				break;
+			case app::main_window::state_e::REFRESH_TAB:
+			case app::main_window::state_e::OPEN_TAB:
+			case app::main_window::state_e::CLOSE_TAB:
+			case app::main_window::state_e::MOVE_RIGHT:
+			case app::main_window::state_e::MOVE_LEFT:
+			case app::main_window::state_e::MOVE_TAB:
+			case app::main_window::state_e::COMMAND:
+			case app::main_window::state_e::FIND:
+			case app::main_window::state_e::NEW_SEARCH:
+			case app::main_window::state_e::EDIT_SEARCH:
+				required = true;
+				break;
+			default:
+				EXCEPTION_ACTION(throw, "Unable to determine whether state " << state << " requires an argument");
+				break;
+		}
+	}
+
+	return required;
 }
 
 std::string tester::base::CommandTest::commandNameToShownText(const std::string & commandName, const bool commandAsTyped) {
 	std::string commandExpectedText = std::string();
 
-	const bool commandsPrintsText = ((commandName.compare(tester::base::command_test::openFileCommandName) == 0) || this->commandRequiresEnter(commandName));
-	if (commandsPrintsText == true) {
-		const std::unique_ptr<app::main_window::json::Data> & commandData = this->findDataWithFieldValue("Name", &commandName);
-		ASSERT((commandData != nullptr), tester::shared::error_type_e::COMMAND, "Unable to find data with Name " + commandName + " in " + this->getActionJsonFilesAsString());
+	const std::unique_ptr<app::main_window::json::Data> & commandData = this->findDataWithFieldValue("Name", &commandName);
+	ASSERT((commandData != nullptr), tester::shared::error_type_e::COMMAND, "Unable to find data with Name " + commandName + " in " + this->getActionJsonFilesAsString());
 
-		if (commandData != nullptr) {
-			// Long command that the user has to type is :<long_command>
-			// It will be displayed as : <long_command>
-			commandExpectedText = ":";
-			if (commandAsTyped == true) {
-				const std::string * const commandLongCmdPtr(static_cast<const std::string *>(commandData->getValueFromMemberName("LongCmd")));
-				ASSERT((commandLongCmdPtr != nullptr), tester::shared::error_type_e::COMMAND, "Unable to find long command for data data with Name " + commandName + " in " + this->getActionJsonFilesAsString());
-				const std::string commandLongCmd(*commandLongCmdPtr);
-				commandExpectedText += " ";
-				commandExpectedText += commandLongCmd;
-			} else {
+	if (commandData != nullptr) {
+		// Long command that the user has to type is :<long_command>
+		// It will be displayed as : <long_command>
+		if (commandAsTyped == true) {
+			const std::string * const commandLongCmdPtr(static_cast<const std::string *>(commandData->getValueFromMemberName("LongCmd")));
+			ASSERT((commandLongCmdPtr != nullptr), tester::shared::error_type_e::COMMAND, "Unable to find long command for data data with Name " + commandName + " in " + this->getActionJsonFilesAsString());
+			const std::string commandLongCmd(*commandLongCmdPtr);
+			commandExpectedText = ": " + commandLongCmd;
+		} else {
+			// If the command doesn't require typing Enter to execute it, the command text is empty as the command has already executed
+			const bool commandsPrintsText = this->commandRequiresEnter(commandName);
+			if (commandsPrintsText == true) {
 				const app::main_window::state_e * const commandStatePtr(static_cast<const app::main_window::state_e *>(commandData->getValueFromMemberName("State")));
 				const std::string commandState(app::shared::qEnumToQString(*commandStatePtr, true).toStdString());
 				std::string lowerCommandState = commandState;
 				std::transform(lowerCommandState.begin(), lowerCommandState.end(), lowerCommandState.begin(), [] (unsigned char c) {
 					return std::tolower(c);
 				});
-				commandExpectedText += lowerCommandState;
+				commandExpectedText = ":" + lowerCommandState;
 
 				const std::string commandNameSearchString("_");
 				const std::string commandNameReplacingString(" ");
@@ -225,19 +264,25 @@ void tester::base::CommandTest::openFile(const std::string & filepath) {
 
 		WAIT_FOR_CONDITION((openFilePopup->isVisible() == true), tester::shared::error_type_e::POPUP, "Open file popup is not visible even though command " + openCommandName + " was executed.", 5000);
 
+		const char insertKey = 'i';
+		LOG_INFO(app::logger::info_level_e::ZERO, commandTestTest, "Initiate inserting text by typing key " << insertKey);
 		// Enable insert mode
-		tester::base::CommandTest::sendKeyEventToFocus(QTest::KeyAction::Click, 'i');
+		tester::base::CommandTest::sendKeyEventToFocus(QTest::KeyAction::Click, insertKey);
 
 		// Open file
+		LOG_INFO(app::logger::info_level_e::ZERO, commandTestTest, "Start typing filepath " << filepath);
 		tester::base::CommandTest::sendKeyClicksToFocus(filepath);
 		const std::string typedFilePath(openFilePopup->getTypedPath().toStdString());
 		ASSERT((typedFilePath.compare(filepath) == 0), tester::shared::error_type_e::POPUP, "Typed filepath " + typedFilePath + " doesn't match expected filepath " + filepath);
 		ASSERT((openFilePopup->isTypedPathAFile() == true), tester::shared::error_type_e::POPUP, "Typed filepath " + typedFilePath + " is not a file");
 
 		// Open file
+		LOG_INFO(app::logger::info_level_e::ZERO, commandTestTest, "Opening file " << filepath);
+	LOG_INFO(app::logger::info_level_e::ZERO, commandTestTest, "DEBUG Opening file " << filepath << " use shortcuts " << this->commandSentThroughShortcuts());
 		if (this->commandSentThroughShortcuts() == true) {
 			// Remove focus from QLineEdit
 			tester::base::CommandTest::sendKeyClickToFocus(Qt::Key_Escape);
+	LOG_INFO(app::logger::info_level_e::ZERO, commandTestTest, "DEBUG - open popup " << openFilePopup.get() << " focus widget " << QApplication::focusWidget() << " open popup visible " << openFilePopup->isVisible());
 			tester::base::CommandTest::sendKeyEventToFocus(QTest::KeyAction::Click, 'o');
 		} else {
 			// Press enter while focus is still on the QLineEdit opens the file
@@ -327,41 +372,7 @@ void tester::base::CommandTest::checkSource(const std::shared_ptr<app::main_wind
 	if (tabType == app::main_window::page_type_e::WEB_CONTENT) {
 		const QUrl & tabUrl = tab->getPage()->url();
 		currentSource = tabUrl.toString().toStdString();
-		ASSERT((tabUrl.isValid() == true), tester::shared::error_type_e::TABS, "The URL returned by the tab " + tabUrl.toString().toStdString() + " is not a valid URL");
-		std::string tabUrlPath = std::string();
-		std::string tabUrlHost = std::string();
-		if (tabUrl.isValid() == true) {
-			tabUrlPath = tabUrl.path(QUrl::FullyEncoded).toStdString();
-			tabUrlHost = tabUrl.host(QUrl::FullyEncoded).toStdString();
-			std::size_t wwwPosition = tabUrlHost.find(www);
-			const bool containsWww = (wwwPosition != std::string::npos);
-			// Erase https from searched text
-			if (containsWww == true) {
-				tabUrlHost.erase(wwwPosition, www.size());
-			}
-		} else {
-			tabUrlPath = "Invalid tab URL";
-			tabUrlHost = "Invalid tab URL";
-		}
-		const QUrl expectedUrl = QUrl(QString::fromStdString(expectedSourceText));
-		ASSERT((expectedUrl.isValid() == true), tester::shared::error_type_e::TEST, "The expected source " + expectedSourceText + " is not a valid URL");
-		std::string expectedUrlPath = std::string();
-		std::string expectedUrlHost = std::string();
-		if (expectedUrl.isValid() == true) {
-			expectedUrlPath = expectedUrl.path(QUrl::FullyEncoded).toStdString();
-			expectedUrlHost = expectedUrl.host(QUrl::FullyEncoded).toStdString();
-			std::size_t wwwPosition = expectedUrlHost.find(www);
-			const bool containsWww = (wwwPosition != std::string::npos);
-			// Erase https from searched text
-			if (containsWww == true) {
-				expectedUrlHost.erase(wwwPosition, www.size());
-			}
-		} else {
-			expectedUrlPath = "Invalid expected URL";
-			expectedUrlHost = "Invalid expected URL";
-		}
-		ASSERT((tabUrlPath.find(expectedUrlPath) != std::string::npos), tester::shared::error_type_e::TABS, "Current path " + tabUrlPath + " of URL " + currentSource + " opened in tab doesn't contain path " + expectedUrlPath + " of the expected URL " + expectedSourceText);
-		ASSERT((tabUrlHost.find(expectedUrlHost) != std::string::npos), tester::shared::error_type_e::TABS, "Current host " + tabUrlHost + " of URL " + currentSource + " opened in tab doesn't contain host " + expectedUrlHost + " of the expected URL " + expectedSourceText);
+		this->checkUrl(tabUrl.toString().toStdString(), expectedSourceText);
 	} else if (tabType == app::main_window::page_type_e::TEXT) {
 		currentSource = tab->getSource().toStdString();
 		WAIT_FOR_CONDITION((expectedSourceText.compare(currentSource) == 0), tester::shared::error_type_e::TABS, "Current source " + currentSource + " doesn't match expected source " + expectedSourceText, 5000);
@@ -381,6 +392,46 @@ void tester::base::CommandTest::checkSource(const std::shared_ptr<app::main_wind
 	const std::shared_ptr<app::main_window::window::Core> & windowCore = this->windowWrapper->getWindowCore();
 	const std::string textInLabel = windowCore->bottomStatusBar->getContentPathText().toStdString();
 	ASSERT((expectedTextInLabel.compare(textInLabel) == 0), tester::shared::error_type_e::STATUSBAR, "Source of the content in tab " + expectedTextInLabel + " doesn't match the source of the content that the user requested to search " + textInLabel);
+}
+
+void tester::base::CommandTest::checkUrl(const std::string currentUrl, const std::string & expectedUrl) {
+	QUrl tabUrl(QString::fromStdString(currentUrl));
+	ASSERT((tabUrl.isValid() == true), tester::shared::error_type_e::TABS, "The URL returned by the tab " + tabUrl.toString().toStdString() + " is not a valid URL");
+	std::string tabUrlPath = std::string();
+	std::string tabUrlHost = std::string();
+	const std::string www(app::shared::www.toStdString());
+	if (tabUrl.isValid() == true) {
+		tabUrlPath = tabUrl.path(QUrl::FullyEncoded).toStdString();
+		tabUrlHost = tabUrl.host(QUrl::FullyEncoded).toStdString();
+		std::size_t wwwPosition = tabUrlHost.find(www);
+		const bool containsWww = (wwwPosition != std::string::npos);
+		// Erase https from searched text
+		if (containsWww == true) {
+			tabUrlHost.erase(wwwPosition, www.size());
+		}
+	} else {
+		tabUrlPath = "Invalid tab URL";
+		tabUrlHost = "Invalid tab URL";
+	}
+	const QUrl expectedTabUrl(QString::fromStdString(expectedUrl));
+	ASSERT((expectedTabUrl.isValid() == true), tester::shared::error_type_e::TEST, "The expected source " + expectedUrl + " is not a valid URL");
+	std::string expectedUrlPath = std::string();
+	std::string expectedUrlHost = std::string();
+	if (expectedTabUrl.isValid() == true) {
+		expectedUrlPath = expectedTabUrl.path(QUrl::FullyEncoded).toStdString();
+		expectedUrlHost = expectedTabUrl.host(QUrl::FullyEncoded).toStdString();
+		std::size_t wwwPosition = expectedUrlHost.find(www);
+		const bool containsWww = (wwwPosition != std::string::npos);
+		// Erase https from searched text
+		if (containsWww == true) {
+			expectedUrlHost.erase(wwwPosition, www.size());
+		}
+	} else {
+		expectedUrlPath = "Invalid expected URL";
+		expectedUrlHost = "Invalid expected URL";
+	}
+	ASSERT((tabUrlPath.find(expectedUrlPath) != std::string::npos), tester::shared::error_type_e::TABS, "Current path " + tabUrlPath + " of URL " + currentUrl + " opened in tab doesn't contain path " + expectedUrlPath + " of the expected URL " + expectedUrl);
+	ASSERT((tabUrlHost.find(expectedUrlHost) != std::string::npos), tester::shared::error_type_e::TABS, "Current host " + tabUrlHost + " of URL " + currentUrl + " opened in tab doesn't contain host " + expectedUrlHost + " of the expected URL " + expectedUrl);
 }
 
 std::string tester::base::CommandTest::commandNameToTypedText(const std::string & commandName) {
@@ -439,7 +490,6 @@ bool tester::base::CommandTest::stateRequiresArgument(const app::main_window::st
 			required = false;
 			break;
 		case app::main_window::state_e::COMMAND:
-
 		case app::main_window::state_e::FIND:
 		case app::main_window::state_e::NEW_SEARCH:
 		case app::main_window::state_e::EDIT_SEARCH:
@@ -453,8 +503,9 @@ bool tester::base::CommandTest::stateRequiresArgument(const app::main_window::st
 	return required;
 }
 
-void tester::base::CommandTest::executeCommand(const std::string & commandName, const std::string & argument, const bool execute) {
+void tester::base::CommandTest::executeCommand(const std::string & commandName, const std::string & argument, const bool executeAfterTypingArgument) {
 
+	LOG_INFO(app::logger::info_level_e::ZERO, commandTestTest, "Executing command " << commandName << " with " << ((argument.empty() == true) ? (" argument " + argument) : "no arguments"));
 	const std::unique_ptr<app::main_window::json::Data> & commandData = this->findDataWithFieldValue("Name", &commandName);
 	ASSERT((commandData != nullptr), tester::shared::error_type_e::COMMAND, "Unable to find data with Name " + commandName + " in " + this->getActionJsonFilesAsString());
 
@@ -467,24 +518,36 @@ void tester::base::CommandTest::executeCommand(const std::string & commandName, 
 
 	app::main_window::state_e commandExpectedState = app::main_window::state_e::UNKNOWN;
 
+	bool executeAfterTypingCommand = false;
 	if (this->commandSentThroughShortcuts() == true) {
 		const bool commandRequiredEnter = this->commandRequiresEnter(commandName);
-		if ((commandName.compare(tester::base::command_test::openFileCommandName) == 0) || (commandRequiredEnter == true)) {
+		if (commandRequiredEnter == true) {
 			commandExpectedState = commandState;
 		} else {
 			commandExpectedState = app::main_window::state_e::IDLE;
 		}
+		executeAfterTypingCommand = (this->stateRequiresArgument(commandExpectedState) == false);
 	} else {
 		commandExpectedState = app::main_window::state_e::COMMAND;
+		// Execute command if next state does not command
+		executeAfterTypingCommand = (this->stateRequiresArgument(commandState) == false);
 	}
 
-	const bool executeCommand = ((this->stateRequiresArgument(commandExpectedState) == false) && (argument.empty() == true));
-	this->writeCommandToStatusBar(commandName, commandExpectedState, executeCommand);
+	// If the user provides an argument, do not execute command
+	executeAfterTypingCommand &= (argument.empty() == true);
+	this->writeCommandToStatusBar(commandName, commandExpectedState, executeAfterTypingCommand);
+
+	if ((this->commandSentThroughShortcuts() == false) && ((argument.empty() == false) || (this->stateRequiresArgument(commandState) == true))) {
+		// Send Space to window in order to change state
+		tester::base::CommandTest::sendKeyClickToFocus(Qt::Key_Space);
+
+		const std::shared_ptr<app::main_window::window::Core> & windowCore = this->windowWrapper->getWindowCore();
+		const app::main_window::state_e & currentState = windowCore->getMainWindowState();
+		WAIT_FOR_CONDITION((currentState == commandState), tester::shared::error_type_e::WINDOW, "Expected window state " + commandState + " doesn't match current window state " + currentState, 1000);
+	}
 
 	if (argument.empty() == false) {
 		if (this->commandSentThroughShortcuts() == false) {
-			// Send Space to window in order to change state
-			tester::base::CommandTest::sendKeyClickToFocus(Qt::Key_Space);
 			const std::string commandAfterStateChanged(this->commandNameToShownText(commandName, false));
 			const std::string expectedText = commandAfterStateChanged;
 
@@ -495,7 +558,7 @@ void tester::base::CommandTest::executeCommand(const std::string & commandName, 
 		const std::string argumentExpectedText = commandExpectedName + " " + argument;
 
 		LOG_INFO(app::logger::info_level_e::ZERO, commandTestTest, "Give argument " << argument << " to command " << commandName);
-		this->writeTextToStatusBar(argument, argumentExpectedText, commandState, execute, true);
+		this->writeTextToStatusBar(argument, argumentExpectedText, commandState, executeAfterTypingArgument, true);
 	}
 
 }

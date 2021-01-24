@@ -104,6 +104,16 @@ namespace app {
 					 */
 					std::shared_ptr<app::base::tab::Tab> widget(const int & index, const bool & checkError = true) const;
 
+					/**
+					 * @brief Function: void moveTab(const int & indexFrom, const int & indexTo)
+					 *
+					 * \param indexFrom: index of the tab to move
+					 * \param indexTo: destination of the tab
+					 *
+					 * move a tab from index indexFrom to index indexTo
+					 */
+					void moveTab(const int & indexFrom, const int & indexTo);
+
 				protected:
 					/**
 					 * @brief Function: void resizeEvent(QResizeEvent * event) override

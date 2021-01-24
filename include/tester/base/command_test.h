@@ -93,15 +93,15 @@ namespace tester {
 				void openFile(const std::string & filepath);
 
 				/**
-				 * @brief Function: void executeCommand(const std::string & commandName, const std::string & argument = std::string(), const bool execute = true)
+				 * @brief Function: void executeCommand(const std::string & commandName, const std::string & argument = std::string(), const bool executeAfterTypingArgument = true)
 				 *
 				 * \param commandName: name of command to search in the JSON
 				 * \param argument: argument to provide to the command. This argument can be an empty string
-				 * \param execution: execute of the command after typing argument
+				 * \param executionAfterTypingArgument: execute of the command after typing argument
 				 *
 				 * This function send an argument and pass an argument to it
 				 */
-				void executeCommand(const std::string & commandName, const std::string & argument = std::string(), const bool execute = true);
+				void executeCommand(const std::string & commandName, const std::string & argument = std::string(), const bool executeAfterTypingArgument = true);
 
 				/**
 				 * @brief Function: bool commandRequiresEnter(const std::string & commandName) const
@@ -156,6 +156,16 @@ namespace tester {
 				 * This function check the tab URL based on the text searched from the user
 				 */
 				void checkSource(const std::shared_ptr<app::main_window::tab::Tab> & tab, const std::string & search);
+
+				/**
+				 * @brief Function: void checkUrl(const std::string currentUrl, const std::string & expectedUrl)
+				 *
+				 * \param currentUrl: current URL to use verify
+				 * \param expectedUrl: expected URL to match the current one against
+				 *
+				 * This function compares the expected URL with the current one
+				 */
+				void checkUrl(const std::string currentUrl, const std::string & expectedUrl);
 
 				/**
 				 * @brief Function: void waitForTabOpened()

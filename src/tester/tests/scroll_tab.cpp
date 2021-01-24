@@ -106,17 +106,17 @@ void tester::test::ScrollTab::testBody() {
 		const std::string scrollDownCommandName("scroll down");
 		this->executeCommand(scrollDownCommandName, std::string());
 
-		const int & verticalScrollPercentageAfterScrollDown = currentTab->getVerticalScrollPercentage();
-		ASSERT((verticalScrollPercentageAfterScrollDown > verticalScrollPercentageAfterScrollUp), tester::shared::error_type_e::TABS, "Current position of the vertical scrollbar is " + std::to_string(verticalScrollPercentageAfterScrollDown) + " whereas it is expected to be greater than " + std::to_string(verticalScrollPercentageAfterScrollUp) + " because command " + scrollDownCommandName + " has been executed.");
+		WAIT_FOR_CONDITION((currentTab->getVerticalScrollPercentage() > verticalScrollPercentageAfterScrollUp), tester::shared::error_type_e::TABS, "Current position of the vertical scrollbar is " + std::to_string(currentTab->getVerticalScrollPercentage()) + " whereas it is expected to be greater than " + std::to_string(verticalScrollPercentageAfterScrollUp) + " because command " + scrollDownCommandName + " has been executed.", 5000);
 
+		const int & verticalScrollPercentageAfterScrollDown = currentTab->getVerticalScrollPercentage();
 		const int vScrollAfterScrollDown = windowCore->bottomStatusBar->getVScroll();
 		ASSERT((vScrollAfterScrollDown == verticalScrollPercentageAfterScrollDown), tester::shared::error_type_e::STATUSBAR, "Current value of the vertical scrolling in the status bar is " + std::to_string(vScrollAfterScrollDown) + " and its position should match the value of the tab scroll manager " + std::to_string(verticalScrollPercentageAfterScrollDown) + " after command " + scrollDownCommandName + " has been executed.");
 
 		this->executeCommand(scrollUpCommandName, std::string());
 
-		const int & verticalScrollPercentageAfterSecondScrollUp = currentTab->getVerticalScrollPercentage();
-		ASSERT((verticalScrollPercentageAfterSecondScrollUp == verticalScrollPercentageAfterScrollUp), tester::shared::error_type_e::TABS, "Current position of the vertical scrollbar is " + std::to_string(verticalScrollPercentageAfterSecondScrollUp) + " whereas it is expected to be " + std::to_string(verticalScrollPercentageAfterScrollUp) + " because command " + scrollUpCommandName + " has been executed after command " + scrollDownCommandName + " hence the scrollbar should return to the initial position.");
+		WAIT_FOR_CONDITION((currentTab->getVerticalScrollPercentage() == verticalScrollPercentageAfterScrollUp), tester::shared::error_type_e::TABS, "Current position of the vertical scrollbar is " + std::to_string(currentTab->getVerticalScrollPercentage()) + " whereas it is expected to be " + std::to_string(verticalScrollPercentageAfterScrollUp) + " because command " + scrollUpCommandName + " has been executed after command " + scrollDownCommandName + " hence the scrollbar should return to the initial position.", 5000);
 
+		const int & verticalScrollPercentageAfterSecondScrollUp = currentTab->getVerticalScrollPercentage();
 		const int vScrollAfterSecondScrollUp = windowCore->bottomStatusBar->getVScroll();
 		ASSERT((vScrollAfterSecondScrollUp == verticalScrollPercentageAfterSecondScrollUp), tester::shared::error_type_e::STATUSBAR, "Current value of the vertical scrolling in the status bar is " + std::to_string(vScrollAfterSecondScrollUp) + " whereas its position should have not changed and stayed " + std::to_string(verticalScrollPercentageAfterSecondScrollUp) + " because command " + scrollUpCommandName + " has been executed after command " + scrollDownCommandName + " hence the scrollbar should return to the initial position.");
 
@@ -126,9 +126,10 @@ void tester::test::ScrollTab::testBody() {
 		while (windowCore->bottomStatusBar->getVScroll() < maxScrollPercentage) {
 			this->executeCommand(scrollDownCommandName, std::string());
 
-			const int & currentVerticalScrollDownPercentage = currentTab->getVerticalScrollPercentage();
-			ASSERT((currentVerticalScrollDownPercentage > previousVerticalScrollDownPercentage), tester::shared::error_type_e::TABS, "Current position of the vertical scrollbar is " + std::to_string(currentVerticalScrollDownPercentage) + " whereas it is expected to be greater than " + std::to_string(previousVerticalScrollDownPercentage) + " because command " + scrollDownCommandName + " has been executed.");
+//			const int & currentVerticalScrollDownPercentage = currentTab->getVerticalScrollPercentage();
+			WAIT_FOR_CONDITION((currentTab->getVerticalScrollPercentage() > previousVerticalScrollDownPercentage), tester::shared::error_type_e::TABS, "Current position of the vertical scrollbar is " + std::to_string(currentTab->getVerticalScrollPercentage()) + " whereas it is expected to be greater than " + std::to_string(previousVerticalScrollDownPercentage) + " because command " + scrollDownCommandName + " has been executed.", 5000);
 
+			const int & currentVerticalScrollDownPercentage = currentTab->getVerticalScrollPercentage();
 			const int vScrollStatusBar = windowCore->bottomStatusBar->getVScroll();
 			ASSERT((vScrollStatusBar == currentVerticalScrollDownPercentage), tester::shared::error_type_e::STATUSBAR, "Current value of the vertical scrolling in the status bar is " + std::to_string(vScrollStatusBar) + " and its position should match the value of the tab scroll manager " + std::to_string(currentVerticalScrollDownPercentage) + " after command " + scrollDownCommandName + " has been executed.");
 
@@ -140,13 +141,13 @@ void tester::test::ScrollTab::testBody() {
 
 		// Scroll to the bottom of the page
 		// Both scroll value and status bar should be synchronized
-		int previousVerticalScrollUpPercentage = verticalScrollPercentageAfterSecondScrollUp;
+		int previousVerticalScrollUpPercentage = currentTab->getVerticalScrollPercentage();
 		while (windowCore->bottomStatusBar->getVScroll() > minScrollPercentage) {
 			this->executeCommand(scrollUpCommandName, std::string());
 
-			const int & currentVerticalScrollUpPercentage = currentTab->getVerticalScrollPercentage();
-			ASSERT((currentVerticalScrollUpPercentage > previousVerticalScrollUpPercentage), tester::shared::error_type_e::TABS, "Current position of the vertical scrollbar is " + std::to_string(currentVerticalScrollUpPercentage) + " whereas it is expected to be greater than " + std::to_string(previousVerticalScrollUpPercentage) + " because command " + scrollUpCommandName + " has been executed.");
+			WAIT_FOR_CONDITION((currentTab->getVerticalScrollPercentage() < previousVerticalScrollUpPercentage), tester::shared::error_type_e::TABS, "Current position of the vertical scrollbar is " + std::to_string(currentTab->getVerticalScrollPercentage()) + " whereas it is expected to be smaller than " + std::to_string(previousVerticalScrollUpPercentage) + " because command " + scrollUpCommandName + " has been executed.", 5000);
 
+			const int & currentVerticalScrollUpPercentage = currentTab->getVerticalScrollPercentage();
 			const int vScrollStatusBar = windowCore->bottomStatusBar->getVScroll();
 			ASSERT((vScrollStatusBar == currentVerticalScrollUpPercentage), tester::shared::error_type_e::STATUSBAR, "Current value of the vertical scrolling in the status bar is " + std::to_string(vScrollStatusBar) + " and its position should match the value of the tab scroll manager " + std::to_string(currentVerticalScrollUpPercentage) + " after command " + scrollUpCommandName + " has been executed.");
 
@@ -155,7 +156,6 @@ void tester::test::ScrollTab::testBody() {
 
 		const int & verticalScrollUpPercentageTop = currentTab->getVerticalScrollPercentage();
 		ASSERT((verticalScrollUpPercentageTop == minScrollPercentage), tester::shared::error_type_e::TABS, "Current position of the vertical scrollbar is " + std::to_string(verticalScrollUpPercentageTop) + " but it should have reached the top of the page hence its value should be " + std::to_string(minScrollPercentage));
-
 
 	}
 

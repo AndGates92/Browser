@@ -54,6 +54,8 @@ void app::main_window::window::Ctrl::connectSignals() {
 	connect(this->core->topMenuBar->getFileMenu()->exitAction.get(), &QAction::triggered, this, &app::main_window::window::Ctrl::closeWindow);
 	connect(this->core->popup.get(), &app::main_window::popup::PopupContainer::closeContainer,  [this] () {
 		emit windowStateChangeRequested(app::main_window::state_e::IDLE, app::main_window::state_postprocessing_e::POSTPROCESS);
+		// Override saved data as state is changed and the popup will give control back to the window controller
+		emit this->saveCurrentState();
 	});
 }
 

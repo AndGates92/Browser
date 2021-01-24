@@ -13,6 +13,7 @@
 #include "app/shared/constants.h"
 #include "app/utility/logger/macros.h"
 #include "app/utility/qt/qt_operator.h"
+#include "app/windows/main_window/shared/constants.h"
 #include "app/windows/main_window/window/core.h"
 #include "app/windows/main_window/statusbar/bar.h"
 #include "tester/tests/move_tab.h"
@@ -74,15 +75,15 @@ void tester::test::MoveTab::testBody() {
 	const std::string www(app::shared::www.toStdString());
 
 	// Create 2 tabs
-	const std::string website0("website0.com");
+	const std::string website0("website0");
 	LOG_INFO(app::logger::info_level_e::ZERO, moveTabTest, "Open new tab with website " << website0);
 	this->openNewTab(website0);
-	const std::string url0 = https + www + website0;
+	const std::string url0 = app::main_window::defaultSearchEngine.arg(QString::fromStdString(website0)).toStdString();
 
-	const std::string website1("website1.com");
+	const std::string website1("website1");
 	LOG_INFO(app::logger::info_level_e::ZERO, moveTabTest, "Open new tab with website " << website1);
 	this->openNewTab(website1);
-	const std::string url1 = https + www + website1;
+	const std::string url1 = app::main_window::defaultSearchEngine.arg(QString::fromStdString(website1)).toStdString();
 
 	const int initialTabIndex = windowCore->getCurrentTabIndex();
 	const int expectedInitialTabIndex = 1;
@@ -101,6 +102,6 @@ void tester::test::MoveTab::testBody() {
 	const int numberOfTabsAfterMove = windowCore->getTabCount();
 	ASSERT((numberOfTabsAfterMove == expectedNumberOfTabs), tester::shared::error_type_e::TABS, "Actual number of tabs " + std::to_string(numberOfTabsAfterMove) + " expected number of tabs is " + std::to_string(expectedNumberOfTabs));
 
-	const std::string textInLabel = windowCore->bottomStatusBar->getUserInputText().toStdString();
-	ASSERT((url1.compare(textInLabel) == 0), tester::shared::error_type_e::STATUSBAR, "Source of the content in tab index " + std::to_string(tabIndexAfterMove) + " " + textInLabel + " doesn't match the expected source " + url1);
+	const std::string textInLabel = windowCore->bottomStatusBar->getContentPathText().toStdString();
+	this->checkUrl(textInLabel, url1);
 }
