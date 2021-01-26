@@ -102,7 +102,7 @@ namespace app {
 
 app::main_window::popup::LabelPopup::LabelPopup(QWidget * parent, Qt::WindowFlags flags) : app::main_window::popup::PopupBase(parent, true, app::main_window::popup::label_popup::padding, flags) {
 
-	LOG_INFO(app::logger::info_level_e::ZERO, labelPopupOverall,  "Creating label popup");
+	LOG_INFO(app::logger::info_level_e::ZERO, labelPopupOverall, "Creating label popup");
 
 	// Create widgets to put in the window
 	this->fillPopup();
@@ -124,7 +124,7 @@ app::main_window::popup::LabelPopup::LabelPopup(QWidget * parent, Qt::WindowFlag
 }
 
 app::main_window::popup::LabelPopup::~LabelPopup() {
-	LOG_INFO(app::logger::info_level_e::ZERO, labelPopupOverall,  "Destructor of label popup class");
+	LOG_INFO(app::logger::info_level_e::ZERO, labelPopupOverall, "Destructor of label popup class");
 }
 
 void app::main_window::popup::LabelPopup::popupLayout() {
@@ -180,7 +180,7 @@ void app::main_window::popup::LabelPopup::fillPopup() {
 }
 
 void app::main_window::popup::LabelPopup::connectSignals() {
-	LOG_INFO(app::logger::info_level_e::ZERO, labelPopupOverall,  "Connect signals");
+	LOG_INFO(app::logger::info_level_e::ZERO, labelPopupOverall, "Connect signals");
 
 	connect(this->timer.get(), &QTimer::timeout, [this] () {
 		this->close();

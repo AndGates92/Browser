@@ -185,7 +185,7 @@
 		LIST.cbegin(), \
 		LIST.cend(), \
 		[&](const TYPE & el) { \
-			LOG_INFO(VERBOSITY, CATEGORY,  "[ List " << NAME << " ] Element " << el.qprint()); \
+			LOG_INFO(VERBOSITY, CATEGORY, "[ List " << NAME << " ] Element " << el.qprint()); \
 		} \
 	);
 

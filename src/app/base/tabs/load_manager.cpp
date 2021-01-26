@@ -18,12 +18,12 @@ LOGGING_CONTEXT(tabLoadManagerOverall, tabLoadManager.overall, TYPE_LEVEL, INFO_
 LOGGING_CONTEXT(tabLoadManagerStatus, tabLoadManager.status, TYPE_LEVEL, INFO_VERBOSITY)
 
 app::base::tab::LoadManager::LoadManager(QWidget * parent): QWidget(parent), status(app::base::tab::load_status_e::IDLE), progress(0) {
-	LOG_INFO(app::logger::info_level_e::ZERO, tabLoadManagerOverall,  "LoadManager constructor");
+	LOG_INFO(app::logger::info_level_e::ZERO, tabLoadManagerOverall, "LoadManager constructor");
 
 }
 
 app::base::tab::LoadManager::~LoadManager() {
-	LOG_INFO(app::logger::info_level_e::ZERO, tabLoadManagerOverall,  "LoadManager destructor");
+	LOG_INFO(app::logger::info_level_e::ZERO, tabLoadManagerOverall, "LoadManager destructor");
 
 }
 
@@ -49,7 +49,7 @@ void app::base::tab::LoadManager::endLoading(const bool & success) {
 
 void app::base::tab::LoadManager::setStatus(const app::base::tab::load_status_e & value) {
 	if (this->status != value) {
-		LOG_INFO(app::logger::info_level_e::ZERO, tabLoadManagerStatus,  "tab load status changed from " << this->status << " to " << value);
+		LOG_INFO(app::logger::info_level_e::ZERO, tabLoadManagerStatus, "tab load status changed from " << this->status << " to " << value);
 		this->status = value;
 		emit statusChanged(this->status);
 	}

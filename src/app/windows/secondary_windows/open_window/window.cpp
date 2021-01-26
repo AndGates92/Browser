@@ -61,7 +61,7 @@ namespace app {
 
 app::open_window::Window::Window(QWidget * parent, Qt::WindowFlags flags) : QWidget(parent, flags), app::base::window::OpenContent(this) {
 
-	LOG_INFO(app::logger::info_level_e::ZERO, openButtonWindowOverall,  "Creating open button window");
+	LOG_INFO(app::logger::info_level_e::ZERO, openButtonWindowOverall, "Creating open button window");
 
 	// Set modal because no other windows should be active
 	this->setWindowModality(Qt::ApplicationModal);
@@ -83,11 +83,11 @@ app::open_window::Window::Window(QWidget * parent, Qt::WindowFlags flags) : QWid
 }
 
 app::open_window::Window::~Window() {
-	LOG_INFO(app::logger::info_level_e::ZERO, openButtonWindowOverall,  "Destructor of Window class");
+	LOG_INFO(app::logger::info_level_e::ZERO, openButtonWindowOverall, "Destructor of Window class");
 }
 
 void app::open_window::Window::browse() {
-	LOG_INFO(app::logger::info_level_e::ZERO, openButtonWindowBrowse,  "Browsing files - selected MIME are: " << this->fileModel->nameFilters());
+	LOG_INFO(app::logger::info_level_e::ZERO, openButtonWindowBrowse, "Browsing files - selected MIME are: " << this->fileModel->nameFilters());
 	const bool isFileViewVisible = this->fileView->isVisible();
 
 	if (isFileViewVisible == true) {
@@ -102,7 +102,7 @@ void app::open_window::Window::browse() {
 }
 
 void app::open_window::Window::cancel() {
-	LOG_INFO(app::logger::info_level_e::ZERO, openButtonWindowCancel,  "Closing dialog as Cancel button has been clicked");
+	LOG_INFO(app::logger::info_level_e::ZERO, openButtonWindowCancel, "Closing dialog as Cancel button has been clicked");
 	if (this->pathToOpen->hasFocus() == true) {
 		this->setFocus();
 	} else {
@@ -115,7 +115,7 @@ void app::open_window::Window::close() {
 }
 
 void app::open_window::Window::apply() {
-	LOG_INFO(app::logger::info_level_e::ZERO, openButtonWindowOpen,  "Open file: " << this->pathToOpen->text());
+	LOG_INFO(app::logger::info_level_e::ZERO, openButtonWindowOpen, "Open file: " << this->pathToOpen->text());
 	this->openPath();
 }
 
@@ -203,7 +203,7 @@ void app::open_window::Window::fillWindow() {
 }
 
 void app::open_window::Window::connectSignals() {
-	LOG_INFO(app::logger::info_level_e::ZERO, openButtonWindowOverall,  "Connect signals");
+	LOG_INFO(app::logger::info_level_e::ZERO, openButtonWindowOverall, "Connect signals");
 
 	connect(this->applyAction.get(), &app::commands::Action::triggered, this, &app::open_window::Window::apply);
 	connect(this->openButton.get(), &QPushButton::pressed, this, &app::open_window::Window::apply);

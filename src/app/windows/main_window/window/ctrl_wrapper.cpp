@@ -34,12 +34,12 @@ app::main_window::window::CtrlWrapper::CtrlWrapper(QWidget * parent, const std::
 }
 
 app::main_window::window::CtrlWrapper::~CtrlWrapper() {
-	LOG_INFO(app::logger::info_level_e::ZERO, mainWindowCtrlWrapperOverall,  "Main window control wrapper destructor");
+	LOG_INFO(app::logger::info_level_e::ZERO, mainWindowCtrlWrapperOverall, "Main window control wrapper destructor");
 }
 
 void app::main_window::window::CtrlWrapper::keyPressEvent(QKeyEvent * event) {
 
-	LOG_INFO(app::logger::info_level_e::ZERO, mainWindowCtrlWrapperUserInput,  "Key event details: event type: keyPress key: " << event->key() << " modifier: " << event->modifiers());
+	LOG_INFO(app::logger::info_level_e::ZERO, mainWindowCtrlWrapperUserInput, "Key event details: event type: keyPress key: " << event->key() << " modifier: " << event->modifiers());
 
 	this->winctrl->keyPressEvent(event);
 	this->tabctrl->keyPressEvent(event);
@@ -50,7 +50,7 @@ void app::main_window::window::CtrlWrapper::keyPressEvent(QKeyEvent * event) {
 
 void app::main_window::window::CtrlWrapper::connectSignals() {
 
-	LOG_INFO(app::logger::info_level_e::ZERO, mainWindowCtrlWrapperOverall,  "Connect signals");
+	LOG_INFO(app::logger::info_level_e::ZERO, mainWindowCtrlWrapperOverall, "Connect signals");
 
 	// Window state change
 	connect(this->winctrl.get(), &app::main_window::window::Ctrl::windowStateChangeRequested, this, &app::main_window::window::CtrlWrapper::changeWindowState);
@@ -167,7 +167,7 @@ bool app::main_window::window::CtrlWrapper::isValidWindowState(const app::main_w
 }
 
 void app::main_window::window::CtrlWrapper::changeWindowStateWrapper(const std::unique_ptr<app::main_window::json::Data> & commandData, const app::main_window::state_postprocessing_e & postprocess) {
-	LOG_INFO(app::logger::info_level_e::ZERO, mainWindowCtrlWrapperOverall,  "Command " << commandData->getName() << " (shortcut: " << commandData->getShortcut() << " long command: " << commandData->getLongCmd() << ") - moving to state " << commandData->getState());
+	LOG_INFO(app::logger::info_level_e::ZERO, mainWindowCtrlWrapperOverall, "Command " << commandData->getName() << " (shortcut: " << commandData->getShortcut() << " long command: " << commandData->getLongCmd() << ") - moving to state " << commandData->getState());
 	this->changeWindowState(commandData->getState(), postprocess);
 }
 
@@ -207,7 +207,7 @@ void app::main_window::window::CtrlWrapper::changeWindowState(const app::main_wi
 
 void app::main_window::window::CtrlWrapper::setupWindowState(const app::main_window::state_e & previousState) {
 	const app::main_window::state_e windowState = this->core->getMainWindowState();
-	LOG_INFO(app::logger::info_level_e::ZERO, mainWindowCtrlWrapperOverall,  "Setting up current state " << windowState << " previousState " << previousState);
+	LOG_INFO(app::logger::info_level_e::ZERO, mainWindowCtrlWrapperOverall, "Setting up current state " << windowState << " previousState " << previousState);
 
 	const int tabCount = this->core->getTabCount();
 	std::shared_ptr<app::main_window::tab::Tab> tab = nullptr;
@@ -254,7 +254,7 @@ void app::main_window::window::CtrlWrapper::setupWindowState(const app::main_win
 			this->tabctrl->setFocus();
 			break;
 		case app::main_window::state_e::EDIT_SEARCH:
-			EXCEPTION_ACTION_COND((tab == nullptr), throw,  "Postprocessing state " << windowState << ": Unable to edit string used for previous search as pointer to tab is " << tab.get());
+			EXCEPTION_ACTION_COND((tab == nullptr), throw, "Postprocessing state " << windowState << ": Unable to edit string used for previous search as pointer to tab is " << tab.get());
 			this->core->printUserInput(app::main_window::text_action_e::SET, searchText);
 			this->setAllShortcutEnabledProperty(false);
 			this->tabctrl->setFocus();
@@ -267,7 +267,7 @@ void app::main_window::window::CtrlWrapper::setupWindowState(const app::main_win
 
 void app::main_window::window::CtrlWrapper::postprocessWindowStateChange(const app::main_window::state_e & previousState) {
 	const app::main_window::state_e windowState = this->core->getMainWindowState();
-	LOG_INFO(app::logger::info_level_e::ZERO, mainWindowCtrlWrapperOverall,  "Current state " << windowState << " previousState " << previousState);
+	LOG_INFO(app::logger::info_level_e::ZERO, mainWindowCtrlWrapperOverall, "Current state " << windowState << " previousState " << previousState);
 
 	// If requesting to go to the idle state, enable shortcuts
 	switch (windowState) {
@@ -332,7 +332,7 @@ void app::main_window::window::CtrlWrapper::setAllShortcutEnabledProperty(const 
 		app::commands::KeySequence key(shortcut->key());
 		// If shortcut key is not defined, then do not do anything
 		if (key.count() > 0) {
-			LOG_INFO(app::logger::info_level_e::ZERO, mainWindowCtrlWrapperUserInput,  "Setting enabled for key " << key.toString() << " to " << enabled);
+			LOG_INFO(app::logger::info_level_e::ZERO, mainWindowCtrlWrapperUserInput, "Setting enabled for key " << key.toString() << " to " << enabled);
 			shortcut->setEnabled(enabled);
 		}
 	}
@@ -345,7 +345,7 @@ void app::main_window::window::CtrlWrapper::executeAction(const app::main_window
 
 void app::main_window::window::CtrlWrapper::keyReleaseEvent(QKeyEvent * event) {
 
-	LOG_INFO(app::logger::info_level_e::ZERO, mainWindowCtrlWrapperOverall,  "Key event details: event type: keyRelease key: " << event->key() << " modifier: " << event->modifiers());
+	LOG_INFO(app::logger::info_level_e::ZERO, mainWindowCtrlWrapperOverall, "Key event details: event type: keyRelease key: " << event->key() << " modifier: " << event->modifiers());
 
 	this->winctrl->keyReleaseEvent(event);
 	this->tabctrl->keyReleaseEvent(event);

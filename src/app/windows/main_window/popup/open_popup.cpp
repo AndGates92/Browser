@@ -96,7 +96,7 @@ namespace app {
 
 app::main_window::popup::OpenPopup::OpenPopup(QWidget * parent, Qt::WindowFlags flags) : app::main_window::popup::PopupBase(parent, true, app::main_window::popup::open_popup::padding, flags), app::base::window::OpenContent(this) {
 
-	LOG_INFO(app::logger::info_level_e::ZERO, openPopupOverall,  "Creating open popup");
+	LOG_INFO(app::logger::info_level_e::ZERO, openPopupOverall, "Creating open popup");
 
 	// Create widgets to put in the window
 	this->fillPopup();
@@ -152,7 +152,7 @@ app::main_window::popup::OpenPopup::OpenPopup(QWidget * parent, Qt::WindowFlags 
 }
 
 app::main_window::popup::OpenPopup::~OpenPopup() {
-	LOG_INFO(app::logger::info_level_e::ZERO, openPopupOverall,  "Destructor of open popup class");
+	LOG_INFO(app::logger::info_level_e::ZERO, openPopupOverall, "Destructor of open popup class");
 }
 
 void app::main_window::popup::OpenPopup::popupLayout() {
@@ -215,7 +215,7 @@ void app::main_window::popup::OpenPopup::fillPopup() {
 }
 
 void app::main_window::popup::OpenPopup::connectSignals() {
-	LOG_INFO(app::logger::info_level_e::ZERO, openPopupOverall,  "Connect signals");
+	LOG_INFO(app::logger::info_level_e::ZERO, openPopupOverall, "Connect signals");
 
 	connect(this->applyAction.get(), &app::commands::Action::triggered, this, &app::main_window::popup::OpenPopup::apply);
 	connect(this->cancelAction.get(), &app::commands::Action::triggered, this, &app::main_window::popup::OpenPopup::cancel);
@@ -246,13 +246,13 @@ void app::main_window::popup::OpenPopup::postProcessTypeAction() {
 }
 
 void app::main_window::popup::OpenPopup::apply() {
-	LOG_INFO(app::logger::info_level_e::ZERO, openPopupOpen,  "Open file: " << this->getTypedPath());
+	LOG_INFO(app::logger::info_level_e::ZERO, openPopupOpen, "Open file: " << this->getTypedPath());
 	this->close();
 	this->openPath();
 }
 
 void app::main_window::popup::OpenPopup::browse() {
-	LOG_INFO(app::logger::info_level_e::ZERO, openPopupBrowse,  "Browsing files - selected MIME are: " << this->fileModel->nameFilters());
+	LOG_INFO(app::logger::info_level_e::ZERO, openPopupBrowse, "Browsing files - selected MIME are: " << this->fileModel->nameFilters());
 	const bool isFileViewVisible = this->fileView->isVisible();
 
 	if (isFileViewVisible == true) {
@@ -267,13 +267,13 @@ void app::main_window::popup::OpenPopup::browse() {
 
 void app::main_window::popup::OpenPopup::cancel() {
 	if (this->pathToOpen->hasFocus() == true) {
-		LOG_INFO(app::logger::info_level_e::ZERO, openPopupCancel,  "Take focus from QLineEdit");
+		LOG_INFO(app::logger::info_level_e::ZERO, openPopupCancel, "Take focus from QLineEdit");
 		this->setFocus();
-LOG_INFO(app::logger::info_level_e::ZERO, openPopupCancel,  "Apply action enabled " << this->applyAction->isEnabled() << "Apply action key " << this->applyAction->shortcut().toString() << " open label enabled " << this->openLabel->isEnabled());
+LOG_INFO(app::logger::info_level_e::ZERO, openPopupCancel, "Apply action enabled " << this->applyAction->isEnabled() << "Apply action key " << this->applyAction->shortcut().toString() << " open label enabled " << this->openLabel->isEnabled());
 		this->insertLabel->setEnabled(true);
 		this->typeAction->setEnabled(true);
 	} else {
-		LOG_INFO(app::logger::info_level_e::ZERO, openPopupCancel,  "Closing popup as Cancel button has been clicked");
+		LOG_INFO(app::logger::info_level_e::ZERO, openPopupCancel, "Closing popup as Cancel button has been clicked");
 		this->close();
 	}
 }
@@ -335,7 +335,7 @@ QSize app::main_window::popup::OpenPopup::sizeHint() const {
 void app::main_window::popup::OpenPopup::pathChanged(const QString & path) {
 	const QFileInfo pathInfo(path);
 	const bool enableAction = pathInfo.exists() && pathInfo.isFile();
-LOG_INFO(app::logger::info_level_e::ZERO, openPopupOverall,  "DEBUG path changed -> enableAction " << enableAction);
+LOG_INFO(app::logger::info_level_e::ZERO, openPopupOverall, "DEBUG path changed -> enableAction " << enableAction);
 	this->openLabel->setEnabled(enableAction);
 	this->applyAction->setEnabled(enableAction);
 }

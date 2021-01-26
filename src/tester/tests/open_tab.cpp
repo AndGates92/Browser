@@ -65,15 +65,15 @@ tester::test::OpenTab::OpenTab(const std::shared_ptr<tester::base::Suite> & test
 	std::string testName("Open tab with " + enumToString + " search using " + (useShortcuts ? "shortcuts" : "full commands"));
 	this->setName(testName);
 	
-	LOG_INFO(app::logger::info_level_e::ZERO, openTabOverall,  "Creating test " << this->getName() << " in suite " << this->getSuite()->getName() << " with search text type " << type);
+	LOG_INFO(app::logger::info_level_e::ZERO, openTabOverall, "Creating test " << this->getName() << " in suite " << this->getSuite()->getName() << " with search text type " << type);
 }
 
 tester::test::OpenTab::~OpenTab() {
-	LOG_INFO(app::logger::info_level_e::ZERO, openTabOverall,  "Test " << this->getName() << " destructor");
+	LOG_INFO(app::logger::info_level_e::ZERO, openTabOverall, "Test " << this->getName() << " destructor");
 }
 
 void tester::test::OpenTab::testBody() {
-	LOG_INFO(app::logger::info_level_e::ZERO, openTabTest,  "Starting test " << this->getName() << " in suite " << this->getSuite()->getName());
+	LOG_INFO(app::logger::info_level_e::ZERO, openTabTest, "Starting test " << this->getName() << " in suite " << this->getSuite()->getName());
 
 	std::string search = std::string();
 	for (const auto & character : search) {

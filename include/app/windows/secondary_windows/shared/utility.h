@@ -138,7 +138,7 @@ namespace app {
 template<class BoxItem, typename std::enable_if<std::is_base_of<app::combo_box_item::ComboBoxItem, BoxItem>::value, void>::type* = nullptr>
 std::shared_ptr<QComboBox> app::secondary_window::createComboBox(QWidget *parent, const std::list<BoxItem> & items) {
 
-	LOG_INFO(app::logger::info_level_e::ZERO, secondaryWindowUtilityOverall,  "Creating Combo Box object");
+	LOG_INFO(app::logger::info_level_e::ZERO, secondaryWindowUtilityOverall, "Creating Combo Box object");
 
 	std::shared_ptr<QComboBox> comboBox = std::make_shared<QComboBox>(parent);
 	comboBox->setFrame(false);
@@ -151,7 +151,7 @@ std::shared_ptr<QComboBox> app::secondary_window::createComboBox(QWidget *parent
 	comboBox->setFixedHeight(comboBox->fontMetrics().height() + 2 * comboBoxVSpacing);
 
 	for (auto item = items.cbegin(); item != items.cend(); item++) {
-		LOG_INFO(app::logger::info_level_e::ZERO, secondaryWindowUtilityOverall,  "Adding item " << item->getText() << " to Combo Box");
+		LOG_INFO(app::logger::info_level_e::ZERO, secondaryWindowUtilityOverall, "Adding item " << item->getText() << " to Combo Box");
 		comboBox->addItem(item->getIcon(), QComboBox::tr(item->getText().c_str()), item->getUserData());
 		if (item->getAction() != nullptr) {
 			comboBox->addAction(const_cast<app::commands::Action *>(item->getAction().get()));

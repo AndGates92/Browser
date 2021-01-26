@@ -58,15 +58,15 @@ namespace tester {
 }
 
 tester::test::EditPathInStatusbar::EditPathInStatusbar(const std::shared_ptr<tester::base::Suite> & testSuite, const bool useShortcuts) : tester::base::CommandTest(testSuite, "Edit path in statusbar", tester::test::open_tab_through_statusbar::jsonFileFullPath, useShortcuts) {
-	LOG_INFO(app::logger::info_level_e::ZERO, editPathInStatusbarOverall,  "Creating test " << this->getName() << " in suite " << this->getSuite()->getName());
+	LOG_INFO(app::logger::info_level_e::ZERO, editPathInStatusbarOverall, "Creating test " << this->getName() << " in suite " << this->getSuite()->getName());
 }
 
 tester::test::EditPathInStatusbar::~EditPathInStatusbar() {
-	LOG_INFO(app::logger::info_level_e::ZERO, editPathInStatusbarOverall,  "Test " << this->getName() << " destructor");
+	LOG_INFO(app::logger::info_level_e::ZERO, editPathInStatusbarOverall, "Test " << this->getName() << " destructor");
 }
 
 void tester::test::EditPathInStatusbar::testBody() {
-	LOG_INFO(app::logger::info_level_e::ZERO, editPathInStatusbarTest,  "Starting test " << this->getName() << " in suite " << this->getSuite()->getName());
+	LOG_INFO(app::logger::info_level_e::ZERO, editPathInStatusbarTest, "Starting test " << this->getName() << " in suite " << this->getSuite()->getName());
 
 	// Open tab
 	const std::string filepath("tester_files/text");
@@ -96,7 +96,7 @@ void tester::test::EditPathInStatusbar::testBody() {
 		const QRect & pageSourceLabelGeometry = pageSourceText->geometry();
 		const QPoint mousePressPosition(pageSourceLabelPosition.x() + pageSourceLabelGeometry.width()/2, pageSourceLabelPosition.y() + pageSourceLabelGeometry.height()/2);
 		const Qt::MouseButton mouseButton = Qt::LeftButton;
-		LOG_INFO(app::logger::info_level_e::ZERO, editPathInStatusbarTest,  "Mouse button " << mouseButton << " has pressed at x:" << mousePressPosition.x() << " y:" << mousePressPosition.y());
+		LOG_INFO(app::logger::info_level_e::ZERO, editPathInStatusbarTest, "Mouse button " << mouseButton << " has pressed at x:" << mousePressPosition.x() << " y:" << mousePressPosition.y());
 		QTest::mousePress(statusbar.get(), mouseButton, Qt::NoModifier, mousePressPosition);
 
 		const char searchChar = '/';

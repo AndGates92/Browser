@@ -22,14 +22,14 @@ LOGGING_CONTEXT(elidedLabelPaint, elidedLabel.paint, TYPE_LEVEL, INFO_VERBOSITY)
 
 app::elided_label::ElidedLabel::ElidedLabel(QWidget * parent, Qt::WindowFlags flags, const QString & textLabel, const QPoint & labelOrigin, const Qt::TextElideMode & textElisionMode) : QLabel(textLabel, parent, flags), elisionMode(textElisionMode), origin(labelOrigin) {
 
-	LOG_INFO(app::logger::info_level_e::ZERO, elidedLabelOverall,  "Elided label constructor for text " << this->text() << " origin " << this->origin << " elision mode " << this->elisionMode);
+	LOG_INFO(app::logger::info_level_e::ZERO, elidedLabelOverall, "Elided label constructor for text " << this->text() << " origin " << this->origin << " elision mode " << this->elisionMode);
 
 	this->setSizePolicy(QSizePolicy::Preferred, QSizePolicy::Minimum);
 	this->updateElidedText(this->geometry().width());
 }
 
 app::elided_label::ElidedLabel::~ElidedLabel() {
-	LOG_INFO(app::logger::info_level_e::ZERO, elidedLabelOverall,  "Elided label destructor");
+	LOG_INFO(app::logger::info_level_e::ZERO, elidedLabelOverall, "Elided label destructor");
 }
 
 void app::elided_label::ElidedLabel::setText(const QString & text) {
@@ -43,10 +43,10 @@ void app::elided_label::ElidedLabel::updateElidedText(const int & width) {
 	// If no elision or text is null, then set elision text to null
 	if ((this->elisionMode == Qt::ElideNone) || (this->text() == QString())) {
 		this->elisionText = QString();
-		LOG_INFO(app::logger::info_level_e::ZERO, elidedLabelElision,  "Elided text is set to null");
+		LOG_INFO(app::logger::info_level_e::ZERO, elidedLabelElision, "Elided text is set to null");
 	} else {
 		this->elisionText = this->fontMetrics().elidedText(this->text(), this->elisionMode, width, Qt::TextShowMnemonic);
-		LOG_INFO(app::logger::info_level_e::ZERO, elidedLabelElision,  "Unprocessed text is \"" << this->text() << "\" and elided text is set to " << this->elisionText);
+		LOG_INFO(app::logger::info_level_e::ZERO, elidedLabelElision, "Unprocessed text is \"" << this->text() << "\" and elided text is set to " << this->elisionText);
 	}
 }
 
@@ -58,7 +58,7 @@ void app::elided_label::ElidedLabel::resizeEvent(QResizeEvent * event) {
 }
 
 void app::elided_label::ElidedLabel::paintEvent(QPaintEvent * event) {
-	LOG_INFO(app::logger::info_level_e::ZERO, elidedLabelPaint,  "Paint text " << this->text() << " elision mode " << this->elisionMode);
+	LOG_INFO(app::logger::info_level_e::ZERO, elidedLabelPaint, "Paint text " << this->text() << " elision mode " << this->elisionMode);
 	if (this->elisionMode == Qt::ElideNone) {
 		QLabel::paintEvent(event);
 	} else {

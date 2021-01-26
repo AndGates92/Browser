@@ -24,7 +24,7 @@ bool app::shared::QActionCompare::operator() (const QAction & lhs, const QAction
 	bool compare = (keyList1.size() < keyList2.size());
 
 	if (keyList1.size() != keyList2.size()) {
-		LOG_INFO(app::logger::info_level_e::ZERO, qactionCompare,  "Size mismatch: " << &lhs << " (text: " << lhs.text() << "): " << keyList1.size() << " and " << &rhs << " (text: " << rhs.text() << "): " << keyList2.size());
+		LOG_INFO(app::logger::info_level_e::ZERO, qactionCompare, "Size mismatch: " << &lhs << " (text: " << lhs.text() << "): " << keyList1.size() << " and " << &rhs << " (text: " << rhs.text() << "): " << keyList2.size());
 	}
 
 	for(QList<QKeySequence>::const_iterator keyIt1 = keyList1.cbegin(), keyIt2 = keyList2.cbegin(); (keyIt1 != keyList1.cend() && keyIt2 != keyList2.cend()); keyIt1++, keyIt2++) {
@@ -32,7 +32,7 @@ bool app::shared::QActionCompare::operator() (const QAction & lhs, const QAction
 		compare |= ((*keyIt1) < (*keyIt2));
 
 		if ((*keyIt1) != (*keyIt2)) {
-			LOG_INFO(app::logger::info_level_e::ZERO, qactionCompare,  "Key sequence mismatch: " << &lhs << " (text: " << lhs.text() << "): " << keyIt1->toString() << " and " << &rhs << " (text: " << rhs.text() << "): " << keyIt2->toString());
+			LOG_INFO(app::logger::info_level_e::ZERO, qactionCompare, "Key sequence mismatch: " << &lhs << " (text: " << lhs.text() << "): " << keyIt1->toString() << " and " << &rhs << " (text: " << rhs.text() << "): " << keyIt2->toString());
 		}
 	}
 
@@ -45,7 +45,7 @@ bool app::shared::QActionCompare::operator() (const QAction & lhs, const QAction
 	compare |= (textCompare < 0);
 
 	if (textCompare != 0) {
-		LOG_INFO(app::logger::info_level_e::ZERO, qactionCompare,  "Text mismatch (compare value " << textCompare << "): " << &lhs << " (text: " << lhs.text() << "): " << lhsText << " and " << &rhs << " (text: " << rhs.text() << "): " << rhsText);
+		LOG_INFO(app::logger::info_level_e::ZERO, qactionCompare, "Text mismatch (compare value " << textCompare << "): " << &lhs << " (text: " << lhs.text() << "): " << lhsText << " and " << &rhs << " (text: " << rhs.text() << "): " << rhsText);
 	}
 
 	return compare;

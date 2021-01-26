@@ -86,7 +86,7 @@ namespace app {
 
 app::command_menu::CommandMenu::CommandMenu(QWidget * parent) : QAbstractItemView(parent), menuModel(new app::command_menu::CommandMenuModel(parent)), visibleHeight(0), visibleWidth(parent->width()) {
 
-	LOG_INFO(app::logger::info_level_e::ZERO, commandMenuOverall,  "Create command menu");
+	LOG_INFO(app::logger::info_level_e::ZERO, commandMenuOverall, "Create command menu");
 	this->setProperties();
 
 	this->setModel(this->menuModel);
@@ -97,7 +97,7 @@ app::command_menu::CommandMenu::CommandMenu(QWidget * parent) : QAbstractItemVie
 }
 
 app::command_menu::CommandMenu::~CommandMenu() {
-	LOG_INFO(app::logger::info_level_e::ZERO, commandMenuOverall,  "Destoy command menu");
+	LOG_INFO(app::logger::info_level_e::ZERO, commandMenuOverall, "Destoy command menu");
 
 	if (this->menuModel != Q_NULLPTR) {
 		delete this->menuModel;
@@ -107,23 +107,23 @@ app::command_menu::CommandMenu::~CommandMenu() {
 void app::command_menu::CommandMenu::setProperties() {
 
 	// Set title
-	LOG_INFO(app::logger::info_level_e::ZERO, commandMenuSettings,  "Set title to command menu: " << app::command_menu::commandMenuTitle);
+	LOG_INFO(app::logger::info_level_e::ZERO, commandMenuSettings, "Set title to command menu: " << app::command_menu::commandMenuTitle);
 	this->setWindowTitle(app::command_menu::commandMenuTitle);
 
 	// Edit trigger
-	LOG_INFO(app::logger::info_level_e::ZERO, commandMenuSettings,  "Edit trigger: " << app::command_menu::editTrigger);
+	LOG_INFO(app::logger::info_level_e::ZERO, commandMenuSettings, "Edit trigger: " << app::command_menu::editTrigger);
 	this->setEditTriggers(app::command_menu::editTrigger);
 
 	// Drag and drop mode
-	LOG_INFO(app::logger::info_level_e::ZERO, commandMenuSettings,  "Drag and drop mode: " << app::command_menu::dragDropMode);
+	LOG_INFO(app::logger::info_level_e::ZERO, commandMenuSettings, "Drag and drop mode: " << app::command_menu::dragDropMode);
 	this->setDragDropMode(app::command_menu::dragDropMode);
 
 	// Autoscroll
-	LOG_INFO(app::logger::info_level_e::ZERO, commandMenuSettings,  "Enable autoscroll: " << app::command_menu::autoScrollProp);
+	LOG_INFO(app::logger::info_level_e::ZERO, commandMenuSettings, "Enable autoscroll: " << app::command_menu::autoScrollProp);
 	this->setAutoScroll(app::command_menu::autoScrollProp);
 
 	// Selection behaviour
-	LOG_INFO(app::logger::info_level_e::ZERO, commandMenuSettings,  "Selection behaviour: " << app::command_menu::selection);
+	LOG_INFO(app::logger::info_level_e::ZERO, commandMenuSettings, "Selection behaviour: " << app::command_menu::selection);
 	this->setSelectionBehavior(app::command_menu::selection);
 }
 
@@ -135,7 +135,7 @@ void app::command_menu::CommandMenu::setModel(app::command_menu::CommandMenuMode
 // Update hash table with elements from the model
 void app::command_menu::CommandMenu::updateHashTable() const {
 
-	LOG_INFO(app::logger::info_level_e::ZERO, commandMenuHashTable,  "Update Hash Table");
+	LOG_INFO(app::logger::info_level_e::ZERO, commandMenuHashTable, "Update Hash Table");
 
 	const QFontMetrics fontProperties(this->font());
 
@@ -147,7 +147,7 @@ void app::command_menu::CommandMenu::updateHashTable() const {
 
 	int numberItemsInModel = this->model()->rowCount(this->rootIndex());
 
-	LOG_INFO(app::logger::info_level_e::ZERO, commandMenuHashTable,  "Number of items in model " << numberItemsInModel);
+	LOG_INFO(app::logger::info_level_e::ZERO, commandMenuHashTable, "Number of items in model " << numberItemsInModel);
 
 	for (int row = 0; row < numberItemsInModel; row++) {
 		const QModelIndex rowIndex(this->model()->index(row, 0, this->rootIndex()));
@@ -164,7 +164,7 @@ void app::command_menu::CommandMenu::updateHashTable() const {
 		const QRect item = QRect(xItem, yItem, rowWidth, rowHeight);
 		itemRect[row] = item;
 
-		LOG_INFO(app::logger::info_level_e::ZERO, commandMenuHashTable,  "Adding item " << item << " to the hash table at row " << row);
+		LOG_INFO(app::logger::info_level_e::ZERO, commandMenuHashTable, "Adding item " << item << " to the hash table at row " << row);
 
 		yItem += rowHeight;
 	}
@@ -186,7 +186,7 @@ QRect app::command_menu::CommandMenu::viewportRectangle(const int row) const {
 	QRect viewportRect = QRect();
 	const QRect currentRect(this->itemRect.value(row));
 	if (currentRect.isEmpty()) {
-		LOG_INFO(app::logger::info_level_e::ZERO, commandMenuViewport,  "Current rectangle is empty");
+		LOG_INFO(app::logger::info_level_e::ZERO, commandMenuViewport, "Current rectangle is empty");
 		viewportRect = currentRect;
 	} else {
 		// compute viewport coordinates (i.e. account for scrolling)
@@ -195,8 +195,8 @@ QRect app::command_menu::CommandMenu::viewportRectangle(const int row) const {
 		int width = currentRect.width();
 		int height = currentRect.height();
 		viewportRect = QRect(x, y, width, height);
-		LOG_INFO(app::logger::info_level_e::ZERO, commandMenuViewport,  "Viewport coordinates: x " << x << " y " << y);
-		LOG_INFO(app::logger::info_level_e::ZERO, commandMenuViewport,  "Viewport dimension: width " << width << " height " << height);
+		LOG_INFO(app::logger::info_level_e::ZERO, commandMenuViewport, "Viewport coordinates: x " << x << " y " << y);
+		LOG_INFO(app::logger::info_level_e::ZERO, commandMenuViewport, "Viewport dimension: width " << width << " height " << height);
 	}
 
 	return viewportRect;
@@ -216,7 +216,7 @@ QRect app::command_menu::CommandMenu::visualRect(const QModelIndex & index) cons
 
 void app::command_menu::CommandMenu::scrollTo(const QModelIndex & index, const QAbstractItemView::ScrollHint hint) {
 
-	LOG_INFO(app::logger::info_level_e::ZERO, commandMenuScrollBar,  "Scroll hint" << hint << " is ignored");
+	LOG_INFO(app::logger::info_level_e::ZERO, commandMenuScrollBar, "Scroll hint" << hint << " is ignored");
 
 	const QRect viewportRect(this->viewport()->rect());
 	const QRect itemRectInViewportCoord(this->visualRect(index));
@@ -255,7 +255,7 @@ void app::command_menu::CommandMenu::scrollTo(const QModelIndex & index, const Q
 	}
 	this->horizontalScrollBar()->setValue(hValue);
 
-	LOG_INFO(app::logger::info_level_e::ZERO, commandMenuScrollBar,  "Scrollbar values: vertical " << vValue << " horizontal " << hValue);
+	LOG_INFO(app::logger::info_level_e::ZERO, commandMenuScrollBar, "Scrollbar values: vertical " << vValue << " horizontal " << hValue);
 
 	this->viewport()->update();
 }
@@ -282,7 +282,7 @@ QModelIndex app::command_menu::CommandMenu::indexAt(const QPoint &point) const {
 
 QModelIndex app::command_menu::CommandMenu::moveCursor(const QAbstractItemView::CursorAction cursorAction, const Qt::KeyboardModifiers modifiers) {
 
-	LOG_INFO(app::logger::info_level_e::ZERO, commandMenuCursor,  "Cursor action " << cursorAction << " modifiers " << modifiers);
+	LOG_INFO(app::logger::info_level_e::ZERO, commandMenuCursor, "Cursor action " << cursorAction << " modifiers " << modifiers);
 
 	QModelIndex currIndex = this->currentIndex();
 
@@ -330,20 +330,20 @@ QModelIndex app::command_menu::CommandMenu::moveCursor(const QAbstractItemView::
 
 	}
 
-	LOG_INFO(app::logger::info_level_e::ZERO, commandMenuCursor,  "Current index is set at row " << currIndex.row() << " and column " << currIndex.column());
+	LOG_INFO(app::logger::info_level_e::ZERO, commandMenuCursor, "Current index is set at row " << currIndex.row() << " and column " << currIndex.column());
 
 	return currIndex;
 }
 
 int app::command_menu::CommandMenu::horizontalOffset() const {
 	const int offset = this->horizontalScrollBar()->value();
-	LOG_INFO(app::logger::info_level_e::ZERO, commandMenuScrollBar,  "Horizontal scrollbar offset " << offset);
+	LOG_INFO(app::logger::info_level_e::ZERO, commandMenuScrollBar, "Horizontal scrollbar offset " << offset);
 	return offset;
 }
 
 int app::command_menu::CommandMenu::verticalOffset() const {
 	const int offset = this->verticalScrollBar()->value();
-	LOG_INFO(app::logger::info_level_e::ZERO, commandMenuScrollBar,  "Vertical scrollbar offset " << offset);
+	LOG_INFO(app::logger::info_level_e::ZERO, commandMenuScrollBar, "Vertical scrollbar offset " << offset);
 	return offset;
 }
 
@@ -353,7 +353,7 @@ bool app::command_menu::CommandMenu::isIndexHidden(const QModelIndex & index) co
 	const int rowIdx = index.row();
 	const int colIdx = index.column();
 
-	LOG_INFO(app::logger::info_level_e::ZERO, commandMenuCursor,  "Index iat row " << rowIdx << " and column " << colIdx << " has hidden attribute set to " << isHidden);
+	LOG_INFO(app::logger::info_level_e::ZERO, commandMenuCursor, "Index iat row " << rowIdx << " and column " << colIdx << " has hidden attribute set to " << isHidden);
 
 	return isHidden;
 }
@@ -387,7 +387,7 @@ void app::command_menu::CommandMenu::setSelection(const QRect & rect, QItemSelec
 		}
 	}
 
-	LOG_INFO(app::logger::info_level_e::ZERO, commandMenuSelection,  "Selection boundaries: top row " << topRowSel << " bottom row " << bottomRowSel);
+	LOG_INFO(app::logger::info_level_e::ZERO, commandMenuSelection, "Selection boundaries: top row " << topRowSel << " bottom row " << bottomRowSel);
 
 	QModelIndex topLeftModel = QModelIndex();
 	QModelIndex bottomRightModel = QModelIndex();
@@ -418,9 +418,9 @@ QRegion app::command_menu::CommandMenu::visualRegionForSelection(const QItemSele
 }
 
 void app::command_menu::CommandMenu::scrollContentsBy(const int x, const int y) {
-	LOG_INFO(app::logger::info_level_e::ZERO, commandMenuScrollBar,  "Set dirty region to point (" << x << ", " << y << ")");
+	LOG_INFO(app::logger::info_level_e::ZERO, commandMenuScrollBar, "Set dirty region to point (" << x << ", " << y << ")");
 	this->scrollDirtyRegion(x,y);
-	LOG_INFO(app::logger::info_level_e::ZERO, commandMenuScrollBar,  "Scroll to point (" << x << ", " << y << ")");
+	LOG_INFO(app::logger::info_level_e::ZERO, commandMenuScrollBar, "Scroll to point (" << x << ", " << y << ")");
 	this->viewport()->scroll(x,y);
 }
 

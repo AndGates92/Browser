@@ -21,12 +21,12 @@ LOGGING_CONTEXT(actionShortcut, action.shortcut, TYPE_LEVEL, INFO_VERBOSITY)
 
 app::commands::Action::Action(QObject * parent, const QString & text, const QIcon & icon) : QAction(icon, text, parent), app::printable_object::PrintableObject() {
 
-	LOG_INFO(app::logger::info_level_e::ZERO, actionOverall,  "Creating action with " << ((text.isEmpty() == true) ? ("text " + text) : ("no text")));
+	LOG_INFO(app::logger::info_level_e::ZERO, actionOverall, "Creating action with " << ((text.isEmpty() == true) ? ("text " + text) : ("no text")));
 
 }
 
 app::commands::Action::~Action() {
-	LOG_INFO(app::logger::info_level_e::ZERO, actionOverall,  "Destructor of action class");
+	LOG_INFO(app::logger::info_level_e::ZERO, actionOverall, "Destructor of action class");
 
 }
 
@@ -40,7 +40,7 @@ app::commands::Action * app::commands::Action::createSeparator(QObject * parent)
 
 void app::commands::Action::setShortcut(const app::commands::KeySequence & key) {
 
-	LOG_INFO(app::logger::info_level_e::ZERO, actionShortcut,  "Setting primary shortcut: " << key.toString());
+	LOG_INFO(app::logger::info_level_e::ZERO, actionShortcut, "Setting primary shortcut: " << key.toString());
 	QAction::setShortcut(key.toQKeySequence());
 
 }
@@ -50,7 +50,7 @@ void app::commands::Action::setShortcuts(const std::list<app::commands::KeySeque
 	QList<QKeySequence> keyList = QList<QKeySequence>();
 
 	for (std::list<app::commands::KeySequence>::const_iterator key = keys.cbegin(); key != keys.cend(); key++) {
-		LOG_INFO(app::logger::info_level_e::ZERO, actionShortcut,  "Appending shortcut " << key->toString());
+		LOG_INFO(app::logger::info_level_e::ZERO, actionShortcut, "Appending shortcut " << key->toString());
 		keyList.append(key->toQKeySequence());
 	}
 
@@ -62,7 +62,7 @@ app::commands::KeySequence app::commands::Action::shortcut() const {
 
 	QKeySequence primaryQKey(QAction::shortcut());
 	app::commands::KeySequence primaryKey(primaryQKey);
-	LOG_INFO(app::logger::info_level_e::ZERO, actionShortcut,  "Setting primary shortcut: " << primaryKey.toString());
+	LOG_INFO(app::logger::info_level_e::ZERO, actionShortcut, "Setting primary shortcut: " << primaryKey.toString());
 
 	return primaryKey;
 
@@ -76,7 +76,7 @@ std::list<app::commands::KeySequence> app::commands::Action::shortcuts() const {
 
 	for (QList<QKeySequence>::const_iterator qKey = keyQList.cbegin(); qKey != keyQList.cend(); qKey++) {
 		app::commands::KeySequence key(*qKey);
-		LOG_INFO(app::logger::info_level_e::ZERO, actionShortcut,  "Appending shortcut " << key.toString());
+		LOG_INFO(app::logger::info_level_e::ZERO, actionShortcut, "Appending shortcut " << key.toString());
 		keyList.push_back(key);
 	}
 
@@ -86,7 +86,7 @@ std::list<app::commands::KeySequence> app::commands::Action::shortcuts() const {
 
 const std::string app::commands::Action::print() const {
 
-	EXCEPTION_ACTION_COND((this->text().isEmpty() == true), throw,  "Action text cannot be empty when getting text using method " << __func__);
+	EXCEPTION_ACTION_COND((this->text().isEmpty() == true), throw, "Action text cannot be empty when getting text using method " << __func__);
 
 	std::string actionText(this->text().toStdString());
 	if (this->shortcut().isEmpty() == false) {

@@ -20,7 +20,7 @@
 LOGGING_CONTEXT(mainWindowWebEnginePageOverall, mainWindowWebEnginePage.overall, TYPE_LEVEL, INFO_VERBOSITY)
 
 app::main_window::tab::WebEnginePage::WebEnginePage(QWidget * parent, const app::main_window::page_type_e & type, const QString & src, app::main_window::tab::WebEngineProfile * profile, const void * data): app::base::tab::WebEnginePage(parent, profile), pageData(app::main_window::tab::PageData::makePageData(type, src.toStdString(), data)) {
-	LOG_INFO(app::logger::info_level_e::ZERO, mainWindowWebEnginePageOverall,  "Web engine page constructor");
+	LOG_INFO(app::logger::info_level_e::ZERO, mainWindowWebEnginePageOverall, "Web engine page constructor");
 
 	this->setBody();
 	if (src != QString()) {
@@ -45,7 +45,7 @@ void app::main_window::tab::WebEnginePage::setBody() {
 		case app::main_window::page_type_e::WEB_CONTENT:
 		{
 			const QUrl url(this->getSource(), QUrl::TolerantMode);
-			EXCEPTION_ACTION_COND((url.isValid() == false), throw,  "URL is not valid. The following error has been identified: " << url.errorString());
+			EXCEPTION_ACTION_COND((url.isValid() == false), throw, "URL is not valid. The following error has been identified: " << url.errorString());
 			this->setUrl(url);
 			this->setSource(url.toString());
 			break;
@@ -62,7 +62,7 @@ void app::main_window::tab::WebEnginePage::setBody() {
 }
 
 app::main_window::tab::WebEnginePage::~WebEnginePage() {
-	LOG_INFO(app::logger::info_level_e::ZERO, mainWindowWebEnginePageOverall,  "Web engine page destructor");
+	LOG_INFO(app::logger::info_level_e::ZERO, mainWindowWebEnginePageOverall, "Web engine page destructor");
 }
 
 CONST_GETTER(app::main_window::tab::WebEnginePage::getType, app::main_window::page_type_e &, this->pageData->type)
@@ -93,7 +93,7 @@ QByteArray app::main_window::tab::WebEnginePage::getTextFileBody() const {
 
 	if (source.isEmpty() == false) {
 		app::main_window::page_type_e type = this->getType();
-		EXCEPTION_ACTION_COND((type != app::main_window::page_type_e::TEXT), throw,  "Unable to get body of text file for tab of type " << type);
+		EXCEPTION_ACTION_COND((type != app::main_window::page_type_e::TEXT), throw, "Unable to get body of text file for tab of type " << type);
 		// Convert QString to std::string
 		std::string filename = source.toStdString();
 		const QString fileContent(QString::fromStdString(app::shared::readFile(filename.c_str())));

@@ -55,7 +55,7 @@ namespace tester {
 }
 
 tester::utility::TestRunner::TestRunner(int & argc, char** argv) : factory(new tester::factory::TestFactory(argc, argv)), testList(tester::utility::TestRunner::test_list_container_t()), failedTests(tester::utility::TestRunner::test_list_container_t()) {
-	LOG_INFO(app::logger::info_level_e::ZERO, testRunnerOverall,  "Creating test runner");
+	LOG_INFO(app::logger::info_level_e::ZERO, testRunnerOverall, "Creating test runner");
 
 	app::settings::Global::getInstance()->appendActionData(tester::utility::test_runner::jsonFullPath);
 	this->factory->populate();
@@ -63,7 +63,7 @@ tester::utility::TestRunner::TestRunner(int & argc, char** argv) : factory(new t
 }
 
 tester::utility::TestRunner::~TestRunner() {
-	LOG_INFO(app::logger::info_level_e::ZERO, testRunnerOverall,  "Test runner destructor");
+	LOG_INFO(app::logger::info_level_e::ZERO, testRunnerOverall, "Test runner destructor");
 }
 
 void tester::utility::TestRunner::fillTestList() {
@@ -80,7 +80,7 @@ void tester::utility::TestRunner::fillTestList() {
 	const std::string & testName = testArgument->second;
 	EXCEPTION_ACTION_COND((testName.empty() == true), throw, "Unable to set up runner if name of the test is an empty string. Choose a test or keep the default value that ensures that you runs all tests.");
 
-	LOG_INFO(app::logger::info_level_e::ZERO, testRunnerTests,  "Looking for " << ((testName.compare("all") == 0) ? "all tests" : (std::string("test ") + testName)) << " in " << ((suiteName.compare("all") == 0) ? "all test suites" : (std::string("suite ") + suiteName)));
+	LOG_INFO(app::logger::info_level_e::ZERO, testRunnerTests, "Looking for " << ((testName.compare("all") == 0) ? "all tests" : (std::string("test ") + testName)) << " in " << ((suiteName.compare("all") == 0) ? "all test suites" : (std::string("suite ") + suiteName)));
 
 	if (suiteName.compare("all") == 0) {
 		const tester::base::Factory::suite_container_t & suites = this->factory->getSuites();
@@ -98,14 +98,14 @@ void tester::utility::TestRunner::addTestFromSuiteToTestList(const std::shared_p
 		const tester::base::Suite::tests_container_t & tests = suite->getTests();
 		for (const auto & test : tests) {
 			this->testList.push_back(test);
-			LOG_INFO(app::logger::info_level_e::ZERO, testRunnerTests,  "Adding test " << test->getName() << " from suite " << suite->getName() << " to the list of tests to run");
+			LOG_INFO(app::logger::info_level_e::ZERO, testRunnerTests, "Adding test " << test->getName() << " from suite " << suite->getName() << " to the list of tests to run");
 		}
 	} else {
 		const std::shared_ptr<tester::base::Test> & test = suite->findTest(testName);
 		EXCEPTION_ACTION_COND((test == nullptr), throw, "Unable to find test " << testName << " from suite " << suite->getName());
 		if (test != nullptr) {
 			this->testList.push_back(test);
-			LOG_INFO(app::logger::info_level_e::ZERO, testRunnerTests,  "Adding test " << test->getName() << " from suite " << suite->getName() << " to the list of tests to run");
+			LOG_INFO(app::logger::info_level_e::ZERO, testRunnerTests, "Adding test " << test->getName() << " from suite " << suite->getName() << " to the list of tests to run");
 		}
 	}
 }
@@ -135,24 +135,24 @@ void tester::utility::TestRunner::run() {
 }
 
 void tester::utility::TestRunner::printResults() const {
-	LOG_INFO(app::logger::info_level_e::ZERO, testRunnerResult,  "Runner results");
-	LOG_INFO(app::logger::info_level_e::ZERO, testRunnerResult,  "Statistics:");
-	LOG_INFO(app::logger::info_level_e::ZERO, testRunnerResult,  "- test run: " << this->testList.size());
-	LOG_INFO(app::logger::info_level_e::ZERO, testRunnerResult,  "- test failed: " << this->failedTests.size());
+	LOG_INFO(app::logger::info_level_e::ZERO, testRunnerResult, "Runner results");
+	LOG_INFO(app::logger::info_level_e::ZERO, testRunnerResult, "Statistics:");
+	LOG_INFO(app::logger::info_level_e::ZERO, testRunnerResult, "- test run: " << this->testList.size());
+	LOG_INFO(app::logger::info_level_e::ZERO, testRunnerResult, "- test failed: " << this->failedTests.size());
 	for (const auto & test : this->failedTests) {
 		const tester::base::Test::test_error_container_t & errorMap = test->getErrorMap();
 		if (errorMap.empty() == false) {
-			LOG_INFO(app::logger::info_level_e::ZERO, testRunnerResult,  "Test \"" << test->getName() << "\" has " << errorMap.size() << " errors:");
+			LOG_INFO(app::logger::info_level_e::ZERO, testRunnerResult, "Test \"" << test->getName() << "\" has " << errorMap.size() << " errors:");
 			for (const auto & e : errorMap) {
-				LOG_INFO(app::logger::info_level_e::ZERO, testRunnerResult,  "- type " << e.first << " error data " << e.second);
+				LOG_INFO(app::logger::info_level_e::ZERO, testRunnerResult, "- type " << e.first << " error data " << e.second);
 			}
 		}
 
 		const tester::base::Test::test_error_container_t & expectedErrors = test->getExpectedErrors();
 		if (expectedErrors.empty() == false) {
-			LOG_INFO(app::logger::info_level_e::ZERO, testRunnerResult,  "Test expected errors:");
+			LOG_INFO(app::logger::info_level_e::ZERO, testRunnerResult, "Test expected errors:");
 			for (const auto & e : expectedErrors) {
-				LOG_INFO(app::logger::info_level_e::ZERO, testRunnerResult,  "- type " << e.first << " error data " << e.second);
+				LOG_INFO(app::logger::info_level_e::ZERO, testRunnerResult, "- type " << e.first << " error data " << e.second);
 			}
 		}
 	}

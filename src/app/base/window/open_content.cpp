@@ -20,7 +20,7 @@ LOGGING_CONTEXT(openContentOverall, openContent.overall, TYPE_LEVEL, INFO_VERBOS
 
 app::base::window::OpenContent::OpenContent(QWidget *widgetParent) : app::base::window::FileHandlingWidgets(widgetParent) {
 
-	LOG_INFO(app::logger::info_level_e::ZERO, openContentOverall,  "Creating OpenContent class");
+	LOG_INFO(app::logger::info_level_e::ZERO, openContentOverall, "Creating OpenContent class");
 
 	this->pathToOpen->setPlaceholderText("<URL or file to open>");
 
@@ -31,7 +31,7 @@ app::base::window::OpenContent::OpenContent(QWidget *widgetParent) : app::base::
 }
 
 app::base::window::OpenContent::~OpenContent() {
-	LOG_INFO(app::logger::info_level_e::ZERO, openContentOverall,  "Destructor of OpenContent class");
+	LOG_INFO(app::logger::info_level_e::ZERO, openContentOverall, "Destructor of OpenContent class");
 }
 
 void app::base::window::OpenContent::openPath() {
@@ -50,9 +50,9 @@ void app::base::window::OpenContent::openPath() {
 			// Path is an existing file
 			// Do not try to open and read file if the name is empty
 			if (!path.isEmpty()) {
-				LOG_INFO(app::logger::info_level_e::ZERO, openContentOverall,  "Opening " << path);
+				LOG_INFO(app::logger::info_level_e::ZERO, openContentOverall, "Opening " << path);
 				this->openItem(path);
-				LOG_INFO(app::logger::info_level_e::ZERO, openContentOverall,  "Close " << path);
+				LOG_INFO(app::logger::info_level_e::ZERO, openContentOverall, "Close " << path);
 			}
 			// Close window when Open is clicked and a file has been opened
 			this->close();

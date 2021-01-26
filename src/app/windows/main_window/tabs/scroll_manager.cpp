@@ -18,12 +18,12 @@
 LOGGING_CONTEXT(mainWindowTabScrollManagerOverall, mainWindowTabScrollManager.overall, TYPE_LEVEL, INFO_VERBOSITY)
 
 app::main_window::tab::ScrollManager::ScrollManager(QWidget * parent, std::weak_ptr<app::main_window::tab::Tab> browserTab, const std::shared_ptr<app::base::tab::TabBar> & tabBar): app::base::tab::ScrollManager(parent, browserTab, tabBar) {
-	LOG_INFO(app::logger::info_level_e::ZERO, mainWindowTabScrollManagerOverall,  "ScrollManager constructor");
+	LOG_INFO(app::logger::info_level_e::ZERO, mainWindowTabScrollManagerOverall, "ScrollManager constructor");
 
 }
 
 app::main_window::tab::ScrollManager::~ScrollManager() {
-	LOG_INFO(app::logger::info_level_e::ZERO, mainWindowTabScrollManagerOverall,  "ScrollManager destructor");
+	LOG_INFO(app::logger::info_level_e::ZERO, mainWindowTabScrollManagerOverall, "ScrollManager destructor");
 
 }
 

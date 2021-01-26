@@ -28,7 +28,7 @@ LOGGING_CONTEXT(mainWindowTabOverall, mainWindowTab.overall, TYPE_LEVEL, INFO_VE
 LOGGING_CONTEXT(mainWindowTabUserInput, mainWindowTab.userInput, TYPE_LEVEL, INFO_VERBOSITY)
 
 app::main_window::tab::Tab::Tab(QWidget * parent, const QString & search): app::base::tab::Tab(parent), searchText(search) {
-	LOG_INFO(app::logger::info_level_e::ZERO, mainWindowTabOverall,  "Tab constructor");
+	LOG_INFO(app::logger::info_level_e::ZERO, mainWindowTabOverall, "Tab constructor");
 
 }
 
@@ -49,7 +49,7 @@ void app::main_window::tab::Tab::configure(const std::shared_ptr<app::base::tab:
 }
 
 app::main_window::tab::Tab::~Tab() {
-	LOG_INFO(app::logger::info_level_e::ZERO, mainWindowTabOverall,  "Tab destructor");
+	LOG_INFO(app::logger::info_level_e::ZERO, mainWindowTabOverall, "Tab destructor");
 
 }
 
@@ -94,7 +94,7 @@ void app::main_window::tab::Tab::connectSignals() {
 	const std::shared_ptr<app::main_window::tab::WebEnginePage> page = view->page();
 	const app::main_window::page_type_e tabType = page->getType();
 	const std::shared_ptr<app::main_window::tab::LoadManager> loadManager = this->getLoadManager();
-	LOG_INFO(app::logger::info_level_e::ZERO, mainWindowTabOverall,  "Connect signals from page of type " << tabType << " to load manager");
+	LOG_INFO(app::logger::info_level_e::ZERO, mainWindowTabOverall, "Connect signals from page of type " << tabType << " to load manager");
 	connect(page.get(), &app::main_window::tab::WebEnginePage::loadStarted, loadManager.get(), &app::main_window::tab::LoadManager::startLoading);
 	connect(page.get(), &app::main_window::tab::WebEnginePage::loadProgress, loadManager.get(), &app::main_window::tab::LoadManager::setProgress);
 
@@ -114,7 +114,7 @@ void app::main_window::tab::Tab::connectSignals() {
 
 	connect(page.get(), &app::main_window::tab::WebEnginePage::loadFinished, this, &app::main_window::tab::Tab::postprocessLoadFinished);
 
-	connect(page.get(), &app::main_window::tab::WebEnginePage::sourceChanged,  [this] (const QString & source) {
+	connect(page.get(), &app::main_window::tab::WebEnginePage::sourceChanged, [this] (const QString & source) {
 		emit this->sourceChanged(source);
 	});
 

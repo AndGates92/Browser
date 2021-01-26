@@ -15,18 +15,18 @@ LOGGING_CONTEXT(mainWindowBaseOverall, mainWindowBase.overall, TYPE_LEVEL, INFO_
 
 app::main_window::window::Base::Base(const std::shared_ptr<app::main_window::window::Core> & windowCore) : core(windowCore) {
 
-	LOG_INFO(app::logger::info_level_e::ZERO, mainWindowBaseOverall,  "Main window base classe constructor");
+	LOG_INFO(app::logger::info_level_e::ZERO, mainWindowBaseOverall, "Main window base classe constructor");
 }
 
 app::main_window::window::Base::Base(const app::main_window::window::Base & rhs) : core(rhs.core) {
 
-	LOG_INFO(app::logger::info_level_e::ZERO, mainWindowBaseOverall,  "Copy constructor main window base");
+	LOG_INFO(app::logger::info_level_e::ZERO, mainWindowBaseOverall, "Copy constructor main window base");
 
 }
 
 app::main_window::window::Base & app::main_window::window::Base::operator=(const app::main_window::window::Base & rhs) {
 
-	LOG_INFO(app::logger::info_level_e::ZERO, mainWindowBaseOverall,  "Copy assignment operator for main window base");
+	LOG_INFO(app::logger::info_level_e::ZERO, mainWindowBaseOverall, "Copy assignment operator for main window base");
 
 	// If rhs points to the same address as this, then return this
 	if (&rhs == this) {
@@ -41,12 +41,12 @@ app::main_window::window::Base & app::main_window::window::Base::operator=(const
 }
 
 app::main_window::window::Base::Base(app::main_window::window::Base && rhs) : core(std::exchange(rhs.core, std::shared_ptr<app::main_window::window::Core>())) {
-	LOG_INFO(app::logger::info_level_e::ZERO, mainWindowBaseOverall,  "Move constructor main window base");
+	LOG_INFO(app::logger::info_level_e::ZERO, mainWindowBaseOverall, "Move constructor main window base");
 }
 
 app::main_window::window::Base & app::main_window::window::Base::operator=(app::main_window::window::Base && rhs) {
 
-	LOG_INFO(app::logger::info_level_e::ZERO, mainWindowBaseOverall,  "Move assignment operator for main window base");
+	LOG_INFO(app::logger::info_level_e::ZERO, mainWindowBaseOverall, "Move assignment operator for main window base");
 
 	// If rhs points to the same address as this, then return this
 	if (&rhs == this) {
@@ -68,7 +68,7 @@ app::main_window::window::Base & app::main_window::window::Base::operator=(app::
 }
 
 app::main_window::window::Base::~Base() {
-	LOG_INFO(app::logger::info_level_e::ZERO, mainWindowBaseOverall,  "Main window base class destructor");
+	LOG_INFO(app::logger::info_level_e::ZERO, mainWindowBaseOverall, "Main window base class destructor");
 }
 
 CONST_GETTER(app::main_window::window::Base::getCore, std::shared_ptr<app::main_window::window::Core> &, this->core)

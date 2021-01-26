@@ -85,7 +85,7 @@ namespace app {
 
 app::main_window::window::MainWindow::MainWindow(QWidget * parent, Qt::WindowFlags flags) : QMainWindow(parent, flags), app::main_window::window::Base(std::shared_ptr<app::main_window::window::Core>(new app::main_window::window::Core(this))), overlayedWidgets(std::list<std::shared_ptr<app::base::overlayed_widget::OverlayedWidget>>()) {
 
-	LOG_INFO(app::logger::info_level_e::ZERO, mainWindowOverall,  "Main window constructor");
+	LOG_INFO(app::logger::info_level_e::ZERO, mainWindowOverall, "Main window constructor");
 
 	this->setEnabled(true);
 
@@ -124,13 +124,13 @@ app::main_window::window::MainWindow::MainWindow(QWidget * parent, Qt::WindowFla
 }
 
 app::main_window::window::MainWindow::~MainWindow() {
-	LOG_INFO(app::logger::info_level_e::ZERO, mainWindowOverall,  "Main window destructor");
+	LOG_INFO(app::logger::info_level_e::ZERO, mainWindowOverall, "Main window destructor");
 
 	const QList<QShortcut *> shortcuts = this->findChildren<QShortcut *>(QString(), Qt::FindDirectChildrenOnly);
 
 	for (QShortcut * shortcut : shortcuts) {
 		if (shortcut != Q_NULLPTR) {
-			LOG_INFO(app::logger::info_level_e::ZERO, mainWindowOverall,  "Delete shortcut associated with key " << shortcut->key());
+			LOG_INFO(app::logger::info_level_e::ZERO, mainWindowOverall, "Delete shortcut associated with key " << shortcut->key());
 			delete shortcut;
 		}
 	}
@@ -156,7 +156,7 @@ void app::main_window::window::MainWindow::customizeMainWidget() {
 }
 
 void app::main_window::window::MainWindow::fillMainWindow() {
-	LOG_INFO(app::logger::info_level_e::ZERO, mainWindowOverall,  "Fill main window");
+	LOG_INFO(app::logger::info_level_e::ZERO, mainWindowOverall, "Fill main window");
 
 	// Customize MainWidget
 	// Tabs
@@ -183,7 +183,7 @@ void app::main_window::window::MainWindow::fillMainWindow() {
 }
 
 void app::main_window::window::MainWindow::customizeTabs() {
-	LOG_INFO(app::logger::info_level_e::ZERO, mainWindowOverall,  "Customize tabs");
+	LOG_INFO(app::logger::info_level_e::ZERO, mainWindowOverall, "Customize tabs");
 
 	// Disable widget resizing
 	this->core->tabs->setSizePolicy(QSizePolicy::Ignored, QSizePolicy::Ignored);
@@ -202,20 +202,20 @@ void app::main_window::window::MainWindow::customizeTabs() {
 }
 
 void app::main_window::window::MainWindow::customizeTopMenuBar() {
-	LOG_INFO(app::logger::info_level_e::ZERO, mainWindowOverall,  "Customize top menu bar");
+	LOG_INFO(app::logger::info_level_e::ZERO, mainWindowOverall, "Customize top menu bar");
 
 	// set menu bar of the main window
 	this->setMenuBar(this->core->topMenuBar.get());
 }
 
 void app::main_window::window::MainWindow::customizeBottomStatusBar() {
-	LOG_INFO(app::logger::info_level_e::ZERO, mainWindowOverall,  "Customize bottom menu bar");
+	LOG_INFO(app::logger::info_level_e::ZERO, mainWindowOverall, "Customize bottom menu bar");
 
 }
 
 void app::main_window::window::MainWindow::mainWindowLayout() {
 
-	LOG_INFO(app::logger::info_level_e::ZERO, mainWindowOverall,  "Define layout");
+	LOG_INFO(app::logger::info_level_e::ZERO, mainWindowOverall, "Define layout");
 
 	// Layout
 	// -------------------------------------------------
@@ -243,7 +243,7 @@ void app::main_window::window::MainWindow::mainWindowLayout() {
 }
 
 void app::main_window::window::MainWindow::connectSignals() {
-	LOG_INFO(app::logger::info_level_e::ZERO, mainWindowOverall,  "Connect signals");
+	LOG_INFO(app::logger::info_level_e::ZERO, mainWindowOverall, "Connect signals");
 
 	// Close window
 	connect(this->ctrl->winctrl.get(), &app::main_window::window::Ctrl::closeWindowSignal, this, &app::main_window::window::MainWindow::closeWindow);
@@ -255,7 +255,7 @@ void app::main_window::window::MainWindow::connectSignals() {
 }
 
 void app::main_window::window::MainWindow::createCtrl() {
-	LOG_INFO(app::logger::info_level_e::ZERO, mainWindowOverall,  "Create controller");
+	LOG_INFO(app::logger::info_level_e::ZERO, mainWindowOverall, "Create controller");
 
 	// main window control object
 	this->ctrl = std::make_unique<app::main_window::window::CtrlWrapper>(this, this->core);
@@ -265,13 +265,13 @@ void app::main_window::window::MainWindow::createCtrl() {
 }
 
 void app::main_window::window::MainWindow::closeWindow() {
-	LOG_INFO(app::logger::info_level_e::ZERO, mainWindowOverall,  "Close main window");
+	LOG_INFO(app::logger::info_level_e::ZERO, mainWindowOverall, "Close main window");
 	const bool success = this->close();
 	Q_ASSERT_X(success, "main window close success check", "Main window close request was not handled properly");
 }
 
 void app::main_window::window::MainWindow::resizeEvent(QResizeEvent *event) {
-	LOG_INFO(app::logger::info_level_e::ZERO, mainWindowOverall,  "Resizing window from size " << event->oldSize() << " to size " << event->size());
+	LOG_INFO(app::logger::info_level_e::ZERO, mainWindowOverall, "Resizing window from size " << event->oldSize() << " to size " << event->size());
 
 	for (const std::shared_ptr<app::base::overlayed_widget::OverlayedWidget> & widget : this->overlayedWidgets) {
 		this->updateWidgetGeometry(widget);

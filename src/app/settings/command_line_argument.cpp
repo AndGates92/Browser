@@ -37,25 +37,25 @@ LOGGING_CONTEXT(commandLineArgumentOverall, commandLineArgument.overall, TYPE_LE
 
 std::shared_ptr<app::command_line::Argument> app::command_line::Argument::makeArgument(const std::string & jsonKey, const std::string & nameKeyValue, const std::string & shortCmdKeyValue, const std::string & longCmdKeyValue, const std::string & defaultValueKeyValue, const int & numberOfArgumentsKeyValue, const std::string & helpKeyValue) {
 	std::shared_ptr<app::command_line::Argument> newData = std::make_shared<app::command_line::Argument>(jsonKey, nameKeyValue, shortCmdKeyValue, longCmdKeyValue, defaultValueKeyValue, numberOfArgumentsKeyValue, helpKeyValue);
-	LOG_INFO(app::logger::info_level_e::ZERO, commandLineArgumentOverall,  "Creating JSON data: " << *newData);
+	LOG_INFO(app::logger::info_level_e::ZERO, commandLineArgumentOverall, "Creating JSON data: " << *newData);
 	return newData;
 }
 
 app::command_line::Argument::Argument(const std::string & jsonKey, const std::string & nameKeyValue, const std::string & shortCmdKeyValue, const std::string & longCmdKeyValue, const std::string & defaultValueKeyValue, const int & numberOfArgumentsKeyValue, const std::string & helpKeyValue) : app::base::json::Data(app::command_line::Argument::parameter_t(app::command_line::argument::keyNames.cbegin(), app::command_line::argument::keyNames.cend())), key(jsonKey), name(nameKeyValue), shortCmd(shortCmdKeyValue), longCmd(longCmdKeyValue), defaultValue(defaultValueKeyValue), numberOfArguments(numberOfArgumentsKeyValue), help(helpKeyValue) {
 
-	LOG_INFO(app::logger::info_level_e::ZERO, commandLineArgumentOverall,  "Main window JSON Data constructor. Data " << *this);
+	LOG_INFO(app::logger::info_level_e::ZERO, commandLineArgumentOverall, "Main window JSON Data constructor. Data " << *this);
 
 }
 
 app::command_line::Argument::Argument(const app::command_line::Argument & rhs) : app::base::json::Data(rhs), key(rhs.key), name(rhs.name), shortCmd(rhs.shortCmd), longCmd(rhs.longCmd), defaultValue(rhs.defaultValue), numberOfArguments(rhs.numberOfArguments), help(rhs.help) {
 
-	LOG_INFO(app::logger::info_level_e::ZERO, commandLineArgumentOverall,  "Copy constructor main window JSON data");
+	LOG_INFO(app::logger::info_level_e::ZERO, commandLineArgumentOverall, "Copy constructor main window JSON data");
 
 }
 
 app::command_line::Argument & app::command_line::Argument::operator=(const app::command_line::Argument & rhs) {
 
-	LOG_INFO(app::logger::info_level_e::ZERO, commandLineArgumentOverall,  "Copy assignment operator for main window JSON data");
+	LOG_INFO(app::logger::info_level_e::ZERO, commandLineArgumentOverall, "Copy assignment operator for main window JSON data");
 
 	// If rhs points to the same address as this, then return this
 	if (&rhs == this) {
@@ -92,12 +92,12 @@ app::command_line::Argument & app::command_line::Argument::operator=(const app::
 
 app::command_line::Argument::Argument(app::command_line::Argument && rhs) : app::base::json::Data(std::move(rhs)), key(std::exchange(rhs.key, std::string())), name(std::exchange(rhs.name, std::string())), shortCmd(std::exchange(rhs.shortCmd, std::string())), longCmd(std::exchange(rhs.longCmd, std::string())), defaultValue(std::exchange(rhs.defaultValue, std::string())), numberOfArguments(std::exchange(rhs.numberOfArguments, -1)), help(std::exchange(rhs.help, std::string())) {
 
-	LOG_INFO(app::logger::info_level_e::ZERO, commandLineArgumentOverall,  "Move constructor main window JSON data");
+	LOG_INFO(app::logger::info_level_e::ZERO, commandLineArgumentOverall, "Move constructor main window JSON data");
 }
 
 app::command_line::Argument & app::command_line::Argument::operator=(app::command_line::Argument && rhs) {
 
-	LOG_INFO(app::logger::info_level_e::ZERO, commandLineArgumentOverall,  "Move assignment operator for main window JSON data");
+	LOG_INFO(app::logger::info_level_e::ZERO, commandLineArgumentOverall, "Move assignment operator for main window JSON data");
 
 	// If rhs points to the same address as this, then return this
 	if (&rhs != this) {
@@ -116,7 +116,7 @@ app::command_line::Argument & app::command_line::Argument::operator=(app::comman
 
 app::command_line::Argument::~Argument() {
 
-	LOG_INFO(app::logger::info_level_e::ZERO, commandLineArgumentOverall,  "JSON Data structure destructor. Data " << *this);
+	LOG_INFO(app::logger::info_level_e::ZERO, commandLineArgumentOverall, "JSON Data structure destructor. Data " << *this);
 
 }
 

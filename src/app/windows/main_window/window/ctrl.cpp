@@ -43,16 +43,16 @@ app::main_window::window::Ctrl::~Ctrl() {
 }
 
 void app::main_window::window::Ctrl::createShortcuts() {
-	LOG_INFO(app::logger::info_level_e::ZERO, mainWindowCtrlOverall,  "Create shortcuts");
+	LOG_INFO(app::logger::info_level_e::ZERO, mainWindowCtrlOverall, "Create shortcuts");
 
 }
 
 void app::main_window::window::Ctrl::connectSignals() {
 
-	LOG_INFO(app::logger::info_level_e::ZERO, mainWindowCtrlOverall,  "Connect signals");
+	LOG_INFO(app::logger::info_level_e::ZERO, mainWindowCtrlOverall, "Connect signals");
 
 	connect(this->core->topMenuBar->getFileMenu()->exitAction.get(), &QAction::triggered, this, &app::main_window::window::Ctrl::closeWindow);
-	connect(this->core->popup.get(), &app::main_window::popup::PopupContainer::closeContainer,  [this] () {
+	connect(this->core->popup.get(), &app::main_window::popup::PopupContainer::closeContainer, [this] () {
 		emit windowStateChangeRequested(app::main_window::state_e::IDLE, app::main_window::state_postprocessing_e::POSTPROCESS);
 		// Override saved data as state is changed and the popup will give control back to the window controller
 		emit this->saveCurrentState();
@@ -69,7 +69,7 @@ void app::main_window::window::Ctrl::actionOnReleasedKey(const app::main_window:
 	if (event->type() == QEvent::KeyRelease) {
 
 		// Retrieve main window controller state
-		LOG_INFO(app::logger::info_level_e::ZERO, mainWindowCtrlUserInput,  "State " << windowState << " key " << keySeq.toString());
+		LOG_INFO(app::logger::info_level_e::ZERO, mainWindowCtrlUserInput, "State " << windowState << " key " << keySeq.toString());
 
 		switch (releasedKey) {
 			default:
@@ -92,7 +92,7 @@ void app::main_window::window::Ctrl::executeAction(const app::main_window::state
 			this->executeCommand(userTypedText, app::main_window::state_postprocessing_e::ACTION);
 			break;
 		default:
-			LOG_INFO(app::logger::info_level_e::ZERO, mainWindowCtrlUserInput,  "User typed text " << userTypedText);
+			LOG_INFO(app::logger::info_level_e::ZERO, mainWindowCtrlUserInput, "User typed text " << userTypedText);
 			break;
 	}
 }
@@ -112,7 +112,7 @@ void app::main_window::window::Ctrl::prepareAction(const app::main_window::state
 		case app::main_window::state_e::IDLE:
 			break;
 		default:
-			LOG_INFO(app::logger::info_level_e::ZERO, mainWindowCtrlUserInput,  "Window in state " << windowState << " Key pressed is " << event->text() << "(ID " << pressedKey << ")");
+			LOG_INFO(app::logger::info_level_e::ZERO, mainWindowCtrlUserInput, "Window in state " << windowState << " Key pressed is " << event->text() << "(ID " << pressedKey << ")");
 			break;
 	}
 }
@@ -123,7 +123,7 @@ void app::main_window::window::Ctrl::toggleShowMenubar() {
 }
 
 void app::main_window::window::Ctrl::closeWindow() {
-	LOG_INFO(app::logger::info_level_e::ZERO, mainWindowCtrlOverall,  "Close slot: exiting from the browser");
+	LOG_INFO(app::logger::info_level_e::ZERO, mainWindowCtrlOverall, "Close slot: exiting from the browser");
 	emit this->closeWindowSignal();
 }
 

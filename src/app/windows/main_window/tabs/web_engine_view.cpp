@@ -27,7 +27,7 @@ LOGGING_CONTEXT(mainWindowWebEngineViewOverall, mainWindowWebEngineView.overall,
 LOGGING_CONTEXT(mainWindowWebEngineViewMenu, mainWindowWebEngineView.menu, TYPE_LEVEL, INFO_VERBOSITY)
 
 app::main_window::tab::WebEngineView::WebEngineView(QWidget * parent, std::weak_ptr<app::main_window::tab::Tab> attachedTab, const app::main_window::page_type_e & type, const QString & src, const void * data): app::base::tab::WebEngineView(parent, attachedTab) {
-	LOG_INFO(app::logger::info_level_e::ZERO, mainWindowWebEngineViewOverall,  "Web engine view constructor");
+	LOG_INFO(app::logger::info_level_e::ZERO, mainWindowWebEngineViewOverall, "Web engine view constructor");
 
 	// Use deleteLater to schedule a destruction event in the event loop
 	std::shared_ptr<app::main_window::tab::WebEnginePage> newPage = std::shared_ptr<app::main_window::tab::WebEnginePage>(new app::main_window::tab::WebEnginePage(parent, type, src, app::main_window::tab::WebEngineProfile::defaultProfile(), data), [] (app::main_window::tab::WebEnginePage * p) {
@@ -39,7 +39,7 @@ app::main_window::tab::WebEngineView::WebEngineView(QWidget * parent, std::weak_
 }
 
 app::main_window::tab::WebEngineView::~WebEngineView() {
-	LOG_INFO(app::logger::info_level_e::ZERO, mainWindowWebEngineViewOverall,  "Web engine view destructor");
+	LOG_INFO(app::logger::info_level_e::ZERO, mainWindowWebEngineViewOverall, "Web engine view destructor");
 }
 
 CASTED_SHARED_PTR_GETTER(app::main_window::tab::WebEngineView::page, app::main_window::tab::WebEnginePage, app::base::tab::WebEngineView::page())

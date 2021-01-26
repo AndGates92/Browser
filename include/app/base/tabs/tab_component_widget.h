@@ -153,7 +153,7 @@ namespace app {
 
 template<typename type>
 app::base::tab::TabComponentWidget<type>::TabComponentWidget(QWidget * parent, std::weak_ptr<app::base::tab::Tab> attachedTab): QWidget(parent) {
-	LOG_INFO(app::logger::info_level_e::ZERO, tabComponentWidgetOverall,  "TabComponentWidget constructor");
+	LOG_INFO(app::logger::info_level_e::ZERO, tabComponentWidgetOverall, "TabComponentWidget constructor");
 
 	this->browserTab.reset();
 
@@ -165,7 +165,7 @@ app::base::tab::TabComponentWidget<type>::TabComponentWidget(QWidget * parent, s
 
 template<typename type>
 app::base::tab::TabComponentWidget<type>::~TabComponentWidget() {
-	LOG_INFO(app::logger::info_level_e::ZERO, tabComponentWidgetOverall,  "TabComponentWidget destructor");
+	LOG_INFO(app::logger::info_level_e::ZERO, tabComponentWidgetOverall, "TabComponentWidget destructor");
 }
 
 template<typename type>

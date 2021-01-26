@@ -39,7 +39,7 @@ namespace app {
 
 app::utility::json::Wrapper::Wrapper(QString jsonFileName, QIODevice::OpenModeFlag jsonOpenFlags) : jsonContent(QJsonValue()), openFlags(jsonOpenFlags), jsonFile(new QFile(jsonFileName)) {
 
-	LOG_INFO(app::logger::info_level_e::ZERO, jsonWrapperOverall,  "Creating JSON Wrapper of file " << jsonFileName);
+	LOG_INFO(app::logger::info_level_e::ZERO, jsonWrapperOverall, "Creating JSON Wrapper of file " << jsonFileName);
 
 	// Ensure that the file is open for read or write or both
 	EXCEPTION_ACTION_COND(((this->openFlags & QIODevice::ReadOnly) == 0), throw, "JSON file doesn't have read flag set to 1 when it was opened therefore it cannot be written");
@@ -48,13 +48,13 @@ app::utility::json::Wrapper::Wrapper(QString jsonFileName, QIODevice::OpenModeFl
 
 app::utility::json::Wrapper::Wrapper(const app::utility::json::Wrapper & rhs) : jsonContent(rhs.jsonContent), type(rhs.type), openFlags(rhs.openFlags), jsonFile(rhs.jsonFile) {
 
-	LOG_INFO(app::logger::info_level_e::ZERO, jsonWrapperOverall,  "Copy constructor json wrapper");
+	LOG_INFO(app::logger::info_level_e::ZERO, jsonWrapperOverall, "Copy constructor json wrapper");
 
 }
 
 app::utility::json::Wrapper & app::utility::json::Wrapper::operator=(const app::utility::json::Wrapper & rhs) {
 
-	LOG_INFO(app::logger::info_level_e::ZERO, jsonWrapperOverall,  "Copy assignment operator for json wrapper");
+	LOG_INFO(app::logger::info_level_e::ZERO, jsonWrapperOverall, "Copy assignment operator for json wrapper");
 
 	// If rhs points to the same address as this, then return this
 	if (&rhs == this) {
@@ -84,12 +84,12 @@ app::utility::json::Wrapper & app::utility::json::Wrapper::operator=(const app::
 }
 
 app::utility::json::Wrapper::Wrapper(app::utility::json::Wrapper && rhs) : jsonContent(std::exchange(rhs.jsonContent, QJsonValue::Undefined)), type(std::exchange(rhs.type, app::utility::json::json_content_type_e::UNKNOWN)), openFlags(std::exchange(rhs.openFlags, QIODevice::NotOpen)), jsonFile(std::exchange(rhs.jsonFile, Q_NULLPTR)) {
-	LOG_INFO(app::logger::info_level_e::ZERO, jsonWrapperOverall,  "Move constructor json wrapper");
+	LOG_INFO(app::logger::info_level_e::ZERO, jsonWrapperOverall, "Move constructor json wrapper");
 }
 
 app::utility::json::Wrapper & app::utility::json::Wrapper::operator=(app::utility::json::Wrapper && rhs) {
 
-	LOG_INFO(app::logger::info_level_e::ZERO, jsonWrapperOverall,  "Move assignment operator for json wrapper");
+	LOG_INFO(app::logger::info_level_e::ZERO, jsonWrapperOverall, "Move assignment operator for json wrapper");
 
 	if (&rhs != this) {
 		this->jsonContent = std::exchange(rhs.jsonContent, QJsonValue::Undefined);
@@ -108,7 +108,7 @@ app::utility::json::Wrapper & app::utility::json::Wrapper::operator=(app::utilit
 }
 
 app::utility::json::Wrapper::~Wrapper() {
-	LOG_INFO(app::logger::info_level_e::ZERO, jsonWrapperOverall,  "Destructor of Wrapper class");
+	LOG_INFO(app::logger::info_level_e::ZERO, jsonWrapperOverall, "Destructor of Wrapper class");
 
 	if (this->jsonFile != Q_NULLPTR) {
 		delete this->jsonFile;
@@ -120,11 +120,11 @@ void app::utility::json::Wrapper::readJson() {
 
 	Q_ASSERT_X((this->openFlags & QIODevice::ReadOnly), "JSON file read", "JSON file is requested to be opened for read but flags don't allow it to open it for read");
 
-	LOG_INFO(app::logger::info_level_e::ZERO, jsonWrapperFile,  "Read JSON file " << this->jsonFile->fileName());
+	LOG_INFO(app::logger::info_level_e::ZERO, jsonWrapperFile, "Read JSON file " << this->jsonFile->fileName());
 
 	// open the file
 	bool openSuccess = this->jsonFile->open(this->openFlags);
-	EXCEPTION_ACTION_COND((!openSuccess), throw,  "Unable to open JSON file " << this->jsonFile->fileName() << " for read");
+	EXCEPTION_ACTION_COND((!openSuccess), throw, "Unable to open JSON file " << this->jsonFile->fileName() << " for read");
 
 	// Copy content into QString
 	QString content(this->jsonFile->readAll());
@@ -151,7 +151,7 @@ void app::utility::json::Wrapper::readJson() {
 
 		const QString errorInFile(content.mid(pos, ErrorCharToPrint));
 		// Check if JSON parsing is successful
-		EXCEPTION_ACTION_COND((jsonDoc.isNull() == true), throw,  "Unable to convert content of file " << this->jsonFile->fileName() << " as UTF8 QString to JSON document because of error " << jsonParseError.errorString() << " (error type " << jsonParseError.error << ") in the following file fragment " << errorInFile);
+		EXCEPTION_ACTION_COND((jsonDoc.isNull() == true), throw, "Unable to convert content of file " << this->jsonFile->fileName() << " as UTF8 QString to JSON document because of error " << jsonParseError.errorString() << " (error type " << jsonParseError.error << ") in the following file fragment " << errorInFile);
 	}
 
 	if (jsonDoc.isObject() == true) {
@@ -165,11 +165,11 @@ void app::utility::json::Wrapper::readJson() {
 		this->jsonContent = QJsonValue(jsonArray);
 		this->type = app::utility::json::json_content_type_e::ARRAY;
 	} else if (jsonDoc.isEmpty() == true) {
-		EXCEPTION_ACTION(throw,  "Cannot read empty JSON file");
+		EXCEPTION_ACTION(throw, "Cannot read empty JSON file");
 	} else if (jsonDoc.isNull() == true) {
-		EXCEPTION_ACTION(throw,  "Cannot read null JSON file");
+		EXCEPTION_ACTION(throw, "Cannot read null JSON file");
 	} else {
-		EXCEPTION_ACTION(throw,  "Invalid data type");
+		EXCEPTION_ACTION(throw, "Invalid data type");
 	}
 
 	this->walkJson(this->jsonContent);
@@ -219,14 +219,14 @@ void app::utility::json::Wrapper::walkJson(const QJsonValue & content) const {
 			LOG_INFO(app::logger::info_level_e::ZERO, jsonWrapperFileContent, "Value is undefined");
 			break;
 		default:
-			EXCEPTION_ACTION(throw,  "Unknown type " << content.type());
+			EXCEPTION_ACTION(throw, "Unknown type " << content.type());
 			break;
 	}
 }
 
 void app::utility::json::Wrapper::addJsonValue(QJsonValue & content, const QJsonValue & val, const QString & key) {
 
-	LOG_INFO(app::logger::info_level_e::ZERO, jsonWrapperFile,  "Append JSON value of type " << val.type());
+	LOG_INFO(app::logger::info_level_e::ZERO, jsonWrapperFile, "Append JSON value of type " << val.type());
 
 	if (content.isObject() == true) {
 
@@ -241,7 +241,7 @@ void app::utility::json::Wrapper::addJsonValue(QJsonValue & content, const QJson
 				QJsonObject newObject (val.toObject());
 				this->appendJsonObject(jsonObj, newObject);
 			} else {
-				EXCEPTION_ACTION_COND((val.isObject() == false), throw,  "Cannot add non-JSON object without key to a JSON object");
+				EXCEPTION_ACTION_COND((val.isObject() == false), throw, "Cannot add non-JSON object without key to a JSON object");
 			}
 		} else {
 			// Insert to JSON object
@@ -289,7 +289,7 @@ void app::utility::json::Wrapper::addJsonValue(QJsonValue & content, const QJson
 			content = QJsonValue(jsonObj);
 		}
 	} else {
-		EXCEPTION_ACTION(throw,  "Cannot add new value to QJsonValue of type " << content.type());
+		EXCEPTION_ACTION(throw, "Cannot add new value to QJsonValue of type " << content.type());
 	}
 
 }
@@ -316,14 +316,14 @@ void app::utility::json::Wrapper::insertToJsonObject(QJsonObject & jsonObj, cons
 	// Update JSON object
 	QJsonObject::iterator iter = jsonObj.insert(key, val);
 	// Ensure that the insertion was successful
-	EXCEPTION_ACTION_COND((iter != jsonObj.end()), throw,  "Unable to add JSON value of type " << val.type() << " at key " << key);
+	EXCEPTION_ACTION_COND((iter != jsonObj.end()), throw, "Unable to add JSON value of type " << val.type() << " at key " << key);
 }
 
 void app::utility::json::Wrapper::writeJson() {
 
 	EXCEPTION_ACTION_COND(((this->openFlags & QIODevice::WriteOnly) == 0), throw, "JSON file doesn't have write flag set to 1 when it was opened therefore it cannot be written");
 
-	LOG_INFO(app::logger::info_level_e::ZERO, jsonWrapperFile,  "Write JSON file " << this->jsonFile->fileName());
+	LOG_INFO(app::logger::info_level_e::ZERO, jsonWrapperFile, "Write JSON file " << this->jsonFile->fileName());
 
 	QJsonDocument jsonDoc;
 
@@ -334,7 +334,7 @@ void app::utility::json::Wrapper::writeJson() {
 		jsonDoc = QJsonDocument(this->jsonContent.toArray());
 		this->type = app::utility::json::json_content_type_e::ARRAY;
 	} else {
-		EXCEPTION_ACTION(throw,  "Invalid data type of JSON file content");
+		EXCEPTION_ACTION(throw, "Invalid data type of JSON file content");
 	}
 
 	// Write updated JSON content to QByteArray
@@ -343,11 +343,11 @@ void app::utility::json::Wrapper::writeJson() {
 	// open the file
 	// Set QIODevicne to WriteOnly and Truncate to replace the content of the entire file
 	bool openSuccess = this->jsonFile->open(this->openFlags);
-	EXCEPTION_ACTION_COND((!openSuccess), throw,  "Unable to open JSON file " << this->jsonFile->fileName() << " for write");
+	EXCEPTION_ACTION_COND((!openSuccess), throw, "Unable to open JSON file " << this->jsonFile->fileName() << " for write");
 
 	// Write File
 	qint64 writeReturn = this->jsonFile->write(updatedContent);
-	EXCEPTION_ACTION_COND((writeReturn == -1), throw,  "Write to JSON file " << this->jsonFile->fileName() << " failed");
+	EXCEPTION_ACTION_COND((writeReturn == -1), throw, "Write to JSON file " << this->jsonFile->fileName() << " failed");
 
 	this->jsonFile->close();
 }

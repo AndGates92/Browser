@@ -38,7 +38,7 @@ namespace app {
 }
 
 app::base::tab::TabBar::TabBar(QWidget * parent, const int & width): QTabBar(parent) {
-	LOG_INFO(app::logger::info_level_e::ZERO, tabBarOverall,  "Tab bar constructor");
+	LOG_INFO(app::logger::info_level_e::ZERO, tabBarOverall, "Tab bar constructor");
 
 	this->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Minimum);
 	this->setExpanding(true);
@@ -52,7 +52,7 @@ app::base::tab::TabBar::TabBar(QWidget * parent, const int & width): QTabBar(par
 }
 
 QSize app::base::tab::TabBar::tabSizeHint(int index) const {
-	LOG_INFO(app::logger::info_level_e::ZERO, tabBarSize,  "Tab bar size hint for tab " << index);
+	LOG_INFO(app::logger::info_level_e::ZERO, tabBarSize, "Tab bar size hint for tab " << index);
 
 	int barWidth = this->parentWidget()->size().width();
 	int barHeight = this->size().height();
@@ -67,7 +67,7 @@ QSize app::base::tab::TabBar::tabSizeHint(int index) const {
 		tabWidth = barWidth/tabNumber;
 	}
 	int tabHeight = barHeight;
-	LOG_INFO(app::logger::info_level_e::ZERO, tabBarSize,  "Tab bar dimensions: width " << barWidth << " height " << barHeight << " Tab width " << tabWidth << " height " << tabHeight << " number of tabs " << tabNumber);
+	LOG_INFO(app::logger::info_level_e::ZERO, tabBarSize, "Tab bar dimensions: width " << barWidth << " height " << barHeight << " Tab width " << tabWidth << " height " << tabHeight << " number of tabs " << tabNumber);
 	QSize tabSize(tabWidth, tabHeight);
 
 	return tabSize;
@@ -75,7 +75,7 @@ QSize app::base::tab::TabBar::tabSizeHint(int index) const {
 
 void app::base::tab::TabBar::setWidth(const int & newWidth) {
 	int tabHeight = app::base::tab::tab_bar::height;
-	LOG_INFO(app::logger::info_level_e::ZERO, tabBarSize,  "Tab bar size width: " << newWidth << " height " << tabHeight);
+	LOG_INFO(app::logger::info_level_e::ZERO, tabBarSize, "Tab bar size width: " << newWidth << " height " << tabHeight);
 	this->resize(QSize(newWidth, tabHeight));
 }
 
@@ -86,7 +86,7 @@ void app::base::tab::TabBar::keyPressEvent(QKeyEvent * event) {
 		userText = "No text provided";
 	}
 
-	LOG_INFO(app::logger::info_level_e::ZERO, tabBarSearch,  "User typed text " << userText << " to search");
+	LOG_INFO(app::logger::info_level_e::ZERO, tabBarSearch, "User typed text " << userText << " to search");
 
 	QTabBar::keyPressEvent(event);
 
@@ -95,6 +95,6 @@ void app::base::tab::TabBar::keyPressEvent(QKeyEvent * event) {
 void app::base::tab::TabBar::resizeEvent(QResizeEvent * event) {
 	QSize previousSize(event->oldSize());
 	QSize newSize(event->size());
-	LOG_INFO(app::logger::info_level_e::ZERO, tabBarSize,  "Tab bar resize from " << previousSize << " to " << newSize);
+	LOG_INFO(app::logger::info_level_e::ZERO, tabBarSize, "Tab bar resize from " << previousSize << " to " << newSize);
 	QTabBar::resizeEvent(event);
 }

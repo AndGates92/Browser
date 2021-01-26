@@ -72,13 +72,13 @@ namespace app {
 
 template<typename derivedType, typename baseType>
 app::utility::InheritedEnableSharedFromThis<derivedType, baseType>::InheritedEnableSharedFromThis() {
-	LOG_INFO(app::logger::info_level_e::ZERO, inheritedEnableSharedFromThisOverall,  "InheritedEnableSharedFromThis constructor");
+	LOG_INFO(app::logger::info_level_e::ZERO, inheritedEnableSharedFromThisOverall, "InheritedEnableSharedFromThis constructor");
 
 }
 
 template<typename derivedType, typename baseType>
 app::utility::InheritedEnableSharedFromThis<derivedType, baseType>::~InheritedEnableSharedFromThis() {
-	LOG_INFO(app::logger::info_level_e::ZERO, inheritedEnableSharedFromThisOverall,  "InheritedEnableSharedFromThis destructor");
+	LOG_INFO(app::logger::info_level_e::ZERO, inheritedEnableSharedFromThisOverall, "InheritedEnableSharedFromThis destructor");
 
 }
 

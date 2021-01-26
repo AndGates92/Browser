@@ -46,7 +46,7 @@ namespace app {
 
 app::main_window::popup::PopupContainer::PopupContainer(QWidget * parent, Qt::WindowFlags flags) : app::base::popup::PopupContainer(parent, flags) {
 
-	LOG_INFO(app::logger::info_level_e::ZERO, mainWindowPopupContainerOverall,  "Main window popup container constructor");
+	LOG_INFO(app::logger::info_level_e::ZERO, mainWindowPopupContainerOverall, "Main window popup container constructor");
 
 	this->addOpenPopup();
 	this->addWarningPopup();
@@ -68,7 +68,7 @@ app::main_window::popup::PopupContainer::PopupContainer(QWidget * parent, Qt::Wi
 }
 
 app::main_window::popup::PopupContainer::~PopupContainer() {
-	LOG_INFO(app::logger::info_level_e::ZERO, mainWindowPopupContainerOverall,  "Main window popup container destructor");
+	LOG_INFO(app::logger::info_level_e::ZERO, mainWindowPopupContainerOverall, "Main window popup container destructor");
 }
 
 bool app::main_window::popup::PopupContainer::showWarningPopup() {
@@ -92,7 +92,7 @@ std::shared_ptr<app::main_window::popup::OpenPopup> app::main_window::popup::Pop
 }
 
 void app::main_window::popup::PopupContainer::connectSignals() {
-	connect(this->getOpenFilePopup().get(), &app::main_window::popup::OpenPopup::sizeChanged,  [this] () {
+	connect(this->getOpenFilePopup().get(), &app::main_window::popup::OpenPopup::sizeChanged, [this] () {
 		emit this->updateGeometryRequest(this->shared_from_this());
 	});
 }

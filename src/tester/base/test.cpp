@@ -39,7 +39,7 @@ tester::base::Test::Test(const std::shared_ptr<tester::base::Suite> & testSuite,
 
 	this->checkCreation();
 
-	LOG_INFO(app::logger::info_level_e::ZERO, baseTestOverall,  "Creating test " << this->name << " in suite " << this->getSuite()->getName());
+	LOG_INFO(app::logger::info_level_e::ZERO, baseTestOverall, "Creating test " << this->name << " in suite " << this->getSuite()->getName());
 }
 
 tester::base::Test::Test(const std::shared_ptr<tester::base::Factory> & factory, const std::string & suiteName, const std::string & testName) : windowWrapper(nullptr), name(testName), errorMap(tester::base::Test::test_error_container_t()), expectedErrors(tester::base::Test::test_error_container_t()), state(tester::shared::test_state_e::INSTATIATED), status(tester::shared::test_status_e::NOT_RUN) {
@@ -51,11 +51,11 @@ tester::base::Test::Test(const std::shared_ptr<tester::base::Factory> & factory,
 
 	this->checkCreation();
 
-	LOG_INFO(app::logger::info_level_e::ZERO, baseTestOverall,  "Creating test " << this->name << " in suite " << suiteSharedPtr->getName());
+	LOG_INFO(app::logger::info_level_e::ZERO, baseTestOverall, "Creating test " << this->name << " in suite " << suiteSharedPtr->getName());
 }
 
 tester::base::Test::~Test() {
-	LOG_INFO(app::logger::info_level_e::ZERO, baseTestOverall,  "Test " << this->name << " destructor");
+	LOG_INFO(app::logger::info_level_e::ZERO, baseTestOverall, "Test " << this->name << " destructor");
 }
 
 bool tester::base::Test::operator== (const tester::base::Test & otherTest) const {
@@ -81,7 +81,7 @@ void tester::base::Test::postProcessCreation() {
 }
 
 bool tester::base::Test::setup() {
-	LOG_INFO(app::logger::info_level_e::ZERO, baseTestTest,  "Setting up test " << this->name);
+	LOG_INFO(app::logger::info_level_e::ZERO, baseTestTest, "Setting up test " << this->name);
 	this->status = tester::shared::test_status_e::NOT_RUN;
 	// Wait for window to become visible
 	while ((this->windowWrapper == nullptr) || (this->getWindow()->isVisible() == false)) {
@@ -137,13 +137,13 @@ void tester::base::Test::wrapup() {
 		this->status = tester::shared::test_status_e::FAIL;
 	}
 
-	LOG_INFO(app::logger::info_level_e::ZERO, baseTestTest,  "Wrapping up test " << this->name << " status " << this->status);
+	LOG_INFO(app::logger::info_level_e::ZERO, baseTestTest, "Wrapping up test " << this->name << " status " << this->status);
 
 }
 
 void tester::base::Test::test() {
 
-	LOG_INFO(app::logger::info_level_e::ZERO, baseTestTest,  "Start test " << this->getName());
+	LOG_INFO(app::logger::info_level_e::ZERO, baseTestTest, "Start test " << this->getName());
 	this->setState(tester::shared::test_state_e::SETTING_UP);
 	bool setupSuccessful = this->setup();
 	this->setState(tester::shared::test_state_e::RUNNING);
@@ -153,7 +153,7 @@ void tester::base::Test::test() {
 	this->setState(tester::shared::test_state_e::WRAPPING_UP);
 	this->wrapup();
 	this->setState(tester::shared::test_state_e::FINISHED);
-	LOG_INFO(app::logger::info_level_e::ZERO, baseTestTest,  "End test " << this->getName());
+	LOG_INFO(app::logger::info_level_e::ZERO, baseTestTest, "End test " << this->getName());
 
 }
 
@@ -189,7 +189,7 @@ const std::shared_ptr<tester::base::Factory> & tester::base::Test::getFactory() 
 }
 
 const std::shared_ptr<tester::base::Suite> tester::base::Test::getSuite() const {
-	EXCEPTION_ACTION_COND((this->suite.expired() == true), throw,  "Unable to get test suite bar for test " << this->name << " as it has already expired");
+	EXCEPTION_ACTION_COND((this->suite.expired() == true), throw, "Unable to get test suite bar for test " << this->name << " as it has already expired");
 	const std::shared_ptr<tester::base::Suite> testSuite = this->suite.lock();
 	EXCEPTION_ACTION_COND((testSuite == nullptr), throw, "Test suite is a nullptr - test " << this->name << " must belong to suite");
 
@@ -224,7 +224,7 @@ void tester::base::Test::addExpectedError(const tester::shared::error_type_e & t
 
 void tester::base::Test::addAssertionFailure(const int & line, const std::string & filename, const std::string & condition, const tester::shared::error_type_e & type, const std::string & errorMessage) {
 	const tester::shared::ErrorData data(this->weak_from_this(), filename, line, condition, errorMessage);
-	LOG_INFO(app::logger::info_level_e::ZERO, baseTestTest,  "ASSERTION FAILED: " << data);
+	LOG_INFO(app::logger::info_level_e::ZERO, baseTestTest, "ASSERTION FAILED: " << data);
 	this->addError(this->errorMap, type, data);
 }
 
@@ -291,7 +291,7 @@ void tester::base::Test::run() {
 	const tester::shared::test_state_e expectedState = tester::shared::test_state_e::CREATED;
 	EXCEPTION_ACTION_COND((this->getState() != expectedState), throw, "Test " << this->name << " is expected to be in state " << expectedState << " whereas it is in state " << this->getState());
 
-	LOG_INFO(app::logger::info_level_e::ZERO, baseTestOverall,  "Running test " << this->name << " in suite " << this->getSuite()->getName());
+	LOG_INFO(app::logger::info_level_e::ZERO, baseTestOverall, "Running test " << this->name << " in suite " << this->getSuite()->getName());
 
 	const std::shared_ptr<tester::base::Factory> & factory = this->getFactory();
 

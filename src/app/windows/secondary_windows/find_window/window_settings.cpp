@@ -58,7 +58,7 @@ namespace app {
 
 app::find_window::Settings::Settings(QWidget * parent) : QGroupBox("Settings", parent) {
 
-	LOG_INFO(app::logger::info_level_e::ZERO, findButtonWindowSettingsOverall,  "Creating find button window settings");
+	LOG_INFO(app::logger::info_level_e::ZERO, findButtonWindowSettingsOverall, "Creating find button window settings");
 
 	// Create action
 	this->createActions();
@@ -81,7 +81,7 @@ app::find_window::Settings::Settings(QWidget * parent) : QGroupBox("Settings", p
 }
 
 app::find_window::Settings::~Settings() {
-	LOG_INFO(app::logger::info_level_e::ZERO, findButtonWindowSettingsOverall,  "Destructor of Settings class");
+	LOG_INFO(app::logger::info_level_e::ZERO, findButtonWindowSettingsOverall, "Destructor of Settings class");
 }
 
 void app::find_window::Settings::widgetLayout() {
@@ -155,7 +155,7 @@ void app::find_window::Settings::fillWidget() {
 }
 
 void app::find_window::Settings::connectSignals() {
-	LOG_INFO(app::logger::info_level_e::ZERO, findButtonWindowSettingsOverall,  "Connect signals");
+	LOG_INFO(app::logger::info_level_e::ZERO, findButtonWindowSettingsOverall, "Connect signals");
 
 }
 

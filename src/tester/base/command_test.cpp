@@ -76,12 +76,12 @@ namespace tester {
 
 tester::base::CommandTest::CommandTest(const std::shared_ptr<tester::base::Suite> & testSuite, const std::string & testName, const std::string & jsonFileName, const bool useShortcuts) : tester::base::Test(testSuite, (testName + " using " + (useShortcuts ? "shortcuts" : "full commands"))), app::main_window::json::Action(jsonFileName), sendCommandsThroughShortcuts(useShortcuts) {
 
-	LOG_INFO(app::logger::info_level_e::ZERO, commandTestOverall,  "Creating test " << this->getName() << " in suite " << this->getSuite()->getName());
+	LOG_INFO(app::logger::info_level_e::ZERO, commandTestOverall, "Creating test " << this->getName() << " in suite " << this->getSuite()->getName());
 
 }
 
 tester::base::CommandTest::~CommandTest() {
-	LOG_INFO(app::logger::info_level_e::ZERO, commandTestOverall,  "Test " << this->getName() << " destructor");
+	LOG_INFO(app::logger::info_level_e::ZERO, commandTestOverall, "Test " << this->getName() << " destructor");
 }
 
 BASE_GETTER(tester::base::CommandTest::commandSentThroughShortcuts, bool, this->sendCommandsThroughShortcuts)
@@ -99,7 +99,7 @@ void tester::base::CommandTest::checkStateAfterTypingText(const std::string & ex
 
 void tester::base::CommandTest::writeTextToStatusBar(const std::string & textToWrite, const std::string & expectedText, const app::main_window::state_e & expectedState, const bool execute, const bool pressEnter) {
 
-	LOG_INFO(app::logger::info_level_e::ZERO, commandTestTest,  "Write " << textToWrite << " to statusbar");
+	LOG_INFO(app::logger::info_level_e::ZERO, commandTestTest, "Write " << textToWrite << " to statusbar");
 
 	const std::shared_ptr<app::main_window::window::Core> & windowCore = this->windowWrapper->getWindowCore();
 

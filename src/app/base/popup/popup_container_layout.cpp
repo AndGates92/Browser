@@ -17,12 +17,12 @@ LOGGING_CONTEXT(popupContainerLayoutOverall, popupContainerLayout.overall, TYPE_
 
 app::base::popup::PopupContainerLayout::PopupContainerLayout(QWidget * parent) : QStackedLayout(parent) {
 
-	LOG_INFO(app::logger::info_level_e::ZERO, popupContainerLayoutOverall,  "Popup container layout constructor");
+	LOG_INFO(app::logger::info_level_e::ZERO, popupContainerLayoutOverall, "Popup container layout constructor");
 
 }
 
 app::base::popup::PopupContainerLayout::~PopupContainerLayout() {
-	LOG_INFO(app::logger::info_level_e::ZERO, popupContainerLayoutOverall,  "Popup container layout destructor");
+	LOG_INFO(app::logger::info_level_e::ZERO, popupContainerLayoutOverall, "Popup container layout destructor");
 }
 
 QSize app::base::popup::PopupContainerLayout::sizeHint() const {

@@ -76,11 +76,11 @@ namespace tester {
 }
 
 tester::test::FindTab::FindTab(const std::shared_ptr<tester::base::Suite> & testSuite, const bool useShortcuts) : tester::base::CommandTest(testSuite, "Find tab", tester::test::find_tab::jsonFileFullPath, useShortcuts) {
-	LOG_INFO(app::logger::info_level_e::ZERO, findTabOverall,  "Creating test " << this->getName() << " in suite " << this->getSuite()->getName());
+	LOG_INFO(app::logger::info_level_e::ZERO, findTabOverall, "Creating test " << this->getName() << " in suite " << this->getSuite()->getName());
 }
 
 tester::test::FindTab::~FindTab() {
-	LOG_INFO(app::logger::info_level_e::ZERO, findTabOverall,  "Test " << this->getName() << " destructor");
+	LOG_INFO(app::logger::info_level_e::ZERO, findTabOverall, "Test " << this->getName() << " destructor");
 }
 
 #if QT_VERSION >= QT_VERSION_CHECK(5, 14, 0)
@@ -91,7 +91,7 @@ std::vector<std::string> tester::test::FindTab::extractDataFromSearchResult(cons
 	const std::string searchTextInLabelAfterUp = windowCore->bottomStatusBar->getSearchResultText().toStdString();
 	auto itemMatch = std::sregex_iterator(searchTextInLabelAfterUp.cbegin(), searchTextInLabelAfterUp.cend(), numberRegex);
 	const long int numberOfMatches = std::distance(itemMatch, sregexIteratorEnd);
-	ASSERT((numberOfMatches == expectedNumberOfMatches), tester::shared::error_type_e::STATUSBAR,  "Found " + std::to_string(numberOfMatches) + " numbers in the text in search label of the status bar " + searchTextInLabelAfterUp + " whereas only " + std::to_string(expectedNumberOfMatches) + " were expected");
+	ASSERT((numberOfMatches == expectedNumberOfMatches), tester::shared::error_type_e::STATUSBAR, "Found " + std::to_string(numberOfMatches) + " numbers in the text in search label of the status bar " + searchTextInLabelAfterUp + " whereas only " + std::to_string(expectedNumberOfMatches) + " were expected");
 
 	std::vector<std::string> result;
 	for (std::sregex_iterator & resultIt = itemMatch; resultIt != sregexIteratorEnd; resultIt++ ) {
@@ -233,7 +233,7 @@ void tester::test::FindTab::findInTab(const std::string & command, const std::re
 
 void tester::test::FindTab::testBody() {
 
-	LOG_INFO(app::logger::info_level_e::ZERO, findTabTest,  "Starting test " << this->getName() << " in suite " << this->getSuite()->getName());
+	LOG_INFO(app::logger::info_level_e::ZERO, findTabTest, "Starting test " << this->getName() << " in suite " << this->getSuite()->getName());
 
 	const std::string https(app::shared::https.toStdString());
 	const std::string www(app::shared::www.toStdString());
@@ -269,7 +269,7 @@ void tester::test::FindTab::testBody() {
 		const std::vector<int> initialMatchPosition = this->searchDataToNumbers(numberRegex, expectedNumberOfMatches);
 		const std::vector<int>::size_type matchVectorInitialSize = initialMatchPosition.size();
 		if (matchVectorInitialSize > 2) {
-			LOG_WARNING(findTabTest,  "Size of the search result data is " << matchVectorInitialSize << ", nonetheless only the first 2 element are relevant for the subsequent checks");
+			LOG_WARNING(findTabTest, "Size of the search result data is " << matchVectorInitialSize << ", nonetheless only the first 2 element are relevant for the subsequent checks");
 		}
 #endif // QT_VERSION
 

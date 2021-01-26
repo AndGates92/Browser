@@ -22,18 +22,18 @@ bool tester::base::SuitePtrCompare::operator() (const std::shared_ptr<tester::ba
 tester::base::Suite::Suite(const std::shared_ptr<tester::base::Factory> & testFactory, const std::string & suiteName, const tester::base::Suite::tests_container_t & testList) : factory(testFactory), name(suiteName), tests(testList) {
 
 	EXCEPTION_ACTION_COND((this->name.empty() == true), throw, "Cannot create test suite with no name");
-	LOG_INFO(app::logger::info_level_e::ZERO, baseSuiteOverall,  "Creating " << *this);
+	LOG_INFO(app::logger::info_level_e::ZERO, baseSuiteOverall, "Creating " << *this);
 
 }
 
 tester::base::Suite::~Suite() {
 
-	LOG_INFO(app::logger::info_level_e::ZERO, baseSuiteOverall,  "Test suite destructor");
+	LOG_INFO(app::logger::info_level_e::ZERO, baseSuiteOverall, "Test suite destructor");
 
 }
 
 const std::shared_ptr<tester::base::Factory> tester::base::Suite::getFactory() const {
-	EXCEPTION_ACTION_COND((this->factory.expired() == true), throw,  "Unable to get factory bar for test " << this->name << " as it has already expired");
+	EXCEPTION_ACTION_COND((this->factory.expired() == true), throw, "Unable to get factory bar for test " << this->name << " as it has already expired");
 	std::shared_ptr<tester::base::Factory> testFactory = this->factory.lock();
 	EXCEPTION_ACTION_COND((testFactory == nullptr), throw, "Factory is a nullptr - suite " << this->name << " must have a factory linked to it");
 

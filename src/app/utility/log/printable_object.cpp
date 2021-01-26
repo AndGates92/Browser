@@ -65,12 +65,12 @@ namespace app {
 
 app::printable_object::PrintableObject::PrintableObject() {
 
-	LOG_INFO(app::logger::info_level_e::ZERO, printableObjectOverall,  "Creating printable object");
+	LOG_INFO(app::logger::info_level_e::ZERO, printableObjectOverall, "Creating printable object");
 
 }
 
 app::printable_object::PrintableObject::~PrintableObject() {
-	LOG_INFO(app::logger::info_level_e::ZERO, printableObjectOverall,  "Destructor of printable object class");
+	LOG_INFO(app::logger::info_level_e::ZERO, printableObjectOverall, "Destructor of printable object class");
 
 }
 

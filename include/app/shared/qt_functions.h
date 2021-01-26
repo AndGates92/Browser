@@ -77,7 +77,7 @@ QString app::shared::qEnumToQString(const qenum value, const bool printEnumKeyOn
 	else {
 		std::string valueStr(valueCStr);
 
-		EXCEPTION_ACTION_COND((valueStr.empty() == true), throw,  "Convertion of enumerator " << metaEnum.scope() << "::" << metaEnum.name() << " to string return a null std::string");
+		EXCEPTION_ACTION_COND((valueStr.empty() == true), throw, "Convertion of enumerator " << metaEnum.scope() << "::" << metaEnum.name() << " to string return a null std::string");
 
 		if (printEnumKeyOnly == false) {
 			fullValueStr.append(metaEnum.scope());

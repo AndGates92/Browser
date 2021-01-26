@@ -60,7 +60,7 @@ namespace app {
 
 app::find_window::Window::Window(QWidget * parent, Qt::WindowFlags flags) : QWidget(parent, flags) {
 
-	LOG_INFO(app::logger::info_level_e::ZERO, findButtonWindowOverall,  "Creating find button window");
+	LOG_INFO(app::logger::info_level_e::ZERO, findButtonWindowOverall, "Creating find button window");
 
 	// Set modal because no other windows should be active
 	this->setWindowModality(Qt::ApplicationModal);
@@ -85,11 +85,11 @@ app::find_window::Window::Window(QWidget * parent, Qt::WindowFlags flags) : QWid
 }
 
 app::find_window::Window::~Window() {
-	LOG_INFO(app::logger::info_level_e::ZERO, findButtonWindowOverall,  "Destructor of Window class");
+	LOG_INFO(app::logger::info_level_e::ZERO, findButtonWindowOverall, "Destructor of Window class");
 }
 
 void app::find_window::Window::cancel() {
-	LOG_INFO(app::logger::info_level_e::ZERO, findButtonWindowCancel,  "Closing dialog as Cancel button has been clicked");
+	LOG_INFO(app::logger::info_level_e::ZERO, findButtonWindowCancel, "Closing dialog as Cancel button has been clicked");
 	if (this->textToFind->hasFocus() == true) {
 		this->setFocus();
 	} else {
@@ -109,7 +109,7 @@ void app::find_window::Window::apply() {
 	const bool & matchFullWord = this->settingsBox->isMatchFullWordSearch();
 
 	const app::windows::shared::FindSettings settings(textToFind, direction, caseSensitive, matchFullWord);
-	LOG_INFO(app::logger::info_level_e::ZERO, findButtonWindowFind,  "Settings:" << settings);
+	LOG_INFO(app::logger::info_level_e::ZERO, findButtonWindowFind, "Settings:" << settings);
 
 	emit find(settings);
 
@@ -191,7 +191,7 @@ void app::find_window::Window::fillWindow() {
 }
 
 void app::find_window::Window::connectSignals() {
-	LOG_INFO(app::logger::info_level_e::ZERO, findButtonWindowOverall,  "Connect signals");
+	LOG_INFO(app::logger::info_level_e::ZERO, findButtonWindowOverall, "Connect signals");
 
 	connect(this->findAction.get(), &app::commands::Action::triggered, this, &app::find_window::Window::apply);
 	connect(this->findButton.get(), &QPushButton::pressed, this, &app::find_window::Window::apply);

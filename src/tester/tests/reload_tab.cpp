@@ -60,16 +60,16 @@ namespace tester {
 }
 
 tester::test::ReloadTab::ReloadTab(const std::shared_ptr<tester::base::Suite> & testSuite, const bool useShortcuts) : tester::base::CommandTest(testSuite, "Reload tab", tester::test::reload_tab::jsonFileFullPath, useShortcuts) {
-	LOG_INFO(app::logger::info_level_e::ZERO, reloadTabOverall,  "Creating test " << this->getName() << " in suite " << this->getSuite()->getName());
+	LOG_INFO(app::logger::info_level_e::ZERO, reloadTabOverall, "Creating test " << this->getName() << " in suite " << this->getSuite()->getName());
 }
 
 tester::test::ReloadTab::~ReloadTab() {
-	LOG_INFO(app::logger::info_level_e::ZERO, reloadTabOverall,  "Test " << this->getName() << " destructor");
+	LOG_INFO(app::logger::info_level_e::ZERO, reloadTabOverall, "Test " << this->getName() << " destructor");
 }
 
 void tester::test::ReloadTab::testBody() {
 
-	LOG_INFO(app::logger::info_level_e::ZERO, reloadTabTest,  "Starting test " << this->getName() << " in suite " << this->getSuite()->getName());
+	LOG_INFO(app::logger::info_level_e::ZERO, reloadTabTest, "Starting test " << this->getName() << " in suite " << this->getSuite()->getName());
 
 	const std::string https(app::shared::https.toStdString());
 	const std::string www(app::shared::www.toStdString());

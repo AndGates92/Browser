@@ -25,11 +25,11 @@ LOGGING_CONTEXT(mainWindowTabWidgetOverall, mainWindowTabWidget.overall, TYPE_LE
 LOGGING_CONTEXT(mainWindowTabWidgetTabs, mainWindowTabWidget.tabs, TYPE_LEVEL, INFO_VERBOSITY)
 
 app::main_window::tab::TabWidget::TabWidget(QWidget * parent): app::base::tab::TabWidget(parent) {
-	LOG_INFO(app::logger::info_level_e::ZERO, mainWindowTabWidgetOverall,  "Main Window Tab widget constructor");
+	LOG_INFO(app::logger::info_level_e::ZERO, mainWindowTabWidgetOverall, "Main Window Tab widget constructor");
 }
 
 app::main_window::tab::TabWidget::~TabWidget() {
-	LOG_INFO(app::logger::info_level_e::ZERO, mainWindowTabWidgetOverall,  "Main Window Tab widget destructor");
+	LOG_INFO(app::logger::info_level_e::ZERO, mainWindowTabWidgetOverall, "Main Window Tab widget destructor");
 
 	const int idx = 0;
 
@@ -39,13 +39,13 @@ app::main_window::tab::TabWidget::~TabWidget() {
 		const app::main_window::page_type_e type = this->getPageType(idx);
 
 		Q_ASSERT_X(((type == app::main_window::page_type_e::TEXT) || (type == app::main_window::page_type_e::WEB_CONTENT)), "Invalid tab type", "Unable to delete provided tab as type is not recognized");
-		LOG_INFO(app::logger::info_level_e::ZERO, mainWindowTabWidgetOverall,  "Removing tab type " << type);
+		LOG_INFO(app::logger::info_level_e::ZERO, mainWindowTabWidgetOverall, "Removing tab type " << type);
 		this->removeTab(idx);
 	}
 }
 
 void app::main_window::tab::TabWidget::removeTab(const int & index) {
-	LOG_INFO(app::logger::info_level_e::ZERO, mainWindowTabWidgetTabs,  "Close tab " << index);
+	LOG_INFO(app::logger::info_level_e::ZERO, mainWindowTabWidgetTabs, "Close tab " << index);
 	this->disconnectTab(this->currentIndex());
 	app::base::tab::TabWidget::removeTab(index);
 	const int currIndex = this->currentIndex();
@@ -69,7 +69,7 @@ void app::main_window::tab::TabWidget::disconnectTab(const int & index) {
 
 	const int tabCount = this->count();
 
-	LOG_INFO(app::logger::info_level_e::ZERO, mainWindowTabWidgetTabs,  "Disconnecting from tab " << index << " out of " << tabCount);
+	LOG_INFO(app::logger::info_level_e::ZERO, mainWindowTabWidgetTabs, "Disconnecting from tab " << index << " out of " << tabCount);
 
 	if (tabCount > 0) {
 		try {
@@ -103,7 +103,7 @@ void app::main_window::tab::TabWidget::connectTab(const int & index) {
 
 	const int tabCount = this->count();
 
-	LOG_INFO(app::logger::info_level_e::ZERO, mainWindowTabWidgetTabs,  "Connecting to tab " << index << " out of " << tabCount);
+	LOG_INFO(app::logger::info_level_e::ZERO, mainWindowTabWidgetTabs, "Connecting to tab " << index << " out of " << tabCount);
 
 	if (tabCount > 0) {
 		std::shared_ptr<app::main_window::tab::Tab> tab = this->widget(index, true);
@@ -138,7 +138,7 @@ std::shared_ptr<app::main_window::tab::WebEnginePage> app::main_window::tab::Tab
 
 	const int tabCount = this->count();
 
-	EXCEPTION_ACTION_COND(((index < 0) || (index >= tabCount)), throw,  "Unable to retrieve tab type as index must be larger or equal to 0 and smaller than the number of tabs " << tabCount << ". Got " << index << ".");
+	EXCEPTION_ACTION_COND(((index < 0) || (index >= tabCount)), throw, "Unable to retrieve tab type as index must be larger or equal to 0 and smaller than the number of tabs " << tabCount << ". Got " << index << ".");
 
 	std::shared_ptr<app::main_window::tab::WebEnginePage> page = nullptr;
 
@@ -154,7 +154,7 @@ const std::shared_ptr<app::main_window::tab::PageData> app::main_window::tab::Ta
 
 	const int tabCount = this->count();
 
-	EXCEPTION_ACTION_COND(((index < 0) || (index >= tabCount)), throw,  "Unable to retrieve tab type as index must be larger or equal to 0 and smaller than the number of tabs " << tabCount << ". Got " << index << ".");
+	EXCEPTION_ACTION_COND(((index < 0) || (index >= tabCount)), throw, "Unable to retrieve tab type as index must be larger or equal to 0 and smaller than the number of tabs " << tabCount << ". Got " << index << ".");
 
 	std::shared_ptr<app::main_window::tab::PageData> pageData = nullptr;
 	const std::shared_ptr<app::main_window::tab::WebEnginePage> page = this->getPage(index);
@@ -215,7 +215,7 @@ int app::main_window::tab::TabWidget::insertTab(const int & index, const app::ma
 	std::shared_ptr<app::main_window::tab::Tab> tab = std::make_shared<app::main_window::tab::Tab>(this, search);
 	tab->configure(this->tabBar(), type, source, data);
 
-	LOG_INFO(app::logger::info_level_e::ZERO, mainWindowTabWidgetTabs,  "Insert tab of type " << type << " with source " << source << " at position " << index);
+	LOG_INFO(app::logger::info_level_e::ZERO, mainWindowTabWidgetTabs, "Insert tab of type " << type << " with source " << source << " at position " << index);
 
 	const QString label = QString();
 	const int currIndex = app::base::tab::TabWidget::insertTab(index, tab, label, icon);
@@ -273,7 +273,7 @@ void app::main_window::tab::TabWidget::goToHistoryItem(const int & index, const 
 			tab->historyPrev();
 			break;
 		default:
-			EXCEPTION_ACTION(throw,  "Undefined direction of history item " << direction);
+			EXCEPTION_ACTION(throw, "Undefined direction of history item " << direction);
 			break;
 	}
 }
@@ -399,7 +399,7 @@ void app::main_window::tab::TabWidget::setTabTitle(const int & index, const QStr
 }
 
 void app::main_window::tab::TabWidget::openFileInCurrentTab(const QString & filepath, const void * data) {
-	LOG_INFO(app::logger::info_level_e::ZERO, mainWindowTabWidgetTabs,  "Print content of file " << filepath << " in tab");
+	LOG_INFO(app::logger::info_level_e::ZERO, mainWindowTabWidgetTabs, "Print content of file " << filepath << " in tab");
 
 	const app::main_window::page_type_e desiredTabType = app::main_window::page_type_e::TEXT;
 
@@ -415,7 +415,7 @@ void app::main_window::tab::TabWidget::openFileInCurrentTab(const QString & file
 	if (tabCount == 0) {
 		index = this->addTab(desiredTabType, data);
 		tabCount = this->count();
-		EXCEPTION_ACTION_COND((index >= tabCount), throw,  "Current tab index " << index << " must be larger than the number of tabs " << tabCount);
+		EXCEPTION_ACTION_COND((index >= tabCount), throw, "Current tab index " << index << " must be larger than the number of tabs " << tabCount);
 	}
 
 	this->changeTabContent(index, desiredTabType, filepath, data);

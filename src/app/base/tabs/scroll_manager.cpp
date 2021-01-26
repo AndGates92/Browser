@@ -56,11 +56,11 @@ namespace app {
 }
 
 app::base::tab::ScrollManager::ScrollManager(QWidget * parent, std::weak_ptr<app::base::tab::Tab> browserTab, const std::shared_ptr<app::base::tab::TabBar> & tabBar): app::base::tab::TabComponentWidget<app::base::tab::direction_e>(parent, browserTab), horizontalScroll(0), verticalScroll(0), scrollPosition(QPointF(0.0, 0.0)), contentsSize(QSizeF(0.0, 0.0)), bar(tabBar) {
-	LOG_INFO(app::logger::info_level_e::ZERO, tabScrollManagerOverall,  "ScrollManager constructor");
+	LOG_INFO(app::logger::info_level_e::ZERO, tabScrollManagerOverall, "ScrollManager constructor");
 }
 
 app::base::tab::ScrollManager::~ScrollManager() {
-	LOG_INFO(app::logger::info_level_e::ZERO, tabScrollManagerOverall,  "ScrollManager destructor");
+	LOG_INFO(app::logger::info_level_e::ZERO, tabScrollManagerOverall, "ScrollManager destructor");
 }
 
 CONST_GETTER(app::base::tab::ScrollManager::getContentsSize, QSizeF &, this->contentsSize)
@@ -125,7 +125,7 @@ const int & app::base::tab::ScrollManager::getHorizontalScrollPercentage() const
 }
 
 void app::base::tab::ScrollManager::checkScrollValue(const int & scroll, const QString & direction) const {
-	EXCEPTION_ACTION_COND(((scroll < app::base::tab::scroll_manager::minScrollPercentage) || (scroll > app::base::tab::scroll_manager::maxScrollPercentage)), throw,  "Invalid value of " << direction << " scroll: " << scroll << ". Valid range is between " << app::base::tab::scroll_manager::minScrollPercentage << " and " << app::base::tab::scroll_manager::maxScrollPercentage);
+	EXCEPTION_ACTION_COND(((scroll < app::base::tab::scroll_manager::minScrollPercentage) || (scroll > app::base::tab::scroll_manager::maxScrollPercentage)), throw, "Invalid value of " << direction << " scroll: " << scroll << ". Valid range is between " << app::base::tab::scroll_manager::minScrollPercentage << " and " << app::base::tab::scroll_manager::maxScrollPercentage);
 }
 
 void app::base::tab::ScrollManager::execute(const app::base::tab::direction_e & direction) {

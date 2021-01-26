@@ -54,16 +54,16 @@ namespace tester {
 }
 
 tester::test::LaunchApp::LaunchApp(const std::shared_ptr<tester::base::Suite> & testSuite, const bool useShortcuts) : tester::base::CommandTest(testSuite, "Launch app and exit", tester::test::launch_app::jsonFileFullPath, useShortcuts) {
-	LOG_INFO(app::logger::info_level_e::ZERO, launchAppOverall,  "Creating test " << this->getName() << " in suite " << this->getSuite()->getName());
+	LOG_INFO(app::logger::info_level_e::ZERO, launchAppOverall, "Creating test " << this->getName() << " in suite " << this->getSuite()->getName());
 }
 
 tester::test::LaunchApp::~LaunchApp() {
-	LOG_INFO(app::logger::info_level_e::ZERO, launchAppOverall,  "Test " << this->getName() << " destructor");
+	LOG_INFO(app::logger::info_level_e::ZERO, launchAppOverall, "Test " << this->getName() << " destructor");
 }
 
 void tester::test::LaunchApp::testBody() {
 
-	LOG_INFO(app::logger::info_level_e::ZERO, launchAppTest,  "Starting test " << this->getName() << " in suite " << this->getSuite()->getName());
+	LOG_INFO(app::logger::info_level_e::ZERO, launchAppTest, "Starting test " << this->getName() << " in suite " << this->getSuite()->getName());
 
 	const std::string quitCommandName("quit browser");
 	this->executeCommand(quitCommandName, std::string());

@@ -30,11 +30,11 @@ app::base::tab::WebEngineProfile * app::base::tab::WebEngineProfile::defaultProf
 }
 
 app::base::tab::WebEngineProfile::WebEngineProfile(const QString & storageName, QObject * parent): QWebEngineProfile(storageName, parent) {
-	LOG_INFO(app::logger::info_level_e::ZERO, webEngineProfileOverall,  "Web engine profile constructor");
+	LOG_INFO(app::logger::info_level_e::ZERO, webEngineProfileOverall, "Web engine profile constructor");
 
 }
 
 app::base::tab::WebEngineProfile::~WebEngineProfile() {
-	LOG_INFO(app::logger::info_level_e::ZERO, webEngineProfileOverall,  "Web engine profile destructor");
+	LOG_INFO(app::logger::info_level_e::ZERO, webEngineProfileOverall, "Web engine profile destructor");
 
 }

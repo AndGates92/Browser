@@ -71,7 +71,7 @@ void app::shared::moveListElements(std::list<type> & l, const int & from, const 
 		const int lSize = l.size();
 
 		auto fromIter = l.begin();
-		EXCEPTION_ACTION_COND((lSize < from), throw,  "Trying to access element at position " << from << " of a list that has " << lSize << " elements");
+		EXCEPTION_ACTION_COND((lSize < from), throw, "Trying to access element at position " << from << " of a list that has " << lSize << " elements");
 		std::advance(fromIter, from);
 
 		auto toAdjustedIter = l.begin();
@@ -85,7 +85,7 @@ void app::shared::moveListElements(std::list<type> & l, const int & from, const 
 		// Result: cCopy a b
 		const int adjustment = (from < to) ? 1 : 0;
 		const int toAdjusted = to + adjustment;
-		EXCEPTION_ACTION_COND((lSize < toAdjusted), throw,  "Trying to move element at position " << from << " to position " << to << " of a list that has " << lSize << " elements");
+		EXCEPTION_ACTION_COND((lSize < toAdjusted), throw, "Trying to move element at position " << from << " to position " << to << " of a list that has " << lSize << " elements");
 		if (toAdjusted == lSize) {
 			toAdjustedIter = l.end();
 		} else {

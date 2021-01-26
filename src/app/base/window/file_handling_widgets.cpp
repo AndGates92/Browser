@@ -34,7 +34,7 @@ app::base::window::FileHandlingWidgets::FileHandlingWidgets(QWidget *widgetParen
 	fileView(Q_NULLPTR)
 {
 
-	LOG_INFO(app::logger::info_level_e::ZERO, fileHandlingWidgetsOverall,  "Creating FileHandlingWidgets class");
+	LOG_INFO(app::logger::info_level_e::ZERO, fileHandlingWidgetsOverall, "Creating FileHandlingWidgets class");
 
 	this->applyAction = std::move(app::secondary_window::createAction(widgetParent, std::string(), std::string(), app::commands::KeySequence(Qt::Key_unknown)));
 	this->browseAction = std::move(app::secondary_window::createAction(widgetParent, "Browse", "Browse files", app::commands::KeySequence(Qt::Key_B)));
@@ -51,7 +51,7 @@ app::base::window::FileHandlingWidgets::FileHandlingWidgets(QWidget *widgetParen
 }
 
 app::base::window::FileHandlingWidgets::~FileHandlingWidgets() {
-	LOG_INFO(app::logger::info_level_e::ZERO, fileHandlingWidgetsOverall,  "Destructor of FileHandlingWidgets class");
+	LOG_INFO(app::logger::info_level_e::ZERO, fileHandlingWidgetsOverall, "Destructor of FileHandlingWidgets class");
 }
 
 const QString app::base::window::FileHandlingWidgets::getPathFromModelIndex(const std::unique_ptr<QFileSystemModel> & model, const QModelIndex & index) {
@@ -69,11 +69,11 @@ const QString app::base::window::FileHandlingWidgets::getPathFromModelIndex(cons
 void app::base::window::FileHandlingWidgets::fileViewClickAction(const QModelIndex & index) {
 	const QString path(this->getPathFromModelIndex(this->fileModel, index));
 
-	LOG_INFO(app::logger::info_level_e::ZERO, fileHandlingWidgetsOverall,  "Selected " << path);
+	LOG_INFO(app::logger::info_level_e::ZERO, fileHandlingWidgetsOverall, "Selected " << path);
 
 	const QFileInfo pathInfo(path);
 
-	LOG_INFO(app::logger::info_level_e::ZERO, fileHandlingWidgetsOverall,  "Selected following path " << path << " (absolute path: " << pathInfo.absoluteFilePath() << ") type: directory -> " << pathInfo.isDir() << " file -> " << pathInfo.isFile());
+	LOG_INFO(app::logger::info_level_e::ZERO, fileHandlingWidgetsOverall, "Selected following path " << path << " (absolute path: " << pathInfo.absoluteFilePath() << ") type: directory -> " << pathInfo.isDir() << " file -> " << pathInfo.isFile());
 
 	// Print path
 	this->pathToOpen->setText(pathInfo.absoluteFilePath());
@@ -84,7 +84,7 @@ void app::base::window::FileHandlingWidgets::fileViewDoubleClickAction(const QMo
 
 	const QFileInfo pathInfo(path);
 
-	LOG_INFO(app::logger::info_level_e::ZERO, fileHandlingWidgetsOverall,  "Selected following path " << path << " (absolute path: " << pathInfo.absoluteFilePath() << ") type: directory -> " << pathInfo.isDir() << " file -> " << pathInfo.isFile());
+	LOG_INFO(app::logger::info_level_e::ZERO, fileHandlingWidgetsOverall, "Selected following path " << path << " (absolute path: " << pathInfo.absoluteFilePath() << ") type: directory -> " << pathInfo.isDir() << " file -> " << pathInfo.isFile());
 
 	if (pathInfo.isDir() == true) {
 		this->fileModel->setRootPath(pathInfo.absoluteFilePath());
@@ -99,7 +99,7 @@ void app::base::window::FileHandlingWidgets::fileViewDoubleClickAction(const QMo
 }
 
 void app::base::window::FileHandlingWidgets::directoryLoadedAction(const QString & path) {
-	LOG_INFO(app::logger::info_level_e::ZERO, fileHandlingWidgetsOverall,  "Finished loading " << path);
+	LOG_INFO(app::logger::info_level_e::ZERO, fileHandlingWidgetsOverall, "Finished loading " << path);
 	// Sort column 0 (i.e. names) in ascending order
 	this->fileModel->sort(0, Qt::AscendingOrder);
 }

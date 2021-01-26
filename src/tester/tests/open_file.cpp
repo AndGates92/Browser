@@ -62,16 +62,16 @@ namespace tester {
 }
 
 tester::test::OpenFile::OpenFile(const std::shared_ptr<tester::base::Suite> & testSuite, const bool useShortcuts) : tester::base::CommandTest(testSuite, "Open file", tester::test::open_file::jsonFileFullPath, useShortcuts) {
-	LOG_INFO(app::logger::info_level_e::ZERO, openFileOverall,  "Creating test " << this->getName() << " in suite " << this->getSuite()->getName());
+	LOG_INFO(app::logger::info_level_e::ZERO, openFileOverall, "Creating test " << this->getName() << " in suite " << this->getSuite()->getName());
 }
 
 tester::test::OpenFile::~OpenFile() {
-	LOG_INFO(app::logger::info_level_e::ZERO, openFileOverall,  "Test " << this->getName() << " destructor");
+	LOG_INFO(app::logger::info_level_e::ZERO, openFileOverall, "Test " << this->getName() << " destructor");
 }
 
 void tester::test::OpenFile::testBody() {
 
-	LOG_INFO(app::logger::info_level_e::ZERO, openFileTest,  "Starting test " << this->getName() << " in suite " << this->getSuite()->getName());
+	LOG_INFO(app::logger::info_level_e::ZERO, openFileTest, "Starting test " << this->getName() << " in suite " << this->getSuite()->getName());
 
 	const std::shared_ptr<app::main_window::window::Core> & windowCore = this->windowWrapper->getWindowCore();
 

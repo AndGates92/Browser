@@ -17,11 +17,11 @@
 LOGGING_CONTEXT(mainWindowTabLoadManagerOverall, mainWindowTabLoadManager.overall, TYPE_LEVEL, INFO_VERBOSITY)
 
 app::main_window::tab::LoadManager::LoadManager(QWidget * parent): app::base::tab::LoadManager(parent) {
-	LOG_INFO(app::logger::info_level_e::ZERO, mainWindowTabLoadManagerOverall,  "LoadManager constructor");
+	LOG_INFO(app::logger::info_level_e::ZERO, mainWindowTabLoadManagerOverall, "LoadManager constructor");
 
 }
 
 app::main_window::tab::LoadManager::~LoadManager() {
-	LOG_INFO(app::logger::info_level_e::ZERO, mainWindowTabLoadManagerOverall,  "LoadManager destructor");
+	LOG_INFO(app::logger::info_level_e::ZERO, mainWindowTabLoadManagerOverall, "LoadManager destructor");
 
 }

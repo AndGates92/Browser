@@ -43,25 +43,25 @@ namespace app {
 
 std::shared_ptr<app::main_window::json::Data> app::main_window::json::Data::makeData(const std::string & jsonKey, const std::string & nameKeyValue, const app::main_window::state_e & stateKeyValue, const int & shortcutKeyValue, const std::string & longCmdKeyValue, const std::string & helpKeyValue) {
 	std::shared_ptr<app::main_window::json::Data> newData = std::make_shared<app::main_window::json::Data>(jsonKey, nameKeyValue, stateKeyValue, shortcutKeyValue, longCmdKeyValue, helpKeyValue);
-	LOG_INFO(app::logger::info_level_e::ZERO, mainWindowDataOverall,  "Creating JSON data: " << *newData);
+	LOG_INFO(app::logger::info_level_e::ZERO, mainWindowDataOverall, "Creating JSON data: " << *newData);
 	return newData;
 }
 
 app::main_window::json::Data::Data(const std::string & jsonKey, const std::string & nameKeyValue, const app::main_window::state_e & stateKeyValue, const int & shortcutKeyValue, const std::string & longCmdKeyValue, const std::string & helpKeyValue) : app::base::json::Data(app::main_window::json::Data::parameter_t(app::main_window::json::data::keyNames.cbegin(), app::main_window::json::data::keyNames.cend())), key(jsonKey), name(nameKeyValue), state(stateKeyValue), shortcut(shortcutKeyValue), longCmd(longCmdKeyValue), help(helpKeyValue) {
 
-	LOG_INFO(app::logger::info_level_e::ZERO, mainWindowDataOverall,  "Main window JSON Data constructor. Data " << *this);
+	LOG_INFO(app::logger::info_level_e::ZERO, mainWindowDataOverall, "Main window JSON Data constructor. Data " << *this);
 
 }
 
 app::main_window::json::Data::Data(const app::main_window::json::Data & rhs) : app::base::json::Data(rhs), key(rhs.key), name(rhs.name), state(rhs.state), shortcut(rhs.shortcut), longCmd(rhs.longCmd), help(rhs.help) {
 
-	LOG_INFO(app::logger::info_level_e::ZERO, mainWindowDataOverall,  "Copy constructor main window JSON data");
+	LOG_INFO(app::logger::info_level_e::ZERO, mainWindowDataOverall, "Copy constructor main window JSON data");
 
 }
 
 app::main_window::json::Data & app::main_window::json::Data::operator=(const app::main_window::json::Data & rhs) {
 
-	LOG_INFO(app::logger::info_level_e::ZERO, mainWindowDataOverall,  "Copy assignment operator for main window JSON data");
+	LOG_INFO(app::logger::info_level_e::ZERO, mainWindowDataOverall, "Copy assignment operator for main window JSON data");
 
 	// If rhs points to the same address as this, then return this
 	if (&rhs == this) {
@@ -95,12 +95,12 @@ app::main_window::json::Data & app::main_window::json::Data::operator=(const app
 
 app::main_window::json::Data::Data(app::main_window::json::Data && rhs) : app::base::json::Data(std::move(rhs)), key(std::exchange(rhs.key, std::string())), name(std::exchange(rhs.name, std::string())), state(std::exchange(rhs.state, app::main_window::state_e::IDLE)), shortcut(std::exchange(rhs.shortcut, (int)Qt::Key_unknown)), longCmd(std::exchange(rhs.longCmd, std::string())), help(std::exchange(rhs.help, std::string())) {
 
-	LOG_INFO(app::logger::info_level_e::ZERO, mainWindowDataOverall,  "Move constructor main window JSON data");
+	LOG_INFO(app::logger::info_level_e::ZERO, mainWindowDataOverall, "Move constructor main window JSON data");
 }
 
 app::main_window::json::Data & app::main_window::json::Data::operator=(app::main_window::json::Data && rhs) {
 
-	LOG_INFO(app::logger::info_level_e::ZERO, mainWindowDataOverall,  "Move assignment operator for main window JSON data");
+	LOG_INFO(app::logger::info_level_e::ZERO, mainWindowDataOverall, "Move assignment operator for main window JSON data");
 
 	// If rhs points to the same address as this, then return this
 	if (&rhs != this) {
@@ -118,7 +118,7 @@ app::main_window::json::Data & app::main_window::json::Data::operator=(app::main
 
 app::main_window::json::Data::~Data() {
 
-	LOG_INFO(app::logger::info_level_e::ZERO, mainWindowDataOverall,  "JSON Data structure destructor. Data " << *this);
+	LOG_INFO(app::logger::info_level_e::ZERO, mainWindowDataOverall, "JSON Data structure destructor. Data " << *this);
 
 }
 

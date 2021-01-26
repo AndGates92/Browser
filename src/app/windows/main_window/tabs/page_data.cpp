@@ -44,24 +44,24 @@ namespace app {
 
 std::shared_ptr<app::main_window::tab::PageData> app::main_window::tab::PageData::makePageData(const app::main_window::page_type_e & type, const std::string & src, const void * data) {
 	std::shared_ptr<app::main_window::tab::PageData> newData = std::make_shared<app::main_window::tab::PageData>(type, src, data);
-	LOG_INFO(app::logger::info_level_e::ZERO, mainWindowPageDataOverall,  "Creating page data: " << newData.get());
+	LOG_INFO(app::logger::info_level_e::ZERO, mainWindowPageDataOverall, "Creating page data: " << newData.get());
 	return newData;
 }
 
 app::main_window::tab::PageData::PageData(const app::main_window::page_type_e & pageType, const std::string & src, const void * pageData): app::printable_object::PrintableObject(), type(pageType), source(src), data(pageData) {
-	LOG_INFO(app::logger::info_level_e::ZERO, mainWindowPageDataOverall,  "Page Data structure constructor. Data " << *this);
+	LOG_INFO(app::logger::info_level_e::ZERO, mainWindowPageDataOverall, "Page Data structure constructor. Data " << *this);
 
 }
 
 app::main_window::tab::PageData::PageData(const app::main_window::tab::PageData & rhs) : type(rhs.type), data(rhs.data) {
 
-	LOG_INFO(app::logger::info_level_e::ZERO, mainWindowPageDataOverall,  "Copy constructor main window page data");
+	LOG_INFO(app::logger::info_level_e::ZERO, mainWindowPageDataOverall, "Copy constructor main window page data");
 
 }
 
 app::main_window::tab::PageData & app::main_window::tab::PageData::operator=(const app::main_window::tab::PageData & rhs) {
 
-	LOG_INFO(app::logger::info_level_e::ZERO, mainWindowPageDataOverall,  "Copy assignment operator for main window page data");
+	LOG_INFO(app::logger::info_level_e::ZERO, mainWindowPageDataOverall, "Copy assignment operator for main window page data");
 
 	// If rhs points to the same address as this, then return this
 	if (&rhs == this) {
@@ -85,12 +85,12 @@ app::main_window::tab::PageData & app::main_window::tab::PageData::operator=(con
 
 app::main_window::tab::PageData::PageData(app::main_window::tab::PageData && rhs) : type(std::exchange(rhs.type, app::main_window::page_type_e::UNKNOWN)), data(std::exchange(rhs.data, nullptr)) {
 
-	LOG_INFO(app::logger::info_level_e::ZERO, mainWindowPageDataOverall,  "Move constructor main window page data");
+	LOG_INFO(app::logger::info_level_e::ZERO, mainWindowPageDataOverall, "Move constructor main window page data");
 }
 
 app::main_window::tab::PageData & app::main_window::tab::PageData::operator=(app::main_window::tab::PageData && rhs) {
 
-	LOG_INFO(app::logger::info_level_e::ZERO, mainWindowPageDataOverall,  "Move assignment operator for main window page data");
+	LOG_INFO(app::logger::info_level_e::ZERO, mainWindowPageDataOverall, "Move assignment operator for main window page data");
 
 	// If rhs points to the same address as this, then return this
 	if (&rhs != this) {
@@ -103,7 +103,7 @@ app::main_window::tab::PageData & app::main_window::tab::PageData::operator=(app
 }
 
 app::main_window::tab::PageData::~PageData() {
-	LOG_INFO(app::logger::info_level_e::ZERO, mainWindowPageDataOverall,  "Destructor of main window page data class");
+	LOG_INFO(app::logger::info_level_e::ZERO, mainWindowPageDataOverall, "Destructor of main window page data class");
 }
 
 const std::string app::main_window::tab::PageData::print() const {
@@ -120,7 +120,7 @@ const std::string app::main_window::tab::PageData::print() const {
 		if (thisData != nullptr) {
 			EXCEPTION_ACTION(throw, "Unexpected non-null pointer for type " << this->type);
 		} else {
-			LOG_INFO(app::logger::info_level_e::ZERO, mainWindowPageDataPrint,  "Data pointer is null therefore no available extra data for type " << this->type);
+			LOG_INFO(app::logger::info_level_e::ZERO, mainWindowPageDataPrint, "Data pointer is null therefore no available extra data for type " << this->type);
 		}
 	} catch (const std::bad_cast & badCastE) {
 		EXCEPTION_ACTION(throw, badCastE.what());

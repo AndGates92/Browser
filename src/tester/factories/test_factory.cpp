@@ -16,13 +16,13 @@ LOGGING_CONTEXT(testFactoryOverall, testFactory.overall, TYPE_LEVEL, INFO_VERBOS
 
 tester::factory::TestFactory::TestFactory(int & argc, char** argv, const tester::base::Factory::suite_container_t & testSuites) : tester::base::Factory(argc, argv, testSuites) {
 
-	LOG_INFO(app::logger::info_level_e::ZERO, testFactoryOverall,  "Test factory constructor");
+	LOG_INFO(app::logger::info_level_e::ZERO, testFactoryOverall, "Test factory constructor");
 
 }
 
 tester::factory::TestFactory::~TestFactory() {
 
-	LOG_INFO(app::logger::info_level_e::ZERO, testFactoryOverall,  "Test factory destructor");
+	LOG_INFO(app::logger::info_level_e::ZERO, testFactoryOverall, "Test factory destructor");
 
 }
 

@@ -26,15 +26,15 @@ LOGGING_CONTEXT(mainWindowCtrlBaseCheck, mainWindowCtrlBase.check, TYPE_LEVEL, I
 LOGGING_CONTEXT(mainWindowCtrlBaseUserInput, mainWindowCtrlBase.userInput, TYPE_LEVEL, INFO_VERBOSITY)
 
 app::main_window::window::CtrlBase::CtrlBase(QWidget * parent, const std::shared_ptr<app::main_window::window::Core> & core) : QWidget(parent), app::main_window::window::Base(core) {
-	LOG_INFO(app::logger::info_level_e::ZERO, mainWindowCtrlBaseOverall,  "Main window control base classe constructor");
+	LOG_INFO(app::logger::info_level_e::ZERO, mainWindowCtrlBaseOverall, "Main window control base classe constructor");
 }
 
 app::main_window::window::CtrlBase::~CtrlBase() {
-	LOG_INFO(app::logger::info_level_e::ZERO, mainWindowCtrlBaseOverall,  "Main window control base class destructor");
+	LOG_INFO(app::logger::info_level_e::ZERO, mainWindowCtrlBaseOverall, "Main window control base class destructor");
 }
 
 void app::main_window::window::CtrlBase::executeCommand(const QString & userCommand, const app::main_window::state_postprocessing_e & postprocess) {
-	LOG_INFO(app::logger::info_level_e::ZERO, mainWindowCtrlBaseOverall,  "Looking for command matching user input: " << userCommand);
+	LOG_INFO(app::logger::info_level_e::ZERO, mainWindowCtrlBaseOverall, "Looking for command matching user input: " << userCommand);
 
 	const app::main_window::state_e previousWindowState = this->core->getMainWindowState();
 
@@ -46,7 +46,7 @@ void app::main_window::window::CtrlBase::executeCommand(const QString & userComm
 
 		// If user command matches the command in the JSON file
 		if (userCommand.compare(refCommand) == 0) {
-			LOG_INFO(app::logger::info_level_e::ZERO, mainWindowCtrlBaseOverall,  "Found command " << refCommand << " matching user input: " << userCommand);
+			LOG_INFO(app::logger::info_level_e::ZERO, mainWindowCtrlBaseOverall, "Found command " << refCommand << " matching user input: " << userCommand);
 			emit windowStateChangeRequested(commandData->getState(), postprocess);
 		}
 	});

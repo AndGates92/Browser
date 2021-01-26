@@ -25,7 +25,7 @@ LOGGING_CONTEXT(tabOverall, tab.overall, TYPE_LEVEL, INFO_VERBOSITY)
 LOGGING_CONTEXT(tabSize, tab.size, TYPE_LEVEL, INFO_VERBOSITY)
 
 app::base::tab::Tab::Tab(QWidget * parent): QWidget(parent), view(Q_NULLPTR), loadManager(Q_NULLPTR), search(Q_NULLPTR), history(Q_NULLPTR), settings(Q_NULLPTR), scrollManager(Q_NULLPTR) {
-	LOG_INFO(app::logger::info_level_e::ZERO, tabOverall,  "Tab constructor");
+	LOG_INFO(app::logger::info_level_e::ZERO, tabOverall, "Tab constructor");
 }
 
 void app::base::tab::Tab::configure(std::shared_ptr<app::base::tab::TabBar> tabBar) {
@@ -49,7 +49,7 @@ void app::base::tab::Tab::configure(std::shared_ptr<app::base::tab::TabBar> tabB
 }
 
 app::base::tab::Tab::~Tab() {
-	LOG_INFO(app::logger::info_level_e::ZERO, tabOverall,  "Tab destructor");
+	LOG_INFO(app::logger::info_level_e::ZERO, tabOverall, "Tab destructor");
 }
 
 void app::base::tab::Tab::setLoadManager(const std::shared_ptr<app::base::tab::LoadManager> & value) {
@@ -121,7 +121,7 @@ CONST_REF_SETTER(app::base::tab::Tab::setSettings, std::shared_ptr<app::base::ta
 void app::base::tab::Tab::resize(const QSize size) {
 	// Resize view
 	if (this->view != Q_NULLPTR) {
-		LOG_INFO(app::logger::info_level_e::ZERO, tabSize,  "Resize view to" << size);
+		LOG_INFO(app::logger::info_level_e::ZERO, tabSize, "Resize view to" << size);
 		this->view->resize(size);
 	}
 	QWidget::resize(size);

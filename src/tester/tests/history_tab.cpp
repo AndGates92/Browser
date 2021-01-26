@@ -58,16 +58,16 @@ namespace tester {
 }
 
 tester::test::HistoryTab::HistoryTab(const std::shared_ptr<tester::base::Suite> & testSuite, const bool useShortcuts) : tester::base::CommandTest(testSuite, "History tab", tester::test::history_tab::jsonFileFullPath, useShortcuts) {
-	LOG_INFO(app::logger::info_level_e::ZERO, historyTabOverall,  "Creating test " << this->getName() << " in suite " << this->getSuite()->getName());
+	LOG_INFO(app::logger::info_level_e::ZERO, historyTabOverall, "Creating test " << this->getName() << " in suite " << this->getSuite()->getName());
 }
 
 tester::test::HistoryTab::~HistoryTab() {
-	LOG_INFO(app::logger::info_level_e::ZERO, historyTabOverall,  "Test " << this->getName() << " destructor");
+	LOG_INFO(app::logger::info_level_e::ZERO, historyTabOverall, "Test " << this->getName() << " destructor");
 }
 
 void tester::test::HistoryTab::testBody() {
 
-	LOG_INFO(app::logger::info_level_e::ZERO, historyTabTest,  "Starting test " << this->getName() << " in suite " << this->getSuite()->getName());
+	LOG_INFO(app::logger::info_level_e::ZERO, historyTabTest, "Starting test " << this->getName() << " in suite " << this->getSuite()->getName());
 
 	// Create 1 tabs and make 2 searches
 	const std::string search0("test0");

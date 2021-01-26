@@ -16,15 +16,15 @@ app::main_window::window::Commands::Commands() : app::main_window::window::Comma
 }
 
 app::main_window::window::Commands::Commands(const std::list<std::string> jsonFiles) : app::main_window::json::Action(jsonFiles) {
-	LOG_INFO(app::logger::info_level_e::ZERO, mainWindowCommandsOverall,  "Creating main window commands with " << this->getActionJsonFilesAsString());
+	LOG_INFO(app::logger::info_level_e::ZERO, mainWindowCommandsOverall, "Creating main window commands with " << this->getActionJsonFilesAsString());
 }
 
 app::main_window::window::Commands::Commands(const std::string jsonFile) : app::main_window::json::Action(jsonFile) {
-	LOG_INFO(app::logger::info_level_e::ZERO, mainWindowCommandsOverall,  "Creating main window commands with " << this->getActionJsonFilesAsString());
+	LOG_INFO(app::logger::info_level_e::ZERO, mainWindowCommandsOverall, "Creating main window commands with " << this->getActionJsonFilesAsString());
 }
 
 app::main_window::window::Commands::~Commands() {
-	LOG_INFO(app::logger::info_level_e::ZERO, mainWindowCommandsOverall,  "Main window commands destructor");
+	LOG_INFO(app::logger::info_level_e::ZERO, mainWindowCommandsOverall, "Main window commands destructor");
 }
 
 void app::main_window::window::Commands::appendActionData(const std::list<std::string> & jsonFiles) {

@@ -55,7 +55,7 @@ namespace app {
 }
 
 app::progress_bar::Bar::Bar(QWidget * parent) : QProgressBar(parent) {
-	LOG_INFO(app::logger::info_level_e::ZERO, progressBarOverall,  "Progress bar constructor");
+	LOG_INFO(app::logger::info_level_e::ZERO, progressBarOverall, "Progress bar constructor");
 
 	this->setAlignment(app::progress_bar::progressAlignment);
 
@@ -92,7 +92,7 @@ int app::progress_bar::Bar::getMinimumValue() {
 }
 
 app::progress_bar::Bar::~Bar() {
-	LOG_INFO(app::logger::info_level_e::ZERO, progressBarOverall,  "Progress bar destructor");
+	LOG_INFO(app::logger::info_level_e::ZERO, progressBarOverall, "Progress bar destructor");
 }
 
 void app::progress_bar::Bar::startLoading() {
@@ -112,7 +112,7 @@ void app::progress_bar::Bar::setValue(const int & value) {
 
 void app::progress_bar::Bar::endLoading(const bool & success) {
 
-	EXCEPTION_ACTION_COND((!success), throw,  "Operation didn't complete succesfully");
+	EXCEPTION_ACTION_COND((!success), throw, "Operation didn't complete succesfully");
 
 	// Hide progress bar after operation completes
 	this->setVisible(false);

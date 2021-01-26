@@ -23,11 +23,11 @@ app::base::menu::Menu::Menu(QWidget * parent, std::weak_ptr<QMenuBar> menuBar, c
 }
 
 app::base::menu::Menu::~Menu() {
-	LOG_INFO(app::logger::info_level_e::ZERO, menuOverall,  "menu destructor");
+	LOG_INFO(app::logger::info_level_e::ZERO, menuOverall, "menu destructor");
 }
 
 void app::base::menu::Menu::createMenu() {
-	EXCEPTION_ACTION_COND((this->menuBar.expired() == true), throw,  "Unable to get menu bar for menu " << menuName << " as it has already expired");
+	EXCEPTION_ACTION_COND((this->menuBar.expired() == true), throw, "Unable to get menu bar for menu " << menuName << " as it has already expired");
 	std::shared_ptr<QMenuBar> bar = this->menuBar.lock();
 	if (bar != Q_NULLPTR) {
 		this->winMenu.reset(bar->addMenu(QWidget::tr(menuName)));
@@ -45,7 +45,7 @@ void app::base::menu::Menu::createShortcuts() {
 }
 
 void app::base::menu::Menu::expand() {
-	EXCEPTION_ACTION_COND((this->menuBar.expired() == true), throw,  "Unable to get menu bar for menu " << this->menuName << " as it has already expired");
+	EXCEPTION_ACTION_COND((this->menuBar.expired() == true), throw, "Unable to get menu bar for menu " << this->menuName << " as it has already expired");
 	std::shared_ptr<QMenuBar> bar = this->menuBar.lock();
 	if (bar != Q_NULLPTR) {
 		// menu is expanded only if menu bar is visible

@@ -79,7 +79,7 @@ std::string app::main_window::json::Action::getShortcutKey(const std::string & v
 		} else if (isColon == true) {
 			keyName.append("Key_Colon");
 		} else {
-			EXCEPTION_ACTION(throw,  "Value in JSON file " << value << " is not alphanumeric and lowercase ");
+			EXCEPTION_ACTION(throw, "Value in JSON file " << value << " is not alphanumeric and lowercase ");
 		}
 	}
 

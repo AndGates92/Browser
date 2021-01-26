@@ -204,7 +204,7 @@ app::base::json::Action<Data>::Action() : actionData(app::base::json::Action<Dat
 
 template<class Data>
 app::base::json::Action<Data>::~Action() {
-	LOG_INFO(app::logger::info_level_e::ZERO, jsonActionOverall,  "Json Action class destructor");
+	LOG_INFO(app::logger::info_level_e::ZERO, jsonActionOverall, "Json Action class destructor");
 }
 
 template<class Data>
@@ -253,14 +253,14 @@ typename app::base::json::Action<Data>::template enableFunction<FuncRet> app::ba
 
 			EXCEPTION_ACTION_COND((success == false), throw, "Insertion of element " << *(it->second) << " failed.");
 
-			LOG_INFO(app::logger::info_level_e::ZERO, jsonActionOverall,  "Appending data for key " << it->first << ": " << *(it->second));
+			LOG_INFO(app::logger::info_level_e::ZERO, jsonActionOverall, "Appending data for key " << it->first << ": " << *(it->second));
 
 			const auto jsonFile = std::find(this->actionJsonFiles.cbegin(), this->actionJsonFiles.cend(), filename);
 			if (jsonFile == this->actionJsonFiles.cend()) {
-				LOG_INFO(app::logger::info_level_e::ZERO, jsonActionOverall,  "Adding " << filename << " to the list of action JSON files");
+				LOG_INFO(app::logger::info_level_e::ZERO, jsonActionOverall, "Adding " << filename << " to the list of action JSON files");
 				this->actionJsonFiles.push_back(filename);
 			} else {
-				LOG_WARNING(jsonActionOverall,  "File " << filename << " has already been added to the list of JSON files");
+				LOG_WARNING(jsonActionOverall, "File " << filename << " has already been added to the list of JSON files");
 			}
 
 		});
@@ -281,7 +281,7 @@ typename app::base::json::Action<Data>::template enableFunction<FuncRet> app::ba
 		return foundData->second;
 	}
 
-	LOG_INFO(app::logger::info_level_e::ZERO, jsonActionOverall,  "Unable to find matching value for field " << name);
+	LOG_INFO(app::logger::info_level_e::ZERO, jsonActionOverall, "Unable to find matching value for field " << name);
 
 	return this->invalidData;
 }

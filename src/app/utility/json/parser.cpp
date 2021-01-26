@@ -22,7 +22,7 @@ LOGGING_CONTEXT(jsonParserValue, jsonParser.value, TYPE_LEVEL, INFO_VERBOSITY)
 
 app::utility::json::Parser::Parser(QString fileName, QIODevice::OpenModeFlag openFlags) : app::utility::json::Wrapper::Wrapper(fileName,openFlags) {
 
-	LOG_INFO(app::logger::info_level_e::ZERO, jsonParserOverall,  "Creating JSON Parser of file " << fileName);
+	LOG_INFO(app::logger::info_level_e::ZERO, jsonParserOverall, "Creating JSON Parser of file " << fileName);
 
 	this->readJson();
 
@@ -30,13 +30,13 @@ app::utility::json::Parser::Parser(QString fileName, QIODevice::OpenModeFlag ope
 
 app::utility::json::Parser::Parser(const app::utility::json::Parser & rhs) : app::utility::json::Wrapper(rhs) {
 
-	LOG_INFO(app::logger::info_level_e::ZERO, jsonParserOverall,  "Copy constructor json parser");
+	LOG_INFO(app::logger::info_level_e::ZERO, jsonParserOverall, "Copy constructor json parser");
 
 }
 
 app::utility::json::Parser & app::utility::json::Parser::operator=(const app::utility::json::Parser & rhs) {
 
-	LOG_INFO(app::logger::info_level_e::ZERO, jsonParserOverall,  "Copy assignment operator for json parser");
+	LOG_INFO(app::logger::info_level_e::ZERO, jsonParserOverall, "Copy assignment operator for json parser");
 
 	// If rhs points to the same address as this, then return this
 	if (&rhs == this) {
@@ -49,12 +49,12 @@ app::utility::json::Parser & app::utility::json::Parser::operator=(const app::ut
 
 app::utility::json::Parser::Parser(app::utility::json::Parser && rhs) : app::utility::json::Wrapper(std::move(rhs)) {
 
-	LOG_INFO(app::logger::info_level_e::ZERO, jsonParserOverall,  "Move constructor json parser");
+	LOG_INFO(app::logger::info_level_e::ZERO, jsonParserOverall, "Move constructor json parser");
 }
 
 app::utility::json::Parser & app::utility::json::Parser::operator=(app::utility::json::Parser && rhs) {
 
-	LOG_INFO(app::logger::info_level_e::ZERO, jsonParserOverall,  "Move assignment operator for json parser");
+	LOG_INFO(app::logger::info_level_e::ZERO, jsonParserOverall, "Move assignment operator for json parser");
 
 	// If rhs points to the same address as this, then return this
 	if (&rhs == this) {
@@ -67,7 +67,7 @@ app::utility::json::Parser & app::utility::json::Parser::operator=(app::utility:
 }
 
 app::utility::json::Parser::~Parser() {
-	LOG_INFO(app::logger::info_level_e::ZERO, jsonParserOverall,  "Destructor of Parser class");
+	LOG_INFO(app::logger::info_level_e::ZERO, jsonParserOverall, "Destructor of Parser class");
 
 }
 
@@ -77,7 +77,7 @@ const QStringList app::utility::json::Parser::getJsonKeys() const {
 		const QStringList jsonKeys(jsonObject.keys());
 		return jsonKeys;
 	} else {
-		EXCEPTION_ACTION(throw,  "JSON file content is of type " << this->jsonContent.type() << ". Unable to retrive key for a file content of type different from object");
+		EXCEPTION_ACTION(throw, "JSON file content is of type " << this->jsonContent.type() << ". Unable to retrive key for a file content of type different from object");
 	}
 
 	return QStringList();
@@ -93,7 +93,7 @@ const QString app::utility::json::Parser::findKeyValue(const QString & treeRoot,
 		const QJsonValue value(jsonObject.value(treeRoot));
 		foundValue = this->searchJson(value, key);
 	} else {
-		EXCEPTION_ACTION(throw,  "JSON file content is of type " << this->jsonContent.type() << ". Unable to retrive key for a file content of type different from object");
+		EXCEPTION_ACTION(throw, "JSON file content is of type " << this->jsonContent.type() << ". Unable to retrive key for a file content of type different from object");
 	}
 
 	LOG_INFO(app::logger::info_level_e::ZERO, jsonParserFileContent, "JSON tree root: " << treeRoot << " key: " << key << " value " << foundValue);
@@ -122,7 +122,7 @@ QMap<QString, QString> app::utility::json::Parser::findKeyAllValues(const QStrin
 			}
 		}
 	} else {
-		EXCEPTION_ACTION(throw,  "JSON file content is of type " << this->jsonContent.type() << ". Unable to retrive key for a file content of type different from object");
+		EXCEPTION_ACTION(throw, "JSON file content is of type " << this->jsonContent.type() << ". Unable to retrive key for a file content of type different from object");
 	}
 
 	return foundMap;
@@ -177,7 +177,7 @@ QString app::utility::json::Parser::searchJsonObject(const QJsonObject & object,
 				valueStr = "false";
 			}
 		} else {
-			EXCEPTION_ACTION(throw,  "Unable to convert value of type "  << value.type() << " of key " << key << " to string");
+			EXCEPTION_ACTION(throw, "Unable to convert value of type "  << value.type() << " of key " << key << " to string");
 		}
 		LOG_INFO(app::logger::info_level_e::ZERO, jsonParserValue, "Found key " << key << " with value " << valueStr);
 	} else {

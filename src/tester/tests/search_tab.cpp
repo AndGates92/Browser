@@ -55,16 +55,16 @@ namespace tester {
 }
 
 tester::test::SearchTab::SearchTab(const std::shared_ptr<tester::base::Suite> & testSuite, const bool useShortcuts) : tester::base::CommandTest(testSuite, "Search tab", tester::test::search_tab::jsonFileFullPath, useShortcuts) {
-	LOG_INFO(app::logger::info_level_e::ZERO, searchTabOverall,  "Creating test " << this->getName() << " in suite " << this->getSuite()->getName());
+	LOG_INFO(app::logger::info_level_e::ZERO, searchTabOverall, "Creating test " << this->getName() << " in suite " << this->getSuite()->getName());
 }
 
 tester::test::SearchTab::~SearchTab() {
-	LOG_INFO(app::logger::info_level_e::ZERO, searchTabOverall,  "Test " << this->getName() << " destructor");
+	LOG_INFO(app::logger::info_level_e::ZERO, searchTabOverall, "Test " << this->getName() << " destructor");
 }
 
 void tester::test::SearchTab::testBody() {
 
-	LOG_INFO(app::logger::info_level_e::ZERO, searchTabTest,  "Starting test " << this->getName() << " in suite " << this->getSuite()->getName());
+	LOG_INFO(app::logger::info_level_e::ZERO, searchTabTest, "Starting test " << this->getName() << " in suite " << this->getSuite()->getName());
 
 	const std::string https(app::shared::https.toStdString());
 	const std::string www(app::shared::www.toStdString());

@@ -18,7 +18,7 @@
 LOGGING_CONTEXT(mainWindowMenuBarOverall, menuBar.overall, TYPE_LEVEL, INFO_VERBOSITY)
 
 app::main_window::menu::MenuBar::MenuBar(QWidget * parent) : app::base::menu::MenuBar(parent), fileMenu(Q_NULLPTR), editMenu(Q_NULLPTR) {
-	LOG_INFO(app::logger::info_level_e::ZERO, mainWindowMenuBarOverall,  "Main window menu bar constructor");
+	LOG_INFO(app::logger::info_level_e::ZERO, mainWindowMenuBarOverall, "Main window menu bar constructor");
 }
 
 void app::main_window::menu::MenuBar::createMenus() {
@@ -27,7 +27,7 @@ void app::main_window::menu::MenuBar::createMenus() {
 }
 
 app::main_window::menu::MenuBar::~MenuBar() {
-	LOG_INFO(app::logger::info_level_e::ZERO, mainWindowMenuBarOverall,  "Main window menu bar destructor");
+	LOG_INFO(app::logger::info_level_e::ZERO, mainWindowMenuBarOverall, "Main window menu bar destructor");
 }
 
 CONST_GETTER(app::main_window::menu::MenuBar::getFileMenu, std::unique_ptr<app::main_window::menu::FileMenu> &, this->fileMenu)

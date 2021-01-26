@@ -15,11 +15,11 @@ LOGGING_CONTEXT(commandMenuModelSettings, commandMenuModel.settings, TYPE_LEVEL,
 
 app::command_menu::CommandMenuModel::CommandMenuModel(QObject * parent) : QAbstractItemModel(parent) {
 
-	LOG_INFO(app::logger::info_level_e::ZERO, commandMenuModelOverall,  "Create command menu model");
+	LOG_INFO(app::logger::info_level_e::ZERO, commandMenuModelOverall, "Create command menu model");
 }
 
 app::command_menu::CommandMenuModel::~CommandMenuModel() {
-	LOG_INFO(app::logger::info_level_e::ZERO, commandMenuModelOverall,  "Destoy command menu model");
+	LOG_INFO(app::logger::info_level_e::ZERO, commandMenuModelOverall, "Destoy command menu model");
 
 }
 

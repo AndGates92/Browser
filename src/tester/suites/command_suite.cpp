@@ -28,12 +28,12 @@ tester::suite::CommandSuite::CommandSuite(const std::shared_ptr<tester::base::Fa
 
 tester::suite::CommandSuite::~CommandSuite() {
 
-	LOG_INFO(app::logger::info_level_e::ZERO, commandSuiteOverall,  "Command suite destructor");
+	LOG_INFO(app::logger::info_level_e::ZERO, commandSuiteOverall, "Command suite destructor");
 
 }
 
 void tester::suite::CommandSuite::populate() {
-	LOG_INFO(app::logger::info_level_e::ZERO, commandSuiteOverall,  "Populating suite " << this->getName());
+	LOG_INFO(app::logger::info_level_e::ZERO, commandSuiteOverall, "Populating suite " << this->getName());
 	for (const bool & shortcut : { false, true } ) {
 		tester::test::LaunchApp::create<tester::test::LaunchApp>(this->shared_from_this(), shortcut);
 		tester::test::OpenTab::create<tester::test::OpenTab>(this->shared_from_this(), shortcut, tester::shared::text_type_e::ALPHANUMERICAL);

@@ -51,12 +51,12 @@ app::main_window::window::CtrlTab::~CtrlTab() {
 }
 
 void app::main_window::window::CtrlTab::createShortcuts() {
-	LOG_INFO(app::logger::info_level_e::ZERO, mainWindowCtrlTabOverall,  "Create shortcuts");
+	LOG_INFO(app::logger::info_level_e::ZERO, mainWindowCtrlTabOverall, "Create shortcuts");
 
 }
 
 void app::main_window::window::CtrlTab::connectSignals() {
-	LOG_INFO(app::logger::info_level_e::ZERO, mainWindowCtrlTabOverall,  "Connect signals");
+	LOG_INFO(app::logger::info_level_e::ZERO, mainWindowCtrlTabOverall, "Connect signals");
 
 	// open tab action (from fileMenu)
 	connect(this->core->topMenuBar->getFileMenu()->openTabAction.get(), &QAction::triggered, this, &app::main_window::window::CtrlTab::setUpOpenNewTab);
@@ -103,7 +103,7 @@ void app::main_window::window::CtrlTab::connectSignals() {
 // Start definition of set up slots
 //************************************************************************************
 void app::main_window::window::CtrlTab::setUpOpenNewTab() {
-	LOG_INFO(app::logger::info_level_e::ZERO, mainWindowCtrlTabSearch,  "Open new tab");
+	LOG_INFO(app::logger::info_level_e::ZERO, mainWindowCtrlTabSearch, "Open new tab");
 	const app::main_window::state_e requestedWindowState = app::main_window::state_e::OPEN_TAB;
 	emit windowStateChangeRequested(requestedWindowState, app::main_window::state_postprocessing_e::POSTPROCESS);
 }
@@ -116,7 +116,7 @@ void app::main_window::window::CtrlTab::setUpOpenNewTab() {
 // Start definition of actions
 //************************************************************************************
 void app::main_window::window::CtrlTab::closeTab(const int & index) {
-	LOG_INFO(app::logger::info_level_e::ZERO, mainWindowCtrlTabTabs,  "Close tab " << index);
+	LOG_INFO(app::logger::info_level_e::ZERO, mainWindowCtrlTabTabs, "Close tab " << index);
 	this->core->tabs->removeTab(index);
 }
 
@@ -127,7 +127,7 @@ void app::main_window::window::CtrlTab::addNewTabAndSearch(const QString & searc
 
 int app::main_window::window::CtrlTab::addNewTab(const app::main_window::page_type_e & type, const void * data) {
 
-	LOG_INFO(app::logger::info_level_e::ZERO, mainWindowCtrlTabTabs,  "Open tab of type " << type);
+	LOG_INFO(app::logger::info_level_e::ZERO, mainWindowCtrlTabTabs, "Open tab of type " << type);
 
 	const int tabCount = this->core->getTabCount();
 	if (tabCount > 0) {
@@ -147,7 +147,7 @@ int app::main_window::window::CtrlTab::addNewTab(const app::main_window::page_ty
 }
 
 void app::main_window::window::CtrlTab::searchTab(const int & index, const QString & search) {
-	LOG_INFO(app::logger::info_level_e::ZERO, mainWindowCtrlTabSearch,  "User input " << search << " in tab " << index);
+	LOG_INFO(app::logger::info_level_e::ZERO, mainWindowCtrlTabSearch, "User input " << search << " in tab " << index);
 	const QString prunedSearch(app::main_window::deletePrefix(search));
 	app::main_window::page_type_e type = app::main_window::textToPageType(prunedSearch);
 	this->core->tabs->changeTabContent(index, type, prunedSearch, nullptr);
@@ -163,17 +163,17 @@ void app::main_window::window::CtrlTab::searchCurrentTab(const QString & search)
 	switch (windowState) {
 		case app::main_window::state_e::NEW_SEARCH:
 		case app::main_window::state_e::EDIT_SEARCH:
-			LOG_INFO(app::logger::info_level_e::ZERO, mainWindowCtrlTabTabs,  "Search " << search << " in tab " << tabIndex);
+			LOG_INFO(app::logger::info_level_e::ZERO, mainWindowCtrlTabTabs, "Search " << search << " in tab " << tabIndex);
 			this->searchTab(tabIndex, search);
 			break;
 		case app::main_window::state_e::FIND:
 		case app::main_window::state_e::FIND_DOWN:
 		case app::main_window::state_e::FIND_UP:
-			LOG_INFO(app::logger::info_level_e::ZERO, mainWindowCtrlTabTabs,  "Find: " << this->findSettings);
+			LOG_INFO(app::logger::info_level_e::ZERO, mainWindowCtrlTabTabs, "Find: " << this->findSettings);
 			this->core->tabs->findInTab(tabIndex, this->findSettings);
 			break;
 		default:
-			EXCEPTION_ACTION(throw,  "Undefined action to execute when in state " << windowState);
+			EXCEPTION_ACTION(throw, "Undefined action to execute when in state " << windowState);
 			break;
 	}
 }
@@ -211,7 +211,7 @@ void app::main_window::window::CtrlTab::reloadTab(const int & tabIndex) {
 
 void app::main_window::window::CtrlTab::moveTab(const int & tabIndex) {
 	const int tabIndexCurrent = this->core->tabs->currentIndex();
-	LOG_INFO(app::logger::info_level_e::ZERO, mainWindowCtrlTabTabs,  "Move tab " << tabIndexCurrent << " to " << tabIndex);
+	LOG_INFO(app::logger::info_level_e::ZERO, mainWindowCtrlTabTabs, "Move tab " << tabIndexCurrent << " to " << tabIndex);
 	this->core->tabs->moveTab(tabIndexCurrent, tabIndex);
 }
 
@@ -220,7 +220,7 @@ void app::main_window::window::CtrlTab::moveCursor(const int & tabIndex) {
 	const int currentTabIndex = this->core->getCurrentTabIndex();
 	this->disconnectTab(currentTabIndex);
 
-	LOG_INFO(app::logger::info_level_e::ZERO, mainWindowCtrlTabTabs,  "Move cursor to tab " << tabIndex);
+	LOG_INFO(app::logger::info_level_e::ZERO, mainWindowCtrlTabTabs, "Move cursor to tab " << tabIndex);
 	this->core->tabs->setCurrentIndex(tabIndex);
 	// Connect signals from tab the cursor is pointing to
 	this->connectTab(tabIndex);
@@ -228,7 +228,7 @@ void app::main_window::window::CtrlTab::moveCursor(const int & tabIndex) {
 
 void app::main_window::window::CtrlTab::connectTab(const int & tabIndex) {
 	const app::main_window::page_type_e tabType = this->core->tabs->getPageType(tabIndex);
-	LOG_INFO(app::logger::info_level_e::ZERO, mainWindowCtrlTabTabs,  "Connect signals from " << tabType << " object of tab " << tabIndex << " to progress bar slots");
+	LOG_INFO(app::logger::info_level_e::ZERO, mainWindowCtrlTabTabs, "Connect signals from " << tabType << " object of tab " << tabIndex << " to progress bar slots");
 
 	std::shared_ptr<app::main_window::tab::Tab> tab = this->core->tabs->widget(tabIndex);
 
@@ -247,7 +247,7 @@ void app::main_window::window::CtrlTab::connectTab(const int & tabIndex) {
 
 void app::main_window::window::CtrlTab::disconnectTab(const int & tabIndex) {
 	const app::main_window::page_type_e tabType = this->core->tabs->getPageType(tabIndex);
-	LOG_INFO(app::logger::info_level_e::ZERO, mainWindowCtrlTabTabs,  "Disconnect connect signals from " << tabType << " object of tab " << tabIndex << " to progress bar slots");
+	LOG_INFO(app::logger::info_level_e::ZERO, mainWindowCtrlTabTabs, "Disconnect connect signals from " << tabType << " object of tab " << tabIndex << " to progress bar slots");
 
 	const std::shared_ptr<app::main_window::tab::Tab> tab = this->core->tabs->widget(tabIndex);
 
@@ -279,7 +279,7 @@ void app::main_window::window::CtrlTab::executeActionOnOffset(const int & offset
 			sign = app::shared::sign_e::MINUS;
 		}
 	} else {
-		EXCEPTION_ACTION(throw,  "Requested to execute tab action in invalid window state " << windowState);
+		EXCEPTION_ACTION(throw, "Requested to execute tab action in invalid window state " << windowState);
 	}
 
 	Q_ASSERT_X(((sign == app::shared::sign_e::MINUS) || (sign == app::shared::sign_e::PLUS)), "sign check to execute movement on offset", "sign input must be either app::shared::sign_e::MINUS or app::shared::sign_e::PLUS");
@@ -314,7 +314,7 @@ void app::main_window::window::CtrlTab::executeActionOnTab(const int & index) {
 				this->reloadTab(tabIndex);
 				break;
 			default:
-				EXCEPTION_ACTION(throw,  "Undefined action to execute when in state " << windowState);
+				EXCEPTION_ACTION(throw, "Undefined action to execute when in state " << windowState);
 				break;
 		}
 	} else {
@@ -342,11 +342,11 @@ void app::main_window::window::CtrlTab::executeTabAction(const int & userInput) 
 			} else if (offsetType == app::shared::offset_type_e::ABSOLUTE) {
 				this->executeActionOnTab(userInput);
 			} else {
-				EXCEPTION_ACTION(throw,  "Undefined direction of movement of tabs. Currently set to " << offsetType);
+				EXCEPTION_ACTION(throw, "Undefined direction of movement of tabs. Currently set to " << offsetType);
 			}
 			break;
 		default:
-			EXCEPTION_ACTION(throw,  "Undefined tab action when in state " << windowState);
+			EXCEPTION_ACTION(throw, "Undefined tab action when in state " << windowState);
 			break;
 	}
 
@@ -361,7 +361,7 @@ void app::main_window::window::CtrlTab::processTabIndex(const QString & userInpu
 		// Convert string un a number in base 10
 		const int userInputInt = userInputStr.toInt(&conversionSuccessful, 10);
 		if (conversionSuccessful == true) {
-			LOG_INFO(app::logger::info_level_e::ZERO, mainWindowCtrlTabUserInput,  "user input succesfully converted to integer: string " << userInputStr << " integer " << userInputInt);
+			LOG_INFO(app::logger::info_level_e::ZERO, mainWindowCtrlTabUserInput, "user input succesfully converted to integer: string " << userInputStr << " integer " << userInputInt);
 			this->executeTabAction(userInputInt);
 		} else {
 			LOG_WARNING(mainWindowCtrlTabTabs, "tab index " << userInputStr << " is not made up by numbers only");
@@ -379,7 +379,7 @@ void app::main_window::window::CtrlTab::actionOnReleasedKey(const app::main_wind
 	if (event->type() == QEvent::KeyRelease) {
 
 		// Retrieve main window controller state
-		LOG_INFO(app::logger::info_level_e::ZERO, mainWindowCtrlTabUserInput,  "State " << windowState << " key " << keySeq.toString());
+		LOG_INFO(app::logger::info_level_e::ZERO, mainWindowCtrlTabUserInput, "State " << windowState << " key " << keySeq.toString());
 
 		switch (releasedKey) {
 			case Qt::Key_Escape:
@@ -499,7 +499,7 @@ void app::main_window::window::CtrlTab::prepareAction(const app::main_window::st
 			}
 			break;
 		default:
-			LOG_INFO(app::logger::info_level_e::ZERO, mainWindowCtrlTabUserInput,  "Window in state " << windowState << " Key pressed is " << event->text() << "(ID " << pressedKey << ")");
+			LOG_INFO(app::logger::info_level_e::ZERO, mainWindowCtrlTabUserInput, "Window in state " << windowState << " Key pressed is " << event->text() << "(ID " << pressedKey << ")");
 			break;
 	}
 
@@ -519,7 +519,7 @@ void app::main_window::window::CtrlTab::convertToAbsTabIndex(const int & offset,
 				distance = 1;
 				break;
 			default:
-				EXCEPTION_ACTION(throw,  "Unable to compute distance when in state " << windowState);
+				EXCEPTION_ACTION(throw, "Unable to compute distance when in state " << windowState);
 				break;
 		}
 	} else {
@@ -527,7 +527,7 @@ void app::main_window::window::CtrlTab::convertToAbsTabIndex(const int & offset,
 	}
 
 	const int tabCount = this->core->getTabCount();
-	EXCEPTION_ACTION_COND((tabCount <= 0), throw,  "Current number of opened tabs is " << tabCount << ". It is not possible to execute actin related to state " << windowState);
+	EXCEPTION_ACTION_COND((tabCount <= 0), throw, "Current number of opened tabs is " << tabCount << ". It is not possible to execute actin related to state " << windowState);
 	const int signInt = static_cast<int>(sign);
 
 	int tabIndexDst = 0;
@@ -547,7 +547,7 @@ void app::main_window::window::CtrlTab::convertToAbsTabIndex(const int & offset,
 	// Keep tabIndex values within valid range (0 and (tabCount -1))
 	const int tabIndex = tabIndexDst % tabCount;
 
-	LOG_INFO(app::logger::info_level_e::ZERO, mainWindowCtrlTabTabs,  "Convert tab relative offset " << (signInt*offset) << " to absolute offset " << tabIndex);
+	LOG_INFO(app::logger::info_level_e::ZERO, mainWindowCtrlTabTabs, "Convert tab relative offset " << (signInt*offset) << " to absolute offset " << tabIndex);
 
 	switch (windowState) {
 		case app::main_window::state_e::MOVE_RIGHT:
@@ -558,7 +558,7 @@ void app::main_window::window::CtrlTab::convertToAbsTabIndex(const int & offset,
 			this->moveTab(tabIndex);
 			break;
 		default:
-			EXCEPTION_ACTION(throw,  "Undefined action when in state " << windowState);
+			EXCEPTION_ACTION(throw, "Undefined action when in state " << windowState);
 			break;
 	}
 }
@@ -651,7 +651,7 @@ void app::main_window::window::CtrlTab::createContentPathTextFromSource(const ap
 }
 
 void app::main_window::window::CtrlTab::createOpenPrompt() {
-	LOG_INFO(app::logger::info_level_e::ZERO, mainWindowCtrlTabPrompt,  "Open prompt to allow user to choose a file to display in a new tab");
+	LOG_INFO(app::logger::info_level_e::ZERO, mainWindowCtrlTabPrompt, "Open prompt to allow user to choose a file to display in a new tab");
 	std::shared_ptr<app::main_window::popup::PopupContainer> container = this->core->popup;
 	bool success = container->showOpenFilePopup();
 	container->setFocus();

@@ -17,18 +17,18 @@ LOGGING_CONTEXT(mainWindowWrapperOverall, mainWindowWrapper.overall, TYPE_LEVEL,
 
 app::main_window::window::Wrapper::Wrapper(QWidget * parent, Qt::WindowFlags flags) : window(new app::main_window::window::MainWindow(parent, flags)) {
 
-	LOG_INFO(app::logger::info_level_e::ZERO, mainWindowWrapperOverall,  "Main window wrapper constructor");
+	LOG_INFO(app::logger::info_level_e::ZERO, mainWindowWrapperOverall, "Main window wrapper constructor");
 
 }
 
 app::main_window::window::Wrapper::Wrapper(app::main_window::window::Wrapper && rhs) : window(std::exchange(rhs.window, Q_NULLPTR)) {
-	LOG_INFO(app::logger::info_level_e::ZERO, mainWindowWrapperOverall,  "Move constructor main window wrapper");
+	LOG_INFO(app::logger::info_level_e::ZERO, mainWindowWrapperOverall, "Move constructor main window wrapper");
 
 }
 
 app::main_window::window::Wrapper & app::main_window::window::Wrapper::operator=(app::main_window::window::Wrapper && rhs) {
 
-	LOG_INFO(app::logger::info_level_e::ZERO, mainWindowWrapperOverall,  "Move assignment operator for main window wrapper");
+	LOG_INFO(app::logger::info_level_e::ZERO, mainWindowWrapperOverall, "Move assignment operator for main window wrapper");
 
 	if (&rhs != this) {
 		this->window = std::move(rhs.window);
@@ -39,11 +39,11 @@ app::main_window::window::Wrapper & app::main_window::window::Wrapper::operator=
 }
 
 app::main_window::window::Wrapper::~Wrapper() {
-	LOG_INFO(app::logger::info_level_e::ZERO, mainWindowWrapperOverall,  "Main window wrapper destructor");
+	LOG_INFO(app::logger::info_level_e::ZERO, mainWindowWrapperOverall, "Main window wrapper destructor");
 }
 
 void app::main_window::window::Wrapper::show() {
-	LOG_INFO(app::logger::info_level_e::ZERO, mainWindowWrapperOverall,  "Show main window");
+	LOG_INFO(app::logger::info_level_e::ZERO, mainWindowWrapperOverall, "Show main window");
 	this->window->show();
 }
 

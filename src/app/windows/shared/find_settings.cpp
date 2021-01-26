@@ -17,19 +17,19 @@ LOGGING_CONTEXT(findSettingsOverall, findSettings.overall, TYPE_LEVEL, INFO_VERB
 
 app::windows::shared::FindSettings::FindSettings(const QString & initText, const app::shared::offset_type_e & initDirection, const bool & initCaseSensitive, const bool & initMatchFullWord) : app::printable_object::PrintableObject(), text(initText), direction(initDirection), caseSensitive(initCaseSensitive), matchFullWord(initMatchFullWord) {
 
-	LOG_INFO(app::logger::info_level_e::ZERO, findSettingsOverall,  "Creating find button window");
+	LOG_INFO(app::logger::info_level_e::ZERO, findSettingsOverall, "Creating find button window");
 
 }
 
 app::windows::shared::FindSettings::FindSettings(const app::windows::shared::FindSettings & rhs) : text(rhs.text), direction(rhs.direction), caseSensitive(rhs.caseSensitive), matchFullWord(rhs.matchFullWord) {
 
-	LOG_INFO(app::logger::info_level_e::ZERO, findSettingsOverall,  "Copy constructor find settings");
+	LOG_INFO(app::logger::info_level_e::ZERO, findSettingsOverall, "Copy constructor find settings");
 
 }
 
 app::windows::shared::FindSettings & app::windows::shared::FindSettings::operator=(const app::windows::shared::FindSettings & rhs) {
 
-	LOG_INFO(app::logger::info_level_e::ZERO, findSettingsOverall,  "Copy assignment operator for find settings");
+	LOG_INFO(app::logger::info_level_e::ZERO, findSettingsOverall, "Copy assignment operator for find settings");
 
 	// If rhs points to the same address as this, then return this
 	if (&rhs == this) {
@@ -57,12 +57,12 @@ app::windows::shared::FindSettings & app::windows::shared::FindSettings::operato
 
 app::windows::shared::FindSettings::FindSettings(app::windows::shared::FindSettings && rhs) : text(std::exchange(rhs.text, QString())), direction(std::exchange(rhs.direction, app::shared::offset_type_e::IDLE)), caseSensitive(std::exchange(rhs.caseSensitive, false)), matchFullWord(std::exchange(rhs.matchFullWord, false)) {
 
-	LOG_INFO(app::logger::info_level_e::ZERO, findSettingsOverall,  "Move constructor find settings");
+	LOG_INFO(app::logger::info_level_e::ZERO, findSettingsOverall, "Move constructor find settings");
 }
 
 app::windows::shared::FindSettings & app::windows::shared::FindSettings::operator=(app::windows::shared::FindSettings && rhs) {
 
-	LOG_INFO(app::logger::info_level_e::ZERO, findSettingsOverall,  "Move assignment operator for find settings");
+	LOG_INFO(app::logger::info_level_e::ZERO, findSettingsOverall, "Move assignment operator for find settings");
 
 	// If rhs points to the same address as this, then return this
 	if (&rhs != this) {
@@ -76,7 +76,7 @@ app::windows::shared::FindSettings & app::windows::shared::FindSettings::operato
 }
 
 app::windows::shared::FindSettings::~FindSettings() {
-	LOG_INFO(app::logger::info_level_e::ZERO, findSettingsOverall,  "Destructor of FindSettings class");
+	LOG_INFO(app::logger::info_level_e::ZERO, findSettingsOverall, "Destructor of FindSettings class");
 }
 
 const std::string app::windows::shared::FindSettings::print() const {

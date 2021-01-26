@@ -20,19 +20,19 @@ LOGGING_CONTEXT(popupPropertiesOverall, popupProperties.overall, TYPE_LEVEL, INF
 
 app::base::popup::PopupProperties::PopupProperties(const bool & center, const int & sidePadding) : centered(center), padding(sidePadding) {
 
-	LOG_INFO(app::logger::info_level_e::ZERO, popupPropertiesOverall,  "Popup properties constructor");
+	LOG_INFO(app::logger::info_level_e::ZERO, popupPropertiesOverall, "Popup properties constructor");
 
 }
 
 app::base::popup::PopupProperties::PopupProperties(const app::base::popup::PopupProperties & rhs): centered(rhs.centered), padding(rhs.padding) {
 
-	LOG_INFO(app::logger::info_level_e::ZERO, popupPropertiesOverall,  "Copy constructor of popup properties");
+	LOG_INFO(app::logger::info_level_e::ZERO, popupPropertiesOverall, "Copy constructor of popup properties");
 
 }
 
 app::base::popup::PopupProperties & app::base::popup::PopupProperties::operator=(const app::base::popup::PopupProperties & rhs) {
 
-	LOG_INFO(app::logger::info_level_e::ZERO, popupPropertiesOverall,  "Copy assignment operator of popup properties");
+	LOG_INFO(app::logger::info_level_e::ZERO, popupPropertiesOverall, "Copy assignment operator of popup properties");
 
 	// If rhs points to the same address as this, then return this
 	if (&rhs == this) {
@@ -51,12 +51,12 @@ app::base::popup::PopupProperties & app::base::popup::PopupProperties::operator=
 
 app::base::popup::PopupProperties::PopupProperties(app::base::popup::PopupProperties && rhs): centered(std::exchange(rhs.centered, false)), padding(std::exchange(rhs.padding, 0)) {
 
-	LOG_INFO(app::logger::info_level_e::ZERO, popupPropertiesOverall,  "Move constructor of popup properties");
+	LOG_INFO(app::logger::info_level_e::ZERO, popupPropertiesOverall, "Move constructor of popup properties");
 }
 
 app::base::popup::PopupProperties & app::base::popup::PopupProperties::operator=(app::base::popup::PopupProperties && rhs) {
 
-	LOG_INFO(app::logger::info_level_e::ZERO, popupPropertiesOverall,  "Move assignment operator of popup properties");
+	LOG_INFO(app::logger::info_level_e::ZERO, popupPropertiesOverall, "Move assignment operator of popup properties");
 
 	// If rhs points to the same address as this, then return this
 	if (&rhs != this) {
@@ -68,7 +68,7 @@ app::base::popup::PopupProperties & app::base::popup::PopupProperties::operator=
 }
 
 app::base::popup::PopupProperties::~PopupProperties() {
-	LOG_INFO(app::logger::info_level_e::ZERO, popupPropertiesOverall,  "Popup properties destructor");
+	LOG_INFO(app::logger::info_level_e::ZERO, popupPropertiesOverall, "Popup properties destructor");
 }
 
 bool app::base::popup::PopupProperties::isCentered() const {

@@ -58,15 +58,15 @@ namespace tester {
 }
 
 tester::test::EditCommandInStatusbar::EditCommandInStatusbar(const std::shared_ptr<tester::base::Suite> & testSuite, const bool useShortcuts) : tester::base::CommandTest(testSuite, "Edit command in statusbar", tester::test::open_tab_through_statusbar::jsonFileFullPath, useShortcuts) {
-	LOG_INFO(app::logger::info_level_e::ZERO, editCommandInStatusbarOverall,  "Creating test " << this->getName() << " in suite " << this->getSuite()->getName());
+	LOG_INFO(app::logger::info_level_e::ZERO, editCommandInStatusbarOverall, "Creating test " << this->getName() << " in suite " << this->getSuite()->getName());
 }
 
 tester::test::EditCommandInStatusbar::~EditCommandInStatusbar() {
-	LOG_INFO(app::logger::info_level_e::ZERO, editCommandInStatusbarOverall,  "Test " << this->getName() << " destructor");
+	LOG_INFO(app::logger::info_level_e::ZERO, editCommandInStatusbarOverall, "Test " << this->getName() << " destructor");
 }
 
 void tester::test::EditCommandInStatusbar::testBody() {
-	LOG_INFO(app::logger::info_level_e::ZERO, editCommandInStatusbarTest,  "Starting test " << this->getName() << " in suite " << this->getSuite()->getName());
+	LOG_INFO(app::logger::info_level_e::ZERO, editCommandInStatusbarTest, "Starting test " << this->getName() << " in suite " << this->getSuite()->getName());
 
 	// Open tab
 	const std::string website("website.com");
@@ -96,7 +96,7 @@ void tester::test::EditCommandInStatusbar::testBody() {
 		const QRect & commandLabelGeometry = commandText->geometry();
 		const QPoint mousePressPosition(commandLabelPosition.x() + commandLabelGeometry.width()/2, commandLabelPosition.y() + commandLabelGeometry.height()/2);
 		const Qt::MouseButton mouseButton = Qt::LeftButton;
-		LOG_INFO(app::logger::info_level_e::ZERO, editCommandInStatusbarTest,  "Mouse button " << mouseButton << " has pressed at x:" << mousePressPosition.x() << " y:" << mousePressPosition.y());
+		LOG_INFO(app::logger::info_level_e::ZERO, editCommandInStatusbarTest, "Mouse button " << mouseButton << " has pressed at x:" << mousePressPosition.x() << " y:" << mousePressPosition.y());
 		QTest::mousePress(statusbar.get(), mouseButton, Qt::NoModifier, mousePressPosition);
 
 		// Complete search

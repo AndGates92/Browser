@@ -74,17 +74,17 @@ namespace app {
 }
 
 app::main_window::window::Core::Core(QWidget * parent) : mainWidget(new QWidget(parent)), tabs(new app::main_window::tab::TabWidget(parent)), topMenuBar(new app::main_window::menu::MenuBar(parent)), popup(new app::main_window::popup::PopupContainer(parent)), bottomStatusBar(new app::main_window::statusbar::Bar(parent)), cmdMenu(new app::command_menu::CommandMenu(parent)), commands(new app::main_window::window::Commands({app::main_window::window::core::tabCommandFileFullPath, app::main_window::window::core::globalCommandFileFullPath})), mainWindowState(app::main_window::state_e::IDLE), offsetType(app::shared::offset_type_e::IDLE), userText(QString()) {
-	LOG_INFO(app::logger::info_level_e::ZERO, mainWindowCoreOverall,  "Main window core constructor");
+	LOG_INFO(app::logger::info_level_e::ZERO, mainWindowCoreOverall, "Main window core constructor");
 	this->topMenuBar->createMenus();
 }
 
 app::main_window::window::Core::Core(app::main_window::window::Core && rhs) :  mainWidget(std::exchange(rhs.mainWidget, Q_NULLPTR)), tabs(std::exchange(rhs.tabs, Q_NULLPTR)), topMenuBar(std::exchange(rhs.topMenuBar, Q_NULLPTR)), popup(std::exchange(rhs.popup, Q_NULLPTR)), bottomStatusBar(std::exchange(rhs.bottomStatusBar, Q_NULLPTR)), cmdMenu(std::exchange(rhs.cmdMenu, Q_NULLPTR)), commands(std::exchange(rhs.commands, Q_NULLPTR)), mainWindowState(std::exchange(rhs.mainWindowState, app::main_window::state_e::IDLE)), offsetType(std::exchange(rhs.offsetType, app::shared::offset_type_e::IDLE)), userText(std::exchange(rhs.userText, QString())) {
-	LOG_INFO(app::logger::info_level_e::ZERO, mainWindowCoreOverall,  "Move constructor main window core");
+	LOG_INFO(app::logger::info_level_e::ZERO, mainWindowCoreOverall, "Move constructor main window core");
 }
 
 app::main_window::window::Core & app::main_window::window::Core::operator=(app::main_window::window::Core && rhs) {
 
-	LOG_INFO(app::logger::info_level_e::ZERO, mainWindowCoreOverall,  "Move assignment operator for main window core");
+	LOG_INFO(app::logger::info_level_e::ZERO, mainWindowCoreOverall, "Move assignment operator for main window core");
 
 	if (&rhs != this) {
 		this->mainWidget = std::move(rhs.mainWidget);
@@ -117,7 +117,7 @@ app::main_window::window::Core & app::main_window::window::Core::operator=(app::
 }
 
 app::main_window::window::Core::~Core() {
-	LOG_INFO(app::logger::info_level_e::ZERO, mainWindowCoreOverall,  "Main window core destructor");
+	LOG_INFO(app::logger::info_level_e::ZERO, mainWindowCoreOverall, "Main window core destructor");
 
 	// Reset pointers
 	this->commands.reset();
@@ -136,7 +136,7 @@ void app::main_window::window::Core::printUserInput(const app::main_window::text
 		textPrint.append(text);
 	}
 
-	LOG_INFO(app::logger::info_level_e::ZERO, mainWindowCoreUserInput,  "Action is " << action << " for user input " << textPrint);
+	LOG_INFO(app::logger::info_level_e::ZERO, mainWindowCoreUserInput, "Action is " << action << " for user input " << textPrint);
 
 	this->updateUserInput(action, text);
 
@@ -176,7 +176,7 @@ const QString app::main_window::window::Core::getActionName() const {
 	actionNameText = actionNameText.toLower();
 	actionNameText = actionNameText.replace(QChar('_'), QChar(' '), Qt::CaseInsensitive);
 
-	LOG_INFO(app::logger::info_level_e::ZERO, mainWindowCoreUserInput,  "State " << this->mainWindowState << " action text " << actionNameText);
+	LOG_INFO(app::logger::info_level_e::ZERO, mainWindowCoreUserInput, "State " << this->mainWindowState << " action text " << actionNameText);
 
 	return actionNameText;
 }

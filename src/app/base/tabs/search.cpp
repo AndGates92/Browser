@@ -24,11 +24,11 @@ LOGGING_CONTEXT(tabSearchOverall, tabSearch.overall, TYPE_LEVEL, INFO_VERBOSITY)
 LOGGING_CONTEXT(tabSearchFind, tabSearch.find, TYPE_LEVEL, INFO_VERBOSITY)
 
 app::base::tab::Search::Search(QWidget * parent, std::weak_ptr<app::base::tab::Tab> attachedTab): app::base::tab::TabComponentWidget<app::windows::shared::FindSettings>(parent, attachedTab), settings(QString(), app::shared::offset_type_e::IDLE, false, false), callback(nullptr) {
-	LOG_INFO(app::logger::info_level_e::ZERO, tabSearchOverall,  "Tab search constructor");
+	LOG_INFO(app::logger::info_level_e::ZERO, tabSearchOverall, "Tab search constructor");
 }
 
 app::base::tab::Search::~Search() {
-	LOG_INFO(app::logger::info_level_e::ZERO, tabSearchOverall,  "Tab search destructor");
+	LOG_INFO(app::logger::info_level_e::ZERO, tabSearchOverall, "Tab search destructor");
 
 }
 

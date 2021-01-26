@@ -74,14 +74,14 @@ namespace app {
 
 app::base::popup::PopupContainer::PopupContainer(QWidget * parent, Qt::WindowFlags flags) : app::base::overlayed_widget::OverlayedWidget(parent, flags), popupWidgets(std::map<unsigned int, std::shared_ptr<app::base::popup::PopupBase>>()) {
 
-	LOG_INFO(app::logger::info_level_e::ZERO, popupContainerOverall,  "Popup container constructor");
+	LOG_INFO(app::logger::info_level_e::ZERO, popupContainerOverall, "Popup container constructor");
 
 	this->popupLayout();
 
 }
 
 app::base::popup::PopupContainer::~PopupContainer() {
-	LOG_INFO(app::logger::info_level_e::ZERO, popupContainerOverall,  "Popup container destructor");
+	LOG_INFO(app::logger::info_level_e::ZERO, popupContainerOverall, "Popup container destructor");
 }
 
 void app::base::popup::PopupContainer::popupLayout() {
@@ -129,7 +129,7 @@ bool app::base::popup::PopupContainer::addWidget(const unsigned int & index, con
 	std::map<unsigned int, std::shared_ptr<app::base::popup::PopupBase>>::const_iterator el(insertReturn.first);
 	bool  success(insertReturn.second);
 	if (success == true) {
-		LOG_INFO(app::logger::info_level_e::ZERO, popupContainerOverall,  "Widget " << widget.get() << " has been successfully added to the widget map at index " << index);
+		LOG_INFO(app::logger::info_level_e::ZERO, popupContainerOverall, "Widget " << widget.get() << " has been successfully added to the widget map at index " << index);
 		this->addWidgetToLayout(index, widget);
 
 		// Connect close popup to close container on order to move the main window to IDLE state and re-enabke shortcuts
@@ -138,7 +138,7 @@ bool app::base::popup::PopupContainer::addWidget(const unsigned int & index, con
 		});
 
 	} else {
-		LOG_INFO(app::logger::info_level_e::ZERO, popupContainerOverall,  "Widget " << widget.get() << " has not been successfully added to the widget map at index " << index << " as it was already filled with widget " << el->second.get());
+		LOG_INFO(app::logger::info_level_e::ZERO, popupContainerOverall, "Widget " << widget.get() << " has not been successfully added to the widget map at index " << index << " as it was already filled with widget " << el->second.get());
 	}
 
 	return success;

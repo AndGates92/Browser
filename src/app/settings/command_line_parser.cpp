@@ -56,7 +56,7 @@ void app::command_line::Parser::addArguments(const app::command_line::argument_m
 void app::command_line::Parser::addArgument(const std::string & key, const std::string & value) {
 	const auto & currentValue = this->decodedArguments.find(key);
 	EXCEPTION_ACTION_COND((currentValue != this->decodedArguments.cend()), throw, "Unable to add key " << key << " because it was found in the command line argument map with value " << currentValue->second);
-	LOG_INFO(app::logger::info_level_e::ZERO, commandLineParserOverall,  "Adding key " << key << " set to " << value);
+	LOG_INFO(app::logger::info_level_e::ZERO, commandLineParserOverall, "Adding key " << key << " set to " << value);
 	this->decodedArguments.insert({key, value});
 }
 

@@ -24,18 +24,18 @@ LOGGING_CONTEXT(mainWindowTesterWrapperOverall, mainWindowTesterWrapper.overall,
 
 tester::main_window_wrapper::MainWindowWrapper::MainWindowWrapper(QWidget * parent, Qt::WindowFlags flags) : app::main_window::window::Wrapper(parent, flags) {
 
-	LOG_INFO(app::logger::info_level_e::ZERO, mainWindowTesterWrapperOverall,  "Main window tester wrapper constructor");
+	LOG_INFO(app::logger::info_level_e::ZERO, mainWindowTesterWrapperOverall, "Main window tester wrapper constructor");
 
 }
 
 tester::main_window_wrapper::MainWindowWrapper::MainWindowWrapper(tester::main_window_wrapper::MainWindowWrapper && rhs) : app::main_window::window::Wrapper(std::move(rhs)) {
-	LOG_INFO(app::logger::info_level_e::ZERO, mainWindowTesterWrapperOverall,  "Move constructor main window tester wrapper");
+	LOG_INFO(app::logger::info_level_e::ZERO, mainWindowTesterWrapperOverall, "Move constructor main window tester wrapper");
 
 }
 
 tester::main_window_wrapper::MainWindowWrapper & tester::main_window_wrapper::MainWindowWrapper::operator=(tester::main_window_wrapper::MainWindowWrapper && rhs) {
 
-	LOG_INFO(app::logger::info_level_e::ZERO, mainWindowTesterWrapperOverall,  "Move assignment operator for main window tester wrapper");
+	LOG_INFO(app::logger::info_level_e::ZERO, mainWindowTesterWrapperOverall, "Move assignment operator for main window tester wrapper");
 
 	app::main_window::window::Wrapper::operator=(std::move(rhs));
 
@@ -43,7 +43,7 @@ tester::main_window_wrapper::MainWindowWrapper & tester::main_window_wrapper::Ma
 }
 
 tester::main_window_wrapper::MainWindowWrapper::~MainWindowWrapper() {
-	LOG_INFO(app::logger::info_level_e::ZERO, mainWindowTesterWrapperOverall,  "Main window tester wrapper destructor");
+	LOG_INFO(app::logger::info_level_e::ZERO, mainWindowTesterWrapperOverall, "Main window tester wrapper destructor");
 }
 
 CONST_GETTER(tester::main_window_wrapper::MainWindowWrapper::getPopupContainer, std::shared_ptr<app::main_window::popup::PopupContainer> &, this->getWindowCore()->popup)

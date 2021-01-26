@@ -14,14 +14,14 @@
 LOGGING_CONTEXT(baseFactoryOverall, baseFactory.overall, TYPE_LEVEL, INFO_VERBOSITY)
 
 tester::base::Factory::Factory(int & argc, char** argv, const tester::base::Factory::suite_container_t & testSuites) : argc(argc), argv(argv), suites(testSuites) {
-	LOG_INFO(app::logger::info_level_e::ZERO, baseFactoryOverall,  "Creating base factory with initial content " << *this);
+	LOG_INFO(app::logger::info_level_e::ZERO, baseFactoryOverall, "Creating base factory with initial content " << *this);
 	for (const auto & suite : this->suites) {
 		suite->populate();
 	}
 }
 
 tester::base::Factory::~Factory() {
-	LOG_INFO(app::logger::info_level_e::ZERO, baseFactoryOverall,  "Base factory destructor");
+	LOG_INFO(app::logger::info_level_e::ZERO, baseFactoryOverall, "Base factory destructor");
 }
 
 int & tester::base::Factory::getArgc() {

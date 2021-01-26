@@ -27,7 +27,7 @@ void app::init::initializeGraphics(int & argc, char** argv) {
 	QApplication app(argc, argv);
 	app.setQuitOnLastWindowClosed(true);
 
-	LOG_INFO(app::logger::info_level_e::ZERO, initGraphicsOverall,  "Create Application");
+	LOG_INFO(app::logger::info_level_e::ZERO, initGraphicsOverall, "Create Application");
 
 	std::unique_ptr<app::main_window::window::Wrapper> window = std::make_unique<app::main_window::window::Wrapper>(Q_NULLPTR, Qt::Window);
 	window->show();

@@ -58,16 +58,16 @@ namespace tester {
 }
 
 tester::test::MoveTab::MoveTab(const std::shared_ptr<tester::base::Suite> & testSuite, const bool useShortcuts) : tester::base::CommandTest(testSuite, "Move tab", tester::test::move_tab::jsonFileFullPath, useShortcuts) {
-	LOG_INFO(app::logger::info_level_e::ZERO, moveTabOverall,  "Creating test " << this->getName() << " in suite " << this->getSuite()->getName());
+	LOG_INFO(app::logger::info_level_e::ZERO, moveTabOverall, "Creating test " << this->getName() << " in suite " << this->getSuite()->getName());
 }
 
 tester::test::MoveTab::~MoveTab() {
-	LOG_INFO(app::logger::info_level_e::ZERO, moveTabOverall,  "Test " << this->getName() << " destructor");
+	LOG_INFO(app::logger::info_level_e::ZERO, moveTabOverall, "Test " << this->getName() << " destructor");
 }
 
 void tester::test::MoveTab::testBody() {
 
-	LOG_INFO(app::logger::info_level_e::ZERO, moveTabTest,  "Starting test " << this->getName() << " in suite " << this->getSuite()->getName());
+	LOG_INFO(app::logger::info_level_e::ZERO, moveTabTest, "Starting test " << this->getName() << " in suite " << this->getSuite()->getName());
 
 	const std::shared_ptr<app::main_window::window::Core> & windowCore = this->windowWrapper->getWindowCore();
 

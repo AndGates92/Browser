@@ -103,7 +103,7 @@ app::settings::Global::Global() : app::settings::Global(0, nullptr) {
 }
 
 app::settings::Global::Global(int argc, char** argv) : app::command_line::Parser(argc, argv, app::settings::global::jsonFullPath) {
-	LOG_INFO(app::logger::info_level_e::ZERO, browserSettingsOverall,  "Creating browser settings with argc set to " << argc << " and argv set to " << argv);
+	LOG_INFO(app::logger::info_level_e::ZERO, browserSettingsOverall, "Creating browser settings with argc set to " << argc << " and argv set to " << argv);
 	if (app::settings::Global::getLogFilePath().empty() == true) {
 		app::settings::Global::setLogPath(argc, argv);
 	}
@@ -111,7 +111,7 @@ app::settings::Global::Global(int argc, char** argv) : app::command_line::Parser
 }
 
 app::settings::Global::~Global() {
-	LOG_INFO(app::logger::info_level_e::ZERO, browserSettingsOverall,  "Browser settings destructor");
+	LOG_INFO(app::logger::info_level_e::ZERO, browserSettingsOverall, "Browser settings destructor");
 }
 
 void app::settings::Global::initialize(int & argc, char** argv) {

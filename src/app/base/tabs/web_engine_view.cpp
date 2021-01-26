@@ -18,7 +18,7 @@
 LOGGING_CONTEXT(webEngineViewOverall, webEngineView.overall, TYPE_LEVEL, INFO_VERBOSITY)
 
 app::base::tab::WebEngineView::WebEngineView(QWidget * parent, std::weak_ptr<app::base::tab::Tab> attachedTab): QWebEngineView(parent) {
-	LOG_INFO(app::logger::info_level_e::ZERO, webEngineViewOverall,  "Web engine view constructor");
+	LOG_INFO(app::logger::info_level_e::ZERO, webEngineViewOverall, "Web engine view constructor");
 
 	this->browserTab.reset();
 	this->setTab(attachedTab);
@@ -31,7 +31,7 @@ app::base::tab::WebEngineView::WebEngineView(QWidget * parent, std::weak_ptr<app
 }
 
 app::base::tab::WebEngineView::~WebEngineView() {
-	LOG_INFO(app::logger::info_level_e::ZERO, webEngineViewOverall,  "Web engine view destructor");
+	LOG_INFO(app::logger::info_level_e::ZERO, webEngineViewOverall, "Web engine view destructor");
 }
 
 void app::base::tab::WebEngineView::updatePage(const std::shared_ptr<app::base::tab::WebEnginePage> & newPage) {

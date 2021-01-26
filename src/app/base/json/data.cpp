@@ -18,19 +18,19 @@ LOGGING_CONTEXT(jsonDataOverall, jsonData.overall, TYPE_LEVEL, INFO_VERBOSITY)
 
 app::base::json::Data::Data(const app::base::json::Data::parameter_t & jsonParameters) : app::printable_object::PrintableObject(), parameters(jsonParameters) {
 
-	LOG_INFO(app::logger::info_level_e::ZERO, jsonDataOverall,  "JSON Data constructor. Data " << *this);
+	LOG_INFO(app::logger::info_level_e::ZERO, jsonDataOverall, "JSON Data constructor. Data " << *this);
 
 }
 
 app::base::json::Data::Data(const app::base::json::Data & rhs): parameters(rhs.parameters) {
 
-	LOG_INFO(app::logger::info_level_e::ZERO, jsonDataOverall,  "Copy constructor JSON data");
+	LOG_INFO(app::logger::info_level_e::ZERO, jsonDataOverall, "Copy constructor JSON data");
 
 }
 
 app::base::json::Data & app::base::json::Data::operator=(const app::base::json::Data & rhs) {
 
-	LOG_INFO(app::logger::info_level_e::ZERO, jsonDataOverall,  "Copy assignment operator for JSON data");
+	LOG_INFO(app::logger::info_level_e::ZERO, jsonDataOverall, "Copy assignment operator for JSON data");
 
 	// If rhs points to the same address as this, then return this
 	if (&rhs == this) {
@@ -46,12 +46,12 @@ app::base::json::Data & app::base::json::Data::operator=(const app::base::json::
 }
 
 app::base::json::Data::Data(app::base::json::Data && rhs): parameters(std::exchange(rhs.parameters, app::base::json::Data::parameter_t())) {
-	LOG_INFO(app::logger::info_level_e::ZERO, jsonDataOverall,  "Move constructor JSON data");
+	LOG_INFO(app::logger::info_level_e::ZERO, jsonDataOverall, "Move constructor JSON data");
 }
 
 app::base::json::Data & app::base::json::Data::operator=(app::base::json::Data && rhs) {
 
-	LOG_INFO(app::logger::info_level_e::ZERO, jsonDataOverall,  "Move assignment operator for JSON data");
+	LOG_INFO(app::logger::info_level_e::ZERO, jsonDataOverall, "Move assignment operator for JSON data");
 
 	// If rhs points to the same address as this, then return this
 	if (&rhs != this) {
@@ -63,7 +63,7 @@ app::base::json::Data & app::base::json::Data::operator=(app::base::json::Data &
 
 app::base::json::Data::~Data() {
 
-	LOG_INFO(app::logger::info_level_e::ZERO, jsonDataOverall,  "JSON Data structure destructor. Data " << *this);
+	LOG_INFO(app::logger::info_level_e::ZERO, jsonDataOverall, "JSON Data structure destructor. Data " << *this);
 
 }
 

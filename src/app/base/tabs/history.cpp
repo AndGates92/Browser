@@ -17,12 +17,12 @@
 LOGGING_CONTEXT(tabHistoryOverall, tabHistory.overall, TYPE_LEVEL, INFO_VERBOSITY)
 
 app::base::tab::History::History(QWidget * parent, std::weak_ptr<app::base::tab::Tab> browserTab, QWebEngineHistory * newHistory): app::base::tab::TabComponentWidget<app::base::tab::stepping_e>(parent, browserTab), history(newHistory) {
-	LOG_INFO(app::logger::info_level_e::ZERO, tabHistoryOverall,  "Tab history constructor");
+	LOG_INFO(app::logger::info_level_e::ZERO, tabHistoryOverall, "Tab history constructor");
 
 }
 
 app::base::tab::History::~History() {
-	LOG_INFO(app::logger::info_level_e::ZERO, tabHistoryOverall,  "Tab history destructor");
+	LOG_INFO(app::logger::info_level_e::ZERO, tabHistoryOverall, "Tab history destructor");
 
 }
 
@@ -59,7 +59,7 @@ void app::base::tab::History::execute(const app::base::tab::stepping_e & step) {
 			this->forward();
 			break;
 		default:
-			LOG_INFO(app::logger::info_level_e::ZERO, tabHistoryOverall,  "Unable to step across items of the history list with direcion set to " << step);
+			LOG_INFO(app::logger::info_level_e::ZERO, tabHistoryOverall, "Unable to step across items of the history list with direcion set to " << step);
 			break;
 	}
 }

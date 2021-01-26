@@ -16,11 +16,11 @@
 LOGGING_CONTEXT(mainWindowTabHistoryOverall, mainWindowTabHistory.overall, TYPE_LEVEL, INFO_VERBOSITY)
 
 app::main_window::tab::History::History(QWidget * parent, std::weak_ptr<app::base::tab::Tab> browserTab, QWebEngineHistory * newHistory): app::base::tab::History(parent, browserTab, newHistory) {
-	LOG_INFO(app::logger::info_level_e::ZERO, mainWindowTabHistoryOverall,  "Main window tab history constructor");
+	LOG_INFO(app::logger::info_level_e::ZERO, mainWindowTabHistoryOverall, "Main window tab history constructor");
 
 }
 
 app::main_window::tab::History::~History() {
-	LOG_INFO(app::logger::info_level_e::ZERO, mainWindowTabHistoryOverall,  "Main window tab history destructor");
+	LOG_INFO(app::logger::info_level_e::ZERO, mainWindowTabHistoryOverall, "Main window tab history destructor");
 
 }

@@ -23,13 +23,13 @@ LOGGING_CONTEXT(mainWindowTabSearchOverall, mainWindowTabSearch.overall, TYPE_LE
 LOGGING_CONTEXT(mainWindowTabSearchFind, mainWindowTabSearch.find, TYPE_LEVEL, INFO_VERBOSITY)
 
 app::main_window::tab::Search::Search(QWidget * parent, std::weak_ptr<app::main_window::tab::Tab> attachedTab): app::base::tab::Search(parent, attachedTab) {
-	LOG_INFO(app::logger::info_level_e::ZERO, mainWindowTabSearchOverall,  "Main window tab search constructor");
+	LOG_INFO(app::logger::info_level_e::ZERO, mainWindowTabSearchOverall, "Main window tab search constructor");
 
 	this->connectSignals();
 }
 
 app::main_window::tab::Search::~Search() {
-	LOG_INFO(app::logger::info_level_e::ZERO, mainWindowTabSearchOverall,  "Main window tab search destructor");
+	LOG_INFO(app::logger::info_level_e::ZERO, mainWindowTabSearchOverall, "Main window tab search destructor");
 
 }
 
@@ -51,7 +51,7 @@ void app::main_window::tab::Search::postProcessSearch(const QWebEngineFindTextRe
 	const int & numberOfMatches = result.numberOfMatches();
 
 	const QString text = this->settings.getText();
-	LOG_INFO(app::logger::info_level_e::ZERO, mainWindowTabSearchFind,  "Searching text " << text << " in the current tab - Match " << activeMatch << " out of " << numberOfMatches);
+	LOG_INFO(app::logger::info_level_e::ZERO, mainWindowTabSearchFind, "Searching text " << text << " in the current tab - Match " << activeMatch << " out of " << numberOfMatches);
 
 	const app::main_window::tab::search_data_s & data { activeMatch, numberOfMatches };
 	emit searchResultChanged(data);
@@ -61,7 +61,7 @@ void app::main_window::tab::Search::postProcessSearch(const QWebEngineFindTextRe
 void app::main_window::tab::Search::setCallback() {
 
 	this->callback = [=] (bool found) {
-		LOG_INFO(app::logger::info_level_e::ZERO, mainWindowTabSearchFind,  "Searching text in the current tab - Found: " << found);
+		LOG_INFO(app::logger::info_level_e::ZERO, mainWindowTabSearchFind, "Searching text in the current tab - Found: " << found);
 		emit this->findTextFinished(found);
 	};
 

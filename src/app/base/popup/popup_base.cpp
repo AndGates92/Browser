@@ -20,12 +20,12 @@ LOGGING_CONTEXT(popupBaseOverall, PopupBase.overall, TYPE_LEVEL, INFO_VERBOSITY)
 
 app::base::popup::PopupBase::PopupBase(QWidget * parent, const bool & centerWidget, const int & widgetPadding, Qt::WindowFlags flags) : QWidget(parent, flags), app::base::popup::PopupProperties(centerWidget, widgetPadding) {
 
-	LOG_INFO(app::logger::info_level_e::ZERO, popupBaseOverall,  "Popup base constructor");
+	LOG_INFO(app::logger::info_level_e::ZERO, popupBaseOverall, "Popup base constructor");
 
 }
 
 app::base::popup::PopupBase::~PopupBase() {
-	LOG_INFO(app::logger::info_level_e::ZERO, popupBaseOverall,  "Popup base destructor");
+	LOG_INFO(app::logger::info_level_e::ZERO, popupBaseOverall, "Popup base destructor");
 
 }
 
