@@ -67,6 +67,21 @@ std::shared_ptr<tester::base::Suite> tester::base::Factory::findSuite(const std:
 	return suite;
 }
 
+tester::base::Factory::suite_container_t tester::base::Factory::weakFindSuite(const std::string & suiteName) const {
+
+	tester::base::Factory::suite_container_t suiteList;
+
+	for (const auto & suite : this->suites) {
+		bool match = suite->weakEqualByName(suiteName);
+		if (match == true) {
+			suiteList.insert(suite);
+		}
+	}
+
+	return suiteList;
+
+}
+
 std::shared_ptr<tester::base::Suite> tester::base::Factory::createSuite(const std::string & suiteName) {
 	std::shared_ptr<tester::base::Suite> suite(new tester::base::Suite(this->shared_from_this(), suiteName));
 	suite->populate();

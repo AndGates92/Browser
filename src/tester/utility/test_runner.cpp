@@ -54,11 +54,12 @@ namespace tester {
 
 }
 
-tester::utility::TestRunner::TestRunner(int & argc, char** argv) : factory(new tester::factory::TestFactory(argc, argv)), testList(tester::utility::TestRunner::test_list_container_t()), failedTests(tester::utility::TestRunner::test_list_container_t()) {
+tester::utility::TestRunner::TestRunner(int & argc, char** argv) : factory(new tester::factory::TestFactory(argc, argv)), testList(tester::base::Suite::tests_container_t()), failedTests(tester::base::Suite::tests_container_t()) {
 	LOG_INFO(app::logger::info_level_e::ZERO, testRunnerOverall, "Creating test runner");
 
 	app::settings::Global::getInstance()->appendActionData(tester::utility::test_runner::jsonFullPath);
 	this->factory->populate();
+
 	this->fillTestList();
 }
 
@@ -75,6 +76,53 @@ void tester::utility::TestRunner::fillTestList() {
 	const std::string & suiteName = suiteArgument->second;
 	EXCEPTION_ACTION_COND((suiteName.empty() == true), throw, "Unable to set up runner if name of suiteName is an empty string. Choose a suite or keep the default value that ensures that you runs all tests.");
 
+	const auto & listArgument = settingsMap.find("List");
+	EXCEPTION_ACTION_COND((listArgument == settingsMap.cend()), throw, "Unable to find key list in command line argument map");
+	const std::string & listElements = listArgument->second;
+	EXCEPTION_ACTION_COND((listElements.empty() == true), throw, "Unable to set up runner because no argument is attached to comand line argument list.");
+
+	const auto & searchModeArgument = settingsMap.find("Search Mode");
+	EXCEPTION_ACTION_COND((searchModeArgument == settingsMap.cend()), throw, "Unable to find key search mode in command line argument map");
+	const std::string & searchMode = searchModeArgument->second;
+	EXCEPTION_ACTION_COND((searchMode.empty() == true), throw, "Unable to set up runner because search mode is not defined.");
+
+	// Strict search if running tests and search mode is set to strict
+	bool strictSearch = (listElements.compare("none") == 0) && (searchMode.compare("strict") == 0);
+
+	this->addSuitesToTestList(suiteName, strictSearch);
+
+	for (const auto & test : this->testList) {
+		LOG_INFO(app::logger::info_level_e::ZERO, testRunnerTests, "Adding test " << test->getName() << " from suite " << test->getSuite()->getName() << " to the list of tests to run");
+	}
+}
+
+
+void tester::utility::TestRunner::addSuitesToTestList(const std::string & suiteName, bool strictSearch) {
+
+	tester::base::Factory::suite_container_t suites;
+
+	if (suiteName.compare("all") == 0) {
+		const auto & matchedSuites = this->factory->getSuites();
+		if (matchedSuites.empty() == false) {
+			suites.insert(matchedSuites.begin(), matchedSuites.end());
+		}
+	} else {
+		if (strictSearch == true) {
+			const auto & suite = this->factory->findSuite(suiteName);
+			EXCEPTION_ACTION_COND((suite == nullptr), throw, "Unable to find suite " << suiteName);
+			if (suite != nullptr) {
+				suites.insert(suite);
+			}
+		} else {
+			const auto & matchedSuites = this->factory->weakFindSuite(suiteName);
+			if (matchedSuites.empty() == false) {
+				suites.insert(matchedSuites.begin(), matchedSuites.end());
+			}
+		}
+	}
+
+	const app::command_line::argument_map_t & settingsMap = app::settings::Global::getInstance()->getSettingsMap();
+
 	const auto & testArgument = settingsMap.find("Test");
 	EXCEPTION_ACTION_COND((testArgument == settingsMap.cend()), throw, "Unable to find key test in command line argument map");
 	const std::string & testName = testArgument->second;
@@ -82,55 +130,79 @@ void tester::utility::TestRunner::fillTestList() {
 
 	LOG_INFO(app::logger::info_level_e::ZERO, testRunnerTests, "Looking for " << ((testName.compare("all") == 0) ? "all tests" : (std::string("test ") + testName)) << " in " << ((suiteName.compare("all") == 0) ? "all test suites" : (std::string("suite ") + suiteName)));
 
-	if (suiteName.compare("all") == 0) {
-		const tester::base::Factory::suite_container_t & suites = this->factory->getSuites();
-		for (const auto & suite : suites) {
-			this->addTestFromSuiteToTestList(suite, testName);
-		}
-	} else {
-		const std::shared_ptr<tester::base::Suite> & suite = this->factory->findSuite(suiteName);
-		this->addTestFromSuiteToTestList(suite, testName);
+	for (const auto & suite : suites) {
+		this->addTestFromSuiteToTestList(suite, testName, strictSearch);
 	}
 }
 
-void tester::utility::TestRunner::addTestFromSuiteToTestList(const std::shared_ptr<tester::base::Suite> & suite, const std::string & testName) {
+void tester::utility::TestRunner::addTestFromSuiteToTestList(const std::shared_ptr<tester::base::Suite> & suite, const std::string & testName, bool strictSearch) {
 	if (testName.compare("all") == 0) {
-		const tester::base::Suite::tests_container_t & tests = suite->getTests();
-		for (const auto & test : tests) {
-			this->testList.push_back(test);
-			LOG_INFO(app::logger::info_level_e::ZERO, testRunnerTests, "Adding test " << test->getName() << " from suite " << suite->getName() << " to the list of tests to run");
+		const auto & matchedTests = suite->getTests();
+		if (matchedTests.empty() == false) {
+			this->testList.insert(matchedTests.begin(), matchedTests.end());
 		}
 	} else {
-		const std::shared_ptr<tester::base::Test> & test = suite->findTest(testName);
-		EXCEPTION_ACTION_COND((test == nullptr), throw, "Unable to find test " << testName << " from suite " << suite->getName());
-		if (test != nullptr) {
-			this->testList.push_back(test);
-			LOG_INFO(app::logger::info_level_e::ZERO, testRunnerTests, "Adding test " << test->getName() << " from suite " << suite->getName() << " to the list of tests to run");
+		if (strictSearch == true) {
+			const std::shared_ptr<tester::base::Test> & test = suite->findTest(testName);
+			EXCEPTION_ACTION_COND((test == nullptr), throw, "Unable to find test " << testName << " from suite " << suite->getName());
+			if (test != nullptr) {
+				this->testList.insert(test);
+			}
+		} else {
+			const auto & matchedTests = suite->weakFindTest(testName);
+			EXCEPTION_ACTION_COND((matchedTests.empty() == true), throw, "Unable to find test " << testName << " from suite " << suite->getName() << " with weak comparison");
+			if (matchedTests.empty() == false) {
+				this->testList.insert(matchedTests.begin(), matchedTests.end());
+			}
 		}
 	}
 }
 
 void tester::utility::TestRunner::run() {
+
+	const app::command_line::argument_map_t & settingsMap = app::settings::Global::getInstance()->getSettingsMap();
+
+	const auto & listArgument = settingsMap.find("List");
+	EXCEPTION_ACTION_COND((listArgument == settingsMap.cend()), throw, "Unable to find key list in command line argument map");
+
+	const std::string & listElements = listArgument->second;
+
+	std::string listPrint;
+
 	for (const auto & test : this->testList) {
 		try {
+			if ((listElements.empty() == true) || (listElements.compare("none") == 0)) {
 				test->run();
 				tester::shared::test_status_e status = test->getStatus();
 				if (status == tester::shared::test_status_e::FAIL) {
-					this->failedTests.push_back(test);
+					this->failedTests.insert(test);
 				}
+			} else if (listElements.compare("tests") == 0) {
+				const std::string line("- " + test->getName() + " in suite " + test->getSuite()->getName() + "\n");
+				listPrint = listPrint + line;
+			} else if (listElements.compare("suites") == 0) {
+				const std::string line("- " + test->getSuite()->getName() + "\n");
+				if (listPrint.find(line) == std::string::npos) {
+					listPrint = listPrint + line;
+				}
+			}
 		} catch (const app::exception::Exception & bexc) {
 			test->addExceptionThrown(bexc.getLine(), bexc.getFilename(), bexc.getCondition(), bexc.getMessage());
-			this->failedTests.push_back(test);
+			this->failedTests.insert(test);
 		} catch (const QUnhandledException & unhandledexc) {
 			const std::string condition = std::string();
 			const std::string message("Got unhandled exception");
 			test->addExceptionThrown(__LINE__, __FILE__, condition, message);
-			this->failedTests.push_back(test);
+			this->failedTests.insert(test);
 		} catch (const std::exception & exc) {
 			const std::string condition = std::string();
 			test->addExceptionThrown(__LINE__, __FILE__, condition, exc.what());
-			this->failedTests.push_back(test);
+			this->failedTests.insert(test);
 		}
+	}
+
+	if (listPrint.empty() == false) {
+		LOG_INFO(app::logger::info_level_e::ZERO, testRunnerOverall, "List of selected " << listElements << ":" << listPrint);
 	}
 }
 

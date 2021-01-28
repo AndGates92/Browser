@@ -11,6 +11,7 @@
 #include <string>
 #include <mutex>
 #include <fstream>
+#include <iostream>
 
 #include "app/utility/log/logging.h"
 #include "app/utility/logger/enums.h"
@@ -23,6 +24,12 @@
 namespace app {
 
 	namespace logger {
+
+		/**
+		 * @brief String representing stdout
+		 *
+		 */
+		static const std::string stdoutStr("stdout");
 
 		class Context;
 
@@ -37,21 +44,7 @@ namespace app {
 				typedef std::function<const app::logger::Context &(void)> context_function_t;
 
 				/**
-				 * @brief Function: explicit Logger(const app::logger::msg_type_e loggerType, const std::string contextFile, const int line, const std::string function, const app::logger::Context loggerContext, const app::logger::info_level_e loggerInfoVerbosity)
-				 *
-				 * \param loggerType: message type associated with the logger
-				 * \param contextFile: filename of the context
-				 * \param line: line of the context
-				 * \param function: function of the context
-				 * \param loggerContext: context to get data from
-				 * \param loggerInfoVerbosity: verbosity level of information messages
-				 *
-				 * Logger constructor with context
-				 */
-				explicit Logger(const app::logger::msg_type_e loggerType, const std::string contextFile, const int line, const std::string function, const app::logger::Context loggerContext, const app::logger::info_level_e loggerInfoVerbosity);
-
-				/**
-				 * @brief Function: explicit Logger(const app::logger::msg_type_e loggerType, const std::string contextFile, const int line, const std::string function, const app::logger::Context loggerContext, const app::logger::info_level_e loggerInfoVerbosity, const std::string ologfilename)
+				 * @brief Function: explicit Logger(const app::logger::msg_type_e loggerType, const std::string contextFile, const int line, const std::string function, const app::logger::Context & loggerContext, const app::logger::info_level_e loggerInfoVerbosity, const std::string ologfilename = std::string())
 				 *
 				 * \param loggerType: message type associated with the logger
 				 * \param contextFile: filename of the context
@@ -63,24 +56,10 @@ namespace app {
 				 *
 				 * Logger constructor with context
 				 */
-				explicit Logger(const app::logger::msg_type_e loggerType, const std::string contextFile, const int line, const std::string function, const app::logger::Context loggerContext, const app::logger::info_level_e loggerInfoVerbosity, const std::string ologfilename);
+				explicit Logger(const app::logger::msg_type_e loggerType, const std::string contextFile, const int line, const std::string function, const app::logger::Context & loggerContext, const app::logger::info_level_e loggerInfoVerbosity, const std::string ologfilename = std::string());
 
 				/**
-				 * @brief Function: explicit Logger(const app::logger::msg_type_e loggerType, const std::string contextFile, const int line, const std::string function, context_function_t loggerContextConstRef, const app::logger::info_level_e loggerInfoVerbosity)
-				 *
-				 * \param loggerType: message type associated with the logger
-				 * \param contextFile: filename of the context
-				 * \param line: line of the context
-				 * \param function: function of the context
-				 * \param loggerContextConstRef: pointer to a function that returns a constant reference to the context
-				 * \param loggerInfoVerbosity: verbosity level of information messages
-				 *
-				 * Logger constructor with context
-				 */
-				explicit Logger(const app::logger::msg_type_e loggerType, const std::string contextFile, const int line, const std::string function, context_function_t loggerContextConstRef, const app::logger::info_level_e loggerInfoVerbosity);
-
-				/**
-				 * @brief Function: explicit Logger(const app::logger::msg_type_e loggerType, const std::string contextFile, const int line, const std::string function, context_function_t loggerContextConstRef, const app::logger::info_level_e loggerInfoVerbosity, const std::string ologfilename)
+				 * @brief Function: explicit Logger(const app::logger::msg_type_e loggerType, const std::string contextFile, const int line, const std::string function, context_function_t loggerContextConstRef, const app::logger::info_level_e loggerInfoVerbosity, const std::string ologfilename = std::string())
 				 *
 				 * \param loggerType: message type associated with the logger
 				 * \param contextFile: filename of the context
@@ -92,23 +71,10 @@ namespace app {
 				 *
 				 * Logger constructor with context
 				 */
-				explicit Logger(const app::logger::msg_type_e loggerType, const std::string contextFile, const int line, const std::string function, context_function_t loggerContextConstRef, const app::logger::info_level_e loggerInfoVerbosity, const std::string ologfilename);
+				explicit Logger(const app::logger::msg_type_e loggerType, const std::string contextFile, const int line, const std::string function, context_function_t loggerContextConstRef, const app::logger::info_level_e loggerInfoVerbosity, const std::string ologfilename = std::string());
 
 				/**
-				 * @brief Function: explicit Logger(const app::logger::msg_type_e loggerType, const std::string contextFile, const int line, const std::string function, const app::logger::info_level_e loggerInfoVerbosity)
-				 *
-				 * \param loggerType: message type associated with the logger
-				 * \param contextFile: filename of the context
-				 * \param line: line of the context
-				 * \param function: function of the context
-				 * \param loggerInfoVerbosity: verbosity level of information messages
-				 *
-				 * Logger constructor
-				 */
-				explicit Logger(const app::logger::msg_type_e loggerType, const std::string contextFile, const int line, const std::string function, const app::logger::info_level_e loggerInfoVerbosity);
-
-				/**
-				 * @brief Function: explicit Logger(const app::logger::msg_type_e loggerType, const std::string contextFile, const int line, const std::string function, const app::logger::info_level_e loggerInfoVerbosity, const std::string ologfilename)
+				 * @brief Function: explicit Logger(const app::logger::msg_type_e loggerType, const std::string contextFile, const int line, const std::string function, const app::logger::info_level_e loggerInfoVerbosity, const std::string ologfilename = std::string())
 				 *
 				 * \param loggerType: message type associated with the logger
 				 * \param contextFile: filename of the context
@@ -119,23 +85,10 @@ namespace app {
 				 *
 				 * Logger constructor
 				 */
-				explicit Logger(const app::logger::msg_type_e loggerType, const std::string contextFile, const int line, const std::string function, const app::logger::info_level_e loggerInfoVerbosity, const std::string ologfilename);
+				explicit Logger(const app::logger::msg_type_e loggerType, const std::string contextFile, const int line, const std::string function, const app::logger::info_level_e loggerInfoVerbosity, const std::string ologfilename = std::string());
 
 				/**
-				 * @brief Function: explicit Logger(const app::logger::msg_type_e loggerType, const std::string contextFile, const int line, const std::string function)
-				 *
-				 * \param loggerType: message type associated with the logger
-				 * \param contextFile: filename of the context
-				 * \param line: line of the context
-				 * \param function: function of the context
-				 *
-				 * Logger constructor
-				 */
-				explicit Logger(const app::logger::msg_type_e loggerType, const std::string contextFile, const int line, const std::string function);
-
-
-				/**
-				 * @brief Function: explicit Logger(const app::logger::msg_type_e loggerType, const std::string contextFile, const int line, const std::string function, const std::string ologfilename)
+				 * @brief Function: explicit Logger(const app::logger::msg_type_e loggerType, const std::string contextFile, const int line, const std::string function, const std::string ologfilename = std::string())
 				 *
 				 * \param loggerType: message type associated with the logger
 				 * \param contextFile: filename of the context
@@ -145,7 +98,7 @@ namespace app {
 				 *
 				 * Logger constructor
 				 */
-				explicit Logger(const app::logger::msg_type_e loggerType, const std::string contextFile, const int line, const std::string function, const std::string ologfilename);
+				explicit Logger(const app::logger::msg_type_e loggerType, const std::string contextFile, const int line, const std::string function, const std::string ologfilename = std::string());
 
 				/**
 				 * @brief Function: virtual ~Logger()
@@ -243,6 +196,9 @@ namespace app {
 				 */
 				template <typename lastType>
 				void append(lastType arg);
+
+				template <typename textType>
+				void writeToStream(const textType & arg);
 
 				/**
 				 * @brief Function: app::logger::Logger & operator<< (app::logger::Logger & log, const type & arg)
@@ -370,41 +326,13 @@ namespace app {
 
 	}
 
-	template <typename... argTypes>
-	void app::logger::Logger::initAndLog(const app::logger::Context & messageContext, argTypes... args) {
-		this->initializeLogging(messageContext);
-
-		std::string message = std::string();
-		app::logging::makeMsg(message, args...);
-
-		*this << message;
-	}
-
-	template <typename... argTypes>
-	void app::logger::Logger::initAndLog(app::logger::Logger::context_function_t loggerContextConstRef, argTypes... args) {
-		this->initAndLog(loggerContextConstRef(), args...);
-	}
-
-	template <typename lastType>
-	void app::logger::Logger::append(lastType arg) {
-		EXCEPTION_ACTION_COND((this->state != app::logger::state_e::LOGGING_MESSAGE), throw, "Function " << __func__ << " can only be executed if the logger is in state app::logger::state_e::LOGGING_MESSAGE. Current state is " << this->state);
-		*this << arg;
-	}
-
-	template <typename firstType, typename... otherTypes>
-	void app::logger::Logger::append(firstType headArg, otherTypes ... otherArgs) {
-		EXCEPTION_ACTION_COND((this->state != app::logger::state_e::LOGGING_MESSAGE), throw, "Function " << __func__ << " can only be executed if the logger is in state app::logger::state_e::LOGGING_MESSAGE. Current state is " << this->state);
-		*this << headArg;
-		this->append(otherArgs...);
-	}
-
 	namespace logger {
 		template <typename type>
 		app::logger::Logger & operator<< (app::logger::Logger & log, const type & arg) {
 			if (log.isLogAllowed() == true) {
 				log.logMutex.lock();
 				log.openOFile();
-				log.ofile << arg;
+				log.writeToStream(arg);
 				log.logMutex.unlock();
 			}
 			return log;
@@ -412,18 +340,49 @@ namespace app {
 
 		template <typename type>
 		app::logger::Logger & operator+ (app::logger::Logger & log, const type & arg) {
-			if (log.isLogAllowed() == true) {
-				log.logMutex.lock();
-				log.openOFile();
-				log.ofile << arg;
-				log.logMutex.unlock();
-			}
-			return log;
+			return log << arg;
 		}
-
 	}
 
 }
+
+template <typename... argTypes>
+void app::logger::Logger::initAndLog(const app::logger::Context & messageContext, argTypes... args) {
+	this->initializeLogging(messageContext);
+
+	std::string message = std::string();
+	app::logging::makeMsg(message, args...);
+
+	*this << message;
+}
+
+template <typename... argTypes>
+void app::logger::Logger::initAndLog(app::logger::Logger::context_function_t loggerContextConstRef, argTypes... args) {
+	this->initAndLog(loggerContextConstRef(), args...);
+}
+
+template <typename lastType>
+void app::logger::Logger::append(lastType arg) {
+	EXCEPTION_ACTION_COND((this->state != app::logger::state_e::LOGGING_MESSAGE), throw, "Function " << __func__ << " can only be executed if the logger is in state app::logger::state_e::LOGGING_MESSAGE. Current state is " << this->state);
+	*this << arg;
+}
+
+template <typename firstType, typename... otherTypes>
+void app::logger::Logger::append(firstType headArg, otherTypes ... otherArgs) {
+	EXCEPTION_ACTION_COND((this->state != app::logger::state_e::LOGGING_MESSAGE), throw, "Function " << __func__ << " can only be executed if the logger is in state app::logger::state_e::LOGGING_MESSAGE. Current state is " << this->state);
+	*this << headArg;
+	this->append(otherArgs...);
+}
+
+template <typename textType>
+void app::logger::Logger::writeToStream(const textType & arg) {
+	if (this->getLogFilename().compare(app::logger::stdoutStr) == 0) {
+		std::cout << arg;
+	} else {
+		this->ofile << arg;
+	}
+}
+
 /** @} */ // End of LoggerGroup group
 
 #endif // LOGGER_H

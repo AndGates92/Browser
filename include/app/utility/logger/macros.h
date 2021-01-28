@@ -75,6 +75,23 @@
 	}
 
 /**
+ * @brief LOG_INFO_TO_FILE(VERBOSITY, CONTEXT, ...)
+ *
+ * \param VERBOSITY : verbosity level
+ * \param CONTEXTY  : context of the print
+ * \param FILENAME  : file to print logs
+ * \param ...       : variable number of arguments to provide to infoMsg
+ *
+ * Print a message to the log file if the chosen verbosity is less or equal to the default verbosity
+ */
+#define LOG_INFO_TO_FILE(VERBOSITY, CONTEXT, FILENAME, ...)\
+	{ \
+		app::logger::Logger infoLogger(app::logger::msg_type_e::INFO, __FILE__, __LINE__, __func__, VERBOSITY, FILENAME); \
+		infoLogger.initializeLogging(CONTEXT); \
+		infoLogger << __VA_ARGS__; \
+	}
+
+/**
  * @brief LOG_WARNING(CONTEXT, ...)
  *
  * \param CONTEXTY  : context of the print

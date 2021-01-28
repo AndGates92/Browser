@@ -11,6 +11,7 @@
 #include <string>
 
 #include "app/shared/cpp_functions.h"
+#include "app/shared/exception.h"
 
 LOGGING_CONTEXT(readFileOverall, readFile.overall, TYPE_LEVEL, INFO_VERBOSITY)
 
@@ -63,19 +64,4 @@ std::string app::shared::readFile(const std::string & filename) {
 	}
 
 	return content;
-}
-
-std::vector<std::string> app::shared::splitStringByDelimiter(const std::string & str, const std::string & delim) {
-
-	std::size_t currentPosition = 0;
-	std::size_t nextPosition = 0;
-	std::vector<std::string> subStrs;
-
-	do {
-		nextPosition = str.find_first_of(delim, currentPosition);
-		subStrs.push_back(str.substr(currentPosition, (nextPosition - currentPosition)));
-		currentPosition = nextPosition + 1;
-	} while (nextPosition != std::string::npos);
-
-	return subStrs;
 }

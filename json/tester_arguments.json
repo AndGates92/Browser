@@ -15,6 +15,25 @@
 		"DefaultValue" : "all",
 		"NumberArguments" : 1,
 		"Help" : "Choose test to run or all to run all tests in the selected suites. A list of comma separated arguments will allow to run all tests in the selected suites."
-	}
+	},
 
+	"SearchMode" : {
+		"Name" : "Search Mode",
+		"ShortCmd" : "sm",
+		"LongCmd" : "search-mode",
+		"DefaultValue" : "strict",
+		"ValidValues" : "strict,weak",
+		"NumberArguments" : 1,
+		"Help" : "List tests available to run as well the suite they belong to or only the available suites. Arguments -t or --test and -s or --suite can be used to narrow down the search."
+	},
+
+	"List" : {
+		"Name" : "List",
+		"ShortCmd" : "ls",
+		"LongCmd" : "list",
+		"DefaultValue" : "none",
+		"ValidValues" : "none,tests,suites",
+		"NumberArguments" : 1,
+		"Help" : "List tests available to run as well the suite they belong to or only the available suites. Arguments -t or --test and -s or --suite can be used to narrow down the search."
+	}
 }

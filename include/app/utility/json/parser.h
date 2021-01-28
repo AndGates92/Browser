@@ -99,7 +99,7 @@ namespace app {
 					QMap<QString, QString> findKeyAllValues(const QString & key) const;
 
 					/**
-					 * @brief Function: const QString findKeyValue(const QString & treeRoot, const QString & key) const
+					 * @brief Function: const std::pair<bool, QString> findKeyValue(const QString & treeRoot, const QString & key) const
 					 *
 					 * \param treeRoot: tree under which the key has to be searched
 					 * \param key: key to look for in the JSON file
@@ -108,7 +108,7 @@ namespace app {
 					 *
 					 * This function find the value of a key under a root tree
 					 */
-					const QString findKeyValue(const QString & treeRoot, const QString & key) const;
+					const std::pair<bool, QString> findKeyValue(const QString & treeRoot, const QString & key) const;
 
 					/**
 					 * @brief Function: const QStringList getJsonKeys() const
@@ -124,28 +124,28 @@ namespace app {
 				private:
 
 					/**
-					 * @brief Function: QString searchJson(const QJsonValue & content, const QString & key) const
+					 * @brief Function: std::pair<bool, QString> searchJson(const QJsonValue & content, const QString & key) const
 					 *
 					 * \param content: content to search for the key
 					 * \param key: key to search for
 					 *
-					 * \return value of the key
+					 * \return pair whose first value is a boolean stating whether the value has been found and the second value is the vale of the key.
 					 *
 					 * This function iterates over a JSON value and looks for a key
 					 */
-					QString searchJson(const QJsonValue & content, const QString & key) const;
+					std::pair<bool, QString> searchJson(const QJsonValue & content, const QString & key) const;
 
 					/**
-					 * @brief Function: QString searchJsonObject(const QJsonObject & object, QString key) const
+					 * @brief Function: std::pair<bool, QString> searchJsonObject(const QJsonObject & object, QString key) const
 					 *
 					 * \param object: object to look the key into
 					 * \param key: key to search for
 					 *
-					 * \return value of the key
+					 * \return pair whose first value is a boolean stating whether the value has been found and the second value is the value of the key.
 					 *
 					 * This function searches a key in the current JSON object or keep looking for it
 					 */
-					QString searchJsonObject(const QJsonObject & content, const QString & key) const;
+					std::pair<bool, QString> searchJsonObject(const QJsonObject & content, const QString & key) const;
 			};
 
 		}

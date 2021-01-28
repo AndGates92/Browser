@@ -74,6 +74,13 @@ namespace app {
 				void initialize(int & argc, char** argv);
 
 				/**
+				 * @brief Function: void printHelp() const
+				 *
+				 * This function prints the help of the browser
+				 */
+				void printHelp() const;
+
+				/**
 				 * @brief Function: void appendActionData(const std::list<std::string> & jsonFiles)
 				 *
 				 * \param jsonFiles: list of JSON file names

@@ -107,6 +107,40 @@ std::shared_ptr<tester::base::Test> tester::base::Suite::findTest(const std::str
 	return test;
 }
 
+bool tester::base::Suite::weakEqualByName(const std::string & suiteName) const {
+
+	auto lowerSuiteName = this->getName();
+	std::transform(lowerSuiteName.begin(), lowerSuiteName.end(), lowerSuiteName.begin(), ::tolower);
+
+	auto searchedLowerSuiteName = suiteName;
+	std::transform(searchedLowerSuiteName.begin(), searchedLowerSuiteName.end(), searchedLowerSuiteName.begin(), ::tolower);
+
+	auto pos = lowerSuiteName.find(searchedLowerSuiteName);
+
+	bool match = false;
+	if (pos != std::string::npos) {
+		match = true;
+	}
+
+	return match;
+
+}
+
+tester::base::Suite::tests_container_t tester::base::Suite::weakFindTest(const std::string & testName) const {
+
+	tester::base::Suite::tests_container_t testList;
+
+	for (const auto & test : this->tests) {
+		bool match = test->weakEqualByName(testName);
+		if (match == true) {
+			testList.insert(test);
+		}
+	}
+
+	return testList;
+
+}
+
 void tester::base::Suite::populate() {
 
 }

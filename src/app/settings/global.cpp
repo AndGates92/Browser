@@ -128,6 +128,7 @@ void app::settings::Global::initialize() {
 	if (app::settings::Global::getLogFilePath().empty() == false) {
 		this->overrideArgumentValue("Log", app::settings::Global::getLogFilePath());
 	}
+
 }
 
 const std::string app::settings::Global::print() const {
@@ -139,6 +140,41 @@ const std::string app::settings::Global::print() const {
 	}
 
 	return settingsInfo;
+}
+
+void app::settings::Global::printHelp() const {
+	const std::string helpLogfile("stdout");
+	LOG_INFO_TO_FILE(app::logger::info_level_e::ZERO, browserSettingsOverall, helpLogfile, "Help for program " << this->getArgv()[0] << ":");
+	for (const auto & item : this->actionData) {
+		const auto & argument = item.second;
+		const std::string & shortCmd = argument->getShortCmd();
+		const std::string & longCmd = argument->getLongCmd();
+		const std::string & defaultValue = argument->getDefaultValue();
+		const std::string & help = argument->getHelp();
+		std::string argumentHelp;
+		// Append short command
+		if (shortCmd.empty() == false) {
+			argumentHelp.append("-" + shortCmd);
+			// If long command is also defined, then print pipe
+			if (longCmd.empty() == false) {
+				argumentHelp.append("|");
+			}
+		}
+
+		// Print long command
+		if (longCmd.empty() == false) {
+			argumentHelp.append("--" + longCmd);
+		}
+
+		argumentHelp.append(":\n  ");
+		argumentHelp.append(help);
+		if (defaultValue.empty() == false) {
+			argumentHelp.append("\n  Default value: ");
+			argumentHelp.append(defaultValue);
+		}
+
+		LOG_INFO_TO_FILE(app::logger::info_level_e::ZERO, browserSettingsOverall, helpLogfile, "- " + argumentHelp);
+	}
 }
 
 CONST_GETTER(app::settings::Global::getSettingsMap, app::command_line::argument_map_t &, this->getDecodedArguments())

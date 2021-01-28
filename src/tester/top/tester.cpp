@@ -45,6 +45,20 @@ int main (int argc, char* argv[]) {
 
 		app::init::initializeSettings(argc, argv);
 		std::unique_ptr<tester::utility::TestRunner> runner = std::make_unique<tester::utility::TestRunner>(argc, argv);
+
+		const app::command_line::argument_map_t & settingsMap = app::settings::Global::getInstance()->getSettingsMap();
+
+		const auto & helpArgument = settingsMap.find("Help");
+		EXCEPTION_ACTION_COND((helpArgument == settingsMap.cend()), throw, "Unable to find key help in command line argument map");
+		const auto & helpRawValue = helpArgument->second;
+		EXCEPTION_ACTION_COND((helpRawValue.empty() == true), throw, "Unable to set up runner if name of suiteName is an empty string. Choose a suite or keep the default value that ensures that you runs all tests.");
+
+		const auto help = (std::stoi(helpRawValue) == 1);
+		if (help == true) {
+			app::settings::Global::getInstance()->printHelp();
+			std::exit(EXIT_SUCCESS);
+		}
+
 		runner->run();
 		runner->printResults();
 

@@ -36,7 +36,7 @@ namespace tester {
 			public:
 
 				/**
-				 * @brief type of test error container
+				 * @brief type of suite container
 				 *
 				 */
 				typedef std::set<std::shared_ptr<tester::base::Suite>, tester::base::SuitePtrCompare> suite_container_t;
@@ -109,6 +109,17 @@ namespace tester {
 				 * This function finds a suite with a given name
 				 */
 				std::shared_ptr<tester::base::Suite> findSuite(const std::string & suiteName) const;
+
+				/**
+				 * @brief Function: suite_container_t weakFindSuite(const std::string & suiteName) const
+				 *
+				 * \param suiteName: string to find in the suite name
+				 *
+				 * \return the list of suites that are weakly equal by name
+				 *
+				 * This function returns the list of suites that are weakly equal by name
+				 */
+				suite_container_t weakFindSuite(const std::string & suiteName) const;
 
 				/**
 				 * @brief Function: const suite_container_t & getSuites() const

@@ -10,6 +10,7 @@
 
 #include <list>
 
+#include "tester/base/suite.h"
 #include "tester/shared/enums.h"
 #include "app/shared/constructor_macros.h"
 #include "app/utility/log/printable_object.h"
@@ -24,7 +25,6 @@ namespace tester {
 	}
 
 	namespace base {
-		class Suite;
 		class Test;
 	}
 
@@ -37,12 +37,6 @@ namespace tester {
 		class TestRunner : public app::printable_object::PrintableObject {
 
 			public:
-
-				/**
-				 * @brief type of test error container
-				 *
-				 */
-				typedef std::list<std::shared_ptr<tester::base::Test>> test_list_container_t;
 
 				/**
 				 * @brief Function: explicit TestRunner(int & argc, char** argv)
@@ -95,13 +89,13 @@ namespace tester {
 				 * @brief list of tests to run
 				 *
 				 */
-				test_list_container_t testList;
+				tester::base::Suite::tests_container_t testList;
 
 				/**
 				 * @brief list of failed tests
 				 *
 				 */
-				test_list_container_t failedTests;
+				tester::base::Suite::tests_container_t failedTests;
 
 				/**
 				 * @brief Function: void fillTestList()
@@ -111,15 +105,27 @@ namespace tester {
 				void fillTestList();
 
 				/**
-				 * @brief Function: void addTestFromSuiteToTestList(const std::shared_ptr<tester::base::Suite> & suite, const std::string & testName)
+				 * @brief Function: void addSuitesToTestList(const std::string & suiteName, bool strictSearch)
+				 *
+				 * \param suiteName: name of the suite
+				 * \param strictSearch: boolean to strictly match the suite name
+				 *
+				 * This function search a suite in the factory to add its tests to the test list.
+				 * If the name of the suite is all, then all suites in the factory are added to the list of suites to search tests
+				 */
+				void addSuitesToTestList(const std::string & suiteName, bool strictSearch);
+
+				/**
+				 * @brief Function: void addTestFromSuiteToTestList(const std::shared_ptr<tester::base::Suite> & suite, const std::string & testName, bool strictSearch)
 				 *
 				 * \param suite: suite to search test into
 				 * \param testName: name of the test
+				 * \param strictSearch: boolean to strictly match the test name
 				 *
-				 * This function search a test in a suite to add it to a suite.
+				 * This function search a test in a suite to add it to the test list.
 				 * If the name of the test is all, then all tests in the suite are added to the test list
 				 */
-				void addTestFromSuiteToTestList(const std::shared_ptr<tester::base::Suite> & suite, const std::string & testName);
+				void addTestFromSuiteToTestList(const std::shared_ptr<tester::base::Suite> & suite, const std::string & testName, bool strictSearch);
 
 				// Move and copy constructor
 				/**

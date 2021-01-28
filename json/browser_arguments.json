@@ -6,6 +6,14 @@
 		"DefaultValue" : "stdout",
 		"NumberArguments" : 1,
 		"Help" : "Log filename"
-	}
+	},
 
+	"Help" : {
+		"Name" : "Help",
+		"ShortCmd" : "h",
+		"LongCmd" : "help",
+		"DefaultValue" : "0",
+		"NumberArguments" : 0,
+		"Help" : "Print help"
+	}
 }

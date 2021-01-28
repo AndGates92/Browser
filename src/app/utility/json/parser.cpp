@@ -83,22 +83,25 @@ const QStringList app::utility::json::Parser::getJsonKeys() const {
 	return QStringList();
 }
 
-const QString app::utility::json::Parser::findKeyValue(const QString & treeRoot, const QString & key) const {
+const std::pair<bool, QString> app::utility::json::Parser::findKeyValue(const QString & treeRoot, const QString & key) const {
 
-	QString foundValue = QString();
+	std::pair<bool, QString> found = std::make_pair(false, QString());
 
 	// If it is a QJsonObject, get all keys otherwise throw an exception
 	if (this->jsonContent.type() == QJsonValue::Object) {
 		const QJsonObject jsonObject(this->jsonContent.toObject());
 		const QJsonValue value(jsonObject.value(treeRoot));
-		foundValue = this->searchJson(value, key);
+		found = this->searchJson(value, key);
 	} else {
 		EXCEPTION_ACTION(throw, "JSON file content is of type " << this->jsonContent.type() << ". Unable to retrive key for a file content of type different from object");
 	}
 
-	LOG_INFO(app::logger::info_level_e::ZERO, jsonParserFileContent, "JSON tree root: " << treeRoot << " key: " << key << " value " << foundValue);
+	// Log only if search has been successful
+	if (found.first == true) {
+		LOG_INFO(app::logger::info_level_e::ZERO, jsonParserFileContent, "JSON tree root: " << treeRoot << " key: " << key << " value " << found.second);
+	}
 
-	return foundValue;
+	return found;
 
 }
 
@@ -113,12 +116,12 @@ QMap<QString, QString> app::utility::json::Parser::findKeyAllValues(const QStrin
 		// Iterate over all key of the object
 		for (QStringList::const_iterator keyIter = jsonKeys.cbegin(); keyIter != jsonKeys.cend(); keyIter++) {
 			LOG_INFO(app::logger::info_level_e::ZERO, jsonParserFileContent, "Searching key: " << key << " under tree " << *keyIter);
-			QString valueStr(this->findKeyValue(*keyIter, key));
+			const auto found = this->findKeyValue(*keyIter, key);
 
 			// Add value only if it is not empty
-			if (valueStr.isEmpty() == false) {
+			if (found.first == true) {
 				// Match key and value and add to QMap
-				foundMap.insert(*keyIter, valueStr);
+				foundMap.insert(*keyIter, found.second);
 			}
 		}
 	} else {
@@ -129,9 +132,9 @@ QMap<QString, QString> app::utility::json::Parser::findKeyAllValues(const QStrin
 
 }
 
-QString app::utility::json::Parser::searchJson(const QJsonValue & content, const QString & key) const {
+std::pair<bool, QString> app::utility::json::Parser::searchJson(const QJsonValue & content, const QString & key) const {
 
-	QString value = QString();
+	std::pair<bool, QString> found = std::make_pair(false, QString());
 	switch (content.type()) {
 		case QJsonValue::Object:
 		{
@@ -139,7 +142,7 @@ QString app::utility::json::Parser::searchJson(const QJsonValue & content, const
 			const QJsonObject jsonObject (content.toObject());
 
 			// search key in current JSON object or keep looking for it
-			value = this->searchJsonObject(jsonObject, key);
+			found = this->searchJsonObject(jsonObject, key);
 
 			break;
 		}
@@ -158,19 +161,24 @@ QString app::utility::json::Parser::searchJson(const QJsonValue & content, const
 			break;
 	}
 
-	return value;
+	return found;
 }
 
-QString app::utility::json::Parser::searchJsonObject(const QJsonObject & object, const QString & key) const {
-	QString valueStr = QString();
+std::pair<bool, QString> app::utility::json::Parser::searchJsonObject(const QJsonObject & object, const QString & key) const {
+	std::pair<bool, QString> found = std::make_pair(false, QString());
 	if (object.contains(key) == true) {
 		QJsonObject::const_iterator iter = object.constFind(key);
 		QJsonValue value(iter.value());
+		QString valueStr = QString();
+		bool match = false;
 		if (value.isString() == true) {
+			match = true;
 			valueStr = value.toString();
 		} else if (value.isDouble() == true) {
+			match = true;
 			valueStr.setNum(value.toDouble(), 'f', 6);
 		} else if (value.isBool() == true) {
+			match = true;
 			if (value.toBool() == true) {
 				valueStr = "true";
 			} else {
@@ -179,19 +187,22 @@ QString app::utility::json::Parser::searchJsonObject(const QJsonObject & object,
 		} else {
 			EXCEPTION_ACTION(throw, "Unable to convert value of type "  << value.type() << " of key " << key << " to string");
 		}
-		LOG_INFO(app::logger::info_level_e::ZERO, jsonParserValue, "Found key " << key << " with value " << valueStr);
+		if (match == true) {
+			LOG_INFO(app::logger::info_level_e::ZERO, jsonParserValue, "Found key " << key << " with value " << valueStr);
+			found = std::make_pair(match, valueStr);
+		}
 	} else {
 		const QStringList jsonKeys (object.keys());
 		// Iterate over all key of the object
 		for (QStringList::const_iterator keyIter = jsonKeys.cbegin(); keyIter != jsonKeys.cend(); keyIter++) {
 			LOG_INFO(app::logger::info_level_e::ZERO, jsonParserFileContent, "JSON key: " << *keyIter);
 			const QJsonValue value(object.value(*keyIter));
-			valueStr = this->searchJson(value, key);
-			if (valueStr != QString()) {
+			found = this->searchJson(value, key);
+			if (found.first == true) {
 				break;
 			}
 		}
 	}
 
-	return valueStr;
+	return found;
 }

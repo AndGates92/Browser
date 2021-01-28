@@ -71,7 +71,7 @@ void app::command_line::Parser::overrideArgumentValue(const std::string & key, c
 CONST_GETTER(app::command_line::Parser::getDecodedArguments, app::command_line::argument_map_t &, this->decodedArguments)
 CONST_GETTER(app::command_line::Parser::getArgc, int &, this->argc)
 
-char ** app::command_line::Parser::getArgv() {
+char ** app::command_line::Parser::getArgv() const {
 	return this->argv;
 }
 
@@ -122,12 +122,11 @@ void app::command_line::Parser::extractArguments() {
 				jsonFilePrint.append("because no action JSON file was provided");
 			} else {
 				jsonFilePrint.append(" in JSON file");
-				if (actionFiles.size() == 1) {
-					jsonFilePrint.append(": ");
-				} else {
+				if (actionFiles.size() > 1) {
 					// Append s to make plural as the file list has more than 1 element
-					jsonFilePrint.append("s: ");
+					jsonFilePrint.append("s");
 				}
+				jsonFilePrint.append(": ");
 
 				for (const auto & filename : actionFiles) {
 					if (filename.compare(actionFiles.front()) != 0) {
@@ -141,9 +140,8 @@ void app::command_line::Parser::extractArguments() {
 
 			const std::unique_ptr<app::command_line::Argument> & match = (shortCmdMatch == nullptr) ? longCmdMatch : shortCmdMatch;
 
-			const int & numberOfArguments = match->getNumberOfArguments();
-			const std::string & cmdName = match->getName();
-
+			const auto & numberOfArguments = match->getNumberOfArguments();
+			const auto & cmdName = match->getName();
 			LOG_INFO(app::logger::info_level_e::ZERO, commandLineParserOverall, "Found setting " << cmdName << " matching option " << option << " which expected " << numberOfArguments << " arguments");
 
 			std::string value = std::string();
@@ -157,6 +155,13 @@ void app::command_line::Parser::extractArguments() {
 					counter++;
 
 					std::string arg(this->argv[counter]);
+
+					const auto & validValues = match->getValidValues();
+					if (validValues.empty() == false) {
+						const auto valueMatch = std::find(validValues.cbegin(), validValues.cend(), arg);
+						EXCEPTION_ACTION_COND((valueMatch == validValues.cend()), throw, "Unable to find value " << arg << " for argument " << cmdName << " in list of valid values");
+					}
+
 					LOG_INFO(app::logger::info_level_e::ZERO, commandLineParserOverall, "Argument " << argNo << " of settings " << cmdName << " is " << arg);
 
 					value = value + arg;
@@ -178,11 +183,16 @@ void app::command_line::Parser::addItemToActionData(std::unique_ptr<app::command
 
 	void * valuePtr = nullptr;
 	int numberArguments = 0;
+	std::list<std::string> validValues;
 
 	if (key.compare("NumberArguments") == 0) {
 		double noArgumentsDouble = std::stod(item);
 		numberArguments = static_cast<int>(noArgumentsDouble);
 		valuePtr = &numberArguments;
+	} else if (key.compare("ValidValues") == 0) {
+		const std::string delimiter(",");
+		validValues = app::utility::splitStringByDelimiter<std::list>(item, delimiter);
+		valuePtr = &validValues;
 	} else {
 		valuePtr = &const_cast<std::string &>(item);
 	}
@@ -192,8 +202,10 @@ void app::command_line::Parser::addItemToActionData(std::unique_ptr<app::command
 
 void app::command_line::Parser::populateDefaultDecodedArguments() {
 	for (const auto & item : this->actionData) {
-		const std::string & defaultValue = static_cast<app::command_line::Argument *>(item.second.get())->getDefaultValue();
-		this->decodedArguments[item.first] = defaultValue;
+		const auto & argument = item.second;
+		const std::string & defaultValue = argument->getDefaultValue();
+		const std::string & name = argument->getName();
+		this->decodedArguments[name] = defaultValue;
 	}
 }
 
@@ -207,8 +219,10 @@ void app::command_line::Parser::appendActionData(const std::list<std::string> & 
 
 void app::command_line::Parser::appendActionData(const std::string & filename) {
 	app::base::json::Action<app::command_line::Argument>::appendActionData(filename);
+	// assign default values to the command line arguments
 	this->populateDefaultDecodedArguments();
 	if ((this->argc != 0) && (this->argv != nullptr)) {
+		// Change value of command line argument map based on inputs from the user (argc and argv)
 		this->extractArguments();
 	}
 }

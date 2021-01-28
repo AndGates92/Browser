@@ -10,9 +10,9 @@
 #include <QtWidgets/QShortcut>
 
 #include "app/shared/enums.h"
-#include "app/shared/cpp_functions.h"
 #include "app/shared/qt_functions.h"
 #include "app/utility/cpp/cpp_operator.h"
+#include "app/utility/cpp/stl_helper.h"
 #include "app/utility/qt/qt_operator.h"
 #include "app/utility/logger/macros.h"
 #include "app/windows/main_window/shared/shared_types.h"
@@ -48,7 +48,7 @@ app::main_window::json::Action::~Action() {
 std::string app::main_window::json::Action::getShortcutKey(const std::string & value) {
 	const std::string delim(",");
 	std::string keyName = std::string();
-	std::vector<std::string> subStrs = app::shared::splitStringByDelimiter(value, delim);
+	auto subStrs = app::utility::splitStringByDelimiter<std::vector>(value, delim);
 	auto alphaNum = [&] (unsigned char c) {
 		return (std::isalnum(c) != 0);
 	};
@@ -89,7 +89,7 @@ std::string app::main_window::json::Action::getShortcutKey(const std::string & v
 std::string app::main_window::json::Action::getShortcutModifier(const std::string & value) {
 	const std::string delim(",");
 	std::string modifierName("Qt::");
-	std::vector<std::string> subStrs = app::shared::splitStringByDelimiter(value, delim);
+	auto subStrs = app::utility::splitStringByDelimiter<std::vector>(value, delim);
 	auto alphaNumUpper = [&] (unsigned char c) {
 		return ((std::isalnum(c) != 0) && (std::isupper(c) != 0));
 	};

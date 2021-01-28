@@ -68,6 +68,28 @@ namespace tester {
 				typedef std::multimap<tester::shared::error_type_e, tester::shared::ErrorData> test_error_container_t;
 
 				/**
+				 * @brief Function: bool operator==(const Test & otherTest) const
+				 *
+				 * \param otherTest: base test to compare
+				 *
+				 * \return value of the comparison
+				 *
+				 * Base Test overloading of operator ==
+				 */
+				bool operator== (const Test & otherTest) const;
+
+				/**
+				 * @brief Function: bool weakEqualByName(const std::string & testName) const
+				 *
+				 * \param testName: string to find in the test name
+				 *
+				 * \return true if the name of the test contains the string provided as argument without case sensitivity
+				 *
+				 * This function returns the name of the test contains the string provided as argument
+				 */
+				bool weakEqualByName(const std::string & testName) const;
+
+				/**
 				 * @brief Function: static void sendKeyClickToFocus(const Qt::Key key)
 				 *
 				 * \return key: key to send to the focus
@@ -118,17 +140,6 @@ namespace tester {
 				 * This function runs the test
 				 */
 				virtual void run() final;
-
-				/**
-				 * @brief Function: bool operator==(const Test & otherTest) const
-				 *
-				 * \param otherTest: base test to compare
-				 *
-				 * \return value of the comparison
-				 *
-				 * Base Test overloading of operator ==
-				 */
-				bool operator== (const Test & otherTest) const;
 
 				/**
 				 * @brief Function: const std::shared_ptr<tester::base::Factory> & getFactory() const

@@ -32,36 +32,38 @@ namespace app {
 
 			public:
 				/**
-				 * @brief Function: static std::shared_ptr<app::command_line::Argument> makeArgument(const std::string & jsonKey, const std::string & nameKeyValue, const std::string & shortCmdKeyValue, const std::string & longCmdKeyValue, const std::string & defaultValueKeyValue, const int & numberOfArgumentsKeyValue, const std::string & helpKeyValue)
+				 * @brief Function: static std::shared_ptr<app::command_line::Argument> makeArgument(const std::string & jsonKey, const std::string & nameKeyValue, const std::string & shortCmdKeyValue, const std::string & longCmdKeyValue, const std::string & defaultValueKeyValue, const std::list<std::string> & validValuesKeyValue, const int & numberOfArgumentsKeyValue, const std::string & helpKeyValue)
 				 *
 				 * \param jsonKey: key in the json file
 				 * \param nameKeyValue: name of the argument
 				 * \param shortCmdKeyValue: short command the user has to type to trigger the argument
 				 * \param longCmdKeyValue: long command the user has to type to trigger the argument
 				 * \param defaultValueKeyValue: default value of the argument
+				 * \param validValuesKeyValue: valid values of the argument
 				 * \param numberOfArgumentsKeyValue: default value of the argument
 				 * \param longCmdKeyValue: long command the user has to type to trigger the argument
 				 * \param helpKeyValue: help of the argument
 				 *
 				 * this function constructs a new instance of class Argument
 				 */
-				static std::shared_ptr<app::command_line::Argument> makeArgument(const std::string & jsonKey, const std::string & nameKeyValue, const std::string & shortCmdKeyValue, const std::string & longCmdKeyValue, const std::string & defaultValueKeyValue, const int & numberOfArgumentsKeyValue, const std::string & helpKeyValue);
+				static std::shared_ptr<app::command_line::Argument> makeArgument(const std::string & jsonKey, const std::string & nameKeyValue, const std::string & shortCmdKeyValue, const std::string & longCmdKeyValue, const std::string & defaultValueKeyValue, const std::list<std::string> & validValuesKeyValue, const int & numberOfArgumentsKeyValue, const std::string & helpKeyValue);
 
 				/**
-				 * @brief Function: Argument(const std::string & jsonKey, const std::string & nameKeyValue = std::string(), const std::string & shortCmdKeyValue = std::string(), const std::string & longCmdKeyValue = std::string(), const std::string & defaultValueKeyValue = std::string(), const int & numberOfArgumentsKeyValue = -1, const std::string & helpKeyValue = std::string())
+				 * @brief Function: Argument(const std::string & jsonKey, const std::string & nameKeyValue = std::string(), const std::string & shortCmdKeyValue = std::string(), const std::string & longCmdKeyValue = std::string(), const std::string & defaultValueKeyValue = std::string(), const std::list<std::string> & validValuesKeyValue = std::list<std::string>(), const int & numberOfArgumentsKeyValue = -1, const std::string & helpKeyValue = std::string())
 				 *
 				 * \param jsonKey: key in the json file
 				 * \param nameKeyValue: name of the argument
 				 * \param shortCmdKeyValue: short command the user has to type to trigger the argument
 				 * \param longCmdKeyValue: long command the user has to type to trigger the argument
 				 * \param defaultValueKeyValue: default value of the argument
+				 * \param validValuesKeyValue: valid values of the argument
 				 * \param numberOfArgumentsKeyValue: default value of the argument
 				 * \param longCmdKeyValue: long command the user has to type to trigger the argument
 				 * \param helpKeyValue: help of the argument
 				 *
 				 * Main Window json data constructor
 				 */
-				explicit Argument(const std::string & jsonKey, const std::string & nameKeyValue = std::string(), const std::string & shortCmdKeyValue = std::string(), const std::string & longCmdKeyValue = std::string(), const std::string & defaultValueKeyValue = std::string(), const int & numberOfArgumentsKeyValue = -1, const std::string & helpKeyValue = std::string());
+				explicit Argument(const std::string & jsonKey, const std::string & nameKeyValue = std::string(), const std::string & shortCmdKeyValue = std::string(), const std::string & longCmdKeyValue = std::string(), const std::string & defaultValueKeyValue = std::string(), const std::list<std::string> & validValuesKeyValue = {}, const int & numberOfArgumentsKeyValue = -1, const std::string & helpKeyValue = std::string());
 
 				// Move and copy constructor
 				/**
@@ -183,6 +185,15 @@ namespace app {
 				const std::string & getDefaultValue() const;
 
 				/**
+				 * @brief Function: const std::list<std::string> & getValidValues() const
+				 *
+				 * \return valid values of the argument
+				 *
+				 * This functions returns the valid values of the argument
+				 */
+				const std::list<std::string> & getValidValues() const;
+
+				/**
 				 * @brief Function: const int & getNumberOfArguments() const
 				 *
 				 * \return number of arguments
@@ -242,6 +253,12 @@ namespace app {
 				 *
 				 */
 				std::string defaultValue;
+
+				/**
+				 * @brief list of valid values
+				 *
+				 */
+				std::list<std::string> validValues;
 
 				/**
 				 * @brief number of arguments

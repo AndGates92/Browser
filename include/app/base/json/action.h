@@ -234,10 +234,14 @@ typename app::base::json::Action<Data>::template enableFunction<FuncRet> app::ba
 			// Create JSON data
 			std::unique_ptr<Data> newData = std::make_unique<Data>(key);
 			const app::base::json::Data::parameter_t & dataParameters = newData->getParameters();
+			// Search all parameters for a given key and use them to pouplate the data
 			std::for_each(dataParameters.cbegin(), dataParameters.cend(), [&] (const std::string & param) {
-				const QString paramValue = commands.findKeyValue(QString::fromStdString(key), QString::fromStdString(param));
-				const std::string value = paramValue.toStdString();
-				this->addItemToActionData(newData, param, value);
+				const auto foundParam = commands.findKeyValue(QString::fromStdString(key), QString::fromStdString(param));
+				if (foundParam.first == true) {
+					// Assign a value to a parameter data by name
+					const auto value = foundParam.second.toStdString();
+					this->addItemToActionData(newData, param, value);
+				}
 			});
 
 			std::pair<std::string, std::unique_ptr<Data>> dataPair;

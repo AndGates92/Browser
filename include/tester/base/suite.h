@@ -59,6 +59,39 @@ namespace tester {
 				virtual ~Suite();
 
 				/**
+				 * @brief Function: bool operator== (const Suite & otherSuite) const
+				 *
+				 * \param otherSuite: base test to compare
+				 *
+				 * \return value of the comparison
+				 *
+				 * Base Suite overloading of operator ==
+				 */
+				bool operator== (const Suite & otherSuite) const;
+
+				/**
+				 * @brief Function: bool weakEqualByName(const std::string & suiteName) const
+				 *
+				 * \param testName: string to find in the test name
+				 *
+				 * \return true if the name of the suite contains the string provided as argument without case sensitivity
+				 *
+				 * This function returns the name of the suite contains the string provided as argument
+				 */
+				bool weakEqualByName(const std::string & suiteName) const;
+
+				/**
+				 * @brief Function: tests_container_t weakFindTest(const std::string & testName) const
+				 *
+				 * \param testName: string to find in the test name
+				 *
+				 * \return the list of tests that are weakly equal by name
+				 *
+				 * This function returns the list of tests that are weakly equal by name
+				 */
+				tests_container_t weakFindTest(const std::string & testName) const;
+
+				/**
 				 * @brief Function: virtual void postProcessCreation() override
 				 *
 				 * This function run tasks that follows suite creation
@@ -118,17 +151,6 @@ namespace tester {
 				 * This function finds a test with a given name
 				 */
 				std::shared_ptr<tester::base::Test> findTest(const std::string & testName) const;
-
-				/**
-				 * @brief Function: bool operator== (const Suite & otherSuite) const
-				 *
-				 * \param otherSuite: base test to compare
-				 *
-				 * \return value of the comparison
-				 *
-				 * Base Suite overloading of operator ==
-				 */
-				bool operator== (const Suite & otherSuite) const;
 
 			protected:
 				/**

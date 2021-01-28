@@ -90,13 +90,13 @@ namespace app {
 				const int & getArgc() const;
 
 				/**
-				 * @brief Function: char ** getArgv()
+				 * @brief Function: char ** getArgv() const
 				 *
 				 * \return the command line
 				 *
 				 * This function returns the command line that launched the application
 				 */
-				char ** getArgv();
+				char ** getArgv() const;
 
 				/**
 				 * @brief Function: const app::command_line::argument_map_t & getDecodedArguments() const

@@ -18,31 +18,15 @@
 // Categories
 LOGGING_CONTEXT(loggerOverall, logger.overall, TYPE_LEVEL, INFO_VERBOSITY)
 
-app::logger::Logger::Logger(const app::logger::msg_type_e loggerType, const std::string contextFile, const int line, const std::string function, app::logger::Logger::context_function_t loggerContextConstRef, const app::logger::info_level_e loggerInfoVerbosity) : app::logger::Logger(loggerType, contextFile, line, function, loggerContextConstRef, loggerInfoVerbosity, app::settings::Global::getLogFilePath()) {
-
-}
-
 app::logger::Logger::Logger(const app::logger::msg_type_e loggerType, const std::string contextFile, const int line, const std::string function, app::logger::Logger::context_function_t loggerContextConstRef, const app::logger::info_level_e loggerInfoVerbosity, const std::string ologfilename) : app::logger::Logger(loggerType, contextFile, line, function, loggerContextConstRef(), loggerInfoVerbosity, ologfilename) {
 
 }
 
-app::logger::Logger::Logger(const app::logger::msg_type_e loggerType, const std::string contextFile, const int line, const std::string function, const app::logger::Context loggerContext, const app::logger::info_level_e loggerInfoVerbosity) : app::logger::Logger(loggerType, contextFile, line, function, loggerContext, loggerInfoVerbosity, app::settings::Global::getLogFilePath()) {
-
-}
-
-app::logger::Logger::Logger(const app::logger::msg_type_e loggerType, const std::string contextFile, const int line, const std::string function, const app::logger::Context loggerContext, const app::logger::info_level_e loggerInfoVerbosity, const std::string ologfilename) : app::logger::Logger(loggerType, contextFile, line, function, loggerInfoVerbosity, ologfilename) {
+app::logger::Logger::Logger(const app::logger::msg_type_e loggerType, const std::string contextFile, const int line, const std::string function, const app::logger::Context & loggerContext, const app::logger::info_level_e loggerInfoVerbosity, const std::string ologfilename) : app::logger::Logger(loggerType, contextFile, line, function, loggerInfoVerbosity, ologfilename) {
 	this->initializeLogging(loggerContext);
 }
 
-app::logger::Logger::Logger(const app::logger::msg_type_e loggerType, const std::string contextFile, const int line, const std::string function, const app::logger::info_level_e loggerInfoVerbosity) : app::logger::Logger(loggerType, contextFile, line, function, loggerInfoVerbosity, app::settings::Global::getLogFilePath()) {
-
-}
-
-app::logger::Logger::Logger(const app::logger::msg_type_e loggerType, const std::string contextFile, const int line, const std::string function, const app::logger::info_level_e loggerInfoVerbosity, const std::string ologfilename) : context(app::logger::Config::getInstance()->getDefaultContextName(), contextFile, line, function, app::logger::Config::getInstance()->getDefaultType(), app::logger::Config::getInstance()->getDefaultVerbosity()), ofile(ologfilename, app::logger::Logger::openMode), infoVerbosity(loggerInfoVerbosity), type(loggerType), state(app::logger::state_e::CONSTRUCTED) {
-
-}
-
-app::logger::Logger::Logger(const app::logger::msg_type_e loggerType, const std::string contextFile, const int line, const std::string function) : app::logger::Logger(loggerType, contextFile, line, function, app::settings::Global::getLogFilePath()) {
+app::logger::Logger::Logger(const app::logger::msg_type_e loggerType, const std::string contextFile, const int line, const std::string function, const app::logger::info_level_e loggerInfoVerbosity, const std::string ologfilename) : context(app::logger::Config::getInstance()->getDefaultContextName(), contextFile, line, function, app::logger::Config::getInstance()->getDefaultType(), app::logger::Config::getInstance()->getDefaultVerbosity(), ologfilename), ofile(), infoVerbosity(loggerInfoVerbosity), type(loggerType), state(app::logger::state_e::CONSTRUCTED) {
 
 }
 
@@ -68,7 +52,7 @@ void app::logger::Logger::copyContextData(const app::logger::Context & otherCont
 	this->context.setInfoVerbosity(otherContext.getInfoVerbosity());
 	const std::string & currentCtxtLogFilename = this->context.getLogFilename();
 	// Copy log filename from context only if no filename was passed to the logger at the time of construction
-	if ((currentCtxtLogFilename.empty() == true) || (currentCtxtLogFilename.compare(app::settings::Global::getLogFilePath()) == 0)) {
+	if (currentCtxtLogFilename.empty() == true) {
 		this->context.setLogFilename(otherContext.getLogFilename());
 	}
 	EXCEPTION_ACTION_COND((this->getLogFilename().empty() == true), throw, "Log filename was set to an empty string");
@@ -114,32 +98,38 @@ void app::logger::Logger::createHeader() {
 }
 
 void app::logger::Logger::endLogging() {
-	if ((this->isLogAllowed() == true) && (this->ofile.is_open() == true)) {
+	// End logging only if logging is allowed and stream file is opened or writing to standard out
+	if ((this->isLogAllowed() == true) && ((this->ofile.is_open() == true) || (this->getLogFilename().compare(app::logger::stdoutStr) == 0))) {
 		this->logMutex.lock();
 		// Append endl at the end of the message
-		this->ofile << std::endl;
+		if (this->getLogFilename().compare(app::logger::stdoutStr) == 0) {
+			std::cout << std::endl;
+		} else {
+			this->ofile << std::endl;
+		}
 		this->logMutex.unlock();
 	}
 	this->setState(app::logger::state_e::LOGGING_ENDED);
 }
 
 void app::logger::Logger::openOFile() {
-	if (this->ofile.is_open() == false) {
-		EXCEPTION_ACTION_COND((this->getLogFilename().empty() == true), throw, "Unable to open file with empty name");
-		if (this->getLogFilename().empty() == true) {
-			this->ofile.open(app::settings::Global::getLogFilePath(), app::logger::Logger::openMode);
-			this->context.setLogFilename(app::settings::Global::getLogFilePath());
-		} else {
+	if (this->getLogFilename().compare(app::logger::stdoutStr) != 0) {
+		// Do not open the file if it is stdout
+		if (this->ofile.is_open() == false) {
+			if (this->getLogFilename().empty() == true) {
+				this->context.setLogFilename(app::settings::Global::getLogFilePath());
+			}
 			this->ofile.open(this->getLogFilename(), app::logger::Logger::openMode);
-		}
-		if ((this->ofile.rdstate() & std::ostream::failbit) != 0) {
-			EXCEPTION_ACTION(throw, "Unable to open file " << this->getLogFilename());
+			if ((this->ofile.rdstate() & std::ostream::failbit) != 0) {
+				EXCEPTION_ACTION(throw, "Unable to open file " << this->getLogFilename());
+			}
 		}
 	}
 }
 
 void app::logger::Logger::closeOFile() {
-	if (this->ofile.is_open() == true) {
+	// Do nto close the file if it is not opened or if it is stdout
+	if ((this->getLogFilename().compare(app::logger::stdoutStr) != 0) && (this->ofile.is_open() == true)){
 		this->logMutex.lock();
 		this->ofile.close();
 		this->logMutex.unlock();

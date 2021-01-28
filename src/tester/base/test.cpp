@@ -58,7 +58,7 @@ tester::base::Test::~Test() {
 	LOG_INFO(app::logger::info_level_e::ZERO, baseTestOverall, "Test " << this->name << " destructor");
 }
 
-bool tester::base::Test::operator== (const tester::base::Test & otherTest) const {
+bool tester::base::Test::operator==(const tester::base::Test & otherTest) const {
 	bool nameComparison = (this->getName().compare(otherTest.getName()) < 0);
 	bool suiteComparison = (this->getSuite() == otherTest.getSuite());
 	bool factoryComparison = (this->getFactory() == otherTest.getFactory());
@@ -66,6 +66,25 @@ bool tester::base::Test::operator== (const tester::base::Test & otherTest) const
 	bool compare = ((nameComparison == true) && (suiteComparison == true) && (factoryComparison == true));
 
 	return compare;
+}
+
+bool tester::base::Test::weakEqualByName(const std::string & testName) const {
+
+	auto lowerTestName = this->getName();
+	std::transform(lowerTestName.begin(), lowerTestName.end(), lowerTestName.begin(), ::tolower);
+
+	auto searchedLowerTestName = testName;
+	std::transform(searchedLowerTestName.begin(), searchedLowerTestName.end(), searchedLowerTestName.begin(), ::tolower);
+
+	auto pos = lowerTestName.find(searchedLowerTestName);
+
+	bool match = false;
+	if (pos != std::string::npos) {
+		match = true;
+	}
+
+	return match;
+
 }
 
 void tester::base::Test::checkCreation() const {

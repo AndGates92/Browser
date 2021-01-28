@@ -41,7 +41,22 @@ int main (int argc, char* argv[]) {
 		LOG_INFO(app::logger::info_level_e::ZERO, , "Built on " << __DATE__ << " at " << __TIME__);
 		LOG_INFO(app::logger::info_level_e::ZERO, , "QT version " << QT_VERSION_STR);
 
-		app::init::initializeBrowser(argc, argv);
+		app::init::initializeSettings(argc, argv);
+
+		const app::command_line::argument_map_t & settingsMap = app::settings::Global::getInstance()->getSettingsMap();
+
+		const auto & helpArgument = settingsMap.find("Help");
+		EXCEPTION_ACTION_COND((helpArgument == settingsMap.cend()), throw, "Unable to find key help in command line argument map");
+		const auto & helpRawValue = helpArgument->second;
+		EXCEPTION_ACTION_COND((helpRawValue.empty() == true), throw, "Unable to set up runner if name of suiteName is an empty string. Choose a suite or keep the default value that ensures that you runs all tests.");
+
+		const auto help = (std::stoi(helpRawValue) == 1);
+		if (help == true) {
+			app::settings::Global::getInstance()->printHelp();
+			std::exit(EXIT_SUCCESS);
+		} else {
+			app::init::initializeGraphics(argc, argv);
+		}
 	} catch (const app::exception::Exception & bexc) {
 		std::string bexcMsg(bexc.print());
 		app::exception::printException(bexcMsg);
