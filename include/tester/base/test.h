@@ -259,36 +259,36 @@ namespace tester {
 				void setName(const std::string & testName);
 
 				/**
-				 * @brief Function: void addExpectedError(const test_error_container_t & errors)
+				 * @brief Function: void addExpectedError(const test_error_container_t & errors) const
 				 *
 				 * \param errors: expected errors
 				 *
 				 * This function adds items to the expected error multi map
 				 */
-				void addExpectedError(const test_error_container_t & errors);
+				void addExpectedError(const test_error_container_t & errors) const;
 
 				/**
-				 * @brief Function: void addExpectedError(const tester::shared::error_type_e & type, const tester::shared::ErrorData & data)
+				 * @brief Function: void addExpectedError(const tester::shared::error_type_e & type, const tester::shared::ErrorData & data) const
 				 *
 				 * \param type: type of expected error
 				 * \param data: data of the expected error
 				 *
 				 * This function adds an item to the expected error multi map
 				 */
-				void addExpectedError(const tester::shared::error_type_e & type, const tester::shared::ErrorData & data);
+				void addExpectedError(const tester::shared::error_type_e & type, const tester::shared::ErrorData & data) const;
 
 				/**
-				 * @brief Function: void addTestError(const tester::shared::error_type_e & type, const tester::shared::ErrorData & data)
+				 * @brief Function: void addTestError(const tester::shared::error_type_e & type, const tester::shared::ErrorData & data) const
 				 *
 				 * \param type: type of expected error
 				 * \param data: data of the expected error
 				 *
 				 * This function adds an item to the expected error multi map
 				 */
-				void addError(test_error_container_t & errors, const tester::shared::error_type_e & type, const tester::shared::ErrorData & data);
+				void addError(test_error_container_t & errors, const tester::shared::error_type_e & type, const tester::shared::ErrorData & data) const;
 
 				/**
-				 * @brief Function: void addAssertionFailure(const int & line, const std::string & filename, const std::string & condition, const tester::shared::error_type_e & type, const std::string & errorMessage);
+				 * @brief Function: void addAssertionFailure(const int & line, const std::string & filename, const std::string & condition, const tester::shared::error_type_e & type, const std::string & errorMessage) const
 				 *
 				 * \param line: line number of the error
 				 * \param filename: filename where the error occurred
@@ -298,10 +298,10 @@ namespace tester {
 				 *
 				 * This function adds an item to the expected error multi map
 				 */
-				void addAssertionFailure(const int & line, const std::string & filename, const std::string & condition, const tester::shared::error_type_e & type, const std::string & errorMessage);
+				void addAssertionFailure(const int & line, const std::string & filename, const std::string & condition, const tester::shared::error_type_e & type, const std::string & errorMessage) const;
 
 				/**
-				 * @brief Function: void addExceptionThrown(const int & line, const std::string & filename, const std::string & condition, const std::string & errorMessage);
+				 * @brief Function: void addExceptionThrown(const int & line, const std::string & filename, const std::string & condition, const std::string & errorMessage)
 				 *
 				 * \param line: line number of the error
 				 * \param filename: filename where the error occurred
@@ -357,13 +357,13 @@ namespace tester {
 				 * @brief map of errors
 				 *
 				 */
-				test_error_container_t errorMap;
+				mutable test_error_container_t errorMap;
 
 				/**
 				 * @brief map of expected errors
 				 *
 				 */
-				test_error_container_t expectedErrors;
+				mutable test_error_container_t expectedErrors;
 
 				/**
 				 * @brief state of the test

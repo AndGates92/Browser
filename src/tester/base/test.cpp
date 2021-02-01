@@ -228,20 +228,24 @@ CONST_GETTER(tester::base::Test::getExpectedErrors, tester::base::Test::test_err
 CONST_SETTER_GETTER(tester::base::Test::setState, tester::base::Test::getState, tester::shared::test_state_e &, this->state)
 CONST_GETTER(tester::base::Test::getStatus, tester::shared::test_status_e &, this->status)
 
-void tester::base::Test::addExpectedError(const tester::base::Test::test_error_container_t & errors) {
+void tester::base::Test::addError(test_error_container_t & errors, const tester::shared::error_type_e & type, const tester::shared::ErrorData & data) const {
+	errors.insert(std::pair<tester::shared::error_type_e, tester::shared::ErrorData>(type, data));
+}
+
+void tester::base::Test::addExpectedError(const tester::base::Test::test_error_container_t & errors) const {
 	for (auto it = errors.cbegin(); it != errors.cend(); it++) {
 		this->addExpectedError(it->first, it->second);
 	}
 }
 
-void tester::base::Test::addExpectedError(const tester::shared::error_type_e & type, const tester::shared::ErrorData & data) {
+void tester::base::Test::addExpectedError(const tester::shared::error_type_e & type, const tester::shared::ErrorData & data) const {
 	bool errorFound = this->searchError(this->expectedErrors, type, data, false);
 	if (errorFound == false) {
 		this->addError(this->expectedErrors, type, data);
 	}
 }
 
-void tester::base::Test::addAssertionFailure(const int & line, const std::string & filename, const std::string & condition, const tester::shared::error_type_e & type, const std::string & errorMessage) {
+void tester::base::Test::addAssertionFailure(const int & line, const std::string & filename, const std::string & condition, const tester::shared::error_type_e & type, const std::string & errorMessage) const {
 	const tester::shared::ErrorData data(this->weak_from_this(), filename, line, condition, errorMessage);
 	LOG_INFO(app::logger::info_level_e::ZERO, baseTestTest, "ASSERTION FAILED: " << data);
 	this->addError(this->errorMap, type, data);
@@ -270,10 +274,6 @@ bool tester::base::Test::waitForCondition(const std::function<bool(void)> & cond
 	}
 
 	return result;
-}
-
-void tester::base::Test::addError(test_error_container_t & errors, const tester::shared::error_type_e & type, const tester::shared::ErrorData & data) {
-	errors.insert(std::pair<tester::shared::error_type_e, tester::shared::ErrorData>(type, data));
 }
 
 bool tester::base::Test::searchError(const tester::base::Test::test_error_container_t & container, const tester::shared::error_type_e & type, const tester::shared::ErrorData & data, const bool & fullMatch) const {

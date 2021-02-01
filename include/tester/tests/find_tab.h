@@ -57,7 +57,7 @@ namespace tester {
 			private:
 
 				/**
-				 * @brief Function: void findInTab(const std::string & command, const std::regex & numberRegex, const int & expectedNumberOfMatches, const int & initialVScroll, int & vScrollPageMatch, const std::vector<int> & initialMatchPosition, std::vector<int> & currentPageMatchPosition, const bool wrapping)
+				 * @brief Function: void findInTab(const std::string & command, const std::regex & numberRegex, const int & expectedNumberOfMatches, const int & initialVScroll, int & vScrollPageMatch, const std::vector<int> & initialMatchPosition, std::vector<int> & currentPageMatchPosition, const bool wrapping) const
 				 *
 				 * \param command: find command
 				 * \param numberRegex: regex to extract data from the search result label
@@ -70,11 +70,11 @@ namespace tester {
 				 *
 				 * This function extracts the data from the search result label
 				 */
-				void findInTab(const std::string & command, const std::regex & numberRegex, const int & expectedNumberOfMatches, int & vScrollPageMatch, std::vector<int> & currentPageMatchPosition, const bool wrapping);
+				void findInTab(const std::string & command, const std::regex & numberRegex, const int & expectedNumberOfMatches, int & vScrollPageMatch, std::vector<int> & currentPageMatchPosition, const bool wrapping) const;
 
 			#if QT_VERSION >= QT_VERSION_CHECK(5, 14, 0)
 				/**
-				 * @brief Function: std::vector<int> searchDataToNumbers(const std::regex & numberRegex, const int & expectedNumberOfMatches)
+				 * @brief Function: std::vector<int> searchDataToNumbers(const std::regex & numberRegex, const int & expectedNumberOfMatches) const
 				 *
 				 * \param numberRegex: regex to extract data from the search result label
 				 * \param expectedNumberOfMatches: expected number of matches
@@ -83,12 +83,12 @@ namespace tester {
 				 *
 				 * This function extracts the data from the search result label as a vector of integers
 				 */
-				std::vector<int> searchDataToNumbers(const std::regex & numberRegex, const int & expectedNumberOfMatches);
+				std::vector<int> searchDataToNumbers(const std::regex & numberRegex, const int & expectedNumberOfMatches) const;
 			#endif // QT_VERSION
 
 			#if QT_VERSION >= QT_VERSION_CHECK(5, 14, 0)
 				/**
-				 * @brief Function: std::vector<std::string> extractDataFromSearchResult(const std::regex & numberRegex, const int & expectedNumberOfMatches)
+				 * @brief Function: std::vector<std::string> extractDataFromSearchResult(const std::regex & numberRegex, const int & expectedNumberOfMatches) const
 				 *
 				 * \param numberRegex: regex to extract data from the search result label
 				 * \param expectedNumberOfMatches: expected number of matches
@@ -97,11 +97,11 @@ namespace tester {
 				 *
 				 * This function extracts the data from the search result label as a vector of strings
 				 */
-				std::vector<std::string> extractDataFromSearchResult(const std::regex & numberRegex, const int & expectedNumberOfMatches);
+				std::vector<std::string> extractDataFromSearchResult(const std::regex & numberRegex, const int & expectedNumberOfMatches) const;
 			#endif // QT_VERSION
 
 				/**
-				 * @brief Function: int computeNextMatchNumber(const std::string & command, const std::vector<int> & initialMatchPosition)
+				 * @brief Function: int computeNextMatchNumber(const std::string & command, const std::vector<int> & initialMatchPosition) const
 				 *
 				 * \param command: command sent to the window
 				 * \param initialMatchPosition: initial match position vector. The first element is the current match position and the second element is the total number of matches
@@ -110,11 +110,11 @@ namespace tester {
 				 *
 				 * This function computes the expected next match position
 				 */
-				int computeNextMatchNumber(const std::string & command, const std::vector<int> & initialMatchPosition);
+				int computeNextMatchNumber(const std::string & command, const std::vector<int> & initialMatchPosition) const;
 
 			#if QT_VERSION >= QT_VERSION_CHECK(5, 14, 0)
 				/**
-				 * @brief Function: std::vector<int> checkMatchPosition(const std::string & command, const std::regex & numberRegex, const int & expectedNumberOfMatches, const std::vector<int> & initialMatchPosition)
+				 * @brief Function: std::vector<int> checkMatchPosition(const std::string & command, const std::regex & numberRegex, const int & expectedNumberOfMatches, const std::vector<int> & initialMatchPosition) const
 				 *
 				 * \param command: command sent to the window
 				 * \param numberRegex: regex to extract data from the search result label
@@ -125,11 +125,11 @@ namespace tester {
 				 *
 				 * This method checks that the match position is the one that is expected
 				 */
-				std::vector<int> checkMatchPosition(const std::string & command, const std::regex & numberRegex, const int & expectedNumberOfMatches, const std::vector<int> & initialMatchPosition);
+				std::vector<int> checkMatchPosition(const std::string & command, const std::regex & numberRegex, const int & expectedNumberOfMatches, const std::vector<int> & initialMatchPosition) const;
 			#endif // QT_VERSION
 
 				/**
-				 * @brief Function: int checkVScrolling(const int & initialVScroll, const std::string & command, const bool wrapping)
+				 * @brief Function: int checkVScrolling(const int & initialVScroll, const std::string & command, const bool wrapping) const
 				 *
 				 * \param initialVScroll: vertical scrolling before search
 				 * \param command: command sent to the window
@@ -139,10 +139,10 @@ namespace tester {
 				 *
 				 * This method checks that the vertical scrolling change through the command
 				 */
-				int checkVScrolling(const int & initialVScroll, const std::string & command, const bool wrapping);
+				int checkVScrolling(const int & initialVScroll, const std::string & command, const bool wrapping) const;
 
 				/**
-				 * @brief Function: int checkVScrolling(const int & initialVScroll, const int & initialMatchPosition, const int & finalMatchPosition)
+				 * @brief Function: int checkVScrolling(const int & initialVScroll, const int & initialMatchPosition, const int & finalMatchPosition) const
 				 *
 				 * \param initialVScroll: vertical scrolling before search
 				 * \param initialMatchPosition: match position before search
@@ -152,7 +152,7 @@ namespace tester {
 				 *
 				 * This method checks that the vertical scrolling change through the match information
 				 */
-				int checkVScrolling(const int & initialVScroll, const int & initialMatchPosition, const int & finalMatchPosition);
+				int checkVScrolling(const int & initialVScroll, const int & initialMatchPosition, const int & finalMatchPosition) const;
 		};
 
 	}

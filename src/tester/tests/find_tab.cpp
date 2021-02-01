@@ -84,7 +84,7 @@ tester::test::FindTab::~FindTab() {
 }
 
 #if QT_VERSION >= QT_VERSION_CHECK(5, 14, 0)
-std::vector<std::string> tester::test::FindTab::extractDataFromSearchResult(const std::regex & numberRegex, const int & expectedNumberOfMatches) {
+std::vector<std::string> tester::test::FindTab::extractDataFromSearchResult(const std::regex & numberRegex, const int & expectedNumberOfMatches) const {
 	auto sregexIteratorEnd = std::sregex_iterator();
 
 	const std::shared_ptr<app::main_window::window::Core> & windowCore = this->windowWrapper->getWindowCore();
@@ -104,7 +104,7 @@ std::vector<std::string> tester::test::FindTab::extractDataFromSearchResult(cons
 }
 #endif // QT_VERSION
 
-int tester::test::FindTab::computeNextMatchNumber(const std::string & command, const std::vector<int> & initialMatchPosition) {
+int tester::test::FindTab::computeNextMatchNumber(const std::string & command, const std::vector<int> & initialMatchPosition) const {
 	const std::vector<int>::size_type initialMatchPositionSize = initialMatchPosition.size();
 	ASSERT((initialMatchPositionSize >= 2), tester::shared::error_type_e::STATUSBAR, "Initial match position vector must have at least 2 elements to be able to perform checks. It has " + std::to_string(initialMatchPositionSize) + " instead.");
 	int nextMatch = -1;
@@ -132,7 +132,7 @@ int tester::test::FindTab::computeNextMatchNumber(const std::string & command, c
 	return nextMatch;
 }
 
-int tester::test::FindTab::checkVScrolling(const int & initialVScroll, const int & initialMatchPosition, const int & finalMatchPosition) {
+int tester::test::FindTab::checkVScrolling(const int & initialVScroll, const int & initialMatchPosition, const int & finalMatchPosition) const {
 	const std::shared_ptr<app::main_window::window::Core> & windowCore = this->windowWrapper->getWindowCore();
 	const int currentVScroll = windowCore->bottomStatusBar->getVScroll();
 
@@ -148,7 +148,7 @@ int tester::test::FindTab::checkVScrolling(const int & initialVScroll, const int
 	return currentVScroll;
 }
 
-int tester::test::FindTab::checkVScrolling(const int & initialVScroll, const std::string & command, const bool wrapping) {
+int tester::test::FindTab::checkVScrolling(const int & initialVScroll, const std::string & command, const bool wrapping) const {
 	const std::shared_ptr<app::main_window::window::Core> & windowCore = this->windowWrapper->getWindowCore();
 	const int currentVScroll = windowCore->bottomStatusBar->getVScroll();
 
@@ -172,7 +172,7 @@ int tester::test::FindTab::checkVScrolling(const int & initialVScroll, const std
 }
 
 #if QT_VERSION >= QT_VERSION_CHECK(5, 14, 0)
-std::vector<int> tester::test::FindTab::searchDataToNumbers(const std::regex & textRegex, const int & expectedNumberOfMatches) {
+std::vector<int> tester::test::FindTab::searchDataToNumbers(const std::regex & textRegex, const int & expectedNumberOfMatches) const {
 	const std::vector<std::string> matchVectorStr = this->extractDataFromSearchResult(textRegex, expectedNumberOfMatches);
 	std::vector<int> matchVector;
 	std::transform(matchVectorStr.cbegin(), matchVectorStr.cend(), back_inserter(matchVector), [] (const std::string & str) {
@@ -183,7 +183,7 @@ std::vector<int> tester::test::FindTab::searchDataToNumbers(const std::regex & t
 #endif // QT_VERSION
 
 #if QT_VERSION >= QT_VERSION_CHECK(5, 14, 0)
-std::vector<int> tester::test::FindTab::checkMatchPosition(const std::string & command, const std::regex & textRegex, const int & expectedNumberOfMatches, const std::vector<int> & initialMatchPosition) {
+std::vector<int> tester::test::FindTab::checkMatchPosition(const std::string & command, const std::regex & textRegex, const int & expectedNumberOfMatches, const std::vector<int> & initialMatchPosition) const {
 	const std::vector<int> matchVector = this->searchDataToNumbers(textRegex, expectedNumberOfMatches);
 	const std::vector<int>::size_type initialMatchPositionSize = initialMatchPosition.size();
 	ASSERT((initialMatchPositionSize >= 2), tester::shared::error_type_e::STATUSBAR, "Initial match position vector must have at least 2 elements to be able to perform checks. It has " + std::to_string(initialMatchPositionSize) + " instead.");
@@ -204,7 +204,7 @@ std::vector<int> tester::test::FindTab::checkMatchPosition(const std::string & c
 }
 #endif // QT_VERSION
 
-void tester::test::FindTab::findInTab(const std::string & command, const std::regex & numberRegex, const int & expectedNumberOfMatches, int & currentVScroll, std::vector<int> & currentMatchPosition, const bool wrapping) {
+void tester::test::FindTab::findInTab(const std::string & command, const std::regex & numberRegex, const int & expectedNumberOfMatches, int & currentVScroll, std::vector<int> & currentMatchPosition, const bool wrapping) const {
 	// Finding upward means that the current item found is the one at the bottom of the webpage
 	const std::shared_ptr<app::main_window::window::Core> & windowCore = this->windowWrapper->getWindowCore();
 	const std::string initialSearchResult = windowCore->bottomStatusBar->getSearchResultText().toStdString();

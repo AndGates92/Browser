@@ -65,35 +65,35 @@ namespace tester {
 				virtual ~CommandTest();
 
 				/**
-				 * @brief Function: makeSearchInTab(const std::string & commandName, const std::string & search = std::string())
+				 * @brief Function: makeSearchInTab(const std::string & commandName, const std::string & search = std::string()) const
 				 *
 				 * \param commandName: command releated to the search
 				 * \param search: text of the search
 				 *
 				 * This function makes a search in a tab and loads the search provided as an argument. If argument search is empty, then the default tab will be opened
 				 */
-				void makeSearchInTab(const std::string & commandName, const std::string & search = std::string());
+				void makeSearchInTab(const std::string & commandName, const std::string & search = std::string()) const;
 
 				/**
-				 * @brief Function: void openNewTab(const std::string & website = std::string())
+				 * @brief Function: void openNewTab(const std::string & website = std::string()) const
 				 *
 				 * \param website: website to open
 				 *
 				 * This function opens a new tab and loads the website provided as an argument. If argument website is empty, then the default tab will be opened
 				 */
-				void openNewTab(const std::string & website = std::string());
+				void openNewTab(const std::string & website = std::string()) const;
 
 				/**
-				 * @brief Function: void openFile(const std::string & filepath)
+				 * @brief Function: void openFile(const std::string & filepath) const
 				 *
 				 * \param filepath: path to the file to open
 				 *
 				 * This function opens a file in a new tab
 				 */
-				void openFile(const std::string & filepath);
+				void openFile(const std::string & filepath) const;
 
 				/**
-				 * @brief Function: void executeCommand(const std::string & commandName, const std::string & argument = std::string(), const bool executeAfterTypingArgument = true)
+				 * @brief Function: void executeCommand(const std::string & commandName, const std::string & argument = std::string(), const bool executeAfterTypingArgument = true) const
 				 *
 				 * \param commandName: name of command to search in the JSON
 				 * \param argument: argument to provide to the command. This argument can be an empty string
@@ -101,7 +101,7 @@ namespace tester {
 				 *
 				 * This function send an argument and pass an argument to it
 				 */
-				void executeCommand(const std::string & commandName, const std::string & argument = std::string(), const bool executeAfterTypingArgument = true);
+				void executeCommand(const std::string & commandName, const std::string & argument = std::string(), const bool executeAfterTypingArgument = true) const;
 
 				/**
 				 * @brief Function: bool commandRequiresEnter(const std::string & commandName) const
@@ -115,7 +115,7 @@ namespace tester {
 				bool commandRequiresEnter(const std::string & commandName) const;
 
 				/**
-				 * @brief Function: std::string commandNameToTypedText(const std::string & commandName)
+				 * @brief Function: std::string commandNameToTypedText(const std::string & commandName) const
 				 *
 				 * \param commandName: name of command to search in the JSON
 				 *
@@ -123,10 +123,10 @@ namespace tester {
 				 *
 				 * This function converts a command name into the text to send to the app
 				 */
-				std::string commandNameToTypedText(const std::string & commandName);
+				std::string commandNameToTypedText(const std::string & commandName) const;
 
 				/**
-				 * @brief Function: std::string commandNameToShownText(const std::string & commandName, const bool commandAsTyped);
+				 * @brief Function: std::string commandNameToShownText(const std::string & commandName, const bool commandAsTyped) const
 				 *
 				 * \param commandName: name of command to search in the JSON
 				 * \param commandAsTyped: keep command as shown
@@ -135,44 +135,44 @@ namespace tester {
 				 *
 				 * This function converts a command name into the text to shown in the statusbar
 				 */
-				std::string commandNameToShownText(const std::string & commandName, const bool commandAsTyped);
+				std::string commandNameToShownText(const std::string & commandName, const bool commandAsTyped) const;
 
 				/**
-				 * @brief Function: void checkCurrentTab(const std::string & search, const int & expectedNumberOfTabs)
+				 * @brief Function: void checkCurrentTab(const std::string & search, const int & expectedNumberOfTabs) const
 				 *
 				 * \param search: text searched by the user
 				 * \param expectedNumberOfTabs: expected number of tabs
 				 *
 				 * This function check the URL in the current tab and the number of tabs
 				 */
-				void checkCurrentTab(const std::string & search, const int & expectedNumberOfTabs);
+				void checkCurrentTab(const std::string & search, const int & expectedNumberOfTabs) const;
 
 				/**
-				 * @brief Function: void checkSource(const std::shared_ptr<app::main_window::tab::Tab> & tab, const std::string & search)
+				 * @brief Function: void checkSource(const std::shared_ptr<app::main_window::tab::Tab> & tab, const std::string & search) const
 				 *
 				 * \param tab: tab to check URL for
 				 * \param search: text searched by the user
 				 *
 				 * This function check the tab URL based on the text searched from the user
 				 */
-				void checkSource(const std::shared_ptr<app::main_window::tab::Tab> & tab, const std::string & search);
+				void checkSource(const std::shared_ptr<app::main_window::tab::Tab> & tab, const std::string & search) const;
 
 				/**
-				 * @brief Function: void checkUrl(const std::string currentUrl, const std::string & expectedUrl)
+				 * @brief Function: void checkUrl(const std::string currentUrl, const std::string & expectedUrl) const
 				 *
 				 * \param currentUrl: current URL to use verify
 				 * \param expectedUrl: expected URL to match the current one against
 				 *
 				 * This function compares the expected URL with the current one
 				 */
-				void checkUrl(const std::string currentUrl, const std::string & expectedUrl);
+				void checkUrl(const std::string currentUrl, const std::string & expectedUrl) const;
 
 				/**
-				 * @brief Function: void waitForTabOpened()
+				 * @brief Function: void waitForTabOpened() const
 				 *
 				 * This function waits for the tab to be opened
 				 */
-				void waitForTabOpened();
+				void waitForTabOpened() const;
 
 			private:
 
@@ -194,7 +194,7 @@ namespace tester {
 				bool stateRequiresArgument(const app::main_window::state_e & state) const;
 
 				/**
-				 * @brief Function: void writeTextToStatusBar(const std::string & textToWrite, const std::string & expectedText, const app::main_window::state_e & expectedState, const bool execute)
+				 * @brief Function: void writeTextToStatusBar(const std::string & textToWrite, const std::string & expectedText, const app::main_window::state_e & expectedState, const bool execute) const
 				 *
 				 * \param textToWrite: text to write in the status bar
 				 * \param expectedText: expected text to be displayed in the window
@@ -204,10 +204,10 @@ namespace tester {
 				 *
 				 * This function writes text to the status base and compares it against a golden reference
 				 */
-				void writeTextToStatusBar(const std::string & textToWrite, const std::string & expectedText, const app::main_window::state_e & expectedState, const bool execute, const bool pressEnter);
+				void writeTextToStatusBar(const std::string & textToWrite, const std::string & expectedText, const app::main_window::state_e & expectedState, const bool execute, const bool pressEnter) const;
 
 				/**
-				 * @brief Function: void writeCommandToStatusBar(const std::string & commandName, const app::main_window::state_e & expectedState, const bool execute)
+				 * @brief Function: void writeCommandToStatusBar(const std::string & commandName, const app::main_window::state_e & expectedState, const bool execute) const
 				 *
 				 * \param commandName: name of command to search in the JSON
 				 * \param expectedState: expected window state while typing
@@ -215,17 +215,17 @@ namespace tester {
 				 *
 				 * This function writes a command to the status base and creates the golden reference to compare against
 				 */
-				void writeCommandToStatusBar(const std::string & commandName, const app::main_window::state_e & expectedState, const bool execute);
+				void writeCommandToStatusBar(const std::string & commandName, const app::main_window::state_e & expectedState, const bool execute) const;
 
 				/**
-				 * @brief Function: void checkStateAfterTypingText(const std::string & expectedText, const app::main_window::state_e & expectedState)
+				 * @brief Function: void checkStateAfterTypingText(const std::string & expectedText, const app::main_window::state_e & expectedState) const
 				 *
 				 * \param expectedText: expected text to be displayed in the window
 				 * \param expectedState: expected window state while typing
 				 *
 				 * This function checks the text in the status bar and window state
 				 */
-				void checkStateAfterTypingText(const std::string & expectedText, const app::main_window::state_e & expectedState);
+				void checkStateAfterTypingText(const std::string & expectedText, const app::main_window::state_e & expectedState) const;
 
 		};
 

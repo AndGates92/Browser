@@ -15,7 +15,7 @@
 // Categories
 LOGGING_CONTEXT(errorDataOverall, errorData.overall, TYPE_LEVEL, INFO_VERBOSITY)
 
-tester::shared::ErrorData::ErrorData(const std::weak_ptr<tester::base::Test> & errorTest, const std::string & errorFilename, const int & errorLineNumber, const std::string & errorCondition, const std::string & errorMessage) : test(errorTest), lineNumber(errorLineNumber), filename(errorFilename), condition(errorCondition), message(errorMessage) {
+tester::shared::ErrorData::ErrorData(const std::weak_ptr<const tester::base::Test> & errorTest, const std::string & errorFilename, const int & errorLineNumber, const std::string & errorCondition, const std::string & errorMessage) : test(errorTest), lineNumber(errorLineNumber), filename(errorFilename), condition(errorCondition), message(errorMessage) {
 	LOG_INFO(app::logger::info_level_e::ZERO, errorDataOverall, "Error data constructor");
 }
 
@@ -61,7 +61,7 @@ tester::shared::ErrorData & tester::shared::ErrorData::operator=(const tester::s
 	return *this;
 }
 
-tester::shared::ErrorData::ErrorData(tester::shared::ErrorData && rhs) : test(std::exchange(rhs.test, std::weak_ptr<tester::base::Test>())), lineNumber(std::exchange(rhs.lineNumber, -1)), filename(std::exchange(rhs.filename, std::string())), condition(std::exchange(rhs.condition, std::string())), message(std::exchange(rhs.message, std::string())) {
+tester::shared::ErrorData::ErrorData(tester::shared::ErrorData && rhs) : test(std::exchange(rhs.test, std::weak_ptr<const tester::base::Test>())), lineNumber(std::exchange(rhs.lineNumber, -1)), filename(std::exchange(rhs.filename, std::string())), condition(std::exchange(rhs.condition, std::string())), message(std::exchange(rhs.message, std::string())) {
 
 	LOG_INFO(app::logger::info_level_e::ZERO, errorDataOverall, "Move constructor error data");
 }
@@ -75,7 +75,7 @@ tester::shared::ErrorData & tester::shared::ErrorData::operator=(tester::shared:
 		this->lineNumber = std::exchange(rhs.lineNumber, -1);
 		this->condition = std::exchange(rhs.condition, std::string());
 		this->filename = std::exchange(rhs.filename, std::string());
-		this->test = std::exchange(rhs.test, std::weak_ptr<tester::base::Test>());
+		this->test = std::exchange(rhs.test, std::weak_ptr<const tester::base::Test>());
 		this->message = std::exchange(rhs.message, std::string());
 	}
 
@@ -87,9 +87,9 @@ CONST_GETTER(tester::shared::ErrorData::getFilename, std::string &, this->filena
 CONST_GETTER(tester::shared::ErrorData::getCondition, std::string &, this->condition)
 CONST_GETTER(tester::shared::ErrorData::getMessage, std::string &, this->message)
 
-const std::shared_ptr<tester::base::Test> tester::shared::ErrorData::getTest() const {
+const std::shared_ptr<const tester::base::Test> tester::shared::ErrorData::getTest() const {
 	EXCEPTION_ACTION_COND((this->test.expired() == true), throw, "Unable to get test as it has already expired");
-	const std::shared_ptr<tester::base::Test> testSharedPtr = this->test.lock();
+	const std::shared_ptr<const tester::base::Test> testSharedPtr = this->test.lock();
 	return testSharedPtr;
 }
 

@@ -35,7 +35,7 @@ namespace tester {
 		class ErrorData : public app::printable_object::PrintableObject {
 			public:
 				/**
-				 * @brief Function: explicit ErrorData(const std::weak_ptr<tester::base::Test> & errorTest, const std::string & errorFilename, const int & errorLineNumber, const std::string & errorCondition, const std::string & errorMessage)
+				 * @brief Function: explicit ErrorData(const std::weak_ptr<const tester::base::Test> & errorTest, const std::string & errorFilename, const int & errorLineNumber, const std::string & errorCondition, const std::string & errorMessage)
 				 *
 				 * \param errorTest: test the error occurred
 				 * \param errorLineNumber: line number of the error
@@ -45,7 +45,7 @@ namespace tester {
 				 *
 				 * Error data constructor
 				 */
-				explicit ErrorData(const std::weak_ptr<tester::base::Test> & errorTest, const std::string & errorFilename, const int & errorLineNumber, const std::string & errorCondition, const std::string & errorMessage);
+				explicit ErrorData(const std::weak_ptr<const tester::base::Test> & errorTest, const std::string & errorFilename, const int & errorLineNumber, const std::string & errorCondition, const std::string & errorMessage);
 
 				/**
 				 * @brief Function: virtual ~ErrorData()
@@ -153,13 +153,13 @@ namespace tester {
 				const std::string & getMessage() const;
 
 				/**
-				 * @brief Function: const std::shared_ptr<tester::base::Test> getTest() const
+				 * @brief Function: const std::shared_ptr<const tester::base::Test> getTest() const
 				 *
 				 * \return shared pointer to the test
 				 *
 				 * This function returns a share dpointer to the test where the error occurred
 				 */
-				const std::shared_ptr<tester::base::Test> getTest() const;
+				const std::shared_ptr<const tester::base::Test> getTest() const;
 
 				/**
 				 * @brief Function: virtual const std::string print() const override
@@ -175,7 +175,7 @@ namespace tester {
 				 * @brief test where the error was occurred
 				 *
 				 */
-				std::weak_ptr<tester::base::Test> test;
+				std::weak_ptr<const tester::base::Test> test;
 
 				/**
 				 * @brief line of the error
