@@ -50,17 +50,17 @@ namespace app {
 
 			public:
 				/**
-				 * @brief Function: explicit ElidedLabel(QWidget * parent, Qt::WindowFlags flags = Qt::WindowFlags(), const QString & textLabel = QString(), const QPoint & labelOrigin = QPoint(app::text_widgets::labelOriginX,app::text_widgets::labelOriginY), const Qt::TextElideMode & textElisionMode = Qt::ElideNone)
+				 * @brief Function: explicit ElidedLabel(QWidget * parent, Qt::WindowFlags flags = Qt::WindowFlags(), const QString & text = QString(), const QPoint & labelOrigin = QPoint(app::text_widgets::labelOriginX,app::text_widgets::labelOriginY), const Qt::TextElideMode & textElisionMode = Qt::ElideNone)
 				 *
-				 * \param textLabel: text to write into QLabel
-				 * \param labelOrigin: origin of the rectangle the label is drawn into
 				 * \param parent: parent window
 				 * \param flags: window flags
+				 * \param text: text to write into QLabel
+				 * \param labelOrigin: origin of the rectangle the label is drawn into
 				 * \param textElisionMode: elision mode
 				 *
 				 * Elided label constructor
 				 */
-				explicit ElidedLabel(QWidget * parent, Qt::WindowFlags flags = Qt::WindowFlags(), const QString & textLabel = QString(), const QPoint & labelOrigin = QPoint(app::text_widgets::labelOriginX,app::text_widgets::labelOriginY), const Qt::TextElideMode & textElisionMode = Qt::ElideNone);
+				explicit ElidedLabel(QWidget * parent, Qt::WindowFlags flags = Qt::WindowFlags(), const QString & text = QString(), const QPoint & labelOrigin = QPoint(app::text_widgets::labelOriginX,app::text_widgets::labelOriginY), const Qt::TextElideMode & textElisionMode = Qt::ElideNone);
 
 				/**
 				 * @brief Function: virtual ~ElidedLabel()

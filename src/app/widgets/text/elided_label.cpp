@@ -20,7 +20,7 @@ LOGGING_CONTEXT(elidedLabelOverall, elidedLabel.overall, TYPE_LEVEL, INFO_VERBOS
 LOGGING_CONTEXT(elidedLabelElision, elidedLabel.elision, TYPE_LEVEL, INFO_VERBOSITY)
 LOGGING_CONTEXT(elidedLabelPaint, elidedLabel.paint, TYPE_LEVEL, INFO_VERBOSITY)
 
-app::text_widgets::ElidedLabel::ElidedLabel(QWidget * parent, Qt::WindowFlags flags, const QString & textLabel, const QPoint & labelOrigin, const Qt::TextElideMode & textElisionMode) : QLabel(textLabel, parent, flags), elisionMode(textElisionMode), origin(labelOrigin) {
+app::text_widgets::ElidedLabel::ElidedLabel(QWidget * parent, Qt::WindowFlags flags, const QString & text, const QPoint & labelOrigin, const Qt::TextElideMode & textElisionMode) : QLabel(text, parent, flags), elisionMode(textElisionMode), origin(labelOrigin) {
 
 	LOG_INFO(app::logger::info_level_e::ZERO, elidedLabelOverall, "Elided label constructor for text " << this->text() << " origin " << this->origin << " elision mode " << this->elisionMode);
 
