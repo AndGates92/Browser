@@ -14,7 +14,7 @@
 #include "app/shared/setters_getters.h"
 #include "app/shared/enums.h"
 #include "app/widgets/text/elided_label.h"
-#include "app/widgets/text/text_edit.h"
+#include "app/widgets/text/line_edit.h"
 #include "app/widgets/progress_bar/bar.h"
 #include "app/widgets/commands/key_sequence.h"
 #include "app/windows/main_window/shared/constants.h"
@@ -111,8 +111,8 @@ app::main_window::statusbar::Bar::Bar(QWidget * parent, Qt::WindowFlags flags) :
 
 	LOG_INFO(app::logger::info_level_e::ZERO, mainWindowStatusBarOverall, "Main window status bar constructor");
 
-	this->userInput = std::move(this->newTextEdit());
-	this->contentPath = std::move(this->newTextEdit());
+	this->userInput = std::move(this->newLineEdit());
+	this->contentPath = std::move(this->newLineEdit());
 	this->scroll = std::move(this->newLabel());
 	this->info = std::move(this->newLabel());
 	this->searchResult = std::move(this->newLabel());
@@ -158,16 +158,15 @@ app::main_window::statusbar::Bar::~Bar() {
 
 }
 
-std::unique_ptr<app::text_widgets::TextEdit> app::main_window::statusbar::Bar::newTextEdit() {
-	std::unique_ptr<app::text_widgets::TextEdit> textEdit = std::make_unique<app::text_widgets::TextEdit>(this, QString());
+std::unique_ptr<app::text_widgets::LineEdit> app::main_window::statusbar::Bar::newLineEdit() {
+	std::unique_ptr<app::text_widgets::LineEdit> textEdit = std::make_unique<app::text_widgets::LineEdit>(this, QString());
 	textEdit->setAttribute(Qt::WA_DeleteOnClose);
-	textEdit->setFrameStyle(QFrame::NoFrame | QFrame::Sunken);
 	textEdit->setFixedHeight(app::main_window::statusbar::textHeight);
 	// Align at the bottom of the widget - this override the default of vertically centered
 	textEdit->setAlignment(Qt::AlignBottom);
 	// Set style sheet from the parent object because it can be customized based on the parent object properties
 	textEdit->setStyleSheet(
-		"QTextEdit {"
+		"QLineEdit {"
 			// Backgorund color to be inherited from the parent one
 			"background: inherit; "
 			// Text color
@@ -342,14 +341,14 @@ CONST_GETTER(app::main_window::statusbar::Bar::getInfo, std::unique_ptr<app::tex
 void app::main_window::statusbar::Bar::setUserInputText(const QString & text) {
 	this->userInput->setText(text);
 }
-CONST_GETTER(app::main_window::statusbar::Bar::getUserInputText, QString, this->userInput->toPlainText())
-CONST_GETTER(app::main_window::statusbar::Bar::getUserInput, std::unique_ptr<app::text_widgets::TextEdit> &, this->userInput)
+CONST_GETTER(app::main_window::statusbar::Bar::getUserInputText, QString, this->userInput->text())
+CONST_GETTER(app::main_window::statusbar::Bar::getUserInput, std::unique_ptr<app::text_widgets::LineEdit> &, this->userInput)
 
 void app::main_window::statusbar::Bar::setContentPathText(const QString & text) {
 	this->contentPath->setText(text);
 }
-CONST_GETTER(app::main_window::statusbar::Bar::getContentPathText, QString, this->contentPath->toPlainText())
-CONST_GETTER(app::main_window::statusbar::Bar::getContentPath, std::unique_ptr<app::text_widgets::TextEdit> &, this->contentPath)
+CONST_GETTER(app::main_window::statusbar::Bar::getContentPathText, QString, this->contentPath->text())
+CONST_GETTER(app::main_window::statusbar::Bar::getContentPath, std::unique_ptr<app::text_widgets::LineEdit> &, this->contentPath)
 
 void app::main_window::statusbar::Bar::setSearchResultText(const QString & text) {
 	this->searchResult->setText(text);
