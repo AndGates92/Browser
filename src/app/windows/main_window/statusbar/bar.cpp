@@ -14,6 +14,7 @@
 #include "app/shared/setters_getters.h"
 #include "app/shared/enums.h"
 #include "app/widgets/text/elided_label.h"
+#include "app/widgets/text/text_edit.h"
 #include "app/widgets/progress_bar/bar.h"
 #include "app/widgets/commands/key_sequence.h"
 #include "app/windows/main_window/shared/constants.h"
@@ -110,11 +111,11 @@ app::main_window::statusbar::Bar::Bar(QWidget * parent, Qt::WindowFlags flags) :
 
 	LOG_INFO(app::logger::info_level_e::ZERO, mainWindowStatusBarOverall, "Main window status bar constructor");
 
-	this->userInput = std::move(this->newWindowLabel());
-	this->contentPath = std::move(this->newWindowLabel());
-	this->scroll = std::move(this->newWindowLabel());
-	this->info = std::move(this->newWindowLabel());
-	this->searchResult = std::move(this->newWindowLabel());
+	this->userInput = std::move(this->newTextEdit());
+	this->contentPath = std::move(this->newTextEdit());
+	this->scroll = std::move(this->newLabel());
+	this->info = std::move(this->newLabel());
+	this->searchResult = std::move(this->newLabel());
 	this->loadBar = std::move(this->newProgressBar());
 
 	this->setSizePolicy(QSizePolicy::Preferred, QSizePolicy::Fixed);
@@ -157,16 +158,42 @@ app::main_window::statusbar::Bar::~Bar() {
 
 }
 
-std::unique_ptr<app::text_widgets::ElidedLabel> app::main_window::statusbar::Bar::newWindowLabel() {
-	std::unique_ptr<app::text_widgets::ElidedLabel> newLabel = std::make_unique<app::text_widgets::ElidedLabel>(this, this->windowFlags(), QString(), app::main_window::statusbar::textOrigin, Qt::ElideRight);
-	newLabel->setAttribute(Qt::WA_DeleteOnClose);
-	newLabel->setFrameStyle(QFrame::NoFrame | QFrame::Sunken);
-	newLabel->setFixedHeight(app::main_window::statusbar::textHeight);
-	newLabel->setTextFormat(Qt::PlainText);
+std::unique_ptr<app::text_widgets::TextEdit> app::main_window::statusbar::Bar::newTextEdit() {
+	std::unique_ptr<app::text_widgets::TextEdit> textEdit = std::make_unique<app::text_widgets::TextEdit>(this, QString());
+	textEdit->setAttribute(Qt::WA_DeleteOnClose);
+	textEdit->setFrameStyle(QFrame::NoFrame | QFrame::Sunken);
+	textEdit->setFixedHeight(app::main_window::statusbar::textHeight);
 	// Align at the bottom of the widget - this override the default of vertically centered
-	newLabel->setAlignment(Qt::AlignBottom);
+	textEdit->setAlignment(Qt::AlignBottom);
 	// Set style sheet from the parent object because it can be customized based on the parent object properties
-	newLabel->setStyleSheet(
+	textEdit->setStyleSheet(
+		"QTextEdit {"
+			// Backgorund color to be inherited from the parent one
+			"background: inherit; "
+			// Text color
+			// Set to white as status bar backgorund color is black
+			"color: white; "
+			"text-align: center; "
+			"border-right: 1px solid inherit; "
+			"border-left: 1px solid inherit; "
+			// Inherit font
+			"font: inherit; "
+		"}"
+	);
+
+	return textEdit;
+}
+
+std::unique_ptr<app::text_widgets::ElidedLabel> app::main_window::statusbar::Bar::newLabel() {
+	std::unique_ptr<app::text_widgets::ElidedLabel> label = std::make_unique<app::text_widgets::ElidedLabel>(this, this->windowFlags(), QString(), app::main_window::statusbar::textOrigin, Qt::ElideRight);
+	label->setAttribute(Qt::WA_DeleteOnClose);
+	label->setFrameStyle(QFrame::NoFrame | QFrame::Sunken);
+	label->setFixedHeight(app::main_window::statusbar::textHeight);
+	label->setTextFormat(Qt::PlainText);
+	// Align at the bottom of the widget - this override the default of vertically centered
+	label->setAlignment(Qt::AlignBottom);
+	// Set style sheet from the parent object because it can be customized based on the parent object properties
+	label->setStyleSheet(
 		"QLabel {"
 			// Backgorund color to be inherited from the parent one
 			"background: inherit; "
@@ -181,7 +208,7 @@ std::unique_ptr<app::text_widgets::ElidedLabel> app::main_window::statusbar::Bar
 		"}"
 	);
 
-	return newLabel;
+	return label;
 }
 
 std::unique_ptr<app::progress_bar::Bar> app::main_window::statusbar::Bar::newProgressBar() {
@@ -315,14 +342,14 @@ CONST_GETTER(app::main_window::statusbar::Bar::getInfo, std::unique_ptr<app::tex
 void app::main_window::statusbar::Bar::setUserInputText(const QString & text) {
 	this->userInput->setText(text);
 }
-CONST_GETTER(app::main_window::statusbar::Bar::getUserInputText, QString, this->userInput->text())
-CONST_GETTER(app::main_window::statusbar::Bar::getUserInput, std::unique_ptr<app::text_widgets::ElidedLabel> &, this->userInput)
+CONST_GETTER(app::main_window::statusbar::Bar::getUserInputText, QString, this->userInput->toPlainText())
+CONST_GETTER(app::main_window::statusbar::Bar::getUserInput, std::unique_ptr<app::text_widgets::TextEdit> &, this->userInput)
 
 void app::main_window::statusbar::Bar::setContentPathText(const QString & text) {
 	this->contentPath->setText(text);
 }
-CONST_GETTER(app::main_window::statusbar::Bar::getContentPathText, QString, this->contentPath->text())
-CONST_GETTER(app::main_window::statusbar::Bar::getContentPath, std::unique_ptr<app::text_widgets::ElidedLabel> &, this->contentPath)
+CONST_GETTER(app::main_window::statusbar::Bar::getContentPathText, QString, this->contentPath->toPlainText())
+CONST_GETTER(app::main_window::statusbar::Bar::getContentPath, std::unique_ptr<app::text_widgets::TextEdit> &, this->contentPath)
 
 void app::main_window::statusbar::Bar::setSearchResultText(const QString & text) {
 	this->searchResult->setText(text);
@@ -404,7 +431,7 @@ void app::main_window::statusbar::Bar::keyPressEvent(QKeyEvent * event) {
 			if ((focusWidget == this->loadBar.get()) || (focusWidget == this->userInput.get())) {
 				EXCEPTION_ACTION(throw, "Unable to execute action because focus widget is set to " << focusWidget);
 			} else if (focusWidget == this->contentPath.get()) {
-				QString path = this->contentPath->text();
+				QString path = this->getContentPathText();
 				LOG_INFO(app::logger::info_level_e::ZERO, mainWindowStatusBarUserInput, "Opening URL or file " << path);
 				// Notify that the content path has changed
 				emit this->contentPathChanged(path);

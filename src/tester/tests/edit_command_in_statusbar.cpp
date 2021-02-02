@@ -9,7 +9,7 @@
 #include <QtTest/QTest>
 #include <QtGui/QKeySequence>
 
-#include "app/widgets/text/elided_label.h"
+#include "app/widgets/text/text_edit.h"
 #include "app/windows/main_window/statusbar/bar.h"
 #include "app/windows/main_window/window/core.h"
 #include "app/shared/enums.h"
@@ -86,12 +86,12 @@ void tester::test::EditCommandInStatusbar::testBody() {
 	// Emulate click on the command in the status bar
 	const int expectedNumberOfTabAfterStartTypingCommand = 1;
 	ASSERT((windowCore->getTabCount() == expectedNumberOfTabAfterStartTypingCommand), tester::shared::error_type_e::TABS, "Number of tab mismatch after start typing command " + openCommandName + " by editing status bar command - actual number of tabs " + std::to_string(windowCore->getTabCount()) + " expected number of tabs is " + std::to_string(expectedNumberOfTabAfterStartTypingCommand));
-	const std::unique_ptr<app::main_window::statusbar::Bar> & statusbar = windowCore->bottomStatusBar;
-	const std::unique_ptr<app::text_widgets::ElidedLabel> & commandText = statusbar->getUserInput();
+	const auto & statusbar = windowCore->bottomStatusBar;
+	const auto & commandText = statusbar->getUserInput();
 	ASSERT((commandText != nullptr), tester::shared::error_type_e::STATUSBAR, "Unable to find command text widget in the status bar");
 	if (commandText != nullptr) {
-		ASSERT((commandText->text().isEmpty() == false), tester::shared::error_type_e::STATUSBAR, "Command text is expected not to be empty");
-		ASSERT((commandText->text().contains(QString::fromStdString(search)) == true), tester::shared::error_type_e::STATUSBAR, "Text in command text \"" + commandText->text().toStdString() + "\" doesn't contains search string \"" + search + "\"");
+		ASSERT((commandText->toPlainText().isEmpty() == false), tester::shared::error_type_e::STATUSBAR, "Command text is expected not to be empty");
+		ASSERT((commandText->toPlainText().contains(QString::fromStdString(search)) == true), tester::shared::error_type_e::STATUSBAR, "Text in command text \"" + commandText->toPlainText().toStdString() + "\" doesn't contains search string \"" + search + "\"");
 		const QPoint & commandLabelPosition = commandText->pos();
 		const QRect & commandLabelGeometry = commandText->geometry();
 		const QPoint mousePressPosition(commandLabelPosition.x() + commandLabelGeometry.width()/2, commandLabelPosition.y() + commandLabelGeometry.height()/2);
@@ -103,7 +103,7 @@ void tester::test::EditCommandInStatusbar::testBody() {
 		const std::string endSearch(" my browser");
 		tester::base::Test::sendKeyClicksToFocus(endSearch);
 		const std::string fullSearch(search + endSearch);
-		ASSERT((commandText->text().contains(QString::fromStdString(fullSearch)) == true), tester::shared::error_type_e::STATUSBAR, "Text in command text \"" + commandText->text().toStdString() + "\" doesn't contains search string \"" + fullSearch + "\"");
+		ASSERT((commandText->toPlainText().contains(QString::fromStdString(fullSearch)) == true), tester::shared::error_type_e::STATUSBAR, "Text in command text \"" + commandText->toPlainText().toStdString() + "\" doesn't contains search string \"" + fullSearch + "\"");
 		const app::main_window::state_e & currentStateAfterEndingTypingCommand = windowCore->getMainWindowState();
 		ASSERT((currentStateAfterEndingTypingCommand == expectedState), tester::shared::error_type_e::WINDOW, "Expected window state " + expectedState + " doesn't match current window state " + currentStateAfterEndingTypingCommand);
 

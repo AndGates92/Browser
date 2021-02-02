@@ -9,7 +9,7 @@
 #include <QtTest/QTest>
 #include <QtGui/QKeySequence>
 
-#include "app/widgets/text/elided_label.h"
+#include "app/widgets/text/text_edit.h"
 #include "app/windows/main_window/statusbar/bar.h"
 #include "app/windows/main_window/window/core.h"
 #include "app/shared/enums.h"
@@ -86,12 +86,12 @@ void tester::test::EditPathInStatusbar::testBody() {
 	// Emulate click on the command in the status bar
 	const int expectedNumberOfTabAfterStartTypingCommand = 1;
 	ASSERT((windowCore->getTabCount() == expectedNumberOfTabAfterStartTypingCommand), tester::shared::error_type_e::TABS, "Number of tab mismatch after start typing command " + openCommandName + " by editing status bar command - actual number of tabs " + std::to_string(windowCore->getTabCount()) + " expected number of tabs is " + std::to_string(expectedNumberOfTabAfterStartTypingCommand));
-	const std::unique_ptr<app::main_window::statusbar::Bar> & statusbar = windowCore->bottomStatusBar;
-	const std::unique_ptr<app::text_widgets::ElidedLabel> & pageSourceText = statusbar->getContentPath();
+	const auto & statusbar = windowCore->bottomStatusBar;
+	const auto & pageSourceText = statusbar->getContentPath();
 	ASSERT((pageSourceText != nullptr), tester::shared::error_type_e::STATUSBAR, "Unable to find page source text widget in the status bar");
 	if (pageSourceText != nullptr) {
-		ASSERT((pageSourceText->text().isEmpty() == false), tester::shared::error_type_e::STATUSBAR, "Command text is expected not to be empty");
-		ASSERT((pageSourceText->text().contains(QString::fromStdString(filepath)) == true), tester::shared::error_type_e::STATUSBAR, "Text in page source text \"" + pageSourceText->text().toStdString() + "\" doesn't contains the path to file \"" + filepath + "\"");
+		ASSERT((pageSourceText->toPlainText().isEmpty() == false), tester::shared::error_type_e::STATUSBAR, "Command text is expected not to be empty");
+		ASSERT((pageSourceText->toPlainText().contains(QString::fromStdString(filepath)) == true), tester::shared::error_type_e::STATUSBAR, "Text in page source text \"" + pageSourceText->toPlainText().toStdString() + "\" doesn't contains the path to file \"" + filepath + "\"");
 		const QPoint & pageSourceLabelPosition = pageSourceText->pos();
 		const QRect & pageSourceLabelGeometry = pageSourceText->geometry();
 		const QPoint mousePressPosition(pageSourceLabelPosition.x() + pageSourceLabelGeometry.width()/2, pageSourceLabelPosition.y() + pageSourceLabelGeometry.height()/2);
@@ -111,7 +111,7 @@ void tester::test::EditPathInStatusbar::testBody() {
 		tester::base::Test::sendKeyClicksToFocus(filenameToOpen);
 		std::string editedPath(filepath, 0, (slashPos+1));
 		editedPath.append(filenameToOpen);
-		ASSERT((pageSourceText->text().contains(QString::fromStdString(editedPath)) == true), tester::shared::error_type_e::STATUSBAR, "Text in page source label \"" + pageSourceText->text().toStdString() + "\" doesn't contains string with edits \"" + editedPath + "\"");
+		ASSERT((pageSourceText->toPlainText().contains(QString::fromStdString(editedPath)) == true), tester::shared::error_type_e::STATUSBAR, "Text in page source label \"" + pageSourceText->toPlainText().toStdString() + "\" doesn't contains string with edits \"" + editedPath + "\"");
 		tester::base::CommandTest::sendKeyClickToFocus(Qt::Key_Enter);
 
 		this->waitForTabOpened();

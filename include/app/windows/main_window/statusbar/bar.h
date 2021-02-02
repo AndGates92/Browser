@@ -24,6 +24,7 @@ namespace app {
 	namespace text_widgets {
 
 		class ElidedLabel;
+		class TextEdit;
 
 	}
 
@@ -64,22 +65,22 @@ namespace app {
 					virtual ~Bar();
 
 					/**
-					 * Function: const std::unique_ptr<app::text_widgets::ElidedLabel> & getUserInput() const
+					 * Function: const std::unique_ptr<app::text_widgets::TextEdit> & getUserInput() const
 					 *
 					 * \return command argument
 					 *
 					 * This function returns the command argument
 					 */
-					const std::unique_ptr<app::text_widgets::ElidedLabel> & getUserInput() const;
+					const std::unique_ptr<app::text_widgets::TextEdit> & getUserInput() const;
 
 					/**
-					 * Function: const std::unique_ptr<app::text_widgets::ElidedLabel> & getContentPath() const
+					 * Function: const std::unique_ptr<app::text_widgets::TextEdit> & getContentPath() const
 					 *
 					 * \return content path
 					 *
 					 * This function returns the content path
 					 */
-					const std::unique_ptr<app::text_widgets::ElidedLabel> & getContentPath() const;
+					const std::unique_ptr<app::text_widgets::TextEdit> & getContentPath() const;
 
 					/**
 					 * Function: const std::unique_ptr<app::text_widgets::ElidedLabel> & getScroll() const
@@ -306,13 +307,13 @@ namespace app {
 					 * @brief user input
 					 *
 					 */
-					std::unique_ptr<app::text_widgets::ElidedLabel> userInput;
+					std::unique_ptr<app::text_widgets::TextEdit> userInput;
 
 					/**
 					 * @brief content
 					 *
 					 */
-					std::unique_ptr<app::text_widgets::ElidedLabel> contentPath;
+					std::unique_ptr<app::text_widgets::TextEdit> contentPath;
 
 					/**
 					 * @brief scroll position
@@ -339,20 +340,29 @@ namespace app {
 					std::unique_ptr<app::progress_bar::Bar> loadBar;
 
 					/**
-					 * @brief Function: std::unique_ptr<app::text_widgets::ElidedLabel> newWindowLabel()
+					 * @brief Function: std::unique_ptr<app::text_widgets::TextEdit> newTextEdit()
+					 *
+					 * \return configured text edit widget
+					 *
+					 * This function configures text edit
+					 */
+					std::unique_ptr<app::text_widgets::TextEdit> newTextEdit();
+
+					/**
+					 * @brief Function: std::unique_ptr<app::text_widgets::ElidedLabel> newLabel()
 					 *
 					 * \return configured label
 					 *
-					 * Configure window label
+					 * This function configures window label
 					 */
-					std::unique_ptr<app::text_widgets::ElidedLabel> newWindowLabel();
+					std::unique_ptr<app::text_widgets::ElidedLabel> newLabel();
 
 					/**
 					 * @brief Function: std::unique_ptr<app::progress_bar::Bar> newProgressBar()
 					 *
 					 * \return configured progress bar
 					 *
-					 * Configure progress bar
+					 * This function configures progress bar
 					 */
 					std::unique_ptr<app::progress_bar::Bar> newProgressBar();
 
