@@ -13,7 +13,7 @@
 #include "app/utility/logger/macros.h"
 #include "app/shared/setters_getters.h"
 #include "app/shared/enums.h"
-#include "app/widgets/elided_label/elided_label.h"
+#include "app/widgets/text/elided_label.h"
 #include "app/widgets/progress_bar/bar.h"
 #include "app/widgets/commands/key_sequence.h"
 #include "app/windows/main_window/shared/constants.h"
@@ -157,8 +157,8 @@ app::main_window::statusbar::Bar::~Bar() {
 
 }
 
-std::unique_ptr<app::elided_label::ElidedLabel> app::main_window::statusbar::Bar::newWindowLabel() {
-	std::unique_ptr<app::elided_label::ElidedLabel> newLabel = std::make_unique<app::elided_label::ElidedLabel>(this, this->windowFlags(), QString(), app::main_window::statusbar::textOrigin, Qt::ElideRight);
+std::unique_ptr<app::text_widgets::ElidedLabel> app::main_window::statusbar::Bar::newWindowLabel() {
+	std::unique_ptr<app::text_widgets::ElidedLabel> newLabel = std::make_unique<app::text_widgets::ElidedLabel>(this, this->windowFlags(), QString(), app::main_window::statusbar::textOrigin, Qt::ElideRight);
 	newLabel->setAttribute(Qt::WA_DeleteOnClose);
 	newLabel->setFrameStyle(QFrame::NoFrame | QFrame::Sunken);
 	newLabel->setFixedHeight(app::main_window::statusbar::textHeight);
@@ -310,25 +310,25 @@ void app::main_window::statusbar::Bar::setInfoText(const QString & text) {
 	this->info->setText(text);
 }
 CONST_GETTER(app::main_window::statusbar::Bar::getInfoText, QString, this->info->text())
-CONST_GETTER(app::main_window::statusbar::Bar::getInfo, std::unique_ptr<app::elided_label::ElidedLabel> &, this->info)
+CONST_GETTER(app::main_window::statusbar::Bar::getInfo, std::unique_ptr<app::text_widgets::ElidedLabel> &, this->info)
 
 void app::main_window::statusbar::Bar::setUserInputText(const QString & text) {
 	this->userInput->setText(text);
 }
 CONST_GETTER(app::main_window::statusbar::Bar::getUserInputText, QString, this->userInput->text())
-CONST_GETTER(app::main_window::statusbar::Bar::getUserInput, std::unique_ptr<app::elided_label::ElidedLabel> &, this->userInput)
+CONST_GETTER(app::main_window::statusbar::Bar::getUserInput, std::unique_ptr<app::text_widgets::ElidedLabel> &, this->userInput)
 
 void app::main_window::statusbar::Bar::setContentPathText(const QString & text) {
 	this->contentPath->setText(text);
 }
 CONST_GETTER(app::main_window::statusbar::Bar::getContentPathText, QString, this->contentPath->text())
-CONST_GETTER(app::main_window::statusbar::Bar::getContentPath, std::unique_ptr<app::elided_label::ElidedLabel> &, this->contentPath)
+CONST_GETTER(app::main_window::statusbar::Bar::getContentPath, std::unique_ptr<app::text_widgets::ElidedLabel> &, this->contentPath)
 
 void app::main_window::statusbar::Bar::setSearchResultText(const QString & text) {
 	this->searchResult->setText(text);
 }
 CONST_GETTER(app::main_window::statusbar::Bar::getSearchResultText, QString, this->searchResult->text())
-CONST_GETTER(app::main_window::statusbar::Bar::getSearchResult, std::unique_ptr<app::elided_label::ElidedLabel> &, this->searchResult)
+CONST_GETTER(app::main_window::statusbar::Bar::getSearchResult, std::unique_ptr<app::text_widgets::ElidedLabel> &, this->searchResult)
 
 void app::main_window::statusbar::Bar::showSearchResult(const bool & showWidget) {
 	const bool isTextEmpty = this->searchResult->text().isEmpty();
@@ -392,7 +392,7 @@ void app::main_window::statusbar::Bar::keyPressEvent(QKeyEvent * event) {
 		EXCEPTION_ACTION_COND((focusWidget == this->info.get()), throw, "Cannot change tab by changing the information text \"" + this->getInfoText() + "\" in the statusbar");
 		EXCEPTION_ACTION_COND((focusWidget == this->searchResult.get()), throw, "Cannot change search result match number by changing the text \"" + this->getSearchResultText() + "\" in the statusbar");
 
-		app::elided_label::ElidedLabel * label = static_cast<app::elided_label::ElidedLabel *>(focusWidget);
+		app::text_widgets::ElidedLabel * label = static_cast<app::text_widgets::ElidedLabel *>(focusWidget);
 		QString labelText(label->text());
 
 		// Print visible text characters
@@ -430,7 +430,7 @@ void app::main_window::statusbar::Bar::keyReleaseEvent(QKeyEvent * event) {
 		LOG_INFO(app::logger::info_level_e::ZERO, mainWindowStatusBarUserInput, "Released key " << keySeq.toString());
 
 		QWidget * focusWidget = this->focusProxy();
-		app::elided_label::ElidedLabel * label = static_cast<app::elided_label::ElidedLabel *>(focusWidget);
+		app::text_widgets::ElidedLabel * label = static_cast<app::text_widgets::ElidedLabel *>(focusWidget);
 		QString labelText(label->text());
 
 		switch (releasedKey) {

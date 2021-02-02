@@ -22,7 +22,7 @@
 #include "app/shared/enums.h"
 #include "app/windows/main_window/popup/label_popup.h"
 #include "app/shared/exception.h"
-#include "app/widgets/elided_label/elided_label.h"
+#include "app/widgets/text/elided_label.h"
 
 // Categories
 LOGGING_CONTEXT(labelPopupOverall, labelPopup.overall, TYPE_LEVEL, INFO_VERBOSITY)
@@ -168,7 +168,7 @@ void app::main_window::popup::LabelPopup::popupLayout() {
 
 void app::main_window::popup::LabelPopup::fillPopup() {
 
-	this->label = std::make_unique<app::elided_label::ElidedLabel>(this, this->windowFlags(), QString(), app::main_window::popup::label_popup::textOrigin, Qt::ElideRight);
+	this->label = std::make_unique<app::text_widgets::ElidedLabel>(this, this->windowFlags(), QString(), app::main_window::popup::label_popup::textOrigin, Qt::ElideRight);
 	this->label->setTextFormat(Qt::PlainText);
 
 	// font

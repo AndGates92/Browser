@@ -21,7 +21,7 @@
  */
 namespace app {
 
-	namespace elided_label {
+	namespace text_widgets {
 
 		class ElidedLabel;
 
@@ -64,49 +64,49 @@ namespace app {
 					virtual ~Bar();
 
 					/**
-					 * Function: const std::unique_ptr<app::elided_label::ElidedLabel> & getUserInput() const
+					 * Function: const std::unique_ptr<app::text_widgets::ElidedLabel> & getUserInput() const
 					 *
 					 * \return command argument
 					 *
 					 * This function returns the command argument
 					 */
-					const std::unique_ptr<app::elided_label::ElidedLabel> & getUserInput() const;
+					const std::unique_ptr<app::text_widgets::ElidedLabel> & getUserInput() const;
 
 					/**
-					 * Function: const std::unique_ptr<app::elided_label::ElidedLabel> & getContentPath() const
+					 * Function: const std::unique_ptr<app::text_widgets::ElidedLabel> & getContentPath() const
 					 *
 					 * \return content path
 					 *
 					 * This function returns the content path
 					 */
-					const std::unique_ptr<app::elided_label::ElidedLabel> & getContentPath() const;
+					const std::unique_ptr<app::text_widgets::ElidedLabel> & getContentPath() const;
 
 					/**
-					 * Function: const std::unique_ptr<app::elided_label::ElidedLabel> & getScroll() const
+					 * Function: const std::unique_ptr<app::text_widgets::ElidedLabel> & getScroll() const
 					 *
 					 * \return web page scroll
 					 *
 					 * This function returns the web page scroll
 					 */
-					const std::unique_ptr<app::elided_label::ElidedLabel> & getScroll() const;
+					const std::unique_ptr<app::text_widgets::ElidedLabel> & getScroll() const;
 
 					/**
-					 * Function: const std::unique_ptr<app::elided_label::ElidedLabel> & getInfo() const
+					 * Function: const std::unique_ptr<app::text_widgets::ElidedLabel> & getInfo() const
 					 *
 					 * \return web page informations
 					 *
 					 * This function returns the web page informations
 					 */
-					const std::unique_ptr<app::elided_label::ElidedLabel> & getInfo() const;
+					const std::unique_ptr<app::text_widgets::ElidedLabel> & getInfo() const;
 
 					/**
-					 * Function: const std::unique_ptr<app::elided_label::ElidedLabel> & getSearchResult() const
+					 * Function: const std::unique_ptr<app::text_widgets::ElidedLabel> & getSearchResult() const
 					 *
 					 * \return search results
 					 *
 					 * This function returns the search result
 					 */
-					const std::unique_ptr<app::elided_label::ElidedLabel> & getSearchResult() const;
+					const std::unique_ptr<app::text_widgets::ElidedLabel> & getSearchResult() const;
 
 					/**
 					 * Function: const std::unique_ptr<app::progress_bar::Bar> & getLoadBar() const
@@ -306,31 +306,31 @@ namespace app {
 					 * @brief user input
 					 *
 					 */
-					std::unique_ptr<app::elided_label::ElidedLabel> userInput;
+					std::unique_ptr<app::text_widgets::ElidedLabel> userInput;
 
 					/**
 					 * @brief content
 					 *
 					 */
-					std::unique_ptr<app::elided_label::ElidedLabel> contentPath;
+					std::unique_ptr<app::text_widgets::ElidedLabel> contentPath;
 
 					/**
 					 * @brief scroll position
 					 *
 					 */
-					std::unique_ptr<app::elided_label::ElidedLabel> scroll;
+					std::unique_ptr<app::text_widgets::ElidedLabel> scroll;
 
 					/**
 					 * @brief info
 					 *
 					 */
-					std::unique_ptr<app::elided_label::ElidedLabel> info;
+					std::unique_ptr<app::text_widgets::ElidedLabel> info;
 
 					/**
 					 * @brief search result
 					 *
 					 */
-					std::unique_ptr<app::elided_label::ElidedLabel> searchResult;
+					std::unique_ptr<app::text_widgets::ElidedLabel> searchResult;
 
 					/**
 					 * @brief load bar
@@ -339,13 +339,13 @@ namespace app {
 					std::unique_ptr<app::progress_bar::Bar> loadBar;
 
 					/**
-					 * @brief Function: std::unique_ptr<app::elided_label::ElidedLabel> newWindowLabel()
+					 * @brief Function: std::unique_ptr<app::text_widgets::ElidedLabel> newWindowLabel()
 					 *
 					 * \return configured label
 					 *
 					 * Configure window label
 					 */
-					std::unique_ptr<app::elided_label::ElidedLabel> newWindowLabel();
+					std::unique_ptr<app::text_widgets::ElidedLabel> newWindowLabel();
 
 					/**
 					 * @brief Function: std::unique_ptr<app::progress_bar::Bar> newProgressBar()

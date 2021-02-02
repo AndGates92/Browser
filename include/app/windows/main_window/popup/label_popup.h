@@ -21,7 +21,7 @@
  */
 namespace app {
 
-	namespace elided_label {
+	namespace text_widgets {
 
 		class ElidedLabel;
 
@@ -106,7 +106,7 @@ namespace app {
 					 * @brief insert label
 					 *
 					 */
-					std::unique_ptr<app::elided_label::ElidedLabel> label;
+					std::unique_ptr<app::text_widgets::ElidedLabel> label;
 
 					/**
 					 * @brief insert label

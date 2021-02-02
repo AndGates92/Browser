@@ -9,7 +9,7 @@
 #include <QtTest/QTest>
 #include <QtGui/QKeySequence>
 
-#include "app/widgets/elided_label/elided_label.h"
+#include "app/widgets/text/elided_label.h"
 #include "app/windows/main_window/statusbar/bar.h"
 #include "app/windows/main_window/window/core.h"
 #include "app/shared/enums.h"
@@ -87,7 +87,7 @@ void tester::test::EditPathInStatusbar::testBody() {
 	const int expectedNumberOfTabAfterStartTypingCommand = 1;
 	ASSERT((windowCore->getTabCount() == expectedNumberOfTabAfterStartTypingCommand), tester::shared::error_type_e::TABS, "Number of tab mismatch after start typing command " + openCommandName + " by editing status bar command - actual number of tabs " + std::to_string(windowCore->getTabCount()) + " expected number of tabs is " + std::to_string(expectedNumberOfTabAfterStartTypingCommand));
 	const std::unique_ptr<app::main_window::statusbar::Bar> & statusbar = windowCore->bottomStatusBar;
-	const std::unique_ptr<app::elided_label::ElidedLabel> & pageSourceText = statusbar->getContentPath();
+	const std::unique_ptr<app::text_widgets::ElidedLabel> & pageSourceText = statusbar->getContentPath();
 	ASSERT((pageSourceText != nullptr), tester::shared::error_type_e::STATUSBAR, "Unable to find page source text widget in the status bar");
 	if (pageSourceText != nullptr) {
 		ASSERT((pageSourceText->text().isEmpty() == false), tester::shared::error_type_e::STATUSBAR, "Command text is expected not to be empty");

@@ -13,14 +13,14 @@
 #include "app/shared/setters_getters.h"
 #include "app/utility/logger/macros.h"
 #include "app/shared/enums.h"
-#include "app/widgets/elided_label/elided_label.h"
+#include "app/widgets/text/elided_label.h"
 
 // Categories
 LOGGING_CONTEXT(elidedLabelOverall, elidedLabel.overall, TYPE_LEVEL, INFO_VERBOSITY)
 LOGGING_CONTEXT(elidedLabelElision, elidedLabel.elision, TYPE_LEVEL, INFO_VERBOSITY)
 LOGGING_CONTEXT(elidedLabelPaint, elidedLabel.paint, TYPE_LEVEL, INFO_VERBOSITY)
 
-app::elided_label::ElidedLabel::ElidedLabel(QWidget * parent, Qt::WindowFlags flags, const QString & textLabel, const QPoint & labelOrigin, const Qt::TextElideMode & textElisionMode) : QLabel(textLabel, parent, flags), elisionMode(textElisionMode), origin(labelOrigin) {
+app::text_widgets::ElidedLabel::ElidedLabel(QWidget * parent, Qt::WindowFlags flags, const QString & textLabel, const QPoint & labelOrigin, const Qt::TextElideMode & textElisionMode) : QLabel(textLabel, parent, flags), elisionMode(textElisionMode), origin(labelOrigin) {
 
 	LOG_INFO(app::logger::info_level_e::ZERO, elidedLabelOverall, "Elided label constructor for text " << this->text() << " origin " << this->origin << " elision mode " << this->elisionMode);
 
@@ -28,18 +28,18 @@ app::elided_label::ElidedLabel::ElidedLabel(QWidget * parent, Qt::WindowFlags fl
 	this->updateElidedText(this->geometry().width());
 }
 
-app::elided_label::ElidedLabel::~ElidedLabel() {
+app::text_widgets::ElidedLabel::~ElidedLabel() {
 	LOG_INFO(app::logger::info_level_e::ZERO, elidedLabelOverall, "Elided label destructor");
 }
 
-void app::elided_label::ElidedLabel::setText(const QString & text) {
+void app::text_widgets::ElidedLabel::setText(const QString & text) {
 
 	QLabel::setText(text);
 	this->updateElidedText(this->geometry().width());
 
 }
 
-void app::elided_label::ElidedLabel::updateElidedText(const int & width) {
+void app::text_widgets::ElidedLabel::updateElidedText(const int & width) {
 	// If no elision or text is null, then set elision text to null
 	if ((this->elisionMode == Qt::ElideNone) || (this->text() == QString())) {
 		this->elisionText = QString();
@@ -50,14 +50,14 @@ void app::elided_label::ElidedLabel::updateElidedText(const int & width) {
 	}
 }
 
-void app::elided_label::ElidedLabel::resizeEvent(QResizeEvent * event) {
+void app::text_widgets::ElidedLabel::resizeEvent(QResizeEvent * event) {
 	QLabel::resizeEvent(event);
 
 	const QSize size(event->size());
 	this->updateElidedText(size.width());
 }
 
-void app::elided_label::ElidedLabel::paintEvent(QPaintEvent * event) {
+void app::text_widgets::ElidedLabel::paintEvent(QPaintEvent * event) {
 	LOG_INFO(app::logger::info_level_e::ZERO, elidedLabelPaint, "Paint text " << this->text() << " elision mode " << this->elisionMode);
 	if (this->elisionMode == Qt::ElideNone) {
 		QLabel::paintEvent(event);
@@ -73,5 +73,5 @@ void app::elided_label::ElidedLabel::paintEvent(QPaintEvent * event) {
 
 }
 
-CONST_SETTER_GETTER(app::elided_label::ElidedLabel::setElisionMode, app::elided_label::ElidedLabel::getElisionMode, Qt::TextElideMode &, this->elisionMode)
-CONST_SETTER_GETTER(app::elided_label::ElidedLabel::setOrigin, app::elided_label::ElidedLabel::getOrigin, QPoint &, this->origin)
+CONST_SETTER_GETTER(app::text_widgets::ElidedLabel::setElisionMode, app::text_widgets::ElidedLabel::getElisionMode, Qt::TextElideMode &, this->elisionMode)
+CONST_SETTER_GETTER(app::text_widgets::ElidedLabel::setOrigin, app::text_widgets::ElidedLabel::getOrigin, QPoint &, this->origin)

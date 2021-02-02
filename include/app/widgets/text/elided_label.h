@@ -22,7 +22,7 @@
  */
 namespace app {
 
-	namespace elided_label {
+	namespace text_widgets {
 
 		// TODO: Try to move to the cpp file
 		namespace {
@@ -50,7 +50,7 @@ namespace app {
 
 			public:
 				/**
-				 * @brief Function: explicit ElidedLabel(QWidget * parent, Qt::WindowFlags flags = Qt::WindowFlags(), const QString & textLabel = QString(), const QPoint & labelOrigin = QPoint(app::elided_label::labelOriginX,app::elided_label::labelOriginY), const Qt::TextElideMode & textElisionMode = Qt::ElideNone)
+				 * @brief Function: explicit ElidedLabel(QWidget * parent, Qt::WindowFlags flags = Qt::WindowFlags(), const QString & textLabel = QString(), const QPoint & labelOrigin = QPoint(app::text_widgets::labelOriginX,app::text_widgets::labelOriginY), const Qt::TextElideMode & textElisionMode = Qt::ElideNone)
 				 *
 				 * \param textLabel: text to write into QLabel
 				 * \param labelOrigin: origin of the rectangle the label is drawn into
@@ -60,7 +60,7 @@ namespace app {
 				 *
 				 * Elided label constructor
 				 */
-				explicit ElidedLabel(QWidget * parent, Qt::WindowFlags flags = Qt::WindowFlags(), const QString & textLabel = QString(), const QPoint & labelOrigin = QPoint(app::elided_label::labelOriginX,app::elided_label::labelOriginY), const Qt::TextElideMode & textElisionMode = Qt::ElideNone);
+				explicit ElidedLabel(QWidget * parent, Qt::WindowFlags flags = Qt::WindowFlags(), const QString & textLabel = QString(), const QPoint & labelOrigin = QPoint(app::text_widgets::labelOriginX,app::text_widgets::labelOriginY), const Qt::TextElideMode & textElisionMode = Qt::ElideNone);
 
 				/**
 				 * @brief Function: virtual ~ElidedLabel()
