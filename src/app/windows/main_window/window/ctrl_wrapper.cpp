@@ -72,8 +72,9 @@ void app::main_window::window::CtrlWrapper::connectSignals() {
 		this->executeAction(windowState);
 	});
 
-	const app::main_window::window::Commands::action_data_t & commands = this->core->commands->getActions();
+	connect(statusBar->getUserInput().get(), &app::text_widgets::LineEdit::textChanged, this,  &app::main_window::window::CtrlWrapper::setCommandLineArgument);
 
+	const app::main_window::window::Commands::action_data_t & commands = this->core->commands->getActions();
 	std::for_each(commands.cbegin(), commands.cend(), [&] (const auto & data) {
 		const std::unique_ptr<app::main_window::json::Data> & commandData = data.second;
 		QShortcut * shortcut = new QShortcut(commandData->getShortcut(), this->window());
@@ -88,6 +89,26 @@ void app::main_window::window::CtrlWrapper::connectSignals() {
 
 	});
 
+}
+
+void app::main_window::window::CtrlWrapper::setCommandLineArgument(const QString & text) {
+	const auto & actionName = this->core->getActionName();
+	auto textCopy(text);
+	EXCEPTION_ACTION_COND((textCopy.contains(actionName, Qt::CaseSensitive) == false), throw, "Command line \"" << text << "\" must contains the command name \"" << actionName << "\"");
+	// indexOf finds the position of the first character of the searched string
+	const auto commandNameStart = textCopy.indexOf(actionName, 0, Qt::CaseSensitive);
+	EXCEPTION_ACTION_COND((commandNameStart == -1), throw, "Unable to find the command name \"" << actionName << "\" in the command line \"" << text << "\"");
+	// In order to find where the string ends, its length must be added
+	const auto commandNameEnd = commandNameStart + actionName.size();
+	if (commandNameEnd < textCopy.size()) {
+		const auto commandNameEndCharacter = textCopy.at(commandNameEnd);
+		// An additional character has to be skipped as it is the space between the command and its argument
+		const auto argumentStart = commandNameEnd + 1;
+		const auto argument = textCopy.right(textCopy.size() - argumentStart);
+		EXCEPTION_ACTION_COND((commandNameEndCharacter.isSpace() == false), throw, "It is expected that the character between the command " << textCopy.left(commandNameEnd) << " and the argument " << argument << " is a space. Found " << commandNameEndCharacter.toLatin1() << " instead.");
+		LOG_INFO(app::logger::info_level_e::ZERO, mainWindowCtrlWrapperOverall, "Full command " << textCopy << " argument " << argument);
+		this->core->updateUserInput(app::main_window::text_action_e::SET, argument);
+	}
 }
 
 void app::main_window::window::CtrlWrapper::saveData() {

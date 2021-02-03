@@ -242,6 +242,14 @@ namespace app {
 					 */
 					void restoreSavedData();
 
+					/**
+					 * @brief Function: void setCommandLineArgument(const QString & text)
+					 *
+					 * \param text: full command line
+					 *
+					 * This function sets the user typed text in the core from the full command line
+					 */
+					void setCommandLineArgument(const QString & text);
 			};
 
 		}

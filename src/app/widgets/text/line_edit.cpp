@@ -24,5 +24,3 @@ app::text_widgets::LineEdit::LineEdit(QWidget * parent, const QString & text) : 
 app::text_widgets::LineEdit::~LineEdit() {
 	LOG_INFO(app::logger::info_level_e::ZERO, lineEditOverall, "Text edit destructor");
 }
-
-
