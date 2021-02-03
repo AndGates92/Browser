@@ -208,7 +208,6 @@ namespace app {
 					 */
 					virtual void executeAction(const app::main_window::state_e & windowState) final;
 
-
 					// Move and copy constructor
 					/**
 					 * @brief Disable move and copy constructors and operator= overloading for class CtrlWrapper

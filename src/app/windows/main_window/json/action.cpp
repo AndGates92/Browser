@@ -7,8 +7,6 @@
  */
 
 // Qt libraries
-#include <QtWidgets/QShortcut>
-
 #include "app/shared/enums.h"
 #include "app/shared/qt_functions.h"
 #include "app/utility/cpp/cpp_operator.h"

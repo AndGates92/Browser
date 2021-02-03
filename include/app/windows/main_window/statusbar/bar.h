@@ -268,6 +268,13 @@ namespace app {
 
 				signals:
 					/**
+					 * @brief Function: void executeAction();
+					 *
+					 * This function is a signal to execute the action requested by the user through the command in the status bar
+					 */
+					void executeAction();
+
+					/**
 					 * @brief Function: void childFocusIn();
 					 *
 					 * This function is a signal triggered when a child widget gets the focus

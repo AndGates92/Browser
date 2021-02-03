@@ -412,34 +412,35 @@ void app::main_window::statusbar::Bar::keyPressEvent(QKeyEvent * event) {
 		LOG_INFO(app::logger::info_level_e::ZERO, mainWindowStatusBarUserInput, "Key pressed " << keySeq.toString());
 
 		QWidget * focusWidget = this->focusProxy();
-		EXCEPTION_ACTION_COND((focusWidget == this->userInput.get()), throw, "Key events towards the command label should be sent directly through the main window");
-		EXCEPTION_ACTION_COND((focusWidget == this->loadBar.get()), throw, "Loadbar is unable to accept key inputs");
-		EXCEPTION_ACTION_COND((focusWidget == this->scroll.get()), throw, "Unable to scroll to the " + std::to_string(this->getVScroll()) + " %% of the page");
-		EXCEPTION_ACTION_COND((focusWidget == this->info.get()), throw, "Cannot change tab by changing the information text \"" + this->getInfoText() + "\" in the statusbar");
-		EXCEPTION_ACTION_COND((focusWidget == this->searchResult.get()), throw, "Cannot change search result match number by changing the text \"" + this->getSearchResultText() + "\" in the statusbar");
+		if (focusWidget != nullptr) {
+			EXCEPTION_ACTION_COND((focusWidget == this->loadBar.get()), throw, "Loadbar is unable to accept key inputs");
+			EXCEPTION_ACTION_COND((focusWidget == this->scroll.get()), throw, "Unable to scroll to the " + std::to_string(this->getVScroll()) + " %% of the page");
+			EXCEPTION_ACTION_COND((focusWidget == this->info.get()), throw, "Cannot change tab by changing the information text \"" + this->getInfoText() + "\" in the statusbar");
+			EXCEPTION_ACTION_COND((focusWidget == this->searchResult.get()), throw, "Cannot change search result match number by changing the text \"" + this->getSearchResultText() + "\" in the statusbar");
 
-		app::text_widgets::ElidedLabel * label = static_cast<app::text_widgets::ElidedLabel *>(focusWidget);
-		QString labelText(label->text());
+			app::text_widgets::LineEdit * lineEdit = static_cast<app::text_widgets::LineEdit *>(focusWidget);
+			QString lineEditText(lineEdit->text());
 
-		// Print visible text characters
-		if ((pressedKey >= Qt::Key_Space) && (pressedKey <= Qt::Key_ydiaeresis)) {
-			labelText.append(event->text());
-			label->setText(labelText);
+			// Print visible text characters
+			if ((pressedKey >= Qt::Key_Space) && (pressedKey <= Qt::Key_ydiaeresis)) {
+				lineEditText.append(event->text());
+				lineEdit->setText(lineEditText);
 
-		} else if ((pressedKey == Qt::Key_Enter) || (pressedKey == Qt::Key_Return)) {
-			if ((focusWidget == this->loadBar.get()) || (focusWidget == this->userInput.get())) {
-				EXCEPTION_ACTION(throw, "Unable to execute action because focus widget is set to " << focusWidget);
-			} else if (focusWidget == this->contentPath.get()) {
-				QString path = this->getContentPathText();
-				LOG_INFO(app::logger::info_level_e::ZERO, mainWindowStatusBarUserInput, "Opening URL or file " << path);
-				// Notify that the content path has changed
-				emit this->contentPathChanged(path);
-				this->window()->setFocus();
-			} else {
-				EXCEPTION_ACTION(throw, "Unable to accept key events because focus widget is set to " << focusWidget);
+			} else if ((pressedKey == Qt::Key_Enter) || (pressedKey == Qt::Key_Return)) {
+				if (focusWidget == this->userInput.get()) {
+					emit this->executeAction();
+				} else if (focusWidget == this->contentPath.get()) {
+					QString path = this->getContentPathText();
+					LOG_INFO(app::logger::info_level_e::ZERO, mainWindowStatusBarUserInput, "Opening URL or file " << path);
+					// Notify that the content path has changed
+					emit this->contentPathChanged(path);
+					this->window()->setFocus();
+				} else {
+					EXCEPTION_ACTION(throw, "Unable to accept key events because focus widget is set to " << focusWidget);
+				}
+				// TODO handle enter or return key
+				// TODO: emit signal to execute action
 			}
-			// TODO handle enter or return key
-			// TODO: emit signal to execute action
 		}
 	}
 }
@@ -456,21 +457,23 @@ void app::main_window::statusbar::Bar::keyReleaseEvent(QKeyEvent * event) {
 		LOG_INFO(app::logger::info_level_e::ZERO, mainWindowStatusBarUserInput, "Released key " << keySeq.toString());
 
 		QWidget * focusWidget = this->focusProxy();
-		app::text_widgets::ElidedLabel * label = static_cast<app::text_widgets::ElidedLabel *>(focusWidget);
-		QString labelText(label->text());
+		if (focusWidget != nullptr) {
+			app::text_widgets::LineEdit * lineEdit = static_cast<app::text_widgets::LineEdit *>(focusWidget);
+			QString lineEditText(lineEdit->text());
 
-		switch (releasedKey) {
-			case Qt::Key_Escape:
-				this->window()->setFocus();
-				this->setFocusProxy(nullptr);
-				break;
-			case Qt::Key_Backspace:
-				if (labelText.isEmpty() == false) {
-					labelText.chop(1);
-					label->setText(labelText);
-				}
-			default:
-				break;
+			switch (releasedKey) {
+				case Qt::Key_Escape:
+					this->window()->setFocus();
+					this->setFocusProxy(nullptr);
+					break;
+				case Qt::Key_Backspace:
+					if (lineEditText.isEmpty() == false) {
+						lineEditText.chop(1);
+						lineEdit->setText(lineEditText);
+					}
+				default:
+					break;
+			}
 		}
 	}
 }

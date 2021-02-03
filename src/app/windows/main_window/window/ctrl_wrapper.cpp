@@ -21,6 +21,7 @@
 #include "app/windows/main_window/tabs/tab.h"
 #include "app/windows/main_window/tabs/tab_widget.h"
 #include "app/widgets/commands/key_sequence.h"
+#include "app/widgets/text/line_edit.h"
 #include "app/shared/exception.h"
 
 // Categories
@@ -65,6 +66,10 @@ void app::main_window::window::CtrlWrapper::connectSignals() {
 	std::unique_ptr<app::main_window::statusbar::Bar> & statusBar = this->core->bottomStatusBar;
 	connect(statusBar.get(), &app::main_window::statusbar::Bar::childFocusIn, this, [this] () {
 		this->setAllShortcutEnabledProperty(false);
+	});
+	connect(statusBar.get(), &app::main_window::statusbar::Bar::executeAction, this, [this] () {
+		const app::main_window::state_e windowState = this->core->getMainWindowState();
+		this->executeAction(windowState);
 	});
 
 	const app::main_window::window::Commands::action_data_t & commands = this->core->commands->getActions();
@@ -231,19 +236,15 @@ void app::main_window::window::CtrlWrapper::setupWindowState(const app::main_win
 			break;
 		case app::main_window::state_e::QUIT:
 		case app::main_window::state_e::TOGGLE_MENUBAR:
-		case app::main_window::state_e::COMMAND:
 			this->setAllShortcutEnabledProperty(false);
 			this->winctrl->setFocus();
 			break;
+		case app::main_window::state_e::COMMAND:
+			this->setAllShortcutEnabledProperty(false);
+			this->winctrl->setFocus();
+			this->winctrl->setFocusProxy(statusBar->getUserInput().get());
+			break;
 		case app::main_window::state_e::OPEN_FILE:
-		case app::main_window::state_e::OPEN_TAB:
-		case app::main_window::state_e::NEW_SEARCH:
-		case app::main_window::state_e::REFRESH_TAB:
-		case app::main_window::state_e::CLOSE_TAB:
-		case app::main_window::state_e::MOVE_RIGHT:
-		case app::main_window::state_e::MOVE_LEFT:
-		case app::main_window::state_e::MOVE_TAB:
-		case app::main_window::state_e::FIND:
 		case app::main_window::state_e::FIND_DOWN:
 		case app::main_window::state_e::FIND_UP:
 		case app::main_window::state_e::SCROLL_UP:
@@ -253,11 +254,25 @@ void app::main_window::window::CtrlWrapper::setupWindowState(const app::main_win
 			this->setAllShortcutEnabledProperty(false);
 			this->tabctrl->setFocus();
 			break;
+		case app::main_window::state_e::OPEN_TAB:
+		case app::main_window::state_e::NEW_SEARCH:
+		case app::main_window::state_e::REFRESH_TAB:
+		case app::main_window::state_e::CLOSE_TAB:
+		case app::main_window::state_e::MOVE_RIGHT:
+		case app::main_window::state_e::MOVE_LEFT:
+		case app::main_window::state_e::MOVE_TAB:
+		case app::main_window::state_e::FIND:
+			this->setAllShortcutEnabledProperty(false);
+			this->core->printUserInput(app::main_window::text_action_e::SET);
+			statusBar->setFocus();
+			statusBar->setFocusProxy(statusBar->getUserInput().get());
+			break;
 		case app::main_window::state_e::EDIT_SEARCH:
 			EXCEPTION_ACTION_COND((tab == nullptr), throw, "Postprocessing state " << windowState << ": Unable to edit string used for previous search as pointer to tab is " << tab.get());
 			this->core->printUserInput(app::main_window::text_action_e::SET, searchText);
 			this->setAllShortcutEnabledProperty(false);
 			this->tabctrl->setFocus();
+			this->tabctrl->setFocusProxy(statusBar->getUserInput().get());
 			break;
 		default: 
 			EXCEPTION_ACTION(throw, "Unable to postprocess transaction to " << windowState << " is valid as state " << windowState << " doesn't have a defined postprocess action");
@@ -272,11 +287,11 @@ void app::main_window::window::CtrlWrapper::postprocessWindowStateChange(const a
 	// If requesting to go to the idle state, enable shortcuts
 	switch (windowState) {
 		case app::main_window::state_e::IDLE:
+		case app::main_window::state_e::REFRESH_TAB:
 		case app::main_window::state_e::COMMAND:
 		case app::main_window::state_e::OPEN_TAB:
 		case app::main_window::state_e::NEW_SEARCH:
 		case app::main_window::state_e::EDIT_SEARCH:
-		case app::main_window::state_e::REFRESH_TAB:
 		case app::main_window::state_e::CLOSE_TAB:
 		case app::main_window::state_e::MOVE_RIGHT:
 		case app::main_window::state_e::MOVE_LEFT:
@@ -339,8 +354,37 @@ void app::main_window::window::CtrlWrapper::setAllShortcutEnabledProperty(const 
 }
 
 void app::main_window::window::CtrlWrapper::executeAction(const app::main_window::state_e & windowState) {
-	this->winctrl->executeAction(windowState);
-	this->tabctrl->executeAction(windowState);
+	switch (windowState) {
+		case app::main_window::state_e::IDLE:
+			LOG_ERROR(mainWindowCtrlWrapperUserInput, "Unable to execute action for state " << windowState);
+			break;
+		case app::main_window::state_e::QUIT:
+		case app::main_window::state_e::TOGGLE_MENUBAR:
+		case app::main_window::state_e::COMMAND:
+			this->winctrl->executeAction(windowState);
+			break;
+		case app::main_window::state_e::OPEN_FILE:
+		case app::main_window::state_e::FIND_DOWN:
+		case app::main_window::state_e::FIND_UP:
+		case app::main_window::state_e::SCROLL_UP:
+		case app::main_window::state_e::SCROLL_DOWN:
+		case app::main_window::state_e::HISTORY_PREV:
+		case app::main_window::state_e::HISTORY_NEXT:
+		case app::main_window::state_e::OPEN_TAB:
+		case app::main_window::state_e::NEW_SEARCH:
+		case app::main_window::state_e::REFRESH_TAB:
+		case app::main_window::state_e::CLOSE_TAB:
+		case app::main_window::state_e::MOVE_RIGHT:
+		case app::main_window::state_e::MOVE_LEFT:
+		case app::main_window::state_e::MOVE_TAB:
+		case app::main_window::state_e::FIND:
+		case app::main_window::state_e::EDIT_SEARCH:
+			this->tabctrl->executeAction(windowState);
+			break;
+		default: 
+			EXCEPTION_ACTION(throw, "Unable to execute action for state " << windowState << " as state " << windowState << " doesn't have a defined window controller");
+			break;
+	}
 }
 
 void app::main_window::window::CtrlWrapper::keyReleaseEvent(QKeyEvent * event) {
@@ -369,6 +413,7 @@ void app::main_window::window::CtrlWrapper::focusOutEvent(QFocusEvent * event) {
 	if (event->lostFocus() == true) {
 		const app::main_window::state_e requestedWindowState = app::main_window::state_e::IDLE;
 		LOG_INFO(app::logger::info_level_e::ZERO, mainWindowCtrlWrapperOverall, "Main window control wrapper lost the keyboard focus. Saving the data and setting the state to " << requestedWindowState);
+/*
 		this->saveData();
 		app::main_window::state_postprocessing_e statePostprocess = app::main_window::state_postprocessing_e::NONE;
 		const app::main_window::state_e windowState = this->core->getMainWindowState();
@@ -378,5 +423,6 @@ void app::main_window::window::CtrlWrapper::focusOutEvent(QFocusEvent * event) {
 			statePostprocess = app::main_window::state_postprocessing_e::SETUP;
 		}
 		this->changeWindowState(requestedWindowState, statePostprocess);
+*/
 	}
 }
