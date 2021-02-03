@@ -425,21 +425,6 @@ void app::main_window::statusbar::Bar::keyPressEvent(QKeyEvent * event) {
 			if ((pressedKey >= Qt::Key_Space) && (pressedKey <= Qt::Key_ydiaeresis)) {
 				lineEditText.append(event->text());
 				lineEdit->setText(lineEditText);
-
-			} else if ((pressedKey == Qt::Key_Enter) || (pressedKey == Qt::Key_Return)) {
-				if (focusWidget == this->userInput.get()) {
-					emit this->executeAction();
-				} else if (focusWidget == this->contentPath.get()) {
-					QString path = this->getContentPathText();
-					LOG_INFO(app::logger::info_level_e::ZERO, mainWindowStatusBarUserInput, "Opening URL or file " << path);
-					// Notify that the content path has changed
-					emit this->contentPathChanged(path);
-					this->window()->setFocus();
-				} else {
-					EXCEPTION_ACTION(throw, "Unable to accept key events because focus widget is set to " << focusWidget);
-				}
-				// TODO handle enter or return key
-				// TODO: emit signal to execute action
 			}
 		}
 	}

@@ -14,6 +14,7 @@
 #include "app/utility/logger/macros.h"
 #include "app/utility/cpp/cpp_operator.h"
 #include "app/widgets/commands/key_sequence.h"
+#include "app/widgets/text/line_edit.h"
 #include "app/windows/main_window/shared/constants.h"
 #include "app/windows/main_window/shared/shared_functions.h"
 #include "app/windows/main_window/window/ctrl_tab.h"
@@ -92,9 +93,12 @@ void app::main_window::window::CtrlTab::connectSignals() {
 
 	std::unique_ptr<app::main_window::statusbar::Bar> & statusBar = this->core->bottomStatusBar;
 	connect(this, &app::main_window::window::CtrlTab::currentTabSrcChanged, statusBar.get(), &app::main_window::statusbar::Bar::setContentPathText);
-	connect(statusBar.get(), &app::main_window::statusbar::Bar::contentPathChanged, this, [this] (const QString & source) {
-		int index = this->core->getCurrentTabIndex();
+	connect(statusBar->getContentPath().get(), &app::text_widgets::LineEdit::returnPressed, this, [&statusBar, this] () {
+		const auto & source = statusBar->getContentPathText();
+		const auto & index = this->core->getCurrentTabIndex();
+		LOG_INFO(app::logger::info_level_e::ZERO, mainWindowCtrlTabSearch, "Opening URL or file " << source << " in tab " << index);
 		this->searchTab(index, source);
+		this->window()->setFocus();
 	});
 
 }

@@ -67,12 +67,12 @@ void app::main_window::window::CtrlWrapper::connectSignals() {
 	connect(statusBar.get(), &app::main_window::statusbar::Bar::childFocusIn, this, [this] () {
 		this->setAllShortcutEnabledProperty(false);
 	});
-	connect(statusBar.get(), &app::main_window::statusbar::Bar::executeAction, this, [this] () {
+
+	connect(statusBar->getUserInput().get(), &app::text_widgets::LineEdit::textChanged, this, &app::main_window::window::CtrlWrapper::setCommandLineArgument);
+	connect(statusBar->getUserInput().get(), &app::text_widgets::LineEdit::returnPressed, this, [this] () {
 		const app::main_window::state_e windowState = this->core->getMainWindowState();
 		this->executeAction(windowState);
 	});
-
-	connect(statusBar->getUserInput().get(), &app::text_widgets::LineEdit::textChanged, this,  &app::main_window::window::CtrlWrapper::setCommandLineArgument);
 
 	const app::main_window::window::Commands::action_data_t & commands = this->core->commands->getActions();
 	std::for_each(commands.cbegin(), commands.cend(), [&] (const auto & data) {
