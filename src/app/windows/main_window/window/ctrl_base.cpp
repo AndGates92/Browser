@@ -184,7 +184,7 @@ void app::main_window::window::CtrlBase::resetWindowState() {
 	const app::main_window::state_e requestedWindowState = app::main_window::state_e::IDLE;
 	emit windowStateChangeRequested(requestedWindowState, app::main_window::state_postprocessing_e::POSTPROCESS);
 
-	this->core->updateUserInput(app::main_window::text_action_e::CLEAR, QString());
+	this->core->updateUserInput(app::main_window::text_action_e::CLEAR);
 	this->core->bottomStatusBar->setUserInputText(QString());
 	emit this->saveCurrentState();
 }

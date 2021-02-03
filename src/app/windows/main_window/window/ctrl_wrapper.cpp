@@ -92,22 +92,28 @@ void app::main_window::window::CtrlWrapper::connectSignals() {
 }
 
 void app::main_window::window::CtrlWrapper::setCommandLineArgument(const QString & text) {
-	const auto & actionName = this->core->getActionName();
-	auto textCopy(text);
-	EXCEPTION_ACTION_COND((textCopy.contains(actionName, Qt::CaseSensitive) == false), throw, "Command line \"" << text << "\" must contains the command name \"" << actionName << "\"");
-	// indexOf finds the position of the first character of the searched string
-	const auto commandNameStart = textCopy.indexOf(actionName, 0, Qt::CaseSensitive);
-	EXCEPTION_ACTION_COND((commandNameStart == -1), throw, "Unable to find the command name \"" << actionName << "\" in the command line \"" << text << "\"");
-	// In order to find where the string ends, its length must be added
-	const auto commandNameEnd = commandNameStart + actionName.size();
-	if (commandNameEnd < textCopy.size()) {
-		const auto commandNameEndCharacter = textCopy.at(commandNameEnd);
-		// An additional character has to be skipped as it is the space between the command and its argument
-		const auto argumentStart = commandNameEnd + 1;
-		const auto argument = textCopy.right(textCopy.size() - argumentStart);
-		EXCEPTION_ACTION_COND((commandNameEndCharacter.isSpace() == false), throw, "It is expected that the character between the command " << textCopy.left(commandNameEnd) << " and the argument " << argument << " is a space. Found " << commandNameEndCharacter.toLatin1() << " instead.");
-		LOG_INFO(app::logger::info_level_e::ZERO, mainWindowCtrlWrapperOverall, "Full command " << textCopy << " argument " << argument);
-		this->core->updateUserInput(app::main_window::text_action_e::SET, argument);
+	const app::main_window::state_e windowState = this->core->getMainWindowState();
+
+	if (windowState == app::main_window::state_e::IDLE) {
+		EXCEPTION_ACTION_COND((text.isEmpty() == false), throw, "Command line should be empty. It is displaying the following string instead \"" << text << "\"");
+	} else {
+		const auto & actionName = this->core->getActionName();
+		auto textCopy(text);
+		EXCEPTION_ACTION_COND((textCopy.contains(actionName, Qt::CaseSensitive) == false), throw, "Command line \"" << text << "\" must contains the command name \"" << actionName << "\"");
+		// indexOf finds the position of the first character of the searched string
+		const auto commandNameStart = textCopy.indexOf(actionName, 0, Qt::CaseSensitive);
+		EXCEPTION_ACTION_COND((commandNameStart == -1), throw, "Unable to find the command name \"" << actionName << "\" in the command line \"" << text << "\"");
+		// In order to find where the string ends, its length must be added
+		const auto commandNameEnd = commandNameStart + actionName.size();
+		if (commandNameEnd < textCopy.size()) {
+			const auto commandNameEndCharacter = textCopy.at(commandNameEnd);
+			// An additional character has to be skipped as it is the space between the command and its argument
+			const auto argumentStart = commandNameEnd + 1;
+			const auto argument = textCopy.right(textCopy.size() - argumentStart);
+			EXCEPTION_ACTION_COND((commandNameEndCharacter.isSpace() == false), throw, "It is expected that the character between the command " << textCopy.left(commandNameEnd) << " and the argument " << argument << " is a space. Found " << commandNameEndCharacter.toLatin1() << " instead.");
+			LOG_INFO(app::logger::info_level_e::ZERO, mainWindowCtrlWrapperOverall, "Full command " << textCopy << " argument " << argument);
+			this->core->updateUserInput(app::main_window::text_action_e::SET, argument);
+		}
 	}
 }
 
@@ -406,6 +412,13 @@ void app::main_window::window::CtrlWrapper::executeAction(const app::main_window
 			EXCEPTION_ACTION(throw, "Unable to execute action for state " << windowState << " as state " << windowState << " doesn't have a defined window controller");
 			break;
 	}
+
+	const app::main_window::state_e requestedWindowState = app::main_window::state_e::IDLE;
+	this->changeWindowState(requestedWindowState, app::main_window::state_postprocessing_e::POSTPROCESS);
+
+	this->core->updateUserInput(app::main_window::text_action_e::CLEAR);
+	this->core->bottomStatusBar->setUserInputText(QString());
+
 }
 
 void app::main_window::window::CtrlWrapper::keyReleaseEvent(QKeyEvent * event) {
