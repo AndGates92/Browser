@@ -237,6 +237,15 @@ namespace app {
 					virtual void changeWindowState(const app::main_window::state_e & nextState, const app::main_window::state_postprocessing_e postprocess) final;
 
 					/**
+					 * @brief Function: virtual void executeCommand(const app::main_window::state_postprocessing_e & postprocess) final
+					 *
+					 * \param postprocess: flag to execute post process after chaning state.
+					 *
+					 * This function executes a command on a based on user input
+					 */
+					virtual void executeCommand(const app::main_window::state_postprocessing_e & postprocess) final;
+
+					/**
 					 * @brief Function: void saveData()
 					 *
 					 * This function saves the current status of the controller

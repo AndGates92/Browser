@@ -101,7 +101,7 @@ void app::main_window::window::CtrlWrapper::setCommandLineArgument(const QString
 		auto textCopy(text);
 
 		QString userTypedText = this->core->getUserText();
-		LOG_INFO(app::logger::info_level_e::ZERO, mainWindowCtrlWrapperUserInput, "User typed text \"" << userTypedText << "\"");
+		LOG_INFO(app::logger::info_level_e::ZERO, mainWindowCtrlWrapperUserInput, "User typed text \"" << userTypedText << "\" in state " << windowState);
 		if (textCopy.contains(printedCommandName, Qt::CaseSensitive) == false) {
 			if (userTypedText.isEmpty() == true) {
 				if (windowState != app::main_window::state_e::COMMAND) {
@@ -110,15 +110,19 @@ void app::main_window::window::CtrlWrapper::setCommandLineArgument(const QString
 						this->core->setOffsetType(app::shared::offset_type_e::IDLE);
 					}
 					this->moveToCommandStateFromNonIdleState(windowState);
-					windowState = this->core->getMainWindowState();
-					printedCommandName = this->core->getActionName();
-					const std::unique_ptr<app::main_window::statusbar::Bar> & statusBar = this->core->bottomStatusBar;
-					textCopy = statusBar->getUserInputText();
 				}
 			} else {
 				EXCEPTION_ACTION(throw, "Command line \"" << text << "\" must contains the command name \"" << printedCommandName << "\" because main window is in state " << windowState << " and command line argument is " << userTypedText);
 			}
+		} else if (windowState == app::main_window::state_e::COMMAND) {
+			this->executeCommand(app::main_window::state_postprocessing_e::SETUP);
 		}
+
+		// Command line or state may have changed
+		windowState = this->core->getMainWindowState();
+		printedCommandName = this->core->getActionName();
+		const std::unique_ptr<app::main_window::statusbar::Bar> & statusBar = this->core->bottomStatusBar;
+		textCopy = statusBar->getUserInputText();
 
 		// indexOf finds the position of the first character of the searched string
 		const auto commandNameStart = textCopy.indexOf(printedCommandName, 0, Qt::CaseSensitive);
@@ -143,6 +147,16 @@ void app::main_window::window::CtrlWrapper::moveToCommandStateFromNonIdleState(c
 	const std::unique_ptr<app::main_window::json::Data> & data = this->core->commands->findDataWithFieldValue("State", &windowState);
 	if (data != this->core->commands->getInvalidData()) {
 		QString longCmd(QString::fromStdString(data->getLongCmd()));
+
+		const auto printedCommandName = this->core->getActionName();
+
+		const std::unique_ptr<app::main_window::statusbar::Bar> & statusBar = this->core->bottomStatusBar;
+		const auto & fullCmdLine = statusBar->getUserInputText();
+		// Delete last character because the command name is not fully printed in the command line
+		const bool deleteLastChar = (fullCmdLine.contains(printedCommandName, Qt::CaseSensitive) == false);
+		if (deleteLastChar == true) {
+			longCmd.chop(1);
+		}
 		requestedWindowState = app::main_window::state_e::COMMAND;
 		// Setting the user input here because it is cleared when changing state
 		this->core->updateUserInput(app::main_window::text_action_e::SET, longCmd);
@@ -151,6 +165,31 @@ void app::main_window::window::CtrlWrapper::moveToCommandStateFromNonIdleState(c
 	}
 	this->changeWindowState(requestedWindowState, app::main_window::state_postprocessing_e::POSTPROCESS);
 	this->core->printUserInput(app::main_window::text_action_e::NO_CHANGE);
+}
+
+void app::main_window::window::CtrlWrapper::executeCommand(const app::main_window::state_postprocessing_e & postprocess) {
+	const QString & userCommand = this->core->getUserText();
+	LOG_INFO(app::logger::info_level_e::ZERO, mainWindowCtrlWrapperUserInput, "Looking for command matching user input: " << userCommand);
+	const app::main_window::state_e previousWindowState = this->core->getMainWindowState();
+	const app::main_window::window::Commands::action_data_t & commands = this->core->commands->getActions();
+
+	std::for_each(commands.cbegin(), commands.cend(), [&] (const auto & data) {
+		const std::unique_ptr<app::main_window::json::Data> & commandData = data.second;
+		const QString refCommand = QString::fromStdString(commandData->getLongCmd());
+
+		// If user command matches the command in the JSON file
+		if (userCommand.compare(refCommand) == 0) {
+			LOG_INFO(app::logger::info_level_e::ZERO, mainWindowCtrlWrapperUserInput, "Found command " << refCommand << " matching user input: " << userCommand);
+			this->core->updateUserInput(app::main_window::text_action_e::CLEAR);
+			this->changeWindowState(commandData->getState(), postprocess);
+		}
+	});
+
+	const app::main_window::state_e currentWindowState = this->core->getMainWindowState();
+
+	if (previousWindowState == currentWindowState) {
+		LOG_WARNING(mainWindowCtrlWrapperUserInput, "Window state remained unchanged to " << currentWindowState << " while runnign command " << userCommand);
+	}
 }
 
 void app::main_window::window::CtrlWrapper::saveData() {
@@ -242,7 +281,6 @@ void app::main_window::window::CtrlWrapper::changeWindowStateWrapper(const std::
 void app::main_window::window::CtrlWrapper::changeWindowState(const app::main_window::state_e & nextState, const app::main_window::state_postprocessing_e postprocess) {
 
 	const app::main_window::state_e windowState = this->core->getMainWindowState();
-	const QString & userTypedText = this->core->getUserText();
 	const std::unique_ptr<app::main_window::json::Data> & data = this->core->commands->findDataWithFieldValue("State", &windowState);
 	QString longCmd = QString();
 	if (data != this->core->commands->getInvalidData()) {
@@ -251,8 +289,8 @@ void app::main_window::window::CtrlWrapper::changeWindowState(const app::main_wi
 
 	// Global conditions are:
 	// - it is possible to move to any state from the COMMAND state
-	// - it is possible to move from any state to COMMAND state if the command line argument is the long command of the state before change
-	const bool globalCondition = ((windowState != app::main_window::state_e::COMMAND) && (nextState == app::main_window::state_e::COMMAND) && (userTypedText.compare(longCmd, Qt::CaseSensitive) == 0));
+	// - it is possible to move from any state to COMMAND state
+	const bool globalCondition = ((windowState != app::main_window::state_e::COMMAND) && (nextState == app::main_window::state_e::COMMAND));
 
 	// Do not change state if the window is already in the one requested
 	if (windowState != nextState) {
@@ -428,8 +466,10 @@ void app::main_window::window::CtrlWrapper::executeAction(const app::main_window
 			break;
 		case app::main_window::state_e::QUIT:
 		case app::main_window::state_e::TOGGLE_MENUBAR:
-		case app::main_window::state_e::COMMAND:
 			this->winctrl->executeAction(windowState);
+			break;
+		case app::main_window::state_e::COMMAND:
+			this->executeCommand(app::main_window::state_postprocessing_e::ACTION);
 			break;
 		case app::main_window::state_e::OPEN_FILE:
 		case app::main_window::state_e::FIND_DOWN:
