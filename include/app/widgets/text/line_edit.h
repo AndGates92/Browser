@@ -47,11 +47,16 @@ namespace app {
 				 */
 				virtual ~LineEdit();
 
-			public slots:
-
 			protected:
 
 			private:
+
+				/**
+				 * @brief Function: virtual void connectSignals() final
+				 *
+				 * This function connects signals and slots within line edit
+				 */
+				void connectSignals();
 
 				// Move and copy constructor
 				/**
@@ -59,7 +64,20 @@ namespace app {
 				 *
 				 */
 				DISABLE_COPY_MOVE(LineEdit)
+
+			private slots:
+				/**
+				 * @brief Function: void onTextChanged(const QString & text)
+				 *
+				 * \param text: new text in the line edit
+				 *
+				 * This function is a slot triggered when the text in the line label changes
+				 */
+				void onTextChanged(const QString & text);
+
+
 		};
+
 
 	}
 

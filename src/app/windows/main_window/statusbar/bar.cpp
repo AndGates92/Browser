@@ -128,10 +128,10 @@ app::main_window::statusbar::Bar::Bar(QWidget * parent, Qt::WindowFlags flags) :
 
 	// user input
 	this->userInput->setAlignment(Qt::AlignLeft | Qt::AlignBottom);
+	this->userInput->setSizePolicy(QSizePolicy::Fixed, QSizePolicy::Fixed);
 
 	// path to the content
 	this->contentPath->setAlignment(Qt::AlignRight | Qt::AlignBottom);
-	this->contentPath->setSizePolicy(QSizePolicy::Fixed, QSizePolicy::Fixed);
 
 	// info
 	this->info->setAlignment(Qt::AlignRight | Qt::AlignBottom);
