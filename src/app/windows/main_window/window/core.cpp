@@ -9,6 +9,7 @@
 #include <iostream>
 
 #include "app/widgets/command_menu/command_menu.h"
+#include "app/widgets/commands/key_sequence.h"
 #include "app/utility/cpp/cpp_operator.h"
 #include "app/shared/exception.h"
 #include "app/shared/qt_functions.h"
@@ -161,7 +162,24 @@ void app::main_window::window::Core::printUserInput(const app::main_window::text
 const QString app::main_window::window::Core::getActionName() const {
 	QString actionNameText = QString();
 
-	const QString actionName(app::shared::qEnumToQString<app::main_window::state_list>(this->mainWindowState, true));
+	QString actionName = QString();
+	
+	const app::main_window::state_e windowState = this->getMainWindowState();
+	if (windowState == app::main_window::state_e::COMMAND) {
+
+		const std::unique_ptr<app::main_window::json::Data> & data = this->commands->findDataWithFieldValue("State", &windowState);
+		if (data != this->commands->getInvalidData()) {
+			const auto & key = data->getShortcut();
+			const app::commands::KeySequence keySeq(key);
+			actionName = keySeq.toString();
+		} else {
+			EXCEPTION_ACTION(throw, "Unable to find JSON data for window state " << windowState);
+		}
+	} else {
+		actionName = app::shared::qEnumToQString<app::main_window::state_list>(windowState, true);
+	}
+
+
 	actionNameText.append(actionName);
 
 	if (this->mainWindowState == app::main_window::state_e::MOVE_TAB) {
@@ -176,7 +194,7 @@ const QString app::main_window::window::Core::getActionName() const {
 	actionNameText = actionNameText.toLower();
 	actionNameText = actionNameText.replace(QChar('_'), QChar(' '), Qt::CaseInsensitive);
 
-	LOG_INFO(app::logger::info_level_e::ZERO, mainWindowCoreUserInput, "State " << this->mainWindowState << " action text " << actionNameText);
+	LOG_INFO(app::logger::info_level_e::ZERO, mainWindowCoreUserInput, "State " << windowState << " action text " << actionNameText);
 
 	return actionNameText;
 }

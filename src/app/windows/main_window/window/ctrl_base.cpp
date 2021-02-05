@@ -119,7 +119,7 @@ void app::main_window::window::CtrlBase::keyReleaseEvent(QKeyEvent * event) {
 							this->core->setOffsetType(app::shared::offset_type_e::IDLE);
 							this->core->printUserInput(app::main_window::text_action_e::CLEAR);
 						}
-						this->moveToCommandStateFromNonIdleState(windowState, static_cast<Qt::Key>(releasedKey));
+						this->moveToCommandStateFromNonIdleState(windowState);
 					}
 				} else {
 					// Compute position of the last character in the string
@@ -168,13 +168,13 @@ void app::main_window::window::CtrlBase::keyPressEvent(QKeyEvent * event) {
 	}
 }
 
-void app::main_window::window::CtrlBase::moveToCommandStateFromNonIdleState(const app::main_window::state_e & windowState, const Qt::Key & key) {
+void app::main_window::window::CtrlBase::moveToCommandStateFromNonIdleState(const app::main_window::state_e & windowState) {
 	// Saving long command for a given state to set it after changing state
 	const app::main_window::state_e requestedWindowState = app::main_window::state_e::COMMAND;
 	const std::unique_ptr<app::main_window::json::Data> & data = this->core->commands->findDataWithFieldValue("State", &windowState);
 	if (data != this->core->commands->getInvalidData()) {
 		QString longCmd(QString::fromStdString(data->getLongCmd()));
-		emit windowStateChangeRequested(requestedWindowState, app::main_window::state_postprocessing_e::POSTPROCESS, key);
+		emit windowStateChangeRequested(requestedWindowState, app::main_window::state_postprocessing_e::POSTPROCESS);
 		// Setting the user input here because it is cleared when changing state
 		this->core->printUserInput(app::main_window::text_action_e::SET, longCmd);
 	}

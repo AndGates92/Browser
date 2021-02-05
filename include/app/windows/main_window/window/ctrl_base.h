@@ -81,15 +81,14 @@ namespace app {
 				signals:
 
 					/**
-					 * @brief Function: void windowStateChangeRequested(const app::main_window::state_e & nextState, const app::main_window::state_postprocessing_e postprocess, const Qt::Key key = Qt::Key_unknown)
+					 * @brief Function: void windowStateChangeRequested(const app::main_window::state_e & nextState, const app::main_window::state_postprocessing_e postprocess)
 					 *
 					 * \param nextState: state the window is requested to go into.
 					 * \param postprocess: flag to execute post process after chaning state.
-					 * \param key: key pressed that supports the request for a state change.
 					 *
 					 * This function is a signal to request a change of the state of window
 					 */
-					void windowStateChangeRequested(const app::main_window::state_e & nextState, const app::main_window::state_postprocessing_e postprocess, const Qt::Key key = Qt::Key_unknown);
+					void windowStateChangeRequested(const app::main_window::state_e & nextState, const app::main_window::state_postprocessing_e postprocess);
 
 					/**
 					 * @brief Function: void saveCurrentState()
@@ -190,14 +189,13 @@ namespace app {
 					QString tabInfoStr(const int & currIndex) const;
 
 					/**
-					 * @brief Function: void moveToCommandStateFromNonIdleState(const app::main_window::state_e & windowState, const Qt::Key & key)
+					 * @brief Function: void moveToCommandStateFromNonIdleState(const app::main_window::state_e & windowState)
 					 *
 					 * \param nextState: state the window is requested to go into.
-					 * \param key: key typed by the user that supports this request.
 					 *
 					 * This function move to command state from another state
 					 */
-					void moveToCommandStateFromNonIdleState(const app::main_window::state_e & windowState, const Qt::Key & key);
+					void moveToCommandStateFromNonIdleState(const app::main_window::state_e & windowState);
 
 					/**
 					 * @brief Function: void resetWindowState()

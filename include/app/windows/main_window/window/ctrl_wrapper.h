@@ -200,6 +200,15 @@ namespace app {
 					void setAllShortcutEnabledProperty(const bool enabled);
 
 					/**
+					 * @brief Function: void moveToCommandStateFromNonIdleState(const app::main_window::state_e & windowState)
+					 *
+					 * \param nextState: state the window is requested to go into.
+					 *
+					 * This function move to command state from another state
+					 */
+					void moveToCommandStateFromNonIdleState(const app::main_window::state_e & windowState);
+
+					/**
 					 * @brief Function: virtual void executeAction(const app::main_window::state_e & windowState) final 
 					 *
 					 * \param windowState: state the window is into.
@@ -218,15 +227,14 @@ namespace app {
 				private slots:
 
 					/**
-					 * @brief Function: virtual void changeWindowState(const app::main_window::state_e & nextState, const app::main_window::state_postprocessing_e postprocess, const Qt::Key key = Qt::Key_unknown) final
+					 * @brief Function: virtual void changeWindowState(const app::main_window::state_e & nextState, const app::main_window::state_postprocessing_e postprocess) final
 					 *
 					 * \param nextState: state the window is requested to go into.
 					 * \param postprocess: flag to execute post process after chaning state.
-					 * \param key: key pressed that supports the request for a state change.
 					 *
 					 * This function changes the state of window
 					 */
-					virtual void changeWindowState(const app::main_window::state_e & nextState, const app::main_window::state_postprocessing_e postprocess, const Qt::Key key = Qt::Key_unknown) final;
+					virtual void changeWindowState(const app::main_window::state_e & nextState, const app::main_window::state_postprocessing_e postprocess) final;
 
 					/**
 					 * @brief Function: void saveData()

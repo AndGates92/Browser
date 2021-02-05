@@ -92,29 +92,65 @@ void app::main_window::window::CtrlWrapper::connectSignals() {
 }
 
 void app::main_window::window::CtrlWrapper::setCommandLineArgument(const QString & text) {
-	const app::main_window::state_e windowState = this->core->getMainWindowState();
+	app::main_window::state_e windowState = this->core->getMainWindowState();
 
 	if (windowState == app::main_window::state_e::IDLE) {
 		EXCEPTION_ACTION_COND((text.isEmpty() == false), throw, "Command line should be empty. It is displaying the following string instead \"" << text << "\"");
 	} else {
-		const auto & actionName = this->core->getActionName();
+		auto printedCommandName = this->core->getActionName();
 		auto textCopy(text);
-		EXCEPTION_ACTION_COND((textCopy.contains(actionName, Qt::CaseSensitive) == false), throw, "Command line \"" << text << "\" must contains the command name \"" << actionName << "\"");
+
+		QString userTypedText = this->core->getUserText();
+		LOG_INFO(app::logger::info_level_e::ZERO, mainWindowCtrlWrapperUserInput, "User typed text \"" << userTypedText << "\"");
+		if (textCopy.contains(printedCommandName, Qt::CaseSensitive) == false) {
+			if (userTypedText.isEmpty() == true) {
+				if (windowState != app::main_window::state_e::COMMAND) {
+					if (windowState == app::main_window::state_e::MOVE_TAB) {
+						// If in state TAB MOVE and the core->userText is empty after deleting the last character, set the move value to IDLE
+						this->core->setOffsetType(app::shared::offset_type_e::IDLE);
+					}
+					this->moveToCommandStateFromNonIdleState(windowState);
+					windowState = this->core->getMainWindowState();
+					printedCommandName = this->core->getActionName();
+					const std::unique_ptr<app::main_window::statusbar::Bar> & statusBar = this->core->bottomStatusBar;
+					textCopy = statusBar->getUserInputText();
+				}
+			} else {
+				EXCEPTION_ACTION(throw, "Command line \"" << text << "\" must contains the command name \"" << printedCommandName << "\" because main window is in state " << windowState << " and command line argument is " << userTypedText);
+			}
+		}
+
 		// indexOf finds the position of the first character of the searched string
-		const auto commandNameStart = textCopy.indexOf(actionName, 0, Qt::CaseSensitive);
-		EXCEPTION_ACTION_COND((commandNameStart == -1), throw, "Unable to find the command name \"" << actionName << "\" in the command line \"" << text << "\"");
+		const auto commandNameStart = textCopy.indexOf(printedCommandName, 0, Qt::CaseSensitive);
+		EXCEPTION_ACTION_COND((commandNameStart == -1), throw, "Unable to find the command name \"" << printedCommandName << "\" in the command line \"" << text << "\" while in state " << windowState);
 		// In order to find where the string ends, its length must be added
-		const auto commandNameEnd = commandNameStart + actionName.size();
+		const auto commandNameEnd = commandNameStart + printedCommandName.size();
 		if (commandNameEnd < textCopy.size()) {
 			const auto commandNameEndCharacter = textCopy.at(commandNameEnd);
 			// An additional character has to be skipped as it is the space between the command and its argument
 			const auto argumentStart = commandNameEnd + 1;
 			const auto argument = textCopy.right(textCopy.size() - argumentStart);
-			EXCEPTION_ACTION_COND((commandNameEndCharacter.isSpace() == false), throw, "It is expected that the character between the command " << textCopy.left(commandNameEnd) << " and the argument " << argument << " is a space. Found " << commandNameEndCharacter.toLatin1() << " instead.");
+			EXCEPTION_ACTION_COND((commandNameEndCharacter.isSpace() == false), throw, "It is expected that the character between the command " << textCopy.left(commandNameEnd) << " and the argument " << argument << " in the text " << textCopy << " is a space. Found " << commandNameEndCharacter.toLatin1() << " instead.");
 			LOG_INFO(app::logger::info_level_e::ZERO, mainWindowCtrlWrapperOverall, "Full command " << textCopy << " argument " << argument);
 			this->core->updateUserInput(app::main_window::text_action_e::SET, argument);
 		}
 	}
+}
+
+void app::main_window::window::CtrlWrapper::moveToCommandStateFromNonIdleState(const app::main_window::state_e & windowState) {
+	// Saving long command for a given state to set it after changing state
+	app::main_window::state_e requestedWindowState = app::main_window::state_e::IDLE;
+	const std::unique_ptr<app::main_window::json::Data> & data = this->core->commands->findDataWithFieldValue("State", &windowState);
+	if (data != this->core->commands->getInvalidData()) {
+		QString longCmd(QString::fromStdString(data->getLongCmd()));
+		requestedWindowState = app::main_window::state_e::COMMAND;
+		// Setting the user input here because it is cleared when changing state
+		this->core->updateUserInput(app::main_window::text_action_e::SET, longCmd);
+	} else {
+		this->core->updateUserInput(app::main_window::text_action_e::CLEAR);
+	}
+	this->changeWindowState(requestedWindowState, app::main_window::state_postprocessing_e::POSTPROCESS);
+	this->core->printUserInput(app::main_window::text_action_e::NO_CHANGE);
 }
 
 void app::main_window::window::CtrlWrapper::saveData() {
@@ -203,23 +239,26 @@ void app::main_window::window::CtrlWrapper::changeWindowStateWrapper(const std::
 	this->changeWindowState(commandData->getState(), postprocess);
 }
 
-void app::main_window::window::CtrlWrapper::changeWindowState(const app::main_window::state_e & nextState, const app::main_window::state_postprocessing_e postprocess, const Qt::Key key) {
+void app::main_window::window::CtrlWrapper::changeWindowState(const app::main_window::state_e & nextState, const app::main_window::state_postprocessing_e postprocess) {
 
 	const app::main_window::state_e windowState = this->core->getMainWindowState();
 	const QString & userTypedText = this->core->getUserText();
+	const std::unique_ptr<app::main_window::json::Data> & data = this->core->commands->findDataWithFieldValue("State", &windowState);
+	QString longCmd = QString();
+	if (data != this->core->commands->getInvalidData()) {
+		longCmd = (QString::fromStdString(data->getLongCmd()));
+	}
 
 	// Global conditions are:
 	// - it is possible to move to any state from the COMMAND state
-	// - it is possible to move from any state to COMMAND state if the user types Backspace and the argument of the command is empty
-	const bool globalCondition = ((windowState != app::main_window::state_e::COMMAND) && (nextState == app::main_window::state_e::COMMAND) && (userTypedText.isEmpty() == true) && (key == Qt::Key_Backspace));
+	// - it is possible to move from any state to COMMAND state if the command line argument is the long command of the state before change
+	const bool globalCondition = ((windowState != app::main_window::state_e::COMMAND) && (nextState == app::main_window::state_e::COMMAND) && (userTypedText.compare(longCmd, Qt::CaseSensitive) == 0));
 
 	// Do not change state if the window is already in the one requested
 	if (windowState != nextState) {
 		bool isValid = this->isValidWindowState(nextState) || globalCondition;
 		if (isValid == true) {
 			this->core->setMainWindowState(nextState);
-
-			this->core->printUserInput(app::main_window::text_action_e::CLEAR);
 
 			if (postprocess == app::main_window::state_postprocessing_e::SETUP) {
 				this->setupWindowState(windowState);
@@ -228,6 +267,8 @@ void app::main_window::window::CtrlWrapper::changeWindowState(const app::main_wi
 				this->postprocessWindowStateChange(windowState);
 			} else if (postprocess == app::main_window::state_postprocessing_e::ACTION) {
 				this->executeAction(nextState);
+			} else {
+				this->core->printUserInput(app::main_window::text_action_e::CLEAR);
 			}
 
 			emit windowStateChanged(nextState);
