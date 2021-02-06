@@ -335,7 +335,6 @@ QSize app::main_window::popup::OpenPopup::sizeHint() const {
 void app::main_window::popup::OpenPopup::pathChanged(const QString & path) {
 	const QFileInfo pathInfo(path);
 	const bool enableAction = pathInfo.exists() && pathInfo.isFile();
-LOG_INFO(app::logger::info_level_e::ZERO, openPopupOverall, "DEBUG path changed -> enableAction " << enableAction);
 	this->openLabel->setEnabled(enableAction);
 	this->applyAction->setEnabled(enableAction);
 }

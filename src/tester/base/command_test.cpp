@@ -278,11 +278,9 @@ void tester::base::CommandTest::openFile(const std::string & filepath) const {
 
 		// Open file
 		LOG_INFO(app::logger::info_level_e::ZERO, commandTestTest, "Opening file " << filepath);
-	LOG_INFO(app::logger::info_level_e::ZERO, commandTestTest, "DEBUG Opening file " << filepath << " use shortcuts " << this->commandSentThroughShortcuts());
 		if (this->commandSentThroughShortcuts() == true) {
 			// Remove focus from QLineEdit
 			tester::base::CommandTest::sendKeyClickToFocus(Qt::Key_Escape);
-	LOG_INFO(app::logger::info_level_e::ZERO, commandTestTest, "DEBUG - open popup " << openFilePopup.get() << " focus widget " << QApplication::focusWidget() << " open popup visible " << openFilePopup->isVisible());
 			tester::base::CommandTest::sendKeyEventToFocus(QTest::KeyAction::Click, 'o');
 		} else {
 			// Press enter while focus is still on the QLineEdit opens the file
