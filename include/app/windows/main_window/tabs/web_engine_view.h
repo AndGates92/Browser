@@ -111,14 +111,6 @@ namespace app {
 					virtual void contextMenuEvent(QContextMenuEvent * event) override;
 
 				private slots:
-					/**
-					 * @brief Function: void updatePageSource(const QUrl & url)
-					 *
-					 * \param url: url of the tab
-					 *
-					 * This function is a slot that receives a notification that the url has changed and it updates the page source
-					 */
-					void updatePageSource(const QUrl & url);
 
 				private:
 					/**

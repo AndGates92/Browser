@@ -47,22 +47,7 @@ CASTED_SHARED_PTR_GETTER(app::main_window::tab::WebEngineView::page, app::main_w
 CONST_CASTED_SHARED_PTR_GETTER(app::main_window::tab::WebEngineView::getTab, app::main_window::tab::Tab, app::base::tab::WebEngineView::getTab())
 
 void app::main_window::tab::WebEngineView::connectSignals() {
-	connect(this, &app::main_window::tab::WebEngineView::urlChanged, this, &app::main_window::tab::WebEngineView::updatePageSource, Qt::UniqueConnection);
-}
 
-void app::main_window::tab::WebEngineView::updatePageSource(const QUrl & url) {
-
-	std::shared_ptr<app::main_window::tab::WebEnginePage> enginePage = this->page();
-
-	if (enginePage != nullptr) {
-		const app::main_window::page_type_e type = enginePage->getType();
-
-		// Propagate URL only if page is of type WEB_CONTENT - if no URL is set, this function is called with about::black
-		if ((type == app::main_window::page_type_e::WEB_CONTENT) && (url.isValid())) {
-			const QString urlStr = url.toDisplayString(QUrl::FullyDecoded);
-			enginePage->setSource(urlStr);
-		}
-	}
 }
 
 const std::string app::main_window::tab::WebEngineView::printActionMap() const {
