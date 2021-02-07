@@ -341,6 +341,17 @@ CONST_GETTER(app::main_window::statusbar::Bar::getInfo, std::unique_ptr<app::tex
 void app::main_window::statusbar::Bar::setUserInputText(const QString & text) {
 	this->userInput->setText(text);
 }
+
+void app::main_window::statusbar::Bar::showUserInput(const bool & showWidget) {
+	const bool isTextEmpty = this->userInput->text().isEmpty();
+	if ((showWidget == true) && (isTextEmpty == false)) {
+		this->userInput->show();
+	} else {
+		this->userInput->hide();
+		this->window()->setFocus();
+	}
+}
+
 CONST_GETTER(app::main_window::statusbar::Bar::getUserInputText, QString, this->userInput->text())
 CONST_GETTER(app::main_window::statusbar::Bar::getUserInput, std::unique_ptr<app::text_widgets::LineEdit> &, this->userInput)
 

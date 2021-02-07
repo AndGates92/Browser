@@ -119,6 +119,15 @@ namespace app {
 					const std::unique_ptr<app::progress_bar::Bar> & getLoadBar() const;
 
 					/**
+					 * Function: void showUserInput(const bool & showWidget)
+					 *
+					 * \param showWidget: boolean indicating whether to show the user input or not
+					 *
+					 * This function shows or hides the user input text edit
+					 */
+					void showUserInput(const bool & showWidget);
+
+					/**
 					 * Function: void showSearchResult(const bool & showWidget)
 					 *
 					 * \param showWidget: boolean indicating whether to show the search result or not

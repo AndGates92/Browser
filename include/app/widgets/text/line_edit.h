@@ -65,17 +65,6 @@ namespace app {
 				 */
 				DISABLE_COPY_MOVE(LineEdit)
 
-			private slots:
-				/**
-				 * @brief Function: void onTextChanged(const QString & text)
-				 *
-				 * \param text: new text in the line edit
-				 *
-				 * This function is a slot triggered when the text in the line label changes
-				 */
-				void onTextChanged(const QString & text);
-
-
 		};
 
 

@@ -92,51 +92,57 @@ void app::main_window::window::CtrlWrapper::connectSignals() {
 }
 
 void app::main_window::window::CtrlWrapper::setCommandLineArgument(const QString & text) {
-	app::main_window::state_e windowState = this->core->getMainWindowState();
+	const std::unique_ptr<app::main_window::statusbar::Bar> & statusBar = this->core->bottomStatusBar;
+	statusBar->showUserInput(text.isEmpty() == false);
 
-	if (windowState == app::main_window::state_e::IDLE) {
-		EXCEPTION_ACTION_COND((text.isEmpty() == false), throw, "Command line should be empty. It is displaying the following string instead \"" << text << "\"");
+	if (text.isEmpty() == true) {
+		this->changeWindowState(app::main_window::state_e::IDLE, app::main_window::state_postprocessing_e::SETUP);
 	} else {
-		auto printedCommandName = this->core->getActionName();
-		auto textCopy(text);
+		app::main_window::state_e windowState = this->core->getMainWindowState();
 
-		QString userTypedText = this->core->getUserText();
-		LOG_INFO(app::logger::info_level_e::ZERO, mainWindowCtrlWrapperUserInput, "User typed text \"" << userTypedText << "\" in state " << windowState);
-		if (textCopy.contains(printedCommandName, Qt::CaseSensitive) == false) {
-			if (userTypedText.isEmpty() == true) {
-				if (windowState != app::main_window::state_e::COMMAND) {
-					if (windowState == app::main_window::state_e::MOVE_TAB) {
-						// If in state TAB MOVE and the core->userText is empty after deleting the last character, set the move value to IDLE
-						this->core->setOffsetType(app::shared::offset_type_e::IDLE);
+		if (windowState == app::main_window::state_e::IDLE) {
+			EXCEPTION_ACTION_COND((text.isEmpty() == false), throw, "Command line should be empty. It is displaying the following string instead \"" << text << "\"");
+		} else {
+			auto printedCommandName = this->core->getActionName();
+			auto textCopy(text);
+
+			QString userTypedText = this->core->getUserText();
+			LOG_INFO(app::logger::info_level_e::ZERO, mainWindowCtrlWrapperUserInput, "User typed text \"" << userTypedText << "\" in state " << windowState);
+			if (textCopy.contains(printedCommandName, Qt::CaseSensitive) == false) {
+				if (userTypedText.isEmpty() == true) {
+					if (windowState != app::main_window::state_e::COMMAND) {
+						if (windowState == app::main_window::state_e::MOVE_TAB) {
+							// If in state TAB MOVE and the core->userText is empty after deleting the last character, set the move value to IDLE
+							this->core->setOffsetType(app::shared::offset_type_e::IDLE);
+						}
+						this->moveToCommandStateFromNonIdleState(windowState);
 					}
-					this->moveToCommandStateFromNonIdleState(windowState);
+				} else {
+					EXCEPTION_ACTION(throw, "Command line \"" << text << "\" must contains the command name \"" << printedCommandName << "\" because main window is in state " << windowState << " and command line argument is " << userTypedText);
 				}
-			} else {
-				EXCEPTION_ACTION(throw, "Command line \"" << text << "\" must contains the command name \"" << printedCommandName << "\" because main window is in state " << windowState << " and command line argument is " << userTypedText);
+			} else if (windowState == app::main_window::state_e::COMMAND) {
+				this->executeCommand(app::main_window::state_postprocessing_e::SETUP);
 			}
-		} else if (windowState == app::main_window::state_e::COMMAND) {
-			this->executeCommand(app::main_window::state_postprocessing_e::SETUP);
-		}
 
-		// Command line or state may have changed
-		windowState = this->core->getMainWindowState();
-		printedCommandName = this->core->getActionName();
-		const std::unique_ptr<app::main_window::statusbar::Bar> & statusBar = this->core->bottomStatusBar;
-		textCopy = statusBar->getUserInputText();
+			// Command line or state may have changed
+			windowState = this->core->getMainWindowState();
+			printedCommandName = this->core->getActionName();
+			textCopy = statusBar->getUserInputText();
 
-		// indexOf finds the position of the first character of the searched string
-		const auto commandNameStart = textCopy.indexOf(printedCommandName, 0, Qt::CaseSensitive);
-		EXCEPTION_ACTION_COND((commandNameStart == -1), throw, "Unable to find the command name \"" << printedCommandName << "\" in the command line \"" << text << "\" while in state " << windowState);
-		// In order to find where the string ends, its length must be added
-		const auto commandNameEnd = commandNameStart + printedCommandName.size();
-		if (commandNameEnd < textCopy.size()) {
-			const auto commandNameEndCharacter = textCopy.at(commandNameEnd);
-			// An additional character has to be skipped as it is the space between the command and its argument
-			const auto argumentStart = commandNameEnd + 1;
-			const auto argument = textCopy.right(textCopy.size() - argumentStart);
-			EXCEPTION_ACTION_COND((commandNameEndCharacter.isSpace() == false), throw, "It is expected that the character between the command " << textCopy.left(commandNameEnd) << " and the argument " << argument << " in the text " << textCopy << " is a space. Found " << commandNameEndCharacter.toLatin1() << " instead.");
-			LOG_INFO(app::logger::info_level_e::ZERO, mainWindowCtrlWrapperOverall, "Full command " << textCopy << " argument " << argument);
-			this->core->updateUserInput(app::main_window::text_action_e::SET, argument);
+			// indexOf finds the position of the first character of the searched string
+			const auto commandNameStart = textCopy.indexOf(printedCommandName, 0, Qt::CaseSensitive);
+			EXCEPTION_ACTION_COND((commandNameStart == -1), throw, "Unable to find the command name \"" << printedCommandName << "\" in the command line \"" << text << "\" while in state " << windowState);
+			// In order to find where the string ends, its length must be added
+			const auto commandNameEnd = commandNameStart + printedCommandName.size();
+			if (commandNameEnd < textCopy.size()) {
+				const auto commandNameEndCharacter = textCopy.at(commandNameEnd);
+				// An additional character has to be skipped as it is the space between the command and its argument
+				const auto argumentStart = commandNameEnd + 1;
+				const auto argument = textCopy.right(textCopy.size() - argumentStart);
+				EXCEPTION_ACTION_COND((commandNameEndCharacter.isSpace() == false), throw, "It is expected that the character between the command " << textCopy.left(commandNameEnd) << " and the argument " << argument << " in the text " << textCopy << " is a space. Found " << commandNameEndCharacter.toLatin1() << " instead.");
+				LOG_INFO(app::logger::info_level_e::ZERO, mainWindowCtrlWrapperOverall, "Full command " << textCopy << " argument " << argument);
+				this->core->updateUserInput(app::main_window::text_action_e::SET, argument);
+			}
 		}
 	}
 }
