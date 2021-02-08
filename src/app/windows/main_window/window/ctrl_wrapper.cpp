@@ -324,7 +324,7 @@ void app::main_window::window::CtrlWrapper::changeWindowState(const app::main_wi
 
 void app::main_window::window::CtrlWrapper::setupWindowState(const app::main_window::state_e & previousState) {
 	const app::main_window::state_e windowState = this->core->getMainWindowState();
-	LOG_INFO(app::logger::info_level_e::ZERO, mainWindowCtrlWrapperOverall, "Setting up current state " << windowState << " previousState " << previousState);
+	LOG_INFO(app::logger::info_level_e::ZERO, mainWindowCtrlWrapperOverall, "Setting up current state " << windowState << " - previous state was " << previousState);
 
 	const int tabCount = this->core->getTabCount();
 	std::shared_ptr<app::main_window::tab::Tab> tab = nullptr;
@@ -376,8 +376,8 @@ void app::main_window::window::CtrlWrapper::setupWindowState(const app::main_win
 		case app::main_window::state_e::FIND:
 			this->setAllShortcutEnabledProperty(false);
 			this->core->printUserInput(app::main_window::text_action_e::SET);
-			statusBar->setFocus();
-			statusBar->setFocusProxy(statusBar->getUserInput().get());
+			this->setFocus();
+			this->setFocusProxy(statusBar->getUserInput().get());
 			break;
 		case app::main_window::state_e::EDIT_SEARCH:
 			EXCEPTION_ACTION_COND((tab == nullptr), throw, "Postprocessing state " << windowState << ": Unable to edit string used for previous search as pointer to tab is " << tab.get());

@@ -409,32 +409,3 @@ void app::main_window::statusbar::Bar::mousePressEvent(QMouseEvent * event) {
 
 	}
 }
-
-void app::main_window::statusbar::Bar::keyPressEvent(QKeyEvent * event) {
-
-	if (event->type() == QEvent::KeyPress) {
-
-		const int pressedKey = event->key();
-		const Qt::KeyboardModifiers keyModifiers = event->modifiers();
-
-		const app::commands::KeySequence keySeq(pressedKey | keyModifiers);
-
-		// Retrieve main window controller state
-		LOG_INFO(app::logger::info_level_e::ZERO, mainWindowStatusBarUserInput, "Key pressed " << keySeq.toString());
-	}
-}
-
-void app::main_window::statusbar::Bar::keyReleaseEvent(QKeyEvent * event) {
-	if (event->type() == QEvent::KeyRelease) {
-
-		const int releasedKey = event->key();
-		const Qt::KeyboardModifiers keyModifiers = event->modifiers();
-
-		const app::commands::KeySequence keySeq(releasedKey | keyModifiers);
-
-		// Retrieve main window controller state
-		LOG_INFO(app::logger::info_level_e::ZERO, mainWindowStatusBarUserInput, "Released key " << keySeq.toString());
-	}
-}
-
-

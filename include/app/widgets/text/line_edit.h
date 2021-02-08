@@ -47,7 +47,24 @@ namespace app {
 				 */
 				virtual ~LineEdit();
 
+			signals:
+				/**
+				 * @brief Function: void escapeReleased();
+				 *
+				 * This function is a signal triggered when the escape key is released
+				 */
+				void escapeReleased();
+
 			protected:
+				/**
+				 * @brief Function: virtual void keyReleaseEvent(QKeyEvent * event) override final
+				 *
+				 * \param event: event coming from keyboard
+				 *
+				 * This function handles event coming from the keyboard
+				 * Re-implement key released event
+				 */
+				virtual void keyReleaseEvent(QKeyEvent * event) override final;
 
 			private:
 
