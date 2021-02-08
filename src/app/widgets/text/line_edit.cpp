@@ -56,3 +56,14 @@ void app::text_widgets::LineEdit::keyReleaseEvent(QKeyEvent * event) {
 		}
 	}
 }
+
+void app::text_widgets::LineEdit::restoreSavedText() {
+	this->setText(this->savedText);
+}
+
+void app::text_widgets::LineEdit::focusInEvent(QFocusEvent * event) {
+	if (event->gotFocus() == true) {
+		this->savedText = this->text();
+	}
+
+}

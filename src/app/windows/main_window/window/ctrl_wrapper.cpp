@@ -74,12 +74,6 @@ void app::main_window::window::CtrlWrapper::connectSignals() {
 		this->executeAction(windowState);
 	});
 	connect(statusBar->getUserInput().get(), &app::text_widgets::LineEdit::escapeReleased, this, [this] () {
-LOG_INFO(app::logger::info_level_e::ZERO, mainWindowCtrlWrapperOverall, "DEBUG User input escape");
-		this->changeWindowState(app::main_window::state_e::IDLE, app::main_window::state_postprocessing_e::SETUP);
-	});
-
-	connect(statusBar->getContentPath().get(), &app::text_widgets::LineEdit::escapeReleased, this, [this] () {
-LOG_INFO(app::logger::info_level_e::ZERO, mainWindowCtrlWrapperOverall, "DEBUG Command path escape");
 		this->changeWindowState(app::main_window::state_e::IDLE, app::main_window::state_postprocessing_e::SETUP);
 	});
 

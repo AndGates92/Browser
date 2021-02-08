@@ -47,6 +47,22 @@ namespace app {
 				 */
 				virtual ~LineEdit();
 
+				/**
+				 * @brief Function: void restoreSavedText()
+				 *
+				 * This function restores the saved text
+				 */
+				void restoreSavedText();
+
+				/**
+				 * @brief Function: virtual void focusInEvent(QFocusEvent * event) override
+				 *
+				 * \param event: focus event
+				 *
+				 * This function handles incoming focus event
+				 */
+				virtual void focusInEvent(QFocusEvent * event) override;
+
 			signals:
 				/**
 				 * @brief Function: void escapeReleased();
@@ -67,6 +83,12 @@ namespace app {
 				virtual void keyReleaseEvent(QKeyEvent * event) override final;
 
 			private:
+
+				/**
+				 * @brief saved text before any edits
+				 *
+				 */
+				QString savedText;
 
 				/**
 				 * @brief Function: virtual void connectSignals() final

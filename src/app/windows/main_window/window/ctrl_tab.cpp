@@ -100,6 +100,9 @@ void app::main_window::window::CtrlTab::connectSignals() {
 		this->searchTab(index, source);
 		this->window()->setFocus();
 	});
+	connect(statusBar->getContentPath().get(), &app::text_widgets::LineEdit::escapeReleased, this, [&statusBar] () {
+		statusBar->getContentPath()->restoreSavedText();
+	});
 
 }
 
