@@ -73,6 +73,15 @@ void app::main_window::window::CtrlWrapper::connectSignals() {
 		const app::main_window::state_e windowState = this->core->getMainWindowState();
 		this->executeAction(windowState);
 	});
+	connect(statusBar->getUserInput().get(), &app::text_widgets::LineEdit::escapeReleased, this, [this] () {
+LOG_INFO(app::logger::info_level_e::ZERO, mainWindowCtrlWrapperOverall, "DEBUG User input escape");
+		this->changeWindowState(app::main_window::state_e::IDLE, app::main_window::state_postprocessing_e::SETUP);
+	});
+
+	connect(statusBar->getContentPath().get(), &app::text_widgets::LineEdit::escapeReleased, this, [this] () {
+LOG_INFO(app::logger::info_level_e::ZERO, mainWindowCtrlWrapperOverall, "DEBUG Command path escape");
+		this->changeWindowState(app::main_window::state_e::IDLE, app::main_window::state_postprocessing_e::SETUP);
+	});
 
 	const app::main_window::window::Commands::action_data_t & commands = this->core->commands->getActions();
 	std::for_each(commands.cbegin(), commands.cend(), [&] (const auto & data) {
@@ -302,6 +311,7 @@ void app::main_window::window::CtrlWrapper::changeWindowState(const app::main_wi
 	if (windowState != nextState) {
 		bool isValid = this->isValidWindowState(nextState) || globalCondition;
 		if (isValid == true) {
+			LOG_INFO(app::logger::info_level_e::ZERO, mainWindowCtrlWrapperOverall, "Window state change from state " << windowState << " to state " << nextState);
 			this->core->setMainWindowState(nextState);
 
 			if (postprocess == app::main_window::state_postprocessing_e::SETUP) {
@@ -343,18 +353,21 @@ void app::main_window::window::CtrlWrapper::setupWindowState(const app::main_win
 	// If requesting to go to the idle state, enable shortcuts
 	switch (windowState) {
 		case app::main_window::state_e::IDLE:
+			this->setFocus();
+			this->setFocusProxy(nullptr);
 			this->core->printUserInput(app::main_window::text_action_e::CLEAR);
 			this->setAllShortcutEnabledProperty(true);
 			break;
 		case app::main_window::state_e::QUIT:
 		case app::main_window::state_e::TOGGLE_MENUBAR:
-			this->setAllShortcutEnabledProperty(false);
 			this->winctrl->setFocus();
+			this->winctrl->setFocusProxy(nullptr);
+			this->setAllShortcutEnabledProperty(false);
 			break;
 		case app::main_window::state_e::COMMAND:
-			this->setAllShortcutEnabledProperty(false);
 			this->winctrl->setFocus();
 			this->winctrl->setFocusProxy(statusBar->getUserInput().get());
+			this->setAllShortcutEnabledProperty(false);
 			break;
 		case app::main_window::state_e::OPEN_FILE:
 		case app::main_window::state_e::FIND_DOWN:
@@ -363,8 +376,9 @@ void app::main_window::window::CtrlWrapper::setupWindowState(const app::main_win
 		case app::main_window::state_e::SCROLL_DOWN:
 		case app::main_window::state_e::HISTORY_PREV:
 		case app::main_window::state_e::HISTORY_NEXT:
-			this->setAllShortcutEnabledProperty(false);
 			this->tabctrl->setFocus();
+			this->tabctrl->setFocusProxy(nullptr);
+			this->setAllShortcutEnabledProperty(false);
 			break;
 		case app::main_window::state_e::OPEN_TAB:
 		case app::main_window::state_e::NEW_SEARCH:
@@ -374,17 +388,17 @@ void app::main_window::window::CtrlWrapper::setupWindowState(const app::main_win
 		case app::main_window::state_e::MOVE_LEFT:
 		case app::main_window::state_e::MOVE_TAB:
 		case app::main_window::state_e::FIND:
-			this->setAllShortcutEnabledProperty(false);
-			this->core->printUserInput(app::main_window::text_action_e::SET);
 			this->setFocus();
 			this->setFocusProxy(statusBar->getUserInput().get());
+			this->setAllShortcutEnabledProperty(false);
+			this->core->printUserInput(app::main_window::text_action_e::SET);
 			break;
 		case app::main_window::state_e::EDIT_SEARCH:
 			EXCEPTION_ACTION_COND((tab == nullptr), throw, "Postprocessing state " << windowState << ": Unable to edit string used for previous search as pointer to tab is " << tab.get());
-			this->core->printUserInput(app::main_window::text_action_e::SET, searchText);
-			this->setAllShortcutEnabledProperty(false);
 			this->tabctrl->setFocus();
 			this->tabctrl->setFocusProxy(statusBar->getUserInput().get());
+			this->core->printUserInput(app::main_window::text_action_e::SET, searchText);
+			this->setAllShortcutEnabledProperty(false);
 			break;
 		default: 
 			EXCEPTION_ACTION(throw, "Unable to postprocess transaction to " << windowState << " is valid as state " << windowState << " doesn't have a defined postprocess action");
