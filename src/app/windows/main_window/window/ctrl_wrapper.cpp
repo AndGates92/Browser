@@ -13,6 +13,7 @@
 #include "app/utility/logger/enums.h"
 #include "app/utility/logger/macros.h"
 #include "app/utility/cpp/cpp_operator.h"
+#include "app/utility/cpp/stl_helper.h"
 #include "app/windows/main_window/window/commands.h"
 #include "app/windows/main_window/window/ctrl_wrapper.h"
 #include "app/windows/main_window/window/ctrl.h"
@@ -125,6 +126,7 @@ void app::main_window::window::CtrlWrapper::setCommandLineArgument(const QString
 
 			QString userTypedText = this->core->getUserText();
 			LOG_INFO(app::logger::info_level_e::ZERO, mainWindowCtrlWrapperUserInput, "User typed text \"" << userTypedText << "\" in state " << windowState);
+			// Move to command state from another state when user deletes characters
 			if (textCopy.contains(printedCommandName, Qt::CaseSensitive) == false) {
 				if (userTypedText.isEmpty() == true) {
 					if (windowState != app::main_window::state_e::COMMAND) {
@@ -138,6 +140,7 @@ void app::main_window::window::CtrlWrapper::setCommandLineArgument(const QString
 					EXCEPTION_ACTION(throw, "Command line \"" << text << "\" must contains the command name \"" << printedCommandName << "\" because main window is in state " << windowState << " and command line argument is " << userTypedText);
 				}
 			} else if (windowState == app::main_window::state_e::COMMAND) {
+				// Try to move to another state or execute the command
 				this->executeCommand(app::main_window::state_postprocessing_e::SETUP);
 			}
 
@@ -194,7 +197,12 @@ void app::main_window::window::CtrlWrapper::moveToCommandStateFromNonIdleState(c
 
 void app::main_window::window::CtrlWrapper::executeCommand(const app::main_window::state_postprocessing_e & postprocess) {
 	const QString & userCommand = this->core->getUserText();
-	LOG_INFO(app::logger::info_level_e::ZERO, mainWindowCtrlWrapperUserInput, "Looking for command matching user input: " << userCommand);
+	const std::string whiteSpaces(" \n\t\v\f\r");
+	std::string prunedUserCommand(app::utility::removeTrailingCharacter(userCommand.toStdString(), whiteSpaces));
+	const auto nonSpacePos = prunedUserCommand.find_first_not_of(whiteSpaces);
+	prunedUserCommand.erase(0, nonSpacePos);
+	const auto prunedUserText = QString::fromStdString(prunedUserCommand);
+	LOG_INFO(app::logger::info_level_e::ZERO, mainWindowCtrlWrapperUserInput, "Looking for command matching user input: " << prunedUserText);
 	const app::main_window::state_e previousWindowState = this->core->getMainWindowState();
 	const app::main_window::window::Commands::action_data_t & commands = this->core->commands->getActions();
 
@@ -203,8 +211,8 @@ void app::main_window::window::CtrlWrapper::executeCommand(const app::main_windo
 		const QString refCommand = QString::fromStdString(commandData->getLongCmd());
 
 		// If user command matches the command in the JSON file
-		if (userCommand.compare(refCommand) == 0) {
-			LOG_INFO(app::logger::info_level_e::ZERO, mainWindowCtrlWrapperUserInput, "Found command " << refCommand << " matching user input: " << userCommand);
+		if (prunedUserText.compare(refCommand) == 0) {
+			LOG_INFO(app::logger::info_level_e::ZERO, mainWindowCtrlWrapperUserInput, "Found command " << refCommand << " matching user input: " << prunedUserText);
 			this->core->updateUserInput(app::main_window::text_action_e::CLEAR);
 			this->changeWindowState(commandData->getState(), postprocess);
 		}
@@ -213,7 +221,7 @@ void app::main_window::window::CtrlWrapper::executeCommand(const app::main_windo
 	const app::main_window::state_e currentWindowState = this->core->getMainWindowState();
 
 	if (previousWindowState == currentWindowState) {
-		LOG_WARNING(mainWindowCtrlWrapperUserInput, "Window state remained unchanged to " << currentWindowState << " while runnign command " << userCommand);
+		LOG_WARNING(mainWindowCtrlWrapperUserInput, "Window state remained unchanged to " << currentWindowState << " while runnign command " << prunedUserText);
 	}
 }
 
