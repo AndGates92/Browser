@@ -4,7 +4,7 @@
  * @copyright
  * @file long_command_with_spaces.h
  * @author Andrea Gianarda
- * @date 30th August 2020
+ * @date 09th February 2021
  * @brief Long command with spaces header file
  */
 
@@ -52,6 +52,11 @@ namespace tester {
 				virtual void testBody() override;
 
 			private:
+				/**
+				 * @brief send command argument
+				 *
+				 */
+				bool sendCommandArgument;
 
 		};
 

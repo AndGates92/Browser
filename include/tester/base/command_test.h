@@ -174,6 +174,29 @@ namespace tester {
 				 */
 				void waitForTabOpened() const;
 
+				/**
+				 * @brief Function: void writeTextToStatusBar(const std::string & textToWrite, const std::string & expectedText, const app::main_window::state_e & expectedState, const bool execute) const
+				 *
+				 * \param textToWrite: text to write in the status bar
+				 * \param expectedText: expected text to be displayed in the window
+				 * \param expectedState: expected window state while typing
+				 * \param excute: boolean that control whether to execute the command or not
+				 * \param pressEnter: press enter to validate the command
+				 *
+				 * This function writes text to the status base and compares it against a golden reference
+				 */
+				void writeTextToStatusBar(const std::string & textToWrite, const std::string & expectedText, const app::main_window::state_e & expectedState, const bool execute, const bool pressEnter) const;
+
+				/**
+				 * @brief Function: void checkStateAfterTypingText(const std::string & expectedText, const app::main_window::state_e & expectedState) const
+				 *
+				 * \param expectedText: expected text to be displayed in the window
+				 * \param expectedState: expected window state while typing
+				 *
+				 * This function checks the text in the status bar and window state
+				 */
+				void checkStateAfterTypingText(const std::string & expectedText, const app::main_window::state_e & expectedState) const;
+
 			private:
 
 				/**
@@ -194,19 +217,6 @@ namespace tester {
 				bool stateRequiresArgument(const app::main_window::state_e & state) const;
 
 				/**
-				 * @brief Function: void writeTextToStatusBar(const std::string & textToWrite, const std::string & expectedText, const app::main_window::state_e & expectedState, const bool execute) const
-				 *
-				 * \param textToWrite: text to write in the status bar
-				 * \param expectedText: expected text to be displayed in the window
-				 * \param expectedState: expected window state while typing
-				 * \param excute: boolean that control whether to execute the command or not
-				 * \param pressEnter: press enter to validate the command
-				 *
-				 * This function writes text to the status base and compares it against a golden reference
-				 */
-				void writeTextToStatusBar(const std::string & textToWrite, const std::string & expectedText, const app::main_window::state_e & expectedState, const bool execute, const bool pressEnter) const;
-
-				/**
 				 * @brief Function: void writeCommandToStatusBar(const std::string & commandName, const app::main_window::state_e & expectedState, const bool execute) const
 				 *
 				 * \param commandName: name of command to search in the JSON
@@ -216,16 +226,6 @@ namespace tester {
 				 * This function writes a command to the status base and creates the golden reference to compare against
 				 */
 				void writeCommandToStatusBar(const std::string & commandName, const app::main_window::state_e & expectedState, const bool execute) const;
-
-				/**
-				 * @brief Function: void checkStateAfterTypingText(const std::string & expectedText, const app::main_window::state_e & expectedState) const
-				 *
-				 * \param expectedText: expected text to be displayed in the window
-				 * \param expectedState: expected window state while typing
-				 *
-				 * This function checks the text in the status bar and window state
-				 */
-				void checkStateAfterTypingText(const std::string & expectedText, const app::main_window::state_e & expectedState) const;
 
 		};
 

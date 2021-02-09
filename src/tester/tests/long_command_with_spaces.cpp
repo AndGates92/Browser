@@ -2,7 +2,7 @@
  * @copyright
  * @file long_command_with_spaces.cpp
  * @author Andrea Gianarda
- * @date 30th August 2020
+ * @date 09th February 2021
  * @brief Long command with spaces functions
  */
 
@@ -11,10 +11,12 @@
 #include "app/shared/enums.h"
 #include "app/utility/logger/macros.h"
 #include "app/utility/qt/qt_operator.h"
-#include "app/windows/main_window/window/main_window.h"
+#include "app/windows/main_window/window/core.h"
+#include "app/windows/main_window/statusbar/bar.h"
 #include "app/windows/main_window/json/data.h"
 #include "tester/tests/long_command_with_spaces.h"
 #include "tester/base/suite.h"
+#include "tester/top/main_window_wrapper.h"
 
 LOGGING_CONTEXT(longCommandWithSpacesOverall, longCommandWithSpaces.overall, TYPE_LEVEL, INFO_VERBOSITY)
 LOGGING_CONTEXT(longCommandWithSpacesTest, longCommandWithSpaces.test, TYPE_LEVEL, INFO_VERBOSITY)
@@ -37,7 +39,7 @@ namespace tester {
 				 * @brief Filename storing informations about commands and shortcuts
 				 *
 				 */
-				static const std::string jsonFileName("global_commands.json");
+				static const std::string jsonFileName("tab_commands.json");
 
 				/**
 				 * @brief Full path towards JSON file storing informations about commands and shortcuts
@@ -53,7 +55,7 @@ namespace tester {
 
 }
 
-tester::test::LongCommandWithSpaces::LongCommandWithSpaces(const std::shared_ptr<tester::base::Suite> & testSuite, const bool withArgument) : tester::base::CommandTest(testSuite, ("Long command with spaces with " ((withArgument == true) ? (" argument" : "no arguments"))), tester::test::long_command_with_spaces::jsonFileFullPath, false) {
+tester::test::LongCommandWithSpaces::LongCommandWithSpaces(const std::shared_ptr<tester::base::Suite> & testSuite, const bool withArgument) : tester::base::CommandTest(testSuite, (std::string("Long command with spaces with ") + ((withArgument == true) ? "argument" : "no arguments")), tester::test::long_command_with_spaces::jsonFileFullPath, false), sendCommandArgument(withArgument) {
 	LOG_INFO(app::logger::info_level_e::ZERO, longCommandWithSpacesOverall, "Creating test " << this->getName() << " in suite " << this->getSuite()->getName());
 }
 
@@ -67,7 +69,7 @@ void tester::test::LongCommandWithSpaces::testBody() {
 
 	const std::string commandName("open tab");
 	std::string commandArgument = std::string();
-	if (withArgument) {
+	if (this->sendCommandArgument) {
 		commandArgument = "test";
 	}
 
@@ -82,11 +84,10 @@ void tester::test::LongCommandWithSpaces::testBody() {
 	const QTest::KeyAction keyAction = QTest::KeyAction::Click;
 	tester::base::CommandTest::sendKeyEventsToFocus(keyAction, spaces);
 	const std::string emptyText = std::string();
-	const std::shared_ptr<app::main_window::window::Core> & windowCore = this->windowWrapper->getWindowCore();
 	const std::string textInLabelBeforeCommand = windowCore->bottomStatusBar->getUserInputText().toStdString();
 	// Spaces should be ignored
-	ASSERT((emptyText.compare(textInLabelBeforeCommand) == 0), tester::shared::error_type_e::STATUSBAR, "Expected text in command line \"" + emptyText + "\" doesn't match the text written in the user input label \"" + textInLabelBeforeCommand + "\". When the window is in state " + idleState + " spaces should be ignored.");
 	const app::main_window::state_e idleState = app::main_window::state_e::IDLE;
+	ASSERT((emptyText.compare(textInLabelBeforeCommand) == 0), tester::shared::error_type_e::STATUSBAR, "Expected text in command line \"" + emptyText + "\" doesn't match the text written in the user input label \"" + textInLabelBeforeCommand + "\". When the window is in state " + idleState + " spaces should be ignored.");
 	this->checkStateAfterTypingText(emptyText, idleState);
 
 	// Send : to move to the command state
@@ -99,11 +100,11 @@ void tester::test::LongCommandWithSpaces::testBody() {
 	tester::base::CommandTest::sendKeyEventsToFocus(keyAction, spaces);
 	const std::string textBeforeCommand = startCommandText + spaces;
 	const std::string textInLabelBeforeCommandName = windowCore->bottomStatusBar->getUserInputText().toStdString();
-	ASSERT((textBeforeCommandName.compare(textInLabelBeforeCommandName) == 0), tester::shared::error_type_e::STATUSBAR, "Expected text in the command line \"" + textBeforeCommandName + "\" doesn't match the text written in the user input label \"" + textInLabelBeforeCommandName + "\". After moving to the typing state " + typingState + " spaces should be allowed before start typing the full command name.");
-	this->checkStateAfterTypingText(textBeforeCommandName, typingState);
+	ASSERT((textBeforeCommand.compare(textInLabelBeforeCommandName) == 0), tester::shared::error_type_e::STATUSBAR, "Expected text in the command line \"" + textBeforeCommand + "\" doesn't match the text written in the user input label \"" + textInLabelBeforeCommandName + "\". After moving to the typing state " + typingState + " spaces should be allowed before start typing the full command name.");
+	this->checkStateAfterTypingText(textBeforeCommand, typingState);
 
 	const std::string commandToSend(this->commandNameToTypedText(commandName));
-	const auto longCmd = std::string();
+	auto longCmd = std::string();
 	if (commandData != nullptr) {
 		const std::string * const commandLongCmdPtr(static_cast<const std::string *>(commandData->getValueFromMemberName("LongCmd")));
 		ASSERT((commandLongCmdPtr != nullptr), tester::shared::error_type_e::COMMAND, "Unable to find long command for data data with Name " + commandName + " in " + this->getActionJsonFilesAsString());
@@ -128,7 +129,7 @@ void tester::test::LongCommandWithSpaces::testBody() {
 		commandState = *commandStatePtr;
 	}
 
-	const std::string textAfterFinishingTypingCommand = commandNameDysplayed + spaces;
+	const std::string textAfterFinishingTypingCommand = commandNameDisplayed + spaces;
 	this->checkStateAfterTypingText(textAfterFinishingTypingCommand, commandState);
 
 	// Type argument and execute it if the argument is empty

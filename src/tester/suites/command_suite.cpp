@@ -19,6 +19,7 @@
 #include "tester/tests/open_file.h"
 #include "tester/tests/edit_command_in_statusbar.h"
 #include "tester/tests/edit_path_in_statusbar.h"
+#include "tester/tests/long_command_with_spaces.h"
 
 LOGGING_CONTEXT(commandSuiteOverall, commandSuite.overall, TYPE_LEVEL, INFO_VERBOSITY)
 
@@ -48,5 +49,8 @@ void tester::suite::CommandSuite::populate() {
 		tester::test::OpenFile::create<tester::test::OpenFile>(this->shared_from_this(), shortcut);
 		tester::test::EditCommandInStatusbar::create<tester::test::EditCommandInStatusbar>(this->shared_from_this(), shortcut);
 		tester::test::EditPathInStatusbar::create<tester::test::EditPathInStatusbar>(this->shared_from_this(), shortcut);
+	}
+	for (const bool & argument : { false, true } ) {
+		tester::test::LongCommandWithSpaces::create<tester::test::LongCommandWithSpaces>(this->shared_from_this(), argument);
 	}
 }
