@@ -152,11 +152,13 @@ void app::main_window::window::CtrlWrapper::setCommandLineArgument(const QString
 			// In order to find where the string ends, its length must be added
 			const auto commandNameEnd = commandNameStart + printedCommandName.size();
 			if (commandNameEnd < textCopy.size()) {
-				const auto commandNameEndCharacter = textCopy.at(commandNameEnd);
+				const auto & commandNameEndCharacter = textCopy.at(commandNameEnd);
 				// An additional character has to be skipped as it is the space between the command and its argument
-				const auto argumentStart = commandNameEnd + 1;
+				const auto argumentStart = commandNameEnd + (commandNameEndCharacter.isSpace() ? 1 : 0);
 				const auto argument = textCopy.right(textCopy.size() - argumentStart);
-				EXCEPTION_ACTION_COND((commandNameEndCharacter.isSpace() == false), throw, "It is expected that the character between the command " << textCopy.left(commandNameEnd) << " and the argument " << argument << " in the text " << textCopy << " is a space. Found " << commandNameEndCharacter.toLatin1() << " instead.");
+				if (windowState != app::main_window::state_e::COMMAND) {
+					EXCEPTION_ACTION_COND((commandNameEndCharacter.isSpace() == false), throw, "It is expected that the character between the command " << textCopy.left(commandNameEnd) << " and the argument " << argument << " in the text " << textCopy << " is a space. Found " << commandNameEndCharacter.toLatin1() << " instead.");
+				}
 				LOG_INFO(app::logger::info_level_e::ZERO, mainWindowCtrlWrapperOverall, "Full command " << textCopy << " argument " << argument);
 				this->core->updateUserInput(app::main_window::text_action_e::SET, argument);
 			}
