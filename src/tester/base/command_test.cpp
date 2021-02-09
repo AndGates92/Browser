@@ -103,7 +103,7 @@ void tester::base::CommandTest::writeTextToStatusBar(const std::string & textToW
 
 	const std::shared_ptr<app::main_window::window::Core> & windowCore = this->windowWrapper->getWindowCore();
 
-	QTest::KeyAction keyAction = QTest::KeyAction::Click;
+	const QTest::KeyAction keyAction = QTest::KeyAction::Click;
 	tester::base::CommandTest::sendKeyEventsToFocus(keyAction, textToWrite);
 
 	this->checkStateAfterTypingText(expectedText, expectedState);
@@ -207,14 +207,14 @@ void tester::base::CommandTest::writeCommandToStatusBar(const std::string & comm
 	const std::string commandToSend(this->commandNameToTypedText(commandName));
 	const std::string commandExpectedText(this->commandNameToShownText(commandName, (expectedState == app::main_window::state_e::COMMAND)));
 
-	LOG_INFO(app::logger::info_level_e::ZERO, commandTestTest, "Type command " << commandName << " - text sent to statusbar: " << commandToSend);
+	LOG_INFO(app::logger::info_level_e::ZERO, commandTestTest, "Type command \"" << commandName << "\" - text sent to statusbar: \"" << commandToSend << "\"");
 	const bool commandRequiredEnter = this->commandRequiresEnter(commandName);
 	const bool pressEnter = execute || (commandRequiredEnter && this->sendCommandsThroughShortcuts);
 
 	// Send : to move to the command state
 	if (this->commandSentThroughShortcuts() == false) {
 		const std::string startCommandText(":");
-		QTest::KeyAction keyAction = QTest::KeyAction::Click;
+		const QTest::KeyAction keyAction = QTest::KeyAction::Click;
 		tester::base::CommandTest::sendKeyEventsToFocus(keyAction, startCommandText);
 
 		this->checkStateAfterTypingText(startCommandText, expectedState);
@@ -516,7 +516,6 @@ void tester::base::CommandTest::executeCommand(const std::string & commandName, 
 
 	app::main_window::state_e commandExpectedState = app::main_window::state_e::UNKNOWN;
 
-	bool executeAfterTypingCommand = false;
 	if (this->commandSentThroughShortcuts() == true) {
 		const bool commandRequiredEnter = this->commandRequiresEnter(commandName);
 		if (commandRequiredEnter == true) {
@@ -524,15 +523,12 @@ void tester::base::CommandTest::executeCommand(const std::string & commandName, 
 		} else {
 			commandExpectedState = app::main_window::state_e::IDLE;
 		}
-		executeAfterTypingCommand = (this->stateRequiresArgument(commandExpectedState) == false);
 	} else {
 		commandExpectedState = app::main_window::state_e::COMMAND;
-		// Execute command if next state does not command
-		executeAfterTypingCommand = (this->stateRequiresArgument(commandState) == false);
 	}
 
-	// If the user provides an argument, do not execute command
-	executeAfterTypingCommand &= (argument.empty() == true);
+	// Execute command if argument is not mandatory for the next state and argument is empty
+	const bool executeAfterTypingCommand = (this->stateRequiresArgument(commandExpectedState) == false) && (argument.empty() == true);
 	this->writeCommandToStatusBar(commandName, commandExpectedState, executeAfterTypingCommand);
 
 	if ((this->commandSentThroughShortcuts() == false) && ((argument.empty() == false) || (this->stateRequiresArgument(commandState) == true))) {
