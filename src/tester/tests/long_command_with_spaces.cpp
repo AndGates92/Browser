@@ -98,7 +98,7 @@ void tester::test::LongCommandWithSpaces::testBody() {
 
 	// Add spaces after moving to command state
 	tester::base::CommandTest::sendKeyEventsToFocus(keyAction, spaces);
-	const std::string textBeforeCommand = startCommandText + spaces;
+	const std::string textBeforeCommand = startCommandText + " " + spaces;
 	const std::string textInLabelBeforeCommandName = windowCore->bottomStatusBar->getUserInputText().toStdString();
 	ASSERT((textBeforeCommand.compare(textInLabelBeforeCommandName) == 0), tester::shared::error_type_e::STATUSBAR, "Expected text in the command line \"" + textBeforeCommand + "\" doesn't match the text written in the user input label \"" + textInLabelBeforeCommandName + "\". After moving to the typing state " + typingState + " spaces should be allowed before start typing the full command name.");
 	this->checkStateAfterTypingText(textBeforeCommand, typingState);

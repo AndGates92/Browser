@@ -378,6 +378,7 @@ void app::main_window::window::CtrlWrapper::setupWindowState(const app::main_win
 			this->winctrl->setFocus();
 			this->winctrl->setFocusProxy(statusBar->getUserInput().get());
 			this->setAllShortcutEnabledProperty(false);
+			this->core->printUserInput(app::main_window::text_action_e::SET);
 			break;
 		case app::main_window::state_e::OPEN_FILE:
 		case app::main_window::state_e::FIND_DOWN:
