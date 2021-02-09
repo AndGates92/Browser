@@ -103,9 +103,12 @@ void app::main_window::window::CtrlTab::connectSignals() {
 	connect(statusBar->getContentPath().get(), &app::text_widgets::LineEdit::escapeReleased, this, [&statusBar] () {
 		statusBar->getContentPath()->restoreSavedText();
 	});
-	connect(statusBar->getContentPath().get(), &app::text_widgets::LineEdit::gotFocus, this, [&statusBar] (const Qt::FocusReason & reason) {
+	connect(statusBar->getContentPath().get(), &app::text_widgets::LineEdit::gotFocus, this, [&statusBar, this] (const Qt::FocusReason & reason) {
 		if (reason != Qt::ActiveWindowFocusReason) {
 			statusBar->getContentPath()->saveText();
+			// Set window state to IDLE when the content path line edit gets the focus in order to avoid clash with other commands
+			const app::main_window::state_e requestedWindowState = app::main_window::state_e::IDLE;
+			emit this->windowStateChangeRequested(requestedWindowState, app::main_window::state_postprocessing_e::NONE);
 		}
 	});
 
