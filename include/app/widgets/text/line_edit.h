@@ -55,6 +55,13 @@ namespace app {
 				void restoreSavedText();
 
 				/**
+				 * @brief Function: void saveText()
+				 *
+				 * This function saves the text in the line edit
+				 */
+				void saveText();
+
+				/**
 				 * @brief Function: virtual void focusInEvent(QFocusEvent * event) override
 				 *
 				 * \param event: focus event
@@ -63,6 +70,15 @@ namespace app {
 				 */
 				virtual void focusInEvent(QFocusEvent * event) override;
 
+				/**
+				 * @brief Function: virtual void focusOutEvent(QFocusEvent * event) override
+				 *
+				 * \param event: focus event
+				 *
+				 * This function handles outgoing focus event
+				 */
+				virtual void focusOutEvent(QFocusEvent * event) override;
+
 			signals:
 				/**
 				 * @brief Function: void escapeReleased();
@@ -70,6 +86,20 @@ namespace app {
 				 * This function is a signal triggered when the escape key is released
 				 */
 				void escapeReleased();
+
+				/**
+				 * @brief Function: void lostFocus(const Qt::FocusReason & reason);
+				 *
+				 * This function is a signal triggered when the line edit loses the focus
+				 */
+				void lostFocus(const Qt::FocusReason & reason);
+
+				/**
+				 * @brief Function: void gotFocus(const Qt::FocusReason & reason);
+				 *
+				 * This function is a signal triggered when the line edit gets the focus
+				 */
+				void gotFocus(const Qt::FocusReason & reason);
 
 			protected:
 				/**

@@ -76,6 +76,20 @@ void app::main_window::window::CtrlWrapper::connectSignals() {
 	connect(statusBar->getUserInput().get(), &app::text_widgets::LineEdit::escapeReleased, this, [this] () {
 		this->changeWindowState(app::main_window::state_e::IDLE, app::main_window::state_postprocessing_e::SETUP);
 	});
+	connect(statusBar->getUserInput().get(), &app::text_widgets::LineEdit::lostFocus, this, [this] (const Qt::FocusReason & reason) {
+		if (reason == Qt::ActiveWindowFocusReason) {
+			this->saveData();
+			this->changeWindowState(app::main_window::state_e::IDLE, app::main_window::state_postprocessing_e::SETUP);
+		}
+	});
+	connect(statusBar->getUserInput().get(), &app::text_widgets::LineEdit::gotFocus, this, [this] (const Qt::FocusReason & reason) {
+		if (reason == Qt::ActiveWindowFocusReason) {
+			const app::main_window::state_e windowState = this->core->getMainWindowState();
+			if (windowState == app::main_window::state_e::IDLE) {
+				this->restoreSavedData();
+			}
+		}
+	});
 
 	const app::main_window::window::Commands::action_data_t & commands = this->core->commands->getActions();
 	std::for_each(commands.cbegin(), commands.cend(), [&] (const auto & data) {
@@ -528,7 +542,8 @@ void app::main_window::window::CtrlWrapper::keyReleaseEvent(QKeyEvent * event) {
 }
 
 void app::main_window::window::CtrlWrapper::focusInEvent(QFocusEvent * event) {
-	if (event->gotFocus() == true) {
+	if ((event->gotFocus() == true) && (event->reason() == Qt::ActiveWindowFocusReason)) {
+		LOG_INFO(app::logger::info_level_e::ZERO, mainWindowCtrlWrapperOverall, "Main window control wrapper got the keyboard focus because it became active. Restoring the saved data");
 		// If the controller is not in the idle state, it is already dealing with a command
 		const app::main_window::state_e windowState = this->core->getMainWindowState();
 		if (windowState == app::main_window::state_e::IDLE) {
@@ -539,10 +554,9 @@ void app::main_window::window::CtrlWrapper::focusInEvent(QFocusEvent * event) {
 }
 
 void app::main_window::window::CtrlWrapper::focusOutEvent(QFocusEvent * event) {
-	if (event->lostFocus() == true) {
+	if ((event->lostFocus() == true) && (event->reason() == Qt::ActiveWindowFocusReason)) {
 		const app::main_window::state_e requestedWindowState = app::main_window::state_e::IDLE;
-		LOG_INFO(app::logger::info_level_e::ZERO, mainWindowCtrlWrapperOverall, "Main window control wrapper lost the keyboard focus. Saving the data and setting the state to " << requestedWindowState);
-/*
+		LOG_INFO(app::logger::info_level_e::ZERO, mainWindowCtrlWrapperOverall, "Main window control wrapper lost the keyboard focus because it became inactive. Saving the data and setting the state to " << requestedWindowState);
 		this->saveData();
 		app::main_window::state_postprocessing_e statePostprocess = app::main_window::state_postprocessing_e::NONE;
 		const app::main_window::state_e windowState = this->core->getMainWindowState();
@@ -552,6 +566,5 @@ void app::main_window::window::CtrlWrapper::focusOutEvent(QFocusEvent * event) {
 			statePostprocess = app::main_window::state_postprocessing_e::SETUP;
 		}
 		this->changeWindowState(requestedWindowState, statePostprocess);
-*/
 	}
 }

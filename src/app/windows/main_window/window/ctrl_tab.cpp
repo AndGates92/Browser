@@ -103,6 +103,13 @@ void app::main_window::window::CtrlTab::connectSignals() {
 	connect(statusBar->getContentPath().get(), &app::text_widgets::LineEdit::escapeReleased, this, [&statusBar] () {
 		statusBar->getContentPath()->restoreSavedText();
 	});
+	connect(statusBar->getContentPath().get(), &app::text_widgets::LineEdit::gotFocus, this, [&statusBar] (const Qt::FocusReason & reason) {
+		if (reason != Qt::ActiveWindowFocusReason) {
+			statusBar->getContentPath()->saveText();
+		}
+	});
+
+
 
 }
 

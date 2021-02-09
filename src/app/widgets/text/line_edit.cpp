@@ -61,10 +61,22 @@ void app::text_widgets::LineEdit::restoreSavedText() {
 	this->setText(this->savedText);
 }
 
+void app::text_widgets::LineEdit::saveText() {
+	this->savedText = this->text();
+}
+
 void app::text_widgets::LineEdit::focusInEvent(QFocusEvent * event) {
-	if ((event->gotFocus() == true) && (event->reason() != Qt::ActiveWindowFocusReason)) {
-		this->savedText = this->text();
+	if (event->gotFocus() == true) {
+		emit this->gotFocus(event->reason());
 	}
 
 	QLineEdit::focusInEvent(event);
+}
+
+void app::text_widgets::LineEdit::focusOutEvent(QFocusEvent * event) {
+	if (event->lostFocus() == true) {
+		emit this->lostFocus(event->reason());
+	}
+
+	QLineEdit::focusOutEvent(event);
 }
