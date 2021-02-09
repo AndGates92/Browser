@@ -67,7 +67,7 @@ void tester::test::LongCommandWithSpaces::testBody() {
 
 	LOG_INFO(app::logger::info_level_e::ZERO, longCommandWithSpacesTest, "Starting test " << this->getName() << " in suite " << this->getSuite()->getName());
 
-	const std::string commandName("open tab");
+	const std::string commandName("open new tab");
 	std::string commandArgument = std::string();
 	if (this->sendCommandArgument) {
 		commandArgument = "test";
