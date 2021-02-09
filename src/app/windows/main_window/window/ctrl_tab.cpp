@@ -112,7 +112,7 @@ void app::main_window::window::CtrlTab::connectSignals() {
 void app::main_window::window::CtrlTab::setUpOpenNewTab() {
 	LOG_INFO(app::logger::info_level_e::ZERO, mainWindowCtrlTabSearch, "Open new tab");
 	const app::main_window::state_e requestedWindowState = app::main_window::state_e::OPEN_TAB;
-	emit windowStateChangeRequested(requestedWindowState, app::main_window::state_postprocessing_e::POSTPROCESS);
+	emit this->windowStateChangeRequested(requestedWindowState, app::main_window::state_postprocessing_e::POSTPROCESS);
 }
 
 //************************************************************************************
@@ -426,20 +426,20 @@ void app::main_window::window::CtrlTab::executeAction(const app::main_window::st
 		case app::main_window::state_e::FIND_DOWN:
 			this->findSettings.setDirection(app::shared::offset_type_e::DOWN);
 			this->searchCurrentTab(QString());
-			emit windowStateChangeRequested(app::main_window::state_e::IDLE, app::main_window::state_postprocessing_e::POSTPROCESS);
+			emit this->windowStateChangeRequested(app::main_window::state_e::IDLE, app::main_window::state_postprocessing_e::POSTPROCESS);
 			break;
 		case app::main_window::state_e::FIND_UP:
 			this->findSettings.setDirection(app::shared::offset_type_e::UP);
 			this->searchCurrentTab(QString());
-			emit windowStateChangeRequested(app::main_window::state_e::IDLE, app::main_window::state_postprocessing_e::POSTPROCESS);
+			emit this->windowStateChangeRequested(app::main_window::state_e::IDLE, app::main_window::state_postprocessing_e::POSTPROCESS);
 			break;
 		case app::main_window::state_e::SCROLL_UP:
 			this->scrollTab(app::shared::offset_type_e::UP);
-			emit windowStateChangeRequested(app::main_window::state_e::IDLE, app::main_window::state_postprocessing_e::POSTPROCESS);
+			emit this->windowStateChangeRequested(app::main_window::state_e::IDLE, app::main_window::state_postprocessing_e::POSTPROCESS);
 			break;
 		case app::main_window::state_e::SCROLL_DOWN:
 			this->scrollTab(app::shared::offset_type_e::DOWN);
-			emit windowStateChangeRequested(app::main_window::state_e::IDLE, app::main_window::state_postprocessing_e::POSTPROCESS);
+			emit this->windowStateChangeRequested(app::main_window::state_e::IDLE, app::main_window::state_postprocessing_e::POSTPROCESS);
 			break;
 		case app::main_window::state_e::REFRESH_TAB:
 		case app::main_window::state_e::CLOSE_TAB:
@@ -677,7 +677,7 @@ void app::main_window::window::CtrlTab::setUpSearchFromMenu(const app::windows::
 	} else if (searchDirection == app::shared::offset_type_e::UP) {
 		windowState = app::main_window::state_e::FIND_DOWN;
 	}
-	emit windowStateChangeRequested(windowState, app::main_window::state_postprocessing_e::POSTPROCESS);
+	emit this->windowStateChangeRequested(windowState, app::main_window::state_postprocessing_e::POSTPROCESS);
 }
 
 void app::main_window::window::CtrlTab::focusInEvent(QFocusEvent * event) {

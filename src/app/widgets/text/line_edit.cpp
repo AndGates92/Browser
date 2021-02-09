@@ -66,4 +66,5 @@ void app::text_widgets::LineEdit::focusInEvent(QFocusEvent * event) {
 		this->savedText = this->text();
 	}
 
+	QLineEdit::focusInEvent(event);
 }
