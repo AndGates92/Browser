@@ -370,13 +370,17 @@ void tester::base::CommandTest::checkSource(const std::shared_ptr<app::main_wind
 	std::string expectedTextInLabel = std::string();
 	if ((app::main_window::isUrl(QString::fromStdString(search)) == true) || (app::main_window::isText(QString::fromStdString(search)) == true)) {
 		expectedTextInLabel = this->pruneUrl(currentSource);
-		textInLabel = this->pruneUrl(textInLabel);
+
+		// Prune URL and replace spaces by +
+		const std::string searchString(" ");
+		const std::string replacingString("+");
+		textInLabel = app::utility::findAndReplaceString(this->pruneUrl(textInLabel), searchString, replacingString);
 	} else if (app::main_window::isFile(QString::fromStdString(search)) == true) {
 		const std::string filePrefix(app::main_window::filePrefix.toStdString());
 		expectedTextInLabel = filePrefix + currentSource;
 	}
 
-	ASSERT((textInLabel.find(expectedTextInLabel) != std::string::npos), tester::shared::error_type_e::STATUSBAR, "Source of the content in tab \"" + expectedTextInLabel + "\" doesn't match the source of the content that the user requested to search \"" + textInLabel + "\"");
+	ASSERT((expectedTextInLabel.find(textInLabel) != std::string::npos), tester::shared::error_type_e::STATUSBAR, "Source of the content in tab \"" + expectedTextInLabel + "\" doesn't match the source of the content that the user requested to search \"" + textInLabel + "\"");
 }
 
 void tester::base::CommandTest::checkUrl(const std::string currentUrl, const std::string & expectedUrl) const {
