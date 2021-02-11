@@ -329,7 +329,6 @@ void tester::base::CommandTest::checkSource(const std::shared_ptr<app::main_wind
 
 	if (app::main_window::isUrl(QString::fromStdString(search)) == true) {
 		const std::string https(app::shared::https.toStdString());
-
 		std::size_t httpsPosition = searchHostname.find(https);
 		const bool containsHttps = (httpsPosition != std::string::npos);
 		// Erase https from searched text
@@ -366,17 +365,18 @@ void tester::base::CommandTest::checkSource(const std::shared_ptr<app::main_wind
 		WAIT_FOR_CONDITION((expectedSourceText.compare(currentSource) == 0), tester::shared::error_type_e::TABS, "Current source " + currentSource + " doesn't match expected source " + expectedSourceText, 5000);
 	}
 
+	const std::shared_ptr<app::main_window::window::Core> & windowCore = this->windowWrapper->getWindowCore();
+	auto textInLabel = windowCore->bottomStatusBar->getContentPathText().toStdString();
 	std::string expectedTextInLabel = std::string();
 	if ((app::main_window::isUrl(QString::fromStdString(search)) == true) || (app::main_window::isText(QString::fromStdString(search)) == true)) {
-		expectedTextInLabel = currentSource;
+		expectedTextInLabel = this->pruneUrl(currentSource);
+		textInLabel = this->pruneUrl(textInLabel);
 	} else if (app::main_window::isFile(QString::fromStdString(search)) == true) {
 		const std::string filePrefix(app::main_window::filePrefix.toStdString());
 		expectedTextInLabel = filePrefix + currentSource;
 	}
 
-	const std::shared_ptr<app::main_window::window::Core> & windowCore = this->windowWrapper->getWindowCore();
-	const std::string textInLabel = windowCore->bottomStatusBar->getContentPathText().toStdString();
-	ASSERT((expectedTextInLabel.compare(textInLabel) == 0), tester::shared::error_type_e::STATUSBAR, "Source of the content in tab \"" + expectedTextInLabel + "\" doesn't match the source of the content that the user requested to search \"" + textInLabel + "\"");
+	ASSERT((textInLabel.find(expectedTextInLabel) != std::string::npos), tester::shared::error_type_e::STATUSBAR, "Source of the content in tab \"" + expectedTextInLabel + "\" doesn't match the source of the content that the user requested to search \"" + textInLabel + "\"");
 }
 
 void tester::base::CommandTest::checkUrl(const std::string currentUrl, const std::string & expectedUrl) const {
@@ -542,4 +542,25 @@ void tester::base::CommandTest::executeCommand(const std::string & commandName, 
 		this->writeTextToStatusBar(argument, argumentExpectedText, commandState, executeAfterTypingArgument, true);
 	}
 
+}
+
+
+std::string tester::base::CommandTest::pruneUrl(const std::string & urlText) const {
+	std::string textCopy(urlText);
+	const std::string https(app::shared::https.toStdString());
+	std::size_t httpsPosition = textCopy.find(https);
+	const bool containsHttps = (httpsPosition != std::string::npos);
+	// Erase https from searched text
+	if (containsHttps == true) {
+		textCopy.erase(httpsPosition, https.size());
+	}
+	const std::string www(app::shared::www.toStdString());
+	std::size_t wwwPosition = textCopy.find(www);
+	const bool containsWww = (wwwPosition != std::string::npos);
+	// Erase www from searched text
+	if (containsWww == true) {
+		textCopy.erase(wwwPosition, www.size());
+	}
+
+	return textCopy;
 }

@@ -197,6 +197,17 @@ namespace tester {
 				 */
 				void checkStateAfterTypingText(const std::string & expectedText, const app::main_window::state_e & expectedState) const;
 
+				/**
+				 * @brief Function: std::string pruneUrl(const std::string & urlText) const
+				 *
+				 * \param urlText: url to prune
+				 *
+				 * \return the prined url as a string
+				 *
+				 * This function prunes a url of the https and www strings
+				 */
+				std::string pruneUrl(const std::string & urlText) const;
+
 			private:
 
 				/**
