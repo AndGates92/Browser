@@ -119,6 +119,9 @@ void tester::test::LongCommandWithSpaces::testBody() {
 
 	// Send more spaces after finishing typing command
 	// This moves the window to the actual command state
+	tester::base::CommandTest::sendKeyClickToFocus(Qt::Key_Space);
+
+	// Add spaces before search
 	tester::base::CommandTest::sendKeyEventsToFocus(keyAction, spaces);
 
 	const std::string commandNameDisplayed(this->commandNameToShownText(commandName, false));
@@ -129,18 +132,25 @@ void tester::test::LongCommandWithSpaces::testBody() {
 		commandState = *commandStatePtr;
 	}
 
-	const std::string textAfterFinishingTypingCommand = commandNameDisplayed + spaces;
+	const std::string textAfterFinishingTypingCommand = commandNameDisplayed + " " + spaces;
 	this->checkStateAfterTypingText(textAfterFinishingTypingCommand, commandState);
 
 	// Type argument and execute it if the argument is empty
 	const bool executeAfterTypingArgument = commandArgument.empty();
 	const std::string fullCommandLine = textAfterFinishingTypingCommand + commandArgument;
+	std::string typedCommandArgument = spaces + commandArgument;
 	this->writeTextToStatusBar(commandArgument, fullCommandLine, commandState, executeAfterTypingArgument, true);
 
 	// If not executing the command add more spaces
 	if (executeAfterTypingArgument == false) {
 		tester::base::CommandTest::sendKeyEventsToFocus(keyAction, spaces);
 		const std::string fullCommandLineWithSpaces = fullCommandLine + spaces;
+		typedCommandArgument += spaces;
 		tester::base::CommandTest::sendKeyClickToFocus(Qt::Key_Enter);
 	}
+
+	this->waitForTabOpened();
+	const int expectedNumberOfTabs = 1;
+	this->checkCurrentTab(typedCommandArgument, expectedNumberOfTabs);
+
 }

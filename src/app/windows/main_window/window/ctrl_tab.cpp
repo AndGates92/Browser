@@ -13,6 +13,7 @@
 #include "app/utility/logger/enums.h"
 #include "app/utility/logger/macros.h"
 #include "app/utility/cpp/cpp_operator.h"
+#include "app/utility/cpp/stl_helper.h"
 #include "app/widgets/commands/key_sequence.h"
 #include "app/widgets/text/line_edit.h"
 #include "app/windows/main_window/shared/constants.h"
@@ -164,8 +165,9 @@ int app::main_window::window::CtrlTab::addNewTab(const app::main_window::page_ty
 }
 
 void app::main_window::window::CtrlTab::searchTab(const int & index, const QString & search) {
-	LOG_INFO(app::logger::info_level_e::ZERO, mainWindowCtrlTabSearch, "User input " << search << " in tab " << index);
-	const QString prunedSearch(app::main_window::deletePrefix(search));
+	std::string searchWithoutSpaces(app::utility::removeLeadingAndTrailingCharacter(search.toStdString(), app::shared::whiteSpaces, app::shared::whiteSpaces));
+	const QString prunedSearch(app::main_window::deletePrefix(QString::fromStdString(searchWithoutSpaces)));
+	LOG_INFO(app::logger::info_level_e::ZERO, mainWindowCtrlTabSearch, "Searching \"" << prunedSearch << "\") in tab " << index << " (raw user input raw text \"" << search << "\"");
 	app::main_window::page_type_e type = app::main_window::textToPageType(prunedSearch);
 	this->core->tabs->changeTabContent(index, type, prunedSearch, nullptr);
 }

@@ -36,6 +36,18 @@ namespace app {
 		 */
 		const QString www("www.");
 
+		/**
+		 * @brief String with white-spaces as defined by the current C locale:
+		 * - ' ': space
+		 * - \r: carriage return
+		 * - \n: line feed
+		 * - \t: horizontal tab
+		 * - \v: vertical tab
+		 * - \f: form feed
+		 *
+		 */
+		static const std::string whiteSpaces(" \n\t\v\f\r");
+
 	}
 
 }

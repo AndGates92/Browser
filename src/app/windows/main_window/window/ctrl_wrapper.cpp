@@ -197,10 +197,7 @@ void app::main_window::window::CtrlWrapper::moveToCommandStateFromNonIdleState(c
 
 void app::main_window::window::CtrlWrapper::executeCommand(const app::main_window::state_postprocessing_e & postprocess) {
 	const QString & userCommand = this->core->getUserText();
-	const std::string whiteSpaces(" \n\t\v\f\r");
-	std::string prunedUserCommand(app::utility::removeTrailingCharacter(userCommand.toStdString(), whiteSpaces));
-	const auto nonSpacePos = prunedUserCommand.find_first_not_of(whiteSpaces);
-	prunedUserCommand.erase(0, nonSpacePos);
+	std::string prunedUserCommand(app::utility::removeLeadingAndTrailingCharacter(userCommand.toStdString(), app::shared::whiteSpaces, app::shared::whiteSpaces));
 	const auto prunedUserText = QString::fromStdString(prunedUserCommand);
 	LOG_INFO(app::logger::info_level_e::ZERO, mainWindowCtrlWrapperUserInput, "Looking for command matching user input: " << prunedUserText);
 	const app::main_window::state_e previousWindowState = this->core->getMainWindowState();

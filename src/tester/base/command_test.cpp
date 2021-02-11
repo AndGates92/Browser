@@ -34,17 +34,7 @@ LOGGING_CONTEXT(commandTestTest, commandTest.test, TYPE_LEVEL, INFO_VERBOSITY)
 namespace tester {
 	namespace base {
 		namespace command_test {
-			/**
-			 * @brief String with white-spaces as defiend by the current C locale:
-			 * - ' ': space
-			 * - \r: carriage return
-			 * - \n: line feed
-			 * - \t: horizontal tab
-			 * - \v: vertical tab
-			 * - \f: form feed
-			 *
-			 */
-			static const std::string whiteSpaces(" \n\t\v\f\r");
+
 
 			/**
 			 * @brief Quit command name
@@ -91,9 +81,9 @@ void tester::base::CommandTest::checkStateAfterTypingText(const std::string & ex
 	const app::main_window::state_e & currentState = windowCore->getMainWindowState();
 	WAIT_FOR_CONDITION((currentState == expectedState), tester::shared::error_type_e::WINDOW, "Expected window state " + expectedState + " doesn't match current window state " + currentState, 1000);
 
-	std::string prunedExpectedText(app::utility::removeTrailingCharacter(expectedText, tester::base::command_test::whiteSpaces));
+	std::string prunedExpectedText(app::utility::removeTrailingCharacter(expectedText, app::shared::whiteSpaces));
 	const std::string textInLabel = windowCore->bottomStatusBar->getUserInputText().toStdString();
-	std::string prunedTextInLabel(app::utility::removeTrailingCharacter(textInLabel, tester::base::command_test::whiteSpaces));
+	std::string prunedTextInLabel(app::utility::removeTrailingCharacter(textInLabel, app::shared::whiteSpaces));
 	ASSERT((prunedExpectedText.compare(prunedTextInLabel) == 0), tester::shared::error_type_e::STATUSBAR, "Command sent \"" + prunedExpectedText + "\" doesn't match the command written in the user input label \"" + prunedTextInLabel + "\"");
 }
 

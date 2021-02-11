@@ -38,7 +38,7 @@ namespace app {
 		/**
 		 * @brief Function: const std::string removeTrailingCharacter(std::string text, const std::string & trailingCharacters)
 		 *
-		 * \param text: text to pruned trailing characters from
+		 * \param text: text to pruned from trailing characters
 		 * \param trailingCharacters: set of trailing characters to search
 		 *
 		 * \return: modified string
@@ -46,6 +46,32 @@ namespace app {
 		 * This function removes trailing characters from a string
 		 */
 		const std::string removeTrailingCharacter(std::string text, const std::string & trailingCharacters);
+
+		/**
+		 * @brief Function: const std::string removeLeadingCharacter(std::string text, const std::string & leadingCharacters)
+		 *
+		 * \param text: text to pruned from leading characters
+		 * \param leadingCharacters: set of leading characters to search
+		 *
+		 * \return: modified string
+		 *
+		 * This function removes leading characters from a string
+		 */
+		const std::string removeLeadingCharacter(std::string text, const std::string & leadingCharacters);
+
+		/**
+		 * @brief Function: const std::string removeLeadingAndTrailingCharacter(std::string text, const std::string & leadingCharacters, const std::string & trailingCharacters)
+		 *
+		 * \param text: text to pruned from leading characters
+		 * \param leadingCharacters: set of leading characters to search
+		 * \param trailingCharacters: set of trailing characters to search
+		 *
+		 * \return: modified string
+		 *
+		 * This function removes leading and trailing characters from a string
+		 */
+		const std::string removeLeadingAndTrailingCharacter(std::string text, const std::string & leadingCharacters, const std::string & trailingCharacters);
+
 
 		/**
 		 * @brief Function: const Container<std::string> splitStringByDelimiter(const std::string & text, const std::string & delimiter)

@@ -38,3 +38,20 @@ const std::string app::utility::removeTrailingCharacter(std::string text, const 
 
 	return text;
 }
+
+const std::string app::utility::removeLeadingCharacter(std::string text, const std::string & leadingCharacters) {
+	std::size_t firstValidCharacter = text.find_first_not_of(leadingCharacters);
+	if (firstValidCharacter != std::string::npos) {
+		text.erase(0, firstValidCharacter);
+	} else {
+		text.clear();
+	}
+
+	return text;
+}
+
+const std::string app::utility::removeLeadingAndTrailingCharacter(std::string text, const std::string & leadingCharacters, const std::string & trailingCharacters) {
+	text = app::utility::removeTrailingCharacter(text, trailingCharacters);
+	text = app::utility::removeLeadingCharacter(text, leadingCharacters);
+	return text;
+}
