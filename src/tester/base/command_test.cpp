@@ -360,7 +360,7 @@ void tester::base::CommandTest::checkSource(const std::shared_ptr<app::main_wind
 	if (tabType == app::main_window::page_type_e::WEB_CONTENT) {
 		const QUrl & tabUrl = tab->getPage()->url();
 		currentSource = tabUrl.toString().toStdString();
-		this->checkUrl(tabUrl.toString().toStdString(), expectedSourceText);
+		this->checkUrl(currentSource, expectedSourceText);
 	} else if (tabType == app::main_window::page_type_e::TEXT) {
 		currentSource = tab->getSource().toStdString();
 		WAIT_FOR_CONDITION((expectedSourceText.compare(currentSource) == 0), tester::shared::error_type_e::TABS, "Current source " + currentSource + " doesn't match expected source " + expectedSourceText, 5000);
@@ -374,12 +374,9 @@ void tester::base::CommandTest::checkSource(const std::shared_ptr<app::main_wind
 		expectedTextInLabel = filePrefix + currentSource;
 	}
 
-	if (tabType == app::main_window::page_type_e::WEB_CONTENT) {
-		const QUrl & tabUrl = tab->getPage()->url();
-	}
 	const std::shared_ptr<app::main_window::window::Core> & windowCore = this->windowWrapper->getWindowCore();
 	const std::string textInLabel = windowCore->bottomStatusBar->getContentPathText().toStdString();
-	ASSERT((expectedTextInLabel.compare(textInLabel) == 0), tester::shared::error_type_e::STATUSBAR, "Source of the content in tab " + expectedTextInLabel + " doesn't match the source of the content that the user requested to search " + textInLabel);
+	ASSERT((expectedTextInLabel.compare(textInLabel) == 0), tester::shared::error_type_e::STATUSBAR, "Source of the content in tab \"" + expectedTextInLabel + "\" doesn't match the source of the content that the user requested to search \"" + textInLabel + "\"");
 }
 
 void tester::base::CommandTest::checkUrl(const std::string currentUrl, const std::string & expectedUrl) const {
