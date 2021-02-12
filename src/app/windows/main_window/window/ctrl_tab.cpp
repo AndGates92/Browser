@@ -100,13 +100,23 @@ void app::main_window::window::CtrlTab::connectSignals() {
 		LOG_INFO(app::logger::info_level_e::ZERO, mainWindowCtrlTabSearch, "Opening URL or file " << source << " in tab " << index);
 		this->searchTab(index, source);
 		this->window()->setFocus();
+		emit this->restoreSavedState();
 	});
 	connect(statusBar->getContentPath().get(), &app::text_widgets::LineEdit::escapeReleased, this, [&statusBar] () {
 		statusBar->getContentPath()->restoreSavedText();
 	});
+	connect(statusBar->getContentPath().get(), &app::text_widgets::LineEdit::lostFocus, this, [&statusBar, this] (const Qt::FocusReason & reason) {
+		if (reason == Qt::ActiveWindowFocusReason) {
+			const app::main_window::state_e windowState = this->core->getMainWindowState();
+			if (windowState == app::main_window::state_e::IDLE) {
+				emit this->restoreSavedState();
+			}
+		}
+	});
 	connect(statusBar->getContentPath().get(), &app::text_widgets::LineEdit::gotFocus, this, [&statusBar, this] (const Qt::FocusReason & reason) {
 		if (reason != Qt::ActiveWindowFocusReason) {
 			statusBar->getContentPath()->saveText();
+			emit this->saveCurrentState();
 			// Set window state to IDLE when the content path line edit gets the focus in order to avoid clash with other commands
 			const app::main_window::state_e requestedWindowState = app::main_window::state_e::IDLE;
 			emit this->windowStateChangeRequested(requestedWindowState, app::main_window::state_postprocessing_e::NONE);

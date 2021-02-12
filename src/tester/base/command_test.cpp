@@ -199,7 +199,8 @@ void tester::base::CommandTest::writeCommandToStatusBar(const std::string & comm
 
 	LOG_INFO(app::logger::info_level_e::ZERO, commandTestTest, "Type command \"" << commandName << "\" - text sent to statusbar: \"" << commandToSend << "\"");
 	const bool commandRequiredEnter = this->commandRequiresEnter(commandName);
-	const bool pressEnter = execute || (commandRequiredEnter && this->sendCommandsThroughShortcuts);
+	// Do not press enter if sending commands through shortcuts
+	const bool pressEnter = (execute == true) && ((commandRequiredEnter == true) || (this->sendCommandsThroughShortcuts == false));
 
 	// Send : to move to the command state
 	if (this->commandSentThroughShortcuts() == false) {
@@ -320,9 +321,9 @@ void tester::base::CommandTest::checkSource(const std::shared_ptr<app::main_wind
 	app::main_window::page_type_e tabType = tab->getType();
 
 	if (tabType == app::main_window::page_type_e::WEB_CONTENT) {
-		ASSERT(((app::main_window::isUrl(QString::fromStdString(search)) == true) || (app::main_window::isText(QString::fromStdString(search)) == true)), tester::shared::error_type_e::TABS, "Search string " + search + " for tab of type " + tabType + " is not recognized neither as a URL or a text");
+		ASSERT(((app::main_window::isUrl(QString::fromStdString(search)) == true) || (app::main_window::isText(QString::fromStdString(search)) == true)), tester::shared::error_type_e::TABS, "Search string \"" + search + "\" for tab of type " + tabType + " is not recognized neither as a URL or a text");
 	} else if (tabType == app::main_window::page_type_e::TEXT) {
-		ASSERT((app::main_window::isFile(QString::fromStdString(search)) == true), tester::shared::error_type_e::TABS, "Search string " + search + " for tab of type " + tabType + " is not recognized as a file path");
+		ASSERT((app::main_window::isFile(QString::fromStdString(search)) == true), tester::shared::error_type_e::TABS, "Search string \"" + search + "\" for tab of type " + tabType + " is not recognized as a file path");
 	} else {
 		EXCEPTION_ACTION(throw, "Untreated case of tab of type " << tabType);
 	}
@@ -507,19 +508,22 @@ void tester::base::CommandTest::executeCommand(const std::string & commandName, 
 
 	app::main_window::state_e commandExpectedState = app::main_window::state_e::UNKNOWN;
 
+	bool executeAfterTypingCommand = false;
 	if (this->commandSentThroughShortcuts() == true) {
 		const bool commandRequiredEnter = this->commandRequiresEnter(commandName);
-		if (commandRequiredEnter == true) {
+		if ((commandState == app::main_window::state_e::OPEN_FILE) || (commandRequiredEnter == true)) {
 			commandExpectedState = commandState;
 		} else {
 			commandExpectedState = app::main_window::state_e::IDLE;
 		}
+		executeAfterTypingCommand = (this->stateRequiresArgument(commandExpectedState) == false);
 	} else {
 		commandExpectedState = app::main_window::state_e::COMMAND;
+		executeAfterTypingCommand = (this->stateRequiresArgument(commandState) == false);
 	}
 
 	// Execute command if argument is not mandatory for the next state and argument is empty
-	const bool executeAfterTypingCommand = (this->stateRequiresArgument(commandExpectedState) == false) && (argument.empty() == true);
+	executeAfterTypingCommand &= (argument.empty() == true);
 	this->writeCommandToStatusBar(commandName, commandExpectedState, executeAfterTypingCommand);
 
 	if ((this->commandSentThroughShortcuts() == false) && ((argument.empty() == false) || (this->stateRequiresArgument(commandState) == true))) {

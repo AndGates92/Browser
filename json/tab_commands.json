@@ -68,7 +68,7 @@
 		"State" : "MOVE_TAB",
 		"Shortcut" : "t",
 		"LongCmd" : "move-tab",
-		"Help" : "This command closes a tab"
+		"Help" : "This command moves a tab to a different position"
 	},
 
 	"MoveCursorRight" : {

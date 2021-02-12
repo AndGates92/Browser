@@ -79,16 +79,16 @@ void app::main_window::window::CtrlWrapper::connectSignals() {
 	});
 	connect(statusBar->getUserInput().get(), &app::text_widgets::LineEdit::lostFocus, this, [this] (const Qt::FocusReason & reason) {
 		if (reason == Qt::ActiveWindowFocusReason) {
-			this->saveData();
-			this->changeWindowState(app::main_window::state_e::IDLE, app::main_window::state_postprocessing_e::SETUP);
-		}
-	});
-	connect(statusBar->getUserInput().get(), &app::text_widgets::LineEdit::gotFocus, this, [this] (const Qt::FocusReason & reason) {
-		if (reason == Qt::ActiveWindowFocusReason) {
 			const app::main_window::state_e windowState = this->core->getMainWindowState();
 			if (windowState == app::main_window::state_e::IDLE) {
 				this->restoreSavedData();
 			}
+		}
+	});
+	connect(statusBar->getUserInput().get(), &app::text_widgets::LineEdit::gotFocus, this, [this] (const Qt::FocusReason & reason) {
+		if (reason == Qt::ActiveWindowFocusReason) {
+			this->saveData();
+			this->changeWindowState(app::main_window::state_e::IDLE, app::main_window::state_postprocessing_e::SETUP);
 		}
 	});
 
@@ -140,8 +140,17 @@ void app::main_window::window::CtrlWrapper::setCommandLineArgument(const QString
 					EXCEPTION_ACTION(throw, "Command line \"" << text << "\" must contains the command name \"" << printedCommandName << "\" because main window is in state " << windowState << " and command line argument is " << userTypedText);
 				}
 			} else if (windowState == app::main_window::state_e::COMMAND) {
-				// Try to move to another state or execute the command
-				this->executeCommand(app::main_window::state_postprocessing_e::SETUP);
+				// Try to execute command only if space has been typed
+				// In the case of text search, there are a few commands with similar text:
+				// - find
+				// - find-down
+				// - find-up
+				// Hence once the user types "find", it may be required to execute the command or way because the command is going to be completed.
+				// It the user wishes to run command "find", the user will press Enter or Space to provide un argument, otherwise the user will keep writing the command
+				if (text.back().isSpace() == true) {
+					// Try to move to another state or execute the command
+					this->executeCommand(app::main_window::state_postprocessing_e::SETUP);
+				}
 			}
 
 			// Command line or state may have changed
@@ -565,7 +574,7 @@ void app::main_window::window::CtrlWrapper::focusOutEvent(QFocusEvent * event) {
 	if ((event->lostFocus() == true) && (event->reason() == Qt::ActiveWindowFocusReason)) {
 		const app::main_window::state_e requestedWindowState = app::main_window::state_e::IDLE;
 		LOG_INFO(app::logger::info_level_e::ZERO, mainWindowCtrlWrapperOverall, "Main window control wrapper lost the keyboard focus because it became inactive. Saving the data and setting the state to " << requestedWindowState);
-		this->saveData();
+/*		this->saveData();
 		app::main_window::state_postprocessing_e statePostprocess = app::main_window::state_postprocessing_e::NONE;
 		const app::main_window::state_e windowState = this->core->getMainWindowState();
 		if (windowState == app::main_window::state_e::OPEN_FILE) {
@@ -574,5 +583,6 @@ void app::main_window::window::CtrlWrapper::focusOutEvent(QFocusEvent * event) {
 			statePostprocess = app::main_window::state_postprocessing_e::SETUP;
 		}
 		this->changeWindowState(requestedWindowState, statePostprocess);
+*/
 	}
 }
