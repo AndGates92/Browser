@@ -103,7 +103,7 @@ void tester::base::CommandTest::writeTextToStatusBar(const std::string & textToW
 			tester::base::CommandTest::sendKeyClickToFocus(Qt::Key_Enter);
 		}
 
-		if (expectedState != app::main_window::state_e::OPEN_FILE) {
+		if ((expectedState != app::main_window::state_e::QUIT) && (expectedState != app::main_window::state_e::OPEN_FILE)) {
 			const app::main_window::state_e expectedStateAfterExecution = app::main_window::state_e::IDLE;
 			const app::main_window::state_e & currentStateAfterExecution = windowCore->getMainWindowState();
 			ASSERT((currentStateAfterExecution == expectedStateAfterExecution), tester::shared::error_type_e::WINDOW, "Expected window state " + expectedStateAfterExecution + " doesn't match current window state " + currentStateAfterExecution);
@@ -511,7 +511,7 @@ void tester::base::CommandTest::executeCommand(const std::string & commandName, 
 	bool executeAfterTypingCommand = false;
 	if (this->commandSentThroughShortcuts() == true) {
 		const bool commandRequiredEnter = this->commandRequiresEnter(commandName);
-		if ((commandState == app::main_window::state_e::OPEN_FILE) || (commandRequiredEnter == true)) {
+		if ((commandState == app::main_window::state_e::QUIT) || (commandState == app::main_window::state_e::OPEN_FILE) || (commandRequiredEnter == true)) {
 			commandExpectedState = commandState;
 		} else {
 			commandExpectedState = app::main_window::state_e::IDLE;
