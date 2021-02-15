@@ -19,6 +19,7 @@
 #include "app/widgets/commands/key_sequence.h"
 #include "app/windows/main_window/shared/constants.h"
 #include "app/windows/main_window/statusbar/bar.h"
+#include "app/windows/main_window/statusbar/command_line_validator.h"
 
 // Categories
 LOGGING_CONTEXT(mainWindowStatusBarOverall, mainWindowStatusBar.overall, TYPE_LEVEL, INFO_VERBOSITY)
@@ -408,4 +409,9 @@ void app::main_window::statusbar::Bar::mousePressEvent(QMouseEvent * event) {
 		}
 
 	}
+}
+
+void app::main_window::statusbar::Bar::setCommandLineValidator(const std::shared_ptr<app::main_window::window::Core> & core) {
+	const app::main_window::statusbar::CommandLineValidator * validator = new app::main_window::statusbar::commandLineValidator(this->userInput, core);
+	this->userInput->setValidator(validator);
 }

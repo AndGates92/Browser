@@ -36,6 +36,12 @@ namespace app {
 
 	namespace main_window {
 
+		namespace window {
+
+			class Core;
+
+		}
+
 		namespace statusbar {
 
 			/**
@@ -207,6 +213,15 @@ namespace app {
 					 * This function sets the text in the search result label
 					 */
 					void setSearchResultText(const QString & text);
+
+					/**
+					 * Function: void setCommandLineValidator(const std::shared_ptr<app::main_window::window::Core> & core)
+					 *
+					 * \param core: window core
+					 *
+					 * This function builds and sets the validator for the command line
+					 */
+					void setCommandLineValidator(const std::shared_ptr<app::main_window::window::Core> & core);
 
 				public slots:
 					/**

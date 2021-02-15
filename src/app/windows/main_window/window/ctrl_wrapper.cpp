@@ -30,6 +30,8 @@ LOGGING_CONTEXT(mainWindowCtrlWrapperOverall, mainWindowCtrlWrapper.overall, TYP
 LOGGING_CONTEXT(mainWindowCtrlWrapperUserInput, mainWindowCtrlWrapper.userInput, TYPE_LEVEL, INFO_VERBOSITY)
 
 app::main_window::window::CtrlWrapper::CtrlWrapper(QWidget * parent, const std::shared_ptr<app::main_window::window::Core> & core) : QWidget(parent), app::main_window::window::Base(core), winctrl(new app::main_window::window::Ctrl(this, core)), tabctrl(new app::main_window::window::CtrlTab(this, core)), savedData({app::main_window::state_e::IDLE, QString()}) {
+	std::unique_ptr<app::main_window::statusbar::Bar> & statusBar = this->core->bottomStatusBar;
+	statusBar->setCommandLineValidator(core);
 	// Connect signals and slots
 	this->connectSignals();
 
