@@ -64,27 +64,6 @@ namespace app {
 					virtual ~CtrlWrapper();
 
 					/**
-					 * @brief Function: virtual void keyPressEvent(QKeyEvent * event) override
-					 *
-					 * \param event: event coming from keyboard
-					 *
-					 * This function handles events coming from the keyboard
-					 * Escape is not triggered in keyPressedEvent
-					 * Re-implement key pressed event
-					 */
-					virtual void keyPressEvent(QKeyEvent * event) override;
-
-					/**
-					 * @brief Function: virtual void keyReleaseEvent(QKeyEvent * event) override
-					 *
-					 * \param event: event coming from keyboard
-					 *
-					 * This function handles events coming from the keyboard
-					 * Re-implement key released event
-					 */
-					virtual void keyReleaseEvent(QKeyEvent * event) override;
-
-					/**
 					 * @brief Function: virtual void focusInEvent(QFocusEvent * event) override
 					 *
 					 * \param event: focus event

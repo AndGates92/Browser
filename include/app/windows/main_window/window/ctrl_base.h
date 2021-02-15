@@ -57,27 +57,6 @@ namespace app {
 					 */
 					virtual ~CtrlBase();
 
-					/**
-					 * @brief Function: virtual void keyPressEvent(QKeyEvent * event) override final
-					 *
-					 * \param event: event coming from keyboard
-					 *
-					 * This function handles events coming from the keyboard
-					 * Escape is not triggered in keyPressedEvent
-					 * Re-implement key pressed event
-					 */
-					virtual void keyPressEvent(QKeyEvent * event) override final;
-
-					/**
-					 * @brief Function: virtual void keyReleaseEvent(QKeyEvent * event) override final
-					 *
-					 * \param event: event coming from keyboard
-					 *
-					 * This function handles event coming from the keyboard
-					 * Re-implement key released event
-					 */
-					virtual void keyReleaseEvent(QKeyEvent * event) override final;
-
 				signals:
 
 					/**

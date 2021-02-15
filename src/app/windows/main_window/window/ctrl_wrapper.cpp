@@ -39,17 +39,6 @@ app::main_window::window::CtrlWrapper::~CtrlWrapper() {
 	LOG_INFO(app::logger::info_level_e::ZERO, mainWindowCtrlWrapperOverall, "Main window control wrapper destructor");
 }
 
-void app::main_window::window::CtrlWrapper::keyPressEvent(QKeyEvent * event) {
-
-	LOG_INFO(app::logger::info_level_e::ZERO, mainWindowCtrlWrapperUserInput, "Key event details: event type: keyPress key: " << event->key() << " modifier: " << event->modifiers());
-
-	this->winctrl->keyPressEvent(event);
-	this->tabctrl->keyPressEvent(event);
-
-	this->core->mainWidget->repaint();
-
-}
-
 void app::main_window::window::CtrlWrapper::connectSignals() {
 
 	LOG_INFO(app::logger::info_level_e::ZERO, mainWindowCtrlWrapperOverall, "Connect signals");
@@ -542,17 +531,6 @@ void app::main_window::window::CtrlWrapper::executeAction(const app::main_window
 
 	this->core->updateUserInput(app::main_window::text_action_e::CLEAR);
 	this->core->bottomStatusBar->setUserInputText(QString());
-
-}
-
-void app::main_window::window::CtrlWrapper::keyReleaseEvent(QKeyEvent * event) {
-
-	LOG_INFO(app::logger::info_level_e::ZERO, mainWindowCtrlWrapperOverall, "Key event details: event type: keyRelease key: " << event->key() << " modifier: " << event->modifiers());
-
-	this->winctrl->keyReleaseEvent(event);
-	this->tabctrl->keyReleaseEvent(event);
-
-	this->core->mainWidget->repaint();
 
 }
 
