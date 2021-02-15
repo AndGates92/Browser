@@ -125,31 +125,29 @@ void app::main_window::window::CtrlWrapper::setCommandLineArgument(const QString
 			auto textCopy(text);
 
 			QString userTypedText = this->core->getUserText();
-			LOG_INFO(app::logger::info_level_e::ZERO, mainWindowCtrlWrapperUserInput, "User typed text \"" << userTypedText << "\" in state " << windowState);
-			// Move to command state from another state when user deletes characters
-			if (textCopy.contains(printedCommandName, Qt::CaseSensitive) == false) {
-				if (userTypedText.isEmpty() == true) {
-					if (windowState != app::main_window::state_e::COMMAND) {
-						if (windowState == app::main_window::state_e::MOVE_TAB) {
-							// If in state TAB MOVE and the core->userText is empty after deleting the last character, set the move value to IDLE
-							this->core->setOffsetType(app::shared::offset_type_e::IDLE);
-						}
-						this->moveToCommandStateFromNonIdleState(windowState);
-					}
-				} else {
-					EXCEPTION_ACTION(throw, "Command line \"" << text << "\" must contains the command name \"" << printedCommandName << "\" because main window is in state " << windowState << " and command line argument is " << userTypedText);
-				}
-			} else if (windowState == app::main_window::state_e::COMMAND) {
+			LOG_INFO(app::logger::info_level_e::ZERO, mainWindowCtrlWrapperUserInput, "User typed text \"" << userTypedText << "\" in state " << windowState << " (printed command: \"" << printedCommandName << "\"");
+			if (windowState == app::main_window::state_e::COMMAND) {
 				// Try to execute command only if space has been typed
 				// In the case of text search, there are a few commands with similar text:
 				// - find
 				// - find-down
 				// - find-up
-				// Hence once the user types "find", it may be required to execute the command or way because the command is going to be completed.
+				// Hence once the user types "find", it may be required to execute the command or wait because the command is going to be completed.
 				// It the user wishes to run command "find", the user will press Enter or Space to provide un argument, otherwise the user will keep writing the command
 				if (text.back().isSpace() == true) {
 					// Try to move to another state or execute the command
 					this->executeCommand(app::main_window::state_postprocessing_e::SETUP);
+				}
+			} else if (textCopy.contains(printedCommandName, Qt::CaseSensitive) == false) {
+				// Move to command state from another state when user deletes characters
+				if ((userTypedText.isEmpty() == true) && (windowState != app::main_window::state_e::COMMAND)) {
+					if (windowState == app::main_window::state_e::MOVE_TAB) {
+						// If in state TAB MOVE and the core->userText is empty after deleting the last character, set the move value to IDLE
+						this->core->setOffsetType(app::shared::offset_type_e::IDLE);
+					}
+					this->moveToCommandStateFromNonIdleState(windowState);
+				} else {
+					EXCEPTION_ACTION(throw, "Command line \"" << text << "\" must contains the command name \"" << printedCommandName << "\" because main window is in state " << windowState << " and command line argument is " << userTypedText);
 				}
 			}
 
