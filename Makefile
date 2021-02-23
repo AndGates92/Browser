@@ -1,4 +1,4 @@
-# Makefile for browser C implementation
+# Makefile for browser C++ implementation
 
 DATE_FORMAT = %a %d %b %Y
 TIME_FORMAT = %H:%M:%S
@@ -303,6 +303,7 @@ MAIN_OBJS = $(APP_MAIN_OBJS) \
 APP_OBJS = $(filter $(foreach DIR, $(APP_OBJS_DIR), $(DIR)/%), $(OBJS_LIST))
 TESTER_OBJS = $(filter-out $(foreach OBJ, $(APP_MAIN_OBJS), %/$(OBJ)), $(APP_OBJS)) $(filter $(foreach DIR, $(TESTER_OBJS_DIR), $(DIR)/%), $(OBJS_LIST))
 
+# Coverage
 COVSEARCHDIR := $(foreach DIR, ${OBJS_DIR}, --object-directory ${DIR})
 COVOPTS = --all-blocks --branch-probabilities --function-summaries --demangled-names --unconditional-branches
 COVEXTRAOPTS ?=
@@ -375,6 +376,7 @@ debug :
 	$(VERBOSE_ECHO)echo "[${TIMESTAMP}] Compiler options:"
 	$(VERBOSE_ECHO)echo "[${TIMESTAMP}] --> $(PROG_LANG) flags: $(CXXFLAGS)"
 	$(VERBOSE_ECHO)echo "[${TIMESTAMP}] --> $(PROG_LANG) extra flags: $(CXXEXTRAFLAGS)"
+	$(VERBOSE_ECHO)echo "[${TIMESTAMP}] --> Linked flags: $(LDFLAGS)"
 	$(VERBOSE_ECHO)echo "[${TIMESTAMP}] --> ASAN flags: $(ASANFLAGS)"
 	$(VERBOSE_ECHO)echo "[${TIMESTAMP}] --> Coverage compile flags: $(COVFLAGS)"
 	$(VERBOSE_ECHO)echo "[${TIMESTAMP}] --> Profiler flags: $(PROFILERFLAGS)"
@@ -388,7 +390,7 @@ debug :
 	$(VERBOSE_ECHO)echo "[${TIMESTAMP}] --> Coverage libraries: $(COVLIBS)"
 	$(VERBOSE_ECHO)echo "[${TIMESTAMP}] --> tester libraries: $(QTTESTLIBS)"
 	$(VERBOSE_ECHO)echo "[${TIMESTAMP}] Compiler options:"
-	$(VERBOSE_ECHO)echo "[${TIMESTAMP}] --> Coverage options: $(GCOVOPTS)"
+	$(VERBOSE_ECHO)echo "[${TIMESTAMP}] --> Coverage options: $(COVOPTS)"
 	$(VERBOSE_ECHO)echo "[${TIMESTAMP}] --> Coverage extra options: $(COVEXTRAOPTS)"
 	$(VERBOSE_ECHO)echo "[${TIMESTAMP}] --> Profiler options: $(PROFOPTS)"
 	$(VERBOSE_ECHO)echo "[${TIMESTAMP}] --> Profiler extra options: $(PROFEXTRAOPTS)"
