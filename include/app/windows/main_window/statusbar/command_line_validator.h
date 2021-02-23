@@ -58,14 +58,14 @@ namespace app {
 					virtual ~CommandLineValidator();
 
 					/**
-					 * @brief Function: QValidator::State validate(QString & input, int & cursorPosition) override
+					 * @brief Function: virtual QValidator::State validate(QString & input, int & cursorPosition) const override
 					 *
 					 * \param input: input to check
 					 * \param cursorPosition: position of the cursor
 					 *
 					 * This function checks that the input meets command line requirements
 					 */
-					QValidator::State validate(QString & input, int & cursorPosition) override;
+					virtual QValidator::State validate(QString & input, int & cursorPosition) const override;
 
 				protected:
 
