@@ -412,6 +412,6 @@ void app::main_window::statusbar::Bar::mousePressEvent(QMouseEvent * event) {
 }
 
 void app::main_window::statusbar::Bar::setCommandLineValidator(const std::shared_ptr<app::main_window::window::Core> & core) {
-	const app::main_window::statusbar::CommandLineValidator * validator = new app::main_window::statusbar::CommandLineValidator(this->userInput, core);
+	const app::main_window::statusbar::CommandLineValidator * validator = new app::main_window::statusbar::CommandLineValidator(this->userInput.get(), core);
 	this->userInput->setValidator(validator);
 }

@@ -1,5 +1,5 @@
-#ifndef MAIN_WINDOW_STATUS_BAR_H
-#define MAIN_WINDOW_STATUS_BAR_H
+#ifndef MAIN_WINDOW_COMAND_LINE_VALIDATOR_H
+#define MAIN_WINDOW_COMAND_LINE_VALIDATOR_H
 /**
  * @copyright
  * @file command_line_validator.h
@@ -70,6 +70,13 @@ namespace app {
 				protected:
 
 				private:
+
+					/**
+					 * @brief main window core
+					 *
+					 */
+					std::shared_ptr<app::main_window::window::Core> core;
+
 					// Move and copy constructor
 					/**
 					 * @brief Disable move and copy constructors and operator= overloading for class CommandLineValidator
@@ -86,4 +93,4 @@ namespace app {
 }
 /** @} */ // End of MainWindowGroup group
 
-#endif // MAIN_WINDOW_CTRL_WRAPPER_H
+#endif // MAIN_WINDOW_COMAND_LINE_VALIDATORH

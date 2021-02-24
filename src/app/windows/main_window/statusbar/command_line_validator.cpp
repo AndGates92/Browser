@@ -9,6 +9,8 @@
 // Qt libraries
 #include <QtWidgets/QWidget>
 
+#include "app/utility/cpp/cpp_operator.h"
+#include "app/utility/logger/macros.h"
 #include "app/windows/main_window/statusbar/command_line_validator.h"
 #include "app/windows/main_window/window/core.h"
 
@@ -26,26 +28,46 @@ app::main_window::statusbar::CommandLineValidator::~CommandLineValidator() {
 
 QValidator::State app::main_window::statusbar::CommandLineValidator::validate(QString & input, int & cursorPosition) const {
 	QValidator::State state = QValidator::Invalid;
-	QChar currentKey = input.at(cursorPosition);
-
+	const auto offsetType = this->core->getOffsetType();
 	const app::main_window::state_e windowState = this->core->getMainWindowState();
+
+	const auto actionName = this->core->getActionName();
+	const bool foundCommandName = (input.contains(actionName) == true);
+	int commandNameEndPosition = actionName.size();
+	if (windowState != app::main_window::state_e::COMMAND) {
+		// Add one to account for the first character ":"
+		commandNameEndPosition += 1;
+	}
+
+	const auto commandArgument = this->core->getUserText();
+
+	bool commandArgumentValid = false;
+
 	switch (windowState) {
 		case app::main_window::state_e::OPEN_TAB:
 		case app::main_window::state_e::NEW_SEARCH:
 		case app::main_window::state_e::EDIT_SEARCH:
 		case app::main_window::state_e::FIND:
-			if ((currentKey.isSpace() == true) || (currentKey.isPunct() == true) || (currentKey.isLetterOrNumber() == true)) {
-				this->core->printUserInput(app::main_window::text_action_e::APPEND, event->text());
+			if (commandArgument.isEmpty() == true) {
+				commandArgumentValid = true;
+			} else {
+				commandArgumentValid = true;
+				for (const auto & c : commandArgument) {
+					commandArgumentValid &= ((c.isSpace() == true) || (c.isPunct() == true) || (c.isLetterOrNumber() == true));
+				}
 			}
 			break;
 		case app::main_window::state_e::CLOSE_TAB:
 		case app::main_window::state_e::MOVE_RIGHT:
 		case app::main_window::state_e::MOVE_LEFT:
 		case app::main_window::state_e::REFRESH_TAB:
-			if (currentKey.isDigit() == true) {
-				state = QValidator::Acceptable;
+			if (commandArgument.isEmpty() == true) {
+				commandArgumentValid = true;
 			} else {
-				LOG_WARNING(commandLineValidatorUserInput, "Pressed key " << event->text() << ". Only numbers are accepted when executing actions like closing windows or moving in the tab bar");
+				commandArgumentValid = true;
+				for (const auto & c : commandArgument) {
+					commandArgumentValid &= (c.isDigit() == true);
+				}
 			}
 			break;
 		case app::main_window::state_e::MOVE_TAB:
@@ -54,32 +76,77 @@ QValidator::State app::main_window::statusbar::CommandLineValidator::validate(QS
 				// If + or - sign is provided, then the value is considered to be relative to the current tab
 				// If key h is pressed, then the value is considered to be relative to the current tab and considered to go to the left
 				// If key l is pressed, then the value is considered to be relative to the current tab and considered to go to the right
-				if (currentKey.isDigit() == true) {
+				bool absoluteMovement = true;
+				for (const auto & c : commandArgument) {
+					absoluteMovement &= (c.isDigit() == true);
+				}
+
+				bool leftMovement = false;
+				bool rightMovement = false;
+
+				if (commandArgument.size() == 1) {
+					auto firstChar = commandArgument.front();
+					leftMovement = ((firstChar == '+') || (firstChar == 'l'));
+					leftMovement = ((firstChar == '-') || (firstChar == 'h'));
+				}
+
+				if (absoluteMovement == true) {
 					this->core->setOffsetType(app::shared::offset_type_e::ABSOLUTE);
 					this->core->printUserInput(app::main_window::text_action_e::CLEAR);
-					state = QValidator::Acceptable;
-				} else if ((currentKey.isNumber() == '+') || (currentKey.isNumber() == 'l')) {
+				} else if (rightMovement == true) {
 					this->core->setOffsetType(app::shared::offset_type_e::RIGHT);
 					this->core->printUserInput(app::main_window::text_action_e::CLEAR);
-					state = QValidator::Acceptable;
-				} else if ((currentKey.isNumber() == '-') || (currentKey.isNumber() == 'h')) {
+				} else if (leftMovement == true) {
 					this->core->setOffsetType(app::shared::offset_type_e::LEFT);
 					this->core->printUserInput(app::main_window::text_action_e::CLEAR);
-					state = QValidator::Acceptable;
 				} else {
-					LOG_WARNING(commandLineValidatorUserInput, "Pressed key " << event->text() << ". Only numbers and + and - signs are accepted when executing actions like move tabs in the tab bar");
+					LOG_WARNING(commandLineValidatorUserInput, "Command argument \"" << commandArgument << "\" is not valid while the offset type is " << offsetType << ". Only numbers and + and - signs are accepted while in state " << windowState);
 				}
+
+				commandArgumentValid = leftMovement || rightMovement || absoluteMovement;
 			} else {
-				if (currentKey.isDigit() == true) {
-					state = QValidator::Acceptable;
+				if (commandArgument.isEmpty() == true) {
+					commandArgumentValid = true;
 				} else {
-					LOG_WARNING(commandLineValidatorUserInput, "Pressed key " << event->text() << ". Only numbers accepted when executing actions like move tabs in the tab bar");
+					commandArgumentValid = true;
+					for (const auto & c : commandArgument) {
+						commandArgumentValid &= (c.isDigit() == true);
+					}
 				}
 			}
 			break;
 		default:
-			LOG_INFO(app::logger::info_level_e::ZERO, commandLineValidatorUserInput, "Window in state " << windowState << " Key pressed is " << event->text() << "(ID " << pressedKey << ")");
+			LOG_INFO(app::logger::info_level_e::ZERO, commandLineValidatorUserInput, "Window in state " << windowState << " Command argument is \"" << commandArgument << "\".");
 			break;
 	}
+
+	if ((commandArgumentValid == true) && (foundCommandName == true)) {
+		state = QValidator::Acceptable;
+	} else if ((commandArgumentValid == true) || (foundCommandName == true)) {
+		state = QValidator::Intermediate;
+	} else {
+		state = QValidator::Invalid;
+	}
+
+	if (input.isEmpty() == true) {
+		this->core->setMainWindowState(app::main_window::state_e::IDLE);
+	} else if ((windowState != app::main_window::state_e::COMMAND) && (foundCommandName == false)) {
+		const auto commandNameEndPosition = input.indexOf(commandArgument);
+		if (cursorPosition < commandNameEndPosition) {
+			auto commandName = input.left(commandNameEndPosition - 1);
+
+			// Delete first character (":")
+			commandName = commandName.right(1);
+
+			// Delete white spaces at the end of command name
+			while(commandName.lastIndexOf(" ") == (commandName.size() - 1)) {
+				commandName = commandName.left(1);
+			}
+			this->core->updateUserInput(app::main_window::text_action_e::SET, commandName);
+			this->core->setMainWindowState(app::main_window::state_e::COMMAND);
+		}
+
+	} 
+
 	return state;
 }
