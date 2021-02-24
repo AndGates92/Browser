@@ -37,8 +37,6 @@ namespace app {
 			 */
 			class CommandLineValidator final : public QValidator {
 
-				Q_OBJECT
-
 				public:
 					/**
 					 * @brief Function: explicit CommandLineValidator(QWidget * parent, const std::shared_ptr<app::main_window::window::Core> & windowCore)
@@ -75,7 +73,16 @@ namespace app {
 					 * @brief main window core
 					 *
 					 */
-					std::shared_ptr<app::main_window::window::Core> core;
+					std::weak_ptr<app::main_window::window::Core> core;
+
+					/**
+					 * @brief Function: std::shared_ptr<app::main_window::window::Core> getCore() const
+					 *
+					 * \return core the component belongs to
+					 *
+					 * This function returns the core the component belongs to
+					 */
+					std::shared_ptr<app::main_window::window::Core> getCore() const;
 
 					// Move and copy constructor
 					/**

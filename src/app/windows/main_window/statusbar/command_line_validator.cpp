@@ -9,6 +9,7 @@
 // Qt libraries
 #include <QtWidgets/QWidget>
 
+#include "app/shared/setters_getters.h"
 #include "app/utility/cpp/cpp_operator.h"
 #include "app/utility/logger/macros.h"
 #include "app/windows/main_window/statusbar/command_line_validator.h"
@@ -26,12 +27,15 @@ app::main_window::statusbar::CommandLineValidator::~CommandLineValidator() {
 
 }
 
+BASE_GETTER(app::main_window::statusbar::CommandLineValidator::getCore, std::shared_ptr<app::main_window::window::Core>, this->core.lock())
+
 QValidator::State app::main_window::statusbar::CommandLineValidator::validate(QString & input, int & cursorPosition) const {
 	QValidator::State state = QValidator::Invalid;
-	const auto offsetType = this->core->getOffsetType();
-	const app::main_window::state_e windowState = this->core->getMainWindowState();
+	auto windowCore = this->getCore();
+	const auto offsetType = windowCore->getOffsetType();
+	const app::main_window::state_e windowState = windowCore->getMainWindowState();
 
-	const auto actionName = this->core->getActionName();
+	const auto actionName = windowCore->getActionName();
 	const bool foundCommandName = (input.contains(actionName) == true);
 	int commandNameEndPosition = actionName.size();
 	if (windowState != app::main_window::state_e::COMMAND) {
@@ -39,7 +43,7 @@ QValidator::State app::main_window::statusbar::CommandLineValidator::validate(QS
 		commandNameEndPosition += 1;
 	}
 
-	const auto commandArgument = this->core->getUserText();
+	const auto commandArgument = windowCore->getUserText();
 
 	bool commandArgumentValid = false;
 
@@ -91,14 +95,14 @@ QValidator::State app::main_window::statusbar::CommandLineValidator::validate(QS
 				}
 
 				if (absoluteMovement == true) {
-					this->core->setOffsetType(app::shared::offset_type_e::ABSOLUTE);
-					this->core->printUserInput(app::main_window::text_action_e::CLEAR);
+					windowCore->setOffsetType(app::shared::offset_type_e::ABSOLUTE);
+					windowCore->printUserInput(app::main_window::text_action_e::CLEAR);
 				} else if (rightMovement == true) {
-					this->core->setOffsetType(app::shared::offset_type_e::RIGHT);
-					this->core->printUserInput(app::main_window::text_action_e::CLEAR);
+					windowCore->setOffsetType(app::shared::offset_type_e::RIGHT);
+					windowCore->printUserInput(app::main_window::text_action_e::CLEAR);
 				} else if (leftMovement == true) {
-					this->core->setOffsetType(app::shared::offset_type_e::LEFT);
-					this->core->printUserInput(app::main_window::text_action_e::CLEAR);
+					windowCore->setOffsetType(app::shared::offset_type_e::LEFT);
+					windowCore->printUserInput(app::main_window::text_action_e::CLEAR);
 				} else {
 					LOG_WARNING(commandLineValidatorUserInput, "Command argument \"" << commandArgument << "\" is not valid while the offset type is " << offsetType << ". Only numbers and + and - signs are accepted while in state " << windowState);
 				}
@@ -129,7 +133,7 @@ QValidator::State app::main_window::statusbar::CommandLineValidator::validate(QS
 	}
 
 	if (input.isEmpty() == true) {
-		this->core->setMainWindowState(app::main_window::state_e::IDLE);
+		windowCore->setMainWindowState(app::main_window::state_e::IDLE);
 	} else if ((windowState != app::main_window::state_e::COMMAND) && (foundCommandName == false)) {
 		const auto commandNameEndPosition = input.indexOf(commandArgument);
 		if (cursorPosition < commandNameEndPosition) {
@@ -142,8 +146,8 @@ QValidator::State app::main_window::statusbar::CommandLineValidator::validate(QS
 			while(commandName.lastIndexOf(" ") == (commandName.size() - 1)) {
 				commandName = commandName.left(1);
 			}
-			this->core->updateUserInput(app::main_window::text_action_e::SET, commandName);
-			this->core->setMainWindowState(app::main_window::state_e::COMMAND);
+			windowCore->updateUserInput(app::main_window::text_action_e::SET, commandName);
+			windowCore->setMainWindowState(app::main_window::state_e::COMMAND);
 		}
 
 	} 
